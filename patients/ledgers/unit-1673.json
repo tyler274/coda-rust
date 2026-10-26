@@ -1,0 +1,4695 @@
+{
+  "unit": "unit-1673",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001673",
+      "given": "Kayla",
+      "family": "Cronin",
+      "birth_date": "1992-01-13",
+      "address_line": "58 Hawley Grove Road",
+      "phone": "+1-413-555-0160",
+      "email": "kayla.cronin@example.test",
+      "marital_status": "married",
+      "summary": "Healthy elementary school teacher who joins the practice at 27. After her first delivery in 2022 she develops autoimmune Addison disease and a right lactational mastitis that becomes an abscess needing drainage; a second uncomplicated delivery in 2025 leaves a diastasis recti.",
+      "events": [
+        {
+          "id": "2019-08-26a",
+          "kind": "telephone",
+          "start": "2019-08-26T13:10",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "date": "2019-08-26T13:10",
+              "author": "front desk",
+              "body": "Caller moved to Northampton over the summer, teaches at an elementary school in town, wants a doctor she can actually reach. Explained membership and that insurance still covers labs and specialists (BCBS PPO). Booked new patient physical 9/9 at 9:00. She signed the records release over the phone-fax form sent to her email; request faxed to her previous primary care office. Asked her to fast for labs."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-05a",
+          "kind": "outside_records",
+          "start": "2019-09-05T10:40",
+          "reason": "Prior primary care records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Office",
+              "date": "2019-09-05T10:40",
+              "author": "outside primary care",
+              "body": "Summary of care, prior primary care practice (patient seen there 2012-2019).\n\nProblem list: none active.\nMedications: none.\nAllergies: no known drug allergies.\nImmunizations: HPV vaccine 3-dose series completed in adolescence; Tdap 2014; childhood series complete per school record.\nCervical screening: Pap 2016, negative for intraepithelial lesion or malignancy.\nLast visit 2018: routine physical, no concerns. Never smoker.\n\n[Scanned 14 pages. Indexed by front desk.]"
+            }
+          ]
+        },
+        {
+          "id": "2019-09-09a",
+          "kind": "establish_care",
+          "start": "2019-09-09T09:00",
+          "end": "2019-09-09T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              75
+            ],
+            "hr": 55,
+            "rr": 14,
+            "temp_c": 37.1,
+            "spo2": 98,
+            "weight_kg": 63.9,
+            "height_cm": 165.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-09-09T09:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 245
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.39
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-09-09T09:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 112
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 89
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-09-09T09:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 173
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 63
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 87
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 117
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 110
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-09T09:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-09T09:50",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-09T09:50",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2019-09-09T09:40",
+              "text": "Specimen: liquid-based cervical cytology. Specimen adequacy: satisfactory for evaluation, transformation zone component present. General categorization: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2019-09-13T15:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2019-09-09T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "New Patient Preventive Visit",
+              "date": "2019-09-09T10:30",
+              "author": "PCP",
+              "body": "27 y/o woman establishing care. Moved here this summer, 1st grade/2nd grade split classroom at a local elementary school. No complaints today. Feels well.\n\nPMH: none. PSH: none. Meds: none, no supplements. Allergies: NKDA.\nOB/GYN: G0. Regular cycles. Not currently trying to conceive, may in the next couple of years. Last Pap 2016 normal per old records.\nFHx: mother - autoimmune hypothyroidism. Maternal aunt - rheumatoid arthritis. Paternal cousin - type 1 diabetes. No known cardiac disease or cancer.\nSH: married, never smoked, doesn't drink, no drugs. Walks most days, some yoga.\nImmunizations: HPV complete, Tdap 2014. Will get flu shot when available.\n\nROS: negative x 12 systems.\n\nExam: vitals as recorded, BMI about 23. Well appearing. HEENT normal, TM clear, oropharynx clear. Neck supple, thyroid normal size without nodules. Lungs clear. Heart regular, no murmur. Abdomen soft, no masses. Breasts: symmetric, no masses, no nipple discharge, no axillary nodes. Pelvic: normal external genitalia, cervix without lesions, Pap collected, bimanual normal. Skin: no rashes, no unusual pigmentation. Neuro nonfocal. Mood bright.\n\nA/P: Healthy adult, preventive visit.\n- Pap today (due, 3 years since last)\n- CBC, CMP, lipids, TSH (family history of autoimmune thyroid disease), one-time HIV and hep C screen\n- Discussed folic acid if she starts trying to conceive\n- Flu shot in October\n- RTC 1 year"
+            }
+          ],
+          "state": {
+            "weight_kg": 63.5,
+            "height_cm": 165.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.8,
+              "Total Cholesterol": 174
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2019-09-11a",
+          "kind": "portal_message",
+          "start": "2019-09-11T16:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Your Lab Results",
+              "date": "2019-09-11T16:20",
+              "author": "PCP",
+              "body": "Hi Kayla, everything from Monday came back in good shape: blood counts, kidneys, liver, sugar and thyroid all normal, and your cholesterol numbers are fine. HIV and hepatitis C screens negative (we only need to do those once). Pap result will take a few more days and I'll send it along. Welcome to the practice!"
+            }
+          ]
+        },
+        {
+          "id": "2019-09-17a",
+          "kind": "portal_message",
+          "start": "2019-09-17T08:05",
+          "reason": "Pap result",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Pap Result",
+              "date": "2019-09-17T08:05",
+              "author": "PCP",
+              "body": "Pap smear normal. Next one in 3 years, or sooner if your OB does one with a pregnancy."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-17a",
+          "kind": "nurse_visit",
+          "start": "2019-10-17T15:40",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-17T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-17T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2019-10-17T15:50",
+              "author": "RN",
+              "body": "Here after school for flu vaccine. No fever today, no prior vaccine reactions, not pregnant. Quadrivalent flu 0.5 mL IM R deltoid. VIS provided. Tolerated without issue, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2020-05-04a",
+          "kind": "portal_message",
+          "start": "2020-05-04T19:30",
+          "reason": "Immunization record request",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Immunization Record",
+              "date": "2020-05-04T19:30",
+              "author": "patient",
+              "body": "Hi, the district HR office is asking all of us to upload an updated immunization record before next year (even though we're all remote right now). Could you put one in the portal? Thanks, Kayla"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Immunization Record",
+              "date": "2020-05-05T09:15",
+              "author": "MA",
+              "body": "Hi Kayla, your immunization summary (including the records from your prior office and last fall's flu shot) is now under Documents in the portal. Let us know if HR needs a signed copy."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-14a",
+          "kind": "annual_physical",
+          "start": "2020-09-14T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              125,
+              73
+            ],
+            "hr": 70,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 63.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-09-14T16:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 240
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.56
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-09-14T16:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Glucose",
+                  "value": 82
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-09-14T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2020-09-14T16:30",
+              "author": "PCP",
+              "body": "Annual. Masked visit. Back in the classroom with hybrid schedule, tiring but fine. No health concerns. No meds. NKDA. Not trying to conceive yet, thinking next year.\n\nExam: BP and weight as recorded, weight up half a kilo. Well appearing. Thyroid normal. Lungs clear, heart regular. Abd benign. Skin normal.\n\nPlan: routine labs. Flu shot next month. Folic acid once trying. Pap not due until 2022. RTC 1 yr."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-09-16a",
+          "kind": "portal_message",
+          "start": "2020-09-16T12:45",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Lab Results",
+              "date": "2020-09-16T12:45",
+              "author": "PCP",
+              "body": "Labs all normal. See you for flu shot."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-13a",
+          "kind": "nurse_visit",
+          "start": "2020-10-13T15:20",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-13T15:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-13T15:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2020-10-13T15:30",
+              "author": "RN",
+              "body": "Flu vaccine, quadrivalent, 0.5 mL IM L deltoid. Screened: afebrile, no COVID symptoms, no exposures. Tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-08a",
+          "kind": "portal_message",
+          "start": "2021-03-08T20:10",
+          "reason": "COVID vaccine question",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "COVID vaccine",
+              "date": "2021-03-08T20:10",
+              "author": "patient",
+              "body": "Teachers are eligible starting this week. Is there any reason I shouldn't get it if we might try for a baby later this year? I can get an appointment at a pharmacy."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: COVID vaccine",
+              "date": "2021-03-09T07:20",
+              "author": "PCP",
+              "body": "Go ahead and get it. No reason to delay trying to conceive after vaccination, and being protected before pregnancy is a good thing. Send me the dates when you're done and we'll add them to your chart."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-10a",
+          "kind": "outside_records",
+          "start": "2021-05-10T11:00",
+          "reason": "Pharmacy immunization record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-06T16:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-27T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy Vaccination Record",
+              "date": "2021-05-10T11:00",
+              "author": "pharmacy",
+              "body": "Patient-uploaded photo of CDC vaccination card plus pharmacy administration record. Pfizer-BioNTech COVID-19 vaccine dose 1 on 04/06/2021 and dose 2 on 04/27/2021, both IM left deltoid. Entered into immunization history by MA."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-23a",
+          "kind": "annual_physical",
+          "start": "2021-08-23T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, preconception",
+          "medications": [
+            {
+              "drug_text": "folic acid 0.4 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily (over the counter)",
+              "dose": {
+                "value": 0.4,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Preconception supplementation"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              75
+            ],
+            "hr": 71,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 62.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-08-23T10:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 242
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.45
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 85
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-08-23T10:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Glucose",
+                  "value": 83
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-23T10:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-08-23T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2021-08-23T11:05",
+              "author": "PCP",
+              "body": "Kayla is in for her yearly before school starts back. She plans to start trying for a pregnancy this winter, and she wanted to go over anything she should do ahead of time.\n\nCurrently no meds. NKDA. Fully vaccinated for COVID (April). Never smoker, no alcohol.\nFHx unchanged - mother hypothyroid, aunt RA, cousin T1DM.\nROS negative. Cycles regular.\n\nExam: vitals as charted. Well, thyroid not enlarged. Heart/lungs normal. Abdomen soft. Skin without rashes or pigment change.\n\nAssessment/plan\n1. Preconception: start folic acid 0.4 mg daily now (OTC, or a prenatal vitamin with that amount). Reviewed avoiding alcohol (already abstains), food safety, keeping flu and COVID up to date. Rubella and varicella immunity will be checked by OB with first prenatal labs. Call when positive test and we'll get her set up with OB.\n2. Thyroid: TSH today given mother's autoimmune thyroid disease.\n3. Health maintenance: Pap up to date (2019). Flu in the fall. Booster when eligible.\nRTC 1 year or when pregnant."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 2.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-08-25a",
+          "kind": "portal_message",
+          "start": "2021-08-25T17:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Lab Results",
+              "date": "2021-08-25T17:15",
+              "author": "PCP",
+              "body": "Thyroid normal, blood count normal, chemistries normal. All good for planning ahead."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T15:30",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-12T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-12T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2021-10-12T15:40",
+              "author": "MA",
+              "body": "Flu quadrivalent 0.5 mL IM R deltoid, lot recorded in vaccine log. Pt denies illness today. Not pregnant per pt. Observed 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-13a",
+          "kind": "portal_message",
+          "start": "2021-12-13T07:50",
+          "reason": "COVID booster recorded",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-12-10T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Booster",
+              "date": "2021-12-13T07:50",
+              "author": "patient",
+              "body": "Got my booster Friday afternoon at the pharmacy downtown (Pfizer again). Sore arm and tired on Saturday, fine now. Card photo attached."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Booster",
+              "date": "2021-12-13T10:05",
+              "author": "MA",
+              "body": "Thanks Kayla, booster dated 12/10/2021 added to your record."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-26a",
+          "kind": "portal_message",
+          "start": "2022-01-26T06:40",
+          "reason": "Positive pregnancy test",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "diagnosed",
+              "onset": "2021-12-29",
+              "note": "LMP 2021-12-29, positive home test"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2022",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics & Gynecology",
+              "reason": "Prenatal care, first pregnancy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Positive test!",
+              "date": "2022-01-26T06:40",
+              "author": "patient",
+              "body": "Two lines this morning! First day of my last period was 12/29. I've been taking the folic acid since August. What do I do next? I don't have an OB yet."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Positive test!",
+              "date": "2022-01-26T07:55",
+              "author": "PCP",
+              "body": "Congratulations! That puts you at about 4 weeks today, due around October 5. Keep the folic acid going. I've sent a referral to the OB group at the hospital; they usually do a first visit around 8-10 weeks and their office will call you to schedule. No alcohol (I know, not an issue), avoid NSAIDs like ibuprofen, acetaminophen is fine if you need something. Call if you have bleeding or severe pain before then."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-09a",
+          "kind": "outside_records",
+          "start": "2022-03-09T11:20",
+          "reason": "Prenatal care records",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-03-02T10:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 223
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.38
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-03-02T10:30",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-03-02T10:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-03-02T10:30",
+              "results": [
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-03-02T10:15",
+              "text": "Liquid-based cervical cytology with high-risk HPV co-testing. Specimen satisfactory for evaluation, endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, high-risk HPV negative.",
+              "issued": "2022-03-07T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2022",
+              "action": "done",
+              "date": "2022-03-09T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics New Prenatal Visit",
+              "date": "2022-03-09T11:20",
+              "author": "obstetrics",
+              "body": "Obstetrics & Gynecology - New OB visit, 03/02/2022\n\n30 y.o. G1P0 at 9w0d by LMP 12/29/2021, confirmed by today's dating ultrasound (single intrauterine pregnancy, cardiac activity present, CRL concordant). EDD 10/05/2022.\n\nPMH: none. Meds: folic acid 0.4 mg. NKDA. Nonsmoker, no alcohol.\nExam: normal. Pap with HPV co-test collected.\nPrenatal labs: CBC normal, blood type and antibody screen sent, rubella immune, hepatitis B surface antigen, HIV and RPR nonreactive.\n\nPlan: routine prenatal care, genetic screening options reviewed, next visit 4 weeks.\n\nThank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-20a",
+          "kind": "portal_message",
+          "start": "2022-05-20T15:50",
+          "reason": "Leave paperwork",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "FMLA form",
+              "date": "2022-05-20T15:50",
+              "author": "patient",
+              "body": "The district sent me FMLA paperwork for maternity leave starting in October. Do you fill this out or does the OB?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: FMLA form",
+              "date": "2022-05-23T09:30",
+              "author": "front desk",
+              "body": "Hi Kayla, for pregnancy leave the OB office is the one to complete it since they're managing the pregnancy and will know the delivery date. If they need anything from us, just have them fax a request."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-05a",
+          "kind": "outside_records",
+          "start": "2022-08-05T10:10",
+          "reason": "Prenatal care records",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2022-07-20T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prenatal Flow Sheet Update",
+              "date": "2022-08-05T10:10",
+              "author": "obstetrics",
+              "body": "Prenatal summary through 07/20/2022 (29w0d).\n\nCourse uncomplicated. Anatomy ultrasound at 20 weeks normal, placenta posterior, no previa. 1-hour glucose screen at 28 weeks normal. BP normal at all visits. Fetal growth appropriate.\nTdap given 07/20/2022.\nPlans vaginal birth, plans to breastfeed.\nNext visits every 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-28a",
+          "kind": "nurse_visit",
+          "start": "2022-09-28T15:30",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-28T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-28T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2022-09-28T15:40",
+              "author": "RN",
+              "body": "39 weeks, wanted her flu shot before the baby comes. Feels well, no contractions, good fetal movement. Inactivated quadrivalent flu 0.5 mL IM L deltoid. Tolerated. Reminded she can go straight to L&D for labor signs."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-05a",
+          "kind": "hospital_admission",
+          "start": "2022-10-05T03:40",
+          "end": "2022-10-07T11:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Labor",
+          "conditions": [
+            {
+              "label": "Normal spontaneous vaginal delivery",
+              "action": "diagnosed",
+              "onset": "2022-10-05",
+              "icd10": "O80"
+            },
+            {
+              "label": "Second-degree perineal laceration during delivery",
+              "action": "diagnosed",
+              "onset": "2022-10-05",
+              "icd10": "O70.1"
+            },
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "resolved"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2022-10-05T03:55",
+              "bp": [
+                120,
+                78
+              ],
+              "hr": 88,
+              "rr": 16,
+              "temp_c": 37.0
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "Labor and Delivery Admission",
+              "date": "2022-10-11T09:00",
+              "author": "obstetrics",
+              "body": "Labor & Delivery admission H&P - 10/05/2022 03:55\n\n30 y.o. G1P0 at 40w0d presenting with contractions about every five minutes for roughly two hours, which she rates as moderately painful, along with a small amount of mucousy, blood-streaked discharge. She asked what the bloody show meant and what happens next; reviewed that it is expected cervical change in early labor.\n\nPrenatal course: uncomplicated, care adequate, no significant findings. Prenatal labs reassuring.\nPMH: none. PSH: none. Meds: folic acid. Allergies: NKDA.\nSH: elementary school teacher, never smoker, no alcohol.\n\nVS: BP 120/78, HR 88, RR 16, T 37.0 C (98.6 F).\nFHT: category I - baseline 140, moderate variability, occasional accels, no decels.\nSSE: bloody show at the os, no active bleeding, no pooling.\nSVE: 4 cm / 80% / vertex.\n\nA/P: active labor, term, primigravida. Admit to L&D. Expectant management, epidural on request, continuous monitoring."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2022-10-11T09:00",
+              "author": "obstetrics",
+              "body": "Admit 10/05/2022, discharge 10/07/2022.\n\nDelivery: normal spontaneous vaginal delivery 10/05/2022 of a healthy term infant after an uncomplicated labor. Second-degree perineal laceration repaired in the delivery room immediately after birth. Placenta delivered intact. Blood loss within normal range.\n\nPostpartum course: unremarkable. Voiding, ambulating, pain controlled. Breastfeeding established, infant feeding well.\nDischarge medications: continue folic acid/prenatal vitamin. Allergies: NKDA.\nFollow-up: OB perineal check in about 1 week and routine postpartum visit; call for fever, heavy bleeding, worsening perineal pain."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-10a",
+          "kind": "specialist_visit",
+          "start": "2022-10-10T10:20",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Perineal pain after delivery",
+          "vitals": {
+            "bp": [
+              132,
+              67
+            ],
+            "hr": 71,
+            "temp_c": 37.3
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-10-10T10:25",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.018
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.3
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Postpartum Follow-up",
+              "date": "2022-10-12T14:10",
+              "author": "obstetrics",
+              "body": "OB/GYN clinic - 10/10/2022\n\nSeen five days after vaginal birth of her first baby. Delivery was complicated by a second-degree laceration, repaired right after delivery. She reports soreness at the repair and that urinating has been difficult and uncomfortable. She is nursing and would like to avoid any medication that might pass to the baby. No fever, no chills, no pus-like drainage.\n\nAllergies: NKDA. Meds: prenatal vitamin.\n\nExam: afebrile. Perineum swollen with mild redness; no fluctuance, no separation of the wound edges, sutures intact. Urine dip negative for leukocytes, nitrites and blood.\n\nAssessment: expected postpartum perineal edema with discomfort at an intact second-degree repair; dysuria from local swelling, no sign of infection.\nPlan: sitz baths two to three times daily, ice packs, peri bottle with voiding, stool softening diet. No medications per her preference. Return for fever, discharge or wound opening. Routine postpartum visit as scheduled."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-10-13a",
+          "kind": "portal_message",
+          "start": "2022-10-13T21:15",
+          "reason": "Delivery update",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Baby's here",
+              "date": "2022-10-13T21:15",
+              "author": "patient",
+              "body": "Just wanted you to know the baby came on the 5th, all healthy. I had a tear that's healing, OB saw me Monday. Nursing is going okay so far. Does the baby's pediatrician need anything from you?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Baby's here",
+              "date": "2022-10-14T07:30",
+              "author": "PCP",
+              "body": "Congratulations to you all! Nothing needed from us for the pediatrician. Rest when you can, and reach out any time - I'm here for you, not just the OB."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-04a",
+          "kind": "specialist_visit",
+          "start": "2022-11-04T13:40",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Nipple pain with breastfeeding",
+          "conditions": [
+            {
+              "label": "Exclusive breastfeeding",
+              "action": "diagnosed",
+              "onset": "2022-10-05",
+              "icd10": "Z39.1"
+            },
+            {
+              "label": "Nipple fissure due to improper breastfeeding technique",
+              "action": "diagnosed",
+              "onset": "2022-10-20",
+              "icd10": "O92.13"
+            },
+            {
+              "label": "Second-degree perineal laceration during delivery",
+              "action": "resolved",
+              "icd10": "O70.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              113,
+              69
+            ],
+            "hr": 74,
+            "temp_c": 36.7
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Clinic Visit",
+              "date": "2022-11-08T08:45",
+              "author": "obstetrics",
+              "body": "OB/GYN - 11/04/2022\n\nReason: painful nipples with breastfeeding.\n\nKayla is 30 and about a month out from an uncomplicated vaginal delivery. Since the first weeks she has had pain in both nipples, sharp and burning, worst during feeds, with abrasions on both sides and some blood-tinged discharge at times. Baby is exclusively at the breast; no bottles or formula. She is worried this could be an infection or something wrong in the breast. No fevers, chills or body aches.\n\nThe perineal laceration has healed and is no longer bothering her.\nAllergies: NKDA. Meds: prenatal vitamin. Never smoker, no alcohol.\n\nExam: both nipples red with small fissures. No breast erythema, induration or engorgement; no masses. Infant observed at the visit: well nourished, alert, active. Shallow latch noted with the feed.\n\nAssessment:\n1. Bilateral nipple fissures from poor latch\n2. Exclusive breastfeeding, infant thriving\n3. Healed second-degree laceration\n\nPlan: latch and positioning reviewed in clinic; referred to our lactation consultant for hands-on help this week. Expressed breast milk to nipples after feeds and air dry. No signs of mastitis. Call with fever, a red or hard area of the breast, or worsening pain."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-12-14a",
+          "kind": "office_visit",
+          "start": "2022-12-14T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, dizziness, weight loss",
+          "vitals": {
+            "bp": [
+              97,
+              59
+            ],
+            "hr": 72,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 60.6
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-12-14T08:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 130
+                },
+                {
+                  "test": "Potassium",
+                  "value": 5.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 99
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Glucose",
+                  "value": 83
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-12-14T08:20",
+              "results": [
+                {
+                  "test": "Cortisol, AM",
+                  "value": 3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-12-14T08:20",
+              "resulted": "2022-12-15T11:40",
+              "results": [
+                {
+                  "test": "Corticotropin",
+                  "loinc": "2141-0",
+                  "unit": "pg/mL",
+                  "value": 200
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-12-14T08:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 233
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.53
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-12-14T08:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2022-12-14T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2022",
+              "action": "placed",
+              "order": "Endocrinology referral, urgent",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "Suspected primary adrenal insufficiency"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2022-12-14T12:30",
+              "author": "PCP",
+              "body": "CC: exhausted, dizzy, losing weight.\n\nS: 10 weeks postpartum, exclusively breastfeeding. Says she expected to be tired with a newborn but this is different - over the past several weeks she's gotten progressively more wiped out, lightheaded when she stands, and has dropped about 5 kg by her home scale beyond what she lost after delivery. Her mother noticed she looks tan, and she's seen it too: darker skin in the creases of her palms, along her laceration scar, and patches on her gums. No vomiting, no syncope, no fevers. Nipple soreness better since lactation help. Sleeping in pieces but mood okay.\n\nMeds: prenatal vitamin/folic acid. NKDA.\nFHx: mother autoimmune hypothyroidism, aunt RA, cousin T1DM.\n\nO: BP low for her today, weight down as charted. Tired-appearing but not toxic. Hyperpigmented palmar creases, darkened scar, brownish patches on the gums. Thyroid normal. Heart regular, lungs clear. Abdomen soft, nontender. Breasts not examined today.\nPHQ-9 5, mostly fatigue items.\n\nA/P: Fatigue, orthostatic symptoms, weight loss and new hyperpigmentation postpartum - very concerned for primary adrenal insufficiency, autoimmune given family history. Postpartum thyroiditis and anemia also on the list.\n- Drew BMP, 8 AM cortisol, ACTH, CBC, TSH this morning before any steroid\n- BMP back before she left the building: Na 130, K 5.5. Fits.\n- Called endocrinology on-call colleague; urgent consult arranged, likely Friday\n- Strict precautions: vomiting, can't keep fluids down, fainting, confusion, severe abdominal pain -> ED immediately and tell them possible adrenal insufficiency\n- Salt liberally, fluids\n- Will call her with cortisol and ACTH"
+            }
+          ],
+          "state": {
+            "bp": [
+              100,
+              60
+            ],
+            "weight_kg": 61.0,
+            "labs": {
+              "Bicarbonate": 24,
+              "Chloride": 97,
+              "Potassium": 5.5,
+              "Sodium": 130,
+              "Thyroid Stimulating Hormone": 1.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-12-15a",
+          "kind": "telephone",
+          "start": "2022-12-15T12:10",
+          "reason": "Results call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results Call",
+              "date": "2022-12-15T12:10",
+              "author": "PCP",
+              "body": "Called pt. AM cortisol 3, ACTH 200 (resulted this morning). Together with low Na/high K, this is primary adrenal insufficiency until proven otherwise. Endo will see her tomorrow 10:30, confirmed with their office; faxed my note and labs. CBC and TSH normal. She's about the same as yesterday, keeping fluids down, no vomiting. Reviewed ED precautions again. She is breastfeeding - told her treatment is compatible with nursing."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-16a",
+          "kind": "specialist_visit",
+          "start": "2022-12-16T10:30",
+          "service": "Endocrinology",
+          "reason": "Suspected adrenal insufficiency",
+          "conditions": [
+            {
+              "label": "Addison disease",
+              "action": "diagnosed",
+              "onset": "2022-11-15"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "hydrocortisone 20 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every morning on waking",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Primary adrenal insufficiency"
+            },
+            {
+              "drug_text": "hydrocortisone 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every afternoon (around 2-4 PM)",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Primary adrenal insufficiency"
+            },
+            {
+              "drug_text": "fludrocortisone acetate 0.1 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 0.1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Primary adrenal insufficiency"
+            },
+            {
+              "drug_text": "hydrocortisone sodium succinate 100 MG Injection",
+              "action": "start",
+              "sig": "Inject 100 mg into the thigh muscle once for vomiting, collapse or adrenal crisis, then call 911",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "ONCE",
+              "route": "Intramuscular",
+              "course": "chronic",
+              "reason": "Emergency kit for adrenal crisis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              100,
+              60
+            ],
+            "hr": 70,
+            "weight_kg": 61.3
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-12-16T11:15",
+              "resulted": "2022-12-23T09:00",
+              "results": [
+                {
+                  "test": "21-Hydroxylase Antibody",
+                  "loinc": "85363-0",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2022",
+              "action": "done",
+              "date": "2022-12-16T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Consultation",
+              "date": "2022-12-16T16:45",
+              "author": "endocrinology",
+              "body": "Endocrinology - New patient consultation, 12/16/2022\nReferring: primary care\n\nDear Colleague,\n\nThank you for the urgent referral of Ms. Cronin, a 30-year-old teacher about ten weeks after her first delivery, who is breastfeeding.\n\nHistory: progressive fatigue and lightheadedness over several weeks, about 5 kg of weight loss, and darkening of her skin most noticeable in the skin creases, her perineal scar and her gums. No vomiting or syncope. No prior steroid exposure.\n\nFamily history: mother with autoimmune hypothyroidism, maternal aunt with rheumatoid arthritis, paternal cousin with type 1 diabetes.\nAllergies: no known drug allergies. Medications: prenatal vitamin.\n\nExam: BP 100/60 seated with a further drop and lightheadedness on standing (orthostatic). Pigmentation accentuated in the palmar creases and the scar; gingival pigmentation. Thyroid normal.\n\nData (drawn by you 12/14, 08:00): sodium 130, potassium 5.5, cortisol 3 mcg/dL, ACTH 200 pg/mL.\n\nImpression: primary adrenal insufficiency (Addison disease). The combination of a very low morning cortisol with a markedly elevated ACTH, hyponatremia, hyperkalemia and pigmentation is diagnostic; a stimulation test would add nothing and delay treatment. Autoimmune adrenalitis is most likely given the family history; 21-hydroxylase antibodies sent today.\n\nPlan:\n1. Hydrocortisone 20 mg on waking and 10 mg in the early afternoon. Fludrocortisone 0.1 mg daily. Both are compatible with breastfeeding at these doses.\n2. Sick-day rules taught and given in writing: double the hydrocortisone doses for fever over 38 C or illness needing bed rest, triple for more severe illness, until 24-48 hours after recovery. Vomiting or unable to take tablets = use the injection and go to the ED.\n3. Hydrocortisone sodium succinate 100 mg IM emergency kit prescribed; she and her mother were shown how to use it.\n4. Medical alert ID recommended.\n5. BMP and renin in about 3 months; I'll see her then. Annual screening for other autoimmune endocrine disease (TSH at minimum) through your office is reasonable.\n\nWith thanks for involving me in her care."
+            }
+          ],
+          "measure": [
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-12-17a",
+          "kind": "telephone",
+          "start": "2022-12-17T10:20",
+          "reason": "Breast pain, body aches",
+          "medications": [
+            {
+              "drug_text": "dicloxacillin 500 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth 4 times daily on an empty stomach for 10 days",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "QID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Lactational mastitis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Weekend Call",
+              "date": "2022-12-17T10:40",
+              "author": "PCP",
+              "body": "Pt called my cell this morning. Since Thursday achy all over with chills, and now the outer part of her right breast is sore and pink, especially during feeds. Hasn't checked a temperature. No vomiting, eating and drinking. Started hydrocortisone and fludrocortisone yesterday per endo.\n\nSounds like early lactational mastitis. Sent dicloxacillin 500 mg QID x 10 days to her pharmacy. Keep nursing/emptying the right side, cool compresses after feeds. Per endo sick-day rules: double hydrocortisone (40 mg AM / 20 mg PM) while feverish or achy. If vomiting -> injection and ED. Asked her to see OB on Monday for an exam since they know her from the nipple issues; she'll call them first thing. Call me back if worse over the weekend."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-19a",
+          "kind": "specialist_visit",
+          "start": "2022-12-19T09:10",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Fever and right breast pain",
+          "conditions": [
+            {
+              "label": "Lactational mastitis",
+              "action": "diagnosed",
+              "onset": "2022-12-15",
+              "icd10": "O91.23"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 88,
+            "temp_c": 38.7
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-12-19T09:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 293
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.47
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-12-19T09:40",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 18
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-12-19T09:45",
+              "resulted": "2022-12-24T09:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Acute Visit",
+              "date": "2022-12-20T07:30",
+              "author": "obstetrics",
+              "body": "OB/GYN - 12/19/2022, same-day visit\n\n30 y.o. P1, about 11 weeks postpartum, breastfeeding, newly diagnosed primary adrenal insufficiency (started hydrocortisone and fludrocortisone 12/16; currently doubling hydrocortisone per sick-day rules). Four days of fever, malaise and a painful red right breast. It began with aches and chills and then localized breast pain with feeding. Her primary care physician started dicloxacillin two days ago and she has not improved.\n\nAllergies: NKDA. Meds: hydrocortisone, fludrocortisone, dicloxacillin, prenatal vitamin.\n\nVitals: T 38.7 C (101.7 F), HR 88, BP 120/78.\nExam: right breast, upper outer quadrant - 5 cm area of firm induration with warmth and erythema; no fluctuance. No nipple discharge or retraction. No palpable axillary nodes. Left breast normal.\n\nLabs today: WBC 12.0, CRP 18. Blood cultures drawn; no growth to date.\n\nAssessment: right lactational mastitis not responding after 48 hours of dicloxacillin.\nPlan: with no response to antibiotics, an abscess has to be excluded - breast ultrasound ordered for tomorrow. Continue dicloxacillin for now and continue nursing or pumping from the right. Keep stress-dosing hydrocortisone. ED tonight for rising fever, rigors, vomiting, lightheadedness or rapidly spreading redness."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-20a",
+          "kind": "ed_visit",
+          "start": "2022-12-20T06:10",
+          "end": "2022-12-20T13:40",
+          "service": "Emergency Medicine",
+          "reason": "Right breast swelling and fever",
+          "conditions": [
+            {
+              "label": "Lactational breast abscess",
+              "action": "diagnosed",
+              "onset": "2022-12-19",
+              "icd10": "O91.13"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "hydrocortisone sodium succinate 100 MG Injection",
+              "action": "start",
+              "sig": "100 mg IV once in ED",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "ONCE",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "Stress dose, adrenal insufficiency with febrile infection"
+            },
+            {
+              "drug_text": "dicloxacillin 500 MG Oral Capsule",
+              "action": "stop",
+              "reason": "Treatment failure, abscess"
+            },
+            {
+              "drug": "cephalexin 500 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth 4 times daily for 10 days",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "QID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Lactational breast abscess after drainage"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2022-12-20T06:15",
+              "bp": [
+                120,
+                78
+              ],
+              "hr": 102,
+              "temp_c": 38.7
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-12-20T06:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 14.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 260
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.44
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 34
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 8.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-12-20T06:30",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 24
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-12-20T09:20",
+              "resulted": "2022-12-22T10:30",
+              "results": [
+                {
+                  "test": "Wound culture",
+                  "loinc": "6462-6",
+                  "text": "Staphylococcus aureus, methicillin-susceptible (oxacillin susceptible). Heavy growth."
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Breast ultrasound",
+              "performed": "2022-12-20T07:40",
+              "text": "Limited right breast ultrasound, upper outer quadrant, targeted to the palpable area. There is a complex, predominantly hypoechoic fluid collection with internal debris and surrounding hyperemia, measuring 5.0 cm in greatest dimension, with overlying skin thickening and edema. Reactive-appearing right axillary lymph nodes with preserved fatty hila. No solid mass.",
+              "conclusion": "5.0 cm right breast upper outer quadrant fluid collection consistent with abscess in a lactating patient."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2022-12-20T06:10"
+            },
+            {
+              "procedure": "Incision and drainage of abscess, simple",
+              "performed": "2022-12-20T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "date": "2022-12-21T08:15",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN NOTE - 12/20/2022 06:15\n\nHPI: 30 y.o. woman, breastfeeding a 2-month-old, with primary adrenal insufficiency diagnosed last week on hydrocortisone/fludrocortisone, seen by OB yesterday for right breast mastitis. Right breast pain and swelling have been building since 12/15 despite dicloxacillin since 12/17; fever and chills since yesterday, and overnight the breast became much more swollen. She has been doubling her hydrocortisone. No vomiting, no syncope.\n\nAllergies: NKDA.\nMeds: hydrocortisone 20 mg AM/10 mg PM (currently doubled), fludrocortisone 0.1 mg, dicloxacillin 500 mg QID, prenatal vitamin.\nSH: teacher, never smoker, no alcohol.\n\nVitals: T 38.7 C (101.7 F), HR 102, BP 120/78.\nExam: uncomfortable, nontoxic. Right breast red and swollen with a tender, fluctuant 5 cm mass in the upper outer quadrant; tender right axillary nodes. Left breast normal. Lungs clear, heart tachycardic and regular.\n\nLabs: WBC 14.0, Hgb 13.2, CRP 24.\nUS (bedside, read by radiology): 5.0 cm right breast abscess, UOQ.\n\nMDM: lactational breast abscess with failure of outpatient therapy, febrile, in a newly diagnosed Addison patient - stress dose given before the procedure.\n\nCourse:\n- Hydrocortisone 100 mg IV at 06:50.\n- General surgery consulted. Incision and drainage at the bedside under local anesthetic by surgery at 09:15: purulent fluid evacuated, loculations broken up, cavity irrigated and packed. Culture sent.\n- Tolerated well, pain controlled, tolerating PO.\n\nDisposition: discharged home 13:40.\n- Stop dicloxacillin. Start cephalexin 500 mg QID x 10 days.\n- Continue sick-day doubling of hydrocortisone until 48 h afebrile, then usual dose.\n- Keep nursing or pumping from both sides; milk from the right is safe for the baby.\n- Packing care reviewed; general surgery clinic wound check 12/28.\n- Follow up with PCP this week. Return for fever not improving in 48 h, vomiting, spreading redness, or lightheadedness."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-21a",
+          "kind": "portal_message",
+          "start": "2022-12-21T08:05",
+          "reason": "After ED visit",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "ER yesterday",
+              "date": "2022-12-21T08:05",
+              "author": "patient",
+              "body": "Ended up in the ER yesterday morning - it was an abscess and they drained it and packed it. Now on cephalexin instead. Fever was down last night. They said to see you this week. Also, am I supposed to keep doubling the hydrocortisone?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: ER yesterday",
+              "date": "2022-12-21T08:40",
+              "author": "PCP",
+              "body": "Got the ED record, glad they drained it. Yes, keep the doubled hydrocortisone until you've been fever-free for two full days, then go back to 20 and 10. Front desk will put you in tomorrow morning."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-22a",
+          "kind": "office_visit",
+          "start": "2022-12-22T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-ED follow-up",
+          "vitals": {
+            "bp": [
+              118,
+              75
+            ],
+            "hr": 72,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 60.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-12-22T09:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 136
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.7
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-12-22T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Follow-up",
+              "date": "2022-12-22T10:30",
+              "author": "PCP",
+              "body": "F/u after ED 12/20 for R breast abscess s/p I&D, and new Addison's (endo 12/16).\n\nFeels a lot better. Last fever Tuesday night. Taking cephalexin QID, no GI upset. Still on doubled HC since 12/17. Dizziness much improved since starting steroids. Nursing on both sides, pumping some on the R.\n\nExam: afebrile, BP better than last week. R breast: packing in place, incision clean, mild residual erythema UOQ receding from the marked borders, no new fluctuance. Skin still pigmented.\n\nA/P\n1. R lactational breast abscess, drained - improving. Finish cephalexin. Wound check with surgery 12/28. Culture pending from ED.\n2. Primary adrenal insufficiency - responding. Afebrile >48 h tomorrow, so back to 20 mg AM / 10 mg PM tomorrow. BMP today to see where Na/K are on fludrocortisone.\n3. Will call with BMP."
+            }
+          ],
+          "state": {
+            "bp": [
+              112,
+              70
+            ],
+            "labs": {
+              "Bicarbonate": 26,
+              "Chloride": 101,
+              "Potassium": 4.7,
+              "Sodium": 136
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-12-23a",
+          "kind": "portal_message",
+          "start": "2022-12-23T13:30",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Your results",
+              "date": "2022-12-23T13:30",
+              "author": "PCP",
+              "body": "Hi Kayla - a few results:\n- Sodium and potassium are almost back to normal (136 and 4.7). The fludrocortisone is doing its job.\n- The breast culture grew a common staph that is sensitive to cephalexin, so the antibiotic you're on is the right one.\n- Endocrinology called: your adrenal antibody test is positive, which confirms the autoimmune type of Addison's we suspected. Nothing changes in your treatment.\nHave a restful holiday, and see you in a couple weeks."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-28a",
+          "kind": "specialist_visit",
+          "start": "2022-12-28T14:00",
+          "service": "General Surgery",
+          "reason": "Wound check after breast abscess drainage",
+          "vitals": {
+            "temp_c": 36.8
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "General Surgery Clinic Note",
+              "date": "2022-12-29T11:10",
+              "author": "general surgery",
+              "body": "General Surgery clinic - 12/28/2022\n\nPOD 8 s/p bedside I&D of right lactational breast abscess (UOQ) in the ED. Culture MSSA. On cephalexin, last doses 12/30. Afebrile. Breastfeeding on both sides. No drainage at home for 2 days.\n\nAllergies: NKDA.\nExam: afebrile. Packing removed. Cavity shallow and granulating well, no purulence, no residual fluctuance or induration on palpation. Surrounding erythema resolved.\n\nA/P: healing well. No further packing; dry gauze. Shower normally. Complete antibiotics. Follow up as needed with us; routine care with PCP."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-01-09a",
+          "kind": "office_visit",
+          "start": "2023-01-09T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up adrenal insufficiency and breast abscess",
+          "conditions": [
+            {
+              "label": "Lactational mastitis",
+              "action": "resolved",
+              "icd10": "O91.23"
+            },
+            {
+              "label": "Lactational breast abscess",
+              "action": "resolved",
+              "icd10": "O91.13"
+            },
+            {
+              "label": "Nipple fissure due to improper breastfeeding technique",
+              "action": "resolved",
+              "icd10": "O92.13"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              77
+            ],
+            "hr": 76,
+            "temp_c": 36.9,
+            "spo2": 99,
+            "weight_kg": 62.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-01-09T16:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-01-09T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Follow-up",
+              "date": "2023-01-09T16:40",
+              "author": "PCP",
+              "body": "Kayla is back three weeks after the breast abscess drainage and a little over three weeks into treatment for Addison's.\n\nShe finished cephalexin 12/30. The incision closed over about a week and she has had no fever, redness or lumps since. Nursing on both sides without pain now; the cracked nipples healed after the lactation visits. Energy noticeably better, no lightheadedness on standing. Taking hydrocortisone 20 mg on waking and 10 mg at about 2 PM, fludrocortisone 0.1 mg in the morning. She carries the injection kit in the diaper bag. Hasn't ordered a medical ID yet.\n\nO: vitals as charted, weight up a little from December. R breast: well-healed small incision UOQ, no induration or mass, no erythema. Pigmentation already a bit lighter per pt, still visible in palmar creases.\nPHQ-9 3.\n\nA/P\n1. Primary adrenal insufficiency, autoimmune (21-OH Ab positive) - improving on replacement. BMP today. Endo f/u in March. Reinforced sick-day rules: fever or vomiting means call us or endo same day.\n2. Right lactational breast abscess with mastitis - resolved.\n3. Nipple fissures - resolved.\n4. Exclusive breastfeeding continues; infant doing well.\nRefills: endo is prescribing for now; we can take over refills once she's stable."
+            }
+          ],
+          "state": {
+            "weight_kg": 62.0,
+            "labs": {
+              "Potassium": 4.2,
+              "Sodium": 139
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-01-18a",
+          "kind": "pharmacy",
+          "start": "2023-01-18T11:25",
+          "reason": "Prior authorization, emergency hydrocortisone kit",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Prior Authorization - Hydrocortisone Sodium Succinate",
+              "date": "2023-01-18T11:25",
+              "author": "MA",
+              "body": "Pharmacy fax: BCBS requires PA for hydrocortisone sodium succinate 100 mg Act-O-Vial (emergency kit, 2 vials). Endocrinology office asked us to submit since we have the records. Submitted via payer portal with dx primary adrenal insufficiency, cortisol/ACTH results and endo consult note. Approved 1/18/2023 for 12 months. Pharmacy notified; pt picking up second vial today."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-13a",
+          "kind": "specialist_visit",
+          "start": "2023-03-13T09:00",
+          "service": "Endocrinology",
+          "reason": "Adrenal insufficiency follow-up",
+          "vitals": {
+            "bp": [
+              108,
+              69
+            ],
+            "hr": 73,
+            "weight_kg": 62.4
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-13T08:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-03-13T08:30",
+              "results": [
+                {
+                  "test": "Plasma Renin Activity",
+                  "value": 2.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2023-03-15T10:20",
+              "author": "endocrinology",
+              "body": "Endocrinology follow-up, 03/13/2023\n\nDear Colleague,\n\nI saw Kayla today, three months after starting replacement for autoimmune Addison disease (21-hydroxylase antibodies positive). She feels close to normal: good energy, no salt craving, no lightheadedness. The breast abscess you and the surgeons managed has healed. She used sick-day doubling appropriately during that illness and has not needed the injection.\n\nCurrent: hydrocortisone 20 mg on waking, 10 mg early afternoon; fludrocortisone 0.1 mg daily. NKDA.\nExam: BP normal without orthostatic change today; weight stable. Pigmentation fading.\nLabs: sodium 139, potassium 4.2, renin in the reference range on fludrocortisone.\n\nAssessment: well replaced on current glucocorticoid and mineralocorticoid doses.\nPlan: no changes. Sick-day rules reviewed again, kit in date. Medical alert ID encouraged. BMP and renin before her next visit in about 6 months. I'm happy for your office to handle refills between visits.\n\nKind regards"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Plasma Renin Activity": 2.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-19a",
+          "kind": "portal_message",
+          "start": "2023-04-19T21:00",
+          "reason": "Medical alert ID question",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Medical bracelet wording",
+              "date": "2023-04-19T21:00",
+              "author": "patient",
+              "body": "Finally ordering one of the medical ID bracelets. What exactly should it say? Also the baby started solids this week (6 months!) so I'm not only breastfeeding anymore - does that change anything for my meds?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Medical bracelet wording",
+              "date": "2023-04-20T07:15",
+              "author": "PCP",
+              "body": "Good question. Something like: ADRENAL INSUFFICIENCY - STEROID DEPENDENT - GIVE HYDROCORTISONE IN EMERGENCY. If there's room, add your name and an emergency phone. Nothing changes with your meds as the baby starts solids, and it's fine to keep nursing as long as you both like."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "pharmacy",
+          "start": "2023-06-12T09:40",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Medication Refill",
+              "date": "2023-06-12T09:40",
+              "author": "MA",
+              "body": "Pharmacy refill request: hydrocortisone 20 mg tab, hydrocortisone 10 mg tab, fludrocortisone 0.1 mg tab. Pt asking to switch to 90-day supplies for the summer. Last endo visit 3/13/23, labs normal. Pended for PCP."
+            },
+            {
+              "type": "Refill Request",
+              "title": "Refill Approved",
+              "date": "2023-06-12T12:50",
+              "author": "PCP",
+              "body": "Approved 90-day supply x 1 refill each, same doses. Endo ok'd us handling refills."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-21a",
+          "kind": "annual_physical",
+          "start": "2023-08-21T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Exclusive breastfeeding",
+              "action": "resolved",
+              "note": "Solids since about 6 months (April 2023); still nursing",
+              "icd10": "Z39.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              107,
+              72
+            ],
+            "hr": 67,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 63.6
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-08-21T09:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.43
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.2
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-21T09:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.83
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 95
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-21T09:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 180
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 95
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 114
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 118
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-21T09:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-08-21T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2023-08-21T10:15",
+              "author": "PCP",
+              "body": "Annual exam. 31F.\n\nInterval: big year - first baby 10/2022, then Addison's (autoimmune) diagnosed 12/2022, R lactational breast abscess drained 12/2022. Since then steady. Back to teaching full time this fall. Baby on solids since April, still nursing mornings and nights.\n\nMeds: hydrocortisone 20 mg qAM / 10 mg early afternoon; fludrocortisone 0.1 mg daily; folic acid 0.4 mg daily; hydrocortisone sodium succinate 100 mg IM kit (has 2 vials, in date). NKDA.\nNo sick days needing stress dose since December. Wearing a medical ID.\nNever smoker, no alcohol.\n\nROS: energy good, no orthostasis, no salt craving, weight back to her baseline. Cycles returned in spring.\n\nExam: vitals as charted. Mild residual pigment in palmar creases only. Thyroid normal, no nodules. Heart regular, lungs clear. Breasts: small healed scar R UOQ, no masses. Abdomen soft. No edema.\n\nA/P\n1. Addison disease - stable. Annual TSH today (autoimmune). Endo again in September.\n2. Exclusive breastfeeding has ended with solids; still partially nursing. Continue folic acid while nursing and if considering another pregnancy.\n3. HM: Pap/HPV co-test 2022 normal, next 2027. Flu and updated COVID in October. Lipids today.\n4. Reminded school nurse should have a copy of her emergency plan; letter printed."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.5,
+            "labs": {
+              "Thyroid Stimulating Hormone": 2.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-08-23a",
+          "kind": "portal_message",
+          "start": "2023-08-23T18:00",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Lab Results",
+              "date": "2023-08-23T18:00",
+              "author": "PCP",
+              "body": "All of Monday's labs are normal, thyroid included. Cholesterol is fine."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-25a",
+          "kind": "specialist_visit",
+          "start": "2023-09-25T15:30",
+          "service": "Endocrinology",
+          "reason": "Adrenal insufficiency follow-up",
+          "vitals": {
+            "bp": [
+              101,
+              74
+            ],
+            "hr": 69,
+            "weight_kg": 63.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-09-18T08:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-18T08:10",
+              "results": [
+                {
+                  "test": "Plasma Renin Activity",
+                  "value": 2.0
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2023-09-27T09:00",
+              "author": "endocrinology",
+              "body": "Endocrinology - 09/25/2023\n\nFollow-up for primary adrenal insufficiency (autoimmune). Doing well; back at work. No adrenal crises, no stress-dosing since last December. Still partially breastfeeding.\n\nMeds unchanged: hydrocortisone 20/10 mg, fludrocortisone 0.1 mg. NKDA.\nExam: normotensive without postural drop. No hyperpigmentation beyond faint palmar creases. Weight stable.\nLabs 9/18: electrolytes normal, renin within range.\n\nPlan: continue current doses. Review kit expiry before winter. Next visit in 6 months with labs beforehand."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "nurse_visit",
+          "start": "2023-10-11T15:35",
+          "reason": "Influenza and COVID-19 vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-11T15:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-11T15:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-11T15:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2023-10-11T15:50",
+              "author": "RN",
+              "body": "Flu (quadrivalent) 0.5 mL IM R deltoid and 2023-24 Pfizer COVID 0.3 mL IM L deltoid. Afebrile, feels well. Reviewed: if she runs a fever after the vaccines, follow her sick-day dosing. Observed 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-18a",
+          "kind": "portal_message",
+          "start": "2023-12-18T19:45",
+          "reason": "Travel question",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Traveling for the holidays",
+              "date": "2023-12-18T19:45",
+              "author": "patient",
+              "body": "We're driving to my parents' for a week over break. Anything special I should pack? Also, the baby weaned this month, so it's officially done."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Traveling for the holidays",
+              "date": "2023-12-19T08:20",
+              "author": "RN",
+              "body": "Hi Kayla! Pack at least double the number of hydrocortisone tablets you'll need for the week (in case of a sick day), the injection kit, and a copy of your emergency letter. Keep the meds in your bag rather than the trunk. Have a wonderful trip."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-17a",
+          "kind": "pharmacy",
+          "start": "2024-01-17T10:30",
+          "reason": "Prior authorization renewal",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Prior Authorization Renewal - Hydrocortisone Sodium Succinate",
+              "date": "2024-01-17T10:30",
+              "author": "MA",
+              "body": "Annual PA renewal for hydrocortisone sodium succinate 100 mg vial (emergency kit) per BCBS. Resubmitted with endo note 9/25/23. Approved through 1/2025. Pharmacy notified."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-12a",
+          "kind": "office_visit",
+          "start": "2024-02-12T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Adrenal insufficiency check-in",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-03-18a",
+          "kind": "specialist_visit",
+          "start": "2024-03-18T15:30",
+          "service": "Endocrinology",
+          "reason": "Adrenal insufficiency follow-up",
+          "vitals": {
+            "bp": [
+              109,
+              70
+            ],
+            "hr": 77,
+            "weight_kg": 64.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-11T07:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 100
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-11T07:55",
+              "results": [
+                {
+                  "test": "Plasma Renin Activity",
+                  "value": 2.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2024-03-20T13:10",
+              "author": "endocrinology",
+              "body": "Endocrinology - 3/18/2024\n\nKayla Cronin, 32, autoimmune Addison disease on hydrocortisone 20/10 and fludrocortisone 0.1. Weaned in December. Well over the winter, no stress doses needed. No orthostatic symptoms or salt craving.\n\nExam: BP normal, no postural change. Weight stable.\nLabs 3/11: Na and K normal, renin in range.\n\nImpression: stable replacement.\nPlan: continue. Replaced the emergency vial that expires this summer (new script sent). If she plans another pregnancy, let me know early so we can plan monitoring and delivery stress dosing. Return in 9 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-20a",
+          "kind": "pharmacy",
+          "start": "2024-05-20T10:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Medication Refill",
+              "date": "2024-05-20T10:05",
+              "author": "MA",
+              "body": "Electronic refill request x3 (hydrocortisone 20 mg, hydrocortisone 10 mg, fludrocortisone 0.1 mg), 90-day. Endo seen 3/18, no changes."
+            },
+            {
+              "type": "Refill Request",
+              "title": "Refill Approved",
+              "date": "2024-05-20T13:30",
+              "author": "PCP",
+              "body": "Sent, 90 days + 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-19a",
+          "kind": "annual_physical",
+          "start": "2024-08-19T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "medications": [
+            {
+              "drug_text": "folic acid 0.4 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Weaned; not currently planning pregnancy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              115,
+              67
+            ],
+            "hr": 72,
+            "rr": 15,
+            "temp_c": 37.0,
+            "spo2": 97,
+            "weight_kg": 63.7
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-08-19T10:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 233
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.73
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 85
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 33
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-19T10:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 90
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-19T10:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-08-19T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2024-08-19T10:30",
+              "author": "PCP",
+              "body": "32 y/o here for annual.\n\nDoing well. Child weaned in December. Teaching again this fall. Missed the February check-in (snow day, rescheduled to this).\nAddison's: endo in March, no changes. No sick days needing stress dosing this year. Medical ID on.\nMeds: HC 20 mg AM / 10 mg ~2 PM, fludro 0.1 mg, emergency HC injection kit (new vial this spring). She stopped the folic acid a few months ago - not planning another pregnancy right now. NKDA.\nSH: never smoker, no EtOH.\n\nROS neg. PHQ-2 0.\n\nExam: vitals as charted. Well. Thyroid normal. Heart RRR, lungs clear. Abd soft. Skin: no abnormal pigmentation now. Ext no edema.\n\nA/P\n- Addison disease, stable on replacement. TSH, CMP today.\n- Folic acid stopped - restart 0.4 mg daily if she starts trying again (she knows).\n- HM: Pap 2027. Flu/COVID in Oct.\n- RTC 1 yr."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "portal_message",
+          "start": "2024-08-21T16:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Lab Results",
+              "date": "2024-08-21T16:10",
+              "author": "PCP",
+              "body": "Normal labs across the board - thyroid, blood counts, electrolytes, kidney and liver. Have a great start to the school year."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "nurse_visit",
+          "start": "2024-10-09T15:30",
+          "reason": "Influenza and COVID-19 vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-09T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-09T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-09T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2024-10-09T15:45",
+              "author": "MA",
+              "body": "2024-25 flu (trivalent) IM L deltoid, 2024-25 COVID (Pfizer) IM R deltoid. No illness today. Tolerated both. 15 min observation without issue."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-09a",
+          "kind": "specialist_visit",
+          "start": "2024-12-09T15:30",
+          "service": "Endocrinology",
+          "reason": "Adrenal insufficiency follow-up",
+          "vitals": {
+            "bp": [
+              111,
+              69
+            ],
+            "hr": 62,
+            "weight_kg": 62.6
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-02T08:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-02T08:05",
+              "results": [
+                {
+                  "test": "Plasma Renin Activity",
+                  "value": 2.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2024-12-11T08:40",
+              "author": "endocrinology",
+              "body": "Endocrinology follow-up - 12/09/2024\n\nDear Colleague,\n\nKayla remains well on hydrocortisone 20 mg/10 mg and fludrocortisone 0.1 mg for autoimmune primary adrenal insufficiency, two years from diagnosis. No crises or emergency injections. She tells me she and her family may try for a second child in the new year.\n\nExam: normotensive, no orthostasis. Weight stable.\nLabs 12/2: sodium and potassium normal, renin in range.\n\nPlan:\n- Continue current doses.\n- Preconception: restart folic acid; let us know when pregnant. We'll follow her each trimester with electrolytes and write a labor and delivery stress-dose plan for her OB in the third trimester.\n- Emergency kit in date.\n\nWith best regards"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-22a",
+          "kind": "pharmacy",
+          "start": "2025-01-22T09:15",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Medication Refill",
+              "date": "2025-01-22T09:15",
+              "author": "MA",
+              "body": "Refill request from pharmacy: hydrocortisone 20 mg and 10 mg tabs, fludrocortisone 0.1 mg. 90-day. Endo seen 12/9/24, doses unchanged. Insurance changed group number for 2025 - updated in registration."
+            },
+            {
+              "type": "Refill Request",
+              "title": "Refill Approved",
+              "date": "2025-01-22T11:40",
+              "author": "PCP",
+              "body": "Approved, same doses, 90 days with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-17a",
+          "kind": "portal_message",
+          "start": "2025-02-17T06:20",
+          "reason": "Positive pregnancy test",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "diagnosed",
+              "onset": "2025-01-10",
+              "note": "LMP 2025-01-10, positive home test"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "folic acid 0.4 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily (over the counter)",
+              "dose": {
+                "value": 0.4,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pregnancy"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2025",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics & Gynecology",
+              "reason": "Prenatal care, second pregnancy, primary adrenal insufficiency"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Pregnant again",
+              "date": "2025-02-17T06:20",
+              "author": "patient",
+              "body": "Positive test this morning. LMP was January 10. I didn't get back on the folic acid until a couple weeks ago, is that okay? Should I call endo myself?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Pregnant again",
+              "date": "2025-02-17T07:45",
+              "author": "PCP",
+              "body": "Congratulations! Due date around October 17. A couple of weeks before conception is still helpful, and taking it now through the first trimester is what matters most - keep going daily. I've sent the OB referral to the same group as last time and I'll message endocrinology too, but please also call them so they can schedule you. Let's do a short video visit in a couple of weeks to go over the plan. Same rules as always: vomiting and can't keep pills down = injection and ED."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-05a",
+          "kind": "telehealth_visit",
+          "start": "2025-03-05T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Early pregnancy with adrenal insufficiency",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-03-05T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2025-03-05T16:35",
+              "author": "PCP",
+              "body": "Video visit, pt at home, identity confirmed, consent for telehealth.\n\n33 y/o G2P1 at about 7.5 weeks by LMP. Feels well. Taking hydrocortisone 20 mg on waking and 10 mg early afternoon, fludrocortisone 0.1 mg, folic acid 0.4 mg. Has 2 in-date emergency vials. First OB visit 3/14. Endo has her scheduled in late May.\n\nExam: limited to video; well appearing, conversing comfortably.\n\nA/P\n1. Intrauterine pregnancy, early - OB to confirm dating.\n2. Primary adrenal insufficiency in pregnancy - doses per endo; reviewed that any vomiting illness in pregnancy is a reason to call the same day, and the injection if she can't keep tablets down. Gave her a printed emergency letter to bring to OB and L&D.\n3. I'll forward her med list and endo notes to OB."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-21a",
+          "kind": "outside_records",
+          "start": "2025-03-21T10:30",
+          "reason": "Prenatal care records",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-03-14T11:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.38
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-14T11:00",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-14T11:00",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-14T11:00",
+              "results": [
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2025",
+              "action": "done",
+              "date": "2025-03-21T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics New Prenatal Visit",
+              "date": "2025-03-21T10:30",
+              "author": "obstetrics",
+              "body": "OB/GYN new prenatal visit - 03/14/2025\n\n33 y.o. G2P1001 at 9w0d by LMP 1/10/2025; dating ultrasound today shows a single live intrauterine pregnancy consistent with dates. EDD 10/17/2025.\n\nOB history: SVD 10/2022, term, second-degree laceration repaired; postpartum course complicated by right lactational breast abscess requiring I&D.\nPMH: primary adrenal insufficiency (autoimmune), diagnosed 12/2022, followed by endocrinology.\nMeds: hydrocortisone 20 mg AM / 10 mg PM, fludrocortisone 0.1 mg daily, folic acid 0.4 mg, hydrocortisone sodium succinate emergency kit. NKDA.\n\nExam normal. Pap not due (co-test 2022 negative).\nPrenatal labs: CBC normal, type and screen sent, rubella immune, HBsAg/HIV/RPR nonreactive.\n\nPlan: routine prenatal care, co-management with endocrinology, intrapartum stress-dose steroid plan to be documented in the third trimester. Thank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-30a",
+          "kind": "specialist_visit",
+          "start": "2025-05-30T09:30",
+          "service": "Endocrinology",
+          "reason": "Adrenal insufficiency in pregnancy, 20 weeks",
+          "vitals": {
+            "bp": [
+              107,
+              73
+            ],
+            "hr": 70,
+            "weight_kg": 71.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-30T09:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-30T09:00",
+              "results": [
+                {
+                  "test": "Plasma Renin Activity",
+                  "value": 2.0
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2025-06-02T12:00",
+              "author": "endocrinology",
+              "body": "Endocrinology - 05/30/2025\n\nKayla is 20 weeks into her second pregnancy, which is going smoothly per her OB. Feels well; no lightheadedness, no salt craving, no vomiting. No sick days requiring stress doses.\n\nMedications: hydrocortisone 20 mg on waking and 10 mg early afternoon, fludrocortisone 0.1 mg daily, folic acid. NKDA.\nExam: BP normal, no postural change. Weight gain appropriate for gestation per OB charting.\nLabs today: electrolytes normal; renin in range.\n\nAssessment: autoimmune primary adrenal insufficiency, clinically well replaced at 20 weeks' gestation.\nPlan: continue current doses. I will see her again near 32 weeks and send a written intrapartum plan to her OB and L&D at that visit. Emergency kit reviewed."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-11a",
+          "kind": "portal_message",
+          "start": "2025-06-11T14:30",
+          "reason": "Leave paperwork",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Leave forms again",
+              "date": "2025-06-11T14:30",
+              "author": "patient",
+              "body": "Same question as last time - district FMLA forms. OB said they'll do the pregnancy part but HR also wants something about my Addison's in case I need intermittent days during the year. Can you do that part?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Leave forms again",
+              "date": "2025-06-11T17:05",
+              "author": "PCP",
+              "body": "Yes - drop the form at the front desk or upload it and I'll complete the section for the chronic condition (intermittent leave for flares/sick days and appointments). Usually back to you within a week."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "FMLA Form Completed",
+              "date": "2025-06-17T10:00",
+              "author": "front desk",
+              "body": "FMLA certification (chronic condition section) completed by PCP and faxed to district HR; copy to patient portal and scanned to chart."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-08a",
+          "kind": "outside_records",
+          "start": "2025-08-08T09:50",
+          "reason": "Prenatal care records",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-07-25T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prenatal Flow Sheet Update",
+              "date": "2025-08-08T09:50",
+              "author": "obstetrics",
+              "body": "Prenatal update through 07/25/2025 (28w0d).\n\nUncomplicated course. 20-week anatomy survey normal; placenta fundal. 1-hour glucose challenge normal at 27 weeks. Blood pressures normal. Fundal height appropriate. Tdap given 07/25/2025.\nEndocrinology co-managing adrenal insufficiency; stress-dose plan pending from endocrinology.\nPlans vaginal delivery and breastfeeding."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-27a",
+          "kind": "specialist_visit",
+          "start": "2025-08-27T10:00",
+          "service": "Endocrinology",
+          "reason": "Adrenal insufficiency in pregnancy, delivery planning",
+          "vitals": {
+            "bp": [
+              114,
+              72
+            ],
+            "hr": 65,
+            "weight_kg": 75.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-08-27T09:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up and Intrapartum Plan",
+              "date": "2025-08-28T15:20",
+              "author": "endocrinology",
+              "body": "Endocrinology - 08/27/2025, 33 weeks' gestation\n\nWell, no symptoms of under-replacement. Same doses: hydrocortisone 20/10 mg, fludrocortisone 0.1 mg. NKDA. Electrolytes today normal. BP normal.\n\nINTRAPARTUM STEROID PLAN (sent to OB and Labor & Delivery):\n1. On admission in labor: continue usual oral doses while able to take them.\n2. At onset of active labor (or before cesarean): hydrocortisone 100 mg IV, then 50 mg IV every 6 hours until delivery.\n3. After delivery: resume oral hydrocortisone at double her usual doses (40 mg AM / 20 mg PM) for 24-48 hours, then back to 20 mg / 10 mg if well. Continue fludrocortisone throughout.\n4. Vomiting, hypotension or unexpected fever: IV hydrocortisone and call endocrinology.\n\nShe has a copy. Postpartum visit with me 3-4 months after delivery."
+            }
+          ],
+          "state": {
+            "weight_kg": 75.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-19a",
+          "kind": "outside_records",
+          "start": "2025-09-19T11:15",
+          "reason": "Prenatal immunization record",
+          "immunizations": [
+            {
+              "vaccine": "RSV, bivalent (Abrysvo)",
+              "date": "2025-09-12T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "OB Immunization Record",
+              "date": "2025-09-19T11:15",
+              "author": "obstetrics",
+              "body": "Immunization administered at OB visit 09/12/2025 (35w0d): RSV prefusion F vaccine (Abrysvo) 0.5 mL IM, for infant protection. No reaction reported."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-24a",
+          "kind": "nurse_visit",
+          "start": "2025-09-24T15:30",
+          "reason": "Influenza and COVID-19 vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-24T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-24T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-09-24T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2025-09-24T15:45",
+              "author": "RN",
+              "body": "36 weeks. Wants flu and COVID before delivery; had RSV vaccine at OB on 9/12. Feels well, no contractions. 2025-26 flu IM R deltoid, 2025-26 COVID IM L deltoid. Tolerated. Reminded: if feverish after the shots, sick-day dosing and call."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-17a",
+          "kind": "hospital_admission",
+          "start": "2025-10-17T01:15",
+          "end": "2025-10-19T12:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Labor",
+          "conditions": [
+            {
+              "label": "Normal spontaneous vaginal delivery",
+              "action": "diagnosed",
+              "onset": "2025-10-17",
+              "icd10": "O80"
+            },
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "resolved"
+            },
+            {
+              "label": "Exclusive breastfeeding",
+              "action": "diagnosed",
+              "onset": "2025-10-17",
+              "icd10": "Z39.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "hydrocortisone sodium succinate 100 MG Injection",
+              "action": "start",
+              "sig": "100 mg IV at active labor, then 50 mg IV every 6 hours until delivery",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "ONCE",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "Intrapartum stress dose, primary adrenal insufficiency"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-10-18T06:10",
+              "bp": [
+                120,
+                75
+              ],
+              "hr": 80,
+              "rr": 16,
+              "temp_c": 37.8
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Postpartum Day 1 Note",
+              "date": "2025-10-22T09:30",
+              "author": "obstetrics",
+              "body": "OB postpartum progress note - 10/18/2025 06:15, PPD#1\n\n33 y.o. G2P2 with autoimmune primary adrenal insufficiency, now one day out from an uncomplicated vaginal birth of a healthy term baby (10/17, 05:52). Her first pregnancy, three years ago, was when the breast abscess and the adrenal diagnosis happened. Intrapartum stress dosing given per the endocrinology plan; now on oral hydrocortisone at double dose with fludrocortisone.\n\nS: some cramping, bleeding lighter than a period. Has had a few episodes of chills with shivering overnight. No chest pain, no shortness of breath, no headache. Nursing exclusively, baby latching well.\n\nO: T 37.8 C (100 F), BP 120/75, HR 80, RR 16.\nFundus firm and nontender, just below the umbilicus. Lochia rubra, small, no clots. Breasts full, tender to palpation, no focal redness. Perineum intact. Calves soft. Remainder of exam unremarkable.\n\nA/P: PPD#1 after NSVD, recovering as expected. Routine postpartum care; vitals per protocol. Continue doubled oral hydrocortisone today, then usual doses per endocrinology plan. Breastfeeding support. Anticipate discharge tomorrow."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2025-10-22T09:30",
+              "author": "obstetrics",
+              "body": "Admission 10/17/2025 - Discharge 10/19/2025\n\nDiagnosis: term pregnancy, delivered. Normal spontaneous vaginal delivery 10/17/2025 of a healthy term infant; perineum intact. Primary adrenal insufficiency, managed with intrapartum IV hydrocortisone per endocrinology plan.\n\nCourse: labor uncomplicated. Hydrocortisone 100 mg IV given at active labor, then 50 mg IV every 6 hours until delivery; doubled oral doses postpartum day 1, usual doses (20 mg AM / 10 mg PM) resumed 10/19 before discharge. Fludrocortisone continued. Afebrile at discharge, vitals normal. Exclusively breastfeeding.\n\nDischarge medications: hydrocortisone 20 mg AM / 10 mg early afternoon, fludrocortisone 0.1 mg daily, folic acid/prenatal vitamin, hydrocortisone sodium succinate 100 mg IM emergency kit. NKDA.\nFollow-up: OB postpartum visit in about 6 weeks; endocrinology in 3-4 months; PCP as needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "telephone",
+          "start": "2025-10-21T11:15",
+          "reason": "Post-discharge check-in",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Delivery Check-in",
+              "date": "2025-10-21T11:15",
+              "author": "RN",
+              "body": "Called pt after hospital discharge 10/19. Feeling well, sore but managing. Back on hydrocortisone 20/10 and fludrocortisone since Sunday morning, no lightheadedness, no fever since leaving. Nursing well, baby to pediatrician tomorrow. Reviewed: fever, breast redness or vomiting -> call same day and use sick-day dosing. Pt appreciative; will see PCP in January."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-24a",
+          "kind": "portal_message",
+          "start": "2025-10-24T20:50",
+          "reason": "Delivery update",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Number two!",
+              "date": "2025-10-24T20:50",
+              "author": "patient",
+              "body": "Baby #2 arrived on the 17th. Easy delivery this time, no tear. The steroid plan went fine and I'm back on my normal doses. Nursing is going much better than the first time around."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Number two!",
+              "date": "2025-10-25T08:10",
+              "author": "PCP",
+              "body": "Wonderful news, congratulations! So glad it went smoothly. Watch for any breast redness or fever and call early this time - you know the drill. Let's see you in January once things settle."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-03a",
+          "kind": "specialist_visit",
+          "start": "2025-12-03T11:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Postpartum visit",
+          "conditions": [
+            {
+              "label": "Diastasis recti abdominis",
+              "action": "diagnosed",
+              "onset": "2025-10-17",
+              "icd10": "M62.08"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              73
+            ],
+            "hr": 64,
+            "temp_c": 36.8,
+            "weight_kg": 68.1
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Postpartum Visit",
+              "date": "2025-12-05T08:20",
+              "author": "obstetrics",
+              "body": "OB/GYN postpartum visit - 12/03/2025\n\n33 y.o. G2P2, primary adrenal insufficiency, seen for routine postpartum care about seven weeks after an uncomplicated vaginal birth following an uncomplicated pregnancy. Breastfeeding exclusively, going well.\n\nNew concern: a bulge along the middle of her belly that she notices most when sitting up from lying down or when bearing down. It does not hurt.\n\nMeds: hydrocortisone 20/10 mg, fludrocortisone 0.1 mg, folic acid. NKDA.\n\nVitals: within normal limits.\nAbdomen: with head lift from supine, a midline ridge appears above the umbilicus. Nontender. It does not change with cough. No hernia defect or reducible mass. Fundus not palpable. Perineum and pelvic exam normal.\n\nAssessment: diastasis recti abdominis after second pregnancy. No hernia.\nPlan: reassurance; referral to pelvic floor and core physical therapy for a progressive program. Avoid heavy straining and full sit-ups until evaluated. Routine gynecologic care; return as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 69.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-12a",
+          "kind": "office_visit",
+          "start": "2026-01-12T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum follow-up, adrenal insufficiency",
+          "vitals": {
+            "bp": [
+              105,
+              78
+            ],
+            "hr": 64,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 67.7
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-01-12T16:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 215
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-12T16:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Glucose",
+                  "value": 78
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-12T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Follow-up",
+              "date": "2026-01-12T16:45",
+              "author": "PCP",
+              "body": "Postpartum check-in, 12 weeks after 2nd delivery (NSVD 10/17/25).\n\nDoing well. Baby exclusively breastfed, gaining well per pediatrics. No breast redness, lumps or fevers this time. Sleeping in chunks. Back to school after February break.\nAddison's: on HC 20/10, fludro 0.1. Stress dosing in labor went per plan; back to usual doses since 10/19. No lightheadedness.\nOB postpartum visit 12/3: diastasis recti, no hernia, PT referral - first PT appointment next week.\nMeds also folic acid. NKDA.\n\nExam: vitals as charted, weight still above pre-pregnancy. Comfortable. Thyroid normal. Heart RRR, lungs clear. Abdomen: midline separation above umbilicus with head lift, nontender, no hernia. Breasts not examined.\nPHQ-9 2.\n\nA/P\n1. Postpartum, doing well; mood screen negative.\n2. Primary adrenal insufficiency - stable. BMP today. Endo f/u 2/9.\n3. Diastasis recti - PT as planned.\n4. CBC today (postpartum)."
+            }
+          ],
+          "state": {
+            "weight_kg": 67.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "specialist_visit",
+          "start": "2026-01-20T08:00",
+          "service": "Physical Therapy",
+          "reason": "Diastasis recti",
+          "procedures": [
+            {
+              "procedure": "Physical therapy evaluation, low complexity",
+              "performed": "2026-01-20T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Physical Therapy Initial Evaluation",
+              "date": "2026-01-22T12:30",
+              "author": "physical therapy",
+              "body": "Outpatient Physical Therapy - Pelvic Health / Initial Evaluation, 01/20/2026\nReferral: OB/GYN, dx diastasis recti abdominis\n\nSubjective: 34 y.o., 3 months postpartum (2nd vaginal delivery), breastfeeding. Notices a midline bulge with sitting up and lifting her baby and car seat. No pain. No urinary leakage or pelvic heaviness. PMH: primary adrenal insufficiency on hydrocortisone/fludrocortisone. NKDA. Goals: lift kids and return to yoga without doming.\n\nObjective: supine curl-up produces midline doming above the umbilicus; separation palpable along the linea alba above the umbilicus, softer tension at the umbilicus, no hernia. Pelvic floor screen normal. Lumbar ROM full.\n\nAssessment: diastasis recti abdominis with impaired deep core recruitment and load transfer. Good rehab potential.\n\nPlan: 1x/week for 8 weeks - breath and transversus abdominis activation, graded loading, lifting mechanics, home program. Avoid full sit-ups/crunches for now."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-09a",
+          "kind": "specialist_visit",
+          "start": "2026-02-09T15:30",
+          "service": "Endocrinology",
+          "reason": "Adrenal insufficiency, postpartum follow-up",
+          "vitals": {
+            "bp": [
+              112,
+              73
+            ],
+            "hr": 61,
+            "weight_kg": 66.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-02T08:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-02T08:00",
+              "results": [
+                {
+                  "test": "Plasma Renin Activity",
+                  "value": 2.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2026-02-11T09:45",
+              "author": "endocrinology",
+              "body": "Endocrinology follow-up - 2/9/2026\n\nDear Colleague,\n\nKayla is almost four months postpartum after her second delivery, which went smoothly with the intrapartum stress-dose plan. She is exclusively breastfeeding and feels well. No crises, no injections used. Electrolytes and renin from 2/2 are in range, and BP is normal without orthostasis.\n\nMedications: hydrocortisone 20 mg on waking, 10 mg early afternoon; fludrocortisone 0.1 mg daily; folic acid. NKDA.\n\nPlan: no change to her doses. Both medications remain fine with breastfeeding. Annual TSH via your office. New emergency vial sent; her current one expires in May. I'll see her in 5-6 months.\n\nWith thanks"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-16a",
+          "kind": "pharmacy",
+          "start": "2026-02-16T09:20",
+          "reason": "Prior authorization renewal",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Prior Authorization - Hydrocortisone Sodium Succinate",
+              "date": "2026-02-16T09:20",
+              "author": "MA",
+              "body": "Pharmacy says new emergency vial from endo (sent 2/9) needs PA again for 2026. Submitted with endo letter 2/9/26 and dx code. Approved 2/16/2026, 12 months. Pt notified via portal she can pick it up."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-27a",
+          "kind": "outside_records",
+          "start": "2026-03-27T10:10",
+          "reason": "Physical therapy discharge summary",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Physical Therapy Discharge Summary",
+              "date": "2026-03-27T10:10",
+              "author": "physical therapy",
+              "body": "Outpatient Physical Therapy - Discharge Summary\nDates of care: 01/20/2026 - 03/23/2026, 8 visits\nDiagnosis: diastasis recti abdominis\n\nProgress: independent with home program. Improved deep core activation and breath control with lifting; doming with curl-up reduced. The midline bulge is still present with exertion but smaller and better controlled. No pain. No hernia noted at any visit. Has resumed gentle yoga with modifications.\n\nPlan: discharge to home exercise program. May return with new referral if symptoms worsen."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-20a",
+          "kind": "portal_message",
+          "start": "2026-04-20T20:30",
+          "reason": "Question about pumping at work",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Pumping at school",
+              "date": "2026-04-20T20:30",
+              "author": "patient",
+              "body": "Baby turned 6 months and we started solids this week. I'm back at school and pumping twice a day. The nurse's office asked whether pumping in the afternoon is okay with my afternoon hydrocortisone dose. I assume yes?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Pumping at school",
+              "date": "2026-04-20T21:15",
+              "author": "PCP",
+              "body": "Yes, totally fine - very little hydrocortisone gets into milk at your dose and no timing changes are needed. Keep taking it around 2 PM as usual. Happy 6 months to the baby!"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-18a",
+          "kind": "pharmacy",
+          "start": "2026-05-18T09:00",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Medication Refill",
+              "date": "2026-05-18T09:00",
+              "author": "MA",
+              "body": "Refills due: hydrocortisone 20 mg, hydrocortisone 10 mg, fludrocortisone 0.1 mg, 90-day. Pharmacy confirmed she picked up the new emergency vial from endo in February."
+            },
+            {
+              "type": "Refill Request",
+              "title": "Refill Approved",
+              "date": "2026-05-18T12:20",
+              "author": "PCP",
+              "body": "Approved x 90 days + 1 refill each."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-13a",
+          "kind": "specialist_visit",
+          "start": "2026-07-13T10:30",
+          "service": "Endocrinology",
+          "reason": "Adrenal insufficiency follow-up",
+          "vitals": {
+            "bp": [
+              109,
+              65
+            ],
+            "hr": 71,
+            "weight_kg": 66.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-13T09:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-13T09:50",
+              "results": [
+                {
+                  "test": "Plasma Renin Activity",
+                  "value": 2.0
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2026-07-15T14:00",
+              "author": "endocrinology",
+              "body": "Endocrinology - 07/13/2026\n\nAutoimmune primary adrenal insufficiency, diagnosed 12/2022. Feels well this summer. Still nursing her 9-month-old alongside solids. No stress-dosing episodes since delivery. Emergency kit current.\n\nMeds: hydrocortisone 20 mg / 10 mg, fludrocortisone 0.1 mg. NKDA.\nExam: BP normal, no postural drop. No hyperpigmentation.\nLabs today: sodium and potassium normal; renin in range.\n\nPlan: continue present doses. Follow up in 6-9 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 66.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-17a",
+          "kind": "annual_physical",
+          "start": "2026-08-17T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Exclusive breastfeeding",
+              "action": "resolved",
+              "note": "Solids since about 6 months (April 2026); still nursing",
+              "icd10": "Z39.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              107,
+              76
+            ],
+            "hr": 75,
+            "rr": 17,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 64.8
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-08-17T09:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 224
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.43
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-08-17T09:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.6
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-08-17T09:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 172
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 89
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 109
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 111
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-17T09:45",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-08-17T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2026-08-17T10:20",
+              "author": "PCP",
+              "body": "Annual, 34F.\n\nInterval since last physical (8/2024): second pregnancy and uncomplicated vaginal delivery 10/17/2025 with intrapartum stress dosing; postpartum diastasis recti, finished PT in March and doing her home program - bulge smaller, no pain. Baby is 10 months, on solids since April, still nursing morning and night and pumping once at school.\nAddison disease: endo 7/13, unchanged. No sick-day episodes this year.\nMeds: hydrocortisone 20 mg on waking, 10 mg ~2 PM; fludrocortisone 0.1 mg; folic acid 0.4 mg; HC sodium succinate 100 mg IM kit (in date). NKDA.\nNever smoker. No alcohol.\n\nROS: negative. PHQ-2 0.\n\nExam: vitals as charted; weight down since January, close to pre-pregnancy. Well. Thyroid normal. Heart regular, lungs clear. Breasts: healed R UOQ scar, no masses. Abdomen: small midline separation above umbilicus with head lift, nontender, no hernia. Skin: no abnormal pigmentation. Ext no edema.\n\nA/P\n1. Primary adrenal insufficiency, autoimmune - stable. TSH, CMP today.\n2. Exclusive breastfeeding ended with solids; continues nursing. Folic acid while nursing is fine.\n3. Diastasis recti - home program.\n4. HM: Pap/HPV due 2027. Lipids today. Flu shot booked for October; COVID when the new vaccine is out.\nRTC 1 yr."
+            }
+          ],
+          "state": {
+            "weight_kg": 65.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 2.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "portal_message",
+          "start": "2026-08-19T17:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Lab Results",
+              "date": "2026-08-19T17:30",
+              "author": "PCP",
+              "body": "Hi Kayla, labs from Monday are all normal - thyroid, blood count, electrolytes, kidney and liver function, and cholesterol. Nothing to change. Good luck with the start of school!"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-20a",
+          "kind": "telephone",
+          "start": "2026-08-20T10:45",
+          "reason": "School emergency plan letter",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "School Emergency Letter",
+              "date": "2026-08-20T10:45",
+              "author": "front desk",
+              "body": "Pt called: school nurse needs an updated adrenal insufficiency emergency action letter for the new school year. Last year's template updated by PCP with current doses and emergency injection instructions, signed, and emailed to pt via portal; copy scanned."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-07a",
+          "kind": "nurse_visit",
+          "start": "2026-10-07T15:30",
+          "reason": "Influenza vaccine",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Diastasis recti abdominis|M62.08": {
+        "code": "M62.08",
+        "display": "Separation of muscle (nontraumatic), other site",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Exclusive breastfeeding|Z39.1": {
+        "code": "Z39.1",
+        "display": "Encounter for care and examination of lactating mother",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Lactational breast abscess|O91.13": {
+        "code": "O91.13",
+        "display": "Abscess of breast associated with lactation",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Lactational mastitis|O91.23": {
+        "code": "O91.23",
+        "display": "Nonpurulent mastitis associated with lactation",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Nipple fissure due to improper breastfeeding technique|O92.13": {
+        "code": "O92.13",
+        "display": "Cracked nipple associated with lactation",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Normal spontaneous vaginal delivery|O80": {
+        "code": "O80",
+        "display": "Encounter for full-term uncomplicated delivery",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Second-degree perineal laceration during delivery|O70.1": {
+        "code": "O70.1",
+        "display": "Second degree perineal laceration during delivery",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "dicloxacillin 500 MG Oral Capsule": {
+        "code": "197596",
+        "display": "dicloxacillin 500 MG Oral Capsule",
+        "ingredient": "dicloxacillin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "fludrocortisone acetate 0.1 MG Oral Tablet": {
+        "code": "313979",
+        "display": "fludrocortisone acetate 0.1 MG Oral Tablet",
+        "ingredient": "fludrocortisone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "folic acid 0.4 MG Oral Tablet": {
+        "code": "198640",
+        "display": "folic acid 0.4 MG Oral Tablet",
+        "ingredient": "folic",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "hydrocortisone 10 MG Oral Tablet": {
+        "code": "197782",
+        "display": "hydrocortisone 10 MG Oral Tablet",
+        "ingredient": "hydrocortisone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "hydrocortisone 20 MG Oral Tablet": {
+        "code": "197783",
+        "display": "hydrocortisone 20 MG Oral Tablet",
+        "ingredient": "hydrocortisone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "hydrocortisone sodium succinate 100 MG Injection": {
+        "code": "238755",
+        "display": "hydrocortisone 100 MG Injection",
+        "ingredient": "hydrocortisone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "21-Hydroxylase Antibody": {
+        "code": "85363-0",
+        "display": "21-Hydroxylase Ab [Presence] in Serum",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Corticotropin": {
+        "code": "2141-0",
+        "display": "Corticotropin [Mass/volume] in Plasma",
+        "unit": "pg/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Wound culture": {
+        "code": "6462-6",
+        "display": "Bacteria identified in Wound by Culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

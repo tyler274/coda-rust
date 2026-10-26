@@ -1,0 +1,237 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001678",
+      "given": "Robin",
+      "family": "Parsons",
+      "birth_date": "1991-02-17",
+      "address_line": "112 Pelham Road, Amherst, MA 01002",
+      "phone": "+1-413-555-0163",
+      "email": "robin.parsons@example.test",
+      "marital_status": "married",
+      "summary": "Elementary school teacher with class I obesity who joined the practice in 2016. Three pregnancies under an outside OB group: a 2019-2020 pregnancy with a short cervix ending in a term vaginal birth, a 2022 pregnancy lost at 23 weeks to fetal osteogenesis imperfecta (COL1A1), and a 2025-2026 pregnancy with diet-controlled gestational diabetes ending in cesarean for arrest of labor; postpartum glucose tolerance normal.",
+      "events": [
+        {
+          "id": "2016-08-30a",
+          "kind": "telephone",
+          "start": "2016-08-30T10:12",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "author": "front desk",
+              "date": "2016-08-30T10:12",
+              "body": "Caller is a 25 y/o teacher in Amherst who wants a new PCP. Has been seeing a doctor near where she grew up and wants someone closer. BCBS PPO, card info taken. Membership agreement and intake packet emailed. New patient physical booked 9/13 at 3:40 pm (after school). Asked her to sign a release so we can get records from the old office - she will bring it to the visit."
+            }
+          ]
+        },
+        {
+          "id": "2016-09-13a",
+          "kind": "establish_care",
+          "start": "2016-09-13T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care, new patient physical",
+          "conditions": [
+            {"label": "Obesity, unspecified", "action": "diagnosed", "onset": "2013-06-01", "note": "Class I, BMI about 31"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 84.6, "height_cm": 165.0, "bp": [112, 72], "labs": {"Hemoglobin": 13.1, "Hematocrit": 39.4, "Total Cholesterol": 184, "Thyroid Stimulating Hormone": 1.8, "Hemoglobin A1c": 5.3}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2016-09-13T16:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2016-09-13T16:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": "Lipid Panel", "collected": "2016-09-13T16:30", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2016-09-13T16:30", "results": [{"test": "Thyroid Stimulating Hormone"}, {"test": "Hemoglobin A1c"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "Elementary school teacher"}
+          ],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2016-09-13T16:25"}],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2016-09-13T15:40"},
+            {"procedure": "Venipuncture", "performed": "2016-09-13T16:30"},
+            {"procedure": "Immunization administration", "performed": "2016-09-13T16:25"}
+          ],
+          "orders": [
+            {"id": "records-prior-2016", "action": "placed", "order": "Records request, prior primary care office", "category": "procedure", "reason": "establishing care"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit - Establish Care",
+              "author": "PCP",
+              "date": "2016-09-13T15:40",
+              "body": "Robin is 25, new to us, here to establish care and get a physical. Teaches second grade in town. Previously followed by a family doctor near her hometown, last physical about a year ago; she thinks the Pap there in 2015 was normal. Records release signed today.\n\nNo active complaints. Feels well. Says her weight has crept up since college, maybe 15-20 lb over a few years. Walks most weekends, no structured exercise during the school year. Eats lunch at school, lots of snacking in the afternoon by her account.\n\nPMH: none other than weight. No surgeries. No hospitalizations.\nMeds: none. No supplements.\nAllergies: NKDA.\nFH: maternal grandmother with type 2 diabetes. Parents well as far as she knows. No known bone or genetic disorders in the family.\nSH: married, lives in Amherst. Never smoked. Doesn't drink. No drugs.\nGyn: regular cycles. Not currently trying to conceive, would like to in the next few years.\nVaccines: childhood series and HPV done as a teen per her mother; Tdap about 2 years ago - will confirm from records.\n\nROS negative in full.\n\nExam: vitals as charted, BMI 31. Well appearing. HEENT normal, sclerae white, TMs clear. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no masses. Extremities without edema. Skin without acanthosis. Mood and affect normal.\n\nA/P\n1. Preventive: CBC, CMP, lipids, TSH, A1c. HIV and hep C screen once - she agrees. Flu shot today. Pap not due until next year per her report; will confirm with records.\n2. Obesity, class I (BMI 31). Talked through realistic goals - cut the afternoon snacking, aim for 150 min/wk walking. She'd like to try on her own. Recheck next year.\n3. Preconception: when she is ready to try, start a prenatal vitamin a few months ahead. Let us know.\n\nRTC 1 yr or sooner."
+            }
+          ]
+        },
+        {
+          "id": "2016-09-16a",
+          "kind": "portal_message",
+          "start": "2016-09-16T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent lab results",
+              "author": "PCP",
+              "date": "2016-09-16T07:55",
+              "body": "Hi Robin, nice to meet you this week. All of your blood work came back normal - blood counts, kidney and liver tests, thyroid, cholesterol and the diabetes screen (A1c). HIV and hepatitis C screens were negative. Nothing to do except keep working on the walking. See you next fall."
+            }
+          ]
+        },
+        {
+          "id": "2016-10-04a",
+          "kind": "outside_records",
+          "start": "2016-10-04T13:20",
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2015-08-11T09:30", "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.", "conclusion": "Negative for intraepithelial lesion or malignancy (NILM)."}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2014-07-22T10:00"}
+          ],
+          "orders": [
+            {"id": "records-prior-2016", "action": "done", "date": "2016-10-04T13:20"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "MA",
+              "date": "2016-10-04T13:20",
+              "body": "Received 14 pages by fax from patient's former family medicine office, covering 2009-2015. Abstracted for chart:\n- Last physical 8/2015. Weight noted as \"overweight/obese, counseled.\" No chronic problems otherwise.\n- Pap 8/11/2015: NILM. Scanned to media.\n- Immunizations: childhood series complete, HPV x3 (2005-2006), MMR x2, varicella x2, Tdap 7/22/2014.\n- No medications. NKDA.\nRouted to PCP for review."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside records reviewed",
+              "author": "PCP",
+              "date": "2016-10-05T17:10",
+              "body": "Reviewed prior records. Nothing surprising. Pap 2015 normal, next due 2018. Tdap 2014. Abstracted to chart."
+            }
+          ]
+        },
+        {
+          "id": "2017-03-07a",
+          "kind": "portal_message",
+          "start": "2017-03-07T20:41",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Form for school",
+              "author": "patient",
+              "date": "2017-03-07T20:41",
+              "body": "Hi, our district wants an updated health form for staff before the field trip season (they want an immunization list mostly). Is that something you can fill out? I can drop it off. Thanks! - Robin"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Form for school",
+              "author": "MA",
+              "date": "2017-03-08T09:15",
+              "body": "Hi Robin, yes - drop it at the front desk or upload it here and we will fill in the immunizations from your chart. Usually 2-3 business days."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Form completed",
+              "author": "MA",
+              "date": "2017-03-10T11:30",
+              "body": "School staff health form completed from chart (immunizations, no restrictions), signed by PCP. Patient notified, picking up at front desk. Copy to media."
+            }
+          ]
+        },
+        {
+          "id": "2017-09-19a",
+          "kind": "annual_physical",
+          "start": "2017-09-19T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 85.5},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2017-09-19T16:35", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2017-09-19T16:30"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2017-09-19T15:50"},
+            {"procedure": "Venipuncture", "performed": "2017-09-19T16:35"},
+            {"procedure": "Immunization administration", "performed": "2017-09-19T16:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2017-09-19T15:50",
+              "body": "Annual. Robin is 26, doing well, back at school two weeks. No new problems. Weight up about 2 lb from last year. Says the snacking plan lasted a month or so. Walking on weekends still; summer was better.\n\nMeds none. NKDA. Never smoker, no alcohol.\nPHQ-2 0.\n\nExam: BMI 31. Well. Heart RRR, lungs clear, abd soft, ext no edema. Thyroid normal. Skin ok.\n\nA/P\n- Obesity class I: we talked about tracking food for a couple of weeks just to see the pattern, and adding a weekday walk after school. She will try an app. A1c today given grandmother with DM and weight.\n- Flu shot given.\n- Pap due next year.\n- RTC 1 yr."
+            }
+          ]
+        },
+        {
+          "id": "2017-09-21a",
+          "kind": "portal_message",
+          "start": "2017-09-21T12:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "A1c result",
+              "author": "PCP",
+              "date": "2017-09-21T12:02",
+              "body": "Robin - your A1c (3-month sugar average) is normal. No sign of diabetes or prediabetes. Keep going with the walking."
+            }
+          ]
+        },
+        {
+          "id": "2018-09-25a",
+          "kind": "annual_physical",
+          "start": "2018-09-25T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, Pap",
+          "state": {"weight_kg": 86.4},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2018-09-25T16:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2018-09-25T16:40", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2018-09-25T16:10", "issued": "2018-10-01T14:00", "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; endocervical/transformation zone component present. General categorization: negative for intraepithelial lesion or malignancy.", "conclusion": "Negative for intraepithelial lesion or malignancy."}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2018-09-25T16:35"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2018-09-25T15:45"},
+            {"procedure": "Venipuncture", "performed": "2018-09-25T16:40"},
+            {"procedure": "Immunization administration", "performed": "2018-09-25T16:35"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical with Pap",
+              "author": "PCP",
+              "date": "2018-09-25T15:45",
+              "body": "27F annual + Pap.\n\nInterval: well. No visits in between. Weight up another couple of pounds; she gave up on the food app after a few weeks (\"too much typing\"). She and her husband are thinking about starting a family in the next year.\n\nMeds none. NKDA. SH unchanged - teaching, never smoker, no EtOH.\nLMP 9/10, cycles regular. No abnormal bleeding.\nPHQ-2 0.\n\nExam: BMI 32. NAD. HEENT nl. Neck no thyromegaly. CV RRR no m. Lungs CTA. Abd soft NT. Pelvic: normal external genitalia, vaginal mucosa normal, cervix nulliparous without lesions, Pap obtained; bimanual no masses or tenderness. Ext no edema.\n\nA/P\n1. Health maintenance: Pap today (cytology alone at 27). CMP, lipids. Flu shot given.\n2. Obesity class I, BMI 32 - discussed that getting some weight off before pregnancy helps, and the GDM risk with her weight + family history. She's motivated. Goal 5-7% loss. Offered nutrition referral, she declined for now.\n3. Preconception: start a prenatal vitamin with folate once they start trying. She will message.\n\nRTC 1 yr."
+            }
+          ]
+        },
+        {
+          "id": "2018-10-02a",
+          "kind": "portal_message",
+          "start": "2018-10-02T08:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and lab results",
+              "author": "PCP",
+              "date": "2018-10-02T08:20",
+              "body": "Hi Robin, your Pap came back normal. Next one in 3 years-ish (we'll switch to the Pap + HPV test after 30). Kidney, liver and cholesterol numbers were all fine too."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

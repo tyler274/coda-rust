@@ -1,0 +1,2312 @@
+{
+  "unit": "unit-2583",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00002583/2026-03-06a: procedure \"Craniotomy for evacuation of epidural hematoma, supratentorial\" not in catalog (text only, no CPT)",
+    "MRN00002583/2026-03-17a: procedure \"Nurse visit, staple removal\" not in catalog (text only, no CPT)"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002583",
+      "given": "Rowan",
+      "family": "Doherty",
+      "birth_date": "2002-04-08",
+      "address_line": "41 Pine Nook Road",
+      "phone": "+1-860-555-0135",
+      "email": "rowan.doherty@example.test",
+      "marital_status": "single",
+      "summary": "University student and track runner who joins the practice healthy at 20, is diagnosed with obstructive hypertrophic cardiomyopathy after collapsing at practice in 2023 and started on metoprolol, has recurrent syncope with a recorded pause in 2024, and in 2026 has an emergency craniotomy for a traumatic epidural hematoma after an unhelmeted motorcycle crash, with full recovery.",
+      "events": [
+        {
+          "id": "2022-08-22a",
+          "kind": "establish_care",
+          "start": "2022-08-22T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care and physical",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              111,
+              76
+            ],
+            "hr": 77,
+            "temp_c": 37.0,
+            "spo2": 97,
+            "weight_kg": 72.3,
+            "height_cm": 179.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-22T11:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 246
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.97
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-08-22T11:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 126
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-08-22T11:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 95
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 162
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 99
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 115
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-22T11:05",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social use"
+            },
+            {
+              "item": "Occupation",
+              "value": "University student"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2022-08-22T10:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-08-22T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-08-22T11:20",
+              "author": "PCP",
+              "body": "20 y/o M, college student, heading into his junior year, runs distance and middle distance on the track team. Wanted one doctor he could text while at school. Last primary care was his pediatrician in Connecticut, records release signed today.\n\nNo complaints. No chronic problems, never hospitalized, no surgeries. No meds, no supplements. NKDA.\n\nFH: father died suddenly at 41. Pt doesn't know the cause, was never told details. No other family history he can name today.\nSH: lives in campus housing during the year, home in Deerfield in the summers. Never smoked, no vaping. Drinks occasionally at social events, a few drinks a month. No drugs.\n\nROS negative, specifically no chest pain, palpitations, fainting or trouble keeping up at practice.\n\nExam: vitals as charted. Lean, well appearing. HEENT clear. Neck supple, no adenopathy. Heart regular rate and rhythm, S1 S2 normal, no murmur. Lungs clear bilaterally. Abdomen soft, nontender, no masses. Extremities without edema, pulses 2+ and symmetric. Skin clear. Neuro grossly normal.\n\nPHQ-2 0. AUDIT-C 2.\n\nA/P\n1. Health maintenance, healthy 20 y/o. One-time HIV and hep C screening today, plus CBC, CMP and lipids as a baseline. Vaccine history pending pediatric records; will catch up flu and COVID in the fall.\n2. Family history of sudden death in father, cause unknown. Asked him to find out what he can from family.\n\nRTC one year, or sooner as needed. Gave him the practice cell number."
+            }
+          ],
+          "state": {
+            "weight_kg": 72.0,
+            "height_cm": 180.0,
+            "labs": {
+              "Low Density Lipoprotein": 94
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-08-24a",
+          "kind": "portal_message",
+          "start": "2022-08-24T08:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2022-08-24T08:40",
+              "author": "PCP",
+              "body": "Rowan, all of your labs from Monday look normal: blood counts, kidney and liver tests, cholesterol, and the HIV and hepatitis C screens are both negative. Nothing to change. Good luck with the semester."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results",
+              "date": "2022-08-24T12:15",
+              "author": "patient",
+              "body": "thanks! moving back into the dorm saturday"
+            }
+          ]
+        },
+        {
+          "id": "2022-09-07a",
+          "kind": "outside_records",
+          "start": "2022-09-07T14:00",
+          "immunizations": [
+            {
+              "vaccine": "MMR",
+              "date": "2003-04-14T10:00"
+            },
+            {
+              "vaccine": "Varicella",
+              "date": "2003-04-14T10:00"
+            },
+            {
+              "vaccine": "MMR",
+              "date": "2006-05-02T10:00"
+            },
+            {
+              "vaccine": "Varicella",
+              "date": "2006-05-02T10:00"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2014-05-19T15:30"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2014-05-19T15:30"
+            },
+            {
+              "vaccine": "HPV, 9-valent",
+              "date": "2014-05-19T15:30"
+            },
+            {
+              "vaccine": "HPV, 9-valent",
+              "date": "2014-12-08T15:30"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2018-06-11T16:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-03T13:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-24T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pediatric records received",
+              "date": "2022-09-07T14:00",
+              "author": "MA",
+              "body": "Records received from patient's prior pediatric office in CT, 38 pages, covering birth through age 18. Abstracted:\n- Well child visits yearly, growth and development normal throughout.\n- No chronic diagnoses. No hospitalizations or surgeries listed.\n- Allergies: none recorded.\n- Last well visit at 18: normal exam, cleared for school sports.\n- Immunizations: childhood series complete per state registry printout. Tdap and first MenACWY at 12, HPV x2 at 12, MenACWY booster at 16. COVID primary series x2 (Pfizer) 2021 per patient's card copy.\nImmunization history entered. Scanned to media."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-12a",
+          "kind": "nurse_visit",
+          "start": "2022-10-12T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-12T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-12T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-12T16:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunizations",
+              "date": "2022-10-12T16:30",
+              "author": "RN",
+              "body": "Home for long weekend. Screening questions negative, no prior vaccine reactions. Influenza quadrivalent 0.5 mL IM left deltoid, Pfizer bivalent booster 0.3 mL IM right deltoid. VIS given. Waited 15 min in lobby, felt fine, left at 16:32."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-03a",
+          "kind": "office_visit",
+          "start": "2023-03-03T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Passed out at track practice yesterday",
+          "vitals": {
+            "bp": [
+              114,
+              74
+            ],
+            "hr": 82,
+            "spo2": 97,
+            "weight_kg": 71.8
+          },
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2023-03-03T08:50",
+              "text": "Normal sinus rhythm. Normal axis. PR, QRS and QT intervals within normal limits. No ST or T wave abnormality. No pathologic Q waves. No voltage criteria for left ventricular hypertrophy.",
+              "conclusion": "Normal sinus rhythm. Normal ECG.",
+              "issued": "2023-03-03T08:55"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-03-03T08:30"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2023-03-03T08:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral-2023",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "Exertional collapse with chest tightness, systolic murmur, father with sudden death at 41"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Collapse",
+              "date": "2023-03-03T09:25",
+              "author": "PCP",
+              "body": "Texted me last night, I asked him to come in first thing.\n\nS: Yesterday afternoon during interval repeats at indoor practice he felt a brief tight feeling in his chest, then the next thing he knew he was on the track with teammates and the coach over him. Teammates say he was out only briefly, no shaking reported, didn't bite his tongue, no incontinence. Came around quickly and was clear. Coach wanted him to go to the ED; he declined and walked back to the dorm. Fine since. No chest pain now, no palpitations he noticed. Never happened before. Ate and drank normally that day.\n\nNo meds. NKDA.\nFH: father died suddenly at 41, still doesn't know more.\n\nO: Vitals as charted. Well, comfortable. Heart regular, there is a soft systolic murmur at the left lower sternal border that I did not hear in August. No gallop. Lungs clear. No edema. Neuro nonfocal.\nECG in office: NSR, normal intervals, no LVH, no Q waves, no ST-T changes. Normal.\n\nA/P: Syncope with exertion, preceded by chest tightness, new murmur, and a father who died suddenly young. Normal ECG doesn't reassure me enough. Urgent cardiology referral today for consult and echo. No running, lifting or hard exertion until cardiology sees him; he'll tell his coach and I'll write a note. If anything recurs, chest pain, palpitations or near-fainting, he goes straight to the ED, not to me.\nDiscussed with him for a while, he understands why."
+            },
+            {
+              "type": "Letter",
+              "title": "Athletics note",
+              "date": "2023-03-03T09:40",
+              "author": "PCP",
+              "body": "To the athletics department:\n\nRowan Doherty was seen in our office today. He should not participate in practice, competition or strength training until he has completed a cardiology evaluation and we provide written clearance.\n\nPrimary care physician"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-03-03b",
+          "kind": "telephone",
+          "start": "2023-03-03T14:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cardiology referral scheduled",
+              "date": "2023-03-03T14:10",
+              "author": "front desk",
+              "body": "Cardiology referral faxed with today's note and ECG. Their scheduler had an opening for new consult Mon 3/13 at 1:00, echo same day. Called pt, confirmed he can make it, he'll drive home from school the night before. Insurance is his mother's plan, card on file current, no referral auth needed for specialist per plan."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-13a",
+          "kind": "specialist_visit",
+          "start": "2023-03-13T13:00",
+          "service": "Cardiology",
+          "reason": "Exertional syncope",
+          "conditions": [
+            {
+              "label": "Obstructive hypertrophic cardiomyopathy",
+              "action": "diagnosed",
+              "onset": "2023-03-13",
+              "icd10": "I42.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Obstructive hypertrophic cardiomyopathy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              111,
+              70
+            ],
+            "hr": 82,
+            "spo2": 98,
+            "weight_kg": 71.5
+          },
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2023-03-13T13:40",
+              "text": "Complete 2D, M-mode, color and spectral Doppler study. Left ventricle normal in cavity size. Asymmetric hypertrophy of the interventricular septum, maximal septal wall thickness 21 mm; posterior wall 10 mm. Left ventricular systolic function hyperdynamic, LVEF 70% by visual estimate. Systolic anterior motion of the anterior mitral leaflet. Resting LVOT peak gradient 38 mmHg, increasing to 64 mmHg with Valsalva. Mitral and aortic valves structurally normal. Tricuspid and pulmonic valves normal. Right ventricle normal in size and function. Atria normal in size. No pericardial effusion. IVC normal with normal respiratory variation.",
+              "conclusion": "Asymmetric septal hypertrophy with systolic anterior motion of the mitral valve and dynamic left ventricular outflow tract obstruction (resting 38 mmHg, 64 mmHg with Valsalva), consistent with obstructive hypertrophic cardiomyopathy. LVEF 70%. No structural valvular abnormality."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office consultation, comprehensive",
+              "performed": "2023-03-13T13:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral-2023",
+              "action": "done",
+              "date": "2023-03-13T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Consultation",
+              "date": "2023-03-15T10:00",
+              "author": "cardiology",
+              "body": "Outpatient cardiology consultation\nDate of visit: 03/13/2023\nReferring: primary care physician\nReason: syncope during exercise\n\nDear colleague,\n\nThank you for asking me to see Rowan, a 20-year-old university student and track athlete. On 3/2 during an interval workout he had a short-lived sensation of chest tightness and then lost consciousness, coming around quickly on the track. He had no prior episodes. He has no significant past medical history and takes no medications. No known drug allergies.\n\nFamily history: he spoke with his family this past week. His father died suddenly at 41; the family has understood it as a cardiac death. A paternal uncle carries a diagnosis of hypertrophic cardiomyopathy.\n\nSocial: never smoker, occasional alcohol on weekends, no drug use. Full-time student.\n\nVital signs were stable today. On exam he is a fit young man in no distress. JVP not elevated. There is a systolic murmur at the left lower sternal border. Lungs clear. No peripheral edema.\n\nEchocardiogram today shows asymmetric septal hypertrophy (21 mm septum, 10 mm posterior wall) with systolic anterior motion of the mitral valve and a resting outflow gradient of 38 mmHg that rises to 64 mmHg with Valsalva. Ejection fraction 70%. The valves themselves are structurally normal.\n\nImpression: Obstructive hypertrophic cardiomyopathy, presenting with exertional syncope.\n\nPlan:\n1. Start metoprolol succinate 50 mg daily. Prescription sent.\n2. He should stay out of competitive running and strenuous exertion. We talked at length about what that means for his season; light recreational activity is fine.\n3. Stay well hydrated and avoid dehydration and heavy alcohol use, both of which worsen obstruction.\n4. Return to clinic in one year, sooner for any recurrent symptoms.\n\nAllergies: NKDA\nMedications at end of visit: metoprolol succinate 50 mg daily\n\nSincerely,\nOutpatient cardiology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-03-16a",
+          "kind": "portal_message",
+          "start": "2023-03-16T21:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "cardiology",
+              "date": "2023-03-16T21:05",
+              "author": "patient",
+              "body": "Hi, saw the cardiologist monday. They said hypertrophic cardiomyopathy and put me on metoprolol 50. Can you do the refills from here on or do I go through them? Also I'm off the team for the season so you don't need to send anything else to the coach"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: cardiology",
+              "date": "2023-03-17T07:50",
+              "author": "PCP",
+              "body": "Rowan, I got the consult letter yesterday and read it through. I'm sorry about the season. Yes, I'm happy to handle refills; just let us know when you're getting low. Let's get you in here in about a month to see how you're doing on the metoprolol and talk through any questions."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-10a",
+          "kind": "office_visit",
+          "start": "2023-04-10T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up hypertrophic cardiomyopathy",
+          "vitals": {
+            "bp": [
+              112,
+              69
+            ],
+            "hr": 74,
+            "spo2": 96,
+            "weight_kg": 72.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-04-10T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-04-10T16:05",
+              "author": "PCP",
+              "body": "F/u new dx obstructive HCM (cardiology 3/13, septum 21 mm, LVOT 38 resting / 64 Valsalva, EF 70%).\n\nTaking metoprolol succinate 50 every morning, hasn't missed doses. No further passing out, no chest tightness, no palpitations. Walking around campus fine. Off the track team, doing some light swimming and walking, within what cardiology allowed. Taking it fairly well, a little flat about losing the season but sleeping and eating ok, not depressed. Has been reading about HCM, we went over questions about genetics in the family and what it means for his future.\n\nMeds: metoprolol succinate 50 mg daily. NKDA.\nFH now clarified: father SCD at 41, paternal uncle with HCM.\n\nExam: vitals as charted. Heart regular, systolic murmur LLSB. Lungs clear. No edema.\n\nA/P\n1. Obstructive HCM, on metoprolol, tolerating. Continue. Refills through us. Cardiology annual f/u next March. Reinforced: fluids, no heavy drinking, no hard exertion, ED for any recurrence.\n2. Health maintenance: physical in August.\nRx metoprolol succinate 50 mg #90 with 3 refills sent to his pharmacy."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-06-19a",
+          "kind": "pharmacy",
+          "start": "2023-06-19T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy refill",
+              "date": "2023-06-19T10:20",
+              "author": "MA",
+              "body": "Pharmacy called to confirm the 90 day supply on metoprolol succinate ER 50 mg, pt switched to the pharmacy near home for summer. Transfer from the campus pharmacy completed by them. Refills remain on file. No action needed from PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-28a",
+          "kind": "annual_physical",
+          "start": "2023-08-28T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              125,
+              69
+            ],
+            "hr": 75,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 71.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-28T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 282
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.97
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-08-28T09:40",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 99
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.0
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-08-28T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-28T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-08-28T09:45",
+              "author": "PCP",
+              "body": "Annual. 21 y/o M, senior year starting next week.\n\nObstructive HCM dx 3/2023, on metoprolol succinate 50 daily, no missed doses. No syncope or near syncope since March, no chest pain, no palpitations, no exercise intolerance with walking and easy swimming. Stays out of competitive sports.\n\nMeds: metoprolol succinate ER 50 mg daily. Allergies: NKDA.\nSH: no tobacco or vaping, alcohol a few drinks a month at most, no drugs. Uses a seatbelt.\nFH: father SCD 41; paternal uncle HCM.\n\nROS otherwise negative.\nPHQ-9 2. AUDIT-C 2.\n\nExam: vitals as charted. Well appearing. HEENT normal, TMs clear. Neck supple, no thyromegaly or adenopathy. Heart regular, systolic murmur LLSB, unchanged. Lungs clear. Abdomen soft, nontender, no organomegaly. GU deferred. Extremities: no edema. Skin: no concerning lesions. Neuro nonfocal.\n\nA/P\n1. Obstructive HCM, stable on metoprolol. Continue. Cardiology f/u due March.\n2. Health maintenance. CBC and BMP today. Flu and COVID this fall, he'll come in when home in October. Tdap last 2014, due next year. HIV/HCV done 2022.\nRTC 1 yr."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-08-30a",
+          "kind": "portal_message",
+          "start": "2023-08-30T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2023-08-30T12:30",
+              "author": "PCP",
+              "body": "Hi Rowan, your blood count and chemistry panel from Monday are normal, including potassium and kidney function. Have a good start to senior year."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-11a",
+          "kind": "portal_message",
+          "start": "2023-09-11T18:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "health form",
+              "date": "2023-09-11T18:45",
+              "author": "patient",
+              "body": "University health services says they need my immunization record again for the fall housing paperwork, can you send it to me here? sorry"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: health form",
+              "date": "2023-09-12T09:15",
+              "author": "MA",
+              "body": "Hi Rowan, your full immunization record is attached as a PDF. You can forward it straight to health services."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-18a",
+          "kind": "nurse_visit",
+          "start": "2023-10-18T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-18T16:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-18T16:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-18T16:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunizations",
+              "date": "2023-10-18T17:00",
+              "author": "RN",
+              "body": "Here for flu and the 2023-24 COVID vaccine. No reactions to prior doses, no fever today. Flu 0.5 mL IM L deltoid, Pfizer 2023-24 formula 0.3 mL IM R deltoid. VIS reviewed. Observed 15 minutes without problems."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-06a",
+          "kind": "ed_visit",
+          "start": "2024-03-06T16:35",
+          "end": "2024-03-06T23:50",
+          "service": "Emergency Medicine",
+          "reason": "Recurrent passing out",
+          "conditions": [
+            {
+              "label": "Syncope",
+              "action": "diagnosed",
+              "onset": "2024-03-06"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-03-06T16:40",
+              "bp": [
+                120,
+                75
+              ],
+              "hr": 70,
+              "rr": 16,
+              "temp_c": 36.7,
+              "spo2": 99
+            },
+            {
+              "time": "2024-03-06T21:30",
+              "bp": [
+                116,
+                72
+              ],
+              "hr": 62,
+              "rr": 14,
+              "temp_c": 36.6,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-03-06T16:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 226
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.84
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-06T16:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-06T16:55",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "value": 3
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2024-03-06T16:45",
+              "text": "Recorded while the patient was asymptomatic. Normal sinus rhythm. Normal axis. Normal PR, QRS and QTc intervals. No ST segment or T wave abnormality. No pathologic Q waves. No pre-excitation.",
+              "conclusion": "Normal sinus rhythm, normal ECG.",
+              "issued": "2024-03-06T16:50"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-03-06T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2024-03-07T09:30",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nDate of service: 03/06/2024, arrived 16:35 by private vehicle with friends\nPCP: primary care physician, copy sent\n\nCHIEF COMPLAINT: passing out, more than once\n\nHPI: 21 y/o M with obstructive hypertrophic cardiomyopathy diagnosed last year after he collapsed at track practice, on metoprolol succinate 50 mg daily. Presents after another fainting spell this afternoon. Describes several similar spells: he gets queasy, hot and lightheaded, and then goes down. This afternoon he was with friends, who say he went pale and sweaty and then slumped to the floor; he came around within moments. No injury, no tongue biting, no incontinence, no post-event confusion. No chest pain, no palpitations, no exertion at the time of any of the spells. Denies drug use.\n\nPMH: obstructive HCM. PSH: none. Meds: metoprolol succinate 50 mg daily. Allergies: NKDA.\nFH: father with sudden cardiac death at 41; paternal uncle with HCM.\nSH: university student, never smoker, occasional alcohol, none today.\n\nEXAM: BP 120/75, HR 70 at triage. Alert, oriented x3, no distress. No head or facial trauma. Heart regular, systolic murmur at the LLSB. Lungs clear. Abdomen benign. Neuro: nonfocal, gait normal.\n\nECG (asymptomatic): normal sinus rhythm, no abnormalities.\nLabs: CBC, BMP and high-sensitivity troponin within normal limits.\n\nED COURSE: Placed on continuous cardiac monitoring. At about 18:10, while seated on the stretcher, he said he felt the same nausea and warmth coming on and became pale. The monitor showed sinus bradycardia followed by a brief period of asystole, then return to normal sinus rhythm as he came around. He was laid flat and recovered within a minute, no intervention needed. Cardiology was consulted by phone and reviewed the strip. He remained on telemetry for the rest of his stay without another event.\n\nMDM: Recurrent syncope with a prodrome of nausea, warmth and lightheadedness, and a captured episode showing sinus bradycardia and a brief pause. Background obstructive HCM. Normal resting ECG and labs. Cardiology agrees with discharge with early outpatient follow-up and no medication change tonight.\n\nDIAGNOSIS: Syncope.\n\nDISPOSITION: Discharged home at 23:50 in the care of friends. Continue metoprolol succinate 50 mg daily. Cardiology clinic will call him for a visit within two weeks. Return precautions given: chest pain, palpitations, fainting with exertion, or any injury from a fall.\n\nEmergency medicine attending"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-07a",
+          "kind": "telephone",
+          "start": "2024-03-07T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED call",
+              "date": "2024-03-07T11:15",
+              "author": "RN",
+              "body": "Called pt after ED record came in. He's back in his room, felt washed out last night but fine this morning, no more episodes. Taking metoprolol as usual. Cardiology already called him, appt 3/18. Booked with PCP Mon 3/11 at 4:00. Told him to go back to the ED with any recurrence."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-11a",
+          "kind": "office_visit",
+          "start": "2024-03-11T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, syncope",
+          "vitals": {
+            "bp": [
+              103,
+              67
+            ],
+            "hr": 70,
+            "spo2": 97,
+            "weight_kg": 72.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-11T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - ED follow-up",
+              "date": "2024-03-11T16:40",
+              "author": "PCP",
+              "body": "ED f/u 3/6 for recurrent syncope.\n\nRead through the ED record before he came in. He tells it the same way: these spells start with nausea, feeling hot and lightheaded, then he goes down; usually standing, never with exertion, never chest pain. He admits there were a few before last week that he didn't tell anyone about, thinking they were nothing. In the ED they caught one on the monitor: sinus brady, a brief pause, then back to sinus. Normal ECG between, normal labs. No episodes since Wednesday.\n\nMeds: metoprolol succinate 50 mg daily, taking it. NKDA.\n\nExam: vitals as charted, orthostatics not done. Heart regular, systolic murmur LLSB, unchanged. Lungs clear. Neuro nonfocal.\n\nA/P\n1. Syncope, recurrent, with prodrome, captured bradycardia/pause in the ED. Known obstructive HCM. Cardiology 3/18 to sort out the mechanism and the metoprolol question; I'd rather they make that call. Meanwhile: lots of fluids, sit or lie down the moment the warning feeling starts, no swimming alone. Return to ED for any spell with exertion or chest pain.\n2. Obstructive HCM: as above.\nI'll watch for the cardiology letter."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-18a",
+          "kind": "specialist_visit",
+          "start": "2024-03-18T10:30",
+          "service": "Cardiology",
+          "reason": "Follow-up after ED visit for syncope",
+          "vitals": {
+            "bp": [
+              116,
+              69
+            ],
+            "hr": 83,
+            "spo2": 97,
+            "weight_kg": 72.1
+          },
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2024-03-18T10:00",
+              "text": "Complete 2D, color and spectral Doppler study, compared with 03/13/2023. Normal left ventricular cavity size. Asymmetric septal hypertrophy, maximal septal thickness 21 mm. LVEF 70%, hyperdynamic. Systolic anterior motion of the anterior mitral leaflet persists. Resting LVOT peak gradient 36 mmHg, 60 mmHg with Valsalva. Mitral and aortic valves structurally normal. Right ventricle normal. Atria normal in size. No pericardial effusion.",
+              "conclusion": "Obstructive hypertrophic cardiomyopathy, unchanged from 03/2023: septum 21 mm, LVEF 70%, LVOT gradient 36 mmHg at rest and 60 mmHg with Valsalva."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-18T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up",
+              "date": "2024-03-19T15:00",
+              "author": "cardiology",
+              "body": "Cardiology clinic follow-up\nDate of visit: 03/18/2024\n\nDear colleague,\n\nI saw Rowan again after his ED visit on 3/6 for recurrent fainting. He describes several episodes, all while standing or sitting still, each heralded by nausea, warmth and lightheadedness and followed by a brief loss of consciousness. None have been exertional and none came with chest pain or palpitations. The episode captured on ED telemetry showed sinus bradycardia and a brief asystolic pause with spontaneous recovery, coinciding with his usual prodrome. No episodes since the ED.\n\nMedications: metoprolol succinate 50 mg daily. Allergies: NKDA.\n\nToday he looks well. Vital signs as recorded. The systolic murmur at the left lower sternal border is unchanged. Lungs clear, no edema.\n\nEcho today is unchanged from last year: septum 21 mm, EF 70%, outflow gradient 36 mmHg at rest and 60 mmHg with Valsalva.\n\nImpression:\n1. Recurrent syncope. The prodrome and the setting, together with the bradycardia and pause during a typical spell, favor a reflex mechanism rather than an outflow or arrhythmic event.\n2. Obstructive hypertrophic cardiomyopathy, stable by echo.\n\nPlan:\n1. Continue metoprolol succinate 50 mg daily, no change.\n2. Generous fluid intake. At the first sign of the warning feeling, sit or lie down; leg-crossing and hand-grip counter-pressure maneuvers reviewed and practiced in clinic.\n3. Continue to avoid competitive and strenuous exertion.\n4. Return in one year, sooner for any exertional symptoms or recurrent syncope.\n\nSincerely,\nOutpatient cardiology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-20a",
+          "kind": "portal_message",
+          "start": "2024-03-20T08:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cardiology visit",
+              "date": "2024-03-20T08:05",
+              "author": "PCP",
+              "body": "Rowan, I read the cardiology note from Monday. Echo unchanged, and they think these spells are the reflex type, set off by the nausea and warm feeling, rather than coming from the heart muscle problem itself. No change to metoprolol. Keep up with the fluids and the counter-pressure moves they showed you. Text me if you have another one."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Cardiology visit",
+              "date": "2024-03-20T19:40",
+              "author": "patient",
+              "body": "ok will do, thanks for checking"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-03a",
+          "kind": "pharmacy",
+          "start": "2024-06-03T09:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2024-06-03T09:10",
+              "author": "MA",
+              "body": "Electronic refill request from pharmacy, metoprolol succinate ER 50 mg, last 90 day fill 3/2024, no refills left on old Rx. Last PCP visit 3/11/24. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill approved",
+              "date": "2024-06-03T12:30",
+              "author": "PCP",
+              "body": "Metoprolol succinate ER 50 mg daily, #90, 3 refills, sent."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-26a",
+          "kind": "annual_physical",
+          "start": "2024-08-26T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              108,
+              73
+            ],
+            "hr": 68,
+            "temp_c": 36.7,
+            "spo2": 96,
+            "weight_kg": 71.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-26T11:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 271
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.91
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-08-26T11:20",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 121
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-08-26T10:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-08-26T11:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-26T11:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2024-08-26T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-08-26T11:30",
+              "author": "PCP",
+              "body": "Yearly exam, 22 y/o, back at school next week, still on his mother's insurance.\n\nObstructive HCM on metoprolol succinate 50. Syncope: none since the ED visit in March. No exertional symptoms, no chest pain, no palpitations. Cardiology again next March.\n\nMeds: metoprolol succinate ER 50 mg daily. NKDA.\nSH: never smoker, drinks rarely, no drugs.\n\nPHQ-9 1, AUDIT-C 2.\nROS negative.\n\nExam: vitals as charted. HEENT normal. Neck supple. Heart regular, systolic murmur LLSB as before. Lungs clear. Abdomen soft, nontender. Extremities no edema. Skin normal. Neuro intact.\n\nA/P\n1. Obstructive HCM, stable.\n2. Syncope, none since March.\n3. Health maintenance: Tdap today, 10 years since the last. CBC and BMP. Flu and COVID when available in October.\nRTC 1 yr."
+            },
+            {
+              "type": "Nursing Note",
+              "title": "Tdap",
+              "date": "2024-08-26T11:18",
+              "author": "RN",
+              "body": "Tdap 0.5 mL IM left deltoid. VIS given. Tolerated, observed without reaction."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-28a",
+          "kind": "portal_message",
+          "start": "2024-08-28T13:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-08-28T13:00",
+              "author": "PCP",
+              "body": "Rowan, Monday's blood count and metabolic panel are normal. See you in October for the fall shots."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-21a",
+          "kind": "nurse_visit",
+          "start": "2024-10-21T17:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-21T17:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-21T17:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-21T17:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunizations",
+              "date": "2024-10-21T17:20",
+              "author": "RN",
+              "body": "Flu (trivalent 2024-25) 0.5 mL IM R deltoid and Moderna 2024-25 COVID 0.5 mL IM L deltoid. Pt asked to lie down for the shots given his fainting history; done supine, no prodrome, sat up after 5 min and observed 15 min total. Fine."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-10a",
+          "kind": "office_visit",
+          "start": "2025-02-10T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up hypertrophic cardiomyopathy",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-02-10b",
+          "kind": "portal_message",
+          "start": "2025-02-10T16:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed appointment",
+              "date": "2025-02-10T16:10",
+              "author": "front desk",
+              "body": "Hi Rowan, we missed you at 3:20 today. Please reply or call to reschedule; a video visit is fine if it's easier with classes."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Missed appointment",
+              "date": "2025-02-10T21:30",
+              "author": "patient",
+              "body": "so sorry, totally forgot. can we do video next week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Missed appointment",
+              "date": "2025-02-11T09:00",
+              "author": "front desk",
+              "body": "Booked: video visit Wednesday 2/19 at 12:15. Link will come by text."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-19a",
+          "kind": "telehealth_visit",
+          "start": "2025-02-19T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up hypertrophic cardiomyopathy",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-02-19T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2025-02-19T12:35",
+              "author": "PCP",
+              "body": "Video, pt in his apartment, identity verified.\n\nCheck-in on obstructive HCM and syncope. No fainting since 3/2024, no near spells. No chest pain, palpitations or shortness of breath. Taking metoprolol succinate 50 daily, few missed doses, needs refills before cardiology. Busy with classes, sleeping enough. Walks everywhere, no hard exercise.\n\nNKDA.\nNo exam beyond appearance: well, talking comfortably.\n\nA/P\n1. Obstructive HCM, stable, metoprolol refilled #90 x3.\n2. Syncope, no recurrence.\nCardiology annual in March, confirmed he has it booked. Physical in August."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-24a",
+          "kind": "specialist_visit",
+          "start": "2025-03-24T14:00",
+          "service": "Cardiology",
+          "reason": "Annual follow-up hypertrophic cardiomyopathy",
+          "vitals": {
+            "bp": [
+              109,
+              69
+            ],
+            "hr": 80,
+            "spo2": 97,
+            "weight_kg": 71.7
+          },
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-03-24T14:05",
+              "text": "Normal sinus rhythm. Normal axis and intervals. No ST or T wave abnormality. No Q waves. No change from 03/2024.",
+              "conclusion": "Normal sinus rhythm. Normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-03-24T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Annual Follow-up",
+              "date": "2025-03-26T11:00",
+              "author": "cardiology",
+              "body": "Cardiology clinic\nDate of visit: 03/24/2025\n\nDear colleague,\n\nRowan returns for his yearly visit for obstructive hypertrophic cardiomyopathy. He has had no syncope since the ED visit of March 2024 and reports no exertional chest discomfort, dyspnea or palpitations. He continues to avoid strenuous exertion. He takes metoprolol succinate 50 mg daily.\n\nAllergies: NKDA.\n\nExam: vital signs as recorded. Systolic murmur at the left lower sternal border, unchanged. Lungs clear. No edema.\n\nECG today: normal sinus rhythm, no abnormality.\n\nImpression: Obstructive HCM, clinically stable. Syncope, no recurrence in a year.\n\nPlan: Continue metoprolol succinate 50 mg daily. Same activity guidance. Return in one year with an echocardiogram.\n\nSincerely,\nOutpatient cardiology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-27a",
+          "kind": "portal_message",
+          "start": "2025-03-27T07:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cardiology note",
+              "date": "2025-03-27T07:45",
+              "author": "PCP",
+              "body": "Got the cardiology letter from Monday. Stable, ECG normal, same dose. Nothing new from my end. See you in August."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-25a",
+          "kind": "annual_physical",
+          "start": "2025-08-25T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              110,
+              73
+            ],
+            "hr": 71,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 71.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-25T10:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 254
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.94
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-08-25T10:00",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-08-25T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-25T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-08-25T10:10",
+              "author": "PCP",
+              "body": "Annual, 23 y/o M, still in school.\n\nHCM (obstructive), metoprolol succinate 50 daily. Cardiology 3/2025 stable, normal ECG, echo next March. No syncope since 3/2024. No exertional symptoms.\n\nMeds: metoprolol succinate ER 50 mg daily. NKDA.\nSH: never smoker, alcohol occasional, no drugs.\nPHQ-9 2. AUDIT-C 2.\nROS negative.\n\nExam: vitals as charted. Well. HEENT normal. Neck supple, no nodes. Heart regular, systolic murmur LLSB, same as always. Lungs clear. Abdomen soft, nontender. Extremities no edema. Skin clear. Neuro nonfocal.\n\nA/P\n1. Obstructive HCM, stable. Continue.\n2. Syncope, none in over a year.\n3. HM: CBC, BMP. Tdap 2024. Flu and COVID in October.\nRTC 1 yr."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-27a",
+          "kind": "portal_message",
+          "start": "2025-08-27T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2025-08-27T12:10",
+              "author": "PCP",
+              "body": "Rowan, labs from Monday are all normal. Nothing to do."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T16:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T16:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunizations",
+              "date": "2025-10-14T16:50",
+              "author": "RN",
+              "body": "Flu 2025-26 0.5 mL IM L deltoid; Pfizer 2025-26 COVID 0.3 mL IM R deltoid. Given lying down at pt's request as last year. No reaction, up and out after 15 min."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-24a",
+          "kind": "pharmacy",
+          "start": "2025-11-24T10:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Insurance change at pharmacy",
+              "date": "2025-11-24T10:40",
+              "author": "MA",
+              "body": "Pharmacy called: metoprolol fill rejected, new member ID on his mother's plan as of the plan year. Pt messaged a photo of the new card, updated in registration and called pharmacy with the new BIN/ID. Claim went through, 90 day supply filled."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-06a",
+          "kind": "hospital_admission",
+          "start": "2026-03-06T14:50",
+          "end": "2026-03-10T11:40",
+          "service": "Neurosurgery",
+          "reason": "Epidural hematoma after motorcycle crash",
+          "conditions": [
+            {
+              "label": "Traumatic epidural hemorrhage with loss of consciousness of unspecified duration, initial encounter",
+              "action": "diagnosed",
+              "onset": "2026-03-06",
+              "icd10": "S06.4X9A"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "levetiracetam 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily for 7 days total (last dose 3/12)",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Seizure prophylaxis after craniotomy"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets by mouth every 8 hours as needed for pain",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Postoperative pain"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-03-06T14:55",
+              "bp": [
+                140,
+                90
+              ],
+              "hr": 100,
+              "rr": 18,
+              "temp_c": 37.0,
+              "spo2": 98
+            },
+            {
+              "time": "2026-03-06T21:30",
+              "bp": [
+                124,
+                76
+              ],
+              "hr": 76,
+              "rr": 16,
+              "temp_c": 37.1,
+              "spo2": 98
+            },
+            {
+              "time": "2026-03-08T08:00",
+              "bp": [
+                118,
+                72
+              ],
+              "hr": 64,
+              "rr": 16,
+              "temp_c": 36.8,
+              "spo2": 99
+            },
+            {
+              "time": "2026-03-10T08:00",
+              "bp": [
+                116,
+                70
+              ],
+              "hr": 60,
+              "rr": 14,
+              "temp_c": 36.7,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-06T15:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.02
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-06T15:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-03-06T15:05",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.3
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-07T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 278
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.86
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-07T05:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 123
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-03-06T15:20",
+              "text": "Indication: motorcycle crash, unhelmeted, loss of consciousness at scene, severe headache.\nTechnique: axial noncontrast CT of the head with coronal and sagittal reformats.\nFindings: Hyperdense biconvex extra-axial collection over the right temporal convexity that does not cross suture lines, maximal thickness 16 mm, estimated volume 34 mL. Local mass effect with 3 mm leftward midline shift. Basal cisterns patent. No subdural, subarachnoid or intraparenchymal hemorrhage. No fracture identified. Ventricles normal in size. Gray-white differentiation preserved. Paranasal sinuses and mastoid air cells clear.",
+              "conclusion": "Acute right temporal epidural hematoma, 16 mm maximal thickness, approximately 34 mL, with 3 mm midline shift. No other intracranial hemorrhage. No fracture identified. Neurosurgery notified at 15:31.",
+              "issued": "2026-03-06T15:35"
+            },
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-03-07T07:10",
+              "text": "Comparison: 03/06/2026.\nFindings: Interval right temporal craniotomy with evacuation of the epidural hematoma. Expected postoperative pneumocephalus and soft tissue swelling at the operative site. No residual or recurrent epidural collection. No new intracranial hemorrhage. Midline shift resolved. Basal cisterns patent.",
+              "conclusion": "Satisfactory evacuation of right temporal epidural hematoma. No residual or new hemorrhage.",
+              "issued": "2026-03-07T08:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-03-06T15:45"
+            },
+            {
+              "procedure": "Craniotomy for evacuation of epidural hematoma, supratentorial",
+              "performed": "2026-03-06T16:40"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-03-10T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "Neurosurgery Admission History and Physical",
+              "date": "2026-03-10T16:00",
+              "author": "neurosurgery",
+              "body": "NEUROSURGERY ADMISSION H&P\nDate of service: 03/06/2026, 15:40\n\nCC: severe headache after motorcycle crash\n\nHPI: 23 y/o man with obstructive HCM and a history of syncope, brought in by EMS after a motorcycle crash. He was not wearing a helmet. Found unresponsive at the scene by bystanders and EMS; he woke up shortly after arrival in our ED and now complains of a severe headache. No other complaints.\n\nPMH: obstructive hypertrophic cardiomyopathy; syncope (2024).\nPSH: none.\nMeds: metoprolol succinate 50 mg daily, last dose this morning.\nAllergies: NKDA.\nFH: father sudden cardiac death at 41; paternal uncle with HCM.\nSH: university student. Never smoker. Occasional alcohol.\n\nExam: BP 140/90, HR 100, RR 18, T 37.0 C (98.6 F), SpO2 98% RA.\nAlert and oriented to person, place and time but restless on the stretcher. Pupils equal and reactive. Extraocular movements full. Face symmetric. Full strength throughout, sensation intact, no drift. No focal neurologic deficit. Cervical collar in place, cleared after CT. Primary and secondary trauma survey otherwise negative per ED.\n\nImaging: CT head, acute right temporal epidural hematoma, biconvex, not crossing sutures, 16 mm thick, about 34 mL, 3 mm midline shift. CT C-spine negative.\nLabs: CBC, BMP, PT/INR normal.\n\nAssessment: Traumatic epidural hematoma, right temporal, volume over 30 mL with mass effect, after loss of consciousness at the scene.\n\nPlan: Emergent right temporal craniotomy for evacuation. Consent obtained from the patient, mother present and informed. Anesthesia aware of obstructive HCM: maintain preload, avoid tachycardia and vasodilation. Continue metoprolol. Levetiracetam for seizure prophylaxis. Neuro ICU postoperatively.\n\nNeurosurgery attending"
+            },
+            {
+              "type": "Operative Note",
+              "title": "Operative Report",
+              "date": "2026-03-10T16:00",
+              "author": "neurosurgery",
+              "body": "OPERATIVE REPORT\nDate of surgery: 03/06/2026\nPreoperative diagnosis: right temporal epidural hematoma\nPostoperative diagnosis: same\nProcedure: right temporal craniotomy for evacuation of epidural hematoma\nAnesthesia: general endotracheal\nEBL: minimal\nSpecimens: none\nComplications: none\n\nIndications: 23 y/o man after an unhelmeted motorcycle crash with an acute right temporal epidural hematoma of about 34 mL with midline shift.\n\nDescription: Supine, head turned left on a horseshoe rest. Right temporal question-mark incision after prep and drape. Scalp flap reflected, bone flap turned with the craniotome. Acute epidural clot encountered and evacuated with suction and irrigation. Bleeding points coagulated. Dura intact, tacked up circumferentially. Hemostasis confirmed. Bone flap replaced with plates. Subgaleal drain placed. Galea closed with interrupted sutures, skin with staples. Sterile dressing.\n\nThe patient tolerated the procedure well, extubated in the OR, moving all extremities, to the neuro ICU in stable condition. Anesthesia reported stable hemodynamics on preload support; metoprolol continued.\n\nNeurosurgery attending"
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary",
+              "date": "2026-03-10T16:00",
+              "author": "neurosurgery",
+              "body": "DISCHARGE SUMMARY\nAdmitted: 03/06/2026  Discharged: 03/10/2026\nService: Neurosurgery\n\nPrincipal diagnosis: traumatic right temporal epidural hematoma\nOther: obstructive hypertrophic cardiomyopathy; history of syncope\nProcedure: right temporal craniotomy with evacuation of epidural hematoma, 03/06/2026\n\nCourse: Arrived after an unhelmeted motorcycle crash with loss of consciousness at the scene, regaining consciousness in the ED, with severe headache and a 34 mL right temporal epidural hematoma on CT. Taken emergently to the OR the same afternoon for craniotomy and evacuation, uncomplicated. Postoperative day 1 CT showed satisfactory evacuation without residual or new hemorrhage. Two nights in the neuro ICU, then the neurosurgery floor. Drain removed POD 1. Neurologically intact throughout. Headache settled to mild by POD 2 on acetaminophen alone. Levetiracetam for 7 days of seizure prophylaxis. Metoprolol continued at home dose with stable heart rate and blood pressure. Ambulating independently, tolerating diet. CT cervical spine negative; no other injuries identified.\n\nCondition at discharge: good. Alert, oriented, no focal deficit. Incision clean, staples in place.\n\nAllergies: NKDA\n\nDischarge medications:\n- Metoprolol succinate ER 50 mg daily (unchanged)\n- Levetiracetam 500 mg twice daily, last dose 03/12/2026\n- Acetaminophen 1000 mg every 8 hours as needed for pain\n\nInstructions: no heavy lifting or contact activity until neurosurgery follow-up. Keep the incision dry for 48 hours, then gentle washing. Staple removal in 7 to 10 days, at the PCP office is fine. Wear a helmet when riding. Return for worsening headache, vomiting, confusion, weakness or seizure.\n\nFollow-up: neurosurgery clinic in about 4 weeks with CT head. PCP within one week.\n\nNeurosurgery"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-11a",
+          "kind": "telephone",
+          "start": "2026-03-11T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Transitional care call",
+              "date": "2026-03-11T10:05",
+              "author": "RN",
+              "body": "TCM call, discharged yesterday after craniotomy for epidural hematoma. Spoke with pt, mother on speaker. Home, resting. Headache mild, acetaminophen twice yesterday. No vomiting, no confusion, no weakness, no seizure. Taking levetiracetam twice a day through tomorrow and his metoprolol. Incision dry, staples in. Discharge papers reviewed with them; med list reconciled, matches. PCP visit booked Fri 3/13 2:00, staple removal can be done then or the following week. Return precautions reviewed."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-13a",
+          "kind": "office_visit",
+          "start": "2026-03-13T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after craniotomy",
+          "vitals": {
+            "bp": [
+              118,
+              78
+            ],
+            "hr": 85,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 71.5
+          },
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-03-13T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "date": "2026-03-13T14:45",
+              "author": "PCP",
+              "body": "Post-discharge. Admitted 3/6 to 3/10 at an outside hospital, neurosurgery service: unhelmeted motorcycle crash, LOC at the scene, right temporal epidural hematoma about 34 mL with 3 mm shift, emergent right temporal craniotomy and evacuation same day. POD1 CT clean. Discharge summary, op note and H&P reviewed.\n\nToday: here with his mother. Headache gone the last day or so, took acetaminophen once yesterday. No nausea, vomiting, confusion, weakness, numbness or vision change. Sleeping fine. Finished levetiracetam last night. Still on metoprolol succinate 50 daily. No syncope.\n\nMeds: metoprolol succinate ER 50 mg daily; acetaminophen 1000 mg q8h prn. NKDA.\n\nExam: vitals as charted. Alert, oriented, conversational, appropriate. Right temporal curvilinear incision with staples, clean, dry, no erythema or drainage, no fluid collection. Pupils equal and reactive, EOM full, face symmetric, strength and sensation normal, gait steady. Heart regular, systolic murmur LLSB as before. Lungs clear.\n\nA/P\n1. Traumatic epidural hematoma s/p craniotomy 3/6, recovering well, intact. Staples out Tuesday 3/17 with nursing. Neurosurgery f/u with CT in April, scheduled. Activity per neurosurgery: no lifting or contact. Helmet, every time, if he rides again; we talked about it plainly.\n2. Obstructive HCM: stable through the admission. Cardiology annual had been booked for March; he'll reschedule after neurosurgery clears him.\n3. Med rec done."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "nurse_visit",
+          "start": "2026-03-17T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Staple removal",
+          "vitals": {
+            "bp": [
+              114,
+              77
+            ],
+            "hr": 83,
+            "temp_c": 36.9
+          },
+          "procedures": [
+            {
+              "procedure": "Nurse visit, staple removal",
+              "performed": "2026-03-17T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Staple removal",
+              "date": "2026-03-17T11:20",
+              "author": "RN",
+              "body": "11 days post right temporal craniotomy. Staples removed without difficulty. Incision well approximated and healed along its length, no erythema, drainage or gaps. Steri-strips not needed. Pt feels well, no headache. Told him he can wash his hair normally now. Reminded about neurosurgery visit in April."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-03-23a",
+          "kind": "portal_message",
+          "start": "2026-03-23T09:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "letter for school",
+              "date": "2026-03-23T09:30",
+              "author": "patient",
+              "body": "The dean of students office wants a letter saying I was in the hospital and when I can come back to class. Can you write one? I feel ready"
+            },
+            {
+              "type": "Letter",
+              "title": "Medical letter for university",
+              "date": "2026-03-23T13:15",
+              "author": "PCP",
+              "body": "To the Dean of Students:\n\nRowan Doherty is a patient of this practice. He was hospitalized from March 6 through March 10, 2026, and has been recovering at home since. He is medically able to return to classes and coursework now. He should not take part in contact sports or heavy physical activity until cleared by his surgical team. Please extend reasonable accommodations for the work missed during this period.\n\nPrimary care physician"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: letter for school",
+              "date": "2026-03-23T13:20",
+              "author": "PCP",
+              "body": "Letter is attached, you can forward it to the dean's office. Glad you're feeling ready."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-13a",
+          "kind": "specialist_visit",
+          "start": "2026-04-13T09:45",
+          "service": "Neurosurgery",
+          "reason": "Postoperative follow-up, epidural hematoma",
+          "conditions": [
+            {
+              "label": "Traumatic epidural hemorrhage with loss of consciousness of unspecified duration, initial encounter",
+              "action": "resolved",
+              "onset": "2026-03-06",
+              "icd10": "S06.4X9A"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              74
+            ],
+            "hr": 83
+          },
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-04-13T08:50",
+              "text": "Comparison: 03/07/2026.\nFindings: Postoperative changes of right temporal craniotomy with bone flap in place. Resolution of the previously evacuated epidural collection; no residual extra-axial fluid. Postoperative pneumocephalus resolved. No intracranial hemorrhage. No mass effect. Ventricles and sulci normal.",
+              "conclusion": "Resolved right temporal epidural hematoma. Expected postoperative changes only.",
+              "issued": "2026-04-13T09:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-04-13T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurosurgery Clinic Follow-up",
+              "date": "2026-04-14T14:00",
+              "author": "neurosurgery",
+              "body": "Neurosurgery clinic\nDate of visit: 04/13/2026\n\nDear colleague,\n\nRowan is five weeks out from right temporal craniotomy for evacuation of a traumatic epidural hematoma. He feels back to normal. No headaches, no seizures, no new neurological symptoms. He is attending classes. Medications: metoprolol succinate 50 mg daily. Allergies: NKDA.\n\nExam: incision fully healed, flap contour good. Alert and oriented, speech fluent, cranial nerves intact, strength and sensation normal, gait normal.\n\nCT head today: resolution of the epidural hematoma; postoperative changes only.\n\nImpression: traumatic epidural hematoma, resolved after evacuation. Excellent recovery.\n\nPlan: cleared for normal activity, including classes and exercise within his cardiology limits. We discussed helmet use at length. No routine neurosurgical follow-up needed; we are happy to see him again for any concerns.\n\nSincerely,\nNeurosurgery"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2026-04-15a",
+          "kind": "portal_message",
+          "start": "2026-04-15T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Neurosurgery visit",
+              "date": "2026-04-15T07:55",
+              "author": "PCP",
+              "body": "Read the neurosurgery note: CT shows the bleed is completely gone and they've cleared you for everything. Really good news. Next step is getting the cardiology visit rebooked."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Neurosurgery visit",
+              "date": "2026-04-15T18:20",
+              "author": "patient",
+              "body": "yes! cardiology appt is june 8"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-08a",
+          "kind": "specialist_visit",
+          "start": "2026-06-08T13:30",
+          "service": "Cardiology",
+          "reason": "Annual follow-up hypertrophic cardiomyopathy",
+          "vitals": {
+            "bp": [
+              116,
+              69
+            ],
+            "hr": 74,
+            "spo2": 97,
+            "weight_kg": 71.3
+          },
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-06-08T13:00",
+              "text": "Complete 2D, color and spectral Doppler study, compared with 03/18/2024. Normal LV cavity size. Asymmetric septal hypertrophy, maximal septal thickness 21 mm. LVEF 70%. Systolic anterior motion of the anterior mitral leaflet. Resting LVOT peak gradient 35 mmHg, 62 mmHg with Valsalva. Mitral and aortic valves structurally normal. Right ventricle normal in size and function. Atria normal in size. No pericardial effusion.",
+              "conclusion": "Obstructive hypertrophic cardiomyopathy, unchanged: septum 21 mm, LVEF 70%, LVOT gradient 35 mmHg at rest and 62 mmHg with Valsalva."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-06-08T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Annual Follow-up",
+              "date": "2026-06-10T09:30",
+              "author": "cardiology",
+              "body": "Cardiology clinic\nDate of visit: 06/08/2026\n\nDear colleague,\n\nRowan's annual visit was moved from March because of his admission for a traumatic epidural hematoma, treated with craniotomy on 3/6/2026; he has recovered fully and neurosurgery has discharged him. From a cardiac standpoint he has had no syncope since March 2024 and no exertional chest pain, dyspnea or palpitations. Medications: metoprolol succinate 50 mg daily. Allergies: NKDA.\n\nExam: vital signs as recorded. Healed right temporal scar. Systolic murmur at the left lower sternal border, unchanged. Lungs clear. No edema.\n\nEcho today: septum 21 mm, EF 70%, outflow gradient 35 mmHg at rest and 62 mmHg with Valsalva, unchanged.\n\nImpression: obstructive hypertrophic cardiomyopathy, stable. Syncope, no recurrence.\n\nPlan: continue metoprolol succinate 50 mg daily. Activity guidance unchanged. Return in one year.\n\nSincerely,\nOutpatient cardiology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-10a",
+          "kind": "portal_message",
+          "start": "2026-06-10T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cardiology letter",
+              "date": "2026-06-10T16:40",
+              "author": "PCP",
+              "body": "Rowan, cardiology letter came in. Echo is the same as two years ago, no change to metoprolol, next visit in a year. Your physical is coming up in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-17a",
+          "kind": "pharmacy",
+          "start": "2026-08-17T09:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2026-08-17T09:25",
+              "author": "MA",
+              "body": "eRx refill request, metoprolol succinate ER 50 mg daily #90. Last refill 5/2026, last PCP contact 3/13/26, cardiology 6/8/26 continued same dose. Routed."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill approved",
+              "date": "2026-08-17T11:50",
+              "author": "PCP",
+              "body": "Approved #90 with 1 refill. Physical 9/14 will renew the rest."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-14a",
+          "kind": "annual_physical",
+          "start": "2026-09-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Obstructive hypertrophic cardiomyopathy|I42.1": {
+        "code": "I42.1",
+        "display": "Obstructive hypertrophic cardiomyopathy",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Traumatic epidural hemorrhage with loss of consciousness of unspecified duration, initial encounter|S06.4X9A": {
+        "code": "S06.4X9A",
+        "display": "Epidural hemorrhage with loss of consciousness of unspecified duration, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    }
+  }
+}

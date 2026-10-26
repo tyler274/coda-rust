@@ -1,0 +1,150 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001732",
+      "events": [
+        {
+          "id": "2025-03-11a",
+          "kind": "annual_physical",
+          "start": "2025-03-11T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, planning pregnancy",
+          "state": {"weight_kg": 62.8},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 1}],
+          "medications": [
+            {"drug_text": "Prenatal Vitamins Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "preconception"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-03-11T16:25", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-03-11T15:40"},
+            {"procedure": "Venipuncture", "performed": "2025-03-11T16:25"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-03-11T15:40",
+              "body": "Yearly visit. She and her husband want to start trying for a baby this summer and she wants to be ready. No complaints. No meds. NKDA. Never smoker; already cutting out the occasional drink.\n\nOB/GYN hx: G0. Cycles regular, about every 28-30 days. Pap 4/2024 normal.\nFH reviewed: mother's postpartum depression after her second baby; maternal aunt with bipolar I. Father T2DM.\n\nROS negative. PHQ-9 1.\n\nExam: vitals as charted. Well-appearing. HEENT normal. Thyroid normal. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Ext no edema. Skin normal.\n\nA/P: Preconception visit, healthy.\n- Start a prenatal vitamin with iron now, 1 daily.\n- No alcohol once trying. Medications and supplements: check with us first.\n- Vaccines current; she'll get flu in the fall either way.\n- Talked about the family history. Her mother's postpartum depression and her aunt's bipolar disorder do raise her own risk after delivery. We'll tell her OB and keep a close eye on mood after the baby comes. She appreciated knowing.\n- CBC today as a baseline.\n- Message us when she has a positive test and we'll get her to OB."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-13a",
+          "kind": "portal_message",
+          "start": "2025-03-13T13:15",
+          "reason": "Lab result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "author": "PCP",
+              "date": "2025-03-13T13:15",
+              "body": "Hi Isabelle, your blood count is normal, no anemia. Keep taking the prenatal vitamin."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-02a",
+          "kind": "portal_message",
+          "start": "2025-06-02T07:02",
+          "reason": "Positive pregnancy test",
+          "conditions": [{"label": "Supervision of normal pregnancy", "action": "diagnosed", "onset": "2025-05-15"}],
+          "orders": [{"id": "ob-referral-2025", "action": "placed", "order": "Obstetrics referral", "category": "referral", "to": "Obstetrics & Gynecology", "reason": "new pregnancy, LMP 2025-05-01"}],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test!",
+              "author": "patient",
+              "date": "2025-06-02T07:02",
+              "body": "Good morning! Two positive home tests this weekend. First day of my last period was May 1. Feeling a little queasy in the mornings but OK. Still on the prenatal vitamin. What do I do next?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive test!",
+              "author": "PCP",
+              "date": "2025-06-02T12:40",
+              "body": "Congratulations to you both! By your period you're about 4 1/2 weeks along, due date around early February. I've sent a referral to an OB group near you and they'll call to set up your first prenatal visit, usually around 8 weeks. Keep the vitamin going, no alcohol, small frequent meals help the queasiness. Call if you have heavy bleeding or bad pain. I'll let the OB know about your family history so they're watching your mood after delivery too."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-10a",
+          "kind": "outside_records",
+          "start": "2025-07-10T10:30",
+          "reason": "OB first prenatal visit letter",
+          "orders": [{"id": "ob-referral-2025", "action": "done", "date": "2025-07-10T10:30"}],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics: Initial Prenatal Visit",
+              "author": "obstetrics",
+              "date": "2025-07-10T10:30",
+              "body": "Obstetrics & Gynecology, outside group\nDate of service: 06/26/2025\n\nRE: Isabelle Murphy, DOB 08/27/1994\n\nThank you for referring Ms. Murphy, a 30 yo G1P0 seen today for her initial prenatal visit at 8w0d by LMP of 05/01/2025.\n\nShe is well. Mild nausea, no vomiting, no bleeding. No medical or surgical history. Medications: prenatal vitamin with iron daily. Allergies: NKDA. Never smoker, no alcohol since conception.\nFamily history noted: mother with postpartum depression, maternal aunt with bipolar I disorder, father with type 2 diabetes.\n\nDating ultrasound: single intrauterine pregnancy with cardiac activity, size consistent with LMP. EDD 02/05/2026.\nRoutine prenatal labs sent; all returned normal.\n\nPlan: routine prenatal care every 4 weeks. Given the family history we will screen her mood each trimester and at the postpartum visit, and we'd welcome your involvement after delivery.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot, pregnant",
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-07T15:55"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-07T15:55"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "author": "RN",
+              "date": "2025-10-07T15:50",
+              "body": "22 weeks pregnant per pt, OB recommends flu vaccine. Feels well. NKDA, no egg or vaccine reactions. Influenza trivalent, preservative-free, 0.5 mL IM L deltoid. VIS given. 15 min observation without problems."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "portal_message",
+          "start": "2025-10-20T18:44",
+          "reason": "Outside vaccine",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-18T09:45"}],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "covid vaccine 10/18",
+              "author": "patient",
+              "date": "2025-10-20T18:44",
+              "body": "OB said to get the updated COVID vaccine during pregnancy, so I got it at the pharmacy Saturday the 18th (Pfizer). Just letting you know."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: covid vaccine 10/18",
+              "author": "MA",
+              "date": "2025-10-21T08:05",
+              "body": "Added to your chart. Thanks Isabelle!"
+            }
+          ]
+        },
+        {
+          "id": "2025-12-04a",
+          "kind": "outside_records",
+          "start": "2025-12-04T14:10",
+          "reason": "OB prenatal update",
+          "immunizations": [{"vaccine": "Tdap", "date": "2025-12-02T10:15"}],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics: Prenatal Update",
+              "author": "obstetrics",
+              "date": "2025-12-04T14:10",
+              "body": "Obstetrics & Gynecology, outside group\nDate of service: 12/02/2025\n\nRE: Isabelle Murphy, DOB 08/27/1994\n\nInterval update for your records. Ms. Murphy is 30w5d and doing well. Anatomy survey at 20 weeks was normal. 1-hour glucose challenge at 26 weeks was normal. Fetal growth appropriate. No bleeding, contractions or leakage of fluid. Good fetal movement.\n\nTdap given today, 0.5 mL IM.\nMedications: prenatal vitamin. Allergies: NKDA.\nMood screen today negative; we reviewed warning signs of postpartum mood changes with her and her husband.\n\nPlan: visits every 2 weeks, then weekly from 36 weeks.\n\nObstetrics & Gynecology"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,307 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002568",
+      "given": "Graham",
+      "family": "Medeiros",
+      "birth_date": "1996-12-06",
+      "address_line": "41 Kellogg Avenue, Apt 3",
+      "phone": "+1-201-555-0150",
+      "email": "graham.medeiros@example.test",
+      "marital_status": "single",
+      "summary": "Healthy software developer and recreational runner who joined the practice in 2024. In January 2025 he had an outside ED stay for an unintentional opioid overdose complicated by saline-induced hyperchloremic acidosis; in July 2026 he was admitted to an outside ICU for exertional heat stroke during a summer marathon and has since recovered.",
+      "events": [
+        {
+          "id": "2024-09-10a",
+          "kind": "establish_care",
+          "start": "2024-09-10T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care and physical",
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 70.5, "height_cm": 179.0, "labs": {"Total Cholesterol": 168, "Low Density Lipoprotein": 92, "High Density Lipoprotein": 60}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per month"},
+            {"item": "Occupation", "value": "Software developer"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2024-09-10T09:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-10T09:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-10T09:20", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2024-09-10T09:20", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2024-09-10T09:20", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2024-09-10T09:10"}],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2024-09-10T08:30"},
+            {"procedure": "Immunization administration", "performed": "2024-09-10T09:10"},
+            {"procedure": "Venipuncture", "performed": "2024-09-10T09:20"}
+          ],
+          "documents": [
+            {
+              "type": "History and physical note",
+              "title": "New Patient Visit — Establish Care",
+              "author": "PCP",
+              "date": "2024-09-10T08:30",
+              "body": "27 y/o man joining the practice. Works from home most days writing software for a logistics company; was overdue for a checkup and wanted a doctor he could actually reach. No complaints today.\n\nPMH: none. No chronic conditions, no hospitalizations.\nPSH: tonsils out as a child, around age 8.\nMeds: none. No supplements.\nAllergies: NKDA.\nFamily: father has high blood pressure. Mother on thyroid replacement for an underactive thyroid. No one in the family died suddenly or young of a heart problem; no anesthesia reactions in the family that he knows of.\nSocial: never smoked, no vaping. Drinks a beer or a glass of wine maybe once or twice a month. Lives alone in an apartment in town. Runs most mornings, 25-35 miles a week, has done several half marathons and is working up to a full.\n\nROS: negative except as above. Sleeps fine. Mood good.\n\nExam: well-appearing, lean, athletic. HEENT normal, tonsillar fossae empty. Neck supple, no thyroid enlargement. Heart regular, slow normal rate, no murmur, no gallop. Lungs clear. Abdomen soft, no organomegaly. Skin unremarkable. Extremities without edema. Neuro grossly intact.\n\nPHQ-2 0.\n\nAssessment / plan:\n- Adult preventive visit, healthy. Baseline CBC, CMP, lipids. Offered once-in-a-lifetime HIV and hep C screening, he agreed.\n- Tdap today, he couldn't remember his last tetanus shot. Requested records from his prior primary care office.\n- Flu and COVID shots when the fall supply arrives; nurse visit.\n- Talked about the marathon plan: fuel and fluids on long runs, don't push through dizziness.\n- Annual visit next September."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-11a",
+          "kind": "portal_message",
+          "start": "2024-09-11T16:40",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2024-09-11T16:40",
+              "body": "Hi Graham, everything from Tuesday came back normal: blood counts, kidney and liver tests, cholesterol, and the HIV and hepatitis C screens were both negative. Nothing to do. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "outside_records",
+          "start": "2024-09-24T11:05",
+          "documents": [
+            {
+              "type": "Outside records",
+              "title": "Records from prior primary care office",
+              "author": "front desk",
+              "date": "2024-09-24T11:05",
+              "body": "Received by fax, 14 pages, from his previous primary care office (last seen 2021). Contents: two well visits with normal exams, routine childhood immunization record, note of tonsillectomy at age 8, no problem list, no medications. Scanned to chart and routed to PCP for review.\n\nPCP review: nothing new. Tdap given here 9/10 since the old record doesn't show a recent one."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T17:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-08T17:20"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T17:22"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-08T17:20"}],
+          "documents": [
+            {
+              "type": "Nursing note",
+              "title": "Nurse Visit — Immunizations",
+              "author": "RN",
+              "date": "2024-10-08T17:15",
+              "body": "In after work for vaccines. Afebrile, feels well. Screening questions negative. Flu vaccine 0.5 mL IM left deltoid; COVID-19 updated vaccine 0.3 mL IM right deltoid. VIS given. Waited 15 min in the lobby without issue. Asked if he can still run tomorrow, told him yes but expect a sore arm."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-26a",
+          "kind": "ed_visit",
+          "start": "2025-01-26T21:40",
+          "end": "2025-01-27T14:10",
+          "service": "Emergency Medicine",
+          "reason": "Found unresponsive after narcotic ingestion",
+          "conditions": [
+            {"label": "Poisoning by unspecified narcotics, accidental (unintentional), initial encounter", "icd10": "T40.601A", "action": "diagnosed", "onset": "2025-01-26"},
+            {"label": "Hypotension, unspecified", "icd10": "I95.9", "action": "diagnosed", "onset": "2025-01-26"},
+            {"label": "Hyperchloremic metabolic acidosis due to excess normal saline infusion", "icd10": "E87.29", "action": "diagnosed", "onset": "2025-01-26"}
+          ],
+          "vitals": [
+            {"time": "2025-01-26T21:40", "rr": 6, "bp": [88, 56], "hr": 118},
+            {"time": "2025-01-26T21:58", "rr": 14, "bp": [90, 58], "hr": 104},
+            {"time": "2025-01-27T03:10", "bp": [106, 64]},
+            {"time": "2025-01-27T09:00", "bp": [118, 72]}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-01-26T21:50", "results": [{"test": "Sodium", "value": 140}, {"test": "Chloride", "value": 104}, {"test": "Bicarbonate", "value": 23}]},
+            {"panel": null, "collected": "2025-01-26T21:50", "results": [{"test": "Ethanol [Mass/volume] in Serum or Plasma", "loinc": "5643-8", "unit": "mg/dL", "text": "Undetectable"}]},
+            {"panel": null, "collected": "2025-01-26T21:50", "results": [{"test": "Acetaminophen [Mass/volume] in Serum or Plasma", "loinc": "3298-7", "unit": "ug/mL", "text": "Undetectable"}]},
+            {"panel": null, "collected": "2025-01-26T21:50", "results": [{"test": "Salicylates [Mass/volume] in Serum or Plasma", "loinc": "4024-6", "unit": "mg/dL", "text": "Undetectable"}]},
+            {"panel": null, "collected": "2025-01-26T22:30", "results": [{"test": "Opiates [Presence] in Urine by Screen method", "loinc": "19295-5", "text": "Positive"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-01-27T03:15", "results": [{"test": "Sodium", "value": 142}, {"test": "Chloride", "value": 117}, {"test": "Bicarbonate", "value": 16}, {"test": "Anion Gap", "value": 9}]},
+            {"panel": null, "collected": "2025-01-27T03:15", "results": [{"test": "pH of Venous blood", "loinc": "2746-2", "unit": "[pH]", "value": 7.29}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-01-27T08:45", "results": [{"test": "Chloride", "value": 110}, {"test": "Bicarbonate", "value": 21}]}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Physician Record",
+              "author": "emergency medicine",
+              "date": "2025-01-28T09:15",
+              "body": "Regional hospital emergency department. Date of service 01/26/2025, observation through 01/27/2025.\n\nCC: unresponsive.\n\nHPI: 28M brought by EMS from his apartment after friends found him unresponsive. Per the friends, who had been with him earlier in the evening, he took a large amount of opioid pills, type unknown. He was giddy at first, then got sleepier and sleepier until they could not wake him. No known co-ingestants.\n\nPMH none. PSH tonsillectomy as a child. Meds none. Allergies: NKDA. FHx father HTN, mother hypothyroid; no sudden cardiac death or malignant hyperthermia in family. SHx never smoker, rare alcohol, software developer.\n\nArrival: RR 6, BP 88/56, HR 118. Responds to pain only. Respirations shallow and irregular. Pupils pinpoint and barely reactive. No signs of trauma.\n\nED course: bag-valve-mask support. Naloxone 0.4 mg IV, repeated once at 2 min. After the second dose RR 14, HR 104, BP 90/58; eyes open, answering questions, oriented. Remained hypotensive, SBP 86-92, despite improved mental status; given 0.9% NaCl boluses, 5 L total over about 5 h, with BP up to 106/64 by 03:10.\n\nLabs: arrival Na 140, Cl 104, HCO3 23. Serum ethanol, acetaminophen and salicylate undetectable. Urine drug screen positive for opiates, all other classes negative. Repeat at 03:15 after the saline: Na 142, Cl 117, HCO3 16, anion gap 9, venous pH 7.29 — non-gap hyperchloremic metabolic acidosis from the saline load. Switched to lactated Ringer's. 08:45: Cl 110, HCO3 21. BP 118/72 at 09:00.\n\nObserved overnight with no recurrent sedation after the last naloxone dose. Patient states this was recreational, a one-time thing, and he did not intend to hurt himself; denies SI. Social work saw him and provided outpatient resources.\n\nDiagnoses: 1) opioid overdose, unintentional; 2) hypotension, resolved with fluids; 3) hyperchloremic metabolic acidosis due to normal saline, improving.\n\nDisposition: discharged home 01/27 14:10 with a friend. Follow up with PCP within 2-3 days for repeat chemistry. Return for any confusion, trouble breathing, or fainting."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-28a",
+          "kind": "telephone",
+          "start": "2025-01-28T10:20",
+          "documents": [
+            {
+              "type": "Telephone encounter",
+              "title": "Post-ED call",
+              "author": "RN",
+              "date": "2025-01-28T10:20",
+              "body": "ED record from the weekend received this morning. Called pt. Says he feels \"basically fine, a little wiped out.\" Eating and drinking. No trouble breathing, no lightheadedness. Booked with PCP Thursday 1/30 at 4:00 for follow-up and repeat bloodwork. He sounded embarrassed; reassured him the visit is just to check in."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-30a",
+          "kind": "office_visit",
+          "start": "2025-01-30T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up",
+          "conditions": [
+            {"label": "Poisoning by unspecified narcotics, accidental (unintentional), initial encounter", "icd10": "T40.601A", "action": "resolved", "onset": "2025-01-26"},
+            {"label": "Hypotension, unspecified", "icd10": "I95.9", "action": "resolved", "onset": "2025-01-26"},
+            {"label": "Hyperchloremic metabolic acidosis due to excess normal saline infusion", "icd10": "E87.29", "action": "resolved", "onset": "2025-01-26"}
+          ],
+          "medications": [
+            {"drug": "naloxone hydrochloride 40 MG/ML Nasal Spray", "action": "start", "sig": "For suspected opioid overdose: spray 1 dose (4 mg) into one nostril. Call 911. May repeat in the other nostril after 2-3 minutes if no response.", "dose": {"value": 4, "unit": "mg"}, "frequency": "PRN", "route": "Nasal", "course": "chronic", "reason": "Opioid overdose rescue"}
+          ],
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-01-30T16:40", "results": [{"test": "Sodium"}, {"test": "Chloride"}, {"test": "Bicarbonate"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-30T16:00"},
+            {"procedure": "Venipuncture", "performed": "2025-01-30T16:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2025-01-30T16:00",
+              "body": "Seen after an ED stay 1/26-1/27 for an opioid overdose. Record reviewed. Briefly: found unresponsive, RR 6, BP 88/56, needed two doses of naloxone, then a lot of saline for low pressure, which left him with a non-gap acidosis (Cl 117, bicarb 16) that was improving on LR at discharge.\n\nHis account: a few friends were over at his apartment Sunday evening, someone had pills, he took several. Doesn't know what they were. Says he has never done this before and has no interest in doing it again. Not an attempt to harm himself; no thoughts of self-harm now or before. Doesn't use other drugs. Alcohol unchanged, rare.\n\nFeels back to normal since yesterday. Ran 3 easy miles this morning. No dizziness, breathing fine, eating and drinking normally.\n\nExam: alert, appropriate, a little sheepish. Heart regular, lungs clear. No IV site redness. Neuro nonfocal.\nPHQ-9 3.\n\nA/P:\n1. Opioid overdose, unintentional, recovered. Talked through harm reduction plainly: pills from friends are often fentanyl now, never use alone, naloxone in the apartment. Prescribed naloxone nasal spray and showed him how to use it; asked him to tell the friends where it is. Offered a referral to our behavioral health counselor, he'd rather not right now; door stays open.\n2. Hyperchloremic acidosis from saline. Repeat BMP today; expect normal.\n3. Hypotension resolved, BP fine today.\nCheck in by video in about 5 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-31a",
+          "kind": "portal_message",
+          "start": "2025-01-31T08:05",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Bloodwork from yesterday",
+              "author": "PCP",
+              "date": "2025-01-31T08:05",
+              "body": "Graham, your chemistry panel is back to normal — chloride and bicarbonate are right where they should be, kidneys normal. The acid-base problem from the ED fluids is gone. See you on video in March."
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Bloodwork from yesterday",
+              "author": "patient",
+              "date": "2025-01-31T12:30",
+              "body": "Great, thanks. Picked up the Narcan."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "telehealth_visit",
+          "start": "2025-03-04T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up check-in",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Telephone encounter",
+              "title": "Missed video visit",
+              "author": "front desk",
+              "date": "2025-03-04T12:50",
+              "body": "Pt did not join 12:30 video visit. Called x1, voicemail. Texted link to reschedule. Pt replied at 12:48 that he was stuck in a work meeting; rebooked for 3/11 at 12:30."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "telehealth_visit",
+          "start": "2025-03-11T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up check-in",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2025-03-11T12:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2025-03-11T12:30",
+              "body": "Video, patient at home, ID confirmed by DOB.\n\nChecking in six weeks after the overdose. No use of any opioids or other drugs since. Mood good, sleeping well, work busy. Running again, building mileage back up.\n\nNaloxone is in his kitchen drawer; the friends who were there that night know where it is.\n\nA/P: doing well, no further use. Nothing new. Physical in September; message anytime."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "annual_physical",
+          "start": "2025-09-16T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 1}
+          ],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2025-09-16T08:40", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-09-16T08:00"},
+            {"procedure": "Venipuncture", "performed": "2025-09-16T08:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-09-16T08:00",
+              "body": "Annual. Feels great. Ran a half in June, trained through the summer, signed up for a full marathon next July. No drug use since January; still has the naloxone, unopened. Alcohol rare, a couple of drinks a month at most.\n\nMeds: naloxone nasal spray PRN (not used). NKDA.\nFH and SH unchanged.\n\nExam: fit, well. BP and pulse normal. HEENT, neck, heart, lungs, abdomen normal. Skin no lesions of note. No edema.\nPHQ-2 0, AUDIT-C 1.\n\nA/P: healthy 28 y/o.\n- Lipids today.\n- Flu and COVID at the October nurse clinic.\n- Training talk for the July race: heat is the main hazard in a summer marathon. Acclimatize, start slower than he thinks, drink to thirst with electrolytes, and stop if he feels confused or stops sweating.\n- Return in a year."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-17a",
+          "kind": "portal_message",
+          "start": "2025-09-17T14:10",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Cholesterol results",
+              "author": "PCP",
+              "date": "2025-09-17T14:10",
+              "body": "Lipid panel from yesterday is normal, Graham. Next check in a few years."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T17:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-07T17:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-07T17:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-07T17:35"}],
+          "documents": [
+            {
+              "type": "Nursing note",
+              "title": "Nurse Visit — Immunizations",
+              "author": "RN",
+              "date": "2025-10-07T17:30",
+              "body": "Seasonal vaccines. No fever or illness. Screening negative. Influenza 0.5 mL IM L deltoid, COVID-19 0.3 mL IM R deltoid. Tolerated well. Last year: sore arm only."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

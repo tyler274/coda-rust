@@ -1,0 +1,927 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002778",
+   "given": "Erin",
+   "family": "Brooks",
+   "birth_date": "1978-07-21",
+   "address_line": "27 Sargeant Street, Apt 2",
+   "phone": "+1-518-555-0124",
+   "email": "erin.brooks@example.test",
+   "marital_status": "single",
+   "summary": "Administrative assistant with long-standing bipolar disorder on lithium, migraine and Raynaud phenomenon, in the practice since 2017. Lithium brings subclinical hypothyroidism (2020-2022) and later a painless thyroiditis with nephrogenic diabetes insipidus (2025); vasospastic angina on amlodipine from 2023; a brief magnesium-supplement diarrhea in 2022.",
+   "events": [
+    {
+     "id": "2017-05-22a",
+     "kind": "telephone",
+     "start": "2017-05-22T11:20",
+     "reason": "New patient inquiry",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient call",
+       "author": "front desk",
+       "date": "2017-05-22T11:26",
+       "body": "Caller asking to join the practice. Moving her primary care here from a practice she has used for years; her\npsychiatrist and rheumatologist are staying the same. BCBS PPO, card info taken. Membership agreement emailed.\nNew patient physical booked 6/12 9:00. Asked her to bring med bottles and contact info for her psychiatrist.\nRecords release form sent with the welcome packet."
+      }
+     ]
+    },
+    {
+     "id": "2017-06-12a",
+     "kind": "establish_care",
+     "start": "2017-06-12T09:00",
+     "end": "2017-06-12T10:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient visit, establish care",
+     "conditions": [
+      {
+       "label": "Bipolar disorder, unspecified",
+       "action": "history",
+       "note": "Long-standing; on lithium, followed by outside psychiatry"
+      },
+      {
+       "label": "Migraine disorder",
+       "icd10": "G43.909",
+       "action": "history",
+       "note": "Episodic; sumatriptan as needed"
+      },
+      {
+       "label": "Raynaud phenomenon",
+       "action": "history",
+       "note": "Since her twenties; followed by outside rheumatology"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "lithium carbonate 300 MG Oral Capsule",
+       "sig": "Take 1 capsule by mouth twice daily",
+       "dose": {
+        "value": 300,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Bipolar disorder (prescribed by outside psychiatry)",
+       "action": "historical"
+      },
+      {
+       "drug_text": "sumatriptan 100 MG Oral Tablet",
+       "sig": "Take 1 tablet by mouth at migraine onset; may repeat once after 2 hours. Max 200 mg per day",
+       "dose": {
+        "value": 100,
+        "unit": "mg"
+       },
+       "frequency": "PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Migraine",
+       "action": "historical"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "None"
+      },
+      {
+       "item": "Occupation",
+       "value": "Administrative assistant"
+      }
+     ],
+     "state": {
+      "weight_kg": 65.0,
+      "height_cm": 165.0,
+      "labs": {
+       "Thyroid Stimulating Hormone": 2.6,
+       "Lithium": 0.9,
+       "Calcium": 9.8,
+       "Creatinine": 0.95,
+       "Total Cholesterol": 184,
+       "High Density Lipoprotein": 63,
+       "Low Density Lipoprotein": 103,
+       "Triglycerides": 88
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 3
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2017-06-12T09:50",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2017-06-12T09:50",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Neutrophils %"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2017-06-12T09:50",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2017-06-12T09:50",
+       "results": [
+        {
+         "test": "Lithium",
+         "loinc": "14334-7",
+         "unit": "mmol/L"
+        },
+        {
+         "test": "Thyroid Stimulating Hormone"
+        },
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, new patient, 18-39",
+       "performed": "2017-06-12T09:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2017-06-12T09:50"
+      }
+     ],
+     "orders": [
+      {
+       "id": "prior-records",
+       "action": "placed",
+       "order": "Request records from prior primary care practice",
+       "category": "procedure",
+       "reason": "establishing care"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2017-06-12T10:40",
+       "body": "NEW PATIENT VISIT\n\n38 y/o woman transferring primary care. Works as an administrative assistant. Here to establish and for a\nphysical. Brought her bottles.\n\nBipolar disorder: diagnosed in early adulthood, on lithium for many years. Sees her psychiatrist every few\nmonths and wants to keep that arrangement. Mood has been steady for years. Psychiatry would like levels drawn here every 6 months if we are willing, results faxed to them.\nAgreed.\n\nMigraine: has had them since her teens. Currently a couple a month.\nSumatriptan 100 mg works within an hour; rarely needs the second dose. No daily headache.\n\nRaynaud: fingers go white then blue in the cold since her twenties. Seen by a rheumatologist about once a year.\nGloves, hand warmers, avoids the freezer aisle. No ulcers. Not on anything for it.\n\nPMH: as above. PSH: tonsillectomy as a child.\nMeds: lithium carbonate 300 mg BID (psychiatry); sumatriptan 100 mg PRN, max 200 mg/day.\nAllergies: NKDA.\nFHx: mother with bipolar disorder. Sister with migraines. Maternal grandmother hypothyroid.\nSHx: never smoker, no alcohol, no drugs. Lives in Holyoke. Office job.\n\nROS: no chest pain, dyspnea, palpitations. No rash. No joint swelling. Periods regular.\n\nExam: well-appearing, pleasant, good eye contact. HEENT normal, tonsils surgically absent. Thyroid not enlarged,\nno nodules. Heart RRR, no murmur. Lungs clear. Abdomen soft. Hands warm today, normal color, no digital\nulcers or pitting, capillary refill brisk. No tremor. Neuro nonfocal. Skin clear.\n\nPHQ-9: 3.\n\nA/P\n1. Bipolar disorder, stable on lithium. Lithium level, CMP, TSH today; repeat every 6 months and copy to\n   psychiatry.\n2. Migraine, episodic. Continue sumatriptan; will take over refills.\n3. Raynaud phenomenon. Continue cold measures, rheum follows.\n4. Health maintenance: CBC, lipids, HIV and hep C screen today. Last Pap 2016 at prior office per pt; records\n   requested. Mammogram discussion at 40."
+      },
+      {
+       "type": "Patient Instructions",
+       "title": "After visit summary",
+       "author": "PCP",
+       "date": "2017-06-12T10:45",
+       "body": "Welcome to the practice.\n- Labs drawn today; results by portal in 1-2 days.\n- Lithium level, kidney and thyroid tests every 6 months here (June and December); we send results to your\n  psychiatrist.\n- Sumatriptan: refills through us from now on.\n- Keep your rheumatology follow-up.\n- Call or text any time; same-day visits available."
+      }
+     ]
+    },
+    {
+     "id": "2017-06-13a",
+     "kind": "portal_message",
+     "start": "2017-06-13T16:10",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2017-06-13T16:10",
+       "body": "Hi Erin, it was nice meeting you yesterday. Everything came back fine: lithium level is in the target range,\nkidney function, thyroid, blood counts and cholesterol are all normal, and the HIV and hepatitis C screens are\nnegative. I faxed a copy to your psychiatrist's office. Next lithium check in December."
+      }
+     ]
+    },
+    {
+     "id": "2017-07-10a",
+     "kind": "outside_records",
+     "start": "2017-07-10T14:00",
+     "reason": "Prior practice records received",
+     "orders": [
+      {
+       "id": "prior-records",
+       "action": "done",
+       "date": "2017-07-10T14:00"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2015-09-14T10:00"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Cervical cytology (Pap) with HPV",
+       "performed": "2016-05-09T10:00",
+       "text": "Outside result in prior practice records. Specimen satisfactory for evaluation; transformation zone present.",
+       "conclusion": "Negative for intraepithelial lesion or malignancy. High-risk HPV not detected."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records from prior primary care",
+       "author": "MA",
+       "date": "2017-07-10T14:20",
+       "body": "Records received from prior primary care office (scanned, 64 pages). Abstracted:\n- Pap with HPV co-test 05/2016: NILM, HPV negative.\n- Tdap 09/2015.\n- Lithium levels over the last several years in range; thyroid and kidney labs normal.\n- Problem list there: bipolar disorder (psychiatry), migraine, Raynaud.\n- No allergies listed.\nRouted to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2017-10-16a",
+     "kind": "nurse_visit",
+     "start": "2017-10-16T08:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2017-10-16T08:20"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2017-10-16T08:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Influenza vaccine",
+       "author": "RN",
+       "date": "2017-10-16T08:30",
+       "body": "Flu vaccine 0.5 mL IM left deltoid. No egg or vaccine reactions in the past. VIS given. Tolerated, left after\n15 min."
+      }
+     ]
+    },
+    {
+     "id": "2017-12-11a",
+     "kind": "lab_only",
+     "start": "2017-12-11T07:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lithium monitoring",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2017-12-11T07:50",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2017-12-11T07:50",
+       "results": [
+        {
+         "test": "Lithium",
+         "loinc": "14334-7",
+         "unit": "mmol/L"
+        },
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2017-12-11T07:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lithium monitoring labs",
+       "author": "PCP",
+       "date": "2017-12-11T15:30",
+       "body": "Lithium level, BMP, TSH all fine. Faxed to psychiatry. Portal note sent. Repeat in June with physical."
+      },
+      {
+       "type": "Patient Message",
+       "title": "December labs",
+       "author": "PCP",
+       "date": "2017-12-11T15:35",
+       "body": "Your December lithium level, kidney tests and thyroid are all normal. Copy sent to your psychiatrist."
+      }
+     ]
+    },
+    {
+     "id": "2018-03-12a",
+     "kind": "pharmacy",
+     "start": "2018-03-12T10:05",
+     "reason": "Prior authorization, sumatriptan quantity",
+     "documents": [
+      {
+       "type": "Prior Authorization",
+       "title": "Sumatriptan quantity limit",
+       "author": "MA",
+       "date": "2018-03-12T10:05",
+       "body": "Pharmacy faxed: plan covers 9 tablets of sumatriptan 100 mg per 30 days; Rx written for 12. Called pt — she\naverages 2 to 4 migraines a month and sometimes takes the second dose. PA form filled with dx and history of\nuse, sent to PCP to sign."
+      },
+      {
+       "type": "Prior Authorization",
+       "title": "Sumatriptan quantity limit approved",
+       "author": "MA",
+       "date": "2018-03-14T09:40",
+       "body": "PA approved for 12 tablets/30 days through 03/2019. Pharmacy and pt notified."
+      }
+     ]
+    },
+    {
+     "id": "2018-06-18a",
+     "kind": "annual_physical",
+     "start": "2018-06-18T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 2
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2018-06-18T09:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2018-06-18T09:15",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Neutrophils %"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2018-06-18T09:15",
+       "results": [
+        {
+         "test": "Lithium",
+         "loinc": "14334-7",
+         "unit": "mmol/L"
+        },
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2018-06-18T08:30"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2018-06-18T09:15"
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2018",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "Screening, age 40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2018-06-18T09:40",
+       "body": "Annual exam.\n\nDoing well. Mood good, sees psychiatry in the fall. Lithium unchanged, 300 BID. Migraines 2-4/month, the PA for\nthe extra sumatriptan went through and that has helped. Raynaud quiet in summer. Work busy, sleeping ok.\n\nMeds: lithium 300 mg BID, sumatriptan 100 mg PRN. NKDA.\n\nROS: no chest pain, SOB, GI or GU complaints raised. No breast lumps.\n\nExam: NAD. Thyroid normal size, nontender. RRR, lungs clear. Breasts without masses, no adenopathy.\nAbdomen benign. Extremities warm, no edema, no digital changes. No tremor.\n\nPHQ-9 2.\n\nPlan\n- Bipolar d/o: lithium level, CMP, TSH today, copy to psychiatry.\n- Migraine: stable; refilled sumatriptan.\n- Raynaud: no change.\n- Turning 40 next month: screening mammogram ordered, she'll schedule for August. Pap due 2021. Flu shot in\n  the fall."
+      }
+     ]
+    },
+    {
+     "id": "2018-06-19a",
+     "kind": "portal_message",
+     "start": "2018-06-19T12:30",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Labs from your physical",
+       "author": "PCP",
+       "date": "2018-06-19T12:30",
+       "body": "All of your labs are normal, including the lithium level and thyroid. Copy sent to your psychiatrist.\nDon't forget to book the mammogram."
+      }
+     ]
+    },
+    {
+     "id": "2018-08-20a",
+     "kind": "imaging",
+     "start": "2018-08-20T10:30",
+     "reason": "Screening mammogram",
+     "orders": [
+      {
+       "id": "mammo-2018",
+       "action": "done",
+       "date": "2018-08-20T10:30"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2018-08-20T10:30",
+       "text": "Bilateral digital screening mammogram with tomosynthesis. No prior studies for comparison. There are scattered areas of fibroglandular density. No suspicious mass, calcifications or architectural distortion.",
+       "conclusion": "Negative. BI-RADS 1. Routine screening recommended."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Mammogram result",
+       "author": "PCP",
+       "date": "2018-08-21T08:15",
+       "body": "Baseline screening mammogram negative, BI-RADS 1. Letter mailed by imaging center; portal note sent."
+      }
+     ]
+    },
+    {
+     "id": "2018-10-15a",
+     "kind": "nurse_visit",
+     "start": "2018-10-15T16:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2018-10-15T16:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2018-10-15T16:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Influenza vaccine",
+       "author": "MA",
+       "date": "2018-10-15T16:45",
+       "body": "Flu shot given R deltoid, lot logged. Screening questions all no. Tolerated well."
+      }
+     ]
+    },
+    {
+     "id": "2018-11-26a",
+     "kind": "outside_records",
+     "start": "2018-11-26T13:00",
+     "reason": "Psychiatry letter received",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Psychiatry progress letter",
+       "author": "psychiatry",
+       "date": "2018-11-26T13:00",
+       "body": "OUTPATIENT PSYCHIATRY — PROGRESS LETTER TO PRIMARY CARE\nDate of visit: 11/19/2018\n\nDear colleague,\n\nMs. Brooks continues in our care for bipolar disorder. She remains euthymic on lithium carbonate 300 mg twice\ndaily, with no manic or depressive symptoms since we last wrote, good sleep and steady function at work. No\nside effects she finds troublesome. We reviewed your June labs; level and renal and thyroid indices are\nacceptable.\n\nPlan: continue lithium at current dose. We would be grateful if you could continue the six-monthly lithium\nlevel, renal panel and TSH. Return visit with us in about 3 months.\n\nAllergies: none known.\n\nOutpatient psychiatry"
+      }
+     ]
+    },
+    {
+     "id": "2018-12-10a",
+     "kind": "lab_only",
+     "start": "2018-12-10T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lithium monitoring",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2018-12-10T07:35",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2018-12-10T07:35",
+       "results": [
+        {
+         "test": "Lithium",
+         "loinc": "14334-7",
+         "unit": "mmol/L"
+        },
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2018-12-10T07:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lithium monitoring labs",
+       "author": "PCP",
+       "date": "2018-12-10T14:05",
+       "body": "Labs reviewed, all within range. Copy faxed to psychiatry."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "RN",
+       "date": "2018-12-10T14:20",
+       "body": "Hi Erin, Dr. reviewed your labs and they are all normal. Results have been sent to your psychiatrist."
+      }
+     ]
+    },
+    {
+     "id": "2019-02-11a",
+     "kind": "office_visit",
+     "start": "2019-02-11T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Migraine and Raynaud follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2019-02-11T15:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2019-02-11T16:15",
+       "body": "S: Follow-up. Migraines have been about 3 a month this winter, same pattern, sumatriptan still works. Uses\nabout 8-10 tabs a month at most. Sumatriptan PA expires next month, wants it renewed. Raynaud more frequent with\nthe cold, mostly getting into the car in the morning; color returns in 10-15 minutes once she warms up. No sores\non fingertips. Mood fine.\n\nO: Vitals reviewed. Hands cool, pink, no ulcers or pitting scars, radial pulses 2+. Neuro grossly normal.\n\nA/P:\n- Migraine, episodic, stable. Renew sumatriptan, MA to handle PA renewal. Reviewed headache red flags.\n- Raynaud, seasonal flare. Layering, gloves, warm the car first. She sees rheumatology in the spring."
+      }
+     ]
+    },
+    {
+     "id": "2019-03-04a",
+     "kind": "pharmacy",
+     "start": "2019-03-04T09:20",
+     "reason": "Prior authorization renewal, sumatriptan",
+     "documents": [
+      {
+       "type": "Prior Authorization",
+       "title": "Sumatriptan PA renewal",
+       "author": "MA",
+       "date": "2019-03-04T09:20",
+       "body": "Sumatriptan 100 mg #12/30 days PA renewal submitted. Approved same day through 03/2020. Pharmacy notified."
+      }
+     ]
+    },
+    {
+     "id": "2019-06-17a",
+     "kind": "annual_physical",
+     "start": "2019-06-17T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "labs": {
+       "Thyroid Stimulating Hormone": 2.9
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 3
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2019-06-17T09:10",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2019-06-17T09:10",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Neutrophils %"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-06-17T09:10",
+       "results": [
+        {
+         "test": "Lithium",
+         "loinc": "14334-7",
+         "unit": "mmol/L"
+        },
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2019-06-17T08:30"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2019-06-17T09:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2019-06-17T09:30",
+       "body": "ANNUAL PHYSICAL — 40F\n\nInterval: no new issues. Psych visits every 3 months, stable on lithium. Migraines 2-3/month. Raynaud quieted\ndown with spring. Saw rheumatology in April, nothing changed.\n\nMeds reviewed: lithium carbonate 300 mg BID, sumatriptan 100 mg PRN.\nAllergies: NKDA.\nSocial: never smoker, no alcohol. Same job.\n\nExam: BP and vitals per flowsheet. Thyroid normal. Heart and lungs normal. Breast exam normal. Abdomen soft.\nNo edema. Skin normal. Normal affect.\n\nPHQ-9 3.\n\nPlan:\n1. Lithium labs today with CBC and CMP; copy to psychiatry.\n2. Mammogram: annual vs every other year discussed; she'll do every other year. Next 2020.\n3. Pap due 2021.\n4. Flu shot this fall."
+      }
+     ]
+    },
+    {
+     "id": "2019-06-18a",
+     "kind": "portal_message",
+     "start": "2019-06-18T17:45",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Results",
+       "author": "PCP",
+       "date": "2019-06-18T17:45",
+       "body": "Your labs look good. Lithium level, kidney numbers and thyroid are all where they should be."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-21a",
+     "kind": "nurse_visit",
+     "start": "2019-10-21T12:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2019-10-21T12:15"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-10-21T12:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Flu vaccine",
+       "author": "RN",
+       "date": "2019-10-21T12:25",
+       "body": "Quadrivalent flu vaccine IM L deltoid on her lunch break. No issues."
+      }
+     ]
+    },
+    {
+     "id": "2019-11-18a",
+     "kind": "office_visit",
+     "start": "2019-11-18T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "6-month follow-up",
+     "appointment": "no-show"
+    },
+    {
+     "id": "2019-11-19a",
+     "kind": "telephone",
+     "start": "2019-11-19T09:05",
+     "reason": "Missed appointment",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed appointment",
+       "author": "front desk",
+       "date": "2019-11-19T09:05",
+       "body": "Pt no-showed 11/18 4:00 follow-up. Reached her — forgot, end-of-month crunch at work. Says she is doing fine\nand would rather just do her December labs and see Dr. at the June physical. Lab appt booked 12/9 7:30. FYI\nto PCP."
+      }
+     ]
+    },
+    {
+     "id": "2019-12-09a",
+     "kind": "lab_only",
+     "start": "2019-12-09T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lithium monitoring",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2019-12-09T07:35",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-12-09T07:35",
+       "results": [
+        {
+         "test": "Lithium",
+         "loinc": "14334-7",
+         "unit": "mmol/L"
+        },
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2019-12-09T07:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lithium monitoring labs",
+       "author": "PCP",
+       "date": "2019-12-09T16:20",
+       "body": "Reviewed. Lithium level, BMP and TSH in range. Faxed to psychiatry."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

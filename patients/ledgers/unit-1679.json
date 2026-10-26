@@ -1,0 +1,2978 @@
+{
+  "unit": "unit-1679",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"prenatal vitamin Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001679",
+      "given": "Susan",
+      "family": "Richard",
+      "birth_date": "1996-10-01",
+      "address_line": "118 Station Road",
+      "phone": "+1-774-555-0163",
+      "email": "susan.richard@example.test",
+      "marital_status": "married",
+      "summary": "Laboratory technician who joined in 2022 with chronic low back pain on as-needed oxycodone. Her third pregnancy (2024-2025) brought a suspicious right thyroid nodule, right otosclerosis, short cervix, placenta accreta, listeriosis and acute calculous cholecystitis, ending in cesarean hysterectomy at 35 weeks and an interval cholecystectomy. Postpartum thyroid FNA was benign with a repeat due September 2026.",
+      "events": [
+        {
+          "id": "2022-08-04a",
+          "kind": "telephone",
+          "start": "2022-08-04T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2022-08-04T10:20",
+              "author": "front desk",
+              "body": "Caller is Susan Richard, 25, moving her care here from her old practice. Says she has chronic low back pain and takes oxycodone that her prior doctor wrote for; she wants to make sure there is no gap in that. Explained the membership and that the doctor will review the prior records before taking over any controlled prescription. New patient visit booked for 8/16 at 9:00. Records release form emailed to her, she will sign and send back today."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-16a",
+          "kind": "establish_care",
+          "start": "2022-08-16T09:00",
+          "end": "2022-08-16T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care, chronic low back pain",
+          "conditions": [
+            {
+              "label": "Chronic low back pain",
+              "action": "history",
+              "onset": "2019-06-01",
+              "note": "Long-standing; managed with as-needed oxycodone by prior practice"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for back pain. #90 per 30 days.",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Chronic low back pain"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              74
+            ],
+            "hr": 86,
+            "temp_c": 36.6,
+            "spo2": 96,
+            "weight_kg": 63.0,
+            "height_cm": 163.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-16T10:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 314
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.59
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-08-16T10:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.65
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 15
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 125
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 89
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-08-16T10:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 164
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 80
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 63
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 107
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 101
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-16T10:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-16T10:05",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-16T10:05",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "No"
+            },
+            {
+              "item": "Occupation",
+              "value": "Laboratory technician"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-08-16T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-08-16T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-08-16T10:00",
+              "author": "PCP",
+              "body": "New patient, 25 y/o woman establishing care. Transferring from her prior practice, which she left because of the drive.\n\nCC: chronic low back pain, wants continuity of her pain medicine.\n\nHPI: Low back pain for several years, mechanical, no radiation into the legs, no numbness or weakness, no bowel or bladder change. Prior doctor has prescribed oxycodone 5 mg as needed; she takes 2-3 a day on work days, fewer on weekends. Works as a lab technician and is on her feet much of the shift, which is when it is worst. Never had imaging that she recalls. Denies taking more than prescribed, denies other substances. No other medicines.\n\nPMH: chronic low back pain. Otherwise healthy.\nOB: G2P2, two term vaginal deliveries, both uncomplicated.\nPSH: none.\nMeds: oxycodone 5 mg q6h prn.\nAllergies: NKDA.\nFH: mother with hypothyroidism and a goiter. Father has had gallstones. Maternal grandmother had otosclerosis (hearing loss).\nSH: married, two children at home. Lab technician. Never smoker, no alcohol, no drug use.\n\nROS: negative except as above.\n\nExam: Vitals as charted. Well appearing, pleasant. HEENT normal. Neck supple, thyroid not enlarged, no nodules felt. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Back: no midline tenderness, mild paraspinal tightness in the lumbar region, full forward flexion with some discomfort at end range. Straight leg raise negative both sides. Strength 5/5 lower extremities, reflexes 2+ and symmetric, sensation intact.\n\nA/P:\n1. Chronic low back pain, mechanical, no red flags. Will continue oxycodone 5 mg q6h prn, #90 per 30 days, prescribing from here going forward once her old records arrive. Controlled substance agreement reviewed and signed today. PDMP checked, consistent with her report, single prescriber.\n2. Health maintenance: baseline CBC, CMP, lipids, TSH (family history), HIV and hep C screening today. Pap per prior records, will confirm date. Flu and COVID in the fall.\n\nFollow up 3 months, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.2,
+            "height_cm": 164.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 2.1,
+              "Total Cholesterol": 168
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-08-19a",
+          "kind": "outside_records",
+          "start": "2022-08-19T09:10",
+          "reason": "Prior practice records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "date": "2022-08-19T09:10",
+              "author": "front desk",
+              "body": "Received 41 pages from the patient's previous primary care office. Summary for the chart:\n- Problem list: chronic low back pain.\n- Medications: oxycodone 5 mg every 6 hours as needed, monthly fills, signed opioid agreement on file there.\n- Cervical cytology 2021: negative for intraepithelial lesion or malignancy.\n- Immunizations: childhood series complete, HPV series complete as a teen, Tdap with each prior pregnancy.\n- Obstetric: two term vaginal deliveries.\nScanned to media. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-19b",
+          "kind": "portal_message",
+          "start": "2022-08-19T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your labs from your first visit",
+              "date": "2022-08-19T16:40",
+              "author": "PCP",
+              "body": "Hi Susan, good to meet you this week. Your blood counts, kidney and liver tests, cholesterol and thyroid all came back in the normal range, and the HIV and hepatitis C screens were negative. Your old records came in too, so I'll be sending your oxycodone from here starting with your next fill. Text me if you need anything before November."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "portal_message",
+          "start": "2022-09-13T08:15",
+          "reason": "Medication refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill request",
+              "date": "2022-09-13T08:15",
+              "author": "patient",
+              "body": "Hi, I have about 3 days of my oxycodone left. Can you send the next one to the same pharmacy? Thanks"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill request",
+              "date": "2022-09-13T11:50",
+              "author": "PCP",
+              "body": "Sent, 30 day supply. PDMP looks fine."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-11T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-11T16:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-11T16:38"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization visit",
+              "date": "2022-10-11T16:45",
+              "author": "RN",
+              "body": "Came in after her shift for flu and bivalent COVID booster. Not pregnant, feeling well, no fever. Influenza quadrivalent 0.5 mL IM right deltoid. Pfizer bivalent 0.3 mL IM left deltoid. VIS given for both. Waited 15 minutes, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-17a",
+          "kind": "office_visit",
+          "start": "2022-11-17T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Back pain follow-up",
+          "vitals": {
+            "bp": [
+              111,
+              72
+            ],
+            "hr": 82,
+            "weight_kg": 63.6
+          },
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-11-17T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up: chronic low back pain",
+              "date": "2022-11-17T08:30",
+              "author": "PCP",
+              "body": "S: Back about the same, 4/10 most days, worse at the end of long shifts. Using oxycodone 2/day on average, never more than 4. No leg symptoms. Sleeping okay. Kids keep her busy.\nO: Vitals as charted. Lumbar paraspinals mildly tender, gait normal, SLR negative.\nA/P: Chronic low back pain, stable on current regimen. PDMP reviewed. Continue oxycodone 5 mg q6h prn, #90/30 days. Encouraged walking and core work at home. RTC 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "pharmacy",
+          "start": "2023-01-10T13:05",
+          "reason": "Prior authorization renewal",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Prior authorization renewal - oxycodone",
+              "date": "2023-01-10T13:05",
+              "author": "MA",
+              "body": "Pharmacy faxed that her plan wants a new prior auth for oxycodone 5 mg for the new year. Completed the insurer form with diagnosis and agreement date, submitted online. Approved same afternoon through 12/31. Pharmacy notified, patient texted that it's ready."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-21a",
+          "kind": "telehealth_visit",
+          "start": "2023-02-21T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Back pain follow-up",
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2023-02-21T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video visit: back pain",
+              "date": "2023-02-21T12:35",
+              "author": "PCP",
+              "body": "Video visit on her lunch break.\nWinter has been a little harder on her back, 5/10, mostly stiffness in the morning. Still averaging two tablets a day. No new symptoms, no numbness, no weakness. Exam limited to video: moves comfortably, sits and stands without difficulty.\nAssessment: chronic low back pain, no change. PDMP checked. Continue current dose. Heat in the mornings, stretching routine reviewed. See her in the office in the spring with her physical."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "portal_message",
+          "start": "2023-04-11T19:22",
+          "reason": "Pharmacy change",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New pharmacy",
+              "date": "2023-04-11T19:22",
+              "author": "patient",
+              "body": "My pharmacy in town is closing. Can you send my next oxycodone to the one on Route 9 instead? Due on Friday."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: New pharmacy",
+              "date": "2023-04-12T09:05",
+              "author": "RN",
+              "body": "Updated your pharmacy in the chart. Doctor will send the new prescription Thursday so it is ready Friday."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-18a",
+          "kind": "annual_physical",
+          "start": "2023-05-18T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              112,
+              80
+            ],
+            "hr": 74,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 63.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-05-18T09:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 287
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.34
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-05-18T09:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.67
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 16
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 124
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-05-18T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-05-18T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-05-18T09:30",
+              "author": "PCP",
+              "body": "26 y/o here for her yearly physical.\n\nInterval: no illnesses. Back pain steady, using oxycodone about twice a day, agreement current. Works full time in the lab, kids are 'a handful but good.' Sleeping six to seven hours.\n\nMeds: oxycodone 5 mg q6h prn. Allergies: NKDA.\nSH: never smoker, no alcohol. Wears seat belt. Exercises by walking a few times a week.\nScreening: PHQ-9 2, GAD-7 3.\n\nExam: vitals as charted. Well. Eyes and ears normal, hearing grossly intact to conversation. Neck supple, no thyroid enlargement or nodule. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Back unchanged from prior, neuro intact. Skin without concerning lesions.\n\nPlan:\n- Health maintenance: Pap up to date (2021, normal), due 2024. CBC and CMP today. Flu and COVID in the fall.\n- Chronic low back pain: continue current plan, PDMP reviewed.\n- Contraception: not using hormonal contraception, she and her husband use condoms; no plans for another pregnancy right now.\nRTC 3 months for back pain."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-19a",
+          "kind": "portal_message",
+          "start": "2023-05-19T17:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2023-05-19T17:10",
+              "author": "PCP",
+              "body": "Susan, your blood counts and chemistry panel from yesterday are all normal. Nothing to do. See you in August."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "office_visit",
+          "start": "2023-08-22T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Back pain follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2023-08-22T16:10",
+              "author": "front desk",
+              "body": "Patient did not arrive for 3:30 follow-up. Called and texted. She called back at 4:05, got stuck at work covering a coworker's shift. Rebooked 8/29."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-08-29a",
+          "kind": "office_visit",
+          "start": "2023-08-29T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Back pain follow-up",
+          "vitals": {
+            "bp": [
+              113,
+              75
+            ],
+            "hr": 96,
+            "weight_kg": 62.4
+          },
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-08-29T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Back pain follow-up",
+              "date": "2023-08-29T16:25",
+              "author": "PCP",
+              "body": "Sorry about last week, short-staffed at work. Back has been better over the summer, 3/10, using 1-2 tabs most days. No new symptoms. Exam: normal gait, mild lumbar paraspinal tenderness, neuro intact. Chronic low back pain, improved. PDMP reviewed, fills on schedule. Continue oxycodone 5 mg q6h prn #90; she may not need all of them, okay to fill later if so. 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "nurse_visit",
+          "start": "2023-10-12T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-12T16:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-12T16:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-12T16:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Fall vaccines",
+              "date": "2023-10-12T16:55",
+              "author": "MA",
+              "body": "Flu (quadrivalent) 0.5 mL IM R deltoid and 2023-24 Pfizer COVID 0.3 mL IM L deltoid. Screening questions negative, not pregnant. VIS provided. Observed 15 min, tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-28a",
+          "kind": "office_visit",
+          "start": "2023-11-28T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Back pain follow-up, controlled substance agreement",
+          "vitals": {
+            "bp": [
+              108,
+              71
+            ],
+            "hr": 77,
+            "weight_kg": 63.3
+          },
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-11-28T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Chronic pain follow-up",
+              "date": "2023-11-28T08:45",
+              "author": "PCP",
+              "body": "Subjective: Back 4/10 with the cold. Function good, working full time, no missed days. Averaging 2 tablets daily. No sedation, no constipation to speak of. Denies other substances.\nObjective: Vitals as charted. Lumbar ROM full with end-range discomfort, SLR negative, strength and reflexes normal.\nAssessment/plan: Chronic low back pain on stable low-dose opioid. Annual agreement renewed and signed, PDMP reviewed. Talked about whether she wants to try coming down on the dose; she prefers to keep things as they are for now and we will revisit. Continue oxycodone 5 mg q6h prn #90. Next visit in about 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "portal_message",
+          "start": "2024-01-09T07:48",
+          "reason": "Medication refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Oxycodone refill + new insurance card",
+              "date": "2024-01-09T07:48",
+              "author": "patient",
+              "body": "Morning! Need my oxycodone refilled this week. Also my employer switched plans for 2024, same company but new ID number. I'll upload a picture of the card."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Oxycodone refill + new insurance card",
+              "date": "2024-01-09T10:30",
+              "author": "MA",
+              "body": "Got the card, insurance updated. New plan needed a prior auth on the oxycodone again, submitted and approved. Prescription sent by the doctor this morning."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-27a",
+          "kind": "telehealth_visit",
+          "start": "2024-02-27T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Back pain follow-up",
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-02-27T12:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video follow-up",
+              "date": "2024-02-27T12:30",
+              "author": "PCP",
+              "body": "Brief video check-in. Back pain steady at about 4, no flares this winter. Uses 2 a day, sometimes 1. Denies side effects. Wants to keep her physical in May. Visual exam: comfortable, moving easily.\nPlan: continue oxycodone 5 mg q6h prn #90, PDMP reviewed. Physical in May, Pap due then."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "telephone",
+          "start": "2024-04-16T14:02",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill call",
+              "date": "2024-04-16T14:02",
+              "author": "RN",
+              "body": "Pt called, pharmacy says the oxycodone script has not come through. Checked, it was sent to the old Amherst pharmacy by mistake. Cancelled there, PCP resent to Route 9 location. Pt aware, will pick up after work."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "annual_physical",
+          "start": "2024-05-14T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, Pap",
+          "medications": [
+            {
+              "drug_text": "prenatal vitamin Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Preconception"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              71
+            ],
+            "hr": 74,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 62.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-05-14T09:25",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 276
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.41
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-05-14T09:25",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 116
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2024-05-14T09:00",
+              "text": "Specimen: cervical, liquid-based preparation. Adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative.",
+              "issued": "2024-05-20T11:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-05-14T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-05-14T09:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-05-14T09:40",
+              "author": "PCP",
+              "body": "27 y/o for annual exam and Pap.\n\nInterval history: Doing well. She and her husband are hoping for a third child and have stopped using condoms. She started an over-the-counter prenatal vitamin on her own last month. Back pain unchanged, 1-2 oxycodone a day.\n\nWe talked through oxycodone if she conceives: risks to the baby including withdrawal after birth, the options of tapering versus staying on a steady low dose, and the need for her OB to know from the first visit. She would like to stay on her current dose and talk with her OB once pregnant. I told her to message me as soon as she has a positive test.\n\nMeds: oxycodone 5 mg q6h prn; prenatal vitamin daily.\nAllergies: NKDA.\nPHQ-9: 2.\n\nExam: Vitals as charted. Well. Neck supple, thyroid normal size, no nodules. Heart and lungs normal. Abdomen benign. Pelvic: normal external genitalia, vagina and cervix normal, Pap with HPV collected, bimanual without masses or tenderness. Back and neuro unchanged.\n\nPlan: Pap/HPV sent. CBC and CMP. Continue prenatal vitamin. Back pain plan unchanged, PDMP reviewed. Follow up August."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-20a",
+          "kind": "portal_message",
+          "start": "2024-05-20T15:30",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and labs",
+              "date": "2024-05-20T15:30",
+              "author": "PCP",
+              "body": "Your Pap was normal and HPV was negative, so the next one isn't due for five years. Your blood work from last week was normal as well."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pap and labs",
+              "date": "2024-05-20T18:02",
+              "author": "patient",
+              "body": "Great, thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2024-07-09a",
+          "kind": "pharmacy",
+          "start": "2024-07-09T11:20",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill request received",
+              "date": "2024-07-09T11:20",
+              "author": "MA",
+              "body": "eRx refill request from pharmacy for oxycodone 5 mg #90. Last fill 6/10. PDMP checked, no other prescribers. Pended for PCP, signed and sent 11:45."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "office_visit",
+          "start": "2024-08-20T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Back pain follow-up",
+          "vitals": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 87,
+            "weight_kg": 62.9
+          },
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-08-20T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2024-08-20T16:40",
+              "author": "PCP",
+              "body": "S: Not pregnant yet, still trying, taking the prenatal vitamin. Back fine through the summer, 3/10. Two tablets a day at most.\nO: BP and weight as charted. Back exam unchanged, neuro intact.\nA/P: Chronic low back pain, stable. Continue oxycodone 5 mg prn #90, PDMP reviewed. Reminded her to message with a positive test so we can coordinate with OB. Flu and COVID shots in October."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T16:34"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T16:34"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-08T16:36"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "date": "2024-10-08T16:45",
+              "author": "RN",
+              "body": "Here for the 2024-25 flu (trivalent) and Moderna COVID. Trying to conceive; both are recommended before and during pregnancy, she was glad to get them now. Flu 0.5 mL IM R deltoid, COVID 0.5 mL IM L deltoid. No reaction during observation."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-08a",
+          "kind": "portal_message",
+          "start": "2024-11-08T21:14",
+          "reason": "Neck lump",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lump on my neck",
+              "date": "2024-11-08T21:14",
+              "author": "patient",
+              "body": "Hi, I noticed a lump on the front of my neck about a week ago when I was putting on a necklace. It doesn't hurt and I can swallow fine, voice is normal. Probably nothing but my mom had thyroid issues so I'd like you to look at it. Also... I think I'm pregnant! Took a test this morning. Can I come in next week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lump on my neck",
+              "date": "2024-11-08T21:40",
+              "author": "PCP",
+              "body": "Congratulations! Yes, come in Tuesday at 8:15 and we'll look at your neck and talk about the pregnancy and your back medicine. Keep taking the prenatal vitamin."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "office_visit",
+          "start": "2024-11-12T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Neck lump; positive home pregnancy test",
+          "conditions": [
+            {
+              "label": "Thyroid nodule",
+              "action": "diagnosed",
+              "onset": "2024-10-29",
+              "note": "Solitary firm right-lobe nodule on exam"
+            },
+            {
+              "label": "Pregnant state",
+              "action": "diagnosed",
+              "onset": "2024-10-14",
+              "note": "LMP 2024-10-14, G3P2",
+              "icd10": "Z33.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              77
+            ],
+            "hr": 82,
+            "spo2": 96,
+            "weight_kg": 63.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-11-12T08:25",
+              "resulted": "2024-11-12T08:35",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-12T08:50",
+              "resulted": "2024-11-13T07:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.5
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-11-12T08:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-11-12T08:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-referral-2024",
+              "action": "placed",
+              "order": "Otolaryngology referral",
+              "category": "referral",
+              "to": "Otolaryngology",
+              "reason": "Palpable right thyroid nodule"
+            },
+            {
+              "id": "ob-referral-2024",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "Prenatal care, G3P2 on chronic oxycodone"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: neck nodule, early pregnancy",
+              "date": "2024-11-12T09:05",
+              "author": "PCP",
+              "body": "28 y/o G3P2 here for two things.\n\n1) Neck lump: Felt it about two weeks ago, front of the neck slightly to the right. Not painful. No trouble swallowing, no hoarseness, no change in voice, no neck pain. No palpitations, tremor, heat intolerance or weight change. No radiation exposure. Mother has hypothyroidism and a goiter.\n\n2) Pregnancy: LMP 10/14, positive home test 11/8. No bleeding or cramping. Taking prenatal vitamin. On oxycodone 5 mg, still 1-2 a day.\n\nExam: Vitals as charted. Neck: a single firm, non-tender nodule in the right lobe of the thyroid, moves with swallowing, roughly 2 cm. Left lobe normal. No cervical or supraclavicular nodes. Heart and lungs normal.\n\nOffice urine hCG positive. Approximately 4 weeks 1 day by LMP, EDD around 7/21/25.\n\nA/P:\n- Right thyroid nodule, new, palpable. TSH and free T4 drawn today. Referring to ENT, who can do the ultrasound in clinic and decide on biopsy. FNA is safe in pregnancy if they want it.\n- Early intrauterine pregnancy presumed, G3P2. Referral to OB for intake. Continue prenatal vitamin.\n- Chronic low back pain on oxycodone in pregnancy: she wishes to continue her current low dose. Not increasing. She will tell OB at intake, and I will send OB a note. PDMP reviewed.\nWill message results."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-11-13a",
+          "kind": "portal_message",
+          "start": "2024-11-13T12:20",
+          "reason": "Thyroid labs",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid blood tests",
+              "date": "2024-11-13T12:20",
+              "author": "PCP",
+              "body": "Your thyroid function is normal: TSH 2.5 and free T4 1.2. That means the nodule isn't over- or under-active, which is reassuring, but ENT will still look at it with an ultrasound. They have you on 11/21. The OB office will call you to set up your first prenatal visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-21a",
+          "kind": "specialist_visit",
+          "start": "2024-11-21T10:30",
+          "service": "Otolaryngology",
+          "reason": "Right thyroid nodule",
+          "reports": [
+            {
+              "study": "Thyroid ultrasound",
+              "performed": "2024-11-21T11:05",
+              "text": "Indication: palpable right thyroid nodule. Technique: high-frequency linear transducer, transverse and longitudinal images of both lobes, isthmus and central and lateral neck. Findings: Right lobe of normal size containing a solid nodule measuring 2.0 cm in greatest dimension, with microcalcifications and irregular margins. Remainder of the right lobe, the isthmus and the left lobe are homogeneous without additional nodules. No cervical lymphadenopathy in levels II through VI.",
+              "conclusion": "Solitary 2.0 cm solid right thyroid nodule with microcalcifications and irregular margins, suspicious sonographic features for malignancy. No cervical lymphadenopathy."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-referral-2024",
+              "action": "done",
+              "date": "2024-11-21T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology consultation: right thyroid nodule",
+              "date": "2024-11-25T09:00",
+              "author": "otolaryngology",
+              "body": "Otolaryngology - Head and Neck Surgery\nDate of service: 11/21/2024\n\nDear Doctor,\nThank you for asking us to see Ms. Richard, a 28-year-old laboratory technician who is about five weeks pregnant, for a right thyroid nodule.\n\nShe noticed a painless anterior neck swelling roughly three weeks ago. She has had no difficulty swallowing and no voice change. No history of head or neck radiation. She reports no family history of thyroid cancer. Medications: oxycodone 5 mg as needed for chronic back pain, prenatal vitamin. NKDA. Never smoker, no alcohol.\n\nExamination: Solitary firm, non-tender nodule in the right thyroid lobe. Larynx, oral cavity and oropharynx normal; no cervical lymphadenopathy; the remainder of the head and neck examination is normal.\n\nData: TSH 2.5 mIU/L and free T4 1.2 ng/dL from your office, both normal. In-clinic ultrasound today shows a 2 cm solid right-lobe nodule with microcalcifications and irregular margins and no abnormal cervical nodes.\n\nImpression: Right thyroid nodule with suspicious sonographic features.\n\nPlan: We discussed that the ultrasound pattern warrants fine-needle aspiration, which can be performed during pregnancy. She would strongly prefer to wait until after delivery, and with normal thyroid function and no abnormal nodes, deferring cytology is a reasonable option. We will follow the nodule clinically and with ultrasound if it changes through the pregnancy, and plan FNA postpartum. She knows to call sooner for growth, hoarseness or difficulty swallowing.\n\nSincerely,\nOtolaryngology"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "outside_records",
+          "start": "2024-12-10T14:00",
+          "reason": "OB intake letter",
+          "orders": [
+            {
+              "id": "ob-referral-2024",
+              "action": "done",
+              "date": "2024-12-10T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics: new prenatal intake",
+              "date": "2024-12-10T14:00",
+              "author": "obstetrics",
+              "body": "Obstetrics and Gynecology\nNew OB visit 12/5/2024\n\nRe: Susan Richard, DOB 10/1/1996\n\nG3P2002 at 7 weeks 3 days by LMP of 10/14/2024, consistent with dating ultrasound today showing a single intrauterine pregnancy with cardiac activity. EDD 7/21/2025. Two prior term vaginal deliveries without complication.\n\nHistory reviewed: chronic low back pain on oxycodone 5 mg as needed, 1-2 tablets daily, prescribed by her PCP; right thyroid nodule under ENT care with FNA planned postpartum. NKDA.\n\nRoutine prenatal labs drawn today were unremarkable; rubella immune. Counseling on opioid use in pregnancy, including neonatal withdrawal and the need for pediatric awareness at delivery; she wishes to remain on her current low dose under her PCP's prescribing and not escalate. We will coordinate with your office.\n\nNext visit in 4 weeks.\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "telehealth_visit",
+          "start": "2025-01-14T12:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Back pain in pregnancy",
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2025-01-14T12:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video visit: back pain, 13 weeks pregnant",
+              "date": "2025-01-14T12:45",
+              "author": "PCP",
+              "body": "13 weeks today. Nausea is easing. Back pain about the same, 4/10, a little worse lifting the kids. Still taking 1-2 oxycodone a day, no more. Has seen OB twice; they know about the oxycodone and are on board with keeping her on this dose. Neck lump unchanged to her, no voice change or swallowing trouble.\n\nAssessment: chronic low back pain in pregnancy on stable low-dose oxycodone; right thyroid nodule, ENT following, FNA planned after delivery.\nPlan: continue oxycodone 5 mg q6h prn #90, no escalation. PDMP reviewed. Acetaminophen is fine to use alongside. Heat and a pregnancy support belt as the belly grows. Copy of this note to OB. Follow up in about 3 months or sooner."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-10a",
+          "kind": "specialist_visit",
+          "start": "2025-02-10T14:00",
+          "service": "Otolaryngology",
+          "reason": "Hearing loss",
+          "conditions": [
+            {
+              "label": "Otosclerosis",
+              "action": "diagnosed",
+              "onset": "2024-08-10",
+              "note": "Right ear, conductive hearing loss"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Audiogram",
+              "performed": "2025-02-10T13:30",
+              "text": "Pure-tone air and bone conduction thresholds obtained in both ears with appropriate masking. Right ear: conductive hearing loss, with the air-bone gap greatest in the low frequencies. Left ear: hearing within normal limits. Word recognition excellent in both ears.",
+              "conclusion": "Right conductive hearing loss. Normal hearing on the left."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology follow-up: hearing loss",
+              "date": "2025-02-13T10:15",
+              "author": "otolaryngology",
+              "body": "Otolaryngology - Head and Neck Surgery\nDate of service: 2/10/2025\n\nDear Doctor,\nI saw Ms. Richard again about three months after our thyroid visit. She is now 17 weeks pregnant. This time she came in about her hearing: over roughly six months she has had more and more trouble hearing, particularly deeper, low-pitched voices and sounds, and it has clearly worsened since she became pregnant. No ear pain, drainage or dizziness. She tells me her mother had hearing problems from a young age that were never worked up, and her maternal grandmother had otosclerosis.\n\nThyroid: no change in the right nodule by her report or on palpation today, no voice change.\n\nExam: Pinnae and external canals normal. Tympanic membranes intact and normal in appearance on both sides. 512 Hz tuning fork: Weber goes to the right; Rinne on the right with bone conduction louder than air conduction, normal on the left.\n\nAudiogram today confirms a right conductive hearing loss; the left ear is normal.\n\nImpression: Right otosclerosis, likely accelerated by pregnancy, with a strong maternal family history.\n\nPlan: We will observe through the pregnancy. After delivery we will repeat the audiogram and go over a hearing aid versus stapes surgery. She is managing well at work for now.\n\nRegards,\nOtolaryngology"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-03a",
+          "kind": "specialist_visit",
+          "start": "2025-03-03T09:40",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit, 20 weeks",
+          "conditions": [
+            {
+              "label": "Short cervix in pregnancy",
+              "action": "diagnosed",
+              "onset": "2025-03-03",
+              "note": "Transvaginal cervical length 2.3 cm at 20 weeks, no funneling",
+              "icd10": "O26.872"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 86,
+            "weight_kg": 66.8
+          },
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics: 20-week visit",
+              "date": "2025-03-05T13:20",
+              "author": "obstetrics",
+              "body": "Obstetrics and Gynecology\nPrenatal visit 3/3/2025, 20 weeks 0 days\n\nS: Feels well. No contractions, no bleeding, no leaking of fluid. Taking her prenatal vitamin every day. Known right otosclerosis and right thyroid nodule, both followed by ENT. Oxycodone unchanged at 1-2 tablets daily per PCP.\n\nO: BP 120/78. Exam normal.\nAnatomy and transvaginal ultrasound: single live fetus, anatomy survey without anomalies, placenta not previa. Transvaginal cervical length 2.3 cm, no funneling.\n\nA: IUP at 20 weeks, G3P2002. Short cervix.\nP: Reviewed what a short cervix means and the warning signs of preterm labor: tightening or cramping, pressure, bleeding or fluid. Return at 24 weeks.\n\nObstetrics"
+            }
+          ],
+          "state": {
+            "weight_kg": 67.0
+          },
+          "measure": [
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-31a",
+          "kind": "specialist_visit",
+          "start": "2025-03-31T10:20",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit, 24 weeks, spotting",
+          "conditions": [
+            {
+              "label": "Placenta accreta",
+              "action": "diagnosed",
+              "onset": "2025-03-31",
+              "note": "Ultrasound at 24 weeks: low-lying placenta, myometrial thinning, multiple lacunae",
+              "icd10": "O43.212"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 82,
+            "weight_kg": 68.1
+          },
+          "orders": [
+            {
+              "id": "mfm-referral-2025",
+              "action": "placed",
+              "order": "Maternal-fetal medicine referral",
+              "category": "referral",
+              "to": "Maternal-Fetal Medicine",
+              "reason": "Placenta accreta on ultrasound"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics: 24-week visit",
+              "date": "2025-04-02T08:50",
+              "author": "obstetrics",
+              "body": "Obstetrics and Gynecology\nPrenatal visit 3/31/2025, 24 weeks 0 days\n\nShe feels well with good fetal movement. Over the past couple of weeks she has had occasional light spotting, no heavy bleeding, no cramping. Otherwise the pregnancy has gone smoothly. Prior deliveries: two uncomplicated term vaginal births.\n\nVitals: BP 120/78, pulse 82. Exam unremarkable.\n\nObstetric ultrasound: placenta low-lying, its edge 1.5 cm from the internal cervical os. Myometrium thinned beneath the placenta, with multiple placental lacunae.\n\nAssessment: 24 weeks with short cervix, now with ultrasound findings of placenta accreta.\nPlan: Urgent referral to maternal-fetal medicine for confirmation and delivery planning at the regional tertiary center. Pelvic rest. Any bleeding more than spotting, go straight to labor and delivery. We discussed this with her at length; it is a lot to absorb and she brought her husband in on speakerphone.\n\nObstetrics"
+            }
+          ],
+          "state": {
+            "weight_kg": 68.8
+          },
+          "measure": [
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-03a",
+          "kind": "portal_message",
+          "start": "2025-04-03T20:05",
+          "reason": "Pregnancy update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "OB news",
+              "date": "2025-04-03T20:05",
+              "author": "patient",
+              "body": "Wanted you to know, my OB says the placenta looks like it is growing into the uterus wall (accreta?). I'm seeing a high risk specialist next week. They said I'd probably need a C-section and maybe a hysterectomy. Kind of scared. Do I need to do anything different with my back pills?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: OB news",
+              "date": "2025-04-03T21:10",
+              "author": "PCP",
+              "body": "Thank you for telling me, Susan, and I'm sorry, that is a lot to take in. The specialists who handle accreta do this planning all the time, and having it found now gives them time to plan the safest delivery. No change to your oxycodone; keep to the same dose. Please let the high-risk team know you take it so anesthesia can plan your pain control. Call or text me anytime, including after your visit if you want to talk it through."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-10a",
+          "kind": "specialist_visit",
+          "start": "2025-04-10T13:00",
+          "service": "Maternal-Fetal Medicine",
+          "reason": "Placenta accreta consultation",
+          "orders": [
+            {
+              "id": "mfm-referral-2025",
+              "action": "done",
+              "date": "2025-04-10T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Maternal-fetal medicine consultation",
+              "date": "2025-04-14T11:30",
+              "author": "maternal-fetal medicine",
+              "body": "Maternal-Fetal Medicine, regional tertiary center\nConsultation 4/10/2025, 25 weeks 3 days\n\nReason: suspected placenta accreta on 24-week ultrasound.\n\nG3P2002 with two prior term vaginal deliveries, no prior uterine surgery. Course notable for a short cervix at 20 weeks and occasional spotting. Chronic low back pain on oxycodone 5 mg, 1-2 per day, prescribed by PCP. Right otosclerosis and a right thyroid nodule followed by ENT. NKDA.\n\nOur detailed ultrasound today confirms a low-lying placenta with retroplacental myometrial thinning and multiple lacunae, consistent with placenta accreta.\n\nRecommendations:\n1. Planned cesarean hysterectomy at our center at 34 to 35 weeks, with our multidisciplinary accreta team (MFM, gynecologic surgery, anesthesia, blood bank, NICU).\n2. Pelvic rest; present to labor and delivery for any bleeding, contractions or pain.\n3. Neonatology aware of the in-utero opioid exposure.\n4. Continue routine prenatal care with her OB, MFM visits monthly.\n\nThank you for involving us.\nMaternal-Fetal Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "telehealth_visit",
+          "start": "2025-04-22T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Back pain follow-up",
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2025-04-22T12:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video visit",
+              "date": "2025-04-22T12:35",
+              "author": "PCP",
+              "body": "26 weeks. Saw MFM; plan is a cesarean hysterectomy at 34-35 weeks at the tertiary center. She is coping, husband and her mother are helping with the kids. Back is a bit worse with the weight, 5/10, but she is managing with the same oxycodone dose plus acetaminophen and a belt. No new neuro symptoms.\nPlan: same dose, #90/30 days, PDMP reviewed. Told her I'd like to see her within a week or two of discharge after delivery. Flagged the chart so I get the delivery records."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-02a",
+          "kind": "outside_records",
+          "start": "2025-05-02T09:30",
+          "reason": "Immunization record",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-04-28T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Immunization record from OB office",
+              "date": "2025-05-02T09:30",
+              "author": "front desk",
+              "body": "Fax from OB office: Tdap 0.5 mL IM given 4/28/2025 at 28 weeks. Entered into immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-23a",
+          "kind": "specialist_visit",
+          "start": "2025-05-23T09:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit, about 32 weeks",
+          "conditions": [
+            {
+              "label": "Occupational chemical exposure",
+              "action": "diagnosed",
+              "onset": "2025-05-23",
+              "note": "Handles laboratory reagents and solvents at work; no specific agent identified",
+              "icd10": "Z57.5"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 72,
+            "weight_kg": 73.0
+          },
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics: 31-32 week visit",
+              "date": "2025-05-27T15:40",
+              "author": "obstetrics",
+              "body": "Obstetrics and Gynecology\nPrenatal visit 5/23/2025, 31 weeks 4 days\n\nShe is doing well and eating carefully. She has been eating fish on purpose, having read that omega-3s help the baby's brain, and wants to know which kinds are safe. Her usual fish: salmon, canned light tuna, swordfish and shrimp. She also asked about the chemicals she works around as a lab technician and whether they could affect the baby.\n\nKnown issues: short cervix, placenta accreta (cesarean hysterectomy planned at the tertiary center), right otosclerosis, right thyroid nodule, chronic back pain on oxycodone.\n\nBP 120/78, HR 72. Exam normal; fundal height appropriate for dates, no edema, fetal heart tones normal.\n\nCounseling:\n- Fish: stop swordfish because of its mercury content. Salmon, canned light tuna and shrimp are good choices, 2 to 3 servings a week in total.\n- Work: occupational chemical exposure noted. Asked her to get the safety data sheets for what she handles and go over them with her employer's occupational health office, work under the hood with gloves, and ask about reassignment for anything flagged as a reproductive hazard.\n\nNext visit in 2 weeks; MFM delivery planning continues.\nObstetrics"
+            }
+          ],
+          "state": {
+            "weight_kg": 72.4
+          },
+          "measure": [
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-30a",
+          "kind": "ed_visit",
+          "start": "2025-05-30T19:20",
+          "end": "2025-05-30T23:55",
+          "service": "Emergency Medicine",
+          "reason": "Decreased fetal movement",
+          "conditions": [
+            {
+              "label": "Maternal opioid use during pregnancy",
+              "action": "diagnosed",
+              "onset": "2024-10-14",
+              "note": "Prescribed oxycodone for chronic low back pain",
+              "icd10": "O99.323"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              106,
+              66
+            ],
+            "hr": 75,
+            "rr": 16,
+            "temp_c": 36.5,
+            "spo2": 97
+          },
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2025-05-30T19:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record: decreased fetal movement",
+              "date": "2025-06-02T08:15",
+              "author": "emergency medicine",
+              "body": "Emergency Department, regional hospital\nDate of visit: 5/30/2025\n\nChief complaint: baby moving less since this morning.\n\nHPI: 28-year-old G3P2002 at 32 weeks 4 days, pregnancy complicated by a short cervix and placenta accreta with a planned cesarean hysterectomy at the tertiary center, also with chronic low back pain on prescribed oxycodone, right otosclerosis and a right thyroid nodule. She has felt less fetal movement for about 12 hours. Her last oxycodone 5 mg was about 4 hours before arrival. No bleeding, leaking fluid or contractions. She denies alcohol, tobacco or any illicit drugs. Sees her OB regularly.\n\nMedications: oxycodone 5 mg as needed (prescribed), prenatal vitamin. NKDA.\n\nExam: Vital signs stable. Fundal height appropriate for gestational age. Abdomen soft, nontender.\nFetal monitoring on arrival: baseline 130 bpm, minimal variability, no accelerations, no decelerations.\n\nCourse: OB consulted, moved to labor and delivery triage for extended monitoring. Within two hours the tracing showed moderate variability with accelerations. Biophysical profile 8/8.\n\nImpression: decreased fetal movement with an initially minimally variable tracing in the setting of maternal opioid use in pregnancy; reassuring after extended monitoring.\nDisposition: discharged home with kick-count instructions; OB follow-up early next week. Return for decreased movement, bleeding, fluid or contractions."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-06-03a",
+          "kind": "hospital_admission",
+          "start": "2025-06-03T13:45",
+          "end": "2025-06-07T12:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Fever and myalgia in pregnancy; Listeria bacteremia",
+          "conditions": [
+            {
+              "label": "Maternal listeriosis",
+              "action": "diagnosed",
+              "onset": "2025-06-02",
+              "note": "Listeria monocytogenes bacteremia at 33 weeks",
+              "icd10": "A32.7"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ampicillin 2000 MG Injection",
+              "action": "start",
+              "sig": "2 g IV every 4 hours via PICC by home infusion, last dose 6/16/2025",
+              "dose": {
+                "value": 2,
+                "unit": "g"
+              },
+              "frequency": "Q4H",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "Listeria bacteremia in pregnancy"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-06-03T13:50",
+              "bp": [
+                120,
+                75
+              ],
+              "hr": 100,
+              "rr": 18,
+              "temp_c": 38.9
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-03T14:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 15.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.11
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-03T14:15",
+              "resulted": "2025-06-04T16:30",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "Listeria monocytogenes isolated (set 1 of 2)"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-03T14:20",
+              "resulted": "2025-06-04T18:10",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "Listeria monocytogenes isolated (set 2 of 2)"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-06-03T13:45"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-06-03T17:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-06-07T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record: fever in pregnancy",
+              "date": "2025-06-05T09:00",
+              "author": "emergency medicine",
+              "body": "Emergency Department, regional hospital\nDate of visit: 6/3/2025\n\nCC: fever, aches, back pain.\n\nHPI: 28-year-old G3P2002 at 33 weeks 1 day, seen here last month for decreased fetal movement, now with a day of fever, diffuse muscle aches and back pain. No recent travel, no sick contacts, no urinary symptoms. Two days ago she was at a family picnic where she ate homemade cheese and deli meats. Known short cervix and placenta accreta; chronic low back pain on prescribed oxycodone; right otosclerosis; right thyroid nodule.\n\nMeds: oxycodone 5 mg q6h prn, prenatal vitamin. NKDA. Never smoker, no alcohol.\n\nExam: T 38.9 C (102 F), BP 120/75, P 100, RR 18. Appears uncomfortable. Abdomen soft, mild tenderness in the left upper quadrant, uterus nontender. Fetal heart tones normal.\n\nLabs: WBC 15.0, hemoglobin 12.5, platelets 250. Blood cultures x2 drawn.\nObstetric ultrasound: no abnormality.\n\nAssessment: febrile illness in the third trimester after unpasteurized cheese and deli meat; listeriosis is the main concern.\nPlan: blood cultures, then IV ampicillin. Admitted to the antepartum service with continuous fetal monitoring."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary: Listeria bacteremia in pregnancy",
+              "date": "2025-06-09T10:40",
+              "author": "obstetrics",
+              "body": "Antepartum service, regional hospital\nAdmitted 6/3/2025, discharged 6/7/2025\n\nDiagnosis: maternal listeriosis (Listeria monocytogenes bacteremia) at 33 weeks.\n\nCourse: Started on IV ampicillin 2 g every 4 hours after cultures were drawn. Both blood culture sets grew Listeria monocytogenes on 6/4. Fever resolved within 48 hours and the myalgias and back pain settled to her baseline. Fetal monitoring reassuring throughout. MFM and infectious disease agreed on a 14-day course. A PICC was placed on 6/6 for home infusion.\n\nDischarge medications:\n- Ampicillin 2 g IV every 4 hours via PICC through 6/16/2025 (home infusion), then PICC removal by home nursing\n- Oxycodone 5 mg every 6 hours as needed (unchanged, per PCP)\n- Prenatal vitamin daily\nAllergies: NKDA.\n\nFollow-up: OB within one week; MFM delivery planning unchanged; pediatrics/NICU aware of the maternal infection.\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-09a",
+          "kind": "portal_message",
+          "start": "2025-06-09T18:30",
+          "reason": "Hospital update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Was in the hospital",
+              "date": "2025-06-09T18:30",
+              "author": "patient",
+              "body": "Just so you know, I was admitted last week with a fever, it turned out to be listeria from cheese at a picnic. I'm home now with an IV line in my arm, a nurse comes for the antibiotic. Feeling way better. Baby is fine."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Was in the hospital",
+              "date": "2025-06-09T19:05",
+              "author": "PCP",
+              "body": "Thanks for letting me know, and I'm glad you're feeling better. I have the discharge summary. Finish every dose of the ampicillin through the 16th. Call me or go to labor and delivery right away for any new fever, chills, redness at the line, bleeding or contractions."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "hospital_admission",
+          "start": "2025-06-17T15:40",
+          "end": "2025-06-24T11:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Acute calculous cholecystitis at 35 weeks; cesarean hysterectomy",
+          "conditions": [
+            {
+              "label": "Acute calculous cholecystitis",
+              "action": "diagnosed",
+              "onset": "2025-06-17",
+              "icd10": "K80.00"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "amoxicillin 875 MG / clavulanate 125 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily for 5 days",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Acute calculous cholecystitis"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (1,000 mg) by mouth every 8 hours for 2 weeks",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q8H",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Postoperative pain"
+            },
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed with food for 2 weeks",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Postoperative pain"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-06-17T15:45",
+              "bp": [
+                112,
+                68
+              ],
+              "hr": 104,
+              "temp_c": 38.1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-17T16:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 13.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 272
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.16
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-21T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2025-06-17T17:10",
+              "text": "Indication: RUQ pain, fever, 35 weeks pregnant. Findings: The gallbladder contains multiple gallstones. The gallbladder wall is thickened and there is pericholecystic fluid. The common bile duct is not dilated and there is no intrahepatic biliary dilation. Liver normal in echotexture. Visualized pancreas unremarkable. Right kidney without hydronephrosis.",
+              "conclusion": "Cholelithiasis with gallbladder wall thickening and pericholecystic fluid, consistent with acute calculous cholecystitis. No biliary ductal dilation."
+            },
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-06-19T09:30",
+              "text": "Specimen: uterus, cervix and placenta, cesarean hysterectomy. Gross: gravid-sized uterus with placenta in situ in the lower uterine segment; adnexa not included. Microscopic: chorionic villi in direct contact with myometrium without intervening decidua; no villi extending into or through the myometrium. Cervix with no significant abnormality.",
+              "conclusion": "Placenta accreta.",
+              "issued": "2025-06-23T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-06-17T15:40"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-06-17T20:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-06-24T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record: RUQ pain in pregnancy",
+              "date": "2025-06-18T13:30",
+              "author": "emergency medicine",
+              "body": "Emergency Department, regional hospital\nDate of visit: 6/17/2025\n\nCC: upper abdominal pain, vomiting.\n\nHPI: 28-year-old G3P2002 at 35 weeks 1 day whose pregnancy has been complicated by a short cervix, placenta accreta and Listeria bacteremia this month (completed IV ampicillin yesterday), with chronic low back pain on oxycodone, right otosclerosis and a right thyroid nodule. Pain came on suddenly in the epigastrium and right upper quadrant after a fatty lunch today. Sharp, constant, worse with eating. Nauseated, vomited once. No urinary symptoms, no vaginal discharge, no contractions. She admits she has missed a few prenatal visits recently because of work. Father has had gallstones.\n\nMeds: oxycodone 5 mg prn, prenatal vitamin. NKDA.\n\nExam: T 38.1 C (100.6 F), P 104, BP 112/68. RUQ tenderness with mild guarding and a positive Murphy sign. Uterus soft and nontender, fetal heart tones normal. Pelvic exam unremarkable. Remainder of exam unremarkable.\n\nLabs: WBC mildly elevated.\nRUQ ultrasound: gallstones, thickened gallbladder wall, pericholecystic fluid, no biliary ductal dilation.\n\nImpression: acute calculous cholecystitis at 35 weeks.\nPlan: IV fluids, piperacillin-tazobactam, NPO. Surgery and MFM consulted. Admitted; transfer to the tertiary center arranged given the planned accreta delivery there."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary: cholecystitis, cesarean hysterectomy",
+              "date": "2025-06-25T16:00",
+              "author": "maternal-fetal medicine",
+              "body": "Maternal-Fetal Medicine / Gynecologic Surgery, regional tertiary center\nAdmitted 6/17/2025 (transferred from the regional hospital ED), discharged 6/24/2025\n\nDiagnoses: acute calculous cholecystitis at 35 weeks; placenta accreta; short cervix; recent Listeria bacteremia (treated); maternal opioid use in pregnancy (prescribed oxycodone).\n\nCourse: Treated with IV piperacillin-tazobactam, bowel rest and fluids, with improvement in pain and fever over 48 hours. Given 35 weeks with placenta accreta and an active intra-abdominal infection, the accreta team and general surgery agreed to move the planned delivery up and leave the gallbladder for interval laparoscopic surgery after recovery.\n\nProcedure 6/19/2025 at 35 weeks 3 days: cesarean delivery with total hysterectomy, placenta left in situ. Ovaries conserved. Estimated blood loss 1,600 mL; no transfusion. Pathology: placenta accreta.\nInfant: liveborn girl, 2,580 g, Apgars 8 and 9, to the NICU for observation given prematurity and in-utero opioid exposure.\n\nPostoperative course uncomplicated. Afebrile from day 2. Tolerating a low-fat diet. Hemoglobin 10.4 on postoperative day 2. Incision clean and dry.\n\nDischarge medications:\n- Amoxicillin-clavulanate 875/125 mg twice daily for 5 days to complete treatment of cholecystitis\n- Acetaminophen 1,000 mg every 8 hours for 2 weeks\n- Ibuprofen 600 mg every 6 hours as needed for 2 weeks\n- Oxycodone 5 mg every 6 hours as needed, her usual prescription from her PCP; no additional opioid prescribed\n- Prenatal vitamin daily\nAllergies: NKDA.\n\nFollow-up: PCP within 1 week; postpartum OB visit in 6 weeks; general surgery in 6 to 8 weeks for interval laparoscopic cholecystectomy. Low-fat diet until then. Return for fever, worsening abdominal pain, jaundice, heavy bleeding or wound redness."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 12.3,
+              "White Blood Cells": 12.6
+            }
+          }
+        },
+        {
+          "id": "2025-06-27a",
+          "kind": "office_visit",
+          "start": "2025-06-27T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-discharge visit",
+          "conditions": [
+            {
+              "label": "Maternal listeriosis",
+              "action": "resolved",
+              "note": "14-day ampicillin course completed 2025-06-16",
+              "icd10": "A32.7"
+            },
+            {
+              "label": "Acquired absence of uterus and cervix",
+              "action": "diagnosed",
+              "onset": "2025-06-19",
+              "note": "Cesarean hysterectomy for placenta accreta, ovaries conserved"
+            },
+            {
+              "label": "Pregnant state",
+              "action": "resolved",
+              "note": "Delivered 2025-06-19 by cesarean hysterectomy",
+              "icd10": "Z33.1"
+            },
+            {
+              "label": "Short cervix in pregnancy",
+              "action": "resolved",
+              "icd10": "O26.872"
+            },
+            {
+              "label": "Placenta accreta",
+              "action": "resolved",
+              "icd10": "O43.212"
+            },
+            {
+              "label": "Maternal opioid use during pregnancy",
+              "action": "resolved",
+              "icd10": "O99.323"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              108,
+              66
+            ],
+            "hr": 76,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 70.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-27T10:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 304
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.58
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-06-27T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-06-27T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "date": "2025-06-27T10:45",
+              "author": "PCP",
+              "body": "Seen 3 days after discharge from the tertiary center. Records reviewed.\n\nSummary: Listeria bacteremia 6/3 treated with 14 days of ampicillin (finished 6/16, PICC out). Then acute calculous cholecystitis 6/17 at 35 weeks; with the accreta, delivery was moved up and she had a cesarean hysterectomy 6/19, ovaries kept, EBL 1.6 L, no transfusion. Baby girl in the NICU for observation, doing well, expected home next week. Gallbladder to come out electively in August.\n\nToday: sore at the incision, walking more each day. No fever. Eating a low-fat diet, no RUQ pain since discharge. Finishing amoxicillin-clavulanate tomorrow. Using acetaminophen around the clock, ibuprofen a couple of times a day, and her usual 1-2 oxycodone; has not needed more. Mood: tired, emotional at times, but feels supported. PHQ-9 4. Bleeding light.\n\nExam: Vitals as charted, afebrile. Well appearing. Heart regular, lungs clear. Abdomen: Pfannenstiel incision clean and dry, healing, appropriately tender; RUQ nontender, Murphy negative. Calves soft.\n\nA/P:\n1. S/p cesarean hysterectomy for placenta accreta - recovering as expected. CBC today. OB postpartum visit 7/31.\n2. Acute calculous cholecystitis - improved; finish antibiotic; interval lap chole with surgery in August.\n3. Maternal listeriosis - treated, course complete. Resolved.\n4. Chronic low back pain - oxycodone unchanged, #90/30 days, PDMP reviewed. No additional opioid.\n5. Mood - screen low; reviewed postpartum depression warning signs, she will reach out.\nFollow up after the cholecystectomy."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.4,
+            "labs": {
+              "Hemoglobin": 10.8,
+              "White Blood Cells": 7.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-30a",
+          "kind": "portal_message",
+          "start": "2025-06-30T12:15",
+          "reason": "Lab result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "date": "2025-06-30T12:15",
+              "author": "PCP",
+              "body": "Your blood count is coming back up after surgery, hemoglobin is already up a little from the 10.4 they found in the hospital, and your white count is normal, so no sign of ongoing infection. Eat well, keep up the prenatal vitamin, and we'll recheck in August."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-31a",
+          "kind": "specialist_visit",
+          "start": "2025-07-31T14:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Postpartum visit",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics: postpartum visit",
+              "date": "2025-08-04T09:20",
+              "author": "obstetrics",
+              "body": "Obstetrics and Gynecology\nPostpartum visit 7/31/2025, 6 weeks after cesarean hysterectomy\n\nRecovering well. Baby home from the NICU and feeding well. Minimal incisional discomfort. No bleeding. No fever. Mood good, sleeping when the baby sleeps, good support at home.\n\nExam: Pfannenstiel incision well healed. Speculum: vaginal cuff healing well, no discharge or granulation tissue. Bimanual: no masses or tenderness.\n\nAssessment: normal postpartum recovery after cesarean hysterectomy for placenta accreta. Ovaries conserved, no hormone replacement needed. No further cervical screening needed given total hysterectomy for a benign indication with prior normal screening.\nPlan: may resume full activity and lifting as tolerated; pelvic rest for 2 more weeks. Return as needed.\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "procedure_visit",
+          "start": "2025-08-12T07:30",
+          "end": "2025-08-12T14:00",
+          "service": "General Surgery",
+          "reason": "Interval laparoscopic cholecystectomy",
+          "conditions": [
+            {
+              "label": "Acute calculous cholecystitis",
+              "action": "resolved",
+              "icd10": "K80.00"
+            },
+            {
+              "label": "Acquired absence of gallbladder",
+              "action": "diagnosed",
+              "onset": "2025-08-12"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-08-12T09:15",
+              "text": "Specimen: gallbladder, laparoscopic cholecystectomy. Gross: gallbladder 7.5 cm in length, opened to reveal multiple yellow faceted stones; wall mildly thickened. Microscopic: chronic inflammatory infiltrate of the wall with Rokitansky-Aschoff sinuses; no dysplasia or malignancy.",
+              "conclusion": "Chronic cholecystitis with cholelithiasis. Negative for dysplasia and malignancy.",
+              "issued": "2025-08-14T13:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Laparoscopic cholecystectomy",
+              "performed": "2025-08-12T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative report: laparoscopic cholecystectomy",
+              "date": "2025-08-14T15:30",
+              "author": "general surgery",
+              "body": "General Surgery, regional hospital\nDate of surgery: 8/12/2025\n\nPreoperative diagnosis: cholelithiasis, status post acute calculous cholecystitis in June treated with antibiotics.\nProcedure: laparoscopic cholecystectomy.\nAnesthesia: general.\n\nFindings: Healed Pfannenstiel incision. Gallbladder without acute inflammation. Critical view of safety obtained. Cystic duct and artery clipped and divided. Gallbladder removed intact in a retrieval bag through the umbilical port.\nEstimated blood loss: minimal. Complications: none.\n\nDischarged home the same day, tolerating diet. Acetaminophen and ibuprofen for pain; she will use her own oxycodone if needed, no new opioid prescribed. Follow up in clinic in 2 weeks.\n\nPathology (8/14): chronic cholecystitis with cholelithiasis, benign."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "office_visit",
+          "start": "2025-08-26T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after surgeries; back pain",
+          "vitals": {
+            "bp": [
+              109,
+              77
+            ],
+            "hr": 72,
+            "weight_kg": 67.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-26T16:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 299
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.86
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-08-26T16:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-26T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2025-08-26T16:35",
+              "author": "PCP",
+              "body": "Two weeks out from lap chole, eight weeks from the hysterectomy. Feels like herself again. Port sites healed, eating normally, no abdominal pain. Back pain is back to baseline, 4/10, carrying the baby is the hard part. Still 1-2 oxycodone a day. Mood good, PHQ-9 3. Planning to go back to work part-time in September.\n\nExam: vitals as charted, weight trending down. Abdomen soft, nontender, port sites and Pfannenstiel incision healed. Back unchanged.\n\nA/P:\n- S/p cesarean hysterectomy and laparoscopic cholecystectomy, recovered. Pathology benign. CBC today to confirm recovery of hemoglobin.\n- Right thyroid nodule: ENT FNA visit is 9/23 as planned.\n- Otosclerosis: ENT will repeat hearing test at the same visit.\n- Chronic low back pain: continue oxycodone 5 mg q6h prn #90, PDMP reviewed.\n- Occupational exposure: she will ask her employer's occupational health office for the safety data sheets before returning.\nFlu and COVID in October."
+            }
+          ],
+          "state": {
+            "weight_kg": 67.1,
+            "labs": {
+              "Hemoglobin": 12.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "specialist_visit",
+          "start": "2025-09-23T09:30",
+          "service": "Otolaryngology",
+          "reason": "Thyroid nodule FNA; hearing reassessment",
+          "reports": [
+            {
+              "study": "Thyroid ultrasound",
+              "performed": "2025-09-23T09:40",
+              "text": "Comparison: 11/21/2024. Right lobe solid nodule measures 2.0 cm in greatest dimension, unchanged, with the same microcalcifications and irregular margins. Left lobe and isthmus without nodules. No cervical lymphadenopathy. Ultrasound-guided fine-needle aspiration of the right nodule performed, 25-gauge needle, three passes, no complications.",
+              "conclusion": "Unchanged 2.0 cm suspicious right thyroid nodule. FNA performed."
+            },
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-09-23T09:50",
+              "text": "Specimen: right thyroid nodule, ultrasound-guided fine-needle aspiration. Adequacy: satisfactory, with sufficient follicular cell groups. Cytology: benign-appearing follicular cells in macrofollicular and flat sheets with colloid; no nuclear features of papillary carcinoma.",
+              "conclusion": "Benign (Bethesda category II), consistent with a benign follicular nodule.",
+              "issued": "2025-09-29T12:00"
+            },
+            {
+              "study": "Audiogram",
+              "performed": "2025-09-23T10:30",
+              "text": "Pure-tone air and bone conduction both ears with masking. Right ear: conductive hearing loss, unchanged from February 2025. Left ear: within normal limits. Word recognition excellent bilaterally.",
+              "conclusion": "Stable right conductive hearing loss."
+            }
+          ],
+          "orders": [
+            {
+              "id": "thyroid-us-fna-2026",
+              "action": "placed",
+              "order": "Thyroid ultrasound with repeat fine-needle aspiration, 12 months",
+              "category": "imaging",
+              "to": "Otolaryngology",
+              "reason": "Benign cytology in a high-suspicion right thyroid nodule"
+            },
+            {
+              "id": "audiology-2025",
+              "action": "placed",
+              "order": "Audiology hearing aid evaluation",
+              "category": "referral",
+              "to": "Audiology",
+              "reason": "Right otosclerosis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology: thyroid FNA and hearing",
+              "date": "2025-09-30T11:00",
+              "author": "otolaryngology",
+              "body": "Otolaryngology - Head and Neck Surgery\nDate of service: 9/23/2025\n\nDear Doctor,\nMs. Richard returned now that she has recovered from delivery (cesarean hysterectomy for accreta in June) and an interval cholecystectomy in August.\n\nThyroid: No neck symptoms. Ultrasound today shows the right nodule unchanged at 2.0 cm with the same suspicious features, and no abnormal nodes. We performed ultrasound-guided FNA. Cytology returned benign (Bethesda II), a benign follicular nodule. Because the sonographic pattern is high suspicion, a benign result does not fully settle it, and our plan is a repeat ultrasound with repeat FNA in 12 months, in September 2026. Surgery was discussed as an alternative; she prefers surveillance.\n\nHearing: Her hearing has not improved after delivery. Audiogram again shows a right conductive loss, stable compared with February. We talked through a hearing aid versus stapes surgery. She would like to start with a hearing aid; referral placed to audiology.\n\nRegards,\nOtolaryngology"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "nurse_visit",
+          "start": "2025-10-09T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-09T16:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-09T16:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-09T16:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Fall vaccines",
+              "date": "2025-10-09T16:35",
+              "author": "RN",
+              "body": "2025-26 trivalent flu 0.5 mL IM right deltoid, Pfizer 2025-26 COVID 0.3 mL IM left deltoid. No fever, no prior reactions. Back at work three days a week. Tolerated well, left after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "portal_message",
+          "start": "2025-10-21T13:40",
+          "reason": "Thyroid biopsy question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid biopsy",
+              "date": "2025-10-21T13:40",
+              "author": "patient",
+              "body": "ENT said my biopsy was benign but they still want to do it again next year. Is that normal? I thought benign meant done."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Thyroid biopsy",
+              "date": "2025-10-21T17:55",
+              "author": "PCP",
+              "body": "Good question. The biopsy was benign, which is good news. The reason for repeating it is that the nodule's ultrasound appearance is the kind where a needle sample can occasionally miss something, so the standard approach is to look again with ultrasound and repeat the biopsy in about a year. It's a safety check, not a sign they think something is wrong. I'll keep an eye on it with you."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-06a",
+          "kind": "specialist_visit",
+          "start": "2025-11-06T11:00",
+          "service": "Audiology",
+          "reason": "Hearing aid fitting",
+          "orders": [
+            {
+              "id": "audiology-2025",
+              "action": "done",
+              "date": "2025-11-06T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Audiology: hearing aid fitting",
+              "date": "2025-11-10T09:00",
+              "author": "audiology",
+              "body": "Audiology\nDate of service: 11/6/2025\n\nReferred by ENT for amplification of a right conductive hearing loss from otosclerosis. Audiogram from 9/23/2025 reviewed.\n\nFitted today with a right behind-the-ear hearing aid, programmed to her thresholds and verified with real-ear measurement. Care, cleaning, battery charging and phone streaming reviewed. She noticed an immediate difference with speech in the room.\n\nPlan: 30-day trial period, follow-up adjustment in 3 to 4 weeks.\nAudiology"
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "office_visit",
+          "start": "2025-12-09T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Back pain follow-up",
+          "medications": [
+            {
+              "drug_text": "prenatal vitamin Oral Tablet",
+              "action": "stop",
+              "reason": "Stopped on her own after delivery"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              113,
+              67
+            ],
+            "hr": 88,
+            "weight_kg": 68.1
+          },
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            },
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-12-09T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Back pain follow-up",
+              "date": "2025-12-09T08:25",
+              "author": "PCP",
+              "body": "S: Baby is 5 months, thriving. Back at work three days a week. Back pain 4/10, about her usual. Uses 1-2 oxycodone a day. Stopped the prenatal vitamin a few weeks ago. Loves the hearing aid, says she hadn't realized how much she was missing on the right. PHQ-2 0.\nO: Vitals as charted. Lumbar exam unchanged, neuro intact.\nA/P: Chronic low back pain, stable. Agreement renewed for the year, PDMP reviewed. Continue oxycodone 5 mg q6h prn #90. Prenatal vitamin removed from list. Physical in March."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "portal_message",
+          "start": "2026-01-13T07:55",
+          "reason": "Refill, prior authorization",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pharmacy says I need a PA again",
+              "date": "2026-01-13T07:55",
+              "author": "patient",
+              "body": "Pharmacy says my insurance needs the prior authorization again for the oxycodone since it's a new year. I have 2 days left."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pharmacy says I need a PA again",
+              "date": "2026-01-13T11:20",
+              "author": "MA",
+              "body": "Submitted this morning and it was approved through the end of the year. Doctor sent the prescription, it should be ready this afternoon."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "annual_physical",
+          "start": "2026-03-10T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              129,
+              62
+            ],
+            "hr": 88,
+            "temp_c": 36.6,
+            "spo2": 96,
+            "weight_kg": 65.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-10T09:25",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 272
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-03-10T09:25",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.67
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 121
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-10T09:25",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-03-10T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-03-10T09:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-03-10T09:40",
+              "author": "PCP",
+              "body": "29 y/o for annual exam. Last physical May 2024; last year was taken up by the pregnancy.\n\nInterval: June 2025 Listeria bacteremia at 33 weeks, then acute calculous cholecystitis at 35 weeks, with delivery moved up to a cesarean hysterectomy for placenta accreta (ovaries conserved), then interval lap chole in August. All recovered. Daughter is 8 months and well. Back to work four days a week.\n\nOngoing:\n- Chronic low back pain: 3-4/10, oxycodone 1-2 a day, agreement current.\n- Right thyroid nodule: FNA 9/2025 benign; ENT repeating ultrasound and FNA in September.\n- Right otosclerosis: right hearing aid since November, happy with it.\n- Occupational: she reviewed the safety data sheets with her occupational health office and uses the hood and gloves for the solvent work.\n\nMeds: oxycodone 5 mg q6h prn. Allergies: NKDA.\nSH: never smoker, no alcohol. Walking with the stroller most days.\nPHQ-9 2, GAD-7 2.\n\nExam: vitals as charted, weight close to pre-pregnancy. Ears: right hearing aid in place, canals and TMs normal. Neck: firm right thyroid nodule, unchanged, no adenopathy. Heart regular, lungs clear. Abdomen: healed Pfannenstiel and laparoscopic port scars, soft, nontender. Back and neuro unchanged.\n\nPlan:\n- CBC, CMP, TSH today.\n- Cervical screening no longer needed after total hysterectomy for a benign reason with normal prior Paps.\n- Vaccines up to date (flu and COVID 10/2025, Tdap 4/2025).\n- Back pain: continue current plan. We talked again about trying a lower dose; she'd like to wait until the baby is sleeping through the night. Will revisit in the summer.\nRTC 3 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.6,
+            "labs": {
+              "Hemoglobin": 13.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-11a",
+          "kind": "portal_message",
+          "start": "2026-03-11T16:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from your physical",
+              "date": "2026-03-11T16:05",
+              "author": "PCP",
+              "body": "Hi Susan, everything from yesterday is normal, including your blood count, which is fully back to where it was before the surgery, and your thyroid function. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "pharmacy",
+          "start": "2026-04-14T10:40",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill request",
+              "date": "2026-04-14T10:40",
+              "author": "MA",
+              "body": "Refill request for oxycodone 5 mg #90 from the Route 9 pharmacy. Last fill 3/15. PDMP reviewed, no other prescribers. Pended for PCP; signed 10:58."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "office_visit",
+          "start": "2026-05-19T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Back pain follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2026-05-19T09:12",
+              "author": "front desk",
+              "body": "Patient called to cancel this afternoon, daughter home from daycare with a cold. Offered video; she prefers to wait. Rescheduled as a video visit 6/2 at lunch."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-06-02a",
+          "kind": "telehealth_visit",
+          "start": "2026-06-02T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Back pain follow-up",
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2026-06-02T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video visit: back pain",
+              "date": "2026-06-02T12:35",
+              "author": "PCP",
+              "body": "Back 3/10, good stretch lately. Using 1 oxycodone most days, occasionally 2. Sleeping better now that the baby is down through the night. No new symptoms. Hearing aid working well. ENT has not scheduled the September ultrasound yet; she'll call them.\nVideo exam: comfortable, moves freely.\nA/P: Chronic low back pain, stable to improved. Continue oxycodone 5 mg q6h prn, she is filling less often and that is fine. PDMP reviewed. Will talk about a formal step-down at the September visit. Reminder to book the ENT ultrasound."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "pharmacy",
+          "start": "2026-07-14T09:30",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill",
+              "date": "2026-07-14T09:30",
+              "author": "MA",
+              "body": "Oxycodone 5 mg refill request. Last fill 5/28, so she is stretching them out. PDMP clean. Sent to PCP, signed."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T20:22",
+          "reason": "ENT appointment",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid ultrasound booked",
+              "date": "2026-08-18T20:22",
+              "author": "patient",
+              "body": "FYI ENT finally called back, the thyroid ultrasound and repeat biopsy are on September 29. Do I need anything from you before that?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Thyroid ultrasound booked",
+              "date": "2026-08-19T07:40",
+              "author": "PCP",
+              "body": "Nothing needed from me, they have your March thyroid labs. Glad it's on the calendar. We'll see you on the 17th."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-17a",
+          "kind": "office_visit",
+          "start": "2026-09-17T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Back pain and medication follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute calculous cholecystitis|K80.00": {
+        "code": "K80.00",
+        "display": "Calculus of gallbladder with acute cholecystitis without obstruction",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Maternal listeriosis|A32.7": {
+        "code": "A32.7",
+        "display": "Listerial sepsis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Maternal opioid use during pregnancy|O99.323": {
+        "code": "O99.323",
+        "display": "Drug use complicating pregnancy, third trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Occupational chemical exposure|Z57.5": {
+        "code": "Z57.5",
+        "display": "Occupational exposure to toxic agents in other industries",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Placenta accreta|O43.212": {
+        "code": "O43.212",
+        "display": "Placenta accreta, second trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pregnant state|Z33.1": {
+        "code": "Z33.1",
+        "display": "Pregnant state, incidental",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Short cervix in pregnancy|O26.872": {
+        "code": "O26.872",
+        "display": "Cervical shortening, second trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "ampicillin 2000 MG Injection": {
+        "code": "1721476",
+        "display": "ampicillin 2000 MG Injection",
+        "ingredient": "ampicillin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "oxycodone hydrochloride 5 MG Oral Tablet": {
+        "code": "1049621",
+        "display": "oxycodone hydrochloride 5 MG Oral Tablet",
+        "ingredient": "oxycodone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "rejected": [
+      "drug \"prenatal vitamin Oral Tablet\""
+    ]
+  }
+}

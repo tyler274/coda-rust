@@ -1,0 +1,313 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001900",
+      "events": [
+        {
+          "id": "2026-01-21a",
+          "kind": "office_visit",
+          "start": "2026-01-21T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in visit",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "portal_message",
+          "start": "2026-04-21T06:48",
+          "reason": "Neck pain, fevers, palpitations",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sore neck and racing heart",
+              "author": "patient",
+              "date": "2026-04-21T06:48",
+              "body": "Good morning. For about a week the front of my neck has been sore and it feels full, like something is pressing when I swallow. I've been running low fevers on and off, feel wiped out, and my heart keeps racing and pounding even sitting at my desk. I also keep breaking into sweats. I had a cold a couple of weeks ago that went away on its own. Can I be seen? I can leave school early."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Sore neck and racing heart",
+              "author": "PCP",
+              "date": "2026-04-21T07:20",
+              "body": "Yes, please come in today. I have 3:30 open. If the racing comes with chest pain, fainting or trouble breathing before then, go to the ED."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21b",
+          "kind": "office_visit",
+          "start": "2026-04-21T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anterior neck pain, low-grade fevers, palpitations",
+          "vitals": {
+            "temp_c": 37.9
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-04-21T16:05",
+              "resulted": "2026-04-22T10:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "text": "<0.01",
+                  "unit": "mIU/L"
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 2.5
+                },
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 70
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-21T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-21T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-Day Visit",
+              "author": "PCP",
+              "date": "2026-04-21T16:20",
+              "body": "SAME-DAY VISIT\n\nS: ~1 week of anterior neck pain and a sense of fullness in the throat, worse when she swallows or turns her head. Low-grade fevers at home, malaise, episodes of palpitations at rest, and intermittent sweats. Had a cold roughly two weeks ago that cleared without treatment. No chest pain, no syncope, no dyspnea. No meds, nothing new OTC. NKDA.\n\nO: T 37.9. Other vitals per flowsheet. Looks tired but not toxic. Oropharynx clear. Thyroid enlarged and distinctly tender to palpation, no discrete nodule felt. No cervical lymphadenopathy. Lungs clear. Heart regular, no murmur. No tremor appreciated.\n\nA/P:\nTender, enlarged thyroid with fever and hyperadrenergic symptoms after a viral illness. Concerned for an inflammatory thyroiditis. TSH, free T4, ESR, CRP drawn today. Will call her tomorrow with results and arrange endocrinology. ED precautions reviewed."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-22a",
+          "kind": "telephone",
+          "start": "2026-04-22T12:15",
+          "reason": "Thyroid results",
+          "orders": [
+            {
+              "id": "endo-referral",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "suspected subacute thyroiditis, urgent"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results Call",
+              "author": "PCP",
+              "date": "2026-04-22T12:15",
+              "body": "Called pt with results: TSH <0.01, free T4 2.5, ESR 70, CRP 8. Hyperthyroid labs with high inflammatory markers, fits the tender gland. Explained this looks like an inflammatory thyroiditis and I want endocrinology to see her this week or next. Urgent referral placed. She agrees. Call or come in for worse neck pain, high fever, chest pain or fainting."
+            },
+            {
+              "type": "Referral",
+              "title": "Endocrinology Referral",
+              "author": "PCP",
+              "date": "2026-04-22T12:30",
+              "body": "URGENT. 34F, previously healthy, 1 week tender enlarged thyroid, low-grade fever, palpitations, sweats after a recent viral illness. TSH <0.01, FT4 2.5, ESR 70, CRP 8 (4/21). No meds, NKDA. Question subacute thyroiditis. Please see within 1-2 weeks."
+            },
+            {
+              "type": "Administrative",
+              "title": "Referral Scheduled",
+              "author": "front desk",
+              "date": "2026-04-22T15:50",
+              "body": "Endocrinology appointment confirmed for Wed 4/29 at 9:00. Labs and referral faxed. Patient notified by phone."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-29a",
+          "kind": "specialist_visit",
+          "start": "2026-04-29T09:00",
+          "service": "Endocrinology",
+          "reason": "Tender thyroid, suppressed TSH",
+          "conditions": [
+            {
+              "label": "Subacute thyroiditis",
+              "icd10": "E06.1",
+              "action": "diagnosed",
+              "onset": "2026-04-15"
+            }
+          ],
+          "vitals": {
+            "hr": 88,
+            "bp": [
+              132,
+              85
+            ]
+          },
+          "orders": [
+            {
+              "id": "endo-referral",
+              "action": "done",
+              "date": "2026-04-29T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Consultation",
+              "author": "endocrinology",
+              "date": "2026-04-30T10:15",
+              "body": "ENDOCRINOLOGY CONSULTATION\nDate of service: 04/29/2026\nRe: Angela Damon, DOB 05/18/1991\nReferred by: primary care\n\nThank you for sending Ms. Damon, a 34 year old elementary school teacher, for evaluation of a painful thyroid.\n\nHistory: For two weeks she has had pain at the front of the neck with a sense of throat fullness, along with low-grade fevers and general malaise. She describes palpitations and intermittent sweating. About three weeks ago she had an upper respiratory infection that resolved without any treatment. She was seen in primary care in 2025 for a post-viral cough, since resolved, and has otherwise been healthy.\n\nPast surgical history: none.\nMedications: none.\nAllergies: no known drug allergies.\nFamily history: noncontributory.\nSocial history: never smoker; alcohol socially, 1-2 drinks per week; teaches elementary school.\n\nExamination: HR 88, BP 132/85. Alert, mildly anxious, in no distress. The thyroid is diffusely enlarged and tender to light palpation, without nodularity. No cervical adenopathy. Lungs clear, heart regular. Skin warm.\n\nData (drawn 04/21/2026 by primary care): TSH <0.01 mIU/L, free T4 2.5 ng/dL, ESR 70 mm/hr, CRP 8 mg/L.\n\nAssessment: Subacute (granulomatous) thyroiditis. The painful, tender gland following a viral illness, with thyrotoxic labs and a markedly elevated sedimentation rate, makes this the diagnosis.\n\nPlan:\n1. Reviewed the expected course with her: the thyroid releases stored hormone for several weeks, and most people recover normal function over the following months.\n2. Repeat TSH and free T4 in about 6 weeks; these can be drawn through her primary care office with a copy to us.\n3. She should call for worsening neck pain, high fever, or palpitations that are not settling.\n4. Follow up here as needed depending on the repeat labs.\n\nThank you for involving us in her care.\n\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-04a",
+          "kind": "portal_message",
+          "start": "2026-05-04T20:05",
+          "reason": "Question about endocrinology plan",
+          "orders": [
+            {
+              "id": "thyroid-recheck",
+              "action": "placed",
+              "order": "TSH and free T4",
+              "category": "lab",
+              "reason": "subacute thyroiditis follow-up per endocrinology"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Follow-up labs",
+              "author": "patient",
+              "date": "2026-05-04T20:05",
+              "body": "Hi, the endocrinologist said I need thyroid blood work in about six weeks and that you'd order it. Neck is less sore already. When should I come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Follow-up labs",
+              "author": "RN",
+              "date": "2026-05-05T09:30",
+              "body": "Hi Angela, we have their letter and the order is in. Any morning the week of June 8 works, no need to fast. Glad the neck is easing up."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-10a",
+          "kind": "lab_only",
+          "start": "2026-06-10T07:50",
+          "reason": "Thyroid recheck",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-06-10T07:50",
+              "resulted": "2026-06-10T16:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.4
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-10T07:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "thyroid-recheck",
+              "action": "done",
+              "date": "2026-06-10T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Thyroid Labs Normal",
+              "author": "PCP",
+              "date": "2026-06-11T08:10",
+              "body": "Angela - TSH 2.4 and free T4 1.2, both back in the normal range. Copy sent to endocrinology. Let's do a quick video visit next week to make sure the symptoms have settled too."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-17a",
+          "kind": "telehealth_visit",
+          "start": "2026-06-17T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Subacute thyroiditis follow-up",
+          "conditions": [
+            {
+              "label": "Subacute thyroiditis",
+              "icd10": "E06.1",
+              "action": "resolved",
+              "onset": "2026-04-15"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2026-06-17T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Follow-Up",
+              "author": "PCP",
+              "date": "2026-06-17T16:18",
+              "body": "VIDEO VISIT - follow-up subacute thyroiditis\n\nPatient at home, consented to video.\n\nNeck pain gone since mid-May. No more palpitations or sweats, no fevers, energy back to normal. Finishing up the school year.\n\nLabs 6/10: TSH 2.4, FT4 1.2.\n\nExam limited by video: well appearing, no distress, speaking comfortably.\n\nA/P: Subacute thyroiditis, clinically and biochemically resolved. Endocrinology has the labs. Let us know if neck pain or racing heart come back. Next routine visit is her physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "portal_message",
+          "start": "2026-08-12T13:30",
+          "reason": "Scheduling annual physical",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical before school gets crazy",
+              "author": "patient",
+              "date": "2026-08-12T13:30",
+              "body": "Hi! Can I get my physical booked for early October, ideally a Wednesday morning before school? Thanks."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical before school gets crazy",
+              "author": "front desk",
+              "date": "2026-08-12T15:02",
+              "body": "You're set for Wednesday 10/7 at 7:40 AM. Come fasting if you'd like labs drawn that morning."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-07a",
+          "kind": "annual_physical",
+          "start": "2026-10-07T07:40",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

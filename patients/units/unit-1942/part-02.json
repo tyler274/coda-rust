@@ -1,0 +1,495 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001942",
+      "events": [
+        {
+          "id": "2025-04-24a",
+          "kind": "telephone",
+          "start": "2025-04-24T08:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "itchy rash",
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "widespread itchy welts"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Phone Call: Rash",
+              "author": "PCP",
+              "date": "2025-04-24T08:25",
+              "body": "Pt called my line early. Since yesterday morning, itchy raised red welts across her stomach, back and both arms. Says individual spots fade within hours but new ones pop up elsewhere. Sent photos through the portal, look like hives. No lip, tongue or eyelid swelling. No throat tightness, no wheeze or trouble breathing. Feels well otherwise. No new meds, foods, detergents or recent illness she can think of.\n\nDermatology had a cancellation tomorrow at 9, booked her in so they can see it while it's active.\n\nReviewed red flags: any swelling of lips/tongue, throat tightness, trouble breathing or lightheadedness -> 911/ED, don't wait for the appointment. She understands."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-25a",
+          "kind": "specialist_visit",
+          "start": "2025-04-25T09:00",
+          "service": "Dermatology",
+          "reason": "itchy raised rash, trunk and arms",
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.6,
+              "Glucose": 88
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ],
+          "conditions": [
+            {
+              "label": "Acute urticaria",
+              "icd10": "L50.9",
+              "action": "diagnosed",
+              "onset": "2025-04-23"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "cetirizine hydrochloride 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth once daily for 14 days",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Acute urticaria"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-25T09:45",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-04-25T09:45",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-25T09:45",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-25T09:45",
+              "results": [
+                {
+                  "test": "Tryptase",
+                  "loinc": "21582-2",
+                  "unit": "ng/mL",
+                  "value": 4.1
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "done",
+              "date": "2025-04-25T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Consultation",
+              "author": "dermatology",
+              "date": "2025-04-30T16:10",
+              "body": "OUTPATIENT DERMATOLOGY CONSULTATION\nDate of service: 04/25/2025\nRequested by: primary care physician\nReason for consultation: widespread pruritic eruption\n\nHISTORY: 26-year-old woman seen on short notice with a two-day history of intensely pruritic, raised red lesions over the trunk and both arms. The lesions are transient. Any single lesion clears in less than 24 hours, though fresh ones continue to appear at other sites. She has had no preceding illness, has started no new drug or supplement, and has not changed her diet. She denies lip or tongue swelling, abdominal pain and shortness of breath.\n\nPast medical history: noncontributory.\nMedications: none.\nAllergies: no known drug allergies.\nFamily history: mother, seasonal allergic rhinitis; father, asthma.\nSocial history: graphic designer. Never smoker. Alcohol 1-2 drinks per month.\n\nEXAMINATION: Vital signs within normal limits. Numerous sharply marginated erythematous plaques of variable size over the trunk and upper extremities, several surrounded by a pale halo. Oral mucosa uninvolved. Breathing comfortably, no distress.\n\nLABORATORY (drawn at this visit): CBC, comprehensive metabolic panel and TSH within normal limits. Serum tryptase 4.1 ng/mL, not elevated.\n\nIMPRESSION: Acute urticaria. No precipitant identified on history.\n\nRECOMMENDATIONS:\n1. Cetirizine 10 mg by mouth once daily for 14 days.\n2. Seek emergency care for any lip, tongue or throat swelling or difficulty breathing.\n3. Should hives recur, we would suggest referral to allergy and immunology.\n4. Follow up with dermatology as needed.\n\nDermatology attending"
+            }
+          ]
+        },
+        {
+          "id": "2025-04-30a",
+          "kind": "outside_records",
+          "start": "2025-04-30T17:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "dermatology consult received",
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "author": "PCP",
+              "date": "2025-04-30T17:20",
+              "body": "Derm consult from 4/25 reviewed. Acute urticaria, no trigger. CBC, CMP, TSH normal, tryptase 4.1. On cetirizine 10 daily x 2 wk. Will check in with her by message."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-30b",
+          "kind": "portal_message",
+          "start": "2025-04-30T17:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "dermatology follow-up",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Dermatology Visit",
+              "author": "PCP",
+              "date": "2025-04-30T17:30",
+              "body": "Hi Natalia, I have the dermatology note now. Your bloodwork from Friday was all normal, including the tryptase, which is the test that would point toward a mast cell problem. So this looks like plain acute hives. How are the spots doing on the cetirizine?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Dermatology Visit",
+              "author": "patient",
+              "date": "2025-04-30T20:04",
+              "body": "Way better, just a couple small ones on my arm today and the itching is mostly gone. The cetirizine makes me a little sleepy if I take it in the morning so I switched to bedtime."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-06a",
+          "kind": "portal_message",
+          "start": "2025-05-06T10:12",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hives update",
+          "conditions": [
+            {
+              "label": "Acute urticaria",
+              "icd10": "L50.9",
+              "action": "resolved"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hives Gone",
+              "author": "patient",
+              "date": "2025-05-06T10:12",
+              "body": "Hi! No new hives since last Thursday. Do I keep taking the cetirizine until the 2 weeks are up or can I stop?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hives Gone",
+              "author": "PCP",
+              "date": "2025-05-06T11:48",
+              "body": "Great news. Finish out the 14 days the dermatologist gave you, then stop. If they return after you finish, message me."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-08a",
+          "kind": "telephone",
+          "start": "2025-09-08T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "reschedule physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling",
+              "author": "front desk",
+              "date": "2025-09-08T15:40",
+              "body": "Pt has a client deadline and can't make tomorrow morning. Moved physical to Wed 9/17 at 8:40."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "annual_physical",
+          "start": "2025-09-09T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-09-17a",
+          "kind": "annual_physical",
+          "start": "2025-09-17T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-17T09:25"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-17T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "author": "PCP",
+              "date": "2025-09-17T10:05",
+              "body": "Annual physical.\n\nS: Doing well. Busy stretch at work, otherwise no concerns. Hives in April (derm, acute urticaria, normal workup) cleared within a week on cetirizine, finished the 2 wk course, none since. No meds now. Still walking and doing yoga. Never smoker, alcohol rare. Menses regular.\n\nROS: negative.\n\nO: Vitals normal. Well appearing. HEENT clear. Neck supple, no thyromegaly. Heart regular, no murmur. Lungs clear bilaterally. Abd soft, NT. Skin: no rash, no lesions of concern. No edema. Neuro nonfocal.\nPHQ-2 0.\n\nA/P: healthy 26F.\n- Flu shot today.\n- COVID updated vaccine at her pharmacy when it's out.\n- Pap due next year (last 6/2023 normal). Plan at next physical.\n- No labs needed this year; lipids/HIV/HCV done 2024.\n- Hives: resolved. If they recur, see allergy per derm.\nRTC 1 yr."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Immunization Administration",
+              "author": "MA",
+              "date": "2025-09-17T09:27",
+              "body": "Flu vaccine 0.5 mL IM R deltoid. Screening questions negative. VIS given. Lot/exp in immunization record. Pt waited 15 min, no issues."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-11a",
+          "kind": "pharmacy",
+          "start": "2025-10-11T11:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "outside immunization report",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-11T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy Immunization Report",
+              "author": "pharmacist",
+              "date": "2025-10-13T08:30",
+              "body": "Vaccine administration record, retail pharmacy.\nNatalia Gillespie, DOB 02/27/1999.\nCOVID-19 mRNA vaccine (Pfizer-BioNTech), 2025-2026 formula, 0.3 mL IM left deltoid, given 10/11/2025.\nPatient-reported allergies: none. No adverse event observed."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-23a",
+          "kind": "portal_message",
+          "start": "2025-12-23T07:52",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hives recurred",
+          "orders": [
+            {
+              "id": "allergy-referral",
+              "action": "placed",
+              "order": "Allergy and immunology referral",
+              "category": "referral",
+              "to": "Allergy and Immunology",
+              "reason": "recurrent hives"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hives Back",
+              "author": "patient",
+              "date": "2025-12-23T07:52",
+              "body": "Ugh, the hives are back. Woke up with them all over my stomach and back and on both arms, exactly like in April. Lips and tongue are fine and I'm breathing normally. Haven't changed anything, no new meds or food. Do I go back to derm?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hives Back",
+              "author": "PCP",
+              "date": "2025-12-23T08:34",
+              "body": "Sorry, Natalia, bad timing right before the holiday. Since this is round two, dermatology suggested allergy, and the allergist can see you tomorrow at 10:20. I booked it and sent the referral. If you can tolerate the itch until then, it's fine to wait so they can see it as it is. Any swelling of your lips, tongue or throat, or trouble breathing, call 911 or go to the ED, don't wait for me."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-24a",
+          "kind": "specialist_visit",
+          "start": "2025-12-24T10:20",
+          "service": "Allergy and Immunology",
+          "reason": "recurrent hives",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ],
+          "conditions": [
+            {
+              "label": "Acute urticaria",
+              "icd10": "L50.9",
+              "action": "diagnosed",
+              "onset": "2025-12-23"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "cetirizine hydrochloride 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth once daily as needed for hives; take every day during a flare",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Acute urticaria"
+            }
+          ],
+          "orders": [
+            {
+              "id": "allergy-referral",
+              "action": "done",
+              "date": "2025-12-24T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Allergy and Immunology Consultation",
+              "author": "allergy and immunology",
+              "date": "2026-01-05T13:45",
+              "body": "ALLERGY & IMMUNOLOGY | NEW CONSULT\nVisit date: 12/24/2025\nReferred by: primary care\n\nCC: hives x 24 hours.\n\nHPI: Ms. Gillespie is a 26 y/o graphic designer referred for itchy, raised, red wheals over the trunk and both arms that began yesterday morning. She had an episode of the same appearance in April 2025, evaluated by dermatology, which resolved on a two-week course of cetirizine. Before this flare she had no infection, no new medication and no dietary change. No fever, joint pain, abdominal pain or breathing difficulty.\n\nPrior workup (April 2025, dermatology): CBC, CMP, TSH normal; tryptase 4.1 ng/mL.\n\nMeds: none.\nAllergies: NKDA.\nFHx: mother with seasonal allergic rhinitis; father with asthma.\nSHx: never smoker; alcohol 1-2 drinks/month.\n\nPE: Vitals WNL. Skin: well-demarcated wheals of varying size on trunk and arms, blanching with pressure. No other skin changes. HEENT, chest, heart and abdomen normal. No lip or tongue swelling.\n\nASSESSMENT: Acute urticaria, second episode. Each episode short-lived, no identifiable trigger by history, normal labs in April. This does not meet criteria for chronic urticaria.\n\nPLAN:\n- No further testing needed at this point.\n- Cetirizine 10 mg PO daily as needed for hives; during a flare, take it every day until it settles. Rx sent.\n- Return to clinic if hives occur most days for 6 weeks.\n- Lip or tongue swelling or any difficulty breathing: emergency care.\n\nAllergy & Immunology"
+            }
+          ]
+        },
+        {
+          "id": "2025-12-30a",
+          "kind": "portal_message",
+          "start": "2025-12-30T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hives update",
+          "conditions": [
+            {
+              "label": "Acute urticaria",
+              "icd10": "L50.9",
+              "action": "resolved"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update",
+              "author": "patient",
+              "date": "2025-12-30T09:15",
+              "body": "Just letting you know the hives cleared up by Sunday. The allergist said it's the same short-term kind as before and gave me cetirizine to keep at home for next time. Happy new year!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Update",
+              "author": "PCP",
+              "date": "2025-12-30T10:02",
+              "body": "So glad it settled quickly. Keep the cetirizine handy, and I'll file the allergist's note when it arrives. Happy new year to you too."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-05a",
+          "kind": "outside_records",
+          "start": "2026-01-05T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "allergy consult received",
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "author": "PCP",
+              "date": "2026-01-05T16:00",
+              "body": "Allergy consult 12/24 reviewed. Second episode acute urticaria, no further workup. Cetirizine 10 mg prn on med list. Return to allergy if hives most days for 6 wk."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "pharmacy",
+          "start": "2026-04-14T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "RN",
+              "date": "2026-04-14T10:40",
+              "body": "Pharmacy refill request: cetirizine 10 mg tab, #30. Original Rx from allergy, no refills left. Pt confirms by message she keeps it on hand, no hives since December, wants a bottle at home and one at her desk. Approved per PCP standing order, #30 with 2 refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "portal_message",
+          "start": "2026-07-28T13:22",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "author": "patient",
+              "date": "2026-07-28T13:22",
+              "body": "Hi, can I set up my physical for September? Also I think I'm due for a Pap this year?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "author": "front desk",
+              "date": "2026-07-28T14:05",
+              "body": "Hi Natalia, you're booked Tuesday 9/22 at 8:40. Yes, your Pap is due, and the doctor will do it at that visit. See you then!"
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T08:40",
+          "reason": "annual physical with Pap",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

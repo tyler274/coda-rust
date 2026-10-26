@@ -1,0 +1,2052 @@
+{
+  "unit": "unit-1690",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00001690/2024-08-13a: reaction \"Contact dermatitis\" not in catalog (text only)",
+    "left text-only (not verified): drug \"prenatal multivitamin with iron Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001690",
+      "given": "Iris",
+      "family": "Castro",
+      "birth_date": "1996-08-20",
+      "address_line": "88 Linden Street, Apt 2",
+      "phone": "+1-201-555-0114",
+      "email": "iris.castro@example.test",
+      "marital_status": "married",
+      "summary": "Thirty-year-old marketing coordinator with generalized anxiety disorder, hypothyroidism and iron deficiency anemia who joined in August 2024 while planning a pregnancy. Her first pregnancy ended with PPROM at 35 weeks complicated by chorioamnionitis and a preterm vaginal birth in May 2025; her second ended with a term vaginal birth in May 2026. Primary care follows her mood, thyroid and iron between two obstetric courses.",
+      "events": [
+        {
+          "id": "2024-08-13a",
+          "kind": "establish_care",
+          "start": "2024-08-13T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish primary care",
+          "conditions": [
+            {
+              "label": "Generalized anxiety disorder",
+              "action": "history"
+            },
+            {
+              "label": "Hypothyroidism",
+              "action": "history"
+            },
+            {
+              "label": "Iron deficiency anemia",
+              "action": "history"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "levothyroxine sodium 0.088 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning on an empty stomach",
+              "dose": {
+                "value": 88,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypothyroidism"
+            },
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Generalized anxiety disorder"
+            },
+            {
+              "drug_text": "prenatal multivitamin with iron Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Iron deficiency anemia; planning pregnancy"
+            },
+            {
+              "drug_text": "docusate sodium 100 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily as needed for constipation",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Penicillin",
+              "reaction": "Anaphylaxis",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            },
+            {
+              "substance": "Latex",
+              "reaction": "Contact dermatitis",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              81
+            ],
+            "hr": 73,
+            "rr": 16,
+            "temp_c": 36.5,
+            "spo2": 99,
+            "weight_kg": 63.5,
+            "height_cm": 163.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-13T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 245
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.87
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-13T10:05",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 16
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-13T10:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-13T10:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 119
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None; abstains during her childbearing years"
+            },
+            {
+              "item": "Occupation",
+              "value": "Marketing coordinator"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-08-13T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-13T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2024-08-13T09:20",
+              "author": "PCP",
+              "body": "27F here to get set up with us. Had been seeing a PCP in the area but wanted a practice she can reach directly. Records release signed today.\n\nShe would like to start trying for a pregnancy this fall, which is why she has been on a prenatal vitamin with iron for a few months. Wants to make sure her thyroid and anxiety are where they should be before then.\n\nAnxiety: GAD, on sertraline 50 for some time, feels it works. Some worry around work deadlines, sleeps fine. No panic attacks. Not interested in changing anything. GAD-7 6, PHQ-9 3.\nThyroid: hypothyroid, levothyroxine 88 mcg each morning, takes it apart from the vitamin. Last TSH was \"normal\" per her, will see records.\nIron: told years ago she was iron deficient. Gets her iron from the prenatal now. Uses docusate now and then for constipation from the iron.\n\nPSH: lap appendectomy at 16; wisdom teeth out.\nMeds: levothyroxine 88 mcg daily; sertraline 50 mg daily; prenatal vitamin w/ iron 1 tab daily; docusate 100 mg prn.\nAllergies: PENICILLIN - anaphylaxis. LATEX - contact dermatitis (gloves).\nFH: mother had preterm premature rupture of membranes with a pregnancy. Father with type 2 diabetes. Sister had chorioamnionitis in a prior pregnancy.\nSH: marketing coordinator. Never smoked. No alcohol at all right now. Never pregnant.\n\nExam: vitals as charted. Well appearing, pleasant. Thyroid smooth, not enlarged, no nodules. Heart regular, no murmur. Lungs clear. Abd soft, well-healed laparoscopic scars. No edema. Affect bright, speech normal.\n\nA/P\n1. GAD - stable on sertraline 50. Talked through sertraline in pregnancy; reasonable to continue, she prefers to stay on it.\n2. Hypothyroidism - TSH today. Once pregnant she should let us know right away so we can recheck.\n3. Iron deficiency anemia - CBC and ferritin. Continue prenatal with iron.\n4. Preconception - on prenatal vitamin already. CMP for baseline.\n5. Health maintenance - will look for her last Pap in outside records. Flu/COVID this fall.\n\nFollow up after labs, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.0,
+            "height_cm": 163.0,
+            "labs": {
+              "Ferritin": 16,
+              "Free Thyroxine": 1.2,
+              "Hemoglobin": 11.9,
+              "Thyroid Stimulating Hormone": 2.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-08-14a",
+          "kind": "portal_message",
+          "start": "2024-08-14T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent lab results",
+              "date": "2024-08-14T16:40",
+              "author": "PCP",
+              "body": "Hi Iris, your labs from yesterday are in. Thyroid level is normal on the 88 mcg, so no change. Kidney, liver and sugar are normal. Your hemoglobin is 11.9, just under the normal range, and your ferritin (iron stores) is 16, on the low side. That fits with the iron deficiency you've had before. Keep taking the prenatal with iron every day, and we will recheck in a few months or once you are pregnant. Let me know if you have questions."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-26a",
+          "kind": "outside_records",
+          "start": "2024-08-26T11:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Records from prior primary care practice",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2023-06-07T10:00",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. General categorization: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "date": "2024-08-26T11:15",
+              "author": "outside primary care",
+              "body": "Records received from prior primary care office, 38 pages, covering 2019 to 2024.\n\nProblem list: generalized anxiety disorder; hypothyroidism; iron deficiency anemia.\nMedications at last visit: levothyroxine 88 mcg daily, sertraline 50 mg daily, prenatal multivitamin with iron daily, docusate 100 mg as needed.\nAllergies: penicillin (anaphylaxis); latex (contact dermatitis).\nSurgical history: laparoscopic appendectomy (adolescent), third molar extraction.\nCervical cytology 06/2023: negative for intraepithelial lesion or malignancy.\n\nNo outstanding orders or referrals."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Records Review",
+              "date": "2024-08-27T08:10",
+              "author": "PCP",
+              "body": "Old records reviewed. Lists match what she told us. Pap 6/2023 NILM, next due 2026. Abstracted."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "pharmacy",
+          "start": "2024-09-10T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy Refill Request",
+              "date": "2024-09-10T10:30",
+              "author": "RN",
+              "body": "Pharmacy fax: refill request sertraline 50 mg, last filled by prior PCP. Pt seen 8/13, on med list. 90-day supply with 1 refill sent per PCP protocol."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-03a",
+          "kind": "portal_message",
+          "start": "2024-10-03T07:52",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Positive home pregnancy test",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "diagnosed",
+              "onset": "2024-08-27",
+              "note": "LMP 2024-08-27"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2024",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "New pregnancy, LMP 2024-08-27"
+            },
+            {
+              "id": "tsh-2024-10",
+              "action": "placed",
+              "order": "TSH and free T4",
+              "category": "lab",
+              "reason": "Hypothyroidism in early pregnancy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test!",
+              "date": "2024-10-03T07:52",
+              "author": "patient",
+              "body": "Hi, I took a test this morning and it was positive! First day of my last period was August 27. You said to let you know right away for the thyroid. Also is it really ok to keep taking the sertraline? I'm a little nervous now that it's real. Who should I see for OB?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive test!",
+              "date": "2024-10-03T12:25",
+              "author": "PCP",
+              "body": "Congratulations! That puts you at about 5 weeks. I've put in a referral to an obstetrics group near you; they usually see new pregnancies around 8 weeks. I also ordered a thyroid level (TSH and free T4), you can come in for the blood draw any morning this week or next.\n\nYes, keep taking the sertraline 50 mg. It is one of the most studied medicines in pregnancy, and stopping it suddenly would be the bigger risk for you. Keep the levothyroxine and prenatal vitamin going too. Any bleeding or bad cramping, call us or the OB right away."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-07a",
+          "kind": "lab_only",
+          "start": "2024-10-07T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "TSH in early pregnancy",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-10-07T08:15",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-07T08:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "tsh-2024-10",
+              "action": "done",
+              "date": "2024-10-07T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "TSH Result Note",
+              "date": "2024-10-08T13:00",
+              "author": "PCP",
+              "body": "TSH and free T4 normal at ~6 wks. Continue levothyroxine 88 mcg. Will copy OB once she is seen. Message sent to pt."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-22T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T16:18"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2024-10-22T16:10",
+              "author": "RN",
+              "body": "Pt ~8 wks pregnant, here for flu and COVID. Screening questions reviewed, no contraindications. Latex allergy - non-latex gloves used. Influenza 0.5 mL IM right deltoid; COVID-19 Pfizer 2024-25 0.3 mL IM left deltoid. Observed 15 min, no reaction. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "outside_records",
+          "start": "2024-11-12T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Obstetrics new pregnancy visit letter",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-10-24T10:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2024",
+              "action": "done",
+              "date": "2024-11-12T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics Consultation Letter",
+              "date": "2024-11-12T14:00",
+              "author": "obstetrics",
+              "body": "Dear Doctor,\n\nThank you for referring Ms. Castro, whom we saw on 10/24/2024 for her initial obstetric visit. She is a 28-year-old G1P0 at 8 weeks 2 days by a certain last menstrual period of 8/27/2024.\n\nHistory reviewed: generalized anxiety disorder on sertraline 50 mg, hypothyroidism on levothyroxine 88 mcg, history of iron deficiency anemia on a prenatal vitamin with iron. Allergies: penicillin (anaphylaxis), latex. Family history notable for PPROM in her mother and chorioamnionitis in her sister.\n\nTransvaginal ultrasound showed a single intrauterine pregnancy with cardiac activity, crown-rump length consistent with dates. EDD 6/3/2025 by LMP, confirmed by ultrasound.\n\nInitial prenatal labs: HIV nonreactive, hepatitis B surface antigen negative, hepatitis C antibody nonreactive, RPR nonreactive. Remaining routine prenatal labs were unremarkable.\n\nPlan: continue current medications. We will follow her through the pregnancy and send updates. Please continue to manage her thyroid and anxiety; we would appreciate copies of TSH results.\n\nSincerely,\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "office_visit",
+          "start": "2025-01-14T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anxiety and thyroid follow-up in pregnancy",
+          "vitals": {
+            "bp": [
+              96,
+              66
+            ],
+            "hr": 72,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 68.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-01-14T15:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 7
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-14T14:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-01-14T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-01-14T14:40",
+              "author": "PCP",
+              "body": "S: 20 wks today, G1. Followed by OB, everything has been routine so far, anatomy scan scheduled next week. Anxiety a bit up with the pregnancy, mostly worry about whether things are going ok between appointments. Still sleeping. No panic. Taking sertraline 50 daily, levothyroxine 88 in the morning, prenatal w/ iron, docusate sometimes. No palpitations, no heat or cold intolerance.\nGAD-7 7, PHQ-9 4.\n\nO: vitals as charted, weight up as expected. Comfortable. Thyroid not enlarged. Heart regular. Lungs clear. Gravid abdomen. No edema. Mood a little anxious, affect full.\n\nA/P:\n1. GAD - mild uptick, reasonable for circumstances. Discussed options; she'd rather not change the dose. Gave info on perinatal counseling resources if she wants them. Continue sertraline 50.\n2. Hypothyroidism - TSH/FT4 today, will forward to OB.\n3. IDA - OB is following her CBC in pregnancy. Continue prenatal with iron.\nRTC after delivery or sooner."
+            },
+            {
+              "type": "Result Note",
+              "title": "TSH Result Note",
+              "date": "2025-01-15T09:30",
+              "author": "PCP",
+              "body": "TSH and free T4 normal at 20 wks. No change to levothyroxine. Copy faxed to OB. Pt notified via portal."
+            }
+          ],
+          "state": {
+            "weight_kg": 68.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "outside_records",
+          "start": "2025-02-11T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Obstetrics update letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics Progress Letter",
+              "date": "2025-02-11T10:20",
+              "author": "obstetrics",
+              "body": "Re: Iris Castro, DOB 08/20/1996\n\nSeen 01/23/2025 at 21 weeks 2 days. Detailed anatomy ultrasound performed: single live intrauterine gestation, normal fetal anatomy survey, fetal growth appropriate for gestational age, normal amniotic fluid, posterior placenta clear of the cervix.\n\nPregnancy uncomplicated to date. Thank you for the TSH result. Medications: levothyroxine 88 mcg, sertraline 50 mg, prenatal vitamin with iron, docusate as needed. Allergies: penicillin (anaphylaxis), latex.\n\nNext visit in 4 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-20a",
+          "kind": "outside_records",
+          "start": "2025-03-20T13:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Obstetrics visit note with immunization",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-03-11T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics Visit Note",
+              "date": "2025-03-20T13:45",
+              "author": "obstetrics",
+              "body": "Prenatal visit 03/11/2025, 28w0d. Feeling well, active fetal movement, no contractions, leakage of fluid or bleeding. Fundal height appropriate for dates, fetal heart tones normal. Growth ultrasound earlier this month normal. Tdap 0.5 mL IM given today. Allergies: PCN (anaphylaxis), latex - latex-free supplies. Pregnancy remains uncomplicated. RTC 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "office_visit",
+          "start": "2025-04-08T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "date": "2025-04-07T15:05",
+              "author": "front desk",
+              "body": "Pt called to cancel 4/8 visit, has OB appointment same week and can't take more time off. Will rebook after the baby comes."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-05-01a",
+          "kind": "hospital_admission",
+          "start": "2025-05-01T09:10",
+          "end": "2025-05-04T11:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Leakage of fluid at 35 weeks",
+          "conditions": [
+            {
+              "label": "Preterm premature rupture of membranes (PPROM)",
+              "action": "diagnosed",
+              "onset": "2025-05-01",
+              "icd10": "O42.013"
+            },
+            {
+              "label": "Intra-amniotic infection (chorioamnionitis)",
+              "action": "diagnosed",
+              "onset": "2025-05-01",
+              "icd10": "O41.1230"
+            },
+            {
+              "label": "Preterm premature rupture of membranes (PPROM)",
+              "action": "resolved",
+              "onset": "2025-05-01",
+              "icd10": "O42.013"
+            },
+            {
+              "label": "Intra-amniotic infection (chorioamnionitis)",
+              "action": "resolved",
+              "onset": "2025-05-01",
+              "icd10": "O41.1230"
+            },
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "resolved",
+              "onset": "2024-08-27"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "vancomycin 1000 MG Injection",
+              "action": "start",
+              "sig": "1 g IV every 12 hours",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q12H",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "GBS prophylaxis, unknown GBS status, penicillin anaphylaxis"
+            },
+            {
+              "drug_text": "oxytocin 10 UNT/ML Injectable Solution",
+              "action": "start",
+              "sig": "IV infusion per labor induction protocol",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "Induction of labor for PPROM"
+            },
+            {
+              "drug_text": "gentamicin 40 MG/ML Injectable Solution",
+              "action": "start",
+              "sig": "5 mg/kg IV once daily",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "Intra-amniotic infection"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (1000 mg) by mouth every 6 hours as needed for fever",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Intrapartum fever"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-05-01T09:15",
+              "bp": [
+                116,
+                72
+              ],
+              "hr": 84,
+              "rr": 16,
+              "temp_c": 36.8,
+              "spo2": 99
+            },
+            {
+              "time": "2025-05-01T21:00",
+              "bp": [
+                120,
+                75
+              ],
+              "hr": 110,
+              "temp_c": 38.7
+            },
+            {
+              "time": "2025-05-04T08:00",
+              "bp": [
+                112,
+                70
+              ],
+              "hr": 82,
+              "rr": 16,
+              "temp_c": 36.9,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-05-01T21:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 18.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.04
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 63
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 11.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-01T21:15",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 24
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-05-01T21:20",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.2
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Obstetric ultrasound with biophysical profile",
+              "loinc": "11525-3",
+              "performed": "2025-05-01T09:55",
+              "text": "Indication: suspected rupture of membranes at 35 weeks 2 days.\nSingle live intrauterine pregnancy. Cephalic presentation. Fetal cardiac activity present.\nAmniotic fluid index: 3 cm.\nBiophysical profile: fetal breathing 2/2, gross body movement 2/2, fetal tone 2/2, amniotic fluid 2/2 by the institution's single-deepest-pocket criterion; total 8/8.\nPlacenta posterior, no previa.",
+              "conclusion": "Single live cephalic fetus with markedly reduced amniotic fluid (AFI 3 cm). Biophysical profile normal, 8/8."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetric Triage and Admission H&P",
+              "date": "2025-05-05T15:30",
+              "author": "obstetrics",
+              "body": "Date of service: 05/01/2025 09:10\n\n28 y/o G1P0 at 35w2d by LMP consistent with first-trimester ultrasound, presenting with clear fluid leaking intermittently from the vagina since about 03:00, roughly 6 hours. No contractions. No vaginal bleeding. Fetal movement normal. Prenatal course has been uncomplicated with adequate care and normal growth scans.\n\nPMH: generalized anxiety disorder, hypothyroidism, iron deficiency anemia.\nPSH: laparoscopic appendectomy age 16; wisdom teeth extraction.\nMeds: levothyroxine 88 mcg daily, sertraline 50 mg daily, prenatal vitamin with iron daily, docusate 100 mg PRN.\nAllergies: PENICILLIN (anaphylaxis); LATEX (contact dermatitis).\nFH: mother with PPROM; father with type 2 diabetes; sister with chorioamnionitis in a prior pregnancy.\nSH: marketing coordinator, never smoker, no alcohol.\n\nExam: VS stable, afebrile. Abdomen gravid, uterus soft and non-tender, fundal height appropriate for dates. Sterile speculum: clear fluid pooling in the posterior vault. Nitrazine positive. Ferning seen on microscopy. Cervix not examined digitally.\nUltrasound: cephalic, AFI 3 cm, BPP 8/8.\n\nA/P: PPROM at 35w2d.\n- Admit to L&D. Given >=34 wk, plan delivery; induction with oxytocin.\n- GBS status unknown. Severe penicillin allergy (anaphylaxis): vancomycin 1 g IV q12h for GBS prophylaxis.\n- Continuous fetal monitoring. Monitor for signs of infection.\n- Continue home levothyroxine, sertraline, PNV.\n- Latex precautions."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics Event Note — Intrapartum Fever",
+              "date": "2025-05-05T15:30",
+              "author": "obstetrics",
+              "body": "Date of service: 05/01/2025 21:00\n\nCalled for maternal fever. Membranes ruptured about 18 hours ago. Since about 15:00 she has had lower abdominal pain and felt feverish; now 6 hours of symptoms. On oxytocin.\n\nT 38.7 C (101.7 F), HR 110, BP 120/75.\nFHR baseline 170 bpm.\nUterus tender to palpation, worst at the fundus.\n\nLabs: WBC 18.0, Hgb 12.2, Plt 250. CRP 24 mg/L (ref <10). UA unremarkable.\n\nImpression: intra-amniotic infection (chorioamnionitis) in the setting of PPROM.\nPlan:\n- Continue vancomycin; add gentamicin 5 mg/kg IV daily (penicillin anaphylaxis precludes ampicillin).\n- Acetaminophen 1 g PO for fever.\n- Continue oxytocin, anticipate vaginal delivery.\n- Newborn team to attend delivery."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2025-05-05T15:30",
+              "author": "obstetrics",
+              "body": "Admission: 05/01/2025   Discharge: 05/04/2025\n\nAdmitting diagnosis: preterm premature rupture of membranes at 35 weeks 2 days.\nAdditional diagnosis: intra-amniotic infection (chorioamnionitis).\n\nHospital course: Admitted from triage after rupture was confirmed by pooling, nitrazine and ferning, with an AFI of 3 cm and a BPP of 8/8. GBS status was unknown, so she received vancomycin for prophylaxis given her penicillin anaphylaxis, and oxytocin induction was started. That evening she developed fever to 38.7 with maternal and fetal tachycardia, fundal tenderness and a WBC of 18.0, consistent with intra-amniotic infection. Gentamicin was added. She progressed and had a spontaneous vaginal delivery on 05/02/2025 at 04:40 at 35 weeks 3 days. Liveborn infant, received by the newborn team; infant care is documented separately in the newborn record.\n\nAntibiotics were discontinued after delivery. She remained afebrile postpartum with a firm, non-tender fundus and normal lochia. Ambulating, voiding, tolerating diet.\n\nDischarge medications: levothyroxine 88 mcg daily; sertraline 50 mg daily; prenatal vitamin with iron daily; docusate 100 mg as needed.\nAllergies: penicillin (anaphylaxis); latex.\n\nObstetric history now G1P0101.\n\nFollow-up: obstetrics postpartum visit in 6 weeks; primary care within 2 weeks. Return for fever, heavy bleeding, foul discharge, worsening abdominal pain, or mood concerns."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-06a",
+          "kind": "telephone",
+          "start": "2025-05-06T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Phone Call",
+              "date": "2025-05-06T10:20",
+              "author": "RN",
+              "body": "Called pt 2 days after discharge (delivered 5/2 at 35 wks after PPROM, treated for chorio). Discharge summary received and in chart. Pt says she is sore and tired but ok. No fever since the hospital, bleeding like a heavy period and slowing down, no clots bigger than a quarter, no calf swelling. Taking levothyroxine, sertraline, prenatal. Mood \"up and down, mostly ok.\" Reviewed warning signs: fever, soaking a pad an hour, foul discharge, chest pain, thoughts of harming self - call or go in. Appt made with PCP 5/14."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-14a",
+          "kind": "office_visit",
+          "start": "2025-05-14T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up after delivery",
+          "vitals": {
+            "bp": [
+              115,
+              71
+            ],
+            "hr": 68,
+            "temp_c": 36.9,
+            "spo2": 99,
+            "weight_kg": 70.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-14T11:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.78
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 226
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-14T11:45",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-14T11:45",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 7
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-05-14T11:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-05-14T11:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-05-14T11:00",
+              "author": "PCP",
+              "body": "Hospital follow-up. Admitted 5/1 at 35w2d with PPROM (AFI 3, BPP 8/8), got vanc for GBS ppx because of her PCN anaphylaxis, induced. Developed intra-amniotic infection that evening - T 38.7, HR 110, fetal tachycardia 170, fundal tenderness, WBC 18, CRP 24. Gent added. SVD 5/2, antibiotics stopped after. Home 5/4. Discharge summary reviewed, med rec done - no new meds, no changes.\n\nToday she is 12 days postpartum. No fevers. Bleeding much lighter. Some perineal soreness, improving. Eating and sleeping when she can. Bowels ok, using docusate. Mood: tearful a couple of times the first week, better now. Anxious about getting back to normal but no hopelessness, no thoughts of self-harm. Taking sertraline daily.\nGAD-7 7, PHQ-9 5.\n\nExam: vitals as charted, afebrile. Tired-appearing but well. Heart regular. Lungs clear. Abdomen soft, non-tender, fundus not palpable above the pubis. Calves soft, non-tender. Affect appropriate, a little tired.\n\nA/P:\n1. Postpartum after PPROM and chorioamnionitis, treated - recovering as expected. OB postpartum visit is in June.\n2. GAD - stable, continue sertraline 50. Will keep an eye on postpartum mood; she knows to call.\n3. Hypothyroidism - TSH today, continue 88 mcg.\n4. IDA - CBC and ferritin today. Continue prenatal with iron.\n5. Records - discharge summary scanned."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.0,
+            "labs": {
+              "Ferritin": 13,
+              "Hemoglobin": 11.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-15a",
+          "kind": "portal_message",
+          "start": "2025-05-15T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results from your visit",
+              "date": "2025-05-15T17:10",
+              "author": "PCP",
+              "body": "Hi Iris - thyroid is normal, stay on the 88 mcg. Hemoglobin is 11.4 and ferritin 13, both a little lower than in August, which is expected after delivery. Please keep taking the prenatal vitamin with iron every day. We'll recheck at your physical later this summer. Hope you're getting some rest."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results from your visit",
+              "date": "2025-05-15T20:48",
+              "author": "patient",
+              "body": "Thank you! Will do."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-18a",
+          "kind": "outside_records",
+          "start": "2025-06-18T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Obstetrics postpartum visit letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics Postpartum Visit",
+              "date": "2025-06-18T09:40",
+              "author": "obstetrics",
+              "body": "Postpartum visit 06/12/2025, 6 weeks after preterm vaginal delivery complicated by PPROM and intra-amniotic infection.\n\nRecovering well. Lochia has stopped. No fever, pelvic pain or urinary symptoms. Mood reported as stable on sertraline.\nExam: BP normal. Abdomen soft, non-tender. Perineum healed. Uterus normal size, non-tender. \n\nAssessment: normal postpartum recovery. Discussed that PPROM and chorioamnionitis may recur in a future pregnancy and that she should come to us early when pregnant.\nMeds unchanged: levothyroxine 88 mcg, sertraline 50 mg, prenatal vitamin with iron, docusate PRN. Allergies: penicillin (anaphylaxis), latex.\nReturn to primary care for ongoing care."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "pharmacy",
+          "start": "2025-07-22T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill requests",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2025-07-22T09:05",
+              "author": "RN",
+              "body": "eRx requests from pharmacy: levothyroxine 88 mcg and sertraline 50 mg, 90 days each. Last TSH 5/14 normal, seen 5/14. Approved per protocol, 1 refill each. Physical already scheduled 8/19."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "annual_physical",
+          "start": "2025-08-19T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              120,
+              77
+            ],
+            "hr": 61,
+            "rr": 17,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 64.9,
+            "height_cm": 164.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-19T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.06
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 248
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-19T09:20",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 21
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-19T09:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 4
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-08-19T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-19T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-08-19T08:40",
+              "author": "PCP",
+              "body": "Annual exam. Turns 29 tomorrow. About 3.5 months out from her May delivery and feeling much more like herself. Back at work. Sleeping better. Anxiety well controlled on sertraline 50 - GAD-7 4, PHQ-9 2. Takes levothyroxine 88 mcg every morning. Still on the prenatal with iron daily; docusate rarely.\n\nROS otherwise negative: no fatigue beyond the usual, no palpitations, no menstrual concerns, no bowel or urinary issues, no rashes.\n\nPMH: GAD, hypothyroidism, IDA. OB: G1P0101 - PPROM 35 wks 5/2025 with chorioamnionitis, SVD.\nPSH: lap appy at 16, wisdom teeth.\nAllergies: PCN (anaphylaxis), latex (contact dermatitis).\nFH: mother PPROM, father T2DM, sister chorioamnionitis.\nSH: marketing coordinator; never smoker; no alcohol.\n\nExam: vitals as charted. NAD. HEENT normal. Thyroid normal size, no nodules. No adenopathy. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Skin without rashes. Extremities without edema. Neuro grossly normal. Mood and affect normal. Pelvic deferred - Pap not due until 2026.\n\nA/P\n1. Health maintenance: Pap 6/2023 NILM, next due 2026. HIV/hep B/hep C screened negative with prenatal labs. Flu and COVID in the fall. Tdap given 3/2025.\n2. GAD - doing well, continue sertraline 50.\n3. Hypothyroidism - TSH today.\n4. IDA - CBC, ferritin. Continue prenatal with iron.\nFollow up in 6 months or sooner."
+            }
+          ],
+          "state": {
+            "weight_kg": 66.0,
+            "labs": {
+              "Ferritin": 21,
+              "Hemoglobin": 12.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-08-21a",
+          "kind": "portal_message",
+          "start": "2025-08-21T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "date": "2025-08-21T12:15",
+              "author": "PCP",
+              "body": "Hi Iris, good news on your labs. Hemoglobin is back to 12.1 (normal) and ferritin is up to 21. Thyroid normal on 88 mcg. No changes - keep doing what you're doing. Happy belated birthday!"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-04a",
+          "kind": "portal_message",
+          "start": "2025-09-04T06:58",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Positive home pregnancy test",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "diagnosed",
+              "onset": "2025-08-03",
+              "note": "LMP 2025-08-03"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2025",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "Pregnancy, LMP 2025-08-03; prior PPROM and chorioamnionitis"
+            },
+            {
+              "id": "tsh-2025-09",
+              "action": "placed",
+              "order": "TSH and free T4",
+              "category": "lab",
+              "reason": "Hypothyroidism in early pregnancy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pregnant again",
+              "date": "2025-09-04T06:58",
+              "author": "patient",
+              "body": "Good morning - I'm pregnant again! Positive test this morning, LMP was August 3rd. A little sooner than planned. I want to go back to the same OB group, do I need a new referral with my insurance? And I assume you want the thyroid test again?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pregnant again",
+              "date": "2025-09-04T11:40",
+              "author": "PCP",
+              "body": "Congratulations! Yes, your plan needs a new referral - I've sent it to the same OB group and flagged that they wanted to see you early this time. TSH and free T4 are ordered; come in for the draw whenever you can this week or early next. Keep taking all your medicines including the prenatal."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-08a",
+          "kind": "lab_only",
+          "start": "2025-09-08T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "TSH in early pregnancy",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-09-08T07:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-08T07:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "tsh-2025-09",
+              "action": "done",
+              "date": "2025-09-08T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "TSH Result Note",
+              "date": "2025-09-09T08:20",
+              "author": "PCP",
+              "body": "TSH/FT4 wnl at 5 wks. Continue levothyroxine 88. Will send to OB with referral. Pt messaged."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T15:38"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2025-10-14T15:30",
+              "author": "RN",
+              "body": "10 wks pregnant. Flu (trivalent, 2025-26) 0.5 mL IM R deltoid and COVID-19 Pfizer 2025-26 0.3 mL IM L deltoid. Non-latex gloves. Tolerated, no reaction at 15 min. Pt reports sore arm last year only."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-30a",
+          "kind": "outside_records",
+          "start": "2025-10-30T14:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Obstetrics initial visit letter, second pregnancy",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-09-18T10:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2025",
+              "action": "done",
+              "date": "2025-10-30T14:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics Consultation Letter",
+              "date": "2025-10-30T14:25",
+              "author": "obstetrics",
+              "body": "Dear Doctor,\n\nWe saw Ms. Castro on 09/18/2025 for her first prenatal visit of this pregnancy at 6 weeks 4 days. She is now G2P0101: her first pregnancy, which we followed, ended in a vaginal delivery at 35 weeks 3 days in May 2025 after PPROM complicated by intra-amniotic infection.\n\nDating ultrasound: single intrauterine pregnancy with cardiac activity, size consistent with LMP of 08/03/2025. EDD 05/10/2026.\n\nPrenatal labs: HIV nonreactive, hepatitis B surface antigen negative, hepatitis C antibody nonreactive, RPR nonreactive; other routine labs unremarkable.\n\nCurrent medications: levothyroxine 88 mcg, sertraline 50 mg, prenatal vitamin with iron, docusate as needed. Allergies: penicillin (anaphylaxis), latex.\n\nGiven her history we will see her at closer intervals. Thank you for the TSH result; please continue to send thyroid values.\n\nSincerely,\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2025-12-02a",
+          "kind": "office_visit",
+          "start": "2025-12-02T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anxiety and thyroid follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No Show",
+              "date": "2025-12-02T16:05",
+              "author": "front desk",
+              "body": "Pt did not arrive for 3:20 appt. Called cell, left message to reschedule. Offered video visit if easier."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "telehealth_visit",
+          "start": "2026-01-13T12:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anxiety follow-up in pregnancy",
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 8
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2026-01-13T12:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2026-01-13T12:20",
+              "author": "PCP",
+              "body": "Video visit from her office over lunch, rescheduled from the missed December appt. 23 wks. OB seeing her every 2-3 wks given last pregnancy; she says all checks have been normal and the baby is growing fine.\n\nAnxiety: more on her mind this time - keeps thinking about last May, worries every time she feels any wetness. Sleeping ok most nights. Working full time. No panic attacks. Not depressed. GAD-7 8, PHQ-9 4. Taking sertraline 50 daily, levothyroxine 88, prenatal.\n\nObs: well appearing on video, speaking easily, appropriate affect, a bit anxious when talking about the last delivery.\n\nA/P\n1. GAD with pregnancy-related worry - talked through what she can watch for and when to call L&D, which seemed to help. Offered to increase sertraline to 75 or a therapy referral; she wants to hold for now and will message if it gets worse. Continue 50.\n2. Hypothyroidism - OB has been checking TSH; asked her to have them send results. Continue 88.\n3. IDA - on prenatal with iron.\nFollow up after delivery."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-26a",
+          "kind": "outside_records",
+          "start": "2026-02-26T10:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Obstetrics visit note with immunization",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2026-02-17T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics Visit Note",
+              "date": "2026-02-26T10:50",
+              "author": "obstetrics",
+              "body": "Prenatal visit 02/17/2026 at 28w2d. G2P0101. Hx PPROM at 35 wks with intra-amniotic infection.\nNo leakage of fluid, bleeding or contractions. Good fetal movement.\nFundal height appropriate for dates, fetal heart tones normal. Anatomy survey at 20 wks normal; growth scan this month normal, fluid normal.\nTdap 0.5 mL IM L deltoid today.\nTSH from last month in range, copy to PCP.\nMeds: levothyroxine 88 mcg, sertraline 50 mg, PNV with iron, docusate prn. Allergies: penicillin (anaphylaxis), latex.\nPlan: continue close follow-up; reviewed signs of rupture of membranes and preterm labor."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "portal_message",
+          "start": "2026-03-24T19:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "date": "2026-03-24T19:30",
+              "author": "patient",
+              "body": "Hi, can I get my levothyroxine and sertraline refilled for 3 months? I want to have plenty on hand before the baby comes. Same pharmacy. Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "date": "2026-03-25T08:45",
+              "author": "RN",
+              "body": "Both sent to your pharmacy, 90 days with a refill. Good luck these last weeks!"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-03a",
+          "kind": "hospital_admission",
+          "start": "2026-05-03T02:40",
+          "end": "2026-05-05T11:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Labor at term",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "resolved",
+              "onset": "2025-08-03"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-05-03T02:50",
+              "bp": [
+                118,
+                74
+              ],
+              "hr": 88,
+              "rr": 18,
+              "temp_c": 36.8,
+              "spo2": 99
+            },
+            {
+              "time": "2026-05-05T08:00",
+              "bp": [
+                110,
+                68
+              ],
+              "hr": 78,
+              "rr": 16,
+              "temp_c": 36.7,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-03T03:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 257
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Delivery Note",
+              "date": "2026-05-06T14:10",
+              "author": "obstetrics",
+              "body": "Date of service: 05/03/2026\n\n29 y/o G2P0101 at 39w0d (EDD 05/10/2026) admitted in spontaneous labor at 02:40. Prenatal care began early and this pregnancy has been uncomplicated. History of PPROM with intra-amniotic infection at 35 weeks in 2025. Allergies: penicillin (anaphylaxis), latex - latex-free room.\n\nSpontaneous vaginal delivery at 08:12 of a full-term male infant. Amniotic fluid clear.\n\nNewborn: good tone and a strong cry at birth. Cord clamped and cut; infant placed on mother's abdomen. Pink initially, then mild central cyanosis by the end of the first minute. HR 140, RR 50 with good respiratory effort, active muscle tone, crying vigorously. Warm room; infant dried and stimulated with back rubbing. Cyanosis resolved with routine care by 5 minutes. Term infant to routine newborn care with the pediatric team.\n\nPlacenta delivered spontaneously, intact. EBL within normal limits. Mother stable."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2026-05-06T14:10",
+              "author": "obstetrics",
+              "body": "Admission: 05/03/2026   Discharge: 05/05/2026\n\nDiagnosis: term pregnancy at 39 weeks 0 days, delivered by spontaneous vaginal delivery. Obstetric history now G2P1102.\n\nCourse: admitted in spontaneous labor, uncomplicated labor and delivery on 05/03/2026 of a term male infant (see delivery note). Postpartum course routine: afebrile, fundus firm, lochia appropriate, ambulating and voiding, pain controlled.\n\nPMH: generalized anxiety disorder, hypothyroidism, iron deficiency anemia.\nDischarge medications (unchanged from home): levothyroxine 88 mcg daily; sertraline 50 mg daily; prenatal vitamin with iron daily; docusate 100 mg as needed.\nAllergies: penicillin (anaphylaxis); latex (contact dermatitis).\n\nFollow-up: obstetrics postpartum visit in 6 weeks. Primary care within 1-2 weeks for thyroid, mood and anemia follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-06a",
+          "kind": "telephone",
+          "start": "2026-05-06T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Phone Call",
+              "date": "2026-05-06T09:40",
+              "author": "RN",
+              "body": "Spoke with pt, day 3 after term SVD 5/3, home 5/5. Feels \"a lot better than last time.\" No fever. Bleeding moderate and decreasing. No headache, vision changes, chest pain or leg swelling. Taking her usual meds, no new ones. Mood good, tired. Reviewed when to call. PCP visit booked 5/12."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "office_visit",
+          "start": "2026-05-12T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up after delivery",
+          "vitals": {
+            "bp": [
+              109,
+              76
+            ],
+            "hr": 72,
+            "temp_c": 36.2,
+            "spo2": 100,
+            "weight_kg": 70.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-12T11:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.69
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 246
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-12T11:10",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-12T11:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 7
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-05-12T10:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-05-12T11:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cbc-iron-recheck-2026",
+              "action": "placed",
+              "order": "CBC and ferritin",
+              "category": "lab",
+              "reason": "Iron deficiency anemia, recheck in 3 months"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2026-05-12T10:30",
+              "author": "PCP",
+              "body": "9 days after term SVD (5/3, 39 wks, boy). Uncomplicated labor and delivery, home 5/5. Delivery note and discharge summary reviewed. Med rec - same four meds, nothing new.\n\nDoing well. Bleeding light. Sore but improving. No fever, no urinary symptoms. Sleep is in pieces. Mood \"honestly better than last year\" - some worry, no low mood, no thoughts of self-harm. GAD-7 7, PHQ-9 5.\n\nExam: vitals as charted. Tired but well appearing. Heart regular. Lungs clear. Abdomen soft, uterus not palpable above the symphysis. Calves non-tender. Affect bright.\n\nA/P\n1. Postpartum, term SVD - routine recovery. OB postpartum visit mid-June.\n2. GAD - stable on sertraline 50, continue. She knows to reach out if mood changes in the coming weeks.\n3. Hypothyroidism - TSH today, continue 88.\n4. IDA - CBC/ferritin today. Continue prenatal with iron.\nPhysical due this fall; Pap due this year."
+            }
+          ],
+          "state": {
+            "weight_kg": 71.0,
+            "labs": {
+              "Ferritin": 12,
+              "Hemoglobin": 11.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-13a",
+          "kind": "portal_message",
+          "start": "2026-05-13T16:55",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your labs",
+              "date": "2026-05-13T16:55",
+              "author": "PCP",
+              "body": "Hi Iris - thyroid is normal on the 88 mcg. Hemoglobin is 11.3 and ferritin is 12, a little low, similar to after your first delivery. Stay on the prenatal with iron every day. I put in an order to recheck your blood count and iron level in about 3 months - you can go to the lab any time in August."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your labs",
+              "date": "2026-05-14T06:20",
+              "author": "patient",
+              "body": "Ok thanks, I'll set a reminder for August."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "outside_records",
+          "start": "2026-06-23T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Obstetrics postpartum visit letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics Postpartum Visit",
+              "date": "2026-06-23T11:30",
+              "author": "obstetrics",
+              "body": "Postpartum visit 06/16/2026, 6 weeks after term spontaneous vaginal delivery.\n\nNo complaints. Bleeding has stopped. No pelvic pain, urinary or bowel problems. Mood stable on sertraline.\nExam: BP normal. Abdomen soft. Perineum healed. Uterus involuted, non-tender.\n\nAssessment: normal postpartum recovery. G2P1102.\nMedications: levothyroxine 88 mcg, sertraline 50 mg, prenatal vitamin with iron, docusate PRN. Allergies: penicillin (anaphylaxis), latex.\nCervical screening due this year - deferred to primary care per patient preference.\nReturn to primary care for ongoing care."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "portal_message",
+          "start": "2026-07-21T21:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Scheduling annual physical",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "date": "2026-07-21T21:05",
+              "author": "patient",
+              "body": "Hi, I need to book my yearly physical and my OB said I'm due for a Pap, can you do both at once? Tuesdays are best for me. Also will do the blood work in August like you said."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "date": "2026-07-22T09:15",
+              "author": "front desk",
+              "body": "Hi Iris, you're booked for your physical with Pap on Tuesday 9/22 at 9:00. Please arrive 10 minutes early. The lab order for August is already in, no appointment needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-25a",
+          "kind": "lab_only",
+          "start": "2026-08-25T07:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anemia recheck",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-08-25T07:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.93
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 276
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-25T07:35",
+              "pending": true,
+              "results": [
+                {
+                  "test": "Ferritin"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-25T07:35"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cbc-iron-recheck-2026",
+              "action": "done",
+              "date": "2026-08-25T07:35"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.9
+            }
+          }
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical with Pap",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Intra-amniotic infection (chorioamnionitis)|O41.1230": {
+        "code": "O41.1230",
+        "display": "Chorioamnionitis, third trimester, not applicable or unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Preterm premature rupture of membranes (PPROM)|O42.013": {
+        "code": "O42.013",
+        "display": "Preterm premature rupture of membranes, onset of labor within 24 hours of rupture, third trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "docusate sodium 100 MG Oral Capsule": {
+        "code": "1115005",
+        "display": "docusate sodium 100 MG Oral Capsule",
+        "ingredient": "docusate",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "gentamicin 40 MG/ML Injectable Solution": {
+        "code": "313996",
+        "display": "gentamicin 40 MG/ML Injectable Solution",
+        "ingredient": "gentamicin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "oxytocin 10 UNT/ML Injectable Solution": {
+        "code": "238013",
+        "display": "oxytocin 10 UNT/ML Injectable Solution",
+        "ingredient": "oxytocin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "vancomycin 1000 MG Injection": {
+        "code": "1807513",
+        "display": "vancomycin 1000 MG Injection",
+        "ingredient": "vancomycin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "reports": {
+      "Obstetric ultrasound with biophysical profile": {
+        "code": "11525-3",
+        "display": "US for pregnancy",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"prenatal multivitamin with iron Oral Tablet\""
+    ]
+  }
+}

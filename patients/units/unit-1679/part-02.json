@@ -1,0 +1,289 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001679",
+      "events": [
+        {
+          "id": "2024-01-09a",
+          "kind": "portal_message",
+          "start": "2024-01-09T07:48",
+          "reason": "Medication refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Oxycodone refill + new insurance card",
+              "author": "patient",
+              "date": "2024-01-09T07:48",
+              "body": "Morning! Need my oxycodone refilled this week. Also my employer switched plans for 2024, same company but new ID number. I'll upload a picture of the card."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Oxycodone refill + new insurance card",
+              "author": "MA",
+              "date": "2024-01-09T10:30",
+              "body": "Got the card, insurance updated. New plan needed a prior auth on the oxycodone again, submitted and approved. Prescription sent by the doctor this morning."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-27a",
+          "kind": "telehealth_visit",
+          "start": "2024-02-27T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Back pain follow-up",
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 4}],
+          "procedures": [
+            {"procedure": "Telehealth visit, established patient, low MDM", "performed": "2024-02-27T12:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video follow-up",
+              "author": "PCP",
+              "date": "2024-02-27T12:30",
+              "body": "Brief video check-in. Back pain steady at about 4, no flares this winter. Uses 2 a day, sometimes 1. Denies side effects. Wants to keep her physical in May. Visual exam: comfortable, moving easily.\nPlan: continue oxycodone 5 mg q6h prn #90, PDMP reviewed. Physical in May, Pap due then."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "telephone",
+          "start": "2024-04-16T14:02",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill call",
+              "author": "RN",
+              "date": "2024-04-16T14:02",
+              "body": "Pt called, pharmacy says the oxycodone script has not come through. Checked, it was sent to the old Amherst pharmacy by mistake. Cancelled there, PCP resent to Route 9 location. Pt aware, will pick up after work."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "annual_physical",
+          "start": "2024-05-14T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, Pap",
+          "medications": [
+            {"drug_text": "prenatal vitamin Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Preconception"}
+          ],
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-05-14T09:25", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-05-14T09:25", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2024-05-14T09:00", "issued": "2024-05-20T11:00", "text": "Specimen: cervical, liquid-based preparation. Adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.", "conclusion": "NILM, HPV negative."}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-05-14T08:30"},
+            {"procedure": "Venipuncture", "performed": "2024-05-14T09:25"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-05-14T09:40",
+              "body": "27 y/o for annual exam and Pap.\n\nInterval history: Doing well. She and her husband are hoping for a third child and have stopped using condoms. She started an over-the-counter prenatal vitamin on her own last month. Back pain unchanged, 1-2 oxycodone a day.\n\nWe talked through oxycodone if she conceives: risks to the baby including withdrawal after birth, the options of tapering versus staying on a steady low dose, and the need for her OB to know from the first visit. She would like to stay on her current dose and talk with her OB once pregnant. I told her to message me as soon as she has a positive test.\n\nMeds: oxycodone 5 mg q6h prn; prenatal vitamin daily.\nAllergies: NKDA.\nPHQ-9: 2.\n\nExam: Vitals as charted. Well. Neck supple, thyroid normal size, no nodules. Heart and lungs normal. Abdomen benign. Pelvic: normal external genitalia, vagina and cervix normal, Pap with HPV collected, bimanual without masses or tenderness. Back and neuro unchanged.\n\nPlan: Pap/HPV sent. CBC and CMP. Continue prenatal vitamin. Back pain plan unchanged, PDMP reviewed. Follow up August."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-20a",
+          "kind": "portal_message",
+          "start": "2024-05-20T15:30",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and labs",
+              "author": "PCP",
+              "date": "2024-05-20T15:30",
+              "body": "Your Pap was normal and HPV was negative, so the next one isn't due for five years. Your blood work from last week was normal as well."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pap and labs",
+              "author": "patient",
+              "date": "2024-05-20T18:02",
+              "body": "Great, thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2024-07-09a",
+          "kind": "pharmacy",
+          "start": "2024-07-09T11:20",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill request received",
+              "author": "MA",
+              "date": "2024-07-09T11:20",
+              "body": "eRx refill request from pharmacy for oxycodone 5 mg #90. Last fill 6/10. PDMP checked, no other prescribers. Pended for PCP, signed and sent 11:45."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "office_visit",
+          "start": "2024-08-20T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Back pain follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 3}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2024-08-20T16:15"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2024-08-20T16:40",
+              "body": "S: Not pregnant yet, still trying, taking the prenatal vitamin. Back fine through the summer, 3/10. Two tablets a day at most.\nO: BP and weight as charted. Back exam unchanged, neuro intact.\nA/P: Chronic low back pain, stable. Continue oxycodone 5 mg prn #90, PDMP reviewed. Reminded her to message with a positive test so we can coordinate with OB. Flu and COVID shots in October."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-08T16:34"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-08T16:36"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-10-08T16:34"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "author": "RN",
+              "date": "2024-10-08T16:45",
+              "body": "Here for the 2024-25 flu (trivalent) and Moderna COVID. Trying to conceive; both are recommended before and during pregnancy, she was glad to get them now. Flu 0.5 mL IM R deltoid, COVID 0.5 mL IM L deltoid. No reaction during observation."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-08a",
+          "kind": "portal_message",
+          "start": "2024-11-08T21:14",
+          "reason": "Neck lump",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lump on my neck",
+              "author": "patient",
+              "date": "2024-11-08T21:14",
+              "body": "Hi, I noticed a lump on the front of my neck about a week ago when I was putting on a necklace. It doesn't hurt and I can swallow fine, voice is normal. Probably nothing but my mom had thyroid issues so I'd like you to look at it. Also... I think I'm pregnant! Took a test this morning. Can I come in next week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lump on my neck",
+              "author": "PCP",
+              "date": "2024-11-08T21:40",
+              "body": "Congratulations! Yes, come in Tuesday at 8:15 and we'll look at your neck and talk about the pregnancy and your back medicine. Keep taking the prenatal vitamin."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "office_visit",
+          "start": "2024-11-12T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Neck lump; positive home pregnancy test",
+          "conditions": [
+            {"label": "Thyroid nodule", "action": "diagnosed", "onset": "2024-10-29", "note": "Solitary firm right-lobe nodule on exam"},
+            {"label": "Pregnant state", "icd10": "Z33.1", "action": "diagnosed", "onset": "2024-10-14", "note": "LMP 2024-10-14, G3P2"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-11-12T08:25", "resulted": "2024-11-12T08:35", "results": [{"test": "Pregnancy Test, Urine", "text": "Positive"}]},
+            {"panel": null, "collected": "2024-11-12T08:50", "resulted": "2024-11-13T07:40", "results": [{"test": "Thyroid Stimulating Hormone", "value": 2.5}, {"test": "Free Thyroxine", "value": 1.2}]}
+          ],
+          "orders": [
+            {"id": "ent-referral-2024", "action": "placed", "order": "Otolaryngology referral", "category": "referral", "to": "Otolaryngology", "reason": "Palpable right thyroid nodule"},
+            {"id": "ob-referral-2024", "action": "placed", "order": "Obstetrics referral", "category": "referral", "to": "Obstetrics", "reason": "Prenatal care, G3P2 on chronic oxycodone"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-11-12T08:15"},
+            {"procedure": "Venipuncture", "performed": "2024-11-12T08:50"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: neck nodule, early pregnancy",
+              "author": "PCP",
+              "date": "2024-11-12T09:05",
+              "body": "28 y/o G3P2 here for two things.\n\n1) Neck lump: Felt it about two weeks ago, front of the neck slightly to the right. Not painful. No trouble swallowing, no hoarseness, no change in voice, no neck pain. No palpitations, tremor, heat intolerance or weight change. No radiation exposure. Mother has hypothyroidism and a goiter.\n\n2) Pregnancy: LMP 10/14, positive home test 11/8. No bleeding or cramping. Taking prenatal vitamin. On oxycodone 5 mg, still 1-2 a day.\n\nExam: Vitals as charted. Neck: a single firm, non-tender nodule in the right lobe of the thyroid, moves with swallowing, roughly 2 cm. Left lobe normal. No cervical or supraclavicular nodes. Heart and lungs normal.\n\nOffice urine hCG positive. Approximately 4 weeks 1 day by LMP, EDD around 7/21/25.\n\nA/P:\n- Right thyroid nodule, new, palpable. TSH and free T4 drawn today. Referring to ENT, who can do the ultrasound in clinic and decide on biopsy. FNA is safe in pregnancy if they want it.\n- Early intrauterine pregnancy presumed, G3P2. Referral to OB for intake. Continue prenatal vitamin.\n- Chronic low back pain on oxycodone in pregnancy: she wishes to continue her current low dose. Not increasing. She will tell OB at intake, and I will send OB a note. PDMP reviewed.\nWill message results."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-13a",
+          "kind": "portal_message",
+          "start": "2024-11-13T12:20",
+          "reason": "Thyroid labs",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid blood tests",
+              "author": "PCP",
+              "date": "2024-11-13T12:20",
+              "body": "Your thyroid function is normal: TSH 2.5 and free T4 1.2. That means the nodule isn't over- or under-active, which is reassuring, but ENT will still look at it with an ultrasound. They have you on 11/21. The OB office will call you to set up your first prenatal visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-21a",
+          "kind": "specialist_visit",
+          "start": "2024-11-21T10:30",
+          "service": "Otolaryngology",
+          "reason": "Right thyroid nodule",
+          "orders": [
+            {"id": "ent-referral-2024", "action": "done", "date": "2024-11-21T10:30"}
+          ],
+          "reports": [
+            {"study": "Thyroid ultrasound", "performed": "2024-11-21T11:05", "text": "Indication: palpable right thyroid nodule. Technique: high-frequency linear transducer, transverse and longitudinal images of both lobes, isthmus and central and lateral neck. Findings: Right lobe of normal size containing a solid nodule measuring 2.0 cm in greatest dimension, with microcalcifications and irregular margins. Remainder of the right lobe, the isthmus and the left lobe are homogeneous without additional nodules. No cervical lymphadenopathy in levels II through VI.", "conclusion": "Solitary 2.0 cm solid right thyroid nodule with microcalcifications and irregular margins, suspicious sonographic features for malignancy. No cervical lymphadenopathy."}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology consultation: right thyroid nodule",
+              "author": "otolaryngology",
+              "date": "2024-11-25T09:00",
+              "body": "Otolaryngology - Head and Neck Surgery\nDate of service: 11/21/2024\n\nDear Doctor,\nThank you for asking us to see Ms. Richard, a 28-year-old laboratory technician who is about five weeks pregnant, for a right thyroid nodule.\n\nShe noticed a painless anterior neck swelling roughly three weeks ago. She has had no difficulty swallowing and no voice change. No history of head or neck radiation. She reports no family history of thyroid cancer. Medications: oxycodone 5 mg as needed for chronic back pain, prenatal vitamin. NKDA. Never smoker, no alcohol.\n\nExamination: Solitary firm, non-tender nodule in the right thyroid lobe. Larynx, oral cavity and oropharynx normal; no cervical lymphadenopathy; the remainder of the head and neck examination is normal.\n\nData: TSH 2.5 mIU/L and free T4 1.2 ng/dL from your office, both normal. In-clinic ultrasound today shows a 2 cm solid right-lobe nodule with microcalcifications and irregular margins and no abnormal cervical nodes.\n\nImpression: Right thyroid nodule with suspicious sonographic features.\n\nPlan: We discussed that the ultrasound pattern warrants fine-needle aspiration, which can be performed during pregnancy. She would strongly prefer to wait until after delivery, and with normal thyroid function and no abnormal nodes, deferring cytology is a reasonable option. We will follow the nodule clinically and with ultrasound if it changes through the pregnancy, and plan FNA postpartum. She knows to call sooner for growth, hoarseness or difficulty swallowing.\n\nSincerely,\nOtolaryngology"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "outside_records",
+          "start": "2024-12-10T14:00",
+          "reason": "OB intake letter",
+          "orders": [
+            {"id": "ob-referral-2024", "action": "done", "date": "2024-12-10T14:00"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics: new prenatal intake",
+              "author": "obstetrics",
+              "date": "2024-12-10T14:00",
+              "body": "Obstetrics and Gynecology\nNew OB visit 12/5/2024\n\nRe: Susan Richard, DOB 10/1/1996\n\nG3P2002 at 7 weeks 3 days by LMP of 10/14/2024, consistent with dating ultrasound today showing a single intrauterine pregnancy with cardiac activity. EDD 7/21/2025. Two prior term vaginal deliveries without complication.\n\nHistory reviewed: chronic low back pain on oxycodone 5 mg as needed, 1-2 tablets daily, prescribed by her PCP; right thyroid nodule under ENT care with FNA planned postpartum. NKDA.\n\nRoutine prenatal labs drawn today were unremarkable; rubella immune. Counseling on opioid use in pregnancy, including neonatal withdrawal and the need for pediatric awareness at delivery; she wishes to remain on her current low dose under her PCP's prescribing and not escalate. We will coordinate with your office.\n\nNext visit in 4 weeks.\nObstetrics"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

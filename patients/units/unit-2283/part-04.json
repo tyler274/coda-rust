@@ -1,0 +1,1109 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002283",
+   "events": [
+    {
+     "id": "2025-01-21a",
+     "kind": "telephone",
+     "start": "2025-01-21T10:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "urology appointment and refills",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Urology date / refills",
+       "author": "front desk",
+       "date": "2025-01-21T10:18",
+       "body": "Wife called to confirm urology consult 2/19 at 9:40 - confirmed with their office, referral on file. Also needs pancrelipase and lispro refills; routed to RN."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Refills sent",
+       "author": "RN",
+       "date": "2025-01-21T11:30",
+       "body": "Pancrelipase 36,000 (90-day) and insulin lispro pens with pen needles sent per protocol. Still has burning on and off, no fever; knows to call if fever."
+      }
+     ]
+    },
+    {
+     "id": "2025-02-19a",
+     "kind": "specialist_visit",
+     "start": "2025-02-19T09:40",
+     "reason": "urology consult",
+     "service": "Urology (outside)",
+     "conditions": [
+      {
+       "label": "Urinary tract infection",
+       "action": "resolved"
+      },
+      {
+       "label": "Chronic prostatitis",
+       "action": "diagnosed",
+       "onset": "2024-04-01",
+       "note": "chronic bacterial prostatitis"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "ciprofloxacin 500 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily for 4 weeks",
+       "dose": {
+        "value": 500,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "chronic bacterial prostatitis"
+      }
+     ],
+     "orders": [
+      {
+       "id": "uro-ref-2024",
+       "action": "done",
+       "date": "2025-02-19T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Urology consultation",
+       "author": "urology",
+       "date": "2025-02-27T08:40",
+       "body": "Outside urology - consult letter\nSeen 02/19/2025\nRe: Vernon Simard, DOB 01/19/1956 (69)\n\nThank you for sending Mr. Simard with BPH and a complicated medical history for recurrent urinary symptoms. For three months he has had dysuria, frequency and low back pain, and over the past year he has had several similar episodes that improved for a time with antibiotics. No fever or chills.\nHistory also includes diabetes on insulin after total pancreatectomy, cirrhosis, CAD.\nMedications: insulin glargine 24 units qhs, insulin lispro sliding scale, tamsulosin 0.4 mg, aspirin 81 mg, atorvastatin 40 mg, pancrelipase, multivitamin, lactulose prn. NKDA.\n\nAfebrile, vital signs normal. DRE: prostate tender and boggy.\nUrinalysis: pyuria and bacteriuria. Urine culture: gram-negative rod.\n\nImpression: chronic bacterial prostatitis.\nPlan: ciprofloxacin 500 mg twice daily for 4 weeks. Continue tamsulosin. Return in 3 months or sooner with fever.\nUrology"
+      }
+     ]
+    },
+    {
+     "id": "2025-03-25a",
+     "kind": "office_visit",
+     "start": "2025-03-25T15:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up",
+     "state": {
+      "labs": {
+       "Bilirubin, Total": 2.2,
+       "Albumin": 3.1,
+       "Prothrombin Time-International Normalized Ratio": 1.5,
+       "Platelets": 145,
+       "Hemoglobin A1c": 7.5
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-03-25T15:30",
+       "results": [
+        {
+         "test": "Bilirubin, Total"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-03-25T15:30",
+       "results": [
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2025-03-25T15:30",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-03-25T15:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.5
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-03-25T15:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-03-25T15:30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "liverus-2025",
+       "action": "placed",
+       "order": "Abdominal ultrasound, liver",
+       "category": "imaging",
+       "reason": "cirrhosis surveillance"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2025-03-25T16:05",
+       "body": "Urology letter reviewed - chronic bacterial prostatitis, 4 weeks of cipro (finishes this week). Burning gone after the first week, back ache better. No tendon pain on cipro.\nLiver: weight steady around 62. No swelling, no confusion. Sober 4 years in February.\nDiabetes: occasional mild lows, none needing glucagon.\nExam: afebrile. Faint icterus. Lungs clear. RRR. Abdomen soft, no shifting dullness. No edema.\nA/P: prostatitis on treatment. Cirrhosis labs and A1c today. Liver US due - ordered."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-08a",
+     "kind": "imaging",
+     "start": "2025-04-08T08:30",
+     "reason": "cirrhosis surveillance",
+     "reports": [
+      {
+       "study": "Abdominal ultrasound",
+       "performed": "2025-04-08T08:30",
+       "text": "Comparison 2/23/2024. Liver nodular and coarse. No focal hepatic lesion. Portal vein patent, hepatopetal. No biliary dilation. Pancreas and spleen surgically absent. No ascites.",
+       "conclusion": "Cirrhotic liver without focal lesion. Ascites seen on the prior study has resolved."
+      }
+     ],
+     "orders": [
+      {
+       "id": "liverus-2025",
+       "action": "done",
+       "date": "2025-04-08T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Ultrasound result",
+       "author": "PCP",
+       "date": "2025-04-09T07:40",
+       "body": "Liver ultrasound: no spots, and the fluid from last year is gone. Keep up the low-salt diet."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-17a",
+     "kind": "annual_physical",
+     "start": "2025-06-17T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "state": {
+      "weight_kg": 62.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2025-06-17T09:40",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-06-17T09:40",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2025-06-17T09:30"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-06-17T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2025-06-17T10:30",
+       "body": "AWV. Doing well. No urinary symptoms since finishing the cipro in March. Oncology surveillance stable. Endocrinology yearly.\nIndependent ADLs, wife manages meds. No falls. PHQ-2 0. Sober 4+ years, smoke-free 3 years.\nACP unchanged.\nExam: weight 62. Faint icterus. Abdomen soft without ascites. Feet: intact sensation, no lesions.\nPlan: lipids, urine microalbumin. Eye exam due in the fall. Vaccines in the fall."
+      }
+     ]
+    },
+    {
+     "id": "2025-08-23a",
+     "kind": "ed_visit",
+     "start": "2025-08-23T15:40",
+     "reason": "fever and painful urination",
+     "end": "2025-08-23T21:10",
+     "service": "Emergency Medicine (outside)",
+     "conditions": [
+      {
+       "label": "Acute prostatitis",
+       "action": "diagnosed",
+       "icd10": "N41.0",
+       "onset": "2025-08-21"
+      }
+     ],
+     "vitals": {
+      "temp_c": 38.7
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-08-23T16:10",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 14.0
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "ceftriaxone 1000 MG Injection",
+       "action": "historical",
+       "sig": "1 g IV once in the ED",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "ONCE",
+       "route": "Intravenous",
+       "course": "short",
+       "reason": "acute bacterial prostatitis"
+      },
+      {
+       "drug": "sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily for 4 weeks",
+       "dose": {
+        "value": 1,
+        "unit": "{tbl}"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "acute bacterial prostatitis"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2025-08-23T15:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency department record",
+       "author": "emergency medicine",
+       "date": "2025-08-25T08:15",
+       "body": "Regional hospital ED - physician record (abbreviated)\nDate of service: 08/23/2025\n\n69 M with BPH and chronic bacterial prostatitis treated earlier this year, now with 2 days of fever, chills and painful urination, with perineal and low back pain.\nPMH: insulin-treated diabetes (total pancreatectomy), cirrhosis, CAD.\nTemp 38.7 C (101.7 F).\nDRE: prostate markedly tender and swollen.\nWBC 14,000. UA: pyuria, bacteriuria. Urine culture sent, pending.\nDx: acute bacterial prostatitis.\nTx: ceftriaxone 1 g IV in the ED. Discharged on trimethoprim-sulfamethoxazole DS twice daily for 4 weeks. Follow up with PCP this week; return for worsening fever, inability to urinate or confusion.\nAllergies: NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2025-08-26a",
+     "kind": "office_visit",
+     "start": "2025-08-26T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "post-ED follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-08-26T10:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-ED Visit",
+       "author": "PCP",
+       "date": "2025-08-26T11:25",
+       "body": "Seen in the ED Saturday 8/23 for fever, chills, dysuria and perineal pain - acute bacterial prostatitis; ceftriaxone there, now on TMP-SMX DS BID for 4 weeks (day 3). ED note received. Culture result not included; requested from the hospital lab.\nFever broke Sunday. Still sore sitting, urinating OK, no retention. Sugars ran high over the weekend (200s-280s), no lows. Eating.\nExam: afebrile today, vitals as charted. Alert and appropriate. Abdomen soft, no suprapubic tenderness. No CVA tenderness. DRE deferred (done in ED).\nA/P: acute bacterial prostatitis improving. Finish 4 weeks. Return/ED for fever, retention or confusion. Will let urology know."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Culture request",
+       "author": "MA",
+       "date": "2025-08-28T14:05",
+       "body": "Called hospital lab twice for the 8/23 urine culture - told it would be faxed. Not received."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-21a",
+     "kind": "office_visit",
+     "start": "2025-10-21T09:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up",
+     "conditions": [
+      {
+       "label": "Acute prostatitis",
+       "action": "resolved",
+       "icd10": "N41.0"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2025-10-21T09:50"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2025-10-21T09:51"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-10-21T09:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.3
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-10-21T09:45",
+       "results": [
+        {
+         "test": "Bilirubin, Total"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2025-10-21T09:10"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-10-21T09:45"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-10-21T09:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2025-10-21T10:05",
+       "body": "Finished the 4 weeks of TMP-SMX in late September. No dysuria, fever or perineal pain since. Urology aware.\nFeels \"like myself\". Weight steady. Sober, smoke-free.\nExam: afebrile, faint icterus, lungs clear, RRR, abdomen soft without ascites, no edema.\nA/P: acute prostatitis resolved. A1c and CMP today. Flu HD and COVID today. Eye exam - reminded."
+      }
+     ]
+    },
+    {
+     "id": "2025-11-18a",
+     "kind": "outside_records",
+     "start": "2025-11-18T12:00",
+     "reason": "eye exam report",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye exam report",
+       "author": "optometry",
+       "date": "2025-11-18T12:00",
+       "body": "Optometry - diabetic eye exam, date of service 11/11/2025\nDilated exam OU: no diabetic retinopathy. No macular edema. Return 1 year."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-13a",
+     "kind": "office_visit",
+     "start": "2026-01-13T13:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "routine follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.8
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2026-01-13T14:15",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.8
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-01-13T14:15",
+       "results": [
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2026-01-13T14:15",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-01-13T13:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-01-13T14:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2026-01-13T14:30",
+       "body": "Turns 70 next week. Quiet holidays, no hospital visits. Oncology surveillance in December - nothing new per pt. Sugars higher this winter, fasting 150-220; lows rare.\nExam: weight as charted. Faint icterus. Lungs clear. RRR. Abdomen soft, no ascites. No edema.\nA/P: diabetes - A1c today; endocrinology visit next month, will leave insulin changes to them. Cirrhosis stable. RTC April."
+      },
+      {
+       "type": "Result Note",
+       "title": "A1c",
+       "author": "PCP",
+       "date": "2026-01-14T08:00",
+       "body": "A1c 7.8. Copy to endocrinology ahead of his February visit."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-19a",
+     "kind": "hospital_admission",
+     "start": "2026-02-19T06:10",
+     "reason": "found unresponsive at home",
+     "end": "2026-03-12T11:00",
+     "service": "Intensive Care Unit (outside)",
+     "conditions": [
+      {
+       "label": "Aspiration pneumonia",
+       "action": "diagnosed",
+       "icd10": "J69.0",
+       "onset": "2026-02-19"
+      },
+      {
+       "label": "Metabolic encephalopathy",
+       "action": "diagnosed",
+       "icd10": "G93.41",
+       "onset": "2026-02-19"
+      },
+      {
+       "label": "Euthyroid sick syndrome",
+       "action": "diagnosed",
+       "icd10": "E07.81"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Endotracheal intubation",
+       "performed": "2026-02-19T06:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Hospital discharge summary",
+       "author": "hospital medicine",
+       "date": "2026-03-16T09:30",
+       "body": "Regional hospital - discharge summary (abbreviated)\nAdmitted 02/19/2026 via ED to ICU. Discharged 03/12/2026 to a skilled nursing facility.\nPatient: Vernon Simard, 70 M\n\nPresentation: found unresponsive at home by his wife. Intubated on arrival for airway protection; IV fluids and broad-spectrum antibiotics for presumed aspiration pneumonia. Needed low-dose vasopressors early; heart rate in the 90s; afebrile.\nBackground: Zenker diverticulum (treated 2022), pancreatic adenocarcinoma s/p completion total pancreatectomy, alcohol-related cirrhosis, insulin-treated diabetes, CAD s/p PCI with stent, BPH.\nICU course: over 10 days the pneumonia improved but he remained lethargic and ventilator dependent. Off sedation he moved little, opened eyes only to deep sternal rub, did not respond to voice, withdrew to pain; pupils equal and reactive; reflexes slow; no goiter, exophthalmos or tremor. Nutrition: mildly underweight. Encephalopathy labs: low serum albumin; thyroid tests with low total T3, normal T4 and normal TSH. No known thyroid or pituitary disease. Read as euthyroid sick syndrome (non-thyroidal illness) - no thyroid treatment; repeat thyroid tests after recovery.\nMental status improved steadily over the following week. Extubated 03/03, out of the ICU 03/05. Worked with PT/OT. Cause of the initial unresponsive episode not established.\nDiagnoses: aspiration pneumonia; acute metabolic encephalopathy, resolving; euthyroid sick syndrome.\nDischarge medications: home regimen resumed - insulin glargine 24 units at bedtime, insulin lispro sliding scale with meals, tamsulosin 0.4 mg, aspirin 81 mg, atorvastatin 40 mg, pancrelipase 36,000 units with meals, multivitamin, lactulose 15 mL BID prn. NKDA.\nFollow-up: PCP within 1 week of SNF discharge; repeat TSH/free T4/T3 in 6 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-20a",
+     "kind": "telephone",
+     "start": "2026-02-20T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "patient hospitalized",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Wife called - ICU",
+       "author": "PCP",
+       "date": "2026-02-20T08:55",
+       "body": "Denise called. Found him yesterday morning not waking up in bed, called 911. He's in the ICU at the regional hospital on a breathing machine; they think he aspirated. I spoke with the ICU team: pneumonia being treated, too early to say more. Gave them his history and our list; asked them to send records. Will call her later this week."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-13a",
+     "kind": "telephone",
+     "start": "2026-03-13T11:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "SNF admission",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "SNF call",
+       "author": "RN",
+       "date": "2026-03-13T11:30",
+       "body": "Skilled nursing facility nurse called: admitted yesterday from the hospital for rehab. Requested our med list and recent labs - faxed. Discharge summary to follow from the hospital. Expected stay 2-3 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-03a",
+     "kind": "telephone",
+     "start": "2026-04-03T09:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "home from SNF",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Home from rehab",
+       "author": "RN",
+       "date": "2026-04-03T10:05",
+       "body": "Wife called: home yesterday (4/2) from the rehab facility. Walking with supervision, eating better. Home health PT and nursing referral sent by the facility, first visit Monday. TCM visit booked 4/7. Meds same as before the hospital per SNF list - reviewed by phone."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-07a",
+     "kind": "office_visit",
+     "start": "2026-04-07T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "transitional care after hospital and rehab",
+     "conditions": [
+      {
+       "label": "Aspiration pneumonia",
+       "action": "resolved",
+       "icd10": "J69.0"
+      },
+      {
+       "label": "Metabolic encephalopathy",
+       "action": "resolved",
+       "icd10": "G93.41"
+      }
+     ],
+     "state": {
+      "weight_kg": 55.5,
+      "labs": {
+       "Albumin": 2.7,
+       "Bilirubin, Total": 2.0
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-04-07T11:05",
+       "results": [
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Bilirubin, Total"
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-04-07T11:05",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2026-04-07T10:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-04-07T11:05"
+      }
+     ],
+     "orders": [
+      {
+       "id": "tft-2026",
+       "action": "placed",
+       "order": "TSH, free T4, free T3",
+       "category": "lab",
+       "reason": "recheck after euthyroid sick syndrome"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Transitional Care Visit",
+       "author": "PCP",
+       "date": "2026-04-07T11:40",
+       "body": "TCM visit. Hospital 2/19-3/12 (ICU, intubated, aspiration pneumonia, prolonged encephalopathy, euthyroid sick picture on thyroid tests), then SNF rehab to 4/2. Discharge summary reviewed. Cause of being found unresponsive never established.\nNow: alert, conversational, back to his usual self per wife. Weak; walks with supervision, home PT twice a week. Eating 5 small meals, enzymes with each. No cough, no fever, swallowing OK for soft solids and thin liquids. Sugars 120s-240s, no lows since home.\nExam: weight 55.5 kg (BMI about 18). Thin. Alert and oriented x3, normal speech. Faint icterus. Lungs clear, no crackles. RRR. Abdomen soft, no ascites. No edema. Gait slow but steady.\nA/P:\n1. Aspiration pneumonia - resolved. Encephalopathy - resolved.\n2. Euthyroid sick syndrome - repeat TSH/free T4/free T3 in 3 weeks, about 6 weeks after discharge as the hospital asked.\n3. Underweight after a long illness, low albumin - calorie/protein plan, shakes between meals.\n4. Diabetes: continue glargine 24 + lispro scale; wife to log.\n5. Cirrhosis: CMP/CBC today.\nMed rec complete, no changes."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-28a",
+     "kind": "lab_only",
+     "start": "2026-04-28T08:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "thyroid recheck",
+     "conditions": [
+      {
+       "label": "Euthyroid sick syndrome",
+       "action": "resolved",
+       "icd10": "E07.81"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Thyroid Stimulating Hormone": 1.8,
+       "Free Thyroxine": 1.1,
+       "Free Triiodothyronine": 3.0
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2026-04-28T08:15",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        },
+        {
+         "test": "Free Thyroxine"
+        },
+        {
+         "test": "Free Triiodothyronine"
+        }
+       ],
+       "resulted": "2026-04-28T16:30"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-04-28T08:15"
+      }
+     ],
+     "orders": [
+      {
+       "id": "tft-2026",
+       "action": "done",
+       "date": "2026-04-28T08:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Thyroid tests",
+       "author": "PCP",
+       "date": "2026-04-29T07:50",
+       "body": "TSH, free T4 and free T3 all normal. The low T3 in the ICU was the illness, not his thyroid - euthyroid sick resolved. No further thyroid testing needed. Portal message sent."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-19a",
+     "kind": "portal_message",
+     "start": "2026-05-19T16:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "update",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Home PT done",
+       "author": "patient",
+       "date": "2026-05-19T16:40",
+       "body": "Denise here. Home PT signed off last week, he walks to the mailbox and back twice a day. Weight on our scale is 123. Eating good. Anything else he needs before June?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Home PT done",
+       "author": "PCP",
+       "date": "2026-05-19T18:05",
+       "body": "That's great progress. Nothing extra - keep the meals and snacks going. We'll weigh him and check labs at the June visit."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-16a",
+     "kind": "annual_physical",
+     "start": "2026-06-16T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "state": {
+      "weight_kg": 56.5
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2026-06-16T09:10",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-06-16T09:10",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2026-06-16T09:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-06-16T09:10"
+      },
+      {
+       "procedure": "Advance care planning, first 30 minutes",
+       "performed": "2026-06-16T09:35"
+      }
+     ],
+     "orders": [
+      {
+       "id": "liverus-2026",
+       "action": "placed",
+       "order": "Abdominal ultrasound, liver",
+       "category": "imaging",
+       "reason": "cirrhosis surveillance"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2026-06-16T10:10",
+       "body": "AWV. Recovered well from the winter admission. Walks daily, no falls, independent in ADLs again; wife does IADLs. PHQ-2 1. Sober 5 years, smoke-free 4.\nACP revisited after the ICU stay (20 min): his wishes unchanged - full treatment if recovery to home is likely, no long-term machines. He'd like to complete a MOLST at the next visit with his wife. HCP wife.\nExam: weight 56.5. Faint icterus. Lungs clear. RRR. Abdomen soft without ascites. Feet: intact sensation, pulses palpable, no lesions.\nPlan: lipids, urine microalbumin. Liver ultrasound due. Eye exam in the fall. Fall vaccines."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-30a",
+     "kind": "imaging",
+     "start": "2026-06-30T10:00",
+     "reason": "cirrhosis surveillance",
+     "reports": [
+      {
+       "study": "Abdominal ultrasound",
+       "performed": "2026-06-30T10:00",
+       "text": "Comparison 4/8/2025. Nodular cirrhotic liver without focal lesion. Portal vein patent with hepatopetal flow. No biliary dilation. Pancreas and spleen surgically absent. No ascites.",
+       "conclusion": "Stable cirrhotic liver, no focal lesion, no ascites."
+      }
+     ],
+     "orders": [
+      {
+       "id": "liverus-2026",
+       "action": "done",
+       "date": "2026-06-30T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Ultrasound",
+       "author": "PCP",
+       "date": "2026-07-01T08:10",
+       "body": "Liver US unchanged, no lesion, no ascites. Letter mailed."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-11a",
+     "kind": "office_visit",
+     "start": "2026-08-11T14:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up",
+     "state": {
+      "weight_kg": 57.0,
+      "labs": {
+       "Albumin": 3.0
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-08-11T14:45",
+       "results": [
+        {
+         "test": "Albumin",
+         "value": 3.0
+        },
+        {
+         "test": "Bilirubin, Total"
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        }
+       ]
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2026-08-11T14:45",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-08-11T14:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.7
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-08-11T14:10"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-08-11T14:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2026-08-11T15:00",
+       "body": "Summer check. Weight 57, slowly up. Energy better, walking further. No urinary symptoms. No cough or choking with meals. Sugars 110s-230s, a couple of mild lows after big lunches, treated with tabs. Endocrinology kept the same doses in July per pt. Oncology surveillance in July clear per pt.\nExam: faint icterus. Lungs clear. RRR. Abdomen soft, no ascites. No edema.\nA/P: CMP, INR, A1c today. Continue current regimen. RTC late September; flu/COVID then."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-12a",
+     "kind": "portal_message",
+     "start": "2026-08-12T12:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2026-08-12T12:30",
+       "body": "Your albumin is creeping up (3.0) - that's the nutrition working. Liver numbers otherwise steady, A1c about where it has been. No changes. See you in September."
+      }
+     ]
+    },
+    {
+     "id": "2026-09-22a",
+     "kind": "office_visit",
+     "start": "2026-09-22T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "routine follow-up",
+     "appointment": "booked"
+    }
+   ]
+  }
+ ]
+}

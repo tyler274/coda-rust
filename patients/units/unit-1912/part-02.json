@@ -1,0 +1,150 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001912",
+      "events": [
+        {
+          "id": "2025-06-05a",
+          "kind": "office_visit",
+          "start": "2025-06-05T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Left ear pain",
+          "conditions": [
+            {"label": "Otitis externa", "action": "diagnosed", "onset": "2025-06-03", "note": "acute diffuse, left ear"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "spo2"],
+          "orders": [
+            {"id": "ent-referral", "action": "placed", "order": "Otolaryngology referral", "category": "referral", "to": "Otolaryngology", "reason": "left otitis externa, canal too swollen for drops; cleaning and wick"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2025-06-05T13:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Same-Day Visit", "author": "PCP", "date": "2025-06-05T14:05", "body": "Texted this morning, seen same day.\n\nS: L ear pain since Tuesday. Hurts a lot when she tugs on the ear lobe. Feels plugged and she can't hear well out of it. No fever, no cold symptoms, hasn't been sick. In the water most of the day for work, including diving instruction off the blocks.\nMeds: triamcinolone cream prn, petroleum jelly. Allergies: NKDA; dust mites, seasonal pollen.\n\nO: Afebrile, vitals per flowsheet. R ear: canal clear, TM normal. L ear: tragal tenderness, exam painful for her. Canal red and swollen nearly shut with greenish discharge; I can't see the TM past the swelling. No preauricular or postauricular swelling, no nodes. Pharynx normal.\n\nA: Acute diffuse otitis externa, L.\n\nP: Canal is too swollen for drops to get where they need to go. Called ENT, who can see her first thing tomorrow to clean it out under the microscope and put in a wick; they'll start the drops then. Keep the ear dry, cotton ball with a little petroleum jelly in the shower, no pool until cleared. Work note for tomorrow."},
+            {"type": "Letter", "title": "Work Note", "author": "PCP", "date": "2025-06-05T14:10", "body": "Taylor Coolidge was seen in our office today. She should stay out of the water through at least 6/16/2025 and may return to dry-land duties as she feels able."}
+          ]
+        },
+        {
+          "id": "2025-06-06a",
+          "kind": "specialist_visit",
+          "start": "2025-06-06T08:30",
+          "service": "Otolaryngology",
+          "reason": "Left ear pain, fullness and decreased hearing",
+          "medications": [
+            {"drug_text": "ciprofloxacin 3 MG/ML / dexamethasone 1 MG/ML Otic Suspension", "action": "start", "sig": "Instill 4 drops into the left ear twice daily for 7 days", "frequency": "BID", "route": "Otic", "course": "short", "reason": "Acute otitis externa, left"}
+          ],
+          "orders": [
+            {"id": "ent-referral", "action": "done", "date": "2025-06-06T08:30"}
+          ],
+          "procedures": [{"procedure": "Office consultation, comprehensive", "performed": "2025-06-06T08:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Otolaryngology Consultation", "author": "otolaryngology", "date": "2025-06-09T10:00", "body": "OTOLARYNGOLOGY CONSULTATION\nDate of service: 06/06/2025\nReferred by: primary care physician\nReason: left otalgia\n\nHistory: 25-year-old swim instructor with three days of left ear pain that is worse with traction on the auricle, plus a blocked sensation and muffled hearing on that side. She denies fever, recent upper respiratory infection or other illness. She spends most of her working day in the pool and dives regularly.\n\nPast history: atopic dermatitis, mild and intermittent. Wisdom teeth extracted at 18.\nMedications: triamcinolone 0.1% cream as needed; petroleum jelly.\nAllergies: no drug allergies; dust mites; seasonal pollen.\nFamily history: mother asthma, allergic rhinitis; father atopic dermatitis; maternal uncle shellfish allergy.\nSocial: never smoker; social alcohol.\n\nExamination: Vital signs within normal limits. Right ear normal. Left external auditory canal diffusely erythematous and edematous with green purulent debris. Tympanic membrane cannot be adequately seen because of canal swelling. Tragal tenderness present; otoscopy is uncomfortable for her. No periauricular cellulitis. Facial nerve intact.\n\nProcedure: Under the microscope the left canal was suctioned of debris. A compressed ear wick was placed. She tolerated this well.\n\nImpression: Acute diffuse otitis externa, left ear.\n\nPlan:\n1. Ciprofloxacin/dexamethasone otic suspension 4 drops to the left ear (onto the wick) twice daily for 7 days.\n2. The wick will likely fall out on its own in 2 to 3 days; continue the drops afterward.\n3. Strict water precautions. No swimming for 10 days.\n4. Return or call if no improvement within 72 hours.\n\nThank you for this referral.\nOtolaryngology"}
+          ]
+        },
+        {
+          "id": "2025-06-12a",
+          "kind": "portal_message",
+          "start": "2025-06-12T07:55",
+          "reason": "Ear follow-up",
+          "documents": [
+            {"type": "Patient Message", "title": "Ear update", "author": "patient", "date": "2025-06-12T07:55", "body": "Hi, quick update: the wick fell out Monday and I've kept doing the drops. Pain is basically gone and I can hear normally again. Am I ok to get back in the pool Monday? I'll be done with the drops Friday."},
+            {"type": "Patient Message", "title": "RE: Ear update", "author": "PCP", "date": "2025-06-12T11:30", "body": "Great to hear. Finish all 7 days of drops. Monday the 16th is fine if the ear still feels normal. Going forward: well-fitting swim earplugs, tip your head and dry the ear after each session, and a hair dryer on the low setting at arm's length if water feels trapped. If it comes back let me know early."}
+          ]
+        },
+        {
+          "id": "2025-08-17a",
+          "kind": "ed_visit",
+          "start": "2025-08-17T19:45",
+          "end": "2025-08-18T01:40",
+          "service": "Emergency Medicine",
+          "reason": "Difficulty breathing, facial swelling and hives after eating shrimp",
+          "conditions": [
+            {"label": "Anaphylactic reaction due to shellfish (crustaceans)", "icd10": "T78.02XA", "action": "diagnosed", "onset": "2025-08-17", "note": "shrimp"}
+          ],
+          "allergies": [
+            {"substance": "Shellfish", "reaction": "Anaphylaxis", "severity": "severe", "criticality": "high", "type": "allergy"}
+          ],
+          "vitals": [
+            {"time": "2025-08-17T19:48", "bp": [90, 50], "hr": 110, "rr": 25, "spo2": 92},
+            {"time": "2025-08-17T23:50", "bp": [108, 68], "hr": 92, "rr": 18, "spo2": 98},
+            {"time": "2025-08-18T01:30", "bp": [114, 72], "hr": 84, "rr": 16, "spo2": 99, "temp_c": 36.8}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-08-17T20:50", "results": [{"test": "Tryptase", "loinc": "21582-2", "unit": "ng/mL", "value": 21.8}]},
+            {"panel": "CBC with Differential", "collected": "2025-08-17T20:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-08-17T20:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Chloride"}, {"test": "Bicarbonate"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "medications": [
+            {"drug": "NDA019430 0.3 ML epinephrine 1 MG/ML Auto-Injector", "action": "start", "sig": "Inject 0.3 mg into the outer thigh at the first sign of a severe allergic reaction, then call 911. May repeat once after 5 to 15 minutes. Dispense 2-pack.", "frequency": "PRN", "route": "Intramuscular", "course": "chronic", "reason": "Shellfish anaphylaxis"}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2025-08-17T19:45"},
+            {"procedure": "Nebulizer treatment", "performed": "2025-08-17T20:00"}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2025-08-18T09:15", "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nArrival: 08/17/2025 19:45 by private vehicle (driven by friend)\n\nCC: trouble breathing, swollen face, itchy rash after shrimp\n\nHPI: 25 y/o F with mild eczema on topical steroid and emollient, seen in June by ENT for a left ear infection that has since cleared. Ate shrimp at a friend's dinner about half an hour before arrival. Within minutes developed a diffuse itchy rash, facial swelling and difficulty breathing. Has eaten shrimp in the past without any reaction. No new medications, no stings or bites.\n\nPMH: atopic dermatitis. PSH: third molar extraction.\nMeds: triamcinolone 0.1% cream prn, petroleum jelly.\nAllergies: dust mites, seasonal pollen. NKDA.\nFH: maternal uncle with shellfish allergy; mother asthma; father eczema.\nSH: swim instructor; never smoker; social EtOH.\n\nTriage: BP 90/50, HR 110, RR 25, SpO2 92% RA.\n\nExam: Anxious. Face visibly swollen. No stridor. Diffuse expiratory wheeze audible. Tachycardic, regular. Urticaria over the trunk and both arms. Abdomen soft.\n\nCourse:\n19:50 epinephrine 0.5 mg IM, L anterolateral thigh.\n19:55 NS 1 L bolus. Albuterol nebulizer x1.\n20:05 diphenhydramine 50 mg IV, famotidine 20 mg IV, methylprednisolone 125 mg IV.\nWheeze cleared and pressure responded after the first epinephrine dose; no repeat needed.\n23:50 reassessment: BP 108/68, HR 92, RR 18, SpO2 98% RA. Facial swelling and hives fading. Lungs clear.\n01:30 BP 114/72, HR 84, RR 16, SpO2 99% RA, T 36.8. Asymptomatic.\n\nResults: Tryptase 21.8 ng/mL (ref <=11.4), drawn about one hour after arrival. CBC within normal limits. BMP within normal limits.\n\nDiagnosis: Anaphylaxis due to shellfish (shrimp).\n\nDisposition: Discharged home 01:40 after about 6 hours of observation, with friend.\nDischarge prescription: epinephrine 0.3 mg auto-injector, 2-pack. Taught use. Avoid shrimp and other shellfish. Use the injector for any recurrence and call 911.\nFollow up with primary care this week and with an allergist.\n\nAllergy list updated: shellfish (anaphylaxis)."}
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "office_visit",
+          "start": "2025-08-19T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, shellfish anaphylaxis",
+          "conditions": [
+            {"label": "Otitis externa", "action": "resolved", "note": "left ear, healed after June treatment"}
+          ],
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "orders": [
+            {"id": "allergy-referral", "action": "placed", "order": "Allergy and Immunology referral", "category": "referral", "to": "Allergy and Immunology", "reason": "shrimp anaphylaxis 8/17/2025"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-08-19T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "ED Follow-up", "author": "PCP", "date": "2025-08-19T11:50", "body": "ED record reviewed (8/17).\n\nS: Sunday night ate shrimp at a friend's, within half an hour had itching, hives, a swollen face and trouble breathing. Friend drove her in. Got one dose of epinephrine plus the usual adjuncts and was home by 2 am. Back to normal by Monday afternoon. Very shaken. She's eaten shrimp many times without a problem, which is what scared her most. Her mom's brother has a shellfish allergy, she says. Filled the EpiPens yesterday, has them in her bag.\n\nL ear: no symptoms since June.\n\nO: Vitals per flowsheet, normal. Well appearing. No facial or lip swelling. Lungs clear, no wheeze. Skin clear of hives; usual mild dryness of the hands. L canal clear, TM intact and normal. R ear normal.\n\nA/P\n1. Anaphylaxis to shrimp, first episode, tryptase 21.8 in the ED. Shellfish allergy added to the allergy list.\n - Avoid shrimp and all crustacean shellfish (crab, lobster, crawfish) until allergy sorts out the rest. Ask about ingredients and shared fryers when eating out.\n - Carry two auto-injectors at all times. Walked through it with a trainer pen: blue to the sky, orange to the thigh, hold 3 seconds, call 911 after. Second dose if not improving in 5 to 15 minutes.\n - Referral to allergy/immunology.\n - Suggested she tell her aquatics director and keep a pen in the pool office.\n2. Otitis externa, L: resolved.\n\nFollow up at the physical in October, sooner for anything."},
+            {"type": "Letter", "title": "Referral Letter", "author": "PCP", "date": "2025-08-19T12:05", "body": "Re: Taylor Coolidge, DOB 09/10/1999\n\nThank you for seeing this 25-year-old swim instructor for evaluation after anaphylaxis to shrimp on 8/17/2025: urticaria, facial swelling, wheeze and hypotension (90/50) within 30 minutes of eating shrimp, responded to one IM epinephrine dose. ED tryptase 21.8 ng/mL. She had previously tolerated shrimp. History of mild atopic dermatitis; environmental sensitivity to dust mites and pollen. Maternal uncle with shellfish allergy.\n\nShe has an epinephrine auto-injector. We'd appreciate guidance on the extent of shellfish avoidance and an action plan.\n\nPrimary care physician"}
+          ]
+        },
+        {
+          "id": "2025-09-04a",
+          "kind": "portal_message",
+          "start": "2025-09-04T15:22",
+          "reason": "Employer emergency action plan form",
+          "documents": [
+            {"type": "Patient Message", "title": "Form for work", "author": "patient", "date": "2025-09-04T15:22", "body": "My aquatics director wants a medical action plan on file for staff with severe allergies now that I told her. I attached their form. Could you fill it out? No rush, just before the fall session starts on the 15th."},
+            {"type": "Letter", "title": "Anaphylaxis Emergency Action Plan", "author": "PCP", "date": "2025-09-05T09:40", "body": "Staff member: Taylor Coolidge\nAllergy: shellfish (shrimp). History of anaphylaxis.\nCarries: epinephrine 0.3 mg auto-injector x2.\n\nIf she has trouble breathing, throat tightness, swelling of the face or lips, widespread hives, faintness or vomiting after possible shellfish exposure: give epinephrine in the outer thigh right away, call 911, have her lie down with legs raised (or sit up if breathing is hard). A second dose may be given in 5 to 15 minutes if symptoms persist. Do not wait to see if it gets better.\n\nPrimary care physician"},
+            {"type": "Patient Message", "title": "RE: Form for work", "author": "PCP", "date": "2025-09-05T09:42", "body": "Done - signed copy attached here and a copy is in your chart. Hope the fall session goes well."}
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "annual_physical",
+          "start": "2025-10-21T08:00",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social (1-2 drinks per week)"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-21T08:35"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-10-21T08:00"},
+            {"procedure": "Immunization administration", "performed": "2025-10-21T08:35"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-10-21T08:55", "body": "Annual.\n\nInterval: L otitis externa in June (ENT, wick and drops), resolved. Shrimp anaphylaxis in August, one ED visit. Nothing since. Strictly avoiding shellfish, carrying both pens, action plan on file at work. Allergy new-patient visit is booked for November. Skin quiet.\n\nMeds: epinephrine 0.3 mg auto-injector prn; triamcinolone 0.1% cream prn; petroleum jelly.\nAllergies: shellfish (anaphylaxis); dust mites; seasonal pollen. No drug allergies.\nSocial: unchanged.\n\nExam: vitals per flowsheet, weight stable. Well. HEENT: canals clear bilaterally, TMs normal. Neck supple. Heart regular, no murmur. Lungs clear. Skin: no active eczema.\n\nPHQ-2: 0.\n\nA/P\n- Shellfish anaphylaxis: avoidance, auto-injectors; allergy visit pending.\n- Atopic dermatitis: quiet.\n- Health maintenance: flu shot today. She'd rather skip a COVID shot this year; fine, offered anytime. Pap up to date (2024), next 2027. GC/CT screening no longer routine at 26; offered, she declines.\n- Next physical October 2026."}
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "telephone",
+          "start": "2025-11-18T09:20",
+          "reason": "Allergy appointment cancelled",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Outside Office Call", "author": "front desk", "date": "2025-11-18T09:20", "body": "Allergy office called: provider out, they are cancelling her 11/20 new patient appointment. Next available new patient slot is 4/14/2026; they booked it and will call her if anything earlier opens. Called pt and left voicemail with the new date."}
+          ]
+        }
+      ]
+    }
+  ]
+}

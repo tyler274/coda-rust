@@ -1,0 +1,861 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002531",
+      "events": [
+        {
+          "id": "2022-01-12a",
+          "kind": "office_visit",
+          "start": "2022-01-12T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-01-13a",
+          "kind": "telephone",
+          "start": "2022-01-13T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "author": "front desk",
+              "date": "2022-01-13T09:05",
+              "body": "Called re: missed visit yesterday. Pt says he got held over at work and forgot to call. Rebooked for mid-April, fasting labs the week before. He asked for refills, routed to RN."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refills",
+              "author": "RN",
+              "date": "2022-01-13T10:20",
+              "body": "Metformin, amlodipine, HCTZ, atenolol refilled x90 days to his pharmacy. Reminded him about April labs."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-13a",
+          "kind": "lab_only",
+          "start": "2022-04-13T07:40",
+          "state": {
+            "labs": {
+              "Fasting Glucose": 126,
+              "Hemoglobin A1c": 7.2,
+              "Total Cholesterol": 220,
+              "Low Density Lipoprotein": 140,
+              "High Density Lipoprotein": 35,
+              "Triglycerides": 250,
+              "Microalbumin/Creatinine Ratio": 86
+            }
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-04-13T07:40",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 126
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.2
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 86
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-04-13T07:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 220
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 140
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 35
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 250
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-04-13T07:40"
+            }
+          ]
+        },
+        {
+          "id": "2022-04-18a",
+          "kind": "office_visit",
+          "start": "2022-04-18T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up; weight gain, thirst",
+          "conditions": [
+            {
+              "label": "Insulin resistance",
+              "icd10": "E88.819",
+              "action": "diagnosed",
+              "onset": "2022-04-18",
+              "note": "With weight gain on olanzapine"
+            },
+            {
+              "label": "Obesity, unspecified",
+              "action": "diagnosed",
+              "onset": "2022-04-18"
+            }
+          ],
+          "state": {
+            "weight_kg": 88.8
+          },
+          "vitals": {
+            "bp": [
+              135,
+              85
+            ],
+            "weight_kg": 88.8
+          },
+          "measure": [
+            "hr",
+            "spo2"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-04-18T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2022-04-18T11:00",
+              "body": "Routine follow-up (missed January).\n\nHe has put on 15 lb in about six months and doesn't know why - says he eats the same and is as active as ever at work. Over the same stretch he has been more thirsty and getting up at night to pee, sometimes twice. No dysuria. No blurry vision. Mood and thinking steady; still olanzapine 10 at night and has been doing well on it for well over a year.\n\nMeds: olanzapine 10 qhs, metformin 1000 BID, amlodipine 10, HCTZ 25, atenolol 50. NKDA.\n\nBP 135/85. Weight 88.8 kg, BMI 30.\nExam unremarkable: heart regular, lungs clear, abdomen soft and nontender, no edema, skin clear.\n\nFasting labs 4/13: glucose 126, A1c 7.2 (was 6.5-6.8 all of last year). Lipids: TC 220, LDL 140, HDL 35, TG 250. Urine ACR 86.\n\nA/P\n1. Type 2 DM, worse: A1c up to 7.2 with weight gain, polydipsia and nocturia. Continue metformin 1000 BID. Diet review, handout given, he will cut the sugary drinks he admits to on night shifts.\n2. Insulin resistance: weight gain, low HDL, high TG and rising glucose on olanzapine. The pattern fits the drug. Writing to his psychiatrist to ask whether a more weight-neutral antipsychotic is reasonable; not changing anything psych-related myself.\n3. Obesity, new as of today, BMI 30.\n4. HTN: 135/85 on three drugs, continue.\n5. CKD 1: ACR 86, creatinine normal last fall.\nRTC 3-4 months."
+            },
+            {
+              "type": "Letter",
+              "title": "Letter to psychiatry",
+              "author": "PCP",
+              "date": "2022-04-18T13:30",
+              "body": "Dear colleague,\n\nI saw our mutual patient Jorge Reyes today. Over the past six months he has gained about 15 lb and his diabetes has worsened, A1c 7.2 from a previous range of 6.5-6.8, with HDL 35 and triglycerides 250. His psychiatric symptoms remain well controlled on olanzapine 10 mg nightly, which I know matters a great deal.\n\nGiven the metabolic picture, would you consider whether an agent with less weight and glucose effect would be appropriate for him? I will keep following his weight, A1c and lipids here and am glad to send results whenever useful.\n\nThank you,\nPrimary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2022-05-16a",
+          "kind": "outside_records",
+          "start": "2022-05-16T14:10",
+          "medications": [
+            {
+              "drug_text": "olanzapine 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Switched by psychiatry for weight and glucose"
+            },
+            {
+              "drug_text": "risperidone 2 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 2,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Schizophrenia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Psychiatry medication change",
+              "author": "psychiatry",
+              "date": "2022-05-16T14:10",
+              "body": "Re: Jorge Reyes\n\nThank you for your letter about his metabolic changes. We discussed options with him at his visit on 05/09/2022. Olanzapine has been discontinued and risperidone started at 2 mg twice daily, with a short cross-taper completed. He understands to call us for any return of symptoms, stiffness or restlessness. He remains stable today. We would welcome repeat glucose and lipids at your next visit.\n\nCommunity psychiatry clinic"
+            }
+          ]
+        },
+        {
+          "id": "2022-06-22a",
+          "kind": "portal_message",
+          "start": "2022-06-22T20:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "weight",
+              "author": "patient",
+              "date": "2022-06-22T20:30",
+              "body": "Is there a nutrition person I can talk to? the new psych med is supposed to be better for weight but I want to get ahead of it"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: weight",
+              "author": "RN",
+              "date": "2022-06-23T08:40",
+              "body": "Good thinking. I attached the diabetes meal-planning handout we use, and the doctor will go over food choices with you at your next visit. Bring your glucose log."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-25a",
+          "kind": "outside_records",
+          "start": "2022-07-25T10:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye exam",
+              "author": "optometry",
+              "date": "2022-07-25T10:30",
+              "body": "Annual dilated exam 07/20/2022. Acuity 20/20 OU corrected. No diabetic retinopathy, no macular edema. Optic nerves normal. Recheck 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-10a",
+          "kind": "office_visit",
+          "start": "2022-08-10T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Headaches, sweating, palpitations",
+          "state": {
+            "bp": [
+              158,
+              98
+            ],
+            "weight_kg": 91.5,
+            "labs": {
+              "Hemoglobin A1c": 7.0,
+              "Metanephrine, Free, Plasma": 470,
+              "Normetanephrine, Free, Plasma": 1450,
+              "Thyroid Stimulating Hormone": 1.6
+            }
+          },
+          "vitals": {
+            "bp": [
+              158,
+              98
+            ],
+            "hr": 96,
+            "weight_kg": 91.5
+          },
+          "measure": [
+            "spo2",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-08-10T16:40",
+              "resulted": "2022-08-12T10:30",
+              "results": [
+                {
+                  "test": "Metanephrine, Free, Plasma",
+                  "value": 470
+                },
+                {
+                  "test": "Normetanephrine, Free, Plasma",
+                  "value": 1450
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-08-10T16:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-08-10T16:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2022-08-10T16:00",
+              "body": "Texted this morning asking to be seen for 'attacks.' Since around the beginning of July he gets spells of pounding headache, drenching sweat and his heart racing, a few times a week, lasting maybe 15-30 minutes. Some of them come with a feeling that something terrible is about to happen. Between spells he feels okay. Not tied to meals or exertion. No chest pain, no syncope. Says these do not feel like his old psychiatric symptoms. Switched to risperidone in May, otherwise no med changes, no caffeine pills or decongestants, no drugs.\n\nBP 158/98 (recheck 156/96), HR 96 - higher than usual for him on atenolol. Afebrile. Weight 91.5.\nAnxious-appearing but calm. Thyroid not enlarged. Heart regular, slightly fast, no murmur. Lungs clear. Abdomen soft, nontender. No tremor. Skin warm.\n\nA/P\nParoxysmal headache, sweating, palpitations with worsening BP in a young man already on three antihypertensives: need to rule out pheochromocytoma. Also thyroid. Plasma free metanephrines and TSH today, A1c while drawing. Not changing BP meds today. He will text if a spell is severe or lasts longer. Will call with results."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-12a",
+          "kind": "telephone",
+          "start": "2022-08-12T12:10",
+          "orders": [
+            {
+              "id": "endo-referral-2022",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "Elevated plasma metanephrines, paroxysmal symptoms, resistant hypertension"
+            },
+            {
+              "id": "urine-24h-2022",
+              "action": "placed",
+              "order": "24-hour urine fractionated metanephrines",
+              "category": "lab",
+              "reason": "Elevated plasma metanephrines"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results call",
+              "author": "PCP",
+              "date": "2022-08-12T12:10",
+              "body": "Called pt. TSH normal. Plasma free metanephrine 470 and normetanephrine 1450 pg/mL, both well above range. Explained this can point to an adrenal tumor that releases adrenaline-type hormones, and we need to confirm. Ordering 24-hour urine collection (jug and instructions at front desk) and an urgent endocrinology referral. A1c 7.0. Told him to keep taking all BP meds, avoid decongestants, and go to the ED for a spell with chest pain, severe headache that won't quit, or fainting. He verbalized understanding."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "lab_only",
+          "start": "2022-08-23T08:30",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-08-23T08:30",
+              "resulted": "2022-08-26T09:15",
+              "results": [
+                {
+                  "test": "Metanephrines, 24 hour urine",
+                  "loinc": "2671-8",
+                  "unit": "ug/(24.h)",
+                  "value": 1850
+                },
+                {
+                  "test": "Normetanephrine, 24 hour urine",
+                  "loinc": "2668-4",
+                  "unit": "ug/(24.h)",
+                  "value": 4600
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "urine-24h-2022",
+              "action": "done",
+              "date": "2022-08-26T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "24-hour urine drop-off",
+              "author": "MA",
+              "date": "2022-08-23T08:30",
+              "body": "Pt dropped off 24-hour urine collection, started 8/22 0730 and finished 8/23 0730 per his log. Kept on ice. Sent to lab."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-26a",
+          "kind": "telephone",
+          "start": "2022-08-26T13:00",
+          "orders": [
+            {
+              "id": "mri-abd-2022",
+              "action": "placed",
+              "order": "MRI abdomen with and without contrast, adrenal protocol",
+              "category": "imaging",
+              "reason": "Biochemically confirmed catecholamine excess"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "24-hour urine result",
+              "author": "PCP",
+              "date": "2022-08-26T13:00",
+              "body": "24-hr urine metanephrines and normetanephrines both clearly elevated, consistent with the blood test. Discussed with pt. Ordered MRI abdomen (adrenal protocol) so endocrinology has imaging at the consult. Endo appointment confirmed for 9/30; asked their office to call if anything opens sooner. Spells unchanged, no ED visits."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-07a",
+          "kind": "imaging",
+          "start": "2022-09-07T18:30",
+          "reports": [
+            {
+              "study": "MRI abdomen with and without contrast",
+              "loinc": "24556-5",
+              "performed": "2022-09-07T18:30",
+              "text": "MRI ABDOMEN WITHOUT AND WITH IV CONTRAST, ADRENAL PROTOCOL\n\nIndication: Elevated plasma and urine metanephrines.\nComparison: None.\nTechnique: Multiplanar multisequence imaging of the abdomen before and after IV gadolinium.\n\nFindings:\nAdrenals: 3.0 cm mass in the left adrenal gland. The right adrenal gland is normal.\nKidneys: Normal size and enhancement bilaterally. No hydronephrosis.\nLiver, gallbladder, spleen, pancreas: Normal.\nVessels: No aortic aneurysm.\nLymph nodes: No adenopathy.\nBones and soft tissues: Unremarkable.",
+              "conclusion": "3.0 cm left adrenal mass. Otherwise normal MRI of the abdomen."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mri-abd-2022",
+              "action": "done",
+              "date": "2022-09-07T18:30"
+            }
+          ]
+        },
+        {
+          "id": "2022-09-08a",
+          "kind": "telephone",
+          "start": "2022-09-08T08:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "MRI result",
+              "author": "PCP",
+              "date": "2022-09-08T08:45",
+              "body": "Reviewed MRI with Jorge by phone: 3 cm left adrenal mass, everything else normal. With the lab results this very likely explains the spells and his hard-to-control BP. Usually treated by removing the gland after medication prep, which endocrinology will set up. He was relieved there's an explanation. Sent MRI report to endocrinology ahead of 9/30."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-30a",
+          "kind": "specialist_visit",
+          "start": "2022-09-30T10:00",
+          "service": "Endocrinology",
+          "reason": "Adrenal mass, elevated metanephrines",
+          "conditions": [
+            {
+              "label": "Pheochromocytoma of left adrenal gland",
+              "icd10": "D35.02",
+              "action": "diagnosed",
+              "onset": "2022-09-30"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "phenoxybenzamine hydrochloride 10 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Preoperative alpha blockade for pheochromocytoma"
+            }
+          ],
+          "state": {
+            "bp": [
+              160,
+              100
+            ],
+            "labs": {
+              "Sodium": 140,
+              "Potassium": 3.2,
+              "Glucose": 98,
+              "Aldosterone": 9,
+              "Plasma Renin Activity": 1.8
+            }
+          },
+          "vitals": {
+            "bp": [
+              160,
+              100
+            ],
+            "hr": 98
+          },
+          "measure": [
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-09-30T10:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.2
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-30T10:45",
+              "resulted": "2022-10-05T14:00",
+              "results": [
+                {
+                  "test": "Aldosterone",
+                  "value": 9
+                },
+                {
+                  "test": "Plasma Renin Activity",
+                  "value": 1.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office consultation, comprehensive",
+              "performed": "2022-09-30T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2022",
+              "action": "done",
+              "date": "2022-09-30T10:00"
+            },
+            {
+              "id": "surg-referral-2022",
+              "action": "placed",
+              "order": "Endocrine surgery referral",
+              "category": "referral",
+              "to": "Endocrine Surgery",
+              "reason": "Left adrenal pheochromocytoma"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology consultation",
+              "author": "endocrinology",
+              "date": "2022-09-30T14:20",
+              "body": "Endocrinology consultation\nReferred by: primary care\nReason: elevated metanephrines and adrenal mass\n\nHistory: 33-year-old man seen for three months of spells of headache, heavy sweating and palpitations. They come in discrete episodes, and he describes some as carrying a sense of dread, as though something bad is about to happen. Since his primary care visit in April his blood pressure has been difficult to control even though he reliably takes amlodipine, hydrochlorothiazide and atenolol. Other history: schizophrenia on risperidone through his psychiatrist, type 2 diabetes on metformin, CKD stage 1, obesity, insulin resistance. NKDA. Never smoker, social alcohol, warehouse work. Father with diabetes, mother with hypertension, maternal uncle with schizophrenia.\n\nExam: BP 160/100, HR 98. Alert, comfortable. Thyroid normal. Heart regular. Lungs clear. Abdominal bruit is audible. No edema.\n\nData: plasma free metanephrines from primary care elevated. 24-hour urine metanephrines and normetanephrines elevated. MRI abdomen: 3 cm left adrenal mass. Today: Na 140, K 3.2, glucose 98. Aldosterone and renin sent given the low potassium.\n\nImpression: Pheochromocytoma, left adrenal, biochemically and anatomically consistent.\n\nPlan:\n1. Start phenoxybenzamine 10 mg twice daily for alpha blockade before surgery; liberal salt and fluids. Continue his other antihypertensives. Atenolol may stay now that alpha blockade is starting.\n2. Referral to endocrine surgery for laparoscopic left adrenalectomy.\n3. Potassium is 3.2 on hydrochlorothiazide; please replete through your office.\n4. Aldosterone/renin pending.\n5. After surgery we will repeat metanephrines and discuss genetic testing.\n\nThank you for this referral.\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "telephone",
+          "start": "2022-10-04T11:30",
+          "medications": [
+            {
+              "drug": "potassium chloride 20 MEQ Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily for 14 days",
+              "dose": {
+                "value": 20,
+                "unit": "meq"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Hypokalemia"
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-k-2022",
+              "action": "placed",
+              "order": "Basic metabolic panel",
+              "category": "lab",
+              "reason": "Recheck potassium"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Endocrinology letter review",
+              "author": "PCP",
+              "date": "2022-10-04T11:30",
+              "body": "Read the endocrinology consult. Pheochromocytoma confirmed, phenoxybenzamine started, surgical referral in. Potassium 3.2 on HCTZ - sending KCl 20 mEq daily x 14 days, BMP in 2 weeks. Spoke with pt: picked up the phenoxybenzamine and started it. Spells less frequent already. Flu shot at RN visit next week."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-05a",
+          "kind": "outside_records",
+          "start": "2022-10-06T09:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Endocrinology result note",
+              "author": "endocrinology",
+              "date": "2022-10-06T09:00",
+              "body": "Addendum to 9/30 consult: aldosterone 9 ng/dL with plasma renin activity 1.8 ng/mL/h, ratio 5. Not suggestive of primary aldosteronism. Low potassium attributed to the thiazide. No change to plan."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-12a",
+          "kind": "nurse_visit",
+          "start": "2022-10-12T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot, BP check",
+          "state": {
+            "bp": [
+              126,
+              80
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-12T08:15"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-12T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit",
+              "author": "RN",
+              "date": "2022-10-12T08:10",
+              "body": "Flu vaccine 0.5 mL IM right deltoid. BP check per PCP since starting phenoxybenzamine: seated as charted, standing similar, no dizziness on standing. Taking KCl. Surgery consult scheduled for later this month."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-19a",
+          "kind": "lab_only",
+          "start": "2022-10-19T07:55",
+          "state": {
+            "labs": {
+              "Potassium": 3.9,
+              "Glucose": 138
+            }
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-10-19T07:55",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-k-2022",
+              "action": "done",
+              "date": "2022-10-19T07:55"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-10-19T07:55"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "portal_message",
+          "start": "2022-10-20T08:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Potassium",
+              "author": "PCP",
+              "date": "2022-10-20T08:30",
+              "body": "Potassium is back to 3.9, normal. Finish the 14 days of potassium pills and then stop. Kidney function fine."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-28a",
+          "kind": "outside_records",
+          "start": "2022-10-28T15:00",
+          "orders": [
+            {
+              "id": "surg-referral-2022",
+              "action": "done",
+              "date": "2022-10-28T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrine surgery consultation",
+              "author": "general surgery",
+              "date": "2022-10-28T15:00",
+              "body": "Endocrine surgery clinic\n\nSeen for a 3.0 cm left adrenal pheochromocytoma referred by endocrinology. On phenoxybenzamine 10 mg BID since 9/30 with good blood pressure response and fewer spells. Never had abdominal surgery. NKDA. Exam: abdomen soft, nontender, no scars.\n\nPlan: laparoscopic left adrenalectomy, scheduled 11/17/2022. Continue phenoxybenzamine through the morning before surgery. Expect 1-2 night stay. Risks, benefits and alternatives reviewed; consent signed."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-02a",
+          "kind": "pharmacy",
+          "start": "2022-11-02T17:45",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-11-02T17:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunization: COVID-19 bivalent",
+              "author": "MA",
+              "date": "2022-11-07T09:30",
+              "body": "Registry: Pfizer bivalent COVID booster 11/02/2022 at a pharmacy. Added."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-17a",
+          "kind": "hospital_admission",
+          "start": "2022-11-17T06:00",
+          "end": "2022-11-19T11:30",
+          "service": "General Surgery",
+          "reason": "Laparoscopic left adrenalectomy for pheochromocytoma",
+          "medications": [
+            {
+              "drug_text": "phenoxybenzamine hydrochloride 10 MG Oral Capsule",
+              "action": "stop",
+              "reason": "Tumor removed"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2022-11-17T09:40",
+              "issued": "2022-11-22T13:00",
+              "text": "SPECIMEN: Left adrenal gland, laparoscopic adrenalectomy.\n\nGROSS: Adrenal gland with an attached well-circumscribed tan-brown nodule measuring 3.0 cm in greatest dimension.\n\nMICROSCOPIC: Nested neoplasm of polygonal cells with granular cytoplasm, consistent with pheochromocytoma. The tumor is confined to the adrenal gland. Margins are negative. Uninvolved adrenal cortex is unremarkable.",
+              "conclusion": "Left adrenal gland: pheochromocytoma, 3.0 cm, confined to the adrenal gland; margins negative."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary",
+              "author": "general surgery",
+              "date": "2022-11-19T11:30",
+              "body": "Admission 11/17/2022 - discharge 11/19/2022\nProcedure: laparoscopic left adrenalectomy, 11/17/2022, uncomplicated.\nIndication: left adrenal pheochromocytoma, prepared with phenoxybenzamine.\n\nCourse: Tolerated surgery well. Blood pressure stable in the low 120s-130s systolic after surgery; glucose monitored and managed with his usual metformin once eating. Ambulating, tolerating diet, pain controlled with acetaminophen. Port sites healing.\n\nDischarge medications: STOP phenoxybenzamine. Continue amlodipine 10 mg daily, hydrochlorothiazide 25 mg daily, atenolol 50 mg daily, metformin 1000 mg BID, risperidone 2 mg BID. Acetaminophen as needed.\nAllergies: NKDA.\nFollow-up: primary care within 1-2 weeks; endocrinology in 6-8 weeks with repeat metanephrines; surgery clinic in 3 weeks. Final pathology to follow."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-11-17T06:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-11-17T06:30",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2022-11-28a",
+          "kind": "office_visit",
+          "start": "2022-11-28T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up",
+          "state": {
+            "bp": [
+              132,
+              84
+            ],
+            "weight_kg": 92.0
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-11-28T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-discharge visit",
+              "author": "PCP",
+              "date": "2022-11-28T13:20",
+              "body": "Seen 9 days after laparoscopic L adrenalectomy. Pathology came back: 3.0 cm pheochromocytoma, confined to the gland, clean margins.\nFeels good. No more spells since surgery. Port sites a little sore, using acetaminophen once a day. Eating well, bowels normal. Back to light duty next week per surgery.\n\nBP 132/84 off phenoxybenzamine, on amlodipine/HCTZ/atenolol. Afebrile.\nIncisions: four small port sites healing, no redness or drainage. Abdomen soft, appropriately tender near ports. Heart regular, lungs clear.\n\nA/P\n- s/p L adrenalectomy for pheo: doing well. Endocrinology in January with repeat metanephrines.\n- HTN: continue all three meds; reassess over the next months now that the tumor is out.\n- DM2: metformin; A1c in January.\n- Work note for light duty given."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              84
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

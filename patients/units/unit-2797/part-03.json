@@ -1,0 +1,487 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001103",
+   "events": [
+    {
+     "id": "2021-03-16a",
+     "kind": "office_visit",
+     "start": "2021-03-16T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hypertension follow-up",
+     "state": {
+      "bp": [
+       176,
+       116
+      ]
+     },
+     "vitals": [
+      {
+       "time": "2021-03-16T15:45",
+       "bp": [
+        180,
+        120
+       ],
+       "hr": 76
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-03-16T16:20",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ],
+       "resulted": "2021-03-17T08:40"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "losartan potassium 25 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 25,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "renovascular hypertension"
+      }
+     ],
+     "orders": [
+      {
+       "id": "cta-abd",
+       "action": "placed",
+       "order": "CT angiogram abdomen",
+       "category": "imaging",
+       "reason": "fibromuscular dysplasia, renal artery"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-03-16T15:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - Hypertension",
+       "author": "PCP",
+       "date": "2021-03-17T09:05",
+       "body": "HTN FOLLOW-UP (seen 3/16; labs back this morning)\nRoutine follow-up of severe hypertension with right renal artery FMD (dx cardiology 3/2020), with prior transient right-eye vision loss (7/2020), headaches and pulsatile tinnitus. Today she denies headache, vision changes or chest pain. Home readings have run higher this winter. Cardiology follow-up never got rebooked.\nMeds: HCTZ 25 mg daily, KCl ER 20 mEq daily.\n\nBP 180/120 (repeated after rest, similar), HR 76.\nExam normal: alert, comfortable; heart regular, no murmur; lungs clear; abdomen soft; no edema; neuro nonfocal.\nLabs 3/16: creatinine and electrolytes normal — Cr 0.66, K 4.0, Na 140, HCO3 28.\n\nA/P\n1. Renovascular HTN due to right renal artery FMD — severely elevated, asymptomatic, no sign of acute end-organ injury. Add losartan 25 mg daily (unilateral disease, normal renal function). Continue HCTZ 25. Continue KCl for now; BMP in 1-2 weeks given ARB.\n2. CT angiogram of the abdomen ordered to define the renal artery disease.\n3. Pregnancy: losartan can harm a developing pregnancy. Counselled; she reports reliable contraception and no plans for pregnancy. Stop it and call right away if pregnancy is ever possible.\n4. Will send CTA result to cardiology with another request for follow-up.\nED for severe headache, vision loss, chest pain or neuro symptoms. Recheck 6-8 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2021-03-29a",
+     "kind": "lab_only",
+     "start": "2021-03-29T07:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "BMP after losartan start",
+     "state": {
+      "labs": {
+       "Potassium": 4.4
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-03-29T07:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ],
+       "resulted": "2021-03-29T13:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2021-03-29T07:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lab Results",
+       "author": "PCP",
+       "date": "2021-03-29T13:40",
+       "body": "Your bloodwork two weeks into losartan looks good — creatinine 0.73 (0.66 before) and potassium 4.5. Your kidneys are tolerating it. CT angiogram is booked for 4/8."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-08a",
+     "kind": "imaging",
+     "start": "2021-04-08T16:30",
+     "service": "Radiology",
+     "reason": "CT angiogram abdomen",
+     "reports": [
+      {
+       "study": "CT abdomen and pelvis with contrast",
+       "performed": "2021-04-08T16:30",
+       "issued": "2021-04-09T09:15",
+       "text": "EXAM: CT angiography of the abdomen.\nINDICATION: Renovascular hypertension; known fibromuscular dysplasia of the right renal artery on ultrasound; anatomic evaluation.\nTECHNIQUE: Arterial-phase helical CT of the abdomen after intravenous contrast, with multiplanar and 3D reformations.\nFINDINGS:\nAbdominal aorta: normal caliber.\nRight renal artery: single artery with an irregular, beaded appearance and a focal area of narrowing. No aneurysm or dissection identified.\nLeft renal artery: single artery, normal in caliber and contour.\nKidneys: normal in size bilaterally with symmetric enhancement. No hydronephrosis.",
+       "conclusion": "1. Beaded, irregular right renal artery with focal narrowing, consistent with multifocal fibromuscular dysplasia.\n2. Normal left renal artery.\n3. Kidneys normal in size."
+      }
+     ],
+     "orders": [
+      {
+       "id": "cta-abd",
+       "action": "done",
+       "date": "2021-04-08T16:30"
+      }
+     ]
+    },
+    {
+     "id": "2021-04-09a",
+     "kind": "portal_message",
+     "start": "2021-04-09T12:35",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "CT Angiogram Result",
+       "author": "PCP",
+       "date": "2021-04-09T12:35",
+       "body": "Kristen, the CT angiogram confirms fibromuscular dysplasia in the artery to your right kidney — the beaded pattern typical of the multifocal type, with one narrowed area. The artery to your left kidney is normal and both kidneys are a normal size. I'm sending the report to cardiology. Keep logging your pressures; next BP visit in early June."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-21a",
+     "kind": "outside_records",
+     "start": "2021-04-21T11:20",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, original",
+       "date": "2021-03-13T10:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, original",
+       "date": "2021-04-10T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "COVID-19 Vaccine Record",
+       "author": "MA",
+       "date": "2021-04-21T11:20",
+       "body": "Pt uploaded photo of CDC vaccination card through portal. Moderna dose 1 3/13/2021, dose 2 4/10/2021, community vaccination clinic. Entered as historical immunizations."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-10a",
+     "kind": "office_visit",
+     "start": "2021-06-10T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Blood pressure follow-up",
+     "state": {
+      "bp": [
+       148,
+       94
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "medications": [
+      {
+       "drug": "losartan potassium 25 MG Oral Tablet",
+       "action": "stop",
+       "reason": "dose increased"
+      },
+      {
+       "drug": "losartan potassium 50 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 50,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "renovascular hypertension"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2021-06-10T15:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - Hypertension",
+       "author": "PCP",
+       "date": "2021-06-10T16:25",
+       "body": "S: BP f/u, ~3 months on losartan 25 + HCTZ 25 + KCl 20. No dizziness, cough or swelling. Home log 140s-150s/90s. No headaches lately, no vision events. Contraception unchanged.\nO: BP 135/95, HR 77, wt 70.3 kg. S1 S2 normal. Clear to auscultation. No pedal edema.\nA/P: Renovascular HTN (R renal FMD) — better, but diastolic and home readings still above goal. Increase losartan to 50 mg daily. BMP in 2 weeks; if potassium stays normal on the higher dose, plan to stop the KCl. Pregnancy precautions on ARB reviewed again."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-24a",
+     "kind": "lab_only",
+     "start": "2021-06-24T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "BMP after losartan increase",
+     "state": {
+      "labs": {
+       "Potassium": 4.6
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-06-24T07:30",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ],
+       "resulted": "2021-06-24T13:20"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2021-06-24T07:30"
+      }
+     ]
+    },
+    {
+     "id": "2021-06-25a",
+     "kind": "telephone",
+     "start": "2021-06-25T11:45",
+     "medications": [
+      {
+       "drug": "potassium chloride 20 MEQ Extended Release Oral Tablet",
+       "action": "stop",
+       "reason": "potassium normal on losartan"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Potassium Plan",
+       "author": "PCP",
+       "date": "2021-06-25T11:45",
+       "body": "BMP 6/24 on losartan 50: K 4.8, Cr 0.68. Potassium has now been normal twice on losartan (4.5 in March, 4.8 now). Stop potassium chloride.\nSpoke with pt; she will stop it today. Repeat BMP in about 2 weeks off potassium."
+      }
+     ]
+    },
+    {
+     "id": "2021-07-12a",
+     "kind": "lab_only",
+     "start": "2021-07-12T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "BMP off potassium",
+     "state": {
+      "bp": [
+       139,
+       88
+      ],
+      "labs": {
+       "Potassium": 4.2
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-07-12T08:00",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ],
+       "resulted": "2021-07-12T14:10"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2021-07-12T08:00"
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Hypokalemia",
+       "icd10": "E87.6",
+       "action": "resolved"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lab Results",
+       "author": "PCP",
+       "date": "2021-07-12T15:00",
+       "body": "Off potassium supplement ~2 weeks: K 4.2, Cr 0.75, Na 140. Low potassium has resolved on losartan. Continue losartan 50 + HCTZ 25. Pt notified via portal."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-28a",
+     "kind": "annual_physical",
+     "start": "2021-10-28T15:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg",
+      "temp_c",
+      "spo2"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-10-28T16:20",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ],
+       "resulted": "2021-10-29T09:05"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-28T16:15"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2021-10-28T15:45"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-28T16:15"
+      }
+     ],
+     "state": {
+      "bp": [
+       138,
+       90
+      ]
+     },
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2021-10-28T16:45",
+       "body": "ANNUAL PHYSICAL\n38 y/o F. Feels well. Home BP since summer mostly 130s-140s over 80s. No headaches or vision changes. Off potassium since June.\nMeds: losartan 50 mg daily; hydrochlorothiazide 25 mg daily. NKDA.\nContraception reliable and unchanged; understands losartan and pregnancy.\nCardiology: has not been back since 3/2020; CTA report was sent in April. She says she'll call.\n\nPrevention: flu today. COVID primary series complete (Moderna 3/2021, 4/2021). Pap/HPV 2019 normal — next 2024. PHQ-2: 0.\n\nExam: BP 132/79, HR 79, T 36.5, SpO2 98%, wt 70.7 kg, BMI 25.7.\nGeneral well. Eyes/ENT normal. Thyroid not enlarged. Cardiac regular, no murmur. Lungs clear. Abdomen soft. No edema. Skin unremarkable.\n\nA/P\n1. Renovascular HTN / R renal FMD — much improved on losartan + HCTZ. Continue. BMP today. BP visits every 6 months.\n2. Health maintenance as above."
+      }
+     ]
+    },
+    {
+     "id": "2021-12-06a",
+     "kind": "portal_message",
+     "start": "2021-12-06T20:30",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, original",
+       "date": "2021-11-20T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Booster",
+       "author": "patient",
+       "date": "2021-12-06T20:30",
+       "body": "FYI I got my COVID booster at the pharmacy on 11/20, Moderna. Arm was sore for a day, that's it."
+      },
+      {
+       "type": "Administrative Note",
+       "title": "Immunization Entered",
+       "author": "MA",
+       "date": "2021-12-07T08:40",
+       "body": "Moderna booster 11/20/2021 entered from pt report and state registry."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

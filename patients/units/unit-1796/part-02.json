@@ -1,0 +1,435 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001796",
+      "events": [
+        {
+          "id": "2026-01-10a",
+          "kind": "ed_visit",
+          "start": "2026-01-10T10:55",
+          "end": "2026-01-10T13:40",
+          "service": "Emergency Medicine",
+          "reason": "Lightheadedness during marathon",
+          "conditions": [
+            {
+              "label": "Dehydration",
+              "icd10": "E86.0",
+              "action": "diagnosed",
+              "onset": "2026-01-10"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-01-10T10:20",
+              "hr": 104,
+              "bp": [
+                98,
+                66
+              ]
+            },
+            {
+              "time": "2026-01-10T10:58",
+              "hr": 98,
+              "bp": [
+                102,
+                68
+              ],
+              "temp_c": 37.3,
+              "rr": 18,
+              "spo2": 99
+            },
+            {
+              "time": "2026-01-10T13:05",
+              "hr": 78,
+              "bp": [
+                114,
+                72
+              ]
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-10T11:10",
+              "resulted": "2026-01-10T11:52",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "sodium chloride 9 MG/ML Injectable Solution",
+              "action": "start",
+              "sig": "1,000 mL IV bolus once",
+              "dose": {
+                "value": 1000,
+                "unit": "mL"
+              },
+              "frequency": "ONCE",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "dehydration"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-01-10T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Outside Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2026-01-14T09:40",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN NOTE (outside facility, central Florida)\nDate of visit: 01/10/2026. Received by fax 01/14/2026.\n\nCC: lightheaded and dizzy during a marathon.\n\nHPI: 33-year-old woman running a marathon this morning in warm, humid weather. Reports she took no fluids from the start. Around mile 10 became lightheaded and dizzy, slowed down and stopped to rest for a few minutes; noticed a dry mouth and that her skin felt sticky. Has not voided since the start of the race. Race medical tent noted HR 104 and BP 98/66, with weight 3 lb under her pre-race check-in weight, and sent her in for evaluation. Denies any recent illness, vomiting or diarrhea. No chest pain, no syncope, no headache, no confusion.\n\nPMH: cryptosporidium infection, summer 2025, resolved.\nPSH: tonsillectomy, wisdom teeth extraction.\nMedications: none.\nAllergies: no known drug allergies.\nFamily hx: mother hypothyroidism, father hypertension.\nSocial: never smoker, social alcohol, works in international business development.\n\nExam on arrival: T 37.3, HR 98, BP 102/68, RR 18, SpO2 99% RA. Alert, oriented, conversant. Mucous membranes dry. Lungs clear. Heart regular, mildly tachycardic, no murmur. Abdomen benign. No focal neuro deficit. Skin warm.\n\nLabs: BMP within reference range, sodium normal.\n\nED course: 1 L normal saline IV. Encouraged oral fluids, tolerated well. Repeat HR 78, BP 114/72. Ambulating without dizziness.\n\nImpression: volume depletion / dehydration from exertion in heat without fluid intake.\n\nDisposition: discharged in stable condition. Oral fluids with electrolytes for the next 24 hours, rest, no running for several days. Follow up with primary care in 1 week. Return for fainting, confusion, chest pain, or inability to keep fluids down."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-12a",
+          "kind": "portal_message",
+          "start": "2026-01-12T08:14",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED visit while traveling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ER visit in Florida",
+              "author": "patient",
+              "date": "2026-01-12T08:14",
+              "body": "Hi, wanted to give you a heads up. I was running the marathon in Florida on Saturday and got really dizzy around mile 10. The medical tent sent me to the ER, they said I was dehydrated and gave me a bag of IV fluids and let me go. I'm home now and honestly feel fine, just sore. They told me to see my doctor in a week. Do you want me to come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ER visit in Florida",
+              "author": "PCP",
+              "date": "2026-01-12T09:02",
+              "body": "Thanks for letting me know, glad you're feeling better. Yes, let's do a quick visit Friday and recheck your electrolytes. Our team will request the ER record so I have it before then. Keep drinking and take a few days off running."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-16a",
+          "kind": "office_visit",
+          "start": "2026-01-16T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, dehydration",
+          "conditions": [
+            {
+              "label": "Dehydration",
+              "icd10": "E86.0",
+              "action": "resolved",
+              "onset": "2026-01-10"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-16T15:45",
+              "resulted": "2026-01-16T20:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-01-16T15:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-01-16T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "author": "PCP",
+              "date": "2026-01-16T17:30",
+              "body": "S: Follow-up after ED visit in Florida 1/10 for dehydration during a marathon (record received 1/14 and reviewed: no fluids taken, lightheaded about mile 10, tent HR 104, BP 98/66, down 3 lb from her check-in weight, BMP normal there, 1 L NS and discharged). Since then feels completely normal. Peeing normally, eating and drinking well. No dizziness standing, no palpitations. Did an easy 3 mi run yesterday without trouble. No GI symptoms.\n\nMeds: none. NKDA.\n\nO: Vitals reviewed, normal. Comfortable. Mucous membranes moist. Heart RRR. Lungs clear. No orthostatic symptoms on standing.\n\nA/P: Exertional dehydration, resolved.\n- BMP today to close the loop.\n- Long-run plan: drink to thirst starting early, roughly every aid station, electrolyte drink for anything over an hour, extra care racing somewhere hot. Weigh before and after long training runs.\n- Back to normal training as she feels able.\nRTC for physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-19a",
+          "kind": "portal_message",
+          "start": "2026-01-19T10:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab result note",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Friday's labs",
+              "author": "PCP",
+              "date": "2026-01-19T10:25",
+              "body": "Hi Lauren, sodium, potassium and kidney function from Friday are all normal. You're fully recovered from the race. Nothing else needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-18a",
+          "kind": "portal_message",
+          "start": "2026-03-18T13:48",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Immunization record request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vaccine record",
+              "author": "patient",
+              "date": "2026-03-18T13:48",
+              "body": "Hello, my company's travel team is asking for a copy of my vaccination record before my next few trips. Could you send me whatever you have on file? A PDF is perfect."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Vaccine record",
+              "author": "MA",
+              "date": "2026-03-18T16:02",
+              "body": "Hi Lauren, your immunization record is attached as a PDF. It includes what came over from your previous office plus the flu shot you got here in October. Let us know if they need anything more."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "ed_visit",
+          "start": "2026-07-20T14:20",
+          "end": "2026-07-20T19:05",
+          "service": "Emergency Medicine",
+          "reason": "Vomiting and diarrhea on cruise",
+          "conditions": [
+            {
+              "label": "Norovirus infection",
+              "icd10": "A08.11",
+              "action": "diagnosed",
+              "onset": "2026-07-19"
+            },
+            {
+              "label": "Dehydration",
+              "icd10": "E86.0",
+              "action": "diagnosed",
+              "onset": "2026-07-20"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-07-20T14:28",
+              "hr": 106,
+              "bp": [
+                110,
+                70
+              ],
+              "temp_c": 37.1,
+              "rr": 16,
+              "spo2": 99
+            },
+            {
+              "time": "2026-07-20T18:40",
+              "hr": 88
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-07-20T15:30",
+              "resulted": "2026-07-20T17:15",
+              "results": [
+                {
+                  "test": "Leukocytes [Presence] in Stool by Light microscopy",
+                  "loinc": "13655-6",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Ova and parasites identified in Stool by Light microscopy",
+                  "loinc": "10704-5",
+                  "text": "No ova or parasites seen"
+                }
+              ]
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "sodium chloride 9 MG/ML Injectable Solution",
+              "action": "start",
+              "sig": "1,000 mL IV bolus once",
+              "dose": {
+                "value": 1000,
+                "unit": "mL"
+              },
+              "frequency": "ONCE",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "dehydration"
+            },
+            {
+              "drug_text": "ondansetron 2 MG/ML Injectable Solution",
+              "action": "start",
+              "sig": "4 mg IV once",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "ONCE",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "vomiting"
+            },
+            {
+              "drug": "ondansetron 4 MG Disintegrating Oral Tablet",
+              "action": "start",
+              "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea. #6",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "nausea and vomiting"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-07-20T18:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Outside Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2026-07-24T11:20",
+              "body": "EMERGENCY DEPARTMENT RECORD (hospital at cruise port of call)\nVisit 07/20/2026. Copy received 07/24/2026 at patient request.\n\nChief complaint: vomiting and diarrhea x 24 h.\n\nHistory: 33 y/o female passenger on a cruise. Sudden onset yesterday of severe nausea, then repeated vomiting and frequent watery, nonbloody diarrhea. Cannot keep down food or liquids. Many other passengers on the ship sick with the same illness. Husband, who ate every meal with her, became ill with the same symptoms a few hours before she did. No raw shellfish, no undercooked meat, no unpasteurized dairy. Nobody in their group with fever or blood in the stool.\n\nPast history: cryptosporidiosis 2025; dehydration after a marathon 01/2026, recovered. Surgeries: tonsillectomy, wisdom teeth.\nMedications: none. Allergies: NKDA.\nSocial: never smoker, occasional alcohol.\n\nTriage: T 37.1 C, HR 106, BP 110/70, RR 16, SpO2 99%.\nExam: Tired-appearing but alert and oriented x3. Dry mucous membranes. Mild tachycardia, regular. Lungs clear. Abdomen soft, nondistended, without peritoneal signs. No rash.\n\nStool: fecal leukocytes negative; ova and parasite exam negative.\n\nTreatment: NS 1 L IV bolus; ondansetron 4 mg IV. Nausea settled; drank oral fluids without vomiting. HR 88 on recheck.\n\nAssessment: acute gastroenteritis in a shipboard outbreak, most consistent with norovirus. Dehydration.\n\nDisposition: discharged back to ship, stable. Rx ondansetron 4 mg ODT q8h PRN nausea, #6. Small frequent sips of oral rehydration fluid, strict handwashing (alcohol gel does not reliably kill this virus), stay in cabin until 48 h symptom-free. Return for blood in stool, high fever, confusion, or inability to keep fluids down. See primary doctor after returning home."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-22a",
+          "kind": "portal_message",
+          "start": "2026-07-22T19:36",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "GI illness on cruise",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sick on the cruise",
+              "author": "patient",
+              "date": "2026-07-22T19:36",
+              "body": "Hi! We got back tonight from our cruise. Half the ship came down with a stomach bug and so did we. I ended up in an ER at one of the stops Monday because I couldn't keep anything down. They gave me fluids and nausea meds and said it was probably norovirus. Vomiting stopped yesterday, still some diarrhea but less. They told me to check in with you when I'm home. I signed their release so you should get the records."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Sick on the cruise",
+              "author": "RN",
+              "date": "2026-07-23T08:10",
+              "body": "Welcome home, sorry the trip ended that way. Sounds like you're turning the corner. Booked you a video visit with Dr. at 11:30 today. Keep sipping fluids until then and call us if you can't keep them down."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-23a",
+          "kind": "telehealth_visit",
+          "start": "2026-07-23T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-ED follow-up, gastroenteritis",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2026-07-23T11:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2026-07-23T12:15",
+              "body": "Video visit, pt at home in Holyoke, consented.\n\nS: Seen 7/20 in an ED at a port stop on her cruise for vomiting and watery diarrhea during a shipboard outbreak; given IV fluids and ondansetron, told likely norovirus (record not yet received). Husband had the same illness. Last emesis 7/21. Two loose stools so far today, no blood. Drinking well and urinating normally. Took the ondansetron twice, none since yesterday. Feels washed out. No fever. No belly pain to speak of.\n\nO: Appears well on video, talking in full sentences, lips moist, no distress.\n\nA/P: Viral gastroenteritis, presumed norovirus, improving. Dehydration improving with oral intake.\n- Keep up fluids, bland food as tolerated, advance diet.\n- Ondansetron PRN, remaining tabs fine to finish or discard.\n- Bleach-based cleaner for bathroom surfaces; handwashing with soap rather than gel. Contagious for a few days after symptoms stop, so no cooking for others this week.\n- Message Monday with an update; sooner for blood in stool, fever, or not keeping fluids down."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-29a",
+          "kind": "portal_message",
+          "start": "2026-07-29T07:44",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Update after gastroenteritis",
+          "conditions": [
+            {
+              "label": "Norovirus infection",
+              "icd10": "A08.11",
+              "action": "resolved",
+              "onset": "2026-07-19"
+            },
+            {
+              "label": "Dehydration",
+              "icd10": "E86.0",
+              "action": "resolved",
+              "onset": "2026-07-20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "All better",
+              "author": "patient",
+              "date": "2026-07-29T07:44",
+              "body": "Sorry this is late, meant to write Monday. Totally back to normal since about Sunday, eating everything, back at work. My husband's fine too."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: All better",
+              "author": "PCP",
+              "date": "2026-07-29T08:30",
+              "body": "Great news, thanks for the update. The ED record came in and matches what you told me. Nothing more to do. See you in October for your physical."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-14a",
+          "kind": "annual_physical",
+          "start": "2026-10-14T08:40",
+          "appointment": "booked",
+          "reason": "Annual physical"
+        }
+      ]
+    }
+  ]
+}

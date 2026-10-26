@@ -1,0 +1,296 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002610",
+      "events": [
+        {
+          "id": "2026-06-22a",
+          "kind": "ed_visit",
+          "start": "2026-06-22T17:45",
+          "end": "2026-06-22T22:30",
+          "service": "Emergency Medicine",
+          "reason": "Right leg weakness after motorcycle crash",
+          "conditions": [
+            {
+              "label": "Brown-Séquard syndrome",
+              "icd10": "S24.143A",
+              "action": "diagnosed",
+              "onset": "2026-06-22",
+              "note": "Right hemicord contusion at T10, motorcycle crash"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-22T18:05",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ],
+              "resulted": "2026-06-22T19:00"
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-06-22T18:05",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ],
+              "resulted": "2026-06-22T19:00"
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-22T18:05",
+              "results": [
+                {
+                  "test": "Drug screen, urine",
+                  "loinc": "19659-1",
+                  "text": "Negative"
+                }
+              ],
+              "resulted": "2026-06-22T19:00"
+            }
+          ],
+          "reports": [
+            {
+              "study": "MRI thoracic spine without contrast",
+              "loinc": "24990-5",
+              "performed": "2026-06-22T20:10",
+              "text": "MRI THORACIC SPINE WITHOUT CONTRAST\nIndication: motorcycle crash, right leg weakness, sensory level.\nTechnique: sagittal and axial T1, T2 and STIR sequences.\nFindings: T2 hyperintense signal within the right half of the spinal cord at T10, consistent with cord contusion. No intramedullary hemorrhage. Cord is not compressed. Vertebral body heights and alignment are maintained; no fracture. No epidural hematoma. Posterior ligaments intact. Remaining cord signal normal.",
+              "conclusion": "Right hemicord contusion at T10. No fracture, compression or ligamentous injury."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-06-22T17:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Outside ED Physician Record",
+              "author": "emergency medicine",
+              "date": "2026-06-29T14:00",
+              "body": "EMERGENCY MEDICINE NOTE (outside hospital)\nDOS 06/22/2026, arrival 17:45, trauma alert\n\nCC: weak right leg after motorcycle crash.\n\nHPI: 34M brought in after a motorcycle crash this afternoon. Known to us from crashes and a hand injury in 2024-25 (L leg embolectomy and R hand fasciotomy Dec 2024; L hand injection injury June 2025). Complains his right leg is weak and he can't feel it when it's touched.\n\nMeds: none. NKDA.\nFH: father with HTN, mother with hypothyroidism.\nSH: former smoker (quit 2024). EtOH socially, 2-3 drinks/wk. Spray painter.\n\nVitals: see flowsheet.\n\nNeuro: alert and oriented. Arms: full strength and normal sensation both sides. RLE strength 3/5. Proprioception and vibration diminished in the right leg. Light touch decreased on the right from T10 down. Pain and temperature preserved on the right, reduced on the left from T12 down. Reflexes normal throughout. Denies bowel or bladder incontinence.\nRest of trauma survey without injury.\n\nLabs: CBC wnl. Lytes wnl. Tox screen negative.\nMRI T-spine: right hemicord contusion at T10, no fracture.\n\nMDM: Picture is a Brown-Sequard syndrome at T10 from a right hemicord contusion - ipsilateral weakness and dorsal column loss, contralateral spinothalamic loss two levels lower. Spine surgery consulted. Admit to trauma.\n\nDx: Traumatic Brown-Sequard syndrome, T10.\nDispo: admit, trauma surgery."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-22b",
+          "kind": "hospital_admission",
+          "start": "2026-06-22T22:30",
+          "end": "2026-06-26T10:00",
+          "service": "Trauma Surgery",
+          "reason": "Traumatic spinal cord injury, T10",
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-06-22T22:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-06-26T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Outside Hospital Discharge Summary - Trauma",
+              "author": "trauma surgery",
+              "date": "2026-06-30T11:20",
+              "body": "TRAUMA SERVICE DISCHARGE / TRANSFER SUMMARY\nAdmitted 06/22/2026. Transferred to inpatient rehabilitation 06/26/2026.\n\nPrincipal dx: Brown-Sequard syndrome at T10 (right hemicord contusion) after motorcycle crash.\n\nCourse: Spine surgery reviewed the MRI: no fracture, no instability, no compression. Nonoperative management, no brace needed. Enoxaparin for DVT prophylaxis while inpatient. PT and OT from day 1; up with a walker by day 3. Right leg strength unchanged early, improving slightly at transfer. Voiding on his own, bowels moving, no incontinence.\n\nAllergies: NKDA.\nHome medications: none.\n\nTransfer: acute inpatient rehabilitation."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-26a",
+          "kind": "hospital_admission",
+          "start": "2026-06-26T12:00",
+          "end": "2026-07-17T11:00",
+          "service": "Physical Medicine and Rehabilitation",
+          "reason": "Inpatient rehabilitation after T10 cord injury",
+          "medications": [
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets by mouth every 8 hours as needed for pain",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "musculoskeletal pain"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-07-17T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Inpatient Rehabilitation Discharge Summary",
+              "author": "physical medicine and rehabilitation",
+              "date": "2026-07-20T09:40",
+              "body": "REHABILITATION DISCHARGE SUMMARY\nAdmit 06/26/2026 - Discharge 07/17/2026 (21 days)\n\nRehab dx: Incomplete thoracic spinal cord injury, Brown-Sequard pattern, T10, traumatic.\n\nProgram: 3 hours a day of PT and OT. Gait training, right leg strengthening, balance work, stairs.\n\nAt discharge: right leg strength 4/5 throughout. Walks household and community distances with a single-point cane, stairs with a rail. Independent in dressing, bathing and toileting. Bladder emptying normally, no retention; bowels regular, continent. Skin intact.\n\nAllergies: NKDA.\nDischarge medication: acetaminophen 500 mg, 2 tabs every 8 hrs as needed.\n\nPlan: outpatient PT three times a week. PM&R clinic in about 4 weeks. No driving or motorcycle until cleared. Off work; return to be decided at PM&R follow-up. PCP visit within a week."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "telephone",
+          "start": "2026-07-20T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Phone Call",
+              "author": "RN",
+              "date": "2026-07-20T14:25",
+              "body": "TCM call. Pt home since Fri 7/17 after 3 weeks inpatient rehab for a spinal cord injury (motorcycle crash 6/22).\n\nSays he is getting around the apartment with the cane, managing the stairs slowly. No falls. Peeing and bowels normal. Takes acetaminophen once or twice a day, that's his only med. First outpatient PT eval is Wednesday afternoon. A friend is driving him for now.\n\nReviewed when to call: new weakness, numbness creeping up, trouble urinating, a fall. Appt with PCP 7/22 at 10:40. Trauma summary already in chart; rehab discharge summary came in this morning."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-22a",
+          "kind": "office_visit",
+          "start": "2026-07-22T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital and rehab follow-up, spinal cord injury",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-07-22T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-Up",
+              "author": "PCP",
+              "date": "2026-07-22T11:30",
+              "body": "TCM visit.\n\n34M, third serious injury in 18 months. Motorcycle crash 6/22: right hemicord contusion at T10 on MRI with a Brown-Sequard pattern, no fracture. Trauma admit 6/22-6/26, nonoperative per spine. Inpatient rehab 6/26-7/17. All records reviewed.\n\nHe walked in with a cane. Right leg tires and feels heavy by the end of the day. Feels his right foot \"isn't where I think it is\" sometimes. No falls. Bladder and bowels normal. Sleep ok. Mood: frustrated about being out of work, not down. Acetaminophen 1-2x/day, enough. PT eval is this afternoon.\n\nMeds: acetaminophen 1000 mg q8h prn. NKDA.\n\nExam: vitals normal, weight steady. Alert, cheerful enough. Arms: normal strength, sensation and reflexes. RLE: 4/5 hip flexion, knee extension, ankle dorsiflexion and plantarflexion. LLE 5/5. Position sense reduced at the right great toe, vibration reduced right ankle. Pinprick and cold reduced left leg. Reflexes normal and symmetric. Walks steadily with a single-point cane. Skin intact over sacrum and heels.\n\nPHQ-9: 4.\n\nA/P\n1. Brown-Sequard syndrome T10, traumatic, improving. Continue outpatient PT 3x/week, PM&R follow-up mid-August. Fall precautions reviewed.\n2. Pain: acetaminophen as is.\n3. Mood: PHQ-9 4. Normal frustration, will keep checking.\n4. Work: out of work per rehab. He'll bring in the short-term disability paperwork from his employer's insurer.\n5. No riding or driving until cleared.\n\nRTC 6-8 weeks, sooner if he slips."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-29a",
+          "kind": "portal_message",
+          "start": "2026-07-29T08:55",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Disability form",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "disability papers",
+              "author": "patient",
+              "date": "2026-07-29T08:55",
+              "body": "Dropped off the short term disability form at the front desk yesterday. They want it back by the 8th. Thanks"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: disability papers",
+              "author": "front desk",
+              "date": "2026-07-30T15:20",
+              "body": "Hi Victor, your form was completed and signed by your doctor and faxed to the insurer today. A copy is at the front desk if you want one."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-13a",
+          "kind": "specialist_visit",
+          "start": "2026-08-13T09:00",
+          "service": "Physical Medicine and Rehabilitation",
+          "reason": "Post-rehabilitation follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "PM&R Clinic Letter",
+              "author": "physical medicine and rehabilitation",
+              "date": "2026-08-17T13:10",
+              "body": "Dear Doctor,\n\nI saw Victor Morales in clinic on 08/13/2026, four weeks after discharge from our inpatient unit for an incomplete T10 spinal cord injury with a Brown-Sequard pattern (06/22/2026).\n\nHe is in outpatient PT three times weekly. Right leg strength is 4/5. He no longer needs the cane in the house and uses it outdoors and on uneven ground. Bladder and bowel function remain normal. No falls. Pain controlled with acetaminophen as needed.\n\nPlan: continue PT with endurance and balance goals. Not yet ready for the standing and booth work of his job; we will reassess return to work in about 6 weeks. Still no motorcycle or driving.\n\nAllergies: NKDA. Medications: acetaminophen prn.\n\nSincerely,\nPhysical Medicine and Rehabilitation"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-24a",
+          "kind": "portal_message",
+          "start": "2026-08-24T20:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Question about return to work",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "PT and going back to work",
+              "author": "patient",
+              "date": "2026-08-24T20:15",
+              "body": "Hi doc. PT says my leg is coming along, I did a whole session today without the cane. Rehab doc wants to wait 6 weeks on work. My shop is asking if I could come back part time to do prep and masking, not the booth. Is that something you can sign off on or does it have to be her?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: PT and going back to work",
+              "author": "PCP",
+              "date": "2026-08-25T12:40",
+              "body": "Great to hear about the session without the cane. Since rehab is managing your recovery and the disability claim, light duty should be cleared by them first; I'll message the rehab office to ask about part-time prep work. We'll go over it at your visit on 9/15 too."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Message to PM&R Office",
+              "author": "PCP",
+              "date": "2026-08-25T12:50",
+              "body": "Left a message with the rehab clinic nurse line: patient asking whether part-time prep and masking work (no spray booth) is reasonable before the planned return-to-work reassessment. Asked them to call back or update us after they decide."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-15a",
+          "kind": "office_visit",
+          "start": "2026-09-15T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, spinal cord injury recovery",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

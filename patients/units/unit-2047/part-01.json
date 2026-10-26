@@ -1,0 +1,1251 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002047",
+      "given": "Viktor",
+      "family": "Pelletier",
+      "birth_date": "1970-07-15",
+      "address_line": "41 Ridgewood Terrace",
+      "phone": "+1-860-555-0141",
+      "email": "viktor.pelletier@example.test",
+      "marital_status": "married",
+      "summary": "Construction foreman with severe alcohol use disorder and heavy smoking who joins the practice in 2022 with COPD and steatorrhea; over four years he is diagnosed with chronic pancreatitis, Leriche syndrome, alcoholic cirrhosis, stage IA right upper lobe NSCLC treated with SBRT, and recurrent alcoholic hepatitis with two admissions. Today he is on diuretics for ascites, still drinking and smoking.",
+      "events": [
+        {
+          "id": "2022-10-04a",
+          "kind": "telephone",
+          "start": "2022-10-04T10:12",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Inquiry",
+              "author": "front desk",
+              "date": "2022-10-04T10:12",
+              "body": "Pt called asking to become a patient. Has not had a regular doctor in several years. Wife set him up with the membership; insurance is through his employer (commercial). Reports stomach trouble and losing weight, wants to be seen soon. Booked new patient visit 10/18 at 7:40 am, first slot, he has to be on site by 9. Intake forms emailed. Asked him to bring all his inhalers and pill bottles."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "establish_care",
+          "start": "2022-10-18T07:40",
+          "end": "2022-10-18T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care; abdominal discomfort and weight loss",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease",
+              "action": "diagnosed",
+              "onset": "2016-05-01",
+              "note": "diagnosed by a prior physician; no records available"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "diagnosed",
+              "onset": "1992-01-01"
+            },
+            {
+              "label": "Alcohol use disorder, severe",
+              "icd10": "F10.20",
+              "action": "diagnosed",
+              "onset": "1997-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheezing",
+              "dose": {
+                "value": 2,
+                "unit": "puff"
+              },
+              "frequency": "Q4-6H PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            },
+            {
+              "drug_text": "ipratropium bromide 0.017 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 2 puffs four times daily",
+              "dose": {
+                "value": 2,
+                "unit": "puff"
+              },
+              "frequency": "QID",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            },
+            {
+              "drug_text": "thiamine 100 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "heavy alcohol use"
+            },
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "heavy alcohol use"
+            },
+            {
+              "drug_text": "Multiple Vitamin Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "heavy alcohol use"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              134,
+              82
+            ],
+            "weight_kg": 90.5,
+            "height_cm": 178.0,
+            "labs": {
+              "Aspartate Aminotransferase": 80,
+              "Alanine Aminotransferase": 45,
+              "Alkaline Phosphatase": 95,
+              "Bilirubin, Total": 1.0,
+              "Albumin": 3.9,
+              "Gamma Glutamyl Transferase": 190,
+              "Platelets": 170,
+              "Mean Corpuscular Volume": 101,
+              "Prothrombin Time-International Normalized Ratio": 1.1,
+              "Glucose": 108,
+              "Low Density Lipoprotein": 118,
+              "Triglycerides": 160,
+              "Hemoglobin A1c": 5.4,
+              "Lipase": 34,
+              "Prothrombin Time": 13.0
+            },
+            "spo2": 95
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-10-18T08:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Total Protein"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-10-18T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets",
+                  "value": 172
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-10-18T08:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                },
+                {
+                  "test": "Prothrombin Time"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-10-18T08:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-18T08:40",
+              "results": [
+                {
+                  "test": "Gamma Glutamyl Transferase"
+                },
+                {
+                  "test": "Lipase"
+                },
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Heavy daily drinking for more than 25 years"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction foreman"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2022-10-18T08:35"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-10-18T08:36"
+            },
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T08:37"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T08:38"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, high MDM",
+              "performed": "2022-10-18T07:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T08:35"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-10-18T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2022",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "upper abdominal pain, weight loss, greasy loose stools"
+            },
+            {
+              "id": "ldct-2022",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "age 52, current smoker, 30 pack-years"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-10-18T09:30",
+              "body": "NEW PATIENT VISIT\n\n52 y/o construction foreman establishing care. Last saw a doctor several years ago; was told he had COPD by a prior physician around 2016, no records he can name, still fills his inhalers.\n\nCC: belly pain and weight loss.\n\nHPI: About 6 weeks of a gnawing ache high in the abdomen, comes and goes, worse after big meals. Belt is looser, thinks he has lost 'a good chunk' though he doesn't own a scale. Stools are loose, 3 or so a day, greasy and smelly, hard to flush. No blood, no black stools, no vomiting. Appetite is fair. No fever.\n\nAlcohol: drinks every day and has for well over 25 years, mostly beer, lately more liquor. Did not want to put a number on it today. Has never tried to stop and has never had a withdrawal seizure. Wife has been after him about it.\nTobacco: about a pack a day for 30 years, 30 pack-years. Not ready to quit; we talked about it briefly.\nNo drug use.\n\nPMH: COPD (prior physician, ~2016). Uses albuterol a few times a week, ipratropium most days.\nPSH: none.\nMeds: albuterol HFA 2 puffs q4-6h prn; ipratropium HFA 2 puffs QID.\nAllergies: NKDA.\nFH: father had a drinking problem and cirrhosis, also lung cancer; died of a heart attack at 63. Mother had COPD; died of breast cancer at 70. Brother has coronary disease.\nSH: married, lives in Northampton. Foreman for a commercial builder, on his feet all day.\n\nROS: as above. Mild morning cough, at baseline. No chest pain. No leg swelling.\n\nExam: Vitals in flowsheet. Weight 90.5 kg, height 178 cm. Alert, smells of tobacco. No jaundice. Lungs with mildly prolonged expiration, no wheeze. Heart regular, no murmur. Abdomen soft, mild tenderness in the epigastrium, no guarding, no mass, liver and spleen not felt. No edema. Skin without rash.\n\nAUDIT-C 12. PHQ-9 5.\n\nA/P:\n1. Upper abdominal pain, weight loss, greasy loose stools in a heavy drinker: concern for pancreatic insufficiency / chronic pancreatitis. CMP, CBC, lipase, GGT, PT/INR today. Referred to GI.\n2. Alcohol use disorder, severe. Long talk. He is not ready to commit to stopping. Starting thiamine 100 mg, folic acid 1 mg and a multivitamin daily. Warned not to stop abruptly on his own without calling us.\n3. COPD. Continue albuterol and ipratropium; refills sent.\n4. Tobacco: advised to quit, open door.\n5. Health maintenance: Tdap, PCV20, flu and bivalent COVID today. HCV and HIV screens. Low-dose CT for lung screening ordered. Colon screening: will give a FIT kit at the next visit.\n\nRTC after GI, sooner prn."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "portal_message",
+          "start": "2022-10-20T16:05",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "author": "PCP",
+              "date": "2022-10-20T16:05",
+              "body": "Hi Viktor, your blood work is back. Your liver tests are up in the pattern we see with heavy drinking, which is one more reason to cut back. Your lipase (a pancreas enzyme) is normal, but that does not rule out the kind of pancreas problem I am worried about, so the GI visit still matters. Blood counts, kidneys and sugar are fine, and the hepatitis C and HIV screens were negative. Gastroenterology should call you to schedule. Let me know if you don't hear from them in a week."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-27a",
+          "kind": "telephone",
+          "start": "2022-10-27T11:20",
+          "reason": "records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside Records Request",
+              "author": "front desk",
+              "date": "2022-10-27T11:20",
+              "body": "Spoke with pt about where he used to be seen. He doesn't remember the name of the office that told him he had COPD, thinks it closed. Pharmacy fill history for his inhalers pulled instead and scanned. No outside records to request at this time."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-12a",
+          "kind": "specialist_visit",
+          "start": "2022-12-12T13:30",
+          "service": "Gastroenterology",
+          "reason": "upper abdominal pain, weight loss, steatorrhea",
+          "conditions": [
+            {
+              "label": "Chronic pancreatitis",
+              "action": "diagnosed",
+              "onset": "2022-09-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "lipase 36000 UNT / amylase 180000 UNT / protease 114000 UNT Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule with each meal and snack",
+              "dose": {
+                "value": 36000,
+                "unit": "[USP'U]"
+              },
+              "frequency": "WITH MEALS AND SNACKS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "exocrine pancreatic insufficiency from chronic pancreatitis"
+            },
+            {
+              "drug": "omeprazole 20 MG Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily before breakfast",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "with pancreatic enzymes"
+            }
+          ],
+          "state": {
+            "weight_kg": 88.6,
+            "labs": {
+              "Fasting Glucose": 112
+            }
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-12-12T14:10",
+              "results": [
+                {
+                  "test": "Lipase"
+                },
+                {
+                  "test": "Fasting Glucose"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2022-12-12T15:20",
+              "text": "INDICATION: Chronic upper abdominal pain, weight loss, steatorrhea.\nTECHNIQUE: Axial CT of the abdomen and pelvis after IV contrast, with coronal and sagittal reformats.\nFINDINGS: Scattered punctate calcifications throughout the pancreas. No pancreatic mass. No peripancreatic fluid collection. Liver without focal lesion. Gallbladder unremarkable; no biliary dilatation. Spleen normal in size. Adrenals and kidneys unremarkable. No ascites. No free air. Bowel nondilated. No adenopathy. Lung bases clear.",
+              "conclusion": "Scattered pancreatic calcifications, consistent with chronic pancreatitis. No mass or collection."
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2022",
+              "action": "done",
+              "date": "2022-12-12T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "author": "gastroenterology",
+              "date": "2022-12-15T09:00",
+              "body": "Outside Gastroenterology Consultation\nDate of service: 12/12/2022\nReferred by: Primary Care\n\nThank you for asking us to see Mr. Pelletier, 52, for upper abdominal pain and weight loss.\n\nHe describes about three months of a dull upper abdominal ache with weight loss he did not intend. Bowel movements are loose, three or four a day, foul smelling and difficult to flush. No hematochezia or melena.\n\nHe tells me he drinks a bottle of wine a day. He smokes. Medications: albuterol, ipratropium, thiamine, folic acid, multivitamin. NKDA.\n\nExam: mild tenderness in the epigastrium; no rebound or guarding. No jaundice.\n\nData: serum lipase normal. Fasting glucose mildly elevated. CT abdomen with contrast (today): scattered calcifications through the pancreas, no mass or fluid collection.\n\nImpression: chronic pancreatitis, almost certainly alcohol related, with exocrine insufficiency (steatorrhea, weight loss). A normal lipase is expected at this stage.\n\nRecommendations:\n- Pancrelipase (Creon) 36,000 lipase units with each meal and snack; omeprazole 20 mg daily to help the enzymes work.\n- Low-fat diet, smaller meals. Stopping alcohol entirely is the most important step and was discussed at length.\n- Follow the fasting glucose in primary care.\n- We will see him back as needed.\n\nThank you for this referral.\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2022-12-20a",
+          "kind": "pharmacy",
+          "start": "2022-12-20T14:40",
+          "reason": "Creon prior authorization",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior Authorization",
+              "author": "MA",
+              "date": "2022-12-20T14:40",
+              "body": "Pharmacy faxed PA request for Creon 36,000 units (prescribed by GI). GI office said their staff is out this week and asked if we could submit. Submitted with CT report and GI letter attached. Approved same afternoon, valid 12 months. Pharmacy and pt notified. Pt says he has been taking the omeprazole already."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-25a",
+          "kind": "office_visit",
+          "start": "2023-01-25T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after GI; leg pain with walking",
+          "state": {
+            "weight_kg": 88.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-01-25T07:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral-2023",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "bilateral buttock and leg claudication, diminished femoral pulses"
+            },
+            {
+              "id": "fit-2023",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-01-25T08:30",
+              "body": "S: Back after GI. Chronic pancreatitis on CT. Taking Creon with meals, most of the time; stools are down to 1-2 a day and firmer. Omeprazole daily. Upper belly ache is milder.\nStill drinking daily. Still smoking.\nNew: for a couple of months his buttocks, thighs and calves ache and tighten when he walks the job site, has to stop and stand a few minutes, then can go again. Both sides. No pain at rest. No foot sores.\n\nO: Wt 88.0 kg (down from 90.5). Vitals otherwise in flowsheet. Lungs as before. Femoral pulses faint on both sides; pedal pulses hard to feel. Feet cool, no ulcers. Abdomen soft, mildly tender epigastrium.\n\nA/P:\n1. Chronic pancreatitis with exocrine insufficiency - better on Creon. Continue. Low-fat diet reviewed.\n2. Bilateral buttock/thigh/calf claudication with weak femoral pulses in a heavy smoker - suspect aortoiliac disease. Referred to cardiology (vascular clinic) for evaluation and testing.\n3. AUD, tobacco - discussed again. Not ready.\n4. Lung screening CT has not been scheduled; radiology left him two messages. He will call them.\n5. FIT kit given.\n\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-06a",
+          "kind": "lab_only",
+          "start": "2023-02-06T10:00",
+          "reason": "FIT returned",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-02-03T07:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2023",
+              "action": "done",
+              "date": "2023-02-06T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT Result",
+              "author": "RN",
+              "date": "2023-02-07T09:15",
+              "body": "FIT negative. Pt notified via portal; repeat in one year."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-15a",
+          "kind": "specialist_visit",
+          "start": "2023-03-15T09:00",
+          "service": "Cardiology",
+          "reason": "bilateral leg claudication",
+          "conditions": [
+            {
+              "label": "Aortoiliac occlusive disease (Leriche syndrome)",
+              "icd10": "I74.09",
+              "action": "diagnosed",
+              "onset": "2022-11-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "aortoiliac occlusive disease"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "aortoiliac occlusive disease"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              138,
+              84
+            ],
+            "hr": 76,
+            "weight_kg": 85.5
+          },
+          "state": {
+            "weight_kg": 85.5
+          },
+          "orders": [
+            {
+              "id": "cards-referral-2023",
+              "action": "done",
+              "date": "2023-03-15T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Consultation, Vascular Clinic",
+              "author": "cardiology",
+              "date": "2023-03-17T12:00",
+              "body": "Cardiology / Vascular Medicine Consultation\nDate of service: 03/15/2023\nReason for referral: bilateral claudication\n\nMr. Pelletier is a 52-year-old foreman referred by his primary care physician. He was seen by gastroenterology in December for chronic pancreatitis. Before joining his current practice last October he had gone several years without seeing any physician.\n\nWith roughly 50 meters of walking he gets a tight, aching pain in both calves, both thighs and both buttocks. A few minutes of standing still relieves it. He denies chest pain and dyspnea.\n\nTobacco: 30 pack-years, still smoking. Alcohol: heavy daily use. Meds: albuterol, ipratropium, thiamine, folic acid, multivitamin, Creon, omeprazole. NKDA.\nFamily: brother with coronary artery disease; father died of MI.\n\nExam: BP 138/84, HR 76, BMI 27. Femoral and dorsalis pedis pulses are markedly reduced on both sides. Both legs are cool with loss of hair; no ulceration. There is mild weakness of the lower extremities, ankle reflexes are diminished bilaterally, and pinprick is reduced over both feet. Heart regular without murmur. Lungs clear.\n\nTesting today:\n- Ankle-brachial index: 0.64 right, 0.59 left.\n- Aortoiliac arterial duplex: occlusion of the distal infrarenal aorta extending into both common iliac arteries, with collateral reconstitution of both external iliac arteries. Monophasic waveforms in both common femoral arteries.\n\nAssessment: aortoiliac occlusive disease (Leriche syndrome) with bilateral claudication.\n\nPlan:\n- Start aspirin 81 mg daily and atorvastatin 40 mg daily.\n- Daily walking program, walking to the point of moderate pain, resting and repeating.\n- Smoking cessation is essential; strongly advised.\n- Medical therapy first. Revascularization is not planned at this point; we will reassess if symptoms progress or rest pain or tissue loss develops.\n- Lipid panel and LFTs in 6 weeks through primary care.\n\nThank you for allowing us to participate in his care.\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2023-04-27a",
+          "kind": "office_visit",
+          "start": "2023-04-27T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up claudication, new statin",
+          "state": {
+            "weight_kg": 85.0,
+            "labs": {
+              "Aspartate Aminotransferase": 95,
+              "Alanine Aminotransferase": 50,
+              "Bilirubin, Total": 1.3,
+              "Albumin": 3.6,
+              "Low Density Lipoprotein": 70,
+              "Triglycerides": 150,
+              "Total Cholesterol": 142,
+              "Alkaline Phosphatase": 92,
+              "Platelets": 165,
+              "Mean Corpuscular Volume": 102
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-04-27T08:20",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Total Protein"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-04-27T08:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-04-27T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-04-27T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-04-27T08:50",
+              "body": "Cardiology letter reviewed: aortoiliac occlusive disease (Leriche), ABI 0.64 R / 0.59 L, started aspirin 81 and atorvastatin 40, walking program, no revascularization for now.\n\nS: Taking aspirin and atorvastatin, no muscle aches. Tries to walk at lunch, still stops at about the same distance. Creon working; stools mostly formed. Still drinking, still smoking, about a pack a day.\n\nO: Wt 85.0. Vitals in flowsheet. Femoral pulses faint bilaterally. Feet cool, no wounds. Lungs prolonged expiration. Abdomen soft, nontender today.\n\nA/P:\n1. Leriche syndrome / aortoiliac disease - continue aspirin, atorvastatin, walking. Lipids and LFTs today as cardiology asked.\n2. Smoking is the biggest thing for his legs and lungs. He knows. Declines help right now.\n3. AUD - still daily. Encouraged.\n4. Chronic pancreatitis - stable on Creon.\n5. COPD - stable.\n\nRTC 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-28a",
+          "kind": "portal_message",
+          "start": "2023-04-28T12:30",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2023-04-28T12:30",
+              "body": "Your LDL cholesterol dropped nicely on atorvastatin. The liver tests are still elevated, a bit more than in October, which fits with the drinking more than with the statin. Keep taking both new medicines. See you in June."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-08a",
+          "kind": "office_visit",
+          "start": "2023-06-08T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-06-08b",
+          "kind": "telephone",
+          "start": "2023-06-08T11:15",
+          "reason": "missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Appointment",
+              "author": "front desk",
+              "date": "2023-06-08T11:15",
+              "body": "Pt no-showed 7:40 appt. Left voicemail. Called back at lunch: forgot, crew started a new site this week. Will call to reschedule when the schedule settles."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-27a",
+          "kind": "office_visit",
+          "start": "2023-07-27T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fatigue and irritability, wife concerned",
+          "state": {
+            "weight_kg": 87.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-07-27T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-07-27T17:10",
+              "body": "Here with his wife, who called to make the appointment.\n\nS: Wife says for the past several months he has been short-tempered and wiped out, napping after work, which he never did. He has had trouble keeping up on the job and has missed some days. He thinks it's the heat and the hours. Says his pants are tighter around the belly even though his face looks thinner. Drinking: wife says it is a fifth of vodka most days now; he did not disagree. No vomiting blood, no black stools.\n\nO: Wt 87.5 (up from 85.0). Vitals in flowsheet. Tired-appearing. Abdomen looks full; hard to examine well today.\n\nA/P:\n1. Fatigue, irritability, increasing girth in a heavy drinker - concerned about progression of liver disease. Called GI myself; they will move his follow-up up to early August and do labs there.\n2. AUD - wife present; we talked frankly about what the drinking is doing. He agreed to the GI visit.\n3. Work note given for missed days.\n\nRTC after GI."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-09a",
+          "kind": "specialist_visit",
+          "start": "2023-08-09T10:30",
+          "service": "Gastroenterology",
+          "reason": "irritability, fatigue, abdominal distension",
+          "conditions": [
+            {
+              "label": "Alcoholic cirrhosis of liver",
+              "action": "diagnosed",
+              "onset": "2023-02-01"
+            }
+          ],
+          "state": {
+            "weight_kg": 87.0,
+            "labs": {
+              "Bilirubin, Direct": 1.5,
+              "Prothrombin Time-International Normalized Ratio": 1.4
+            }
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2023-08-09T11:15",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 2.9
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.8
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 120
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 180
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 150
+                },
+                {
+                  "test": "Bilirubin, Direct"
+                },
+                {
+                  "test": "Total Protein"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-08-09T11:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 16
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Follow-up",
+              "author": "gastroenterology",
+              "date": "2023-08-11T15:30",
+              "body": "Outside Gastroenterology Clinic Note\nDate of service: 08/09/2023\n\nMr. Pelletier returns, seen earlier than planned at his PCP's request. Since his GI visit in December and his cardiology evaluation in March, his wife has noticed him changing over about six months: he is more irritable, and he tires so easily that he is struggling to keep his job as a foreman.\n\nSocial: current smoker, 30 pack-years. Drinking has climbed over the past 10 years; he now drinks about a fifth of vodka a day.\nMeds: albuterol, ipratropium, aspirin 81, atorvastatin 40, thiamine, folic acid, multivitamin, Creon 36,000 with meals and snacks, omeprazole 20. NKDA.\n\nExam: Enlarged breast tissue on both sides. Small testes. Thinning of axillary and pubic hair. Numerous spider angiomas across the chest; palmar erythema. The abdomen is distended with a fluid wave, consistent with ascites.\n\nLabs today: albumin 2.9 g/dL, total bilirubin 2.8 mg/dL, alkaline phosphatase 120 U/L, AST 180 U/L, ALT 150 U/L, PT 16 seconds.\n\nImpression: alcoholic cirrhosis with ascites, decompensated.\n\nPlan:\n- Complete abstinence from alcohol. He was told plainly that continued drinking will shorten his life.\n- 2 g sodium diet.\n- Labs through primary care.\n- Return to GI in 6 months or sooner.\n\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2023-08-21a",
+          "kind": "office_visit",
+          "start": "2023-08-21T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up new cirrhosis diagnosis",
+          "state": {
+            "weight_kg": 86.8,
+            "labs": {
+              "Aspartate Aminotransferase": 175,
+              "Alanine Aminotransferase": 140,
+              "Bilirubin, Total": 2.6,
+              "Albumin": 3.0,
+              "Prothrombin Time-International Normalized Ratio": 1.4,
+              "Platelets": 130,
+              "Alkaline Phosphatase": 115,
+              "Prothrombin Time": 15.8,
+              "Mean Corpuscular Volume": 103,
+              "Bilirubin, Direct": 1.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-21T08:20",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Total Protein"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-21T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets",
+                  "value": 131
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-08-21T08:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                },
+                {
+                  "test": "Prothrombin Time"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2023-08-21T08:25"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2023-08-21T07:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-08-21T08:25"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-21T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-08-21T09:05",
+              "body": "GI note from 8/9 reviewed: decompensated alcoholic cirrhosis with ascites; albumin 2.9, bili 2.8, AST 180, ALT 150, PT 16. Plan was abstinence, low sodium, GI in 6 months.\n\nS: He says the GI doctor 'scared him straight.' Has been drinking less this past week, says beer instead of vodka; wife at work today. Belly still big but not tight. No confusion that he notices. No bleeding.\n\nO: Wt 86.8. Vitals in flowsheet. Spider angiomas on chest. Abdomen distended, soft, nontender. No edema. No asterixis.\n\nA/P:\n1. Alcoholic cirrhosis with ascites. Repeat CMP, CBC, INR today. Reinforced no alcohol, 2 g sodium diet; low-sodium handout given. Call for fever, belly pain, confusion, black stools or vomiting blood.\n2. AUD severe, AUDIT-C 12. Offered referral to addiction treatment; he wants to try on his own first. Warned about withdrawal and to call if shaky or sweaty.\n3. Hepatitis B vaccine #1 (Heplisav-B) today given the cirrhosis; #2 in a month.\n4. Leriche, pancreatitis, COPD - unchanged.\n\nRTC 3 months; nurse visit next month for vaccines."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "nurse_visit",
+          "start": "2023-09-19T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2023-09-19T07:35"
+            },
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-19T07:37"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-09-19T07:39"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-19T07:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2023-09-19T07:55",
+              "body": "In for Heplisav-B dose 2 (series complete), flu and updated COVID. Screening questions negative. Heplisav R deltoid, flu L deltoid, COVID L deltoid lower. VIS given. Tolerated. Left for work at 7:50."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-17a",
+          "kind": "office_visit",
+          "start": "2023-11-17T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "cirrhosis follow-up",
+          "state": {
+            "weight_kg": 86.0,
+            "labs": {
+              "Aspartate Aminotransferase": 120,
+              "Alanine Aminotransferase": 85,
+              "Bilirubin, Total": 1.7,
+              "Albumin": 3.4,
+              "Prothrombin Time-International Normalized Ratio": 1.2,
+              "Platelets": 140,
+              "Alkaline Phosphatase": 100,
+              "Prothrombin Time": 14.0,
+              "Mean Corpuscular Volume": 102
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-11-17T16:20",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Total Protein"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-11-17T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets",
+                  "value": 138
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-11-17T16:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                },
+                {
+                  "test": "Prothrombin Time"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 7
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-11-17T16:25"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-11-17T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-11-17T16:25"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-11-17T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-11-17T16:45",
+              "body": "S: Stopped the vodka after the GI visit and is drinking beer only, 'three or four most nights,' wife agrees it is less. Belly has gone down; belt back to the old notch. More energy, back to full days. Still about a pack a day. Taking Creon, omeprazole, aspirin, atorvastatin, vitamins. Legs the same with walking.\n\nO: Wt 86.0. Vitals in flowsheet. Sclerae anicteric today. Abdomen soft, not distended, no fluid wave. A few spider angiomas on chest. No edema.\n\nA/P:\n1. Alcoholic cirrhosis - clinically better with less drinking; ascites no longer apparent. Labs today. Keep sodium low.\n2. AUD - real progress, AUDIT-C down to 7. Goal is still zero. Praised the change.\n3. Tobacco - advised to quit.\n4. Shingrix #1 today; #2 at the physical in January.\n5. Leriche, COPD, pancreatitis stable.\n\nRTC January for physical."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-20a",
+          "kind": "portal_message",
+          "start": "2023-11-20T08:50",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2023-11-20T08:50",
+              "body": "Good news, Viktor: your liver numbers are clearly better than in August. Bilirubin and liver enzymes are coming down and the albumin (protein the liver makes) is up. That is what cutting back looks like on paper. Keep going."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

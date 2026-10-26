@@ -1,0 +1,4106 @@
+{
+  "unit": "unit-2215",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002215",
+      "given": "Roger",
+      "family": "Wright",
+      "birth_date": "1951-11-21",
+      "address_line": "41 Rocky Hill Road",
+      "phone": "+1-860-555-0140",
+      "email": "roger.wright@example.test",
+      "marital_status": "divorced",
+      "summary": "Retired postal worker with insulin-treated type 2 diabetes, CKD, hypertension, coronary disease with a 2022 stent and PAD who joins in 2023. Over two years he has an unstable-angina admission with femoral angiography, cholesterol embolism syndrome with kidney injury three weeks later, acute pancreatitis, and severe hypoglycemia with E. coli urosepsis; outside records arrive late or not at all.",
+      "events": [
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient, establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2009-01-01"
+            },
+            {
+              "label": "Type 2 diabetes mellitus with diabetic chronic kidney disease",
+              "action": "diagnosed",
+              "onset": "2011-01-01"
+            },
+            {
+              "label": "Chronic kidney disease, stage 3a",
+              "action": "diagnosed",
+              "onset": "2020-01-01"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "diagnosed",
+              "onset": "2009-01-01"
+            },
+            {
+              "label": "Coronary artery disease",
+              "action": "diagnosed",
+              "onset": "2022-01-01"
+            },
+            {
+              "label": "Presence of coronary artery stent",
+              "action": "diagnosed",
+              "onset": "2022-01-01"
+            },
+            {
+              "label": "Peripheral arterial disease",
+              "action": "diagnosed",
+              "onset": "2021-01-01"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "diagnosed",
+              "onset": "2022-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+              "action": "historical",
+              "sig": "Inject 24 units under the skin at bedtime",
+              "dose": {
+                "value": 24,
+                "unit": "[iU]"
+              },
+              "frequency": "DAILY",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "type 2 diabetes"
+            },
+            {
+              "drug_text": "3 ML insulin aspart 100 UNT/ML Pen Injector",
+              "action": "historical",
+              "sig": "Inject under the skin with meals per correction scale",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "type 2 diabetes"
+            },
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth at bedtime",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hyperlipidemia, coronary disease"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "coronary disease"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfonamide antibiotics",
+              "reaction": "Rash",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              137,
+              78
+            ],
+            "hr": 63,
+            "temp_c": 36.2,
+            "spo2": 97,
+            "weight_kg": 91.3,
+            "height_cm": 175.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-12T10:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.58
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 26
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Glucose",
+                  "value": 155
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 46
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.0
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-12T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.31
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 239
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-12T10:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 78
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 44
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 155
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 153
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 109
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.7
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 17
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired postal worker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, high MDM",
+              "performed": "2023-09-12T09:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "abi-2023",
+              "action": "placed",
+              "order": "Ankle-brachial index",
+              "category": "imaging",
+              "to": "Vascular laboratory",
+              "reason": "peripheral arterial disease, no prior index on file"
+            },
+            {
+              "id": "aaa-us-2023",
+              "action": "placed",
+              "order": "Abdominal aorta ultrasound, aneurysm screening",
+              "category": "imaging",
+              "to": "Radiology",
+              "reason": "male former smoker, 65-75"
+            },
+            {
+              "id": "ldct-2023",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "to": "Radiology",
+              "reason": "40 pack-years, quit 2022"
+            },
+            {
+              "id": "records-prior-2023",
+              "action": "placed",
+              "order": "Records request, prior primary care practice",
+              "category": "referral",
+              "to": "Prior primary care practice",
+              "reason": "transfer of care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-09-12T09:20",
+              "author": "PCP",
+              "body": "Mr. Wright is 71, a retired letter carrier, transferring care after his longtime PCP retired. He wanted one doctor he can actually reach.\n\nHISTORY\nType 2 diabetes for well over a decade, on basal insulin for years. Glargine 24 units at bedtime and aspart by a correction scale with meals; he checks sugars before meals and at bedtime. Reports morning sugars mostly 120s-160s. No lows he is aware of.\nHypertension on lisinopril and amlodipine for years.\nKidney function reduced for a few years; told stage 3. Never seen nephrology.\nCoronary disease: one stent in 2022 at an outside hospital after chest pain. Follows with a cardiology group once a year. No chest pain or pressure since the stent. No orthopnea, no edema.\nPAD is on his old list. He is not sure who found it. Denies leg pain with walking; walks around the neighborhood most days.\nCholesterol on atorvastatin 40 at night.\n\nMEDICATIONS\nInsulin glargine 24 units SC at bedtime\nInsulin aspart SC with meals per correction scale\nLisinopril 10 mg daily\nAmlodipine 5 mg daily\nAtorvastatin 40 mg at bedtime\nAspirin 81 mg daily\n\nALLERGIES: sulfa antibiotics (rash)\n\nSURGICAL: coronary stent 2022.\n\nFAMILY: father had an MI at 64. Mother had an ischemic stroke at 79. A sibling has type 2 diabetes and is on dialysis for kidney failure.\n\nSOCIAL: Smoked for about forty years, 40 pack-years; quit in 2022 around the time of the stent. Does not drink. Retired from the postal service. Lives in Hadley.\n\nROS: no chest pain, dyspnea, claudication, foot wounds, vision change, urinary symptoms.\n\nEXAM\nWell-appearing, conversational.\nHEENT: anicteric. Neck: no JVD, no bruit.\nHeart: regular, no murmur. Lungs: clear.\nAbdomen: soft, nontender.\nExt: no edema. Dorsalis pedis and posterior tibial pulses diminished but present bilaterally. Feet warm, skin intact, no calluses. Monofilament intact.\n\nASSESSMENT / PLAN\n1. Type 2 diabetes on basal plus correction insulin. A1c today. Continue current doses for now.\n2. CKD stage 3, likely diabetic and hypertensive. CMP and urine albumin/creatinine today.\n3. Hypertension. In range today. Continue lisinopril and amlodipine.\n4. CAD with stent 2022. Continue aspirin and atorvastatin. Keep annual cardiology.\n5. PAD by history with diminished pulses. Will get an ABI so we have a baseline.\n6. Former heavy smoker, quit 2022: eligible for annual low-dose CT; ordered. One-time aorta ultrasound for aneurysm screening ordered.\n7. Lipids today.\n8. Hep C screen today.\n9. Records requested from prior practice.\nReturn in 3 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              138,
+              78
+            ],
+            "weight_kg": 91.2,
+            "height_cm": 175.0,
+            "labs": {
+              "Blood Urea Nitrogen": 26,
+              "Creatinine": 1.6,
+              "Glucose": 152,
+              "Hemoglobin": 13.2,
+              "Hemoglobin A1c": 7.7,
+              "High Density Lipoprotein": 42,
+              "Low Density Lipoprotein": 76,
+              "Microalbumin/Creatinine Ratio": 18,
+              "Potassium": 4.6,
+              "Triglycerides": 160
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-09-13a",
+          "kind": "portal_message",
+          "start": "2023-09-13T16:40",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2023-09-13T16:40",
+              "author": "PCP",
+              "body": "Hi Mr. Wright,\n\nYour labs are back. Your A1c is about where you guessed, a little under 8. Kidney function is in the same range your old office had on file, and potassium is fine on the lisinopril. Your LDL cholesterol is under 80 on the atorvastatin. The urine protein test is normal. Hepatitis C screen negative.\n\nNo medicine changes. I'll see you in December.\n\nYour primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-27a",
+          "kind": "outside_records",
+          "start": "2023-09-27T11:15",
+          "reason": "prior practice records received",
+          "orders": [
+            {
+              "id": "records-prior-2023",
+              "action": "done",
+              "date": "2023-09-27T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "date": "2023-09-27T11:15",
+              "author": "front desk",
+              "body": "Faxed records received from the patient's prior primary care office, 38 pages, scanned to chart.\n\nAbstracted by front desk for the physician:\n- Problem list on their last note: hypertension, type 2 diabetes on insulin, CKD stage 3, hyperlipidemia, coronary artery disease s/p PCI with stent 2022, peripheral arterial disease, tobacco use (quit 2022).\n- Medication list matches what patient brought in.\n- Allergy: sulfa (rash).\n- Colonoscopy 2018: normal, no polyps. Repeat interval listed as 10 years.\n- No cardiology catheterization report in the packet; stent noted by history only.\n- Creatinine values on their flowsheet run 1.5 to 1.7 over the last two years."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-05a",
+          "kind": "nurse_visit",
+          "start": "2023-10-05T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and pneumonia vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-05T14:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2023-10-05T14:05"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-10-05T14:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2023-10-05T14:00",
+              "author": "RN",
+              "body": "Here for high-dose flu and PCV20. No prior pneumococcal vaccine found in the old records or the state registry. Screening questions negative. VIS sheets given.\nFlu high-dose 0.7 mL IM left deltoid. PCV20 0.5 mL IM right deltoid. Lot numbers in the immunization record.\nTolerated well, waited 15 minutes, left in good spirits. Reminded about updated COVID shot at his pharmacy."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "pharmacy",
+          "start": "2023-10-11T10:30",
+          "reason": "vaccine administered at pharmacy",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2023-10-10T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization notification",
+              "date": "2023-10-11T10:30",
+              "author": "pharmacy",
+              "body": "Immunization notification. Patient: Roger Wright, DOB 11/21/1951. Vaccine: COVID-19 mRNA 2023-2024 formula (Moderna), 0.5 mL IM left deltoid, administered 10/10/2023 by pharmacist. Allergies on pharmacy profile: sulfa. No adverse event reported."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-16a",
+          "kind": "imaging",
+          "start": "2023-10-16T08:40",
+          "service": "Outpatient vascular laboratory",
+          "reason": "ABI and aortic screening ultrasound",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2023-10-16T09:20",
+              "text": "LIMITED ABDOMINAL AORTA ULTRASOUND, SCREENING\nIndication: abdominal aortic aneurysm screening, male former smoker.\nTechnique: grayscale and color Doppler imaging of the abdominal aorta from the diaphragm to the bifurcation, with the proximal common iliac arteries.\nFindings: The abdominal aorta is normal in caliber throughout, maximal outer-to-outer diameter 2.1 cm in the infrarenal segment. Proximal common iliac arteries are normal in caliber. No aneurysm. No periaortic fluid.",
+              "conclusion": "Normal caliber abdominal aorta. No abdominal aortic aneurysm."
+            }
+          ],
+          "orders": [
+            {
+              "id": "abi-2023",
+              "action": "done",
+              "date": "2023-10-16T08:40"
+            },
+            {
+              "id": "aaa-us-2023",
+              "action": "done",
+              "date": "2023-10-16T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Ankle-Brachial Index",
+              "date": "2023-10-16T10:10",
+              "author": "vascular laboratory",
+              "body": "ANKLE-BRACHIAL INDEX, RESTING\nIndication: peripheral arterial disease by history; diminished pedal pulses.\nAllergies: sulfonamide antibiotics.\nTechnique: Doppler pressures at both brachial arteries and at the dorsalis pedis and posterior tibial arteries of each ankle, supine after 10 minutes of rest. Highest brachial pressure used as denominator.\n\nResults:\nRight ABI 0.84.\nLeft ABI 0.78.\nVessels were compressible.\n\nImpression: Abnormal resting ABI on both sides, consistent with peripheral arterial disease, left lower than right."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-26a",
+          "kind": "imaging",
+          "start": "2023-10-26T13:30",
+          "service": "Radiology",
+          "reason": "lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2023-10-26T13:45",
+              "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING (BASELINE)\nIndication: 72-year-old former smoker, 40 pack-years, quit 2022.\nTechnique: low-dose helical CT of the chest without contrast.\nFindings: Lungs: no pulmonary nodules. No consolidation or effusion. Airways patent. Heart normal in size. A coronary artery stent is noted. No pericardial effusion. Mediastinum: no adenopathy. Upper abdomen: unremarkable. Bones: no suspicious lesion.",
+              "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2023",
+              "action": "done",
+              "date": "2023-10-26T13:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT result",
+              "date": "2023-10-27T08:15",
+              "author": "PCP",
+              "body": "Screening CT negative, Lung-RADS 1. Stent seen, as expected. Repeat in a year. MA to send result letter."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "specialist_visit",
+          "start": "2023-11-14T10:00",
+          "service": "Cardiology",
+          "reason": "annual coronary follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up letter",
+              "date": "2023-11-20T09:00",
+              "author": "cardiology",
+              "body": "Re: Roger Wright, DOB 11/21/1951. Date of visit 11/14/2023.\n\nDear Doctor,\n\nI saw Mr. Wright for his yearly visit. He has coronary disease with a single stent placed in 2022. Since then he has had no angina and no exertional limitation; he walks most days without symptoms. No palpitations, presyncope or edema.\n\nMedications: aspirin 81 mg, atorvastatin 40 mg, lisinopril 10 mg, amlodipine 5 mg, insulin glargine and aspart.\nAllergies: sulfa antibiotics.\n\nExam: regular rhythm, no murmur, lungs clear, no edema.\nECG: sinus rhythm, no acute ST or T change.\n\nImpression: stable coronary disease without angina.\nPlan: continue current medicines. I will see him in a year, sooner if symptoms return.\n\nOutside cardiology"
+            }
+          ]
+        },
+        {
+          "id": "2023-11-29a",
+          "kind": "outside_records",
+          "start": "2023-11-29T15:00",
+          "reason": "diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye exam",
+              "date": "2023-11-29T15:00",
+              "author": "optometry",
+              "body": "Diabetic eye examination report. Patient: Roger Wright. Exam date 11/21/2023.\nDilated fundus exam both eyes.\nVisual acuity with correction: 20/25 right, 20/25 left.\nFindings: no diabetic retinopathy in either eye. No macular edema.\nRecommendation: repeat dilated exam in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-14a",
+          "kind": "office_visit",
+          "start": "2023-12-14T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              128,
+              69
+            ],
+            "hr": 59,
+            "spo2": 97,
+            "weight_kg": 90.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-12-14T11:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.56
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.7
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 27
+                },
+                {
+                  "test": "Glucose",
+                  "value": 150
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 47
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-12-14T11:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-12-14T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2023-12-14T11:00",
+              "author": "PCP",
+              "body": "S: Three-month check. Sugars in his log: fasting mostly 130-170, an occasional 190 after a holiday party. No readings under 70. Taking glargine 24 nightly and aspart by the scale, usually 2-4 units at supper. Feels fine. No chest pain. No leg pain walking. Cardiology saw him in November, nothing changed. Eye exam done, no retinopathy.\n\nO: Vitals per flowsheet. Heart regular. Lungs clear. Feet: pulses diminished bilaterally, skin intact, no ulcers, monofilament normal.\nABI from October 0.84 R / 0.78 L. Aorta normal. LDCT negative.\n\nA/P:\n- T2DM with CKD: A1c and BMP today. Same insulin.\n- HTN: acceptable, continue.\n- PAD confirmed by ABI, no claudication. Aspirin and statin. Keep walking.\n- CKD 3a: recheck today.\n- RTC 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-01-08a",
+          "kind": "pharmacy",
+          "start": "2024-01-08T09:45",
+          "reason": "prior authorization, insulin aspart pens",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy: prior authorization",
+              "date": "2024-01-08T09:45",
+              "author": "MA",
+              "body": "Pharmacy called: new year Part D formulary needs prior auth for the aspart pens or a switch to the vial. Patient prefers to stay on the pens he has used for years. PA form completed with diagnosis T2DM on basal-bolus insulin, CKD 3a, and submitted through the portal. Told pharmacy to give a 7-day supply in the meantime."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PA approved",
+              "date": "2024-01-10T14:20",
+              "author": "MA",
+              "body": "Prior auth for insulin aspart pens approved through 12/31/2024. Pharmacy and patient notified."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-07a",
+          "kind": "nurse_visit",
+          "start": "2024-02-07T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "shingles vaccine, dose 1",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-02-07T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-02-07T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Shingrix #1",
+              "date": "2024-02-07T15:30",
+              "author": "RN",
+              "body": "Shingrix dose 1, 0.5 mL IM left deltoid. No history of a reaction to vaccines. Counseled on sore arm and feeling run down for a day or two. Second dose due in 2 to 6 months; he plans to get it at his pharmacy in May."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-21a",
+          "kind": "office_visit",
+          "start": "2024-03-21T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes, kidney and blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              143,
+              83
+            ],
+            "hr": 56,
+            "spo2": 97,
+            "weight_kg": 91.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-21T09:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.61
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 28
+                },
+                {
+                  "test": "Glucose",
+                  "value": 151
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 45
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-21T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-21T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2024-03-21T08:40",
+              "author": "PCP",
+              "body": "Roger is here for his diabetes and kidney check. Winter was quiet. He walked at the mall most mornings when the roads were bad. Log reviewed: fasting 120s to 160s, pre-supper similar, nothing below 80. He has not needed more than 4 units of aspart at any meal.\nPA for the pens went through.\nNo chest discomfort, no shortness of breath, no foot sores, no swelling.\n\nExam: BP and weight per vitals. Comfortable. RRR. Clear lungs. No edema. Pedal pulses faint but present both sides, warm feet, skin intact.\n\nAssessment and plan\nType 2 diabetes with CKD 3a: A1c and BMP today. Continue glargine 24 units and correction aspart.\nHypertension: continue lisinopril 10, amlodipine 5.\nCAD/PAD: aspirin, atorvastatin 40.\nShingrix #2 due in May.\nNext: wellness visit in June."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-09a",
+          "kind": "pharmacy",
+          "start": "2024-05-09T12:10",
+          "reason": "vaccine administered at pharmacy",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-05-08T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization notification",
+              "date": "2024-05-09T12:10",
+              "author": "pharmacy",
+              "body": "Immunization notification. Roger Wright, DOB 11/21/1951. Zoster vaccine recombinant, adjuvanted (Shingrix), dose 2 of 2, 0.5 mL IM right deltoid, given 05/08/2024. Patient reports dose 1 at his physician's office in February. No adverse event."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "annual_physical",
+          "start": "2024-06-18T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              144,
+              76
+            ],
+            "hr": 56,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 91.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-06-18T09:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.62
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Glucose",
+                  "value": 152
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 26
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 45
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 97
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-06-18T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 224
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-06-18T09:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 77
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 43
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 155
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 151
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 108
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-18T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.5
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 18
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2024-06-18T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2024-06-18T09:00",
+              "author": "PCP",
+              "body": "MEDICARE ANNUAL WELLNESS VISIT\n\nHealth risk assessment reviewed with patient. Lives in Hadley, independent in all daily activities, drives, manages his own medicines and insulin. No falls in the past year. Hearing adequate for conversation. Vision corrected, eye exam November 2023 without retinopathy.\nPHQ-2: 0.\nCognition: Mini-Cog 3-word recall 3/3, clock normal.\nAdvance directive: has a health care proxy form at home, not yet filed; asked him to bring a copy.\n\nProblems reviewed: HTN, T2DM on insulin with CKD 3a, hyperlipidemia, CAD s/p stent 2022, PAD (ABI 0.84 R / 0.78 L), former smoker.\nMedications reconciled, unchanged.\nAllergy: sulfa antibiotics.\n\nPrevention:\n- Colonoscopy 2018 normal; next 2028 if still appropriate.\n- LDCT October 2023 Lung-RADS 1; next due this fall.\n- AAA screen done 2023, normal.\n- Immunizations: flu and PCV20 fall 2023, COVID 2023-24, Shingrix complete. RSV recommended this fall given diabetes and CKD.\n- Hep C negative 2023.\n\nExam: well, BMI per vitals. Heart regular, lungs clear, no edema. Feet without lesions; pulses diminished bilaterally.\n\nPlan: annual labs today. Diabetes follow-up in September. RSV and flu in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-19a",
+          "kind": "portal_message",
+          "start": "2024-06-19T17:05",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results from your wellness visit",
+              "date": "2024-06-19T17:05",
+              "author": "PCP",
+              "body": "Mr. Wright, your labs from yesterday look stable. Kidney function is in your usual range, cholesterol is at goal on the atorvastatin, blood count is fine, and the urine protein check is normal again. A1c is in the same range as before. Nothing to change. See you in September."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results from your wellness visit",
+              "date": "2024-06-19T19:30",
+              "author": "patient",
+              "body": "Thanks Doc. Will do."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-11a",
+          "kind": "office_visit",
+          "start": "2024-09-11T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "vitals": {
+            "bp": [
+              148,
+              74
+            ],
+            "hr": 61,
+            "spo2": 99,
+            "weight_kg": 91.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-09-11T10:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.66
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.7
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 27
+                },
+                {
+                  "test": "Glucose",
+                  "value": 156
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 44
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-11T10:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-09-11T10:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-11T11:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "RSV, adjuvanted (Arexvy)",
+              "date": "2024-09-11T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2024-09-11T10:20",
+              "author": "PCP",
+              "body": "SUBJECTIVE\nGood summer. Sugars steady per his log, fasting mostly 130s-150s. No lows. Using aspart 2 units most suppers. No chest pain or pressure with yard work. No leg pain walking. No foot problems.\n\nOBJECTIVE\nVitals reviewed. RRR, lungs clear, no edema. Feet: intact skin, diminished pulses as before, monofilament intact.\n\nASSESSMENT/PLAN\nT2DM on insulin, stable. A1c, BMP today. Same doses.\nHTN, CKD 3a: continue lisinopril/amlodipine. Labs as above.\nCAD: due for cardiology in November.\nRSV vaccine today (Arexvy), VIS given. Flu shot next month when the high-dose arrives.\nLDCT due in October; reminder sent to scheduling.\nRTC 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-03a",
+          "kind": "portal_message",
+          "start": "2024-10-03T08:12",
+          "reason": "patient reports hospital stay",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Was in the hospital",
+              "date": "2024-10-03T08:12",
+              "author": "patient",
+              "body": "Hi, wanted you to know I was in the hospital from last Friday till Tuesday. Had chest pressure Friday morning sitting at the kitchen table that would not quit so I called 911. They kept me and did a heart cath Monday through the left groin. They said no new stent was needed and to keep taking the same pills. They said I should see you and my heart doctor. I feel ok now. Groin is a little sore. Do you want to see me? Roger"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Was in the hospital",
+              "date": "2024-10-03T12:40",
+              "author": "PCP",
+              "body": "Thank you for letting me know, Roger. Glad you are feeling better. Yes, I'd like to see you next week; the front desk will call with a time. We'll request the hospital records. If the chest pressure comes back, call 911 again, don't wait for us. If the groin gets more swollen, very bruised or painful, call the same day."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-04a",
+          "kind": "telephone",
+          "start": "2024-10-04T10:05",
+          "reason": "records request",
+          "orders": [
+            {
+              "id": "records-hosp-2024-09",
+              "action": "placed",
+              "order": "Records request, hospital admission 9/27-10/1/2024",
+              "category": "referral",
+              "to": "Outside hospital health information management",
+              "reason": "admission for chest pain with cardiac catheterization"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2024-10-04T10:05",
+              "author": "front desk",
+              "body": "Faxed records request with patient's signed release to the hospital's health information department for the admission 9/27/2024 to 10/1/2024: discharge summary, catheterization report, ECGs, labs. Confirmation page received."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "office_visit",
+          "start": "2024-10-08T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after hospital stay for chest pressure",
+          "conditions": [
+            {
+              "label": "Unstable angina",
+              "action": "history",
+              "onset": "2024-09-27",
+              "note": "outside admission 9/27-10/1/2024; diagnostic coronary angiography via left femoral artery 9/30, no stent placed",
+              "icd10": "I20.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              144,
+              71
+            ],
+            "hr": 62,
+            "spo2": 98,
+            "weight_kg": 91.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-10-08T14:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.6
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 150
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 45
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-10-08T13:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T14:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-10-08T14:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital follow-up",
+              "date": "2024-10-08T13:40",
+              "author": "PCP",
+              "body": "Seen after an outside admission 9/27 to 10/1. Records requested 10/4, not yet received; history is from the patient and his discharge paperwork, which he did not bring.\n\nHe had resting chest pressure on 9/27 and called EMS. Admitted and told it was unstable angina. Diagnostic cath 9/30 through the left femoral artery; he was told no new stent was needed and to continue his current medicines. No chest pressure since discharge. Some soreness in the left groin that is fading. No leg pain, no numbness, no change in his feet.\nMedicines unchanged: aspirin, atorvastatin 40, lisinopril 10, amlodipine 5, glargine 24, aspart scale.\n\nExam: comfortable. RRR, no murmur. Lungs clear. Left groin: puncture site healed, no hematoma, no bruit, no tenderness. Both feet warm, color normal, pulses diminished as at baseline.\n\nA/P\n1. Unstable angina, s/p diagnostic coronary angiography 9/30/2024, managed medically per patient. Continue aspirin and atorvastatin. He will move his cardiology follow-up earlier; their office is calling him. Chest pain precautions reviewed.\n2. Left femoral access site healing well.\n3. CKD 3a: BMP today after the hospital stay.\n4. Will chase hospital records.\nHigh-dose flu vaccine given today."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-20a",
+          "kind": "hospital_admission",
+          "start": "2024-10-20T13:25",
+          "end": "2024-10-23T11:30",
+          "service": "Emergency Medicine; Inpatient Medicine",
+          "reason": "left foot pain, discolored toe, kidney injury",
+          "vitals": {
+            "bp": [
+              139,
+              76
+            ],
+            "hr": 65,
+            "rr": 17,
+            "temp_c": 36.7,
+            "spo2": 97
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-10-20T14:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 2.8
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 44
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Glucose",
+                  "value": 150
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 23
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-10-20T14:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 259
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-20T14:05",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 46
+                },
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 58
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-10-23T06:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 2.5
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.8
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 152
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 27
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-10-20T13:25"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-10-20T19:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2024-10-23T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "date": "2024-10-25T09:30",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nPatient: Roger Wright, 72M. Arrival 10/20/2024 13:25.\n\nCC: Left foot pain x2 days.\n\nHPI: 72-year-old man with diabetes on insulin, hypertension, CKD, hyperlipidemia, coronary disease with prior stent and peripheral arterial disease, who had a diagnostic heart catheterization for unstable angina three weeks ago. Two days of severe, sharp, constant pain in the left foot that gets worse when he props the leg up. Over the past couple of weeks he has also had brief spells of disturbed vision that clear on their own, and belly pain that comes on after meals.\n\nHOME MEDS: insulin glargine 24 units at bedtime, insulin aspart correction scale with meals, lisinopril 10 mg daily, amlodipine 5 mg daily, atorvastatin 40 mg nightly, aspirin 81 mg daily.\nALLERGIES: sulfa antibiotics (rash).\nFH: father MI at 64, mother ischemic stroke at 79, sibling with type 2 diabetes and kidney failure on dialysis.\nSH: ex-smoker, 40 pack-years, quit 2022. No alcohol. Retired from the post office.\n\nEXAM: Left foot cool compared with the right, one toe cyanotic. Lacy, net-like mottling over both lower legs. Fundoscopy: bright refractile plaques where retinal arterioles branch. Groin access site healed.\n\nDATA: creatinine 2.8 mg/dL (his baseline 1.6), BUN 44, CBC within normal limits, CRP 46 mg/L, ESR 58 mm/h.\n\nMDM: Blue toe, livedo, retinal cholesterol plaques and a sharp creatinine rise three weeks after a catheter procedure: cholesterol embolization syndrome with acute kidney injury. Admit to medicine for renal monitoring and pain control.\n\nDISPOSITION: admitted."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2024-11-19T14:10",
+              "author": "hospital medicine",
+              "body": "DISCHARGE SUMMARY\nAdmitted 10/20/2024. Discharged 10/23/2024.\n\nPrincipal diagnosis: atheroembolism (cholesterol embolism syndrome) following coronary angiography 9/30/2024.\nSecondary: acute kidney injury on CKD stage 3; type 2 diabetes on insulin; hypertension; coronary artery disease; peripheral arterial disease.\n\nHospital course: Presented with left foot pain, a cyanotic toe, livedo of the lower legs and retinal cholesterol plaques three weeks after femoral catheterization. Creatinine 2.8 on arrival from a baseline of 1.6. Managed supportively with fluids as tolerated, foot care and pain control. Aspirin and atorvastatin continued. No anticoagulation was given. Creatinine 2.5 on the morning of discharge. Foot pain improved; toe remained dusky but viable.\n\nDischarge medications (no changes): insulin glargine 24 units at bedtime, insulin aspart correction scale, lisinopril 10 mg daily, amlodipine 5 mg daily, atorvastatin 40 mg nightly, aspirin 81 mg daily.\nAllergies: sulfonamide antibiotics.\n\nFollow-up: primary care within one week with a basic metabolic panel. Cardiology as scheduled."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2024-10-23a",
+          "kind": "telephone",
+          "start": "2024-10-23T15:50",
+          "reason": "post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2024-10-23T15:50",
+              "author": "RN",
+              "body": "Patient called: discharged today from a second hospital stay since Sunday 10/20 for left foot pain and a blue toe. He says they told him small pieces of cholesterol broke loose after the heart cath and his kidneys took a hit. No discharge papers sent to us yet. Same medicines. Foot pain better than Sunday, toe still a bit purple. Eating and drinking ok, urinating normally. No chest pain.\nScheduled Monday 10/28 with PCP, bloodwork same day. Advised to keep the foot protected, no heating pad, and call or go to the ED for a black or open toe, fever, or much less urine."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-28a",
+          "kind": "office_visit",
+          "start": "2024-10-28T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after hospitalization, atheroembolism and kidney injury",
+          "conditions": [
+            {
+              "label": "Atheroembolism (cholesterol embolism syndrome)",
+              "action": "diagnosed",
+              "onset": "2024-10-18",
+              "icd10": "I75.89"
+            },
+            {
+              "label": "Acute kidney injury",
+              "action": "diagnosed",
+              "onset": "2024-10-20",
+              "icd10": "N17.9"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              81
+            ],
+            "hr": 53,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 91.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-10-28T10:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 2.3
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 157
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 29
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2024-10-28T09:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-2024-11",
+              "action": "placed",
+              "order": "Basic metabolic panel in 3 weeks",
+              "category": "lab",
+              "to": "Laboratory",
+              "reason": "acute kidney injury"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "date": "2024-10-28T09:30",
+              "author": "PCP",
+              "body": "TRANSITIONAL CARE VISIT\nAdmission 10/20-10/23/2024. ED record received 10/25 and reviewed; discharge summary not yet received.\n\nSummary from the ED record and patient: three weeks after the 9/30 diagnostic coronary angiography through the left femoral artery, he developed severe left foot pain, a cyanotic toe, livedo of both lower legs, retinal cholesterol plaques on fundoscopy, brief visual disturbances and post-meal belly pain. Creatinine 2.8 from baseline 1.6, BUN 44, CRP and ESR elevated, CBC normal. Diagnosed with cholesterol embolization and acute kidney injury. Told no medicine changes.\n\nToday: foot pain much less, takes nothing for it now. Toe still dusky. Vision has been normal since the hospital. Belly pain after meals has settled. Urinating normally. Sugars a little higher in the hospital, back to his usual at home.\n\nExam: afebrile. Comfortable. Heart regular. Lungs clear. Abdomen soft, nontender. Legs: faint lacy mottling persists over both shins. One toe on the left foot dusky violaceous, cool at the tip, capillary refill slow, skin intact, no ulceration or black areas. Left foot otherwise warm. Pedal pulses diminished as before.\n\nCreatinine today 2.3, coming down.\n\nA/P\n1. Atheroembolism (cholesterol embolism syndrome) after femoral catheterization, with acute kidney injury on CKD 3a. Supportive care. Continue aspirin and atorvastatin. Avoid any new vascular procedures if possible. Protect the foot. Recheck BMP in 3 weeks.\n2. Unstable angina 9/2024 managed medically. Cardiology in December.\n3. T2DM: same insulin.\n4. Medication reconciliation done; list unchanged.\nCall for any skin breakdown on the toe."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-11-06a",
+          "kind": "pharmacy",
+          "start": "2024-11-06T11:20",
+          "reason": "vaccine administered at pharmacy",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-11-05T16:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization notification",
+              "date": "2024-11-06T11:20",
+              "author": "pharmacy",
+              "body": "Immunization notification. Roger Wright, DOB 11/21/1951. COVID-19 mRNA vaccine 2024-2025 formula (Pfizer-BioNTech), 0.3 mL IM left deltoid, administered 11/05/2024. Allergies on file: sulfa. No reaction reported."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-18a",
+          "kind": "lab_only",
+          "start": "2024-11-18T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "kidney function recheck",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-11-18T08:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.9
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.7
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 153
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 37
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-11-18T08:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-2024-11",
+              "action": "done",
+              "date": "2024-11-18T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "BMP result",
+              "date": "2024-11-18T16:30",
+              "author": "PCP",
+              "body": "Creatinine 1.9, down from 2.3 three weeks ago and 2.8 at admission. Potassium fine. Kidneys recovering. Recheck at his January visit. Portal message sent."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "outside_records",
+          "start": "2024-11-19T14:10",
+          "reason": "hospital records received",
+          "orders": [
+            {
+              "id": "records-hosp-2024-09",
+              "action": "cancelled",
+              "date": "2024-11-19T14:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records status",
+              "date": "2024-11-19T14:15",
+              "author": "front desk",
+              "body": "Discharge summary for the 10/20-10/23 stay arrived by fax today and is filed under that admission. Called the hospital's records office again about the September admission and catheterization: they have no record of our 10/4 request. They asked for a new release; patient says he will sign one at his next visit. Closing the old request."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-11a",
+          "kind": "specialist_visit",
+          "start": "2024-12-11T14:00",
+          "service": "Cardiology",
+          "reason": "follow-up after unstable angina and angiography",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up letter",
+              "date": "2024-12-16T10:20",
+              "author": "cardiology",
+              "body": "Re: Roger Wright, DOB 11/21/1951. Seen 12/11/2024.\n\nDear Doctor,\n\nMr. Wright returns after his September admission for unstable angina, during which diagnostic coronary angiography was done through the left femoral artery and he was managed medically. In October he was readmitted with cholesterol embolization and acute kidney injury, which you have been following.\n\nHe has had no angina since the angiography. He is walking again. No dyspnea, palpitations or syncope.\n\nMedications: aspirin 81 mg, atorvastatin 40 mg, lisinopril 10 mg, amlodipine 5 mg, insulin glargine and aspart.\nAllergies: sulfa antibiotics.\n\nExam: regular rhythm, no murmur. Lungs clear. No edema.\nECG: sinus rhythm, no acute ST or T change.\n\nAssessment: coronary artery disease, stable since the September event. History of atheroembolism.\nPlan: continue aspirin and atorvastatin 40 mg and his current blood pressure regimen. Follow-up in a year.\n\nOutside cardiology"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-19a",
+          "kind": "imaging",
+          "start": "2024-12-19T10:10",
+          "service": "Radiology",
+          "reason": "annual lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2024-12-19T10:20",
+              "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING (ANNUAL)\nIndication: former smoker, 40 pack-years, quit 2022.\nComparison: 10/26/2023.\nTechnique: low-dose helical CT of the chest without contrast.\nFindings: No pulmonary nodule. No consolidation, effusion or pneumothorax. Central airways clear. Heart size normal; coronary stent again noted. No mediastinal or hilar adenopathy. Visualized upper abdomen unremarkable.",
+              "conclusion": "Lung-RADS 1, negative. Continue annual screening."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT result",
+              "date": "2024-12-20T08:05",
+              "author": "PCP",
+              "body": "Annual screening CT negative again. Letter to patient. Next one December 2025."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-13a",
+          "kind": "office_visit",
+          "start": "2025-01-13T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, kidney function and toe",
+          "conditions": [
+            {
+              "label": "Acute kidney injury",
+              "action": "resolved",
+              "icd10": "N17.9"
+            },
+            {
+              "label": "Unstable angina",
+              "action": "resolved",
+              "icd10": "I20.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              138,
+              84
+            ],
+            "hr": 55,
+            "spo2": 98,
+            "weight_kg": 91.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-01-13T11:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.6
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 156
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 45
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-01-13T11:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.22
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 263
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-01-13T11:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-13T10:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "records-hosp-2024-09b",
+              "action": "placed",
+              "order": "Records request, hospital admission 9/27-10/1/2024 (second request)",
+              "category": "referral",
+              "to": "Outside hospital health information management",
+              "reason": "catheterization report and discharge summary never received"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2025-01-13T10:40",
+              "author": "PCP",
+              "body": "Roger is back for his kidney and diabetes check, about 12 weeks after the cholesterol emboli. The toe turned back to a normal color by late November, he says, and has stayed that way. No pain in the foot. No visual spells. No more belly pain after eating. No chest pain since September. Saw cardiology in December, no changes.\nSugars: fasting 130-160, no lows.\n\nExam: RRR, lungs clear. Legs: mottling gone. Left toes normal color, warm, capillary refill brisk, skin intact, no tissue loss. Pedal pulses diminished, unchanged.\n\nLabs today: creatinine 1.6, back to his old baseline.\n\nA/P\n- Atheroembolism 10/2024: recovered clinically; kidney function back to baseline. AKI resolved. Keep on aspirin and statin. Keep it on his list so nobody forgets before the next catheter procedure.\n- Unstable angina 9/2024: no recurrence; cardiology following. Off the active list.\n- CKD 3a: stable.\n- T2DM: A1c today, no change to insulin.\n- HTN: continue.\n- He signed a new release; front desk re-faxing the request for the September cath records.\nRTC 3-4 months, sooner as needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-05a",
+          "kind": "outside_records",
+          "start": "2025-02-05T13:20",
+          "reason": "diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye exam",
+              "date": "2025-02-05T13:20",
+              "author": "optometry",
+              "body": "Diabetic eye examination report. Patient: Roger Wright. Exam date 01/30/2025.\nHistory per patient: told of cholesterol plaques in the eye vessels during an October hospital stay; no visual symptoms since.\nAcuity with correction 20/25 OU.\nDilated fundus exam: no diabetic retinopathy either eye. No macular edema. No retinal emboli seen today. Optic nerves healthy.\nRecommend dilated exam yearly."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-25a",
+          "kind": "hospital_admission",
+          "start": "2025-04-25T07:50",
+          "end": "2025-04-29T13:00",
+          "service": "Emergency Medicine; Inpatient Medicine",
+          "reason": "severe epigastric pain with vomiting",
+          "vitals": {
+            "bp": [
+              165,
+              90
+            ],
+            "hr": 102,
+            "rr": 16,
+            "temp_c": 38.2,
+            "spo2": 99
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-25T08:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 16.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.59
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 235
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-04-25T08:20",
+              "results": [
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 31
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 2.1
+                },
+                {
+                  "test": "Glucose",
+                  "value": 210
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.7
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 33
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-25T08:20",
+              "results": [
+                {
+                  "test": "Lipase",
+                  "value": 1100
+                },
+                {
+                  "test": "Amylase",
+                  "loinc": "1798-8",
+                  "unit": "U/L",
+                  "value": 900
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-04-26T05:30",
+              "results": [
+                {
+                  "test": "Triglycerides",
+                  "value": 172
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 80
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 39
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 153
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 114
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-04-29T05:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.9
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.7
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 25
+                },
+                {
+                  "test": "Glucose",
+                  "value": 153
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 37
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis without contrast",
+              "loinc": "36952-0",
+              "performed": "2025-04-25T09:40",
+              "text": "CT ABDOMEN AND PELVIS WITHOUT IV CONTRAST\nIndication: severe epigastric pain radiating to the back, vomiting, elevated lipase. IV contrast withheld for reduced kidney function.\nFindings: Peripancreatic inflammatory stranding and edema surrounding the pancreas. No organized peripancreatic collection. Liver, spleen and adrenal glands unremarkable. Gallbladder unremarkable without dense stones. No biliary dilation. Kidneys without hydronephrosis. Bowel loops are not obstructed. Abdominal aorta normal in caliber. No free air.",
+              "conclusion": "Findings of acute pancreatitis: peripancreatic inflammation and edema."
+            },
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2025-04-25T15:10",
+              "text": "RIGHT UPPER QUADRANT ULTRASOUND\nIndication: acute pancreatitis, evaluate for gallstones.\nFindings: Gallbladder normally distended, no stones, no sludge, no wall thickening, no pericholecystic fluid; sonographic Murphy sign negative. Common bile duct 4 mm, not dilated. No intrahepatic ductal dilation. Liver normal in echotexture. Pancreas partially obscured by bowel gas.",
+              "conclusion": "No gallstones. No biliary dilation."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-04-25T07:50"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-04-25T12:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-04-29T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2025-05-27T10:45",
+              "author": "hospital medicine",
+              "body": "DISCHARGE SUMMARY\nAdmission 4/25/2025, discharge 4/29/2025.\n\nPrincipal diagnosis: acute pancreatitis.\nSecondary: acute kidney injury on chronic kidney disease stage 3; type 2 diabetes on insulin; hypertension; coronary artery disease; peripheral arterial disease; history of cholesterol embolization (10/2024).\n\nPresentation: about six hours of severe, steady upper abdominal pain boring through to the back, with nausea and repeated vomiting. Denied chest pain, shortness of breath and any change in bowel habits. In the ED: BP 165/90, HR 102, temperature 38.2 C. Abdomen distended and tender in the epigastrium with hypoactive bowel sounds.\nED labs: WBC 16.0, hemoglobin 13.2, BUN 31, creatinine 2.1 (baseline 1.6), glucose 210, amylase 900 U/L, lipase 1100 U/L.\nCT abdomen/pelvis without contrast: inflammation and edema around the pancreas.\n\nHospital course: Treated with IV fluids, bowel rest and IV analgesia. Right upper quadrant ultrasound showed no gallstones and no duct dilation. Triglycerides 172. He does not drink alcohol. No cause was established. Pain settled by day 3 and diet was advanced, tolerated. Insulin continued with dose adjustment while not eating, then home doses resumed. Creatinine 1.9 at discharge.\n\nDischarge medications (unchanged from admission): insulin glargine 24 units at bedtime, insulin aspart correction scale, lisinopril 10 mg daily, amlodipine 5 mg daily, atorvastatin 40 mg nightly, aspirin 81 mg daily.\nAllergies: sulfonamide antibiotics (rash).\n\nFollow-up: primary care in 1 week with BMP."
+            }
+          ],
+          "measure": [
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-05-01a",
+          "kind": "portal_message",
+          "start": "2025-05-01T09:25",
+          "reason": "patient reports hospital stay",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hospital again",
+              "date": "2025-05-01T09:25",
+              "author": "patient",
+              "body": "Hello, I was in the hospital again last Friday to Tuesday. Pancreatitis they said. Terrible pain in my stomach going to my back and throwing up. They did a CT and an ultrasound, no gallstones. I'm eating soft stuff now and feel much better. They said to see you in a week and get bloodwork. Can I get in Monday or Tuesday? Roger"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hospital again",
+              "date": "2025-05-01T10:02",
+              "author": "front desk",
+              "body": "Hi Mr. Wright, we have you Monday 5/5 at 1:20 with your doctor, labs at the visit. Please bring any discharge papers you were given. We have requested the hospital records."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-05a",
+          "kind": "office_visit",
+          "start": "2025-05-05T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after hospitalization for pancreatitis",
+          "conditions": [
+            {
+              "label": "Acute pancreatitis",
+              "action": "diagnosed",
+              "onset": "2025-04-25",
+              "icd10": "K85.90"
+            },
+            {
+              "label": "Acute kidney injury",
+              "action": "diagnosed",
+              "onset": "2025-04-25",
+              "icd10": "N17.9"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              140,
+              86
+            ],
+            "hr": 63,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 91.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-05T14:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.9
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 28
+                },
+                {
+                  "test": "Glucose",
+                  "value": 158
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 37
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-05T14:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.76
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 267
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-05T14:00",
+              "results": [
+                {
+                  "test": "Lipase",
+                  "value": 35
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-05-05T13:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "records-hosp-2025-04",
+              "action": "placed",
+              "order": "Records request, hospital admission 4/25-4/29/2025",
+              "category": "referral",
+              "to": "Outside hospital health information management",
+              "reason": "acute pancreatitis admission"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "date": "2025-05-05T13:20",
+              "author": "PCP",
+              "body": "TRANSITIONAL CARE VISIT\nAdmitted 4/25-4/29/2025 with acute pancreatitis. No hospital records yet; he brought his discharge instruction sheet, which lists the diagnosis, no medicine changes, and a BMP in a week. Records requested today.\n\nHe describes six hours of severe upper belly pain going into the back with vomiting before he went in. CT and gallbladder ultrasound done; he was told no gallstones and that they did not find a cause. He does not drink.\nNow: eating regular meals since Saturday without pain. No nausea. Bowels normal. No fever. Sugars back to his usual range at home; glargine 24 and scale aspart as before. No chest pain. Feet fine.\n\nExam: afebrile, looks well. Abdomen soft, nondistended, no tenderness, normal bowel sounds. Heart regular, lungs clear. No edema.\n\nA/P\n1. Acute pancreatitis, recovering; cause not identified on the hospital's workup per patient. Lipase, CBC today. Diet as tolerated.\n2. AKI with the pancreatitis: BMP today.\n3. T2DM, HTN, CAD/PAD, prior atheroembolism: no changes.\nWill review the summary when it comes. Wellness visit in June."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab result",
+              "date": "2025-05-06T08:30",
+              "author": "PCP",
+              "body": "Lipase normal. White count normal. Creatinine 1.9, better than the 2.1 he had in the ED but higher than his January 1.6. Recheck at the June visit to see where it settles."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Blood Urea Nitrogen": 30,
+              "Creatinine": 1.9,
+              "Lipase": 36
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-27a",
+          "kind": "outside_records",
+          "start": "2025-05-27T10:50",
+          "reason": "hospital discharge summary received",
+          "orders": [
+            {
+              "id": "records-hosp-2025-04",
+              "action": "done",
+              "date": "2025-05-27T10:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records received",
+              "date": "2025-05-27T10:50",
+              "author": "front desk",
+              "body": "Discharge summary for the April 2025 admission received by fax today, filed under that admission and routed to PCP. ED physician record was not included; the hospital says the summary is what they release for this request."
+            },
+            {
+              "type": "Result Note",
+              "title": "Outside summary reviewed",
+              "date": "2025-05-28T07:40",
+              "author": "PCP",
+              "body": "Reviewed. Lipase 1100, amylase 900, WBC 16.0, creatinine 2.1 on arrival; CT with peripancreatic edema, RUQ US without stones, TG 172. No cause named. Matches what he told us. Nothing new to act on."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "annual_physical",
+          "start": "2025-06-17T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "conditions": [
+            {
+              "label": "Acute pancreatitis",
+              "action": "resolved",
+              "icd10": "K85.90"
+            },
+            {
+              "label": "Acute kidney injury",
+              "action": "resolved",
+              "icd10": "N17.9"
+            },
+            {
+              "label": "Chronic kidney disease, stage 3a",
+              "action": "resolved"
+            },
+            {
+              "label": "Chronic kidney disease, stage 3b",
+              "action": "diagnosed",
+              "onset": "2025-06-17"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              77
+            ],
+            "hr": 70,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 91.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-06-17T09:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.9
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Glucose",
+                  "value": 152
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 29
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 37
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-17T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.65
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 271
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-06-17T09:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 79
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 162
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 156
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 111
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-17T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.6
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 18
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2025-06-17T09:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-06-17T10:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-06-17T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2025-06-17T09:10",
+              "author": "PCP",
+              "body": "MEDICARE ANNUAL WELLNESS VISIT\n\nInterval: hard year. Unstable angina with diagnostic cath 9/2024 (records still not received), cholesterol emboli with AKI 10/2024, acute pancreatitis 4/2025. Feels back to himself now. Eating normally, no abdominal pain since discharge. No chest pain. Walking most days.\n\nHRA: independent in ADLs and IADLs, drives, does his own insulin. No falls. Hearing fine. Eyes checked January, no retinopathy.\nPHQ-2: 0. Mini-Cog 3/3, normal clock.\nHealth care proxy copy now in the chart.\n\nMedications reconciled; unchanged.\nAllergy: sulfa antibiotics.\n\nExam: well. Heart regular, lungs clear, abdomen soft and nontender. Feet: skin intact, pulses diminished as before, monofilament intact.\n\nKidney function: creatinine 1.9 today, same as May, now the third value at that level since April. eGFR in the high 30s. Restaging CKD to 3b. This is his new baseline after two kidney injuries.\n\nA/P\n- Acute pancreatitis: resolved.\n- AKI: resolved, new baseline as above.\n- CKD 3b: continue lisinopril, BP control; avoid NSAIDs (he doesn't use them). Annual urine albumin today.\n- T2DM: A1c today.\n- Lipids today on atorvastatin 40.\n- Prevention: Tdap today. LDCT due December. Flu, COVID in the fall. Colonoscopy 2028 if appropriate.\nFollow-up September."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-10a",
+          "kind": "office_visit",
+          "start": "2025-09-10T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and kidney follow-up",
+          "vitals": {
+            "bp": [
+              146,
+              82
+            ],
+            "hr": 62,
+            "spo2": 98,
+            "weight_kg": 91.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-09-10T14:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.92
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.7
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 32
+                },
+                {
+                  "test": "Glucose",
+                  "value": 153
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 36
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-10T14:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-09-10T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2025-09-10T14:20",
+              "author": "PCP",
+              "body": "S: Quiet summer, no ED trips. Sugars fasting 120-160 on glargine 24 and the aspart scale. No readings below 70 in the meter memory we looked at together. No abdominal pain. No chest pain, no leg pain with walking.\nO: vitals reviewed. Heart RRR, lungs clear, abdomen benign, feet intact with diminished pulses.\nA/P:\n- T2DM with CKD 3b: A1c and BMP today; no change.\n- HTN: continue.\n- CAD/PAD/history of atheroembolism: aspirin, atorvastatin.\n- Flu and COVID vaccines next month; nurse visit booked.\nRTC 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "nurse_visit",
+          "start": "2025-10-08T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-08T10:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-10-08T10:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-08T10:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2025-10-08T10:30",
+              "author": "RN",
+              "body": "High-dose flu 0.5 mL IM right deltoid and 2025-26 COVID vaccine IM left deltoid. Screening negative, VIS provided. Observed 15 minutes without problems."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-26a",
+          "kind": "hospital_admission",
+          "start": "2025-10-26T06:40",
+          "end": "2025-10-31T12:00",
+          "service": "Emergency Medicine; Intensive Care; Inpatient Medicine",
+          "reason": "altered mental status, hypoglycemia, fever",
+          "vitals": {
+            "bp": [
+              95,
+              60
+            ],
+            "hr": 102,
+            "rr": 22,
+            "temp_c": 38.3,
+            "spo2": 98
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-26T06:55",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 48
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 2.8
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 44
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Sodium",
+                  "value": 135
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 18
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 23
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-26T07:05",
+              "results": [
+                {
+                  "test": "pH of arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.32
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 32
+                },
+                {
+                  "test": "Bicarbonate in arterial blood",
+                  "loinc": "1960-4",
+                  "unit": "mmol/L",
+                  "value": 18
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-26T06:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.75
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 238
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-26T07:20",
+              "resulted": "2025-10-28T09:00",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": "Escherichia coli, greater than 100,000 CFU/mL. Susceptible to ceftriaxone."
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-26T07:10",
+              "resulted": "2025-10-31T07:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days."
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-31T05:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 2.3
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Glucose",
+                  "value": 148
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 29
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 29
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-10-26T06:40"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-10-26T10:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-10-31T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2025-11-07T15:30",
+              "author": "hospital medicine",
+              "body": "DISCHARGE SUMMARY\nAdmitted 10/26/2025 (ICU 10/26-10/28, then medical floor). Discharged 10/31/2025.\n\nPrincipal diagnosis: severe hypoglycemia with altered mental status.\nSecondary: sepsis from a urinary source, Escherichia coli; acute kidney injury on CKD stage 3b; type 2 diabetes on insulin; hypertension; coronary artery disease; peripheral arterial disease; history of atheroembolism and of acute pancreatitis.\n\nPresentation: brought in by ambulance from home, confused and drowsy. On arrival lethargic but rousable, skin warm and dry. BP 95/60, HR 102, RR 22, temperature 38.3 C. Glucose 48. Creatinine 2.8 (baseline 1.9), BUN 44, potassium 4.5, sodium 135. Arterial gas: pH 7.32, PaCO2 32, HCO3 18.\n\nCourse: IV dextrose with recovery of mental status; glucose monitored hourly in the ICU. IV fluids and IV ceftriaxone for urosepsis. Urine culture grew E. coli susceptible to ceftriaxone; blood cultures no growth. Insulin held at first, then basal resumed at a lower dose: glargine 18 units at bedtime, aspart correction scale with meals. No further hypoglycemia on the floor. Creatinine 2.3 on the day of discharge.\n\nDischarge medications:\n- insulin glargine 18 units SC at bedtime (DECREASED from 24)\n- insulin aspart correction scale with meals (unchanged)\n- cefpodoxime 200 mg by mouth twice daily to complete 10 days of antibiotic therapy (NEW)\n- lisinopril 10 mg daily, amlodipine 5 mg daily, atorvastatin 40 mg nightly, aspirin 81 mg daily (unchanged)\nAllergies: sulfonamide antibiotics (rash).\n\nFollow-up: primary care within one week; BMP."
+            }
+          ],
+          "measure": [
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-11-01a",
+          "kind": "pharmacy",
+          "start": "2025-11-01T10:15",
+          "reason": "pharmacy call about new prescriptions",
+          "medications": [
+            {
+              "drug_text": "cefpodoxime 200 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily to complete 10 days of antibiotics",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "urinary tract infection with sepsis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy call",
+              "date": "2025-11-01T10:15",
+              "author": "RN",
+              "body": "Saturday call from patient's pharmacy. They filled cefpodoxime 200 mg BID yesterday and a new glargine prescription for 18 units at bedtime from a hospital discharge, and wanted to confirm which glargine dose is current since our refill on file says 24 units. We had no notice of a hospitalization.\nCalled patient: admitted 10/26 to 10/31, found confused at home with a low sugar and a urine infection, in the ICU two days. Feels weak but ok. Taking the antibiotic. Has been taking 18 units since discharge; sugars 140s-180s, no lows.\nTold pharmacy to follow the 18-unit discharge prescription. Our list still shows 24 units; PCP to reconcile. Post-hospital visit booked Tuesday 11/4. Advised patient to check sugars 4 times a day and call for anything under 70."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "office_visit",
+          "start": "2025-11-04T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after hospitalization for hypoglycemia and urosepsis",
+          "conditions": [
+            {
+              "label": "Type 2 diabetes mellitus with hypoglycemia without coma",
+              "action": "diagnosed",
+              "onset": "2025-10-26",
+              "note": "severe hypoglycemia, glucose 48, ICU 10/2025",
+              "icd10": "E11.649"
+            },
+            {
+              "label": "Sepsis due to Escherichia coli",
+              "action": "diagnosed",
+              "onset": "2025-10-26",
+              "icd10": "A41.51"
+            },
+            {
+              "label": "Urinary tract infection",
+              "action": "diagnosed",
+              "onset": "2025-10-26"
+            },
+            {
+              "label": "Acute kidney injury",
+              "action": "diagnosed",
+              "onset": "2025-10-26",
+              "icd10": "N17.9"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+              "action": "stop",
+              "reason": "dose reduced after severe hypoglycemia"
+            },
+            {
+              "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+              "action": "start",
+              "sig": "Inject 18 units under the skin at bedtime",
+              "dose": {
+                "value": 18,
+                "unit": "[iU]"
+              },
+              "frequency": "DAILY",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "type 2 diabetes"
+            },
+            {
+              "drug_text": "glucagon 3 MG Nasal Powder",
+              "action": "start",
+              "sig": "Spray 3 mg into one nostril once for severe low blood sugar; may repeat once after 15 minutes with a new device",
+              "dose": {
+                "value": 3,
+                "unit": "mg"
+              },
+              "route": "Nasal",
+              "course": "chronic",
+              "reason": "severe hypoglycemia"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              133,
+              77
+            ],
+            "hr": 60,
+            "temp_c": 36.9,
+            "spo2": 99,
+            "weight_kg": 90.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-04T11:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 2.1
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 30
+                },
+                {
+                  "test": "Glucose",
+                  "value": 156
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 33
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-04T11:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.71
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 263
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-11-04T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-2025-12",
+              "action": "placed",
+              "order": "Basic metabolic panel in 5 weeks",
+              "category": "lab",
+              "to": "Laboratory",
+              "reason": "acute kidney injury"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "date": "2025-11-04T11:00",
+              "author": "PCP",
+              "body": "TRANSITIONAL CARE VISIT\nAdmission 10/26-10/31/2025. We learned of it from the pharmacy on 11/1. No discharge summary yet; patient brought his discharge medication list.\n\nPer patient and his paperwork: found confused at home early Sunday and taken by ambulance. Sugar was very low and he had a fever; urine infection that got into his blood. ICU for two days. Glargine cut from 24 to 18 units. Antibiotic, cefpodoxime, through Wednesday. He does not remember the morning he was brought in. He had not changed his insulin doses before it happened.\n\nNow: no fever, no urinary complaints. Energy coming back. Sugars since discharge: fasting 140-190, pre-supper 150-200, no lows. Uses aspart only for readings over 200.\n\nExam: afebrile, alert, oriented. Heart regular. Lungs clear. Abdomen soft; no CVA tenderness. Feet intact, pulses diminished as before.\nCreatinine today 2.1.\n\nA/P\n1. Severe hypoglycemia with altered mental status during E. coli urosepsis and AKI on CKD 3b, on basal insulin. Updated our list to glargine 18 units at bedtime; stopped the 24-unit order. Glucagon nasal powder prescribed; reviewed when and how to use it. A1c goal relaxed to under 8 given the low and his kidneys. Check sugars at least twice a day plus any time he feels off.\n2. Urosepsis, E. coli: finishing cefpodoxime. Feels well.\n3. AKI on CKD 3b: creatinine improving. BMP in about 5 weeks.\n4. HTN, CAD/PAD: unchanged.\nWill review the summary when it arrives. Follow-up in December."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-10a",
+          "kind": "lab_only",
+          "start": "2025-12-10T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "kidney function recheck",
+          "conditions": [
+            {
+              "label": "Acute kidney injury",
+              "action": "resolved",
+              "icd10": "N17.9"
+            },
+            {
+              "label": "Sepsis due to Escherichia coli",
+              "action": "resolved",
+              "icd10": "A41.51"
+            },
+            {
+              "label": "Urinary tract infection",
+              "action": "resolved"
+            },
+            {
+              "label": "Type 2 diabetes mellitus with hypoglycemia without coma",
+              "action": "resolved",
+              "icd10": "E11.649"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-10T08:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.9
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 30
+                },
+                {
+                  "test": "Glucose",
+                  "value": 146
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 37
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-10T08:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-2025-12",
+              "action": "done",
+              "date": "2025-12-10T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "BMP result",
+              "date": "2025-12-10T15:45",
+              "author": "PCP",
+              "body": "Creatinine back to 1.9, his baseline since spring. Kidney injury resolved. Hospital summary received 11/7 and reviewed: urine culture E. coli, blood cultures negative, glargine reduced to 18. Infection treated; no lows reported since. Closing out the acute problems. Message to patient."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Kidney test",
+              "date": "2025-12-10T15:50",
+              "author": "PCP",
+              "body": "Roger, your kidney numbers are back to where they were before the hospital stay. Keep the glargine at 18 units and keep the glucagon handy. See you in February."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-18a",
+          "kind": "imaging",
+          "start": "2025-12-18T14:20",
+          "service": "Radiology",
+          "reason": "annual lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2025-12-18T14:30",
+              "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING (ANNUAL)\nIndication: former smoker, 40 pack-years, quit 2022.\nComparison: 12/19/2024 and 10/26/2023.\nTechnique: low-dose helical CT of the chest, no IV contrast.\nFindings: No pulmonary nodules. Lungs clear without consolidation. No pleural effusion. Heart normal size; coronary stent. No adenopathy. Upper abdomen unremarkable.",
+              "conclusion": "Lung-RADS 1. Negative screen; next annual screen in 12 months."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT result",
+              "date": "2025-12-19T09:10",
+              "author": "PCP",
+              "body": "Third negative annual screen. Letter sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-22a",
+          "kind": "outside_records",
+          "start": "2026-01-22T12:30",
+          "reason": "diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye exam",
+              "date": "2026-01-22T12:30",
+              "author": "optometry",
+              "body": "Annual diabetic eye exam, 01/16/2026, Roger Wright.\nBest corrected acuity 20/25 right, 20/25 left.\nDilated exam: no diabetic retinopathy OU, no macular edema, no retinal emboli visualized.\nReturn in one year."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "office_visit",
+          "start": "2026-02-10T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and kidney follow-up",
+          "vitals": {
+            "bp": [
+              131,
+              87
+            ],
+            "hr": 57,
+            "spo2": 98,
+            "weight_kg": 91.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-10T10:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.89
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 28
+                },
+                {
+                  "test": "Glucose",
+                  "value": 160
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 37
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-10T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-02-10T09:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "records-cards-2025-12",
+              "action": "placed",
+              "order": "Records request, cardiology visit 12/2025",
+              "category": "referral",
+              "to": "Outside cardiology",
+              "reason": "annual coronary follow-up letter not received"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2026-02-10T09:50",
+              "author": "PCP",
+              "body": "S: First visit since the October hospital stay settled down. Glargine 18 at bedtime, aspart only for readings over 200, a few times a week. Fasting 140s to 170s. Lowest reading in the meter since November is 92. Glucagon at home, unused; he keeps it next to his meter. No urinary symptoms. No chest pain, no leg pain with walking.\nSaw cardiology in December for the yearly visit; he says they listened, did an ECG, and changed nothing. We never got a letter.\n\nO: vitals as charted. Heart regular, lungs clear, no edema. Feet: skin intact, pulses diminished as before.\n\nA/P\n- T2DM with CKD 3b, recent severe hypoglycemia: A1c today, goal under 8. Keep glargine 18.\n- CKD 3b: BMP today.\n- HTN: continue lisinopril 10, amlodipine 5.\n- CAD/PAD, history of atheroembolism: aspirin, atorvastatin 40. Requesting the December cardiology note.\nRTC 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-11a",
+          "kind": "telephone",
+          "start": "2026-02-11T11:05",
+          "reason": "records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2026-02-11T11:05",
+              "author": "front desk",
+              "body": "Faxed request to the cardiology office for the note from the patient's December 2025 visit. Their staff said the provider had not signed the note yet and it would be sent once finalized."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "portal_message",
+          "start": "2026-03-16T07:55",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "date": "2026-03-16T07:55",
+              "author": "patient",
+              "body": "Morning. I need refills on the long acting insulin pens and the atorvastatin, mail order says no refills left. Thanks, Roger"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "date": "2026-03-16T13:20",
+              "author": "MA",
+              "body": "Hi Roger, both sent to your mail-order pharmacy for 90 days with refills: insulin glargine pens, 18 units at bedtime, and atorvastatin 40 mg. Pen needles were added too."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-15a",
+          "kind": "office_visit",
+          "start": "2026-04-15T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and kidney follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2026-04-15T11:20",
+              "author": "front desk",
+              "body": "Patient did not arrive for 10:40 visit. Called; he had it written down for next week. Rescheduled to 4/28."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2026-04-28a",
+          "kind": "office_visit",
+          "start": "2026-04-28T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and kidney follow-up",
+          "vitals": {
+            "bp": [
+              150,
+              79
+            ],
+            "hr": 52,
+            "spo2": 97,
+            "weight_kg": 91.2
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-28T14:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.9
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 29
+                },
+                {
+                  "test": "Glucose",
+                  "value": 157
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 37
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-28T14:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-04-28T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2026-04-28T14:00",
+              "author": "PCP",
+              "body": "Rescheduled from 4/15. Doing well. Sugars fasting 130-170, no lows, glucagon still unused. No hospital visits. No abdominal pain, no chest pain, no foot problems.\nExam: regular rhythm, clear lungs, no edema, feet intact.\nFebruary A1c was 8.3, a little above the under-8 goal; after last fall's low he would rather run slightly high, and so would I.\nPlan: A1c and BMP today; no insulin change. The cardiology letter from December still has not come. Wellness visit in June."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-25a",
+          "kind": "annual_physical",
+          "start": "2026-06-25T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              129,
+              77
+            ],
+            "hr": 61,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 91.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-25T09:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.91
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Glucose",
+                  "value": 155
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 33
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 36
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-25T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.52
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-06-25T09:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 74
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 42
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 143
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 145
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 103
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-25T09:45",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 17
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2026-06-25T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2026-06-25T09:00",
+              "author": "PCP",
+              "body": "MEDICARE ANNUAL WELLNESS VISIT\n\nA calmer year after the October 2025 admission. No ED visits or hospital stays since. Sugars steady on glargine 18 with correction aspart, no lows. No chest pain.\n\nHRA: lives in Hadley, independent with all activities, drives, manages his insulin. No falls. Hearing and vision adequate; eye exam January, no retinopathy.\nPHQ-2: 0. Mini-Cog 3/3.\nHealth care proxy on file.\n\nMedications reconciled: glargine 18 units at bedtime, aspart correction scale, glucagon nasal as needed, lisinopril 10, amlodipine 5, atorvastatin 40, aspirin 81.\nAllergy: sulfa antibiotics (rash).\n\nExam: well-appearing. Heart regular, lungs clear, abdomen soft. Feet: skin intact, diminished pulses, sensation intact.\n\nPlan\n- Annual CMP, CBC, lipids and urine albumin today. A1c was done in April.\n- Prevention: immunizations current through last fall; flu and COVID this fall. LDCT due December. Colonoscopy 2028 if still appropriate.\n- Labs before the September follow-up."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-24a",
+          "kind": "lab_only",
+          "start": "2026-08-24T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "labs before follow-up",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-08-24T08:20",
+              "resulted": "2026-08-24T15:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.94
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.7
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 29
+                },
+                {
+                  "test": "Glucose",
+                  "value": 149
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 36
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-24T08:20",
+              "resulted": "2026-08-25T11:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-24T08:20"
+            }
+          ]
+        },
+        {
+          "id": "2026-09-08a",
+          "kind": "office_visit",
+          "start": "2026-09-08T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and kidney follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute kidney injury|N17.9": {
+        "code": "N17.9",
+        "display": "Acute kidney failure, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Acute pancreatitis|K85.90": {
+        "code": "K85.90",
+        "display": "Acute pancreatitis without necrosis or infection, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Atheroembolism (cholesterol embolism syndrome)|I75.89": {
+        "code": "I75.89",
+        "display": "Atheroembolism of other site",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Sepsis due to Escherichia coli|A41.51": {
+        "code": "A41.51",
+        "display": "Sepsis due to Escherichia coli [E. coli]",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Type 2 diabetes mellitus with hypoglycemia without coma|E11.649": {
+        "code": "E11.649",
+        "display": "Type 2 diabetes mellitus with hypoglycemia without coma",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Unstable angina|I20.0": {
+        "code": "I20.0",
+        "display": "Unstable angina",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "3 ML insulin aspart 100 UNT/ML Pen Injector": {
+        "code": "1653202",
+        "display": "3 ML insulin aspart, human 100 UNT/ML Pen Injector",
+        "ingredient": "ml",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "cefpodoxime 200 MG Oral Tablet": {
+        "code": "309078",
+        "display": "cefpodoxime 200 MG Oral Tablet",
+        "ingredient": "cefpodoxime",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "glucagon 3 MG Nasal Powder": {
+        "code": "2180666",
+        "display": "glucagon 3 MG Nasal Powder",
+        "ingredient": "glucagon",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Amylase": {
+        "code": "1798-8",
+        "display": "Amylase [Enzymatic activity/volume] in Serum or Plasma",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Bicarbonate in arterial blood": {
+        "code": "1960-4",
+        "display": "Bicarbonate [Moles/volume] in Arterial blood",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Carbon dioxide partial pressure in arterial blood": {
+        "code": "2019-8",
+        "display": "Carbon dioxide [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH of arterial blood": {
+        "code": "2744-1",
+        "display": "pH of Arterial blood",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "CT abdomen and pelvis without contrast": {
+        "code": "36952-0",
+        "display": "CT Abdomen and Pelvis WO contrast",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

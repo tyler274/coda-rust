@@ -1,0 +1,687 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002226",
+      "given": "Robert",
+      "family": "Graves",
+      "birth_date": "1950-08-04",
+      "address_line": "63 Prospect Avenue",
+      "phone": "+1-413-555-0155",
+      "email": "robert.graves@example.test",
+      "summary": "Retired math teacher with a 2013 mechanical mitral valve on warfarin, hypertension, type 2 diabetes, CKD 3a and hyperlipidemia who joins in 2022 just before a right hip replacement. The hip later becomes chronically infected and is treated with a two-stage exchange; severe aortic stenosis, tap-responsive normal pressure hydrocephalus (shunted) and recurrent bleeding from cecal angiodysplasia with iron deficiency follow. Today a capsule endoscopy is booked and the aortic stenosis has never been taken to intervention.",
+      "events": [
+        {
+          "id": "2022-08-10a",
+          "kind": "establish_care",
+          "start": "2022-08-10T09:00",
+          "end": "2022-08-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care; anticoagulation for mechanical mitral valve",
+          "conditions": [
+            {
+              "label": "Presence of prosthetic heart valve",
+              "icd10": "Z95.2",
+              "action": "history",
+              "onset": "2013-04-01",
+              "note": "Mechanical mitral valve replacement 2013; warfarin, INR goal 2.5-3.5"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2009-01-01"
+            },
+            {
+              "label": "Type 2 diabetes mellitus without complications",
+              "action": "history",
+              "onset": "2012-01-01"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "history",
+              "onset": "2010-01-01"
+            },
+            {
+              "label": "Chronic kidney disease, stage 3a",
+              "action": "history",
+              "onset": "2019-01-01"
+            },
+            {
+              "label": "Chronic constipation",
+              "action": "history",
+              "onset": "2015-01-01"
+            },
+            {
+              "label": "Personal history of colon polyps",
+              "icd10": "Z86.0100",
+              "action": "history",
+              "onset": "2021-04-01",
+              "note": "Polypectomy spring 2021, surveillance advised in 3 years"
+            },
+            {
+              "label": "Primary osteoarthritis of hip",
+              "action": "history",
+              "onset": "2019-01-01",
+              "note": "Right hip, severe; total hip arthroplasty scheduled 9/27/2022"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "warfarin sodium 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily in the evening, or as directed per INR",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Mechanical mitral valve, INR goal 2.5-3.5"
+            },
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Type 2 diabetes"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hyperlipidemia"
+            },
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Mechanical mitral valve"
+            },
+            {
+              "drug_text": "docusate sodium 100 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily as needed for constipation (over the counter)",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Chronic constipation"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              128,
+              74
+            ],
+            "weight_kg": 84.2,
+            "height_cm": 175.0,
+            "labs": {
+              "Hemoglobin A1c": 6.9,
+              "Low Density Lipoprotein": 76,
+              "Creatinine": 1.3,
+              "Prothrombin Time-International Normalized Ratio": 2.9,
+              "Microalbumin/Creatinine Ratio": 12,
+              "Prothrombin Time": 33.3,
+              "Hemoglobin": 14.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "1-2 glasses of wine per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired high school mathematics teacher"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-08-10T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-08-10T10:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-10T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-08-10T10:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-08-10T10:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, high MDM",
+              "performed": "2022-08-10T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2022",
+              "action": "placed",
+              "order": "Request for records from prior primary care practice",
+              "category": "referral",
+              "to": "Prior primary care practice",
+              "reason": "Establish care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-08-10T10:40",
+              "body": "New patient, 72 y/o retired HS math teacher, transferring care from a practice he'd been with for years. Main reason for coming: wants one doctor who will run his warfarin and see the whole picture.\n\nHPI: Mechanical mitral valve placed in 2013. Has been on warfarin since, goal INR 2.5-3.5, on 5 mg nightly with occasional adjustments; last INRs at his old office in range per his log book, no bleeding or clot history he knows of. Also takes aspirin 81. HTN on lisinopril 20 and amlodipine 5, home readings he says are 'in the 120s.' DM2 for about ten years on metformin 1000 BID, last A1c 'just under 7.' Statin for lipids. Told his kidneys are 'stage 3, stable' for a few years. Constipation is long-standing, uses an OTC stool softener every so often, not bothersome. Colonoscopy spring 2021 with polyps removed, told 3 years.\n\nRight hip: years of worsening pain, severe arthritis on x-ray per his surgeon, now limping and using the banister on stairs. Right total hip is booked for 9/27. He'll need a bridging plan for the warfarin, which is part of why he wanted to get established now.\n\nPMH/PSH: as above. Mechanical MVR 2013. Polypectomy 2021.\nMeds: warfarin 5 mg qhs, lisinopril 20 daily, metformin 1000 BID, atorvastatin 40 daily, amlodipine 5 daily, ASA 81 daily, docusate prn.\nAllergies: NKDA.\nFamily hx: no colon cancer in the family, no early heart disease, nobody with HHT that he knows of.\nSocial: retired from teaching high school math. Quit smoking 2007, about 20 pack-years before that. Wine 1-2 glasses a week. Walks less than he'd like because of the hip.\n\nROS: neg for chest pain, palpitations, syncope, bleeding, black stools, urinary sx. Hip as above.\n\nExam: Well-appearing, pleasant. Vitals reviewed. HEENT unremarkable. Neck supple, no JVD. Heart: regular rhythm, crisp mechanical valve click. Lungs clear. Abd soft, NT, no masses. Ext no edema. Right hip with painful, limited internal rotation; antalgic gait. Feet: intact sensation to monofilament, pulses palpable, no lesions.\n\nPHQ-2 negative.\n\nA/P:\n1. Mechanical mitral valve on warfarin - we'll take over INR management. INR today. Continue 5 mg nightly. ASA 81 continued.\n2. Right hip OA, THA 9/27 - preop visit ~2 wks before surgery; will set up warfarin hold with enoxaparin bridge then.\n3. HTN - at goal, no change.\n4. DM2 - A1c, UACR today. Continue metformin. Eye exam due, he'll book with his optometrist.\n5. CKD 3a - CMP today, keep off NSAIDs (he knows).\n6. HLD - lipids.\n7. Hx polyps - surveillance due ~2024.\n8. Records requested from prior office.\n\nRTC for preop mid-Sept."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-12a",
+          "kind": "portal_message",
+          "start": "2022-08-12T14:20",
+          "reason": "New patient lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2022-08-12T14:20",
+              "body": "Hi Mr. Graves - your labs from Wednesday are back. INR is in your goal range, so stay on 5 mg nightly and we'll recheck at your pre-op visit. Sugar control (A1c) is good. Kidney function is at your usual stage 3 level, stable, and the urine protein test is normal. Cholesterol is well controlled on the atorvastatin. Blood counts normal. Nothing to change. See you in September."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-24a",
+          "kind": "outside_records",
+          "start": "2022-08-24T11:00",
+          "reason": "Records received from prior primary care practice",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-02-05T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-02-26T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-10-20T10:00"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2017-06-12T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2022",
+              "action": "done",
+              "date": "2022-08-24T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "author": "front desk",
+              "date": "2022-08-24T11:00",
+              "body": "Records received by fax from patient's previous primary care office, 46 pages, scanned to chart.\n\nPCP summary of contents:\n- Cardiac surgery summary 2013: mitral valve replaced with a mechanical prosthesis; warfarin started, INR goal 2.5-3.5, aspirin 81 added.\n- Colonoscopy April 2021: polyps removed; repeat in 3 years recommended.\n- Problem list: HTN, DM2, hyperlipidemia, CKD stage 3, chronic constipation, right hip osteoarthritis.\n- Med list matches what he brought in.\n- Labs 2019-2022: creatinine 1.2-1.4 range, A1c 6.6-7.1, INRs mostly in range.\n- Immunizations: COVID primary series 2/2021 and booster 10/2021 (Pfizer), Tdap 2017, yearly flu shots. No pneumococcal or shingles vaccine on file.\n- Routine screening there: hepatitis C not on file. AAA screening not on file."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "office_visit",
+          "start": "2022-09-13T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pre-operative evaluation, right total hip arthroplasty",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-13T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-09-13T09:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-09-13T09:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2022-09-13T09:00",
+              "text": "Sinus rhythm, rate in the 70s. Normal axis. Normal intervals. No ST or T wave changes. No prior tracing for comparison.",
+              "conclusion": "Normal sinus rhythm. Normal ECG."
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "enoxaparin sodium 100 MG/ML Prefilled Syringe",
+              "action": "start",
+              "sig": "Inject 80 mg (0.8 mL) under the skin every 12 hours as directed for warfarin bridge; last pre-op dose the morning of 9/26",
+              "dose": {
+                "value": 80,
+                "unit": "mg"
+              },
+              "frequency": "Q12H",
+              "route": "Subcutaneous",
+              "course": "short",
+              "reason": "Warfarin bridge, mechanical mitral valve"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-09-13T08:40"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2022-09-13T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Pre-operative Evaluation",
+              "author": "PCP",
+              "date": "2022-09-13T09:45",
+              "body": "Preop eval for R THA 9/27 with his orthopedic surgeon.\n\nNo chest pain, no exertional SOB, no syncope. Functional capacity limited by the hip, not his heart - climbs a flight of stairs slowly, hip is the limiter. No bleeding problems. Takes his meds reliably.\n\nExam: regular rhythm, mechanical click crisp. Lungs clear. No edema. R hip antalgic.\nECG today NSR, normal.\n\nAssessment: elevated-risk procedure in a patient with a mechanical MITRAL valve -> needs bridging. Cardiac risk otherwise acceptable; no further testing needed before surgery.\n\nAnticoag plan (copy given to pt and faxed to surgeon):\n- Last warfarin dose Wed 9/21 (hold 5 days).\n- Start enoxaparin 80 mg SC q12h Fri 9/23. Last dose the morning of 9/26 (24 h before surgery).\n- After surgery: warfarin back at 5 mg the evening of surgery if the surgeon agrees; enoxaparin restart when surgeon says hemostasis ok (usually 24-48 h), continue until INR >= 2.5.\n- INR checks here after discharge.\n- ASA 81: surgeon prefers to continue, fine.\n\nCBC, BMP, INR today. Metformin hold morning of surgery. Cleared from medical standpoint."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 3.1,
+              "Prothrombin Time": 35.5
+            }
+          }
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "hospital_admission",
+          "start": "2022-09-27T06:00",
+          "end": "2022-09-30T12:00",
+          "service": "Orthopedic Surgery",
+          "reason": "Elective right total hip arthroplasty",
+          "conditions": [
+            {
+              "label": "Primary osteoarthritis of hip",
+              "action": "resolved",
+              "note": "Right hip replaced 9/27/2022"
+            },
+            {
+              "label": "Presence of right artificial hip joint",
+              "action": "diagnosed",
+              "onset": "2022-09-27"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Total hip arthroplasty",
+              "performed": "2022-09-27T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary - Right Total Hip Arthroplasty",
+              "author": "orthopedic surgery",
+              "date": "2022-10-03T09:30",
+              "body": "REGIONAL HOSPITAL - ORTHOPEDIC SURGERY DISCHARGE SUMMARY\nAdmit 09/27/2022  Discharge 09/30/2022\n\nDiagnosis: Severe primary osteoarthritis, right hip.\nProcedure 09/27/2022: Right total hip arthroplasty, posterior approach. Uncomplicated.\n\nHospital course: Tolerated surgery well. Pain controlled with oral agents by POD1. Worked with PT, ambulating with walker POD1, stairs POD2. Warfarin resumed the evening of surgery at home dose; enoxaparin 80 mg q12h restarted POD1 per the anticoagulation plan from the patient's PCP. Incision clean, dry and intact at discharge. No fever. Mechanical valve sounds normal.\n\nAllergies: NKDA.\nDischarge meds: home medicines unchanged (warfarin 5 mg, lisinopril 20, metformin 1000 BID, atorvastatin 40, amlodipine 5, aspirin 81); enoxaparin 80 mg SC q12h until INR >= 2.5 per PCP.\n\nDisposition: home with home PT. Posterior hip precautions.\nFollow-up: orthopedics 2 weeks for wound check. PCP for INR within 1 week."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T10:00",
+          "reason": "INR check after hip surgery, on enoxaparin bridge",
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.0,
+              "Prothrombin Time": 23.1
+            }
+          },
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-10-04T10:05",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "INR Check",
+              "author": "RN",
+              "date": "2022-10-04T10:30",
+              "body": "Pt in for INR, 1 wk post R THA. Using walker. Incision covered, no drainage per pt. Taking warfarin 5 mg nightly and enoxaparin injections twice a day, no missed doses, no bleeding or bruising beyond the injection sites.\n\nINR still below goal. Reviewed with PCP: continue warfarin 5 mg nightly, continue enoxaparin q12h. Recheck 1 week. Pt verbalized understanding, has enough syringes."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T10:15",
+          "reason": "INR check; flu and COVID vaccines",
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.7,
+              "Prothrombin Time": 31.0
+            }
+          },
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-10-11T10:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2022-10-11T10:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-11T10:45"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-11T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "INR Check and Immunizations",
+              "author": "RN",
+              "date": "2022-10-11T11:00",
+              "body": "INR back in goal range today. Per PCP: stop enoxaparin, continue warfarin 5 mg nightly, next INR in 2 weeks then space out. Pt relieved to be done with the shots.\n\nFlu vaccine (high-dose) L deltoid and COVID bivalent booster R deltoid given. Tolerated well, waited 15 min without issue. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-25a",
+          "kind": "lab_only",
+          "start": "2022-10-25T09:30",
+          "reason": "INR monitoring",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-10-25T09:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 3.2,
+              "Prothrombin Time": 36.7
+            }
+          }
+        },
+        {
+          "id": "2022-11-18a",
+          "kind": "office_visit",
+          "start": "2022-11-18T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anticoagulation follow-up, mechanical mitral valve",
+          "vitals": {
+            "bp": [
+              132,
+              74
+            ],
+            "hr": 78
+          },
+          "measure": [
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-11-18T10:25",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.6
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-11-18T11:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-11-18T10:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-11-18T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Anticoagulation Follow-up",
+              "author": "PCP",
+              "date": "2022-11-18T11:10",
+              "body": "S: Here for routine warfarin follow-up for his mechanical mitral valve. Feels well, no complaints. Hip recovering nicely, off the walker, using a cane outdoors. Taking warfarin every evening, hasn't missed doses. No changes in what he eats, no new meds or supplements, no antibiotics. No bleeding, bruising, dark stools, chest pain or SOB.\n\nO: BP 132/74, HR 78 regular. Click crisp. Lungs clear. R hip incision well healed.\nINR today 2.6.\n\nA/P: Mechanical MVR, INR 2.6 - in goal 2.5-3.5, at the low end but fine. Continue warfarin 5 mg nightly. Next INR in 4 weeks.\nHTN fine.\nShingrix #1 today, #2 in 2-6 months.\nRTC 3 months for diabetes visit."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time": 29.5
+            }
+          }
+        },
+        {
+          "id": "2022-12-16a",
+          "kind": "lab_only",
+          "start": "2022-12-16T09:15",
+          "reason": "INR monitoring",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-12-16T09:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "INR Result Call",
+              "author": "RN",
+              "date": "2022-12-16T14:00",
+              "body": "Called pt with today's INR. No missed doses, no bleeding, holiday plans don't involve big diet changes. Continue warfarin 5 mg nightly, recheck in 4 weeks. Pt agrees."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.9,
+              "Prothrombin Time": 33.3
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

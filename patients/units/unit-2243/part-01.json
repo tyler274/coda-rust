@@ -1,0 +1,873 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002243",
+      "given": "Roger",
+      "family": "Desrosiers",
+      "birth_date": "1953-09-25",
+      "address_line": "41 Kellogg Road",
+      "phone": "+1-508-555-0169",
+      "email": "roger.desrosiers@example.test",
+      "marital_status": "married",
+      "summary": "Retired math teacher with Parkinson disease since 2016, hypertension, hyperlipidemia, BPH and diverticulosis who joins in 2018. Over the following years he has two diverticular bleeds, dopamine-agonist psychosis, an NSTEMI and an inferior STEMI with two stents, and a left central retinal artery occlusion.",
+      "events": [
+        {
+          "id": "2018-09-24a",
+          "kind": "outside_records",
+          "start": "2018-09-24T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Records from prior primary care office",
+          "conditions": [
+            {
+              "label": "Parkinson disease",
+              "action": "history",
+              "onset": "2016-05-01"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2009-01-01"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "history",
+              "onset": "2011-01-01"
+            },
+            {
+              "label": "Benign prostatic hyperplasia with lower urinary tract symptoms",
+              "action": "history",
+              "onset": "2017-03-01"
+            },
+            {
+              "label": "Diverticulosis of colon",
+              "action": "history",
+              "onset": "2016-04-12"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "carbidopa 25 MG / levodopa 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth three times daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Parkinson disease"
+            },
+            {
+              "drug_text": "rasagiline 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Parkinson disease"
+            },
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth nightly",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "QHS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hyperlipidemia"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Primary prevention"
+            },
+            {
+              "drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth nightly at bedtime",
+              "dose": {
+                "value": 0.4,
+                "unit": "mg"
+              },
+              "frequency": "QHS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "BPH"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "front desk",
+              "date": "2018-09-24T10:40",
+              "body": "Records received by fax ahead of new patient appointment 10/2. 31 pages: last two office notes, med list, problem list, labs from 2017 and spring 2018, colonoscopy report 2016, urology summary 2017, neurology letter 4/2018. Scanned to chart, flagged for PCP review.\n\nPCP review summary:\n- Parkinson disease dx 2016 by outside neurology, still followed there. Sinemet 25/100 TID, rasagiline 1 mg qAM.\n- HTN on lisinopril 20 and metoprolol succinate 50, controlled on their readings.\n- Hyperlipidemia on atorvastatin 40.\n- BPH with LUTS on tamsulosin 0.4 qhs. Diagnostic cystoscopy 3/2017 (outside urology): enlarged prostate, no bladder lesion.\n- Screening colonoscopy 4/2016: no polyps, sigmoid diverticulosis. Prep good.\n- ASA 81 daily, primary prevention per prior PCP.\n- NKDA. Never smoker.\n- Prior labs unremarkable."
+            }
+          ]
+        },
+        {
+          "id": "2018-10-02a",
+          "kind": "establish_care",
+          "start": "2018-10-02T09:00",
+          "end": "2018-10-02T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "state": {
+            "bp": [
+              126,
+              76
+            ],
+            "weight_kg": 79.4,
+            "height_cm": 175.0,
+            "labs": {
+              "Low Density Lipoprotein": 86,
+              "High Density Lipoprotein": 48,
+              "Triglycerides": 118,
+              "Total Cholesterol": 158,
+              "Hemoglobin": 14.1,
+              "Creatinine": 1.0,
+              "Hemoglobin A1c": 5.6,
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired high school mathematics teacher"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2018-10-02T10:05",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2018-10-02T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2018-10-02T10:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Total Cholesterol"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2018-10-02T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2018-10-02T09:55"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2018-10-02T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2018-10-02T09:55"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2018-10-02T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2018-10-02T09:00",
+              "body": "65 y/o retired high school math teacher transferring care. Wanted a practice where he could reach his doctor directly. Here with his wife.\n\nPD diagnosed 2016, followed by outside neurology, last seen spring. Tremor R>L, slower than he used to be, still does everything himself. On Sinemet TID and rasagiline, no side effects he can name. Takes doses on time, wife keeps a pill box.\n\nHTN: on lisinopril 20 + metoprolol succ 50 for years. Home cuff readings 120s/70s. No CP, no SOB, no palpitations, no edema.\nLipids: atorvastatin 40, no muscle aches.\nBPH: on tamsulosin, urology workup 2017 incl cystoscopy. Says stream is fine for now, up once a night.\nDiverticulosis on 2016 colonoscopy. No bleeding, no abd pain, bowels regular.\nASA 81 daily, started by prior PCP.\n\nMeds: carbidopa-levodopa 25-100 TID, rasagiline 1 mg qAM, lisinopril 20 daily, metoprolol succinate 50 daily, atorvastatin 40 qhs, ASA 81 daily, tamsulosin 0.4 qhs.\nAllergies: NKDA.\nPSH: colonoscopy 2016, cystoscopy 2017.\nFH: father MI at 72. Mother ischemic stroke at 78. One older brother with HTN. Nobody with Parkinson's or psychiatric illness.\nSH: married, lives with wife in Granby. Taught HS math 30+ years, retired. Never smoked. Glass of wine once or twice a month. Walks most days.\n\nROS otherwise negative.\n\nExam: well appearing, mild hypomimia. HEENT unremarkable. Neck supple, no bruits. Heart RRR, no murmur. Lungs clear. Abd soft, NT. Ext no edema. Neuro: resting tremor R hand, mild bradykinesia, gait steady with reduced arm swing R. Mood euthymic.\n\nA/P:\n1. Parkinson disease - per neurology, continue current regimen.\n2. HTN - at goal, continue.\n3. Hyperlipidemia - lipid panel today, continue atorvastatin.\n4. BPH - stable on tamsulosin.\n5. Diverticulosis - no issues.\n6. HM: flu shot today (high dose). HCV and HIV screen today. Colonoscopy 2016 normal apart from diverticula. Tdap and Shingrix at Welcome to Medicare visit in the spring. PHQ-2 0.\nLabs: CMP, CBC, lipids, A1c, TSH, HCV, HIV.\nRTC 5-6 months for Welcome to Medicare exam."
+            }
+          ]
+        },
+        {
+          "id": "2018-10-05a",
+          "kind": "portal_message",
+          "start": "2018-10-05T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2018-10-05T16:20",
+              "body": "Roger, your labs from Tuesday look good. Kidney function, blood counts, sugar and thyroid are normal. LDL is well controlled on the atorvastatin. Hepatitis C and HIV screens negative. Nothing to change. See you in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2018-10-15a",
+          "kind": "telephone",
+          "start": "2018-10-15T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "author": "front desk",
+              "date": "2018-10-15T14:20",
+              "body": "Per PCP, faxed records request with signed release to the outside GI group for the full 2016 colonoscopy report (only the summary page came with the PCP records). Also asked neurology to cc us on future visit notes."
+            }
+          ]
+        },
+        {
+          "id": "2018-10-29a",
+          "kind": "outside_records",
+          "start": "2018-10-29T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Colonoscopy report received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outside GI records",
+              "author": "front desk",
+              "date": "2018-10-29T09:10",
+              "body": "Received from outside GI: colonoscopy 04/2016, screening, average risk. Cecum reached, prep good. Sigmoid diverticulosis. No polyps. Recommend repeat in 10 years. Scanned. PCP reviewed, nothing new."
+            }
+          ]
+        },
+        {
+          "id": "2018-12-10a",
+          "kind": "specialist_visit",
+          "start": "2018-12-10T14:00",
+          "service": "Neurology",
+          "reason": "Parkinson disease follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up letter",
+              "author": "neurology",
+              "date": "2018-12-10T14:00",
+              "body": "Movement disorders clinic, follow-up visit.\n\nRe: Roger Desrosiers, DOB 9/25/1953\n\nThank you for taking over his primary care. Mr. Desrosiers returns for routine follow-up of idiopathic Parkinson disease diagnosed in 2016. He reports no change since spring. Tremor mostly in the right hand at rest. No falls. Sleeping reasonably. No hallucinations.\n\nMedications: carbidopa-levodopa 25/100 three times daily, rasagiline 1 mg each morning, lisinopril, metoprolol succinate, atorvastatin, aspirin 81, tamsulosin.\nAllergies: NKDA.\n\nExam: alert, conversant. Mild facial masking. Rest tremor right hand, mild bradykinesia on finger taps right more than left, mild rigidity right wrist. Gait with reduced right arm swing, pull test negative.\n\nImpression: Parkinson disease, stable on current therapy.\nPlan: no change. Return in one year, sooner as needed.\n\nMovement disorders neurologist"
+            }
+          ]
+        },
+        {
+          "id": "2019-01-21a",
+          "kind": "telephone",
+          "start": "2019-01-21T11:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Switch refills to mail order",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refills to mail order",
+              "author": "RN",
+              "date": "2019-01-21T11:15",
+              "body": "Pt called. Supplemental plan wants 90-day fills through mail order. Sent lisinopril 20, metoprolol succ 50, atorvastatin 40, tamsulosin 0.4 as 90-day supplies with 3 refills. Sinemet and rasagiline come from neurology, pt aware he needs to call them for those."
+            }
+          ]
+        },
+        {
+          "id": "2019-03-11a",
+          "kind": "annual_physical",
+          "start": "2019-03-11T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Welcome to Medicare exam",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-03-11T10:15"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2019-03-11T10:16"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial preventive physical examination (Welcome to Medicare)",
+              "performed": "2019-03-11T09:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-03-11T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Welcome to Medicare Visit",
+              "author": "PCP",
+              "date": "2019-03-11T09:30",
+              "body": "IPPE.\n\nDoing well. Neurology saw him in December, no changes. BP at home 120s/70s. No CP or SOB. Walking 30 min most days. Up once a night to urinate, unchanged.\n\nFunctional: independent in ADLs and IADLs, still drives, does the finances. No falls in the past year. Hearing ok, vision ok with readers. Home safety reviewed, has grab bars in the shower.\nPHQ-2: 0.\nAdvance directive: has HCP (wife), will bring a copy.\n\nExam: BP and weight per flowsheet. Mild masking, R hand rest tremor. Heart RRR. Lungs clear. No edema.\n\nA/P:\n- Medicare IPPE completed. Screening schedule given.\n- Tdap and Shingrix #1 today. Shingrix #2 in 2-6 months, nurse visit.\n- Pneumococcal in the fall with flu.\n- Colon cancer screening up to date (2016).\n- Continue all meds. Labs in August with next visit."
+            }
+          ]
+        },
+        {
+          "id": "2019-05-20a",
+          "kind": "nurse_visit",
+          "start": "2019-05-20T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2019-05-20T10:35"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-05-20T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "author": "RN",
+              "date": "2019-05-20T10:30",
+              "body": "Shingrix #2 given, 0.5 mL IM, left deltoid. Dose 1 in March gave him a sore arm and he felt tired the next day; told to expect the same. Observed 15 min, fine. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2019-08-19a",
+          "kind": "office_visit",
+          "start": "2019-08-19T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension and lipid follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2019-08-19T09:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-08-19T09:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Total Cholesterol"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2019-08-19T08:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-08-19T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2019-08-19T08:45",
+              "body": "F/u HTN, lipids.\n\nGood summer, been gardening. No CP, SOB, lightheadedness. Taking everything. Urinary sx stable.\n\nBP fine today, see vitals. Heart RRR, lungs clear, no edema. Tremor unchanged.\n\nA/P:\nHTN - controlled, continue lisinopril/metoprolol.\nHLD - lipids + BMP today, continue atorva 40.\nPD - per neuro.\nFlu and pneumovax in October, nurse visit. RTC 6 mo for AWV."
+            }
+          ]
+        },
+        {
+          "id": "2019-08-21a",
+          "kind": "portal_message",
+          "start": "2019-08-21T12:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2019-08-21T12:05",
+              "body": "Kidney function and potassium normal. Cholesterol about where it was last fall, LDL at goal. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-07a",
+          "kind": "nurse_visit",
+          "start": "2019-10-07T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and pneumococcal vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2019-10-07T10:05"
+            },
+            {
+              "vaccine": "Pneumococcal polysaccharide PPSV23",
+              "date": "2019-10-07T10:07"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-07T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "author": "RN",
+              "date": "2019-10-07T10:00",
+              "body": "High-dose flu R deltoid, PPSV23 L deltoid. No prior reactions apart from Shingrix soreness. Tolerated, left after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2019-12-09a",
+          "kind": "specialist_visit",
+          "start": "2019-12-09T13:30",
+          "service": "Neurology",
+          "reason": "Parkinson disease follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up letter",
+              "author": "neurology",
+              "date": "2019-12-09T13:30",
+              "body": "Movement disorders clinic\n\nRoger Desrosiers was seen for yearly follow-up of Parkinson disease. He and his wife describe a stable year. He walks daily and does yard work. No falls, no freezing, no hallucinations, no dizziness on standing.\n\nExam: rest tremor right hand, bradykinesia right greater than left, mild rigidity right arm. Gait unchanged from last year. Postural reflexes intact.\n\nAssessment: Parkinson disease, stable.\nPlan: continue carbidopa-levodopa 25/100 three times daily and rasagiline 1 mg every morning. Keep exercising. Return in 12 months.\n\nMovement disorders neurologist"
+            }
+          ]
+        },
+        {
+          "id": "2020-02-24a",
+          "kind": "annual_physical",
+          "start": "2020-02-24T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "state": {
+            "labs": {
+              "Vitamin B12": 452
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-02-24T09:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-02-24T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-02-24T09:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-02-24T09:40",
+              "results": [
+                {
+                  "test": "Vitamin B12"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2020-02-24T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-02-24T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2020-02-24T09:00",
+              "body": "AWV.\n\nHe's well. Neurology in December, stable. No falls. Still drives, still does his own taxes and his wife's. Up once at night to void, sometimes twice, stream maybe a bit slower but not bothering him.\nPHQ-2 0. No memory concerns from him or wife.\nAdvance directive on file, HCP wife.\n\nVitals per flowsheet. Exam: masking, R rest tremor, heart RRR, lungs clear, abd soft, no edema.\n\nA/P:\n- Wellness plan updated. Vaccines up to date (Tdap, Shingrix x2, PPSV23, flu).\n- HTN controlled. HLD on statin. Labs today incl B12 since on long-term levodopa.\n- BPH - mild progression of sx, watch. Tell me if it bothers him.\n- RTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2020-02-26a",
+          "kind": "portal_message",
+          "start": "2020-02-26T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2020-02-26T08:50",
+              "body": "All normal, B12 included. LDL still at goal."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-23b",
+          "kind": "telephone",
+          "start": "2020-03-23T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Visit cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Visit cancelled",
+              "author": "front desk",
+              "date": "2020-03-23T08:30",
+              "body": "Called pt to cancel today's routine visit per office COVID protocol for non-urgent in-person visits. No active concerns. Will offer a video visit in May."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-23a",
+          "kind": "office_visit",
+          "start": "2020-03-23T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2020-05-11a",
+          "kind": "telehealth_visit",
+          "start": "2020-05-11T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up by video",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-05-11T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2020-05-11T10:00",
+              "body": "Video visit, pt at home with wife, consent for virtual visit obtained.\n\nStaying home since March, wife does the shopping. Home BPs he read off his log: 118-130/70-78. No CP, SOB, edema. Walking the neighborhood. Tremor about the same. Mood ok.\n\nA/P: HTN controlled on lisinopril 20/metoprolol 50, continue. Refills sent. In person in August with BMP."
+            }
+          ]
+        },
+        {
+          "id": "2020-08-24a",
+          "kind": "office_visit",
+          "start": "2020-08-24T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-08-24T09:45",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2020-08-24T09:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-08-24T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2020-08-24T09:15",
+              "body": "F/u HTN/HLD/PD. Masked, screening negative.\n\nNo new issues. No CP/SOB. Bowels regular, no blood. Urinary: up 1-2x/night.\n\nExam: vitals ok. Heart RRR no murmur, lungs clear, no edema. Tremor R hand unchanged.\n\nA/P: all stable, BMP today. Flu shot October. RTC 4 months."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-05a",
+          "kind": "nurse_visit",
+          "start": "2020-10-05T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2020-10-05T11:05"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-05T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu vaccine",
+              "author": "MA",
+              "date": "2020-10-05T11:00",
+              "body": "High-dose flu given, left deltoid. Curbside in the parking lot per current protocol. No issues."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-16a",
+          "kind": "specialist_visit",
+          "start": "2020-11-16T15:00",
+          "service": "Neurology",
+          "reason": "Parkinson disease follow-up by video",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology telehealth follow-up",
+              "author": "neurology",
+              "date": "2020-11-16T15:00",
+              "body": "Movement disorders clinic, video follow-up.\n\nMr. Desrosiers joined from home with his wife. They report a stable year apart from less activity during the pandemic. He is still walking outside daily. No falls. No hallucinations or confusion.\n\nLimited video exam: right hand rest tremor, mild hypomimia, finger taps slowed on the right, gait across the kitchen steady with reduced right arm swing.\n\nAssessment: Parkinson disease, stable.\nPlan: continue carbidopa-levodopa 25/100 three times daily and rasagiline 1 mg daily. In-person visit next year.\n\nMovement disorders neurologist"
+            }
+          ]
+        },
+        {
+          "id": "2020-12-14a",
+          "kind": "office_visit",
+          "start": "2020-12-14T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Urinary symptoms",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "orders": [
+            {
+              "id": "uro-referral-2020",
+              "action": "placed",
+              "order": "Urology referral",
+              "category": "referral",
+              "to": "Urology",
+              "reason": "worsening lower urinary tract symptoms on tamsulosin"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-12-14T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2020-12-14T10:30",
+              "body": "Urinary symptoms.\n\nOver the fall his stream has gotten gradually weaker, he wakes at night to urinate, and he feels he doesn't completely empty. Still on tamsulosin nightly, takes it. No burning, no blood in the urine, no UTIs. No fever.\n\nExam: abd soft, nontender, no suprapubic fullness. Deferred DRE, he'd rather urology do it.\n\nA/P: BPH with LUTS, symptoms back despite alpha blocker. Refer back to urology (he saw them in 2017, prefers a group closer to home). Continue tamsulosin. Will see their note."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

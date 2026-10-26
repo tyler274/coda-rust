@@ -1,0 +1,3134 @@
+{
+  "unit": "unit-1681",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"prenatal multivitamin oral tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001681",
+      "given": "Emily",
+      "family": "Lemieux",
+      "birth_date": "1992-04-22",
+      "address_line": "57 Silver Street",
+      "phone": "+1-617-555-0187",
+      "email": "emily.lemieux@example.test",
+      "marital_status": "married",
+      "summary": "Administrative assistant who joined the practice at 27 weeks of her second pregnancy with a history of gestational hypertension. Severe preeclampsia with AKI and hypertensive retinopathy at 35 weeks in October 2024, then eclampsia at 34 weeks in her third pregnancy in October 2025; both resolved postpartum on short courses of nifedipine.",
+      "events": [
+        {
+          "id": "2024-08-06a",
+          "kind": "telephone",
+          "start": "2024-08-06T10:12",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "date": "2024-08-06T10:12",
+              "author": "front desk",
+              "body": "Caller wants to set up primary care here. Has had no PCP since her old practice closed its panel to her plan. Currently about 25 weeks pregnant, OB care with an outside OB group and she plans to keep them for the pregnancy. Membership paperwork emailed. New patient visit booked 8/20 at 8:40. Asked her to have her prior practice and OB send records."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "establish_care",
+          "start": "2024-08-20T08:40",
+          "end": "2024-08-20T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "History of gestational hypertension",
+              "action": "history",
+              "onset": "2021-06-01",
+              "note": "First pregnancy 2021, resolved postpartum",
+              "icd10": "Z87.59"
+            },
+            {
+              "label": "Pregnant state",
+              "action": "diagnosed",
+              "onset": "2024-02-26",
+              "note": "LMP 2024-02-12, prenatal care with outside OB",
+              "icd10": "Z33.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "prenatal multivitamin oral tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pregnancy"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Preeclampsia prevention, prescribed by OB"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              115,
+              69
+            ],
+            "hr": 74,
+            "rr": 14,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 73.9,
+            "height_cm": 165.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-20T09:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 14
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-20T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 280
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.94
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "No alcohol use"
+            },
+            {
+              "item": "Occupation",
+              "value": "Administrative assistant"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-08-20T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2024-08-20T09:40",
+              "author": "PCP",
+              "body": "New patient, establishing primary care.\n\nEmily is 32, G2P1, currently 27w1d by an LMP of 2/12/24. Prenatal care is with an outside OB group and going smoothly so far by her account. She wanted a primary care home for after the baby and for her own long-term health. No complaints today. No headaches, no visual changes, no swelling beyond the end of the day.\n\nOB history: first pregnancy 2021, term vaginal delivery. Developed gestational hypertension late in that pregnancy, no meds needed after delivery and pressures came back to normal postpartum. Because of that history her OB started her on aspirin 81 mg at 12 weeks this time. Also on a prenatal vitamin.\n\nPMH: as above, otherwise none. PSH: none.\nMeds: prenatal vitamin with folic acid 1 tab daily; aspirin 81 mg daily (OB).\nAllergies: NKDA.\nFH: mother had preeclampsia with her pregnancies. Father has hypertension. Otherwise noncontributory.\nSH: married, works as an administrative assistant. Never smoked, does not drink.\n\nExam: vitals as charted, BP normal. Pleasant, well appearing, gravid. HEENT unremarkable. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen gravid, fundus consistent with dates, nontender. Trace ankle edema only. Reflexes 2+ and symmetric. Skin without rash.\n\nAssessment/plan:\n1. Pregnancy, 27 weeks, with history of gestational hypertension and a mother with preeclampsia. Higher risk for a hypertensive disorder this time. Agree with aspirin. Reviewed warning signs: severe headache, vision change, RUQ or upper belly pain, sudden swelling, shortness of breath. These go to L&D or the ED, not a call-back. OB is following BP at every visit.\n2. Baseline labs today: CMP and CBC so we have her own numbers on file.\n3. Health maintenance: will request prior-practice records for Pap history. Flu shot this fall, can do it here.\n\nRTC after delivery, sooner prn."
+            }
+          ],
+          "state": {
+            "bp": [
+              110,
+              70
+            ],
+            "weight_kg": 74.5,
+            "height_cm": 165.0,
+            "labs": {
+              "Creatinine": 0.7,
+              "Hemoglobin": 11.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "portal_message",
+          "start": "2024-08-21T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2024-08-21T16:05",
+              "author": "PCP",
+              "body": "Hi Emily, your labs from yesterday look good. Kidney function is normal (creatinine 0.7), liver tests normal, and your hemoglobin is 11.6, which is a typical number for this point in pregnancy. Nothing to do. Nice to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-28a",
+          "kind": "outside_records",
+          "start": "2024-08-28T11:20",
+          "reason": "Records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prenatal Records, Outside OB Group",
+              "date": "2024-08-28T11:20",
+              "author": "obstetrics",
+              "body": "Prenatal record summary, received by fax.\n\nPatient: Emily Lemieux, DOB 04/22/1992. G2P1001. LMP 02/12/2024, EDD 11/18/2024, dating confirmed by first-trimester ultrasound.\n\nHistory: gestational hypertension in prior pregnancy (2021), resolved after delivery. Family history of preeclampsia (mother).\nMedications: prenatal vitamin daily. Low-dose aspirin 81 mg daily started at 12 weeks for preeclampsia risk reduction, continue to 36 weeks.\nAllergies: NKDA.\n\nPrenatal labs: antibody screen negative. Rubella immune. HBsAg negative. HIV negative. Hepatitis C antibody negative. RPR nonreactive. Urine culture negative. First-trimester screen low risk. Anatomy survey at 20 weeks normal. Glucose challenge at 26 weeks normal.\n\nBlood pressures at all visits through 26 weeks in the normal range. Urine protein negative at each visit.\n\nPlan: routine prenatal visits, Tdap at 28-32 weeks in office, BP at each visit."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "date": "2024-08-28T11:25",
+              "author": "outside primary care",
+              "body": "Records from prior primary care practice, 2019-2023.\n\nProblem list: history of gestational hypertension (2021).\nMedications at last visit: none.\nAllergies: no known drug allergies.\nPreventive: cervical cytology with HPV co-testing 03/2023, NILM, HPV negative. Tdap 2021 (pregnancy). COVID-19 primary series completed.\nLast visit 05/2023, annual exam, BP 112/70, no concerns."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "nurse_visit",
+          "start": "2024-09-24T13:30",
+          "reason": "Influenza vaccine",
+          "vitals": {
+            "bp": [
+              110,
+              73
+            ],
+            "hr": 84
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-24T13:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-24T13:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2024-09-24T13:40",
+              "author": "RN",
+              "body": "Here for flu vaccine. 32 weeks pregnant, OB aware and agrees. Screening questions negative, no prior reactions. Influenza vaccine 0.5 mL IM right deltoid, VIS provided. BP normal today. Tolerated well, waited 15 min without issue."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-10-18a",
+          "kind": "ed_visit",
+          "start": "2024-10-18T07:52",
+          "end": "2024-10-18T11:30",
+          "service": "Emergency Medicine",
+          "reason": "Severe headache and blurry vision, 35 weeks pregnant",
+          "conditions": [
+            {
+              "label": "Severe preeclampsia without HELLP features",
+              "action": "diagnosed",
+              "onset": "2024-10-17",
+              "icd10": "O14.13"
+            },
+            {
+              "label": "Acute kidney injury",
+              "action": "diagnosed",
+              "onset": "2024-10-18",
+              "icd10": "N17.9"
+            },
+            {
+              "label": "Hypertensive retinopathy",
+              "action": "diagnosed",
+              "onset": "2024-10-18",
+              "icd10": "H35.033"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-10-18T07:58",
+              "bp": [
+                155,
+                100
+              ],
+              "hr": 94,
+              "rr": 18,
+              "temp_c": 36.8,
+              "spo2": 98
+            },
+            {
+              "time": "2024-10-18T08:14",
+              "bp": [
+                155,
+                100
+              ],
+              "hr": 91
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-18T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 95
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-18T08:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 70
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 80
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 19
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 62
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-10-18T08:20",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "2+"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.017
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.2
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-10-18T07:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2024-10-23T09:10",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Date of service 10/18/2024. Copy received 10/23/2024.\n\nCC: headache, blurry vision.\n\nHPI: 32 y/o G2P1 at 35w4d by early ultrasound. Woke yesterday with a headache that has been severe all day and night, not relieved by rest, and her vision has been blurry since yesterday afternoon. Pregnancy uncomplicated to this point per patient and OB record. Prior pregnancy with gestational hypertension. Denies seizure, chest pain, shortness of breath. Fetal movement present.\n\nMeds: prenatal vitamin daily; aspirin 81 mg daily. Allergies: NKDA.\nFH: mother with preeclampsia; father with chronic hypertension.\nSH: never smoker, no alcohol, works as an administrative assistant.\n\nVitals: BP 155/100 on arrival and 155/100 again on repeat 15 minutes later. HR 90s, afebrile, SpO2 98% RA.\nExam: uncomfortable but alert and oriented. Fundoscopy with arteriolar narrowing and cotton wool spots. Lungs clear. Heart regular. Gravid, nontender. 2+ edema of both lower legs. DTRs 3+, no clonus. No focal neuro deficit.\n\nLabs: Hgb 11.0 g/dL. Platelets 95,000/uL. Creatinine 1.2 mg/dL (baseline 0.7 on prenatal labs). AST 70 U/L, ALT 80 U/L. UA protein 2+.\nFetal heart tones in the 140s, reactive tracing on L&D monitor.\n\nED course: IV labetalol given with improvement in pressure. Magnesium sulfate load and infusion started for seizure prophylaxis. OB at bedside.\n\nImpression: severe preeclampsia without HELLP features. Acute kidney injury. Hypertensive retinopathy.\nDisposition: admitted to labor and delivery under OB for delivery planning."
+            }
+          ],
+          "state": {
+            "bp": [
+              155,
+              100
+            ],
+            "labs": {
+              "Alanine Aminotransferase": 80,
+              "Aspartate Aminotransferase": 70,
+              "Creatinine": 1.2,
+              "Hemoglobin": 11.0,
+              "Platelets": 95
+            }
+          }
+        },
+        {
+          "id": "2024-10-18b",
+          "kind": "hospital_admission",
+          "start": "2024-10-18T11:30",
+          "end": "2024-10-22T12:15",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Severe preeclampsia at 35 weeks, delivery",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "action": "resolved",
+              "onset": "2024-02-26",
+              "note": "Delivered 2024-10-19",
+              "icd10": "Z33.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "stop",
+              "reason": "Delivered"
+            },
+            {
+              "drug_text": "nifedipine 30 MG 24HR Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 30,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Postpartum hypertension after severe preeclampsia"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-22T05:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 162
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-22T05:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 38
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 44
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 67
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2024-10-23T09:15",
+              "author": "obstetrics",
+              "body": "Regional hospital, labor and delivery. Admitted 10/18/2024, discharged 10/22/2024. Received 10/23/2024.\n\nAdmitting diagnosis: severe preeclampsia without HELLP features at 35w4d, with acute kidney injury and hypertensive retinopathy.\n\nHospital course: Admitted from the ED on magnesium sulfate after IV labetalol. Pressures controlled with as-needed IV labetalol. Cervix favorable; induction with oxytocin. Uncomplicated vaginal delivery early on 10/19/2024 of a liveborn infant. Blood loss within normal limits. Magnesium continued 24 hours postpartum, no seizure activity. Headache and visual blurring resolved by postpartum day 1. Pressures settled into the 130s-140s/80s-90s; started nifedipine ER 30 mg daily on postpartum day 1.\n\nDischarge labs 10/22: creatinine 0.9 mg/dL, platelets 162,000/uL, AST 38 U/L, ALT 44 U/L.\n\nDischarge medications: nifedipine ER 30 mg daily. Prenatal vitamin daily. Aspirin discontinued.\nAllergies: NKDA.\n\nFollow-up: BP check with PCP within one week. Home BP twice daily, call for 160/110 or higher, severe headache or vision change. Postpartum visit with OB in 6 weeks. Eye follow-up recommended for the retinal findings."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 44,
+              "Aspartate Aminotransferase": 38,
+              "Creatinine": 0.9,
+              "Platelets": 162
+            }
+          }
+        },
+        {
+          "id": "2024-10-23a",
+          "kind": "telephone",
+          "start": "2024-10-23T14:20",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "date": "2024-10-23T14:20",
+              "author": "RN",
+              "body": "Called pt day after discharge, records in from hospital this AM. She and baby home, doing well. Taking nifedipine 30 daily, has a home cuff, readings 128-140/84-90. No headache, vision back to normal, no RUQ pain, swelling going down. Off aspirin per OB. Reviewed when to call/go to ED. Visit with PCP Friday 10/25 confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-25a",
+          "kind": "office_visit",
+          "start": "2024-10-25T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, postpartum preeclampsia",
+          "vitals": {
+            "bp": [
+              138,
+              88
+            ],
+            "hr": 72,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 69.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-25T11:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 100
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 16
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.0
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 64
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-25T11:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 289
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.84
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2024-10-25T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ophtho-2024",
+              "action": "placed",
+              "order": "Ophthalmology referral",
+              "category": "referral",
+              "to": "Ophthalmology",
+              "reason": "Hypertensive retinopathy with cotton wool spots during severe preeclampsia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2024-10-25T12:05",
+              "author": "PCP",
+              "body": "Hospital f/u, 6 days postpartum.\n\nS: Seen in the ED 10/18 at 35w4d with severe headache and blurry vision, BP 155/100, platelets 95K, Cr 1.2 (her baseline here was 0.7 in August), AST/ALT 70/80, 2+ proteinuria, cotton wool spots on fundoscopy. Dx severe preeclampsia. Mag, labetalol, induced, SVD 10/19. Discharge Cr 0.9, plt 162. Went home on nifedipine ER 30.\nFeels fine. Tired, baby feeding every 2-3 h. Headache gone, vision normal. No RUQ pain, no SOB. Home BPs 126-140/82-90. Off aspirin.\n\nMeds: nifedipine ER 30 mg daily, prenatal vitamin.\n\nO: BP 138/88 here. Well appearing. Fundi not dilated, no papilledema on undilated look. Heart regular. Lungs clear. Abdomen soft, fundus firm below umbilicus. Trace edema at ankles. Reflexes 2+, no clonus. PHQ-9 = 3.\n\nA/P:\n1. Postpartum hypertension after severe preeclampsia: acceptable on nifedipine ER 30. Keep home log, send readings next week. Call for 150/100 or above, or any headache or vision change.\n2. AKI: rechecking CMP today.\n3. Hypertensive retinopathy: referral to ophthalmology for dilated exam in 4-6 weeks.\n4. Prenatal vitamin can continue.\n5. Mood screen reassuring, has support at home.\n\nRTC 6 weeks postpartum (early Dec), sooner prn."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2024-10-26T09:30",
+              "author": "PCP",
+              "body": "Emily, good news. Kidney number is down to 0.8, almost back to your August value. Platelets and liver tests are back to normal. Keep the nifedipine going and keep sending your home readings."
+            }
+          ],
+          "state": {
+            "bp": [
+              138,
+              88
+            ],
+            "weight_kg": 69.0,
+            "labs": {
+              "Alanine Aminotransferase": 26,
+              "Aspartate Aminotransferase": 24,
+              "Creatinine": 0.8,
+              "Platelets": 248
+            }
+          },
+          "measure": [
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-11-01a",
+          "kind": "portal_message",
+          "start": "2024-11-01T20:44",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Home BP Readings",
+              "date": "2024-11-01T20:44",
+              "author": "patient",
+              "body": "Hi, here's my week. Mornings mostly 122/80 to 128/84, evenings a little higher, highest was 132/86 Tuesday. No headaches. Is that ok? Should I keep checking twice a day?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Home BP Readings",
+              "date": "2024-11-02T10:15",
+              "author": "PCP",
+              "body": "Those look very good. Stay on the nifedipine for now and keep checking once a day is fine. We'll talk about stopping it at your visit in December."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "pharmacy",
+          "start": "2024-11-12T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2024-11-12T09:05",
+              "author": "MA",
+              "body": "Pharmacy fax: refill request nifedipine ER 30 mg, hospital rx was 14 days. Pended 30 day supply, no refills, for PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2024-11-12T12:40",
+              "author": "PCP",
+              "body": "Sent 30 days. Plan is to reassess at 6 wk visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "office_visit",
+          "start": "2024-12-03T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "6-week postpartum BP follow-up",
+          "conditions": [
+            {
+              "label": "Severe preeclampsia without HELLP features",
+              "action": "resolved",
+              "onset": "2024-10-17",
+              "icd10": "O14.13"
+            },
+            {
+              "label": "Acute kidney injury",
+              "action": "resolved",
+              "onset": "2024-10-18",
+              "icd10": "N17.9"
+            },
+            {
+              "label": "History of preeclampsia",
+              "action": "diagnosed",
+              "onset": "2024-10-18"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "nifedipine 30 MG 24HR Extended Release Oral Tablet",
+              "action": "stop",
+              "reason": "Pressures normal postpartum"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              74
+            ],
+            "hr": 63,
+            "spo2": 97,
+            "weight_kg": 66.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-03T16:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-03T16:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 228
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-12-03T16:00",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-12-03T15:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-12-03T15:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-12-03T15:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-12-03T16:10",
+              "author": "PCP",
+              "body": "6 wk postpartum f/u for BP.\n\nDoing well. Home BPs the last 2 weeks 108-120/68-78 on nifedipine ER 30, a couple of lightheaded moments standing up fast. No headaches, vision fine. Saw OB last week for her postpartum visit, all ok there.\n\nBP 116/74, rest of vitals as charted. Looks well. Heart RRR, lungs clear, no edema. PHQ-2 0.\n\nA/P:\n1. Postpartum HTN resolved. Stop nifedipine today. Check home BP a few times a week for 2 weeks, then weekly for a month; send me numbers if over 135/85.\n2. Severe preeclampsia, now resolved. AKI resolved if today's Cr is back to baseline, rechecking BMP/CBC/LFT. Putting history of preeclampsia on the problem list.\n3. Talked about what this means long-term: having preeclampsia raises lifetime risk of high blood pressure and heart disease, so yearly BP, lipids and sugar from here on. For any future pregnancy: early OB visit, aspirin from 12 weeks, baseline labs, and let us know as soon as she's pregnant.\n4. Eye appt with ophthalmology 12/10.\n5. COVID booster today. Flu done in Sept.\n\nRTC for a physical in about a year."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2024-12-04T08:50",
+              "author": "PCP",
+              "body": "Hi Emily, creatinine is 0.7, right back to your baseline. Blood counts and liver tests normal. The kidney injury from October has fully recovered."
+            }
+          ],
+          "state": {
+            "bp": [
+              116,
+              74
+            ],
+            "weight_kg": 66.0,
+            "labs": {
+              "Creatinine": 0.7,
+              "Hemoglobin": 12.6
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "specialist_visit",
+          "start": "2024-12-10T09:30",
+          "service": "Ophthalmology",
+          "reason": "Retinal follow-up after preeclampsia",
+          "conditions": [
+            {
+              "label": "Hypertensive retinopathy",
+              "action": "resolved",
+              "onset": "2024-10-18",
+              "icd10": "H35.033"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ophtho-2024",
+              "action": "done",
+              "date": "2024-12-10T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology Consultation",
+              "date": "2024-12-12T13:00",
+              "author": "ophthalmology",
+              "body": "Thank you for sending Ms. Lemieux, 32, seen 12/10/2024 for follow-up of retinal changes noted during severe preeclampsia in October (arteriolar narrowing and cotton wool spots per the hospital record).\n\nShe reports clear vision since delivery. No floaters, flashes or field loss. Allergies: NKDA. Meds: none besides a prenatal vitamin; postpartum nifedipine stopped last week.\n\nVA 20/20 OD, 20/20 OS. Pupils equal, no APD. IOP 14/15. Anterior segment quiet OU.\nDilated fundus exam: discs pink and sharp, C/D 0.3 OU. Vessels of normal caliber, no AV nicking. No cotton wool spots, hemorrhages or exudates. Macula flat with good foveal reflex OU. Periphery attached.\n\nImpression: hypertensive retinopathy of pregnancy, resolved. Normal fundus exam today.\nPlan: no ophthalmic follow-up needed beyond routine eye care. Would re-examine if hypertension recurs."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-08a",
+          "kind": "portal_message",
+          "start": "2025-01-08T19:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "BP Off Medication",
+              "date": "2025-01-08T19:22",
+              "author": "patient",
+              "body": "Checking in like you asked. Been off the nifedipine a month. Readings are 108/70 to 118/76, nothing over 120. Can I stop checking every week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: BP Off Medication",
+              "date": "2025-01-09T08:05",
+              "author": "PCP",
+              "body": "Those are great numbers. You can drop to checking once or twice a month. Keep the cuff, we'll want it if you ever get pregnant again."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-20a",
+          "kind": "portal_message",
+          "start": "2025-03-20T07:48",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "action": "diagnosed",
+              "onset": "2025-03-04",
+              "note": "LMP 2025-02-18",
+              "icd10": "Z33.1"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive Pregnancy Test",
+              "date": "2025-03-20T07:48",
+              "author": "patient",
+              "body": "Positive home test this morning. Wasn't exactly planned this soon. LMP was Feb 18. I called my OB and they can't see me until mid-April. You said to tell you right away, so here I am. What should I do in the meantime?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive Pregnancy Test",
+              "date": "2025-03-20T12:30",
+              "author": "PCP",
+              "body": "Thank you for letting me know. Keep taking the prenatal vitamin. Let's see you in early April for a BP check and baseline labs that I'll send to your OB. The aspirin is usually started at 12 weeks, your OB will set that up. Check your BP at home once or twice a week, and any severe headache, vision change or upper belly pain goes straight to L&D."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling",
+              "date": "2025-03-20T13:10",
+              "author": "front desk",
+              "body": "Per PCP message, booked pt Thu 4/10 9:20 for early pregnancy BP check and labs."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-10a",
+          "kind": "office_visit",
+          "start": "2025-04-10T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Early pregnancy, baseline BP and labs",
+          "vitals": {
+            "bp": [
+              118,
+              74
+            ],
+            "hr": 76,
+            "spo2": 98,
+            "weight_kg": 65.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-04-10T09:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-10T09:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 272
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.26
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-04-10T09:50",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.018
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 7.1
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-04-10T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-04-10T10:05",
+              "author": "PCP",
+              "body": "Early pregnancy visit, 7w2d by LMP 2/18/25. G3P2.\n\nHome test positive 3/20. Some nausea in the mornings, eating ok. No bleeding or cramping. No headaches. Home BPs 104-116/66-74. OB intake 4/17.\n\nHx: gestational HTN in 2021 pregnancy; severe preeclampsia at 35 wk Oct 2024 with AKI and retinal changes, all resolved, off nifedipine since Dec.\nMeds: prenatal vitamin. NKDA.\n\nBP normal today, vitals as charted. Well appearing. Heart regular, lungs clear. No edema.\n\nA/P: early pregnancy with prior severe preeclampsia, high risk for recurrence.\n- Baseline CMP, CBC and UA today so OB has a pre-20-week comparison. Will fax to OB.\n- Aspirin 81 from 12 weeks, OB to start.\n- Reviewed warning signs again.\n- Short interval since last delivery (under 6 months), she knows. OB to follow closely.\nRTC mid-pregnancy for BP check here, otherwise OB visits."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2025-04-11T11:40",
+              "author": "PCP",
+              "body": "Baseline labs are all normal: kidney function 0.7, liver tests normal, platelets normal, no protein in the urine. Faxed to your OB office today."
+            }
+          ],
+          "state": {
+            "weight_kg": 66.5,
+            "labs": {
+              "Hemoglobin": 12.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "outside_records",
+          "start": "2025-05-13T15:00",
+          "reason": "OB records received",
+          "medications": [
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Preeclampsia prevention, prescribed by OB"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "OB Visit Note, 12 Weeks",
+              "date": "2025-05-13T15:00",
+              "author": "obstetrics",
+              "body": "Outside OB group, prenatal visit 05/13/2025. Copy to PCP.\n\nG3P2002 at 12w0d. Prior: gestational hypertension (2021), severe preeclampsia with delivery at 35 weeks (10/2024). Interpregnancy interval short.\nBP normal. Urine protein negative. FHR present by Doppler.\nPlan: begin low-dose aspirin 81 mg nightly through 36 weeks. Serial growth ultrasounds from 28 weeks. Baseline labs from PCP reviewed and normal. Home BP log. Next visit 4 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "telephone",
+          "start": "2025-06-17T11:30",
+          "reason": "Forms",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Forms Question",
+              "date": "2025-06-17T11:30",
+              "author": "front desk",
+              "body": "Pt called asking who fills out her maternity leave paperwork for her employer. Advised the OB office handles leave forms for pregnancy and delivery. She'll drop them there. No action for us."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "office_visit",
+          "start": "2025-07-22T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Mid-pregnancy BP check",
+          "vitals": {
+            "bp": [
+              105,
+              75
+            ],
+            "hr": 72,
+            "spo2": 98,
+            "weight_kg": 71.2
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-07-22T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-07-22T16:30",
+              "author": "PCP",
+              "body": "22 wk, here for a BP check between OB visits as planned.\n\nFeeling well, nausea gone. Anatomy scan normal per pt. On aspirin 81 since 12 wk and the prenatal vitamin. Home BPs and OB readings all normal, nothing over 120/78. No headaches, no visual symptoms, no swelling.\n\nBP normal here, weight up as expected. Heart regular, lungs clear. Gravid, nontender. No edema. Reflexes 2+. PHQ-9 2.\n\nA/P: so far an uncomplicated pregnancy with a high-risk history. Continue aspirin per OB, home BP twice weekly, rising to daily from 28 wk. Flu and Tdap here in Sept. Reviewed warning signs."
+            }
+          ],
+          "state": {
+            "weight_kg": 71.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "nurse_visit",
+          "start": "2025-09-09T10:10",
+          "reason": "Influenza and Tdap vaccines",
+          "vitals": {
+            "bp": [
+              109,
+              79
+            ],
+            "hr": 74
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-09T10:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-09T10:15"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2025-09-09T10:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunizations",
+              "date": "2025-09-09T10:25",
+              "author": "RN",
+              "body": "29 wk pregnant, here for flu and Tdap, OB requested Tdap be given here. No prior vaccine reactions. Flu 0.5 mL IM L deltoid, Tdap 0.5 mL IM R deltoid. VIS given for both. BP normal. Waited 15 min, no issues."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "ed_visit",
+          "start": "2025-10-14T06:40",
+          "end": "2025-10-14T09:15",
+          "service": "Emergency Medicine",
+          "reason": "Seizure at home, 34 weeks pregnant",
+          "conditions": [
+            {
+              "label": "Eclampsia",
+              "action": "diagnosed",
+              "onset": "2025-10-14",
+              "icd10": "O15.03"
+            },
+            {
+              "label": "Acute kidney injury",
+              "action": "diagnosed",
+              "onset": "2025-10-14",
+              "icd10": "N17.9"
+            },
+            {
+              "label": "Hypertensive retinopathy",
+              "action": "diagnosed",
+              "onset": "2025-10-14",
+              "icd10": "H35.033"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-10-14T06:46",
+              "bp": [
+                158,
+                102
+              ],
+              "hr": 88,
+              "rr": 16,
+              "temp_c": 36.9,
+              "spo2": 97
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-14T06:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 105
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.84
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-14T06:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 70
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 80
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 56
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-10-14T07:05",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "2+"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.4
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-10-14T06:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-10-20T08:30",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Date of service 10/14/2025. Copy received 10/20/2025.\n\nCC: seizure at home, 34 weeks pregnant.\n\nHPI: 33 y/o G3P2 at 34w0d brought in by her husband after a generalized tonic-clonic seizure at home this morning, witnessed by him. For two days she has had a persistent headache and visual disturbance, seeing flashing lights, and could not focus at her desk at work. She also noted mild pain under the right ribs. Prenatal course unremarkable up to now, with normal pressures at every prior visit. Prior history of gestational hypertension (2021) and an ED evaluation in 10/2024 at 35 weeks for severe headache and blurry vision, diagnosed with severe preeclampsia then.\n\nMeds: prenatal vitamin daily; aspirin 81 mg daily. Allergies: NKDA.\nFH: mother had preeclampsia; father with chronic hypertension.\nSH: never smoker, no alcohol, administrative assistant.\n\nVitals: BP 158/102, HR 88, RR 16, afebrile, SpO2 97% RA.\nExam: awake, oriented, answering appropriately. Fundi with arteriolar narrowing and cotton wool spots. Reflexes brisk. Lungs clear. Heart regular. Gravid abdomen, soft. 1+ pitting edema of both lower legs.\n\nLabs: Hgb 11.2 g/dL, platelets 105,000/uL, creatinine 1.3 mg/dL, AST 70 U/L, ALT 80 U/L. UA 2+ protein.\nBedside obstetric ultrasound (OB): estimated fetal weight below the 10th percentile for gestational age, oligohydramnios with AFI 3 cm.\n\nED course: magnesium sulfate load and infusion, IV labetalol for BP. No further seizure in the department. OB and anesthesia at bedside.\n\nImpression: eclampsia at 34 weeks. Acute kidney injury. Hypertensive retinopathy. Fetal growth restriction with oligohydramnios.\nDisposition: admitted to the obstetric ICU."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14b",
+          "kind": "hospital_admission",
+          "start": "2025-10-14T09:15",
+          "end": "2025-10-18T11:40",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Eclampsia at 34 weeks, delivery",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "action": "resolved",
+              "onset": "2025-03-04",
+              "note": "Delivered 2025-10-14",
+              "icd10": "Z33.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "stop",
+              "reason": "Delivered"
+            },
+            {
+              "drug_text": "nifedipine 30 MG 24HR Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 30,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Postpartum hypertension after eclampsia"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-10-14T09:40",
+              "bp": [
+                160,
+                110
+              ],
+              "hr": 88
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-14T10:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 110
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.89
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-14T10:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 70
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 65
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 51
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 60
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-10-14T10:05",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "2+"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.4
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-18T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 158
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.79
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-18T05:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 41
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 39
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 76
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-10-14T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetric ICU Admission Note",
+              "date": "2025-10-20T08:35",
+              "author": "obstetrics",
+              "body": "Obstetric ICU admission, 10/14/2025. Copy received with discharge packet 10/20/2025.\n\nReason: eclampsia at 34w0d. Seized at home this morning after two days of headache and blurred vision; her husband brought her to the ED. Magnesium running, IV labetalol given in the ED.\n\nHx: gestational hypertension with first pregnancy; severe preeclampsia 10/2024 with delivery at 35 weeks. Meds: prenatal vitamin, aspirin 81 mg. NKDA.\n\nExam on arrival to the unit: BP 160/110, HR 88. Awake, oriented, headache improving. Reflexes 3+ throughout, no sustained clonus. Fundi: arteriolar narrowing with cotton wool spots. Lungs clear. Gravid.\n\nRepeat labs: creatinine 1.4 mg/dL, platelets 110,000/uL, AST 70 U/L, ALT 65 U/L. UA 2+ protein.\nFetal: EFW under the 10th percentile, AFI 3 cm. Category I tracing.\n\nAssessment: eclampsia with severe features, AKI, hypertensive retinal changes; fetal growth restriction with oligohydramnios.\nPlan: magnesium for seizure prophylaxis continuing 24 hours after delivery. Labetalol IV as needed for severe-range pressures. Proceed with delivery today once stable. Cervix examined; induction with continuous monitoring, low threshold for cesarean. Neonatology aware. Strict I/O, labs q6h."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2025-10-20T08:40",
+              "author": "obstetrics",
+              "body": "Regional hospital, obstetric ICU then postpartum unit. Admitted 10/14/2025, discharged 10/18/2025. Received 10/20/2025.\n\nDiagnoses: eclampsia at 34 weeks. Acute kidney injury. Hypertensive retinopathy. Fetal growth restriction with oligohydramnios.\n\nCourse: Admitted from the ED after a single eclamptic seizure at home. Magnesium sulfate with IV labetalol as needed. Induction started the same morning; vaginal delivery the evening of 10/14/2025 of a preterm liveborn infant, cared for by the neonatal team. No further seizures. Magnesium continued 24 hours after delivery. Transferred from the ICU to the postpartum unit on 10/15. Headache and visual symptoms cleared by 10/16. RUQ discomfort resolved. Pressures 130s-150s/80s-90s postpartum; nifedipine ER 30 mg daily started 10/15 with good effect.\n\nDischarge labs 10/18: creatinine 1.0 mg/dL, platelets 158,000/uL, AST 41 U/L, ALT 39 U/L.\n\nDischarge medications: nifedipine ER 30 mg daily. Prenatal vitamin. Aspirin stopped.\nAllergies: NKDA.\n\nFollow-up: PCP BP check within one week, repeat creatinine. OB postpartum visit. Ophthalmology for the retinal findings. Return for BP 160/110 or higher, headache, vision change, seizure."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 39,
+              "Aspartate Aminotransferase": 41,
+              "Creatinine": 1.0,
+              "Hemoglobin": 10.9,
+              "Platelets": 158
+            }
+          }
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "telephone",
+          "start": "2025-10-20T15:05",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "date": "2025-10-20T15:05",
+              "author": "RN",
+              "body": "Hospital records arrived today. Called pt. Home since Sat. On nifedipine ER 30 daily. Home readings 130-142/84-92. No headache, vision ok, no further seizures, no RUQ pain. Husband home with her this week. Not driving. Visit with PCP Thurs 10/23 at 1:40, pt aware. ED precautions reviewed."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-23a",
+          "kind": "office_visit",
+          "start": "2025-10-23T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after eclampsia",
+          "vitals": {
+            "bp": [
+              136,
+              86
+            ],
+            "hr": 92,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 71.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-23T14:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-23T14:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 231
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.98
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-10-23T13:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ophtho-2025",
+              "action": "placed",
+              "order": "Ophthalmology referral",
+              "category": "referral",
+              "to": "Ophthalmology",
+              "reason": "Hypertensive retinopathy with cotton wool spots during eclampsia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-10-23T14:50",
+              "author": "PCP",
+              "body": "TCM visit, 9 days postpartum after eclampsia.\n\nHospital course (records reviewed): 34w0d, two days of headache, flashing lights and mild RUQ pain, then a GTC seizure at home 10/14. ED BP 158/102, OB ICU 160/110. Cr 1.3 then 1.4, plt 105K then 110K, AST 70, ALT 80/65, 2+ protein, cotton wool spots again. EFW <10th %ile, AFI 3. Mag, labetalol, induced, vaginal delivery that evening. No further seizures. D/c 10/18 on nifedipine ER 30, Cr 1.0, plt 158.\n\nToday: shaken by it but doing ok. Headache gone, vision normal, no new neuro symptoms. Sleeping in pieces. Home BPs 128-140/82-90. Not driving yet.\n\nMeds: nifedipine ER 30 daily, prenatal vitamin. Aspirin stopped. NKDA.\n\nExam: BP 136/86. Alert, fully oriented, speech normal. CN intact, strength and sensation symmetric, reflexes 2+, no clonus. Heart regular. Lungs clear. Abdomen soft, nontender, no RUQ tenderness. Trace ankle edema. PHQ-9 = 4.\n\nA/P:\n1. Postpartum HTN after eclampsia: at goal on nifedipine ER 30. Daily home BP, send log in 1-2 weeks.\n2. AKI: CMP/CBC today.\n3. Hypertensive retinopathy: ophthalmology again, same office as last year.\n4. Eclampsia: single seizure, no recurrence, neuro exam normal today. Driving: wait until cleared at the 6-week visit.\n5. Mood: PHQ-9 4. Lot to absorb with a second severe episode in a year; she has support. Will recheck.\n\nRTC ~6 weeks postpartum."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2025-10-24T12:15",
+              "author": "PCP",
+              "body": "Your creatinine today is 0.9, coming down nicely from 1.4 in the hospital. Platelets and liver tests are back to normal. Same plan."
+            }
+          ],
+          "state": {
+            "bp": [
+              136,
+              86
+            ],
+            "weight_kg": 70.0,
+            "labs": {
+              "Alanine Aminotransferase": 24,
+              "Aspartate Aminotransferase": 22,
+              "Creatinine": 0.9,
+              "Hemoglobin": 11.3,
+              "Platelets": 236
+            }
+          },
+          "measure": [
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "portal_message",
+          "start": "2025-11-04T21:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "BP Log",
+              "date": "2025-11-04T21:10",
+              "author": "patient",
+              "body": "BP log for the past 10 days attached. Most are 118-126 over 76-82. Lowest 112/72. A little dizzy sometimes when I stand quickly at night feedings but it passes."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: BP Log",
+              "date": "2025-11-05T09:20",
+              "author": "PCP",
+              "body": "Thanks, that's a good trend. Stand up slowly at night and drink plenty of water. If you start seeing readings under 100 or the dizziness gets worse, message me and we may stop the nifedipine early. Otherwise we'll decide at your visit 11/25."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "specialist_visit",
+          "start": "2025-11-18T14:00",
+          "service": "Ophthalmology",
+          "reason": "Retinal follow-up after eclampsia",
+          "conditions": [
+            {
+              "label": "Hypertensive retinopathy",
+              "action": "resolved",
+              "onset": "2025-10-14",
+              "icd10": "H35.033"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ophtho-2025",
+              "action": "done",
+              "date": "2025-11-18T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology Follow-up",
+              "date": "2025-11-20T10:30",
+              "author": "ophthalmology",
+              "body": "Re: Emily Lemieux, DOB 04/22/1992, seen 11/18/2025.\n\nKnown to us from 12/2024, when her retinal changes from preeclampsia had cleared. Seen again after eclampsia at 34 weeks last month, with arteriolar narrowing and cotton wool spots documented by the hospital.\n\nNo visual complaints now. NKDA. On nifedipine postpartum.\n\nVA 20/20 each eye. Pupils normal. IOP normal OU. Anterior segments quiet.\nDilated exam: optic nerves healthy OU. Arterioles normal caliber. No cotton wool spots, hemorrhages, exudates or edema. Maculae normal. Periphery flat.\n\nImpression: hypertensive retinopathy of pregnancy, resolved again, normal fundi.\nPlan: routine eye care. Please send her back with any future hypertensive episode."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-25a",
+          "kind": "office_visit",
+          "start": "2025-11-25T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "6-week postpartum BP follow-up",
+          "conditions": [
+            {
+              "label": "Eclampsia",
+              "action": "resolved",
+              "onset": "2025-10-14",
+              "icd10": "O15.03"
+            },
+            {
+              "label": "Acute kidney injury",
+              "action": "resolved",
+              "onset": "2025-10-14",
+              "icd10": "N17.9"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "nifedipine 30 MG 24HR Extended Release Oral Tablet",
+              "action": "stop",
+              "reason": "Pressures normal postpartum"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              76
+            ],
+            "hr": 80,
+            "spo2": 97,
+            "weight_kg": 69.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-25T11:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-25T11:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 222
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.47
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-11-25T11:15",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-11-25T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-11-25T11:25",
+              "author": "PCP",
+              "body": "6 wk postpartum after eclampsia.\n\nFeels like herself again. Home BPs 110-122/70-80 on nifedipine, the standing dizziness is less. No headaches, no visual change, no seizure-like events. Eye exam last week normal per letter. OB postpartum visit done; family planning is with them.\n\nBP 118/76. Well. Neuro nonfocal. Heart regular, lungs clear, no edema. PHQ-9 3.\n\nA/P:\n1. Postpartum HTN resolved: stop nifedipine. Home BP twice weekly for a month, message if over 135/85.\n2. Eclampsia, resolved. No further seizures, neuro exam normal. Cleared to drive.\n3. AKI: repeat BMP today, expect baseline.\n4. Hypertensive retinopathy resolved per ophthalmology.\n5. Problem list keeps history of preeclampsia; eclampsia in Oct 2025 noted there. Two pregnancies now with severe hypertensive disease plus a family history on both sides, so her long-term CV risk is real. Physical in Feb with lipids and A1c, then yearly BP, lipids, glucose.\n6. Mood ok.\n\nRTC Feb for physical."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2025-11-26T08:10",
+              "author": "PCP",
+              "body": "Creatinine 0.7, back to your normal. Blood counts and liver tests normal. Kidneys have recovered again."
+            }
+          ],
+          "state": {
+            "bp": [
+              118,
+              76
+            ],
+            "labs": {
+              "Creatinine": 0.7,
+              "Hemoglobin": 12.9
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "portal_message",
+          "start": "2026-01-13T12:52",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical and Vitamins",
+              "date": "2026-01-13T12:52",
+              "author": "patient",
+              "body": "Hi, I need to book the physical you mentioned for February. Also should I still be taking the prenatal vitamin? I have about a month left in the bottle."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical and Vitamins",
+              "date": "2026-01-13T17:20",
+              "author": "PCP",
+              "body": "Fine to keep taking it, it does no harm. We can talk about it at the physical. Front desk will reach out with a February time, please come fasting if it's a morning slot."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling",
+              "date": "2026-01-14T09:15",
+              "author": "front desk",
+              "body": "Called pt back, booked annual physical Thu 2/12 8:20, fasting labs same morning."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "annual_physical",
+          "start": "2026-02-12T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              125,
+              80
+            ],
+            "hr": 79,
+            "rr": 17,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 66.9,
+            "height_cm": 164.8
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-02-12T08:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 171
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 78
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 94
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 110
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-12T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-02-12T08:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 100
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 67
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-12T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 284
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "No alcohol use"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-02-12T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-02-12T09:15",
+              "author": "PCP",
+              "body": "Annual preventive visit. 33 y/o, 4 months postpartum.\n\nInterval: back at work part-time since January. No headaches, chest pain, palpitations or swelling. Home BPs off medication since late Nov run 106-118/68-76. Sleep still broken but improving. Still taking the prenatal vitamin.\n\nPMH: history of gestational HTN (2021); severe preeclampsia with AKI and retinal changes (10/2024, delivered 35 wk); eclampsia with AKI and retinal changes (10/2025, delivered 34 wk). All resolved, kidney function and fundi normal since.\nMeds: prenatal vitamin daily. NKDA.\nFH: mother with preeclampsia, father with hypertension.\nSH: married, administrative assistant, never smoker, no alcohol. Walks most days.\n\nROS otherwise negative.\n\nExam: vitals as charted, BP normal. Well appearing. HEENT normal. Neck supple, no thyroid enlargement or nodules. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Extremities without edema. Skin without concerning lesions. Neuro nonfocal. Mood and affect appropriate. PHQ-9 2, GAD-7 3.\n\nA/P:\n1. Health maintenance. Fasting lipids, A1c, CMP, CBC today. Cervical screening up to date (co-test 2023 negative), next due 2028. Flu and Tdap given in Sept. HIV and hep C negative on prenatal labs, no repeat needed.\n2. History of preeclampsia/eclampsia. Discussed that two hypertensive pregnancies plus family history put her at higher lifetime risk for hypertension and heart disease. Plan: BP check here every 6 months with home log, yearly lipids and A1c, keep up activity. If she considers another pregnancy, preconception visit here and with OB first.\n3. Prenatal vitamin: fine to finish the bottle and stop. Her choice.\n\nRTC 3 months for BP check, yearly physical."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2026-02-13T10:05",
+              "author": "PCP",
+              "body": "Hi Emily, all your labs are normal. Cholesterol panel is in a healthy range, A1c (3-month sugar average) is normal, kidney and liver function normal, blood counts normal. We'll repeat lipids and A1c next year."
+            }
+          ],
+          "state": {
+            "weight_kg": 66.0,
+            "labs": {
+              "Hemoglobin": 13.0,
+              "Hemoglobin A1c": 5.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "office_visit",
+          "start": "2026-05-12T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "BP check",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Appointment",
+              "date": "2026-05-12T16:45",
+              "author": "front desk",
+              "body": "No-show for 4:20 BP check. Left VM to reschedule."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Reschedule",
+              "date": "2026-05-13T10:30",
+              "author": "front desk",
+              "body": "Pt returned call, sorry, childcare fell through yesterday. Asked if it can be a video visit since she has the home cuff. OK per PCP. Booked video 5/21 12:15."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2026-05-21a",
+          "kind": "telehealth_visit",
+          "start": "2026-05-21T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "BP follow-up, home readings",
+          "medications": [
+            {
+              "drug_text": "prenatal multivitamin oral tablet",
+              "action": "stop",
+              "reason": "Patient stopped"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2026-05-21T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2026-05-21T12:35",
+              "author": "PCP",
+              "body": "Video visit for BP follow-up, history of preeclampsia and eclampsia.\n\nPt at home, identity confirmed. Sent 2 weeks of home readings before the visit: 104-120/66-78, average around 112/72. Checked cuff against our office reading in Feb, matched. No headaches, no swelling, no visual symptoms. Feels well. Stopped the prenatal vitamin in March.\n\nExam limited to video: well appearing, comfortable, speaking easily.\n\nA/P: normotensive off medication 6 months postpartum. Continue home checks once or twice a month. In-office BP in about 4 months, labs at next year's physical. Message with any reading over 135/85.\n\n15 min."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T08:31",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Scheduling",
+              "date": "2026-08-18T08:31",
+              "author": "patient",
+              "body": "Hi, you said to come back in for a BP check around September. Do you have anything late in the day on a Tuesday? Home numbers still good, mostly 110s over 70s."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Scheduling",
+              "date": "2026-08-18T11:02",
+              "author": "front desk",
+              "body": "You're booked Tuesday 9/22 at 4:40 for a BP check with the doctor. Bring your cuff so we can compare. We can do your flu shot that day too."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "office_visit",
+          "start": "2026-09-22T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure and cardiovascular risk follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute kidney injury|N17.9": {
+        "code": "N17.9",
+        "display": "Acute kidney failure, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Eclampsia|O15.03": {
+        "code": "O15.03",
+        "display": "Eclampsia complicating pregnancy, third trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of gestational hypertension|Z87.59": {
+        "code": "Z87.59",
+        "display": "Personal history of other complications of pregnancy, childbirth and the puerperium",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hypertensive retinopathy|H35.033": {
+        "code": "H35.033",
+        "display": "Hypertensive retinopathy, bilateral",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pregnant state|Z33.1": {
+        "code": "Z33.1",
+        "display": "Pregnant state, incidental",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Severe preeclampsia without HELLP features|O14.13": {
+        "code": "O14.13",
+        "display": "Severe pre-eclampsia, third trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "nifedipine 30 MG 24HR Extended Release Oral Tablet": {
+        "code": "198034",
+        "display": "24 HR nifedipine 30 MG Extended Release Oral Tablet",
+        "ingredient": "nifedipine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "rejected": [
+      "drug \"prenatal multivitamin oral tablet\""
+    ]
+  }
+}

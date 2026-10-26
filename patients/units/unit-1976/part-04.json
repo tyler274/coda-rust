@@ -1,0 +1,920 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001976",
+   "events": [
+    {
+     "id": "2024-01-16a",
+     "kind": "office_visit",
+     "start": "2024-01-16T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "state": {
+      "bp": [
+       137,
+       85
+      ],
+      "weight_kg": 101.4,
+      "labs": {
+       "Hemoglobin A1c": 7.8,
+       "Fasting Glucose": 149
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-01-16T08:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Fasting Glucose"
+        }
+       ],
+       "resulted": "2024-01-16T15:50"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-01-16T08:20"
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2024",
+       "action": "placed",
+       "order": "Fecal immunochemical test",
+       "category": "lab",
+       "reason": "Colorectal cancer screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes / HTN Follow-up",
+       "author": "PCP",
+       "date": "2024-01-16T09:30",
+       "body": "59-year-old here for winter visit, fasting. Feels well. Still eating slowly and with water. Taking all five medications. Home BP 130s-140s/80s. No chest pain, no breathlessness, no new numbness in feet, no vision change.\n\nProblems: T2DM, HTN, HLD, obesity, OSA, achalasia.\nMeds: metformin 1000 mg BID, lisinopril 20 mg daily, amlodipine 5 mg daily, HCTZ 25 mg daily, atorvastatin 40 mg daily. NKDA.\n\nVitals: BP 142/88, HR 74, RR 14, T 36.8, SpO2 96%. Wt 101.3 kg, BMI 32.0.\nExam: NAD. Heart regular, no murmur. Lungs clear. No edema. Feet: intact, pulses present, monofilament normal.\n\nA/P\n1. T2DM - A1c and fasting glucose today. Continue metformin; diet.\n2. HTN - 142/88 today, home mostly lower. Continue.\n3. HLD - continue atorvastatin; lipids in summer.\n4. Colorectal screening due (colonoscopy 2014 normal). He chose yearly FIT. Kit given with instructions; mail back within a few days of collection.\nRTC July."
+      },
+      {
+       "type": "Result Note",
+       "title": "A1c 01/16",
+       "author": "PCP",
+       "date": "2024-01-16T16:30",
+       "body": "A1c 7.2, fasting glucose 152. Stable. Released with note."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-06a",
+     "kind": "lab_only",
+     "start": "2024-02-06T10:00",
+     "reason": "FIT kit returned",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-02-05T07:00",
+       "results": [
+        {
+         "test": "Fecal Immunochemical Test",
+         "text": "Negative"
+        }
+       ],
+       "resulted": "2024-02-06T10:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2024",
+       "action": "done",
+       "date": "2024-02-06T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "FIT result",
+       "author": "RN",
+       "date": "2024-02-06T10:20",
+       "body": "FIT collected 02/05, resulted 02/06: negative. Patient notified by portal. Repeat in one year. Health maintenance updated."
+      }
+     ]
+    },
+    {
+     "id": "2024-05-21a",
+     "kind": "office_visit",
+     "start": "2024-05-21T08:00",
+     "end": "2024-05-21T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Trouble walking, numb hands",
+     "state": {
+      "bp": [
+       138,
+       86
+      ],
+      "weight_kg": 101.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-05-21T08:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "mri-cspine",
+       "action": "placed",
+       "order": "MRI cervical spine without contrast",
+       "category": "imaging",
+       "reason": "Gait difficulty, bilateral hand numbness, hyperreflexia; evaluate for cervical myelopathy"
+      },
+      {
+       "id": "nsg-referral",
+       "action": "placed",
+       "order": "Neurosurgery referral",
+       "category": "referral",
+       "to": "Neurosurgery",
+       "reason": "Suspected cervical myelopathy"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - gait difficulty, hand numbness",
+       "author": "PCP",
+       "date": "2024-05-21T09:20",
+       "body": "CC: \"my legs aren't working right.\"\n\nHPI: 60-year-old man. For about four months walking has gotten harder: he feels unsteady and holds the rail on the cab steps now. Both hands feel numb. When he bends his head forward he gets a sharp, electric pain shooting down both arms. On a few occasions he has leaked urine before he could get to a bathroom, which is new for him. No falls with injury. No fever, no recent neck trauma.\n\nPMH: T2DM, HTN, HLD, obesity, OSA, achalasia.\nMeds: metformin 1000 mg BID, lisinopril 20 mg, amlodipine 5 mg, HCTZ 25 mg, atorvastatin 40 mg. NKDA.\n\nExam: BP 135/90, HR 74, RR 15, T 36.4, SpO2 96%. Wt 102.3 kg, BMI 32.4.\nGeneral: well, worried.\nNeck: no tenderness to palpation.\nNeuro: alert, speech normal. Strength grossly preserved in arms and legs. Knee and ankle reflexes brisk on both sides. Gait unsteady.\nFeet: skin intact, pulses 2+, monofilament sensation present at all sites.\n\nAssessment: Progressive gait disturbance, bilateral hand numbness, urinary leakage and neck-flexion arm pains with brisk leg reflexes. Concern for compression of the cervical spinal cord.\n\nPlan\n- MRI cervical spine without contrast, ordered; front desk to get the first available slot.\n- Neurosurgery referral placed.\n- Call or text right away for new weakness, falls, or loss of bladder or bowel control.\n- Diabetes labs at July visit as planned."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-04a",
+     "kind": "imaging",
+     "start": "2024-06-04T18:40",
+     "service": "Radiology",
+     "reason": "MRI cervical spine",
+     "orders": [
+      {
+       "id": "mri-cspine",
+       "action": "done",
+       "date": "2024-06-04T18:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Imaging Report",
+       "title": "MRI cervical spine without contrast",
+       "author": "radiology",
+       "date": "2024-06-05T08:15",
+       "body": "MRI CERVICAL SPINE WITHOUT CONTRAST\nDate of exam: 06/04/2024\nIndication: 4 months of progressive gait difficulty, bilateral hand numbness, urinary leakage, brisk reflexes. Evaluate for cervical myelopathy.\nTechnique: Multiplanar, multisequence MRI of the cervical spine without intravenous contrast.\nComparison: none.\n\nFindings:\nAlignment is maintained. Vertebral body heights are preserved. Bone marrow signal is unremarkable.\nThere is multilevel degenerative disc disease of the cervical spine, with disc changes at several levels narrowing the canal and compressing the spinal cord.\nThe craniocervical junction is normal. Visualized posterior fossa is unremarkable.\nParaspinal soft tissues are unremarkable.\n\nImpression:\nMultilevel cervical degenerative disc disease with spinal cord compression."
+      },
+      {
+       "type": "Result Note",
+       "title": "MRI result reviewed",
+       "author": "PCP",
+       "date": "2024-06-05T12:40",
+       "body": "MRI C-spine: multilevel degenerative disc disease compressing the spinal cord. Called patient and reviewed. Neurosurgery referral is in; asked staff to push for the earliest consult and send the images and report there. Same precautions as at the visit."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-06a",
+     "kind": "telephone",
+     "start": "2024-06-06T11:40",
+     "reason": "MRI result call",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Neurosurgery appointment",
+       "author": "RN",
+       "date": "2024-06-06T11:55",
+       "body": "Patient called back. Neurosurgery office has him for 07/30, earliest new-patient opening; on their cancellation list. MRI disc and report sent to them 06/05 per front desk.\nHe says symptoms are the same as at the visit, no new weakness, no falls. Reviewed reasons to call us or go to the ED (sudden weakness, can't walk, lose control of bladder or bowels). He verbalized understanding."
+      }
+     ]
+    },
+    {
+     "id": "2024-07-16a",
+     "kind": "office_visit",
+     "start": "2024-07-16T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "state": {
+      "bp": [
+       137,
+       86
+      ],
+      "weight_kg": 100.6,
+      "labs": {
+       "Hemoglobin A1c": 7.2,
+       "Glucose": 156,
+       "Fasting Glucose": 156,
+       "Creatinine": 1.0,
+       "Blood Urea Nitrogen": 14,
+       "Low Density Lipoprotein": 136,
+       "High Density Lipoprotein": 37,
+       "Triglycerides": 186
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-07-16T08:35",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 210
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ],
+       "resulted": "2024-07-17T07:10"
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-07-16T08:35",
+       "results": [
+        {
+         "test": "Glucose",
+         "value": 156
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.0
+        },
+        {
+         "test": "Blood Urea Nitrogen",
+         "value": 14
+        },
+        {
+         "test": "Potassium"
+        }
+       ],
+       "resulted": "2024-07-17T07:10"
+      },
+      {
+       "panel": null,
+       "collected": "2024-07-16T08:35",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.2
+        }
+       ],
+       "resulted": "2024-07-17T07:10"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-07-16T08:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2024",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "Annual lung cancer screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes and Blood Pressure Follow-up",
+       "author": "PCP",
+       "date": "2024-07-16T09:20",
+       "body": "60M here fasting for diabetes and BP visit. Walking still unsteady, hands still numb; no new weakness, no falls. Neurosurgery consult 07/30. Swallowing about the same.\n\nProblems: T2DM, HTN, HLD, obesity, OSA, achalasia; cervical spinal cord compression on MRI 06/04, awaiting neurosurgery.\nMeds: metformin 1000 mg BID, lisinopril 20 mg daily, amlodipine 5 mg daily, hydrochlorothiazide 25 mg daily, atorvastatin 40 mg daily. NKDA.\n\nVitals: BP 131/93, HR 72, RR 16, T 36.6, SpO2 98%. Wt 100.9 kg, BMI 31.9.\nExam: no distress. Heart regular, no murmur. Lungs clear. No edema. Gait unsteady, unchanged. Feet: skin intact, pulses 2+, monofilament intact.\n\nA/P\n1. T2DM: fasting labs today - A1c, BMP. Diet and taking metformin twice daily as prescribed.\n2. HTN: 131/93. Continue.\n3. HLD: lipid panel today.\n4. Cervical cord compression: neurosurgery 07/30; labs today will go with the referral.\n5. Lung CT due September; ordered.\nPhysical in October."
+      },
+      {
+       "type": "Result Note",
+       "title": "Labs 07/16",
+       "author": "PCP",
+       "date": "2024-07-17T11:40",
+       "body": "A1c 7.2, glucose 156 (fasting). Creatinine 1.0, eGFR 86, BUN 14, K 4.3. TC 210, HDL 38, TG 193, LDL 130.\nStable. Copied to neurosurgery ahead of 07/30. Patient notified."
+      }
+     ]
+    },
+    {
+     "id": "2024-07-30a",
+     "kind": "specialist_visit",
+     "start": "2024-07-30T13:00",
+     "service": "Neurosurgery",
+     "reason": "Gait difficulty, hand numbness",
+     "conditions": [
+      {
+       "label": "Cervical spondylotic myelopathy",
+       "icd10": "M47.12",
+       "action": "diagnosed",
+       "onset": "2024-07-30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "nsg-referral",
+       "action": "done",
+       "date": "2024-07-30T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurosurgery consultation",
+       "author": "neurosurgery",
+       "date": "2024-08-05T14:10",
+       "body": "NEUROSURGERY — NEW PATIENT CONSULTATION\nDate of visit: 07/30/2024\nPatient: Lamar Bryant (DOB 02/26/1964), 60-year-old man\nReferred by: primary care\n\nHistory: Mr. Bryant has type 2 diabetes, hypertension and hyperlipidemia, and had a work-up for swallowing difficulty a year ago. Over the past six months his walking has steadily worsened. Both hands are numb, and he has had episodes of leaking urine. Bending his neck forward sends sharp pains down his arms.\n\nAllergies: NKDA.\nMedications: metformin 1000 mg twice daily; lisinopril 20 mg daily; amlodipine 5 mg daily; hydrochlorothiazide 25 mg daily; atorvastatin 40 mg daily.\nPast surgical history: none.\nSocial: long-haul truck driver. Former smoker, 20 pack-years. Alcohol 1-2 drinks per month.\n\nExamination: Lower extremity reflexes exaggerated. Hoffmann sign present bilaterally. Gait unsteady.\n\nImaging: MRI of the cervical spine (06/04/2024), images reviewed today: multilevel degenerative disc disease with compression of the spinal cord.\n\nLaboratory (primary care, 07/16/2024): HbA1c 7.2%, fasting glucose 156 mg/dL, creatinine 1.0 mg/dL, total cholesterol 210 mg/dL, BUN 14 mg/dL.\n\nImpression: Cervical spondylotic myelopathy."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-10a",
+     "kind": "imaging",
+     "start": "2024-09-10T16:30",
+     "service": "Radiology",
+     "reason": "Lung cancer screening",
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2024-09-10T16:30",
+       "text": "LDCT CHEST, LUNG CANCER SCREENING\nIndication: annual screening; former smoker, 20 pack-years, quit 2011.\nTechnique: Low-dose CT of the chest without contrast.\nComparison: 09/12/2023.\nFindings:\nNo pulmonary nodules. No airspace disease, effusion or pneumothorax.\nEsophagus remains dilated, consistent with known achalasia, similar to prior.\nNo thoracic lymphadenopathy. Heart size normal. Aorta normal in caliber.\nIncluded upper abdomen and bones without suspicious finding.",
+       "conclusion": "Lung-RADS 1, negative. Dilated esophagus consistent with known achalasia. Next annual screening in 12 months."
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2024",
+       "action": "done",
+       "date": "2024-09-10T16:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "LDCT 09/10",
+       "author": "PCP",
+       "date": "2024-09-11T08:25",
+       "body": "LDCT Lung-RADS 1; esophagus dilated as before (achalasia). Patient notified. Next 09/2025."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-22a",
+     "kind": "annual_physical",
+     "start": "2024-10-22T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "bp": [
+       136,
+       86
+      ],
+      "weight_kg": 101.1
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-10-22T08:45",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ],
+       "resulted": "2024-10-22T13:30"
+      },
+      {
+       "panel": null,
+       "collected": "2024-10-22T08:45",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ],
+       "resulted": "2024-10-23T10:00"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2024-10-22T08:00"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2024-10-22T08:50"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2024-10-22T08:52"
+      },
+      {
+       "vaccine": "RSV, adjuvanted (Arexvy)",
+       "date": "2024-10-22T08:55"
+      }
+     ],
+     "orders": [
+      {
+       "id": "eye-exam",
+       "action": "placed",
+       "order": "Diabetic eye exam",
+       "category": "referral",
+       "to": "Optometry",
+       "reason": "Annual diabetic retinal exam due"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2024-10-22T09:30",
+       "body": "ANNUAL PHYSICAL\nLamar Bryant, 60\n\nInterval: Neurosurgery consultation 07/30 - diagnosed cervical spondylotic myelopathy. LDCT 09/10 Lung-RADS 1. FIT negative 02/2024. Last eye exam 08/2023.\nFeels \"about the same.\" Still working.\n\nProblem list: type 2 diabetes (since 2004); essential hypertension; hyperlipidemia; obesity; obstructive sleep apnea (2022); achalasia (2023); cervical spondylotic myelopathy (2024); former smoker.\nMedications: metformin 1000 mg twice daily; lisinopril 20 mg daily; amlodipine 5 mg daily; hydrochlorothiazide 25 mg daily; atorvastatin 40 mg daily.\nAllergies: NKDA. Surgical history: none.\nFamily/social: unchanged; married, long-haul driver, quit smoking 03/2011 (20 pack-years), alcohol 1-2/month.\n\nVitals: BP 134/85, HR 63, RR 16, T 36.5, SpO2 97%, Wt 101.5 kg, Ht 177.9 cm, BMI 32.1.\nExam\nGeneral: well appearing.\nHEENT: normal. Neck: supple.\nHeart: RRR, no murmur. Lungs: clear.\nAbdomen: soft, nontender.\nExtremities: no edema.\nNeuro: gait unsteady, as at prior visits.\nFeet: skin intact, nails fine, pulses 2+, monofilament intact both feet.\nPHQ-2: 0.\n\nPlan\n- Vaccines today: influenza, 2024-25 COVID, RSV (age 60 with diabetes; one dose).\n- Diabetic eye exam: due since 08/2024. Referral/reminder to optometry entered; he will call them.\n- FIT due 01/2025 - kit at winter visit.\n- PSA next year.\n- T2DM: A1c 7.2 in July. Urine albumin/creatinine today; BMP was done in July.\n- HTN, HLD: continue current medications.\n- CBC today.\nRTC January."
+      },
+      {
+       "type": "Result Note",
+       "title": "Physical labs",
+       "author": "PCP",
+       "date": "2024-10-23T12:30",
+       "body": "CBC normal (Hgb 14.3). Urine albumin/creatinine 11, normal. Released."
+      }
+     ]
+    },
+    {
+     "id": "2024-12-10a",
+     "kind": "pharmacy",
+     "start": "2024-12-10T09:20",
+     "reason": "Mail-order refill request",
+     "documents": [
+      {
+       "type": "Pharmacy",
+       "title": "Mail-order renewals",
+       "author": "MA",
+       "date": "2024-12-10T09:35",
+       "body": "Mail-order pharmacy renewal requests for metformin 1000 mg, lisinopril 20 mg, amlodipine 5 mg, hydrochlorothiazide 25 mg, atorvastatin 40 mg. Seen 10/22. Approved, 90-day supply x 3 refills each."
+      }
+     ]
+    },
+    {
+     "id": "2025-01-21a",
+     "kind": "office_visit",
+     "start": "2025-01-21T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "bp": [
+       138,
+       86
+      ],
+      "weight_kg": 101.9,
+      "labs": {
+       "Hemoglobin A1c": 7.4,
+       "Fasting Glucose": 154
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-01-21T08:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.4
+        },
+        {
+         "test": "Fasting Glucose"
+        }
+       ],
+       "resulted": "2025-01-21T16:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-01-21T08:20"
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2025",
+       "action": "placed",
+       "order": "Fecal immunochemical test",
+       "category": "lab",
+       "reason": "Colorectal cancer screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2025-01-21T09:35",
+       "body": "S: 60-year-old, fasting, here for diabetes check. Holidays were heavy - \"a lot of cookies and fast food.\" Admits the evening metformin has been missed more often, maybe 2-3 nights a week when he eats late in the truck. Morning medicines every day. Walking unchanged. No chest pain or shortness of breath. Has not called optometry yet.\n\nMeds: metformin 1000 mg BID, lisinopril 20 mg, amlodipine 5 mg, HCTZ 25 mg, atorvastatin 40 mg. NKDA.\n\nO: BP 133/88, HR 65, RR 15, T 36.3, SpO2 96%. Wt 102.6 kg, BMI 32.4.\nComfortable. Heart regular. Lungs clear. No edema. Feet: intact skin, pulses 2+, sensation normal to monofilament.\n\nA/P:\n1. T2DM: A1c drawn today. Reviewed taking metformin with dinner every night (alarm, keep a bottle in the cab), cutting sweets and sugary drinks, packing the cooler again. Will message with the result.\n2. HTN: 133/88, continue.\n3. HLD: continue atorvastatin 40.\n4. FIT kit given.\n5. Eye exam reminder: number for optometry given again."
+      },
+      {
+       "type": "Result Note",
+       "title": "A1c 01/21",
+       "author": "PCP",
+       "date": "2025-01-21T16:30",
+       "body": "A1c 7.4, fasting glucose 146. As discussed in clinic: metformin twice daily every day, diet. Recheck July. Portal note sent."
+      }
+     ]
+    },
+    {
+     "id": "2025-02-11a",
+     "kind": "lab_only",
+     "start": "2025-02-11T10:15",
+     "reason": "FIT kit returned",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-02-10T07:00",
+       "results": [
+        {
+         "test": "Fecal Immunochemical Test",
+         "text": "Negative"
+        }
+       ],
+       "resulted": "2025-02-11T10:15"
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2025",
+       "action": "done",
+       "date": "2025-02-11T10:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "FIT result",
+       "author": "RN",
+       "date": "2025-02-11T10:30",
+       "body": "FIT (collected 02/10) negative. Patient notified through portal. Next due 01/2026."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-15a",
+     "kind": "pharmacy",
+     "start": "2025-04-15T09:10",
+     "reason": "Mail-order refill request",
+     "documents": [
+      {
+       "type": "Pharmacy",
+       "title": "Mail-order renewals",
+       "author": "MA",
+       "date": "2025-04-15T09:25",
+       "body": "Renewal requests: atorvastatin 40 mg, lisinopril 20 mg. Seen 01/21, next 07/22. Sent, 90 days x 3."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-24a",
+     "kind": "portal_message",
+     "start": "2025-06-24T19:50",
+     "reason": "Appointment and fasting labs question",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "july appointment",
+       "author": "patient",
+       "date": "2025-06-24T19:50",
+       "body": "hi still on for July 22 in the morning? do I need to fast. I'll be back the night before"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: july appointment",
+       "author": "front desk",
+       "date": "2025-06-25T08:45",
+       "body": "Yes, you are booked for 07/22 at 8:00. Please come fasting (water and your morning medicines are fine) so labs can be drawn at the visit."
+      }
+     ]
+    },
+    {
+     "id": "2025-07-22a",
+     "kind": "office_visit",
+     "start": "2025-07-22T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "bp": [
+       139,
+       87
+      ],
+      "weight_kg": 102.3,
+      "labs": {
+       "Hemoglobin A1c": 7.9,
+       "Fasting Glucose": 168,
+       "Low Density Lipoprotein": 134,
+       "High Density Lipoprotein": 37,
+       "Triglycerides": 210
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2025-07-22T08:35",
+       "results": [
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ],
+       "resulted": "2025-07-23T07:15"
+      },
+      {
+       "panel": null,
+       "collected": "2025-07-22T08:35",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.9
+        },
+        {
+         "test": "Fasting Glucose"
+        }
+       ],
+       "resulted": "2025-07-23T07:15"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-07-22T08:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2025",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "Annual lung cancer screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2025-07-22T09:25",
+       "body": "Subjective: 61-year-old, fasting. Says the spring was busy and he \"fell off\" the cooler plan again; lots of fast food. Still misses the evening metformin a couple of nights a week. Morning pills reliably. No chest pain, dyspnea, polyuria or thirst he has noticed. Walking unchanged. Swallowing unchanged. Has not had the eye exam yet.\n\nMedications: metformin 1000 mg twice daily; lisinopril 20 mg daily; amlodipine 5 mg daily; hydrochlorothiazide 25 mg daily; atorvastatin 40 mg daily.\nAllergies: NKDA.\n\nObjective: BP 130/81, HR 68, RR 15, T 36.2, SpO2 97%. Weight 101.9 kg, BMI 32.2.\nWell appearing. Heart regular. Lungs clear. No edema. Gait unsteady as before. Feet: skin intact, pulses 2+, monofilament normal.\n\nAssessment and plan\n1. T2DM: A1c and fasting glucose today, plus lipids. Back to basics: metformin with breakfast and dinner every day, water instead of soda, one packed meal a day. Will message with the result.\n2. HTN: 130/81, at goal. Continue.\n3. HLD: lipid panel today.\n4. Lung CT due September - ordered.\n5. Optometry: reminder again.\nPhysical in October."
+      },
+      {
+       "type": "Result Note",
+       "title": "Labs 07/22",
+       "author": "PCP",
+       "date": "2025-07-23T12:15",
+       "body": "A1c 7.9 (was 7.4 in January), fasting glucose 173. Lipids: TC 215, HDL 39, TG 195, LDL 137.\nPortal message to patient: A1c higher; same counseling as in clinic - every dose of metformin, diet changes; recheck at the winter visit."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Labs 07/22",
+       "author": "patient",
+       "date": "2025-07-23T21:30",
+       "body": "ok I hear you. going to do better with the night pill. thanks"
+      }
+     ]
+    },
+    {
+     "id": "2025-09-16a",
+     "kind": "imaging",
+     "start": "2025-09-16T16:40",
+     "service": "Radiology",
+     "reason": "Lung cancer screening",
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2025-09-16T16:40",
+       "text": "LOW-DOSE CT CHEST (LUNG CANCER SCREENING)\nHistory: former smoker, 20 pack-years, quit 03/2011.\nTechnique: Non-contrast low-dose chest CT.\nComparison: 09/10/2024, 09/12/2023.\nFindings:\nLungs and airways: no nodule, mass or consolidation. No effusion. No pneumothorax.\nMediastinum: dilated esophagus, unchanged, consistent with known achalasia. No adenopathy. Normal heart size. Normal aortic caliber.\nUpper abdomen and bones: unremarkable on included images.",
+       "conclusion": "Lung-RADS 1, negative. Stable dilated esophagus consistent with known achalasia."
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2025",
+       "action": "done",
+       "date": "2025-09-16T16:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "LDCT 09/16",
+       "author": "PCP",
+       "date": "2025-09-17T08:30",
+       "body": "LDCT negative, Lung-RADS 1. Esophagus dilated as on prior scans. Patient notified through portal."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-21a",
+     "kind": "annual_physical",
+     "start": "2025-10-21T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "bp": [
+       137,
+       86
+      ],
+      "weight_kg": 102.0,
+      "labs": {
+       "Glucose": 166,
+       "Prostate Specific Antigen": 1.2
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-10-21T08:45",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Potassium"
+        }
+       ],
+       "resulted": "2025-10-22T07:20"
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-10-21T08:45",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ],
+       "resulted": "2025-10-21T13:50"
+      },
+      {
+       "panel": null,
+       "collected": "2025-10-21T08:45",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        },
+        {
+         "test": "Prostate Specific Antigen"
+        }
+       ],
+       "resulted": "2025-10-22T10:30"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2025-10-21T08:00"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2025-10-21T08:50"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2025-10-21T08:52"
+      },
+      {
+       "vaccine": "Tdap",
+       "date": "2025-10-21T08:55"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2025-10-21T09:35",
+       "body": "ANNUAL PREVENTIVE VISIT - 61M\n\nInterval: A1c 7.9 in July. LDCT 09/16 Lung-RADS 1. No ED visits or hospital stays. Eye exam not yet done.\nFeels ok. Says he has been better with the evening metformin \"most nights.\" No chest pain, dyspnea, vision change or foot problems.\n\nProblems: type 2 diabetes (2004); hypertension; hyperlipidemia; obesity; obstructive sleep apnea; achalasia; cervical spondylotic myelopathy; former smoker (quit 03/2011, 20 pack-years).\nMeds: metformin 1000 mg BID; lisinopril 20 mg daily; amlodipine 5 mg daily; hydrochlorothiazide 25 mg daily; atorvastatin 40 mg daily.\nAllergies: NKDA. Surgeries: none.\n\nVitals: BP 137/86, HR 78, RR 14, T 36.4, SpO2 98%, Wt 101.0 kg, Ht 178.1 cm, BMI 31.8.\nGeneral: no distress. HEENT normal. Neck supple, no nodes.\nHeart: regular, no murmurs. Lungs: clear.\nAbdomen: soft, nontender.\nExtremities: no edema. Skin: no concerning lesions.\nNeuro: gait unsteady, unchanged.\nFeet: intact, pulses 2+, monofilament intact.\nPHQ-2: 0.\n\nPlan\n- Vaccines: influenza, 2025-26 COVID, and Tdap (last 2015) today.\n- PSA: discussed again; he wants it. Drawn.\n- Colorectal: FIT due January.\n- Eye exam: still outstanding; reminder remains open.\n- T2DM: A1c at January visit. BMP and urine albumin/creatinine today.\n- HTN/HLD: continue current regimen.\n- Lung screening: reaches 15 years since quitting in 03/2026; revisit at the summer visit.\n- CBC today.\nRTC January."
+      },
+      {
+       "type": "Result Note",
+       "title": "Physical labs 10/21",
+       "author": "PCP",
+       "date": "2025-10-22T12:50",
+       "body": "Creatinine 1.01, eGFR 85, K 4.3, glucose 166. Urine albumin/creatinine 11. CBC normal (Hgb 14.0). PSA 1.2.\nReleased with note."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-09a",
+     "kind": "portal_message",
+     "start": "2025-12-09T10:00",
+     "reason": "Appointment reminder",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Appointment reminder",
+       "author": "front desk",
+       "date": "2025-12-09T10:00",
+       "body": "Reminder: diabetes follow-up on 01/20/2026 at 8:20. Please come fasting. Reply here or text the office if you need to change it."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

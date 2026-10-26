@@ -1,0 +1,2249 @@
+{
+  "unit": "unit-2782",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00002782/2021-09-14a: allergen \"Seasonal pollen\" not in catalog (text only)",
+    "MRN00002782/2021-09-14a: reaction \"Sneezing, nasal congestion, itchy eyes\" not in catalog (text only)",
+    "MRN00002782/2021-09-14a: allergen \"Dust mites\" not in catalog (text only)",
+    "MRN00002782/2021-09-14a: reaction \"Nasal congestion, sneezing\" not in catalog (text only)",
+    "left text-only (not verified): lab \"Thyroglobulin\" LOINC 3013-3 not found; closest real codes: 57780-9 Thyroglobulin and Thyroglobulin Ab panel - Serum or Plasma; 101568-4 Thyroglobulin and Thyroglobulin Ab panel - Tissue fine needle aspirate; 14918-7 Thyroglobulin [Moles/volume] in Serum or Plasma; 100796-2 Thyroglobulin [Mass/volume] in Body fluid; 97640-7 Thyroglobulin [Moles/volume] in Tissue fine needle aspirate",
+    "left text-only (not verified): lab \"Thyroglobulin Antibody\" LOINC 8098-9 not found; closest real codes: 96460-1 Thyroglobulin [Mass/volume] in Serum or Plasma by Immunoassay --post thyroglobulin antibody neutralization; 110119-5 Thyroglobulin Ab [Measurement] in Serum; 15210-8 Thyroglobulin Ab [Presence] in Serum; 5380-1 Thyroglobulin Ab [Units/volume] in Serum by Radioimmunoassay (RIA); 53919-7 Thyroglobulin Ab [Units/volume] in Tissue fine needle aspirate"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002782",
+      "given": "Maureen",
+      "family": "Dunn",
+      "birth_date": "1983-06-12",
+      "address_line": "41 Ward Ave",
+      "phone": "+1-347-555-0119",
+      "email": "maureen.dunn@example.test",
+      "summary": "Elementary school teacher with seasonal allergic rhinitis who joined in 2021. A right thyroid nodule found in 2023 proved to be papillary thyroid carcinoma, treated with total thyroidectomy and radioactive iodine; in 2026 her surveillance thyroglobulin rose without structural disease on ultrasound and is being followed by otolaryngology.",
+      "events": [
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care and physical",
+          "conditions": [
+            {
+              "label": "Seasonal allergic rhinitis",
+              "action": "history",
+              "note": "Pollen and dust mites; spring and fall flares; OTC loratadine as needed",
+              "icd10": "J30.2"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "loratadine 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily as needed for seasonal allergies",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Seasonal allergic rhinitis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies",
+              "type": "allergy"
+            },
+            {
+              "substance": "Seasonal pollen",
+              "reaction": "Sneezing, nasal congestion, itchy eyes",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Dust mites",
+              "reaction": "Nasal congestion, sneezing",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              73
+            ],
+            "hr": 70,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 65.1,
+            "height_cm": 165.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-14T16:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 190
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.38
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-14T16:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.69
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 114
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-14T16:30",
+              "results": [
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 109
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 94
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 178
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 116
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T16:30",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T16:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2021-09-14T15:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-09-14T16:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2021",
+              "action": "placed",
+              "order": "Records request, prior primary care",
+              "category": "procedure",
+              "reason": "Prior screening and immunization history"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and physical note",
+              "title": "New Patient Visit",
+              "date": "2021-09-14T16:25",
+              "author": "PCP",
+              "body": "New patient, 38F, elementary school teacher. Wants a practice she can reach directly. Records request to prior PCP signed today.\n\nNo active complaints. Only ongoing issue is seasonal allergies - sneezing, congestion, itchy eyes in spring and again in early fall, worse with dust at home. Uses OTC loratadine 10 mg on bad days, works well. Never seen an allergist, never needed a nasal spray.\n\nPMH: seasonal allergic rhinitis. No surgeries. No hospitalizations.\nMeds: loratadine 10 mg PRN.\nAllergies: no drug allergies. Environmental: pollen, dust mites.\nFH: mother - hypothyroidism, on replacement. Father - hypertension. Maternal aunt - papillary thyroid cancer, treated.\nSH: never smoker. 1-2 glasses of wine a week. No drugs. No radiation exposure.\nGYN: menses regular. Last Pap at prior office, she thinks 2018, normal.\nImmunizations: COVID series this winter through the school district clinic. Tdap within 10 years per her, will confirm with records.\n\nROS negative except allergy symptoms.\n\nExam: vitals as charted. Well, pleasant. HEENT: TMs clear, mild pale nasal turbinates, oropharynx normal. Neck supple, thyroid normal to palpation, no nodes. Heart RRR no murmur. Lungs clear bilaterally. Abd soft, non-tender. Ext no edema. Skin no concerning lesions. Neuro grossly normal.\n\nA/P\n1. Preventive: CBC, CMP, lipids. One-time HCV and HIV screening, she agrees. Pap - will confirm the date once records arrive. Flu shot once the clinic has stock. PHQ-2 0.\n2. Seasonal allergic rhinitis - stable on PRN loratadine. Fine to use daily through the season if needed.\n\nReturn for annual in a year."
+            }
+          ],
+          "state": {
+            "weight_kg": 65.3,
+            "height_cm": 165.0,
+            "labs": {
+              "Low Density Lipoprotein": 92
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-09-17a",
+          "kind": "portal_message",
+          "start": "2021-09-17T08:10",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Lab results",
+              "date": "2021-09-17T08:10",
+              "author": "PCP",
+              "body": "Hi Maureen - all of your labs came back normal: blood counts, kidney and liver function, sugar, and cholesterol. Hepatitis C and HIV screens were negative, and those are one-time tests so you won't need them again. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-20a",
+          "kind": "outside_records",
+          "start": "2021-09-20T11:05",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2017-03-22T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-01-30T09:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-02-20T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2021",
+              "action": "done",
+              "date": "2021-09-20T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside records",
+              "title": "Records received from prior primary care",
+              "date": "2021-09-20T11:05",
+              "author": "front desk",
+              "body": "Faxed records from patient's previous primary care office, 34 pages, scanned to media.\n\nAbstracted by RN for the chart:\n- Pap smear 05/2018: negative for intraepithelial lesion. No prior abnormal Paps documented.\n- Tdap 03/2017.\n- COVID-19 Pfizer dose 1 01/30/2021, dose 2 02/20/2021 (copy of vaccination card in packet).\n- Problem list there: allergic rhinitis.\n- Labs 2019: CBC and BMP unremarkable.\nNothing else of note. Pap next due 05/2021 if cytology alone every 3 yr - routed to PCP."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Chart review",
+              "date": "2021-09-21T07:45",
+              "author": "PCP",
+              "body": "Reviewed prior records. Pap 2018 normal - she's overdue by the 3-year schedule. Will do co-testing at her annual next fall rather than bring her back sooner; low risk. Tdap current until 2027."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "nurse_visit",
+          "start": "2021-10-05T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-05T15:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-05T15:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse note",
+              "title": "Immunization",
+              "date": "2021-10-05T16:00",
+              "author": "RN",
+              "body": "Came by after school for seasonal flu vaccine. No fever today, no prior reactions to flu shots. Quadrivalent given IM left deltoid, lot logged. VIS given. Waited 15 min, no issues."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-09a",
+          "kind": "portal_message",
+          "start": "2021-11-09T19:20",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-06T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "COVID booster",
+              "date": "2021-11-09T19:20",
+              "author": "patient",
+              "body": "Just letting you know I got the Pfizer booster Saturday at the pharmacy near school. Mostly just tired the next day. Can you put it in my record?"
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: COVID booster",
+              "date": "2021-11-10T09:02",
+              "author": "MA",
+              "body": "Added to your immunization record, dated 11/6. Thanks for letting us know!"
+            }
+          ]
+        },
+        {
+          "id": "2022-04-19a",
+          "kind": "portal_message",
+          "start": "2022-04-19T20:44",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Allergy question",
+              "date": "2022-04-19T20:44",
+              "author": "patient",
+              "body": "Pollen is brutal this year. Is it ok to take the loratadine every day for the next couple months instead of just when it's bad? Or should I be on something else?"
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Allergy question",
+              "date": "2022-04-20T07:30",
+              "author": "PCP",
+              "body": "Yes, daily loratadine through the season is completely fine and often works better than taking it on and off. If it stops being enough, let me know and we can talk about other options."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-21a",
+          "kind": "annual_physical",
+          "start": "2022-09-21T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              126,
+              70
+            ],
+            "hr": 73,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 64.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-21T16:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 231
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-21T16:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.68
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 114
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-21T16:20",
+              "results": [
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 94
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 90
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 170
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 109
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-09-21T16:05",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV DNA: not detected.",
+              "conclusion": "NILM. High-risk HPV negative.",
+              "issued": "2022-09-26T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-09-21T15:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-21T16:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-21T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-21T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-09-21T16:40",
+              "author": "PCP",
+              "body": "Annual. Feeling well. Rough allergy spring, did fine with daily loratadine April-June, back to as needed now. Third week of classes, tired but ok. No new symptoms.\n\nMeds: loratadine 10 mg PRN. NKDA.\nSH unchanged: never smoker, 1-2 drinks/wk. FH unchanged.\nLMP 2 wk ago, regular.\n\nExam: vitals as charted, BMI ~24. HEENT normal. Neck: thyroid normal, no masses or adenopathy. CV RRR. Lungs clear. Breasts: no masses, skin or nipple changes, no axillary nodes. Abd benign. Pelvic: normal external genitalia, vaginal walls normal, cervix without lesions, Pap with HPV obtained. Skin normal.\n\nA/P\n- Health maintenance: Pap with HPV today. CBC, CMP, lipids. Flu shot today. Discussed mammograms - she turns 40 next June, plan to start screening then, every other year is reasonable. PHQ-2 0.\n- Allergic rhinitis: loratadine daily in season, PRN otherwise.\nRTC 1 yr."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "portal_message",
+          "start": "2022-09-27T12:15",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Your results",
+              "date": "2022-09-27T12:15",
+              "author": "PCP",
+              "body": "Maureen - Pap was normal and HPV negative, so with co-testing you're set for 5 years (2027). Bloodwork all normal again, cholesterol nice. Enjoy the fall."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "portal_message",
+          "start": "2022-10-18T17:02",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-15T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Vaccine update",
+              "date": "2022-10-18T17:02",
+              "author": "patient",
+              "body": "Got the new bivalent covid shot this past weekend at the pharmacy. FYI for my chart."
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Vaccine update",
+              "date": "2022-10-19T08:40",
+              "author": "MA",
+              "body": "Got it, recorded as 10/15/22. Thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2023-07-26a",
+          "kind": "office_visit",
+          "start": "2023-07-26T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lump in front of neck",
+          "conditions": [
+            {
+              "label": "Thyroid nodule",
+              "action": "diagnosed",
+              "onset": "2023-07-12",
+              "note": "Right lobe, about 2 cm by palpation"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              75
+            ],
+            "hr": 86,
+            "temp_c": 36.5,
+            "spo2": 99,
+            "weight_kg": 67.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-07-26T11:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-07-26T11:00",
+              "results": [
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-07-26T10:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-07-26T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "thyroid-us-2023",
+              "action": "placed",
+              "order": "Thyroid ultrasound",
+              "category": "imaging",
+              "to": "Radiology",
+              "reason": "Palpable right thyroid nodule"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-07-26T10:55",
+              "author": "PCP",
+              "body": "S: Texted yesterday about a bump on her neck. About two weeks ago she caught it in the bathroom mirror - a lump low on the front of the neck, right of midline. Hasn't changed since. Not tender. Swallowing fine, voice normal. Otherwise feels like herself: weight steady, energy fine, mood fine. Periods regular. Never had radiation to the head or neck. Maternal aunt had papillary thyroid cancer.\n\nMeds: loratadine PRN. NKDA.\n\nO: Vitals normal, see flowsheet.\nNeck: gland not diffusely enlarged. Discrete firm nodule in the R lobe, roughly 2 cm, non-tender, moves with swallow. L lobe unremarkable. No cervical or supraclavicular adenopathy. Trachea midline.\nHeart/lungs normal.\n\nA/P: Right thyroid nodule, 2 cm, new to her. Clinically euthyroid.\n- TSH and free T4 today\n- Thyroid US ordered; scheduling will call with a slot this week or next\n- Depending on US, likely FNA. Explained most nodules are benign. She'll message with questions."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Free Thyroxine": 1.1,
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-07-27a",
+          "kind": "portal_message",
+          "start": "2023-07-27T13:30",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Thyroid labs",
+              "date": "2023-07-27T13:30",
+              "author": "PCP",
+              "body": "Your TSH and free T4 are both normal, so the nodule isn't making extra hormone. Ultrasound is booked for Monday the 31st - I'll be in touch as soon as I see it."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-31a",
+          "kind": "imaging",
+          "start": "2023-07-31T08:45",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "Thyroid ultrasound",
+              "performed": "2023-07-31T08:45",
+              "text": "Indication: Palpable right thyroid nodule.\nTechnique: Grayscale and color Doppler sonography of the thyroid and central and lateral neck.\nFindings: The thyroid gland is normal in overall size. Right lobe: solid hypoechoic nodule in the mid to lower pole measuring 1.9 x 1.5 x 1.4 cm, with irregular margins. Wider than tall. No echogenic foci. Remainder of the right lobe normal in echotexture. Left lobe: homogeneous, no nodules. Isthmus normal. No abnormal cervical lymph nodes in levels II through VI bilaterally.\nACR TI-RADS: composition solid (2), echogenicity hypoechoic (2), shape wider-than-tall (0), margin irregular (2), echogenic foci none (0); total 6 points, TR4.",
+              "conclusion": "1.9 cm solid hypoechoic right thyroid nodule with irregular margins, ACR TI-RADS TR4. Meets criteria for FNA. No abnormal cervical lymph nodes.",
+              "issued": "2023-07-31T13:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "thyroid-us-2023",
+              "action": "done",
+              "date": "2023-07-31T08:45"
+            }
+          ]
+        },
+        {
+          "id": "2023-08-01a",
+          "kind": "telephone",
+          "start": "2023-08-01T16:10",
+          "orders": [
+            {
+              "id": "thyroid-fna-2023",
+              "action": "placed",
+              "order": "Ultrasound-guided fine needle aspiration, right thyroid nodule",
+              "category": "procedure",
+              "to": "Interventional Radiology",
+              "reason": "TI-RADS 4 nodule 1.9 cm"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Ultrasound result",
+              "date": "2023-08-01T16:25",
+              "author": "PCP",
+              "body": "Called pt with US: 1.9 cm solid nodule R lobe, TR4, irregular margins, nodes normal. Recommends biopsy at this size. Reviewed what FNA involves - small needle, ultrasound guided, done in radiology, back to work same day. She'd like to get it done before school starts. FNA ordered, marked for next available."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-08a",
+          "kind": "procedure_visit",
+          "start": "2023-08-08T09:30",
+          "service": "Interventional Radiology",
+          "reason": "US-guided FNA right thyroid nodule",
+          "orders": [
+            {
+              "id": "thyroid-fna-2023",
+              "action": "done",
+              "date": "2023-08-08T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure note",
+              "title": "Ultrasound-guided thyroid FNA (outside radiology)",
+              "date": "2023-08-08T10:20",
+              "author": "radiology",
+              "body": "Procedure: Ultrasound-guided fine needle aspiration, right thyroid nodule.\nDate of service: 08/08/2023.\nAllergies: no known drug allergies; seasonal pollen, dust mites.\nConsent obtained after discussion of risks including bleeding and infection. Time-out performed.\nThe previously described 1.9 cm solid hypoechoic right lobe nodule was localized. After local anesthesia with 1% lidocaine, four passes were made with a 25-gauge needle under real-time guidance. Samples sent for cytology; on-site adequacy assessment satisfactory.\nNo immediate complications. Hemostasis with manual pressure. Patient tolerated well and left in stable condition.\nResults to the ordering provider."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-11a",
+          "kind": "outside_records",
+          "start": "2023-08-11T11:40",
+          "conditions": [
+            {
+              "label": "Malignant neoplasm of thyroid gland",
+              "action": "diagnosed",
+              "onset": "2023-08-08",
+              "note": "Papillary thyroid carcinoma, right lobe, by FNA (Bethesda VI)",
+              "icd10": "C73"
+            },
+            {
+              "label": "Thyroid nodule",
+              "action": "resolved",
+              "onset": "2023-07-12",
+              "note": "Characterized as papillary thyroid carcinoma"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-08-08T09:30",
+              "text": "Specimen: Thyroid, right lobe nodule, ultrasound-guided fine needle aspiration (4 passes).\nPreparation: direct smears (Diff-Quik and Papanicolaou) and liquid-based preparation.\nAdequacy: satisfactory for evaluation.\nMicroscopic: Cellular aspirate with branching papillary fragments containing fibrovascular cores. Follicular cells show enlarged, overlapping oval nuclei with fine powdery chromatin, longitudinal grooves and intranuclear pseudoinclusions. Scant colloid.",
+              "conclusion": "MALIGNANT (Bethesda category VI). Papillary thyroid carcinoma.",
+              "issued": "2023-08-11T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Biopsy result call",
+              "date": "2023-08-11T12:30",
+              "author": "PCP",
+              "body": "Cytology back: papillary thyroid carcinoma, Bethesda VI. Called Maureen and gave her the result by phone rather than leave it in the portal. She was quiet, then had good questions. Explained papillary is the most common type and usually very treatable, next step is a head and neck surgeon. She'd like to come in to talk it through in person - booked for 8/18. Told her she can call or text me before then."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-18a",
+          "kind": "office_visit",
+          "start": "2023-08-18T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up thyroid nodule biopsy",
+          "vitals": {
+            "bp": [
+              118,
+              76
+            ],
+            "hr": 74,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 65.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-08-18T13:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-referral-2023",
+              "action": "placed",
+              "order": "Otolaryngology referral",
+              "category": "referral",
+              "to": "Otolaryngology - Head and Neck Surgery",
+              "reason": "Papillary thyroid carcinoma, right lobe, 1.9 cm on US"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-08-18T13:50",
+              "author": "PCP",
+              "body": "Here to go over the thyroid biopsy and plan next steps. Swelling first noticed about a month ago. Since then no pain, no voice change, no trouble breathing, swallows solids and liquids fine. Feels well. Weight stable, eating normally, no recent illness. Allergies quiet this summer, using OTC loratadine as needed.\n\nPMH: seasonal allergic rhinitis. Meds: loratadine PRN. NKDA.\nSH: teacher, never smoker, social drinker. No recent travel, no toxic or environmental exposures she knows of.\n\nExam: T 36.7, P 74, BP 118/76, BMI 24.\nAnterior neck: firm, non-tender, mobile R thyroid nodule, about 1.8 cm on my exam. No cervical lymphadenopathy. Rest of exam normal.\n\nData: TSH and FT4 7/26 normal. US 7/31 TR4 nodule 1.9 cm, nodes normal. FNA 8/8 papillary carcinoma, Bethesda VI.\n\nA/P: Papillary thyroid carcinoma, right lobe, no clinically or sonographically abnormal nodes.\n- Referral to head and neck surgery (ENT). Sent with images and cytology. Asked for an early appointment.\n- She asked about treatment - explained surgery is the main step, the surgeon will talk about how much thyroid to remove, possible radioactive iodine after, and thyroid hormone replacement if the whole gland comes out.\n- Gave her a written summary to take home.\n- Will stay in touch through the process."
+            }
+          ],
+          "measure": [
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-06a",
+          "kind": "specialist_visit",
+          "start": "2023-09-06T14:15",
+          "service": "Otolaryngology",
+          "reason": "Papillary thyroid carcinoma",
+          "orders": [
+            {
+              "id": "ent-referral-2023",
+              "action": "done",
+              "date": "2023-09-06T14:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology - Head and Neck Surgery consultation",
+              "date": "2023-09-11T09:00",
+              "author": "otolaryngology",
+              "body": "Dear Doctor,\n\nThank you for referring Ms. Maureen Dunn, a 40-year-old elementary school teacher, whom I saw on 09/06/2023 for a right thyroid papillary carcinoma.\n\nShe found a right-sided neck lump in July. Thyroid function normal. Ultrasound 07/31/2023: 1.9 cm solid hypoechoic right lobe nodule, irregular margins, TR4, no abnormal nodes. FNA 08/08/2023: papillary thyroid carcinoma, Bethesda VI. She is asymptomatic - normal voice, no dysphagia or airway symptoms. No radiation exposure. Maternal aunt with papillary thyroid cancer; mother hypothyroid.\n\nPMH: seasonal allergic rhinitis. Medications: loratadine 10 mg as needed. Allergies: no known drug allergies; seasonal pollen, dust mites.\n\nExam: Well appearing. Voice normal. Firm, mobile right thyroid nodule, about 2 cm. No palpable cervical adenopathy. Flexible fiberoptic laryngoscopy: normal larynx, both vocal folds fully mobile and symmetric.\n\nImpression: Papillary thyroid carcinoma, right lobe, about 2 cm, clinically node negative.\n\nPlan: We discussed lobectomy versus total thyroidectomy at length. After considering the options she prefers total thyroidectomy, which also allows radioactive iodine and thyroglobulin follow-up if indicated. Risks discussed including recurrent laryngeal nerve injury, hypocalcemia, bleeding and lifelong thyroid hormone replacement. Surgery is planned for October with an overnight stay. Her pre-operative labs will be done at our hospital.\n\nI will keep you updated.\n\nOtolaryngology - Head and Neck Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "portal_message",
+          "start": "2023-09-12T21:05",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Surgery date + work form",
+              "date": "2023-09-12T21:05",
+              "author": "patient",
+              "body": "Surgery is set for October 11. The surgeon's office is doing the medical leave paperwork for school, but HR also wants a form from my regular doctor saying I'm under care. Can I drop it off? Also thank you for getting me in so fast."
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Surgery date + work form",
+              "date": "2023-09-13T07:20",
+              "author": "PCP",
+              "body": "Of course - drop it at the front desk or upload it here and I'll fill it out this week. Glad the timing worked out. Thinking of you."
+            },
+            {
+              "type": "Administrative note",
+              "title": "Form completed",
+              "date": "2023-09-15T14:00",
+              "author": "front desk",
+              "body": "Employer leave certification form completed and signed by PCP, faxed to district HR per patient request. Copy scanned."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "hospital_admission",
+          "start": "2023-10-11T07:30",
+          "end": "2023-10-12T11:15",
+          "service": "Otolaryngology",
+          "reason": "Total thyroidectomy for papillary thyroid carcinoma",
+          "medications": [
+            {
+              "drug": "levothyroxine sodium 0.125 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily on an empty stomach",
+              "dose": {
+                "value": 125,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Thyroid hormone replacement after total thyroidectomy"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-10-11T15:00",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-11T15:00",
+              "results": [
+                {
+                  "test": "Parathyroid Hormone, Intact",
+                  "value": 32
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-12T05:30",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary (outside hospital)",
+              "date": "2023-10-16T10:30",
+              "author": "otolaryngology",
+              "body": "Admission: 10/11/2023. Discharge: 10/12/2023.\nService: Otolaryngology - Head and Neck Surgery.\nAllergies: No known drug allergies. Environmental: seasonal pollen, dust mites.\n\nDiagnosis: Papillary thyroid carcinoma, right lobe.\nProcedure 10/11/2023: Total thyroidectomy. Both recurrent laryngeal nerves identified and preserved with nerve monitoring; four parathyroid glands identified and preserved in situ. Two small central compartment lymph nodes adjacent to the right lobe were removed with the specimen. Estimated blood loss minimal. No drain.\n\nHospital course: Uneventful. Voice normal post-op. Calcium checked post-op evening and the next morning, both normal; intact PTH post-op normal. No tingling or cramping. Tolerating diet, pain well controlled. Incision clean and dry.\n\nDischarge medications:\n- NEW: levothyroxine 125 mcg by mouth daily, on an empty stomach\n- loratadine 10 mg daily as needed (home)\n\nFollow-up: ENT clinic in about 2 weeks; final pathology will be reviewed there. Call for neck swelling, trouble breathing, numbness or tingling around the mouth or in the fingers."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Free Thyroxine": 1.4,
+              "Parathyroid Hormone, Intact": 31,
+              "Thyroid Stimulating Hormone": 1.2
+            }
+          }
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "outside_records",
+          "start": "2023-10-19T09:15",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-10-11T08:15",
+              "text": "Specimen: Thyroid, total thyroidectomy, with right central compartment lymph nodes.\nGross: Total thyroidectomy specimen, oriented. Right lobe contains a 1.8 cm firm tan-white lesion. Left lobe and isthmus unremarkable. Two lymph nodes identified.\nMicroscopic summary:\n- Histologic type: papillary thyroid carcinoma, classic type\n- Focality: unifocal\n- Tumor site: right lobe\n- Tumor size: 1.8 cm\n- Margins: negative\n- Extrathyroidal extension: not identified\n- Lymphovascular invasion: not identified\n- Lymph nodes: 0 of 2 involved\n- Left lobe and isthmus: benign thyroid tissue\n- Pathologic stage (AJCC 8th): pT1b pN0",
+              "conclusion": "Papillary thyroid carcinoma, classic type, right lobe, 1.8 cm, unifocal, margins negative, no extrathyroidal extension, no lymphovascular invasion; 0/2 lymph nodes. pT1b pN0.",
+              "issued": "2023-10-17T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Outside pathology review",
+              "date": "2023-10-19T12:10",
+              "author": "PCP",
+              "body": "Final path from thyroidectomy reviewed: classic PTC, 1.8 cm R lobe, unifocal, clear margins, no ETE, no LVI, nodes 0/2. pT1b N0. Encouraging. Surgeon seeing her next week to discuss RAI. Sent her a short note."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-25a",
+          "kind": "specialist_visit",
+          "start": "2023-10-25T10:40",
+          "service": "Otolaryngology",
+          "reason": "Post-operative visit",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-10-25T11:10",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "rai-referral-2023",
+              "action": "placed",
+              "order": "Nuclear medicine referral, radioactive iodine ablation",
+              "category": "referral",
+              "to": "Nuclear Medicine",
+              "reason": "Papillary thyroid carcinoma s/p total thyroidectomy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology post-operative visit",
+              "date": "2023-10-27T08:30",
+              "author": "otolaryngology",
+              "body": "Dear Doctor,\n\nMs. Dunn returned on 10/25/2023, two weeks after total thyroidectomy. She is recovering well. Voice is normal; no dysphagia; no perioral or fingertip paresthesias. Taking levothyroxine 125 mcg daily.\n\nAllergies: NKDA; seasonal pollen, dust mites.\n\nExam: Incision healing well without erythema, seroma or hematoma. Voice strong.\n\nCalcium today normal.\n\nPathology reviewed with her: classic papillary carcinoma, 1.8 cm, unifocal, margins negative, no extrathyroidal extension or lymphovascular invasion, 0/2 nodes (pT1b N0).\n\nPlan: After discussion she wishes to proceed with remnant ablation with radioactive iodine. Referral placed to nuclear medicine; preparation will be with recombinant TSH so she can stay on levothyroxine. Continue levothyroxine 125 mcg daily. I will see her in surveillance after the ablation with thyroglobulin and neck ultrasound.\n\nOtolaryngology - Head and Neck Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2023-11-07a",
+          "kind": "nurse_visit",
+          "start": "2023-11-07T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-11-07T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-11-07T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse note",
+              "title": "Immunization",
+              "date": "2023-11-07T15:58",
+              "author": "RN",
+              "body": "Flu vaccine, quadrivalent, R deltoid IM. Pt back at work since last week, neck incision healed. Feels well, afebrile. Tolerated."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "annual_physical",
+          "start": "2023-11-14T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "documents": [
+            {
+              "type": "Administrative note",
+              "title": "Appointment cancelled",
+              "date": "2023-11-09T10:15",
+              "author": "front desk",
+              "body": "Pt called to cancel annual on 11/14 - between surgery and the iodine treatment next month she has too many appointments. Will rebook in the new year."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2023-11-21a",
+          "kind": "portal_message",
+          "start": "2023-11-21T18:40",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-11-18T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Covid vaccine",
+              "date": "2023-11-21T18:40",
+              "author": "patient",
+              "body": "Got this year's covid vaccine on Saturday. Just for my records."
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Covid vaccine",
+              "date": "2023-11-22T08:15",
+              "author": "MA",
+              "body": "Recorded, thanks Maureen."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-06a",
+          "kind": "procedure_visit",
+          "start": "2023-12-06T09:00",
+          "service": "Nuclear Medicine",
+          "reason": "Radioactive iodine remnant ablation",
+          "orders": [
+            {
+              "id": "rai-referral-2023",
+              "action": "done",
+              "date": "2023-12-06T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nuclear medicine treatment summary",
+              "date": "2023-12-19T11:00",
+              "author": "nuclear medicine",
+              "body": "Patient: Maureen Dunn. DOB 06/12/1983.\nDiagnosis: Papillary thyroid carcinoma, s/p total thyroidectomy 10/11/2023, pT1b N0.\nAllergies: no known drug allergies; seasonal pollen, dust mites.\n\nPreparation: Low-iodine diet beforehand. Recombinant human TSH IM on 12/04/2023 and 12/05/2023. Remained on levothyroxine 125 mcg daily.\n\nTreatment 12/06/2023: I-131 sodium iodide 30 mCi orally for remnant ablation. Radiation safety precautions reviewed in writing, including time away from close contact with children; she will return to the classroom after the precaution period.\n\nPost-therapy whole-body scan 12/13/2023: Focal uptake in the thyroid bed consistent with a small remnant. No uptake in the neck nodes, chest or elsewhere outside physiologic distribution.\n\nImpression: Uncomplicated remnant ablation. Post-therapy scan shows thyroid bed uptake only.\nFollow-up with her otolaryngologist for thyroglobulin and ultrasound surveillance."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-17a",
+          "kind": "office_visit",
+          "start": "2024-01-17T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after thyroid cancer treatment",
+          "vitals": {
+            "bp": [
+              120,
+              68
+            ],
+            "hr": 70,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 65.6
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-01-17T15:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "to": "Radiology",
+              "reason": "Routine screening, age 40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-01-17T15:55",
+              "author": "PCP",
+              "body": "Catching up after the fall. Thyroidectomy 10/11, path pT1b N0 classic PTC. RAI 12/6 with Thyrogen prep, post-treatment scan bed uptake only. Back in the classroom since the post-RAI precautions ended. Energy good, sleeping ok, no palpitations, no tremor, no tingling. Voice normal. Takes levothyroxine 125 mcg every morning before breakfast, coffee 30-45 min later.\n\nAllergies: NKDA. Env: pollen, dust mites.\nMeds: levothyroxine 125 mcg daily, loratadine PRN.\n\nExam: vitals as charted, weight unchanged. Thyroidectomy scar well healed, no masses or nodes in the neck. Heart RRR. Lungs clear.\n\nA/P\n1. Papillary thyroid cancer s/p total thyroidectomy and RAI - recovering well. Surveillance with ENT (thyroglobulin + US, first around July). ENT set the dose and follows the TSH.\n2. Levothyroxine 125 mcg - she asked if we can handle refills here so she isn't calling the surgeon's office. Yes - 90-day supply with refills sent. Dose changes stay with ENT.\n3. Annual physical to reschedule for the fall; mammogram due now that she's 40 - ordered."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "imaging",
+          "start": "2024-03-12T16:00",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-03-12T16:00",
+              "text": "Exam: Bilateral screening mammogram with tomosynthesis. Baseline; no prior studies.\nBreast composition: scattered areas of fibroglandular density.\nFindings: No suspicious masses, architectural distortion or suspicious calcifications in either breast. Skin and nipples unremarkable. Axillary regions unremarkable.",
+              "conclusion": "BI-RADS 1: Negative. Routine screening recommended.",
+              "issued": "2024-03-13T10:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "done",
+              "date": "2024-03-12T16:00"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-13a",
+          "kind": "portal_message",
+          "start": "2024-03-13T17:45",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Mammogram result",
+              "date": "2024-03-13T17:45",
+              "author": "PCP",
+              "body": "Your first mammogram was normal. Next one in two years, spring 2026."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "pharmacy",
+          "start": "2024-05-07T09:20",
+          "documents": [
+            {
+              "type": "Refill request",
+              "title": "Pharmacy refill request",
+              "date": "2024-05-07T09:20",
+              "author": "RN",
+              "body": "Pharmacy fax: levothyroxine 125 mcg #90 - request to switch to a 90-day mail order supply per her insurance. New Rx sent to mail order pharmacy, same dose, 3 refills. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-10a",
+          "kind": "specialist_visit",
+          "start": "2024-07-10T09:40",
+          "service": "Otolaryngology",
+          "reason": "Thyroid cancer surveillance",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-07-10T08:50",
+              "results": [
+                {
+                  "test": "Thyroglobulin",
+                  "loinc": "3013-3",
+                  "unit": "ng/mL",
+                  "text": "<1"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-07-10T08:50",
+              "results": [
+                {
+                  "test": "Thyroglobulin Antibody",
+                  "loinc": "8098-9",
+                  "unit": "[IU]/mL",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-07-10T08:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.1
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Thyroid ultrasound",
+              "performed": "2024-07-10T08:15",
+              "text": "Indication: Papillary thyroid carcinoma, status post total thyroidectomy and radioactive iodine ablation; surveillance.\nComparison: Thyroid ultrasound 07/31/2023.\nFindings: Post-surgical changes of total thyroidectomy. The thyroid beds are clear without nodule, mass or abnormal vascularity. Cervical lymph nodes in levels II through VI bilaterally are normal in size and morphology with preserved fatty hila.",
+              "conclusion": "No sonographic evidence of residual or recurrent disease in the thyroid beds or cervical lymph nodes.",
+              "issued": "2024-07-10T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology surveillance visit",
+              "date": "2024-07-15T13:00",
+              "author": "otolaryngology",
+              "body": "Dear Doctor,\n\nI saw Ms. Dunn on 07/10/2024 for her first surveillance visit, about nine months after total thyroidectomy (pT1b N0 classic papillary carcinoma) and seven months after I-131 remnant ablation.\n\nShe feels well and has no neck symptoms. Voice normal. Medications: levothyroxine 125 mcg daily, loratadine as needed. Allergies: no known drug allergies; seasonal pollen, dust mites.\n\nExam: Healed incision. No masses or lymphadenopathy.\n\nResults: Thyroglobulin <1 ng/mL with negative thyroglobulin antibody. TSH within normal limits. Neck ultrasound today shows clear thyroid beds and normal-appearing cervical nodes.\n\nAssessment: Excellent response to therapy.\n\nPlan: Continue levothyroxine 125 mcg daily. Repeat thyroglobulin in one year.\n\nOtolaryngology - Head and Neck Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-18a",
+          "kind": "annual_physical",
+          "start": "2024-09-18T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              125,
+              70
+            ],
+            "hr": 78,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 65.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-18T16:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 232
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-18T16:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 89
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-18T16:15",
+              "results": [
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 63
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 87
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 91
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 171
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 108
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-18T16:15",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-09-18T15:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-18T16:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-18T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-18T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-18T16:35",
+              "author": "PCP",
+              "body": "Annual, first since 2022 (last year's was cancelled around her treatment). Doing well. ENT surveillance in July was clean: Tg <1, antibody neg, US clear - next check July 2025. On levothyroxine 125 mcg, no missed doses she can think of. Allergies did ok this spring with loratadine.\n\nNKDA. Env allergies pollen, dust mites.\nSH: teaching, never smoker, 1-2 drinks/wk.\nFH: mother hypothyroid, father HTN, maternal aunt PTC.\nGyn: menses regular.\n\nROS: no fatigue, no heat or cold intolerance, no palpitations, no hoarseness.\n\nExam: vitals as charted. Neck: well-healed low collar scar, no masses, no adenopathy. HEENT normal. CV RRR, no murmur. Lungs clear. Breasts without masses or axillary nodes. Abdomen soft. Skin normal.\n\nA/P\n- Health maintenance: CBC, CMP, lipids, and TSH since we're drawing anyway (copy to ENT). Flu shot given. Mammogram 3/2024 negative, next 2026. Pap/HPV 2022 negative, next 2027. Colon screening starts at 45. PHQ-2 0.\n- PTC in remission per ENT; levothyroxine refills here.\n- Allergic rhinitis stable.\nRTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-20a",
+          "kind": "portal_message",
+          "start": "2024-09-20T07:55",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Lab results",
+              "date": "2024-09-20T07:55",
+              "author": "PCP",
+              "body": "Everything looks good - TSH right in range on your current dose, blood counts and chemistries normal, cholesterol fine. I sent a copy of the TSH to your ENT."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-15a",
+          "kind": "portal_message",
+          "start": "2024-10-15T19:30",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-12T10:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Covid shot",
+              "date": "2024-10-15T19:30",
+              "author": "patient",
+              "body": "Updated covid shot done at the pharmacy 10/12. Sore arm, nothing else."
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Covid shot",
+              "date": "2024-10-16T08:20",
+              "author": "MA",
+              "body": "Thanks - added to your immunization list."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "portal_message",
+          "start": "2025-04-22T21:10",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Allergies + thyroid pill",
+              "date": "2025-04-22T21:10",
+              "author": "patient",
+              "body": "Tree pollen season again and I'm back on the loratadine every day. Quick question - is it ok to take it at the same time as my levothyroxine in the morning or should I space them out?"
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Allergies + thyroid pill",
+              "date": "2025-04-23T07:15",
+              "author": "PCP",
+              "body": "Loratadine doesn't interfere with levothyroxine absorption, so taking them together is fine. The ones to keep 4 hours away from your thyroid pill are calcium, iron and antacids."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-09a",
+          "kind": "specialist_visit",
+          "start": "2025-07-09T10:10",
+          "service": "Otolaryngology",
+          "reason": "Thyroid cancer surveillance",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-07-09T09:30",
+              "results": [
+                {
+                  "test": "Thyroglobulin",
+                  "loinc": "3013-3",
+                  "unit": "ng/mL",
+                  "text": "<1"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-09T09:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.3
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology follow-up",
+              "date": "2025-07-14T12:20",
+              "author": "otolaryngology",
+              "body": "Dear Doctor,\n\nMs. Dunn was seen 07/09/2025 for annual surveillance of papillary thyroid carcinoma treated with total thyroidectomy (10/2023) and I-131 remnant ablation (12/2023).\n\nNo symptoms. No new neck lumps, voice change or swallowing difficulty. Medications: levothyroxine 125 mcg daily; loratadine as needed. Allergies: NKDA; seasonal pollen, dust mites.\n\nExam: Neck without masses or lymphadenopathy. Normal voice.\n\nLabs: Thyroglobulin <1 ng/mL. TSH within normal limits.\n\nAssessment: No evidence of disease.\n\nPlan: Continue current levothyroxine. Return in six months with thyroglobulin.\n\nOtolaryngology - Head and Neck Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-17a",
+          "kind": "annual_physical",
+          "start": "2025-09-17T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              132,
+              77
+            ],
+            "hr": 77,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 64.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-17T16:25",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 269
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.73
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-17T16:25",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 98
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-17T16:25",
+              "results": [
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 96
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 95
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 173
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 114
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-17T16:25",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-09-17T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-17T16:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-17T16:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-17T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-17T16:50",
+              "author": "PCP",
+              "body": "42F, annual. Well. Second week back in the classroom. ENT in July: thyroglobulin still undetectable, TSH fine - they want her back in January now instead of a year out.\n\nMeds: levothyroxine 125 mcg daily, loratadine PRN (daily April-May this year).\nNKDA. Env: pollen, dust mites.\nNever smoker. Alcohol 1-2/wk.\n\nROS negative. PHQ-2 1 (a little tired the first weeks of school, nothing more).\n\nExam: vitals as charted, weight stable. Neck scar healed, no masses or nodes. Heart and lungs normal. Breasts normal, no axillary nodes. Abdomen benign. Skin without concerning lesions.\n\nA/P\n- Annual labs plus TSH. Flu vaccine today.\n- Screening: mammogram due 3/2026, will order closer to then. Pap 2027. Colorectal screening at 45 - will bring up in 2028.\n- PTC under ENT surveillance, no evidence of disease. Continue levothyroxine 125.\n- Seasonal allergic rhinitis, controlled.\nSee you next fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-19a",
+          "kind": "portal_message",
+          "start": "2025-09-19T12:40",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Results",
+              "date": "2025-09-19T12:40",
+              "author": "PCP",
+              "body": "All normal again, including the TSH. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-02a",
+          "kind": "pharmacy",
+          "start": "2025-12-02T10:05",
+          "documents": [
+            {
+              "type": "Refill request",
+              "title": "Levothyroxine renewal",
+              "date": "2025-12-02T10:05",
+              "author": "RN",
+              "body": "Mail order renewal request for levothyroxine 125 mcg, 90 days. Last TSH 9/17/25 normal. Renewed x 4 per standing protocol, PCP cosign."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-07a",
+          "kind": "specialist_visit",
+          "start": "2026-01-07T09:50",
+          "service": "Otolaryngology",
+          "reason": "Thyroid cancer follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-01-07T09:10",
+              "results": [
+                {
+                  "test": "Thyroglobulin",
+                  "loinc": "3013-3",
+                  "unit": "ng/mL",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-07T09:10",
+              "results": [
+                {
+                  "test": "Thyroglobulin Antibody",
+                  "loinc": "8098-9",
+                  "unit": "[IU]/mL",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-07T09:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-07T09:10",
+              "results": [
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-07T09:10",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology follow-up",
+              "date": "2026-01-12T15:10",
+              "author": "otolaryngology",
+              "body": "Dear Doctor,\n\nI saw Ms. Dunn, now 42, on 01/07/2026 for routine follow-up of papillary thyroid carcinoma, first found in July 2023 when she noticed a lump in the front of her neck. She had total thyroidectomy and I-131 ablation about two years ago (10/2023 and 12/2023; pT1b N0).\n\nShe has no symptoms. Medications: levothyroxine 125 mcg daily; loratadine 10 mg daily as needed for seasonal allergies. Allergies: no known drug allergies; seasonal pollen, dust mites.\nFamily history: maternal aunt with papillary thyroid carcinoma; mother with hypothyroidism; father with hypertension.\nSocial: never smoker, alcohol socially 1-2 drinks weekly, elementary school teacher.\n\nExam: Unremarkable. Neck without palpable masses or adenopathy.\n\nLabs (drawn today):\n- Thyroglobulin 10 ng/mL, up from <1 ng/mL in July 2025\n- Thyroglobulin antibody negative\n- TSH within normal limits\n- Free T4 within normal limits\n- Calcium within normal limits\n\nAssessment: Papillary thyroid carcinoma with a new rise in thyroglobulin after a previously undetectable level, antibody negative.\n\nPlan: Neck ultrasound in the next few weeks. Repeat thyroglobulin and antibody in three months. Continue levothyroxine 125 mcg daily. I reviewed with her that a rising thyroglobulin needs to be followed closely but does not by itself mean the cancer has returned.\n\nOtolaryngology - Head and Neck Surgery"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.4
+            }
+          }
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "portal_message",
+          "start": "2026-01-13T20:25",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "ENT results",
+              "date": "2026-01-13T20:25",
+              "author": "patient",
+              "body": "Did you see the ENT note? My thyroglobulin went from under 1 to 10. They're doing an ultrasound next week. I'm trying not to spiral. Is this the cancer coming back?"
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: ENT results",
+              "date": "2026-01-14T07:05",
+              "author": "PCP",
+              "body": "I did see it, and I understand why it's on your mind. A rise like this is the reason they check thyroglobulin - it tells them to look more closely, it doesn't give an answer on its own. Your exam was normal and your surgery and pathology were very favorable. The ultrasound is the right next step. I'll look at the result as soon as it posts, and call me or text anytime before then if you want to talk it through."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "imaging",
+          "start": "2026-01-21T08:30",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "Thyroid ultrasound",
+              "performed": "2026-01-21T08:30",
+              "text": "Indication: Papillary thyroid carcinoma status post total thyroidectomy and I-131 ablation; rising thyroglobulin.\nComparison: 07/10/2024.\nFindings: Post-thyroidectomy changes. No soft tissue mass, nodule or abnormal vascularity in either thyroid bed. Cervical lymph nodes in levels II through VI bilaterally are normal in size and morphology with preserved fatty hila; no cystic change, microcalcification or abnormal hilar flow.",
+              "conclusion": "No mass in the thyroidectomy bed. No suspicious cervical lymph nodes. Unchanged from 07/10/2024.",
+              "issued": "2026-01-21T12:45"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-22a",
+          "kind": "telephone",
+          "start": "2026-01-22T16:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Ultrasound result",
+              "date": "2026-01-22T16:15",
+              "author": "PCP",
+              "body": "Called pt re: neck US yesterday - thyroid bed clear, no suspicious nodes, same as 2024. ENT plans repeat Tg in April. She was relieved. Will follow along."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "portal_message",
+          "start": "2026-02-24T18:00",
+          "orders": [
+            {
+              "id": "mammo-2026",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "to": "Radiology",
+              "reason": "Routine screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Mammogram",
+              "date": "2026-02-24T18:00",
+              "author": "patient",
+              "body": "I think I'm due for my mammogram in March. Can you put the order in? Tuesdays after school are best."
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Mammogram",
+              "date": "2026-02-25T09:30",
+              "author": "MA",
+              "body": "Order is in. Radiology scheduling will call you to set up a Tuesday."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "imaging",
+          "start": "2026-03-10T16:15",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2026-03-10T16:15",
+              "text": "Exam: Bilateral screening mammogram with tomosynthesis.\nComparison: 03/12/2024.\nBreast composition: scattered areas of fibroglandular density.\nFindings: No suspicious mass, calcification or architectural distortion. Stable appearance compared with prior.",
+              "conclusion": "BI-RADS 1: Negative. Routine screening.",
+              "issued": "2026-03-11T09:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2026",
+              "action": "done",
+              "date": "2026-03-10T16:15"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-08a",
+          "kind": "specialist_visit",
+          "start": "2026-04-08T09:30",
+          "service": "Otolaryngology",
+          "reason": "Repeat thyroglobulin",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-04-08T08:55",
+              "results": [
+                {
+                  "test": "Thyroglobulin",
+                  "loinc": "3013-3",
+                  "unit": "ng/mL",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-08T08:55",
+              "results": [
+                {
+                  "test": "Thyroglobulin Antibody",
+                  "loinc": "8098-9",
+                  "unit": "[IU]/mL",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-08T08:55",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.4
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology follow-up",
+              "date": "2026-04-13T11:45",
+              "author": "otolaryngology",
+              "body": "Dear Doctor,\n\nMs. Dunn returned 04/08/2026 to recheck thyroglobulin after January's rise.\n\nShe remains asymptomatic. Medications unchanged: levothyroxine 125 mcg daily, loratadine as needed. Allergies: NKDA; seasonal pollen, dust mites.\n\nExam: Neck without masses or adenopathy.\n\nNeck ultrasound 01/21/2026: no thyroid bed mass, no suspicious cervical lymph nodes.\n\nLabs today: Thyroglobulin 9.8 ng/mL (10 in January). Thyroglobulin antibody negative. TSH within normal limits.\n\nAssessment: Papillary thyroid carcinoma with a detectable thyroglobulin that has held steady over three months, without structural disease on ultrasound.\n\nPlan: Continue levothyroxine 125 mcg daily. Repeat thyroglobulin, antibody and neck ultrasound in October 2026. We discussed that if the thyroglobulin rises further, additional imaging would be the next step.\n\nOtolaryngology - Head and Neck Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "portal_message",
+          "start": "2026-04-14T19:50",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Thyroglobulin again",
+              "date": "2026-04-14T19:50",
+              "author": "patient",
+              "body": "ENT says the number is basically the same (9.8) and they'll check again in October with another ultrasound. Is it weird that I'm relieved it didn't go down OR up?"
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Thyroglobulin again",
+              "date": "2026-04-14T21:05",
+              "author": "PCP",
+              "body": "Not weird at all - stable is good news here. Their plan makes sense to me. Enjoy April vacation."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T10:30",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Physical",
+              "date": "2026-08-18T10:30",
+              "author": "patient",
+              "body": "Hi, I'd like to book my physical for late September. Any Wednesday after 3:15 works."
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Physical",
+              "date": "2026-08-18T13:10",
+              "author": "front desk",
+              "body": "You're booked Wednesday 9/23 at 3:30 for your annual. See you then!"
+            }
+          ]
+        },
+        {
+          "id": "2026-09-23a",
+          "kind": "annual_physical",
+          "start": "2026-09-23T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Malignant neoplasm of thyroid gland|C73": {
+        "code": "C73",
+        "display": "Malignant neoplasm of thyroid gland",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Seasonal allergic rhinitis|J30.2": {
+        "code": "J30.2",
+        "display": "Other seasonal allergic rhinitis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "rejected": [
+      "lab \"Thyroglobulin\" LOINC 3013-3 not found; closest real codes: 57780-9 Thyroglobulin and Thyroglobulin Ab panel - Serum or Plasma; 101568-4 Thyroglobulin and Thyroglobulin Ab panel - Tissue fine needle aspirate; 14918-7 Thyroglobulin [Moles/volume] in Serum or Plasma; 100796-2 Thyroglobulin [Mass/volume] in Body fluid; 97640-7 Thyroglobulin [Moles/volume] in Tissue fine needle aspirate",
+      "lab \"Thyroglobulin Antibody\" LOINC 8098-9 not found; closest real codes: 96460-1 Thyroglobulin [Mass/volume] in Serum or Plasma by Immunoassay --post thyroglobulin antibody neutralization; 110119-5 Thyroglobulin Ab [Measurement] in Serum; 15210-8 Thyroglobulin Ab [Presence] in Serum; 5380-1 Thyroglobulin Ab [Units/volume] in Serum by Radioimmunoassay (RIA); 53919-7 Thyroglobulin Ab [Units/volume] in Tissue fine needle aspirate"
+    ]
+  }
+}

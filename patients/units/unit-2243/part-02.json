@@ -1,0 +1,526 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002243",
+      "events": [
+        {
+          "id": "2021-01-11a",
+          "kind": "specialist_visit",
+          "start": "2021-01-11T13:20",
+          "service": "Urology",
+          "reason": "Weakening urinary stream, nocturia, incomplete emptying",
+          "state": {"labs": {"Prostate Specific Antigen": 4.3}},
+          "measure": ["bp", "hr", "temp_c"],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2021-01-11T13:05", "results": [{"test": "Urine Blood", "text": "Negative"}, {"test": "Urine Leukocyte Esterase", "text": "Negative"}, {"test": "Urine Nitrite", "text": "Negative"}]},
+            {"panel": null, "collected": "2021-01-11T13:05", "results": [{"test": "Prostate Specific Antigen", "value": 4.3}, {"test": "Creatinine", "loinc": "2160-0", "unit": "mg/dL"}]}
+          ],
+          "medications": [
+            {"drug": "finasteride 5 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Benign prostatic hyperplasia"}
+          ],
+          "orders": [
+            {"id": "uro-referral-2020", "action": "done", "date": "2021-01-11T13:20"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology consultation",
+              "author": "urology",
+              "date": "2021-01-11T13:20",
+              "body": "Dear Doctor,\n\nThank you for referring Roger Desrosiers, 67, for lower urinary tract symptoms. He was evaluated by a urologist in 2017, including a diagnostic cystoscopy that showed an enlarged prostate and no bladder lesion, and has been on tamsulosin 0.4 mg at bedtime since.\n\nOver the past several months his stream has slowly weakened. He gets up at night to void and finishes with the sense that his bladder is not empty. He has had no dysuria, no gross hematuria and no urinary infections.\n\nOther history: Parkinson disease, hypertension, hyperlipidemia, diverticulosis. Medications: carbidopa-levodopa, rasagiline, lisinopril, metoprolol succinate, atorvastatin, aspirin 81 mg, tamsulosin. NKDA. Never smoker, no alcohol of note.\n\nExam: vital signs normal. Abdomen soft and non-distended, bladder not palpable. DRE: prostate symmetrically enlarged, smooth, non-tender, no nodules.\n\nData: urinalysis negative. Creatinine unchanged from his prior values. PSA 4.3, slightly above the laboratory's standard cutoff but within the expected range for his age and gland size.\n\nImpression: symptomatic BPH with recurrent symptoms on alpha blockade.\n\nPlan: add finasteride 5 mg daily to shrink the gland over the next 6-12 months; continue tamsulosin. Counseled that finasteride lowers PSA by roughly half, so future values should be read with that in mind. Follow-up here in six months with a repeat PSA.\n\nSincerely,\nUrology"
+            }
+          ]
+        },
+        {
+          "id": "2021-01-13a",
+          "kind": "pharmacy",
+          "start": "2021-01-13T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New prescription notice",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy notice",
+              "author": "MA",
+              "date": "2021-01-13T09:30",
+              "body": "Fill notification: finasteride 5 mg #90, prescribed by urology. Added to med list. Pt confirmed by phone he started it yesterday."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-08a",
+          "kind": "outside_records",
+          "start": "2021-03-08T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID-19 vaccine record",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-02-10T11:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-03T11:20"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "COVID-19 vaccination card",
+              "author": "front desk",
+              "date": "2021-03-08T14:10",
+              "body": "Pt brought vaccination card. Pfizer dose 1 2/10/21, dose 2 3/3/21 at the regional vaccination site. Entered in immunization record, copy scanned."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-22a",
+          "kind": "annual_physical",
+          "start": "2021-03-22T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "state": {"weight_kg": 78.6},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-03-22T09:35", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-03-22T09:35", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2021-03-22T09:35", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}]}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2021-03-22T09:00"},
+            {"procedure": "Venipuncture", "performed": "2021-03-22T09:35"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2021-03-22T09:00",
+              "body": "AWV, in person.\n\nBoth COVID shots done. Saw urology in January, started finasteride on top of tamsulosin; too early to tell much, no side effects. Neurology by video in November, no changes.\nNo falls. Independent. PHQ-2 0.\nAlcohol: an occasional glass of wine, 1-2/month.\n\nExam: vitals per flowsheet. R rest tremor, masking. Heart RRR. Lungs clear. Abd soft. No edema.\n\nPlan:\n- Wellness plan reviewed. Vaccines current.\n- HTN, HLD stable, labs today.\n- BPH on finasteride + tamsulosin per urology.\n- Routine follow-up booked for early July."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-04a",
+          "kind": "ed_visit",
+          "start": "2021-07-04T08:50",
+          "end": "2021-07-04T13:40",
+          "service": "Emergency Medicine",
+          "reason": "Painless bright red blood per rectum with clots",
+          "state": {"labs": {"Hemoglobin": 11.2, "Mean Corpuscular Volume": 90, "Platelets": 230}},
+          "vitals": [
+            {"time": "2021-07-04T08:55", "bp": [124, 76], "hr": 88, "rr": 14, "temp_c": 36.9},
+            {"time": "2021-07-04T11:30", "bp": [122, 74], "hr": 84, "rr": 14}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-07-04T09:05", "results": [{"test": "Hemoglobin", "value": 11.2}, {"test": "Mean Corpuscular Volume", "value": 90}, {"test": "Platelets", "value": 230}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2021-07-04T09:05", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-07-04T09:05", "results": [{"test": "Blood Urea Nitrogen"}, {"test": "Creatinine"}]}
+          ],
+          "conditions": [
+            {"label": "Diverticular hemorrhage of large intestine", "icd10": "K57.31", "action": "diagnosed", "onset": "2021-07-04"}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2021-07-04T08:50"}],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2021-07-07T08:30",
+              "body": "Regional hospital emergency department. Date of service 07/04/2021. Received 07/07/2021.\n\nCC: rectal bleeding.\n\nHPI: 67M with known diverticulosis and BPH (urology visit in January) woke feeling normal, had breakfast, then had sudden urgency and passed a large amount of red blood with small clots. No abdominal pain. No lightheadedness. No fever. Bowel habits unchanged. Never had this before.\n\nPMH: Parkinson disease, HTN, hyperlipidemia, BPH, diverticulosis, occasional constipation.\nMeds: carbidopa-levodopa, rasagiline, lisinopril, metoprolol succinate, atorvastatin, aspirin 81, tamsulosin, finasteride.\nAllergies: NKDA.\nSH: never smoker, occasional alcohol, lives with his wife, independent.\n\nVitals on arrival: T 36.9, BP 124/76, HR 88, RR 14.\nExam: alert, comfortable. Heart regular, lungs clear. Abdomen soft, not distended, no tenderness, guarding or mass. Rectal: bright red blood in the vault, no mass, no fissure.\n\nLabs: Hgb 11.2, MCV 90, plt 230. PT/INR normal. BMP within normal limits.\n\nED course: two large-bore IVs, crystalloid. Remained hemodynamically stable. GI consulted, bowel prep started for urgent colonoscopy. Admitted to medicine.\n\nImpression: acute painless hematochezia, presumed diverticular.\n\nEmergency medicine attending"
+            }
+          ]
+        },
+        {
+          "id": "2021-07-04b",
+          "kind": "hospital_admission",
+          "start": "2021-07-04T13:40",
+          "end": "2021-07-06T11:30",
+          "service": "Internal Medicine — Hospital Medicine",
+          "reason": "Diverticular hemorrhage",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-07-05T05:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-07-06T05:30", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "reports": [
+            {"study": "Colonoscopy report", "loinc": "18746-8", "performed": "2021-07-04T20:15", "text": "Indication: acute hematochezia. Sedation: monitored anesthesia care. Prep: rapid purge, fair. Scope advanced to the cecum, identified by the appendiceal orifice and ileocecal valve. Fresh blood and clots in the sigmoid colon. Scattered sigmoid diverticula. One sigmoid diverticulum with active oozing at its neck; 4 mL dilute epinephrine injected around it, then bipolar cautery applied with hemostasis. Observed for several minutes without further bleeding. Remaining colon to the cecum without blood after washing; no polyps or masses. Retroflexion in the rectum normal.", "conclusion": "Bleeding sigmoid diverticulum, treated with epinephrine injection and cautery with hemostasis. Sigmoid diverticulosis. No polyps."}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2021-07-04T13:40"},
+            {"procedure": "Colonoscopy, diagnostic", "performed": "2021-07-04T20:15"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2021-07-06T11:00"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary",
+              "author": "hospital medicine",
+              "date": "2021-07-07T08:31",
+              "body": "Admission 07/04/2021 - Discharge 07/06/2021. Received 07/07/2021.\n\nAdmitting diagnosis: hematochezia.\nDischarge diagnosis: diverticular hemorrhage, sigmoid colon, treated endoscopically.\n\nHospital course: 67M with Parkinson disease, HTN, hyperlipidemia, BPH and known diverticulosis admitted from the ED with painless hematochezia. Hemodynamically stable throughout on IV fluids. Colonoscopy the evening of admission, within 12 hours of arrival, found a bleeding sigmoid diverticulum, treated with epinephrine injection and cautery with good hemostasis. No further bleeding after the procedure. No transfusion needed. Aspirin held during admission; resumed at discharge. Diet advanced without issue.\n\nDischarge medications: unchanged home medications, carbidopa-levodopa 25/100 TID, rasagiline 1 mg qAM, lisinopril 20 mg, metoprolol succinate 50 mg, atorvastatin 40 mg, aspirin 81 mg, tamsulosin 0.4 mg qhs, finasteride 5 mg.\nAllergies: NKDA.\n\nFollow-up: PCP within one week with CBC. Return for recurrent bleeding, dizziness or black stools.\n\nHospital medicine"
+            }
+          ]
+        },
+        {
+          "id": "2021-07-06a",
+          "kind": "office_visit",
+          "start": "2021-07-06T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2021-07-12a",
+          "kind": "office_visit",
+          "start": "2021-07-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, diverticular bleed",
+          "state": {"labs": {"Hemoglobin": 11.9}},
+          "conditions": [
+            {"label": "Diverticular hemorrhage of large intestine", "icd10": "K57.31", "action": "resolved"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-07-12T10:30", "results": [{"test": "Hemoglobin", "value": 11.9}, {"test": "Hematocrit", "value": 35.6}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-07-12T10:00"},
+            {"procedure": "Venipuncture", "performed": "2021-07-12T10:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "author": "PCP",
+              "date": "2021-07-12T10:00",
+              "body": "Post-hospital visit. Discharge summary and colonoscopy report reviewed.\n\nAdmitted 7/4-7/6 with painless hematochezia, bleeding sigmoid diverticulum injected and cauterized at colonoscopy. No transfusion. Since home: no further blood, stools brown, formed. Energy a little low the first few days, better now. No dizziness standing up. Back on aspirin.\n\nExam: BP and HR fine, no orthostatic symptoms. Conjunctivae slightly pale. Abd soft, nontender. Heart RRR.\n\nA/P:\n1. Diverticular hemorrhage s/p endoscopic hemostasis - resolved clinically. CBC today. Fiber, fluids. Reviewed warning signs and when to go to the ED.\n2. Aspirin - primary prevention only. Discussed; he wants to stay on it given his father's MI. Continue for now.\n3. Rest of meds unchanged."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-14a",
+          "kind": "portal_message",
+          "start": "2021-07-14T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "CBC result",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CBC result",
+              "author": "PCP",
+              "date": "2021-07-14T13:00",
+              "body": "Hemoglobin 11.9, up from the hospital. Heading the right way. Recheck in about 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-26a",
+          "kind": "specialist_visit",
+          "start": "2021-07-26T14:00",
+          "service": "Urology",
+          "reason": "BPH follow-up on finasteride",
+          "state": {"labs": {"Prostate Specific Antigen": 2.3}},
+          "labs": [
+            {"panel": null, "collected": "2021-07-26T13:45", "results": [{"test": "Prostate Specific Antigen", "value": 2.3}]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology follow-up",
+              "author": "urology",
+              "date": "2021-07-26T14:00",
+              "body": "Urology follow-up.\n\nMr. Desrosiers returns six months after finasteride was added. He notes a stronger stream and fewer nighttime trips. He was admitted earlier this month for a diverticular bleed, now resolved. No hematuria. No sexual side effects he wishes to discuss.\n\nPSA today 2.3, the expected fall on finasteride.\n\nImpression: BPH, improved on combination therapy.\nPlan: continue finasteride 5 mg and tamsulosin 0.4 mg. Yearly follow-up with PSA.\n\nUrology"
+            }
+          ]
+        },
+        {
+          "id": "2021-08-23a",
+          "kind": "lab_only",
+          "start": "2021-08-23T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Repeat CBC",
+          "state": {"labs": {"Hemoglobin": 13.5}},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-08-23T08:15", "results": [{"test": "Hemoglobin", "value": 13.5}, {"test": "Hematocrit", "value": 40.4}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2021-08-23T08:15"}],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CBC result",
+              "author": "PCP",
+              "date": "2021-08-24T12:40",
+              "body": "Hgb 13.5, nearly back to his usual. No further checks needed for this. Message sent to pt."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-04a",
+          "kind": "nurse_visit",
+          "start": "2021-10-04T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine and COVID booster",
+          "state": {"labs": {"Hemoglobin": 14.0}},
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2021-10-04T10:25"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-10-04T10:27"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-04T10:25"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "author": "RN",
+              "date": "2021-10-04T10:20",
+              "body": "High-dose flu L deltoid. Pfizer booster R deltoid, 7 months after primary series. Screening questions negative. Observed 15 min without reaction."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-18a",
+          "kind": "specialist_visit",
+          "start": "2021-10-18T13:00",
+          "service": "Neurology",
+          "reason": "Parkinson disease follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up letter",
+              "author": "neurology",
+              "date": "2021-10-18T13:00",
+              "body": "Movement disorders clinic, in-person follow-up.\n\nMr. Desrosiers is seen for yearly review of Parkinson disease with his wife. He had a diverticular bleed in July treated at colonoscopy and has recovered. Motor symptoms are much as last year. No falls, no hallucinations, no confusion.\n\nExam: rest tremor right hand, bradykinesia right more than left, cogwheeling at the right wrist. Gait with reduced arm swing on the right; pull test with one step back.\n\nAssessment: Parkinson disease, stable.\nPlan: carbidopa-levodopa 25/100 three times daily and rasagiline 1 mg daily, unchanged. Return in 6 months.\n\nMovement disorders neurologist"
+            }
+          ]
+        },
+        {
+          "id": "2021-11-15a",
+          "kind": "office_visit",
+          "start": "2021-11-15T09:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "social": [{"item": "History of alcohol use", "value": "Former drinker, none since October 2021"}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2021-11-15T09:45"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2021-11-15T09:45",
+              "body": "Routine f/u.\n\nNo further bleeding since July. Stream better since finasteride, up once a night. Neurology in October, no changes. Has stopped drinking altogether as of last month, wasn't much to begin with.\nNo CP, SOB, edema.\n\nExam: vitals ok. Heart RRR, lungs clear, no edema. Tremor unchanged.\n\nA/P: HTN, HLD, BPH, PD all stable. Continue meds. AWV in February with labs."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-28a",
+          "kind": "annual_physical",
+          "start": "2022-02-28T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-02-28T09:40", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-02-28T09:40", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2022-02-28T09:40", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}]},
+            {"panel": "Urinalysis", "collected": "2022-02-28T09:40", "results": [{"test": "Urine Blood", "text": "Negative"}, {"test": "Urine Protein", "text": "Negative"}]}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2022-02-28T09:00"},
+            {"procedure": "Venipuncture", "performed": "2022-02-28T09:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2022-02-28T09:00",
+              "body": "AWV.\n\nWinter uneventful. No bleeding. Urinary sx improved on finasteride. No alcohol since October. Walking indoors at the mall when it's icy.\nFunctional: independent ADLs/IADLs. No falls. PHQ-2 0.\nNeurology follow-up booked for early April.\n\nExam: per flowsheet. Masking, R tremor, heart RRR, lungs clear, no edema.\n\nPlan:\n- Labs today incl UA.\n- Vaccines: due for PCV20 this fall (PPSV23 2019). Flu + COVID per fall schedule.\n- Continue meds. RTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-07a",
+          "kind": "portal_message",
+          "start": "2022-03-07T19:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Wife's question about hallucinations",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question about something Roger is seeing",
+              "author": "patient",
+              "date": "2022-03-07T19:40",
+              "body": "Hi, this is his wife writing on his account. For a few weeks now Roger has been telling me he sees small animals running across the living room floor, like mice or a cat. There is nothing there. He isn't upset by it and knows they aren't real once he looks closer. He's otherwise himself. Is this something to worry about? His neurology appointment is April 4."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question about something Roger is seeing",
+              "author": "PCP",
+              "date": "2022-03-08T08:15",
+              "body": "Thank you for telling me. Visual hallucinations like this can happen with Parkinson disease and sometimes with its medicines, so neurology is the right place for it. Please keep the April 4 appointment and tell them exactly what you told me. If he becomes confused, frightened, feverish, or the visions change suddenly, call me the same day. I'll send a note to his neurologist ahead of the visit."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-04a",
+          "kind": "specialist_visit",
+          "start": "2022-04-04T10:30",
+          "service": "Neurology",
+          "reason": "Visual hallucinations",
+          "measure": ["bp", "hr"],
+          "conditions": [
+            {"label": "Parkinson disease psychosis", "icd10": "F06.0", "action": "diagnosed", "onset": "2022-02-01"},
+            {"label": "Mild cognitive impairment", "action": "diagnosed", "onset": "2022-04-04"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up letter",
+              "author": "neurology",
+              "date": "2022-04-04T10:30",
+              "body": "Movement disorders clinic\n\nDear Doctor, thank you for your note ahead of today's visit.\n\nRoger Desrosiers, 68, with Parkinson disease of about five years' duration (also BPH and diverticulosis), returns for evaluation of visual hallucinations. For two months he has been seeing small animals scurrying across the room; when he looks for them, nothing is there. He says nothing about his medicines has changed.\n\nCurrent medicines: carbidopa-levodopa 25/100 three times daily, lisinopril 20 mg, metoprolol succinate 50 mg, atorvastatin 40 mg, aspirin 81 mg, tamsulosin 0.4 mg at bedtime.\nNKDA. Never smoker; former occasional alcohol, stopped in October.\n\nVital signs normal.\nExam: rest tremor, bradykinesia and cogwheel rigidity, unchanged in distribution from last fall. MMSE 26/30.\n\nAssessment:\n1. Parkinson disease with psychosis (well-formed visual hallucinations).\n2. Mild cognitive impairment, MMSE 26/30.\n\nPlan: we discussed the hallucinations with him and his wife. We will see him again in follow-up.\n\nMovement disorders neurologist"
+            }
+          ]
+        },
+        {
+          "id": "2022-05-16a",
+          "kind": "office_visit",
+          "start": "2022-05-16T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-05-16T09:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2022-05-16T09:30",
+              "body": "F/u. With wife.\n\nNeurology letter from 4/4 reviewed: PD with psychosis (visual hallucinations), MMSE 26/30, mild cognitive impairment. No medication change made there.\nWife says the animals come and go; he is not bothered by them. Still managing his own pills with the pill box, she double-checks.\nOtherwise well. No CP/SOB. No bleeding. Urinary ok.\n\nExam: BP fine. Alert, conversant, appropriate. Masking, R tremor. Heart RRR. Lungs clear.\n\nA/P:\n1. PD with psychosis, MCI - per neurology. Added to problem list.\n2. HTN, HLD, BPH stable. Continue current meds.\nRTC 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-25a",
+          "kind": "specialist_visit",
+          "start": "2022-07-25T15:00",
+          "service": "Urology",
+          "reason": "Yearly BPH follow-up",
+          "state": {"labs": {"Prostate Specific Antigen": 2.2}},
+          "labs": [
+            {"panel": null, "collected": "2022-07-25T14:40", "results": [{"test": "Prostate Specific Antigen", "value": 2.2}]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology follow-up",
+              "author": "urology",
+              "date": "2022-07-25T15:00",
+              "body": "Urology yearly visit. BPH on finasteride and tamsulosin, voiding well, nocturia once. No hematuria or infections. PSA 2.2, stable on finasteride. Continue both. See in one year.\n\nUrology"
+            }
+          ]
+        },
+        {
+          "id": "2022-09-26a",
+          "kind": "nurse_visit",
+          "start": "2022-09-26T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and pneumococcal vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2022-09-26T10:45"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2022-09-26T10:47"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-09-26T10:45"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "author": "RN",
+              "date": "2022-09-26T10:40",
+              "body": "High-dose flu R deltoid, Prevnar 20 L deltoid (PPSV23 10/2019). Wife with him. Tolerated. Pneumococcal series now complete. Bivalent COVID booster next month."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "telephone",
+          "start": "2022-10-11T11:30",
+          "service": "Neurology",
+          "reason": "Medication change by telephone",
+          "medications": [
+            {"drug_text": "pramipexole dihydrochloride 0.25 MG Oral Tablet", "action": "start", "sig": "Take 1/2 tablet by mouth three times daily for 7 days, then 1 tablet three times daily", "dose": {"value": 0.25, "unit": "mg"}, "frequency": "TID", "route": "Oral", "course": "chronic", "reason": "Parkinson disease"}
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Neurology telephone note (copy to PCP)",
+              "author": "neurology",
+              "date": "2022-10-11T11:30",
+              "body": "Movement disorders clinic, telephone.\n\nSpoke with Mr. Desrosiers and his wife about his motor control. After discussion, adding pramipexole: 0.125 mg three times daily for one week, then 0.25 mg three times daily. Continue carbidopa-levodopa 25/100 three times daily and rasagiline 1 mg daily. Reviewed side effects including sleepiness, swelling, impulse control problems and hallucinations; call us with any of these. Prescription sent.\n\nMovement disorders neurologist"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-17a",
+          "kind": "nurse_visit",
+          "start": "2022-10-17T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID booster",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-17T10:05"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-17T10:05"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "COVID booster",
+              "author": "MA",
+              "date": "2022-10-17T10:00",
+              "body": "Pfizer bivalent booster, L deltoid. Med list updated: neurology added pramipexole last week. No reaction during observation."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-28a",
+          "kind": "office_visit",
+          "start": "2022-11-28T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-11-28b",
+          "kind": "telephone",
+          "start": "2022-11-28T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment call",
+              "author": "front desk",
+              "date": "2022-11-28T14:30",
+              "body": "Called re: missed 10:15 appt. Wife answered, said they mixed up the date. Will fold it into the February wellness visit."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-05a",
+          "kind": "portal_message",
+          "start": "2022-12-05T20:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Wife concerned about hallucinations and suspicion",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Roger is seeing things again and worse",
+              "author": "patient",
+              "date": "2022-12-05T20:10",
+              "body": "This is his wife again. For about a month Roger has been seeing the animals in the house again, more than in the spring. Now he is also convinced the neighbors are stealing from him. Nothing is missing. This started a few weeks after neurology added the new pill in October. What should we do?"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Call to neurology and to patient's wife",
+              "author": "PCP",
+              "date": "2022-12-06T08:40",
+              "body": "Read wife's message. Called her: no fever, no urinary symptoms, eating and drinking, no falls, no new medicines besides pramipexole since October. He is not aggressive and she feels safe at home.\nCalled movement disorders clinic, spoke with the nurse; concern for dopamine agonist related psychosis. Their earliest neurologist visit is Jan 9, they will keep him on the cancellation list and the neurologist will review today and call them about any interim change. Wife told to call 911 for any danger to him or others, otherwise call me with changes. Will see their note."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,4376 @@
+{
+  "unit": "unit-2736",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002736",
+      "given": "Jill",
+      "family": "Winslow",
+      "birth_date": "1974-09-16",
+      "address_line": "64 Haydenville Road",
+      "phone": "+1-617-555-0162",
+      "email": "jill.winslow@example.test",
+      "summary": "Administrative assistant with hypothyroidism after radioactive iodine for Graves' disease who joins in 2020 and over six years collects a run of autoimmune diagnoses at outside specialists: discoid lupus, lichen planus, seropositive rheumatoid arthritis, primary biliary cholangitis, then central hypothyroidism that turns out to be a macroprolactinoma found in July 2026 and just started on cabergoline.",
+      "events": [
+        {
+          "id": "2020-09-02a",
+          "kind": "outside_records",
+          "start": "2020-09-02T14:10",
+          "reason": "Records from prior primary care office",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records received",
+              "date": "2020-09-02T14:10",
+              "author": "front desk",
+              "body": "Records packet received by fax ahead of new-patient appointment 9/10. 38 pages. Scanned to chart.\n\nContents per cover summary from her previous office:\n- Problem list: hypothyroidism following radioactive iodine for Graves' disease (Graves' diagnosed 2015, I-131 ablation 2016, on replacement since)\n- Medication: levothyroxine 125 mcg daily\n- Allergies: NKDA\n- Colonoscopy 2015, age 40, early because of father's colon cancer: normal, no polyps, 10-year interval\n- Pap with HPV co-test 2019: NILM, HPV negative\n- Screening mammogram 2019: BI-RADS 1\n- Tdap 2017\n\nFlagged for PCP review."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-10a",
+          "kind": "establish_care",
+          "start": "2020-09-10T08:40",
+          "end": "2020-09-10T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient visit, establish care",
+          "conditions": [
+            {
+              "label": "Hypothyroidism",
+              "action": "history",
+              "onset": "2016-05-01"
+            },
+            {
+              "label": "History of Graves' disease treated with radioactive iodine ablation",
+              "action": "history",
+              "onset": "2016-03-01",
+              "icd10": "Z86.39"
+            },
+            {
+              "label": "Family history of colon cancer",
+              "action": "history"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "levothyroxine sodium 0.125 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning on an empty stomach",
+              "dose": {
+                "value": 125,
+                "unit": "ug"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypothyroidism"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              115,
+              73
+            ],
+            "hr": 75,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 71.9,
+            "height_cm": 164.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-09-10T09:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 89
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-09-10T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.61
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 302
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-09-10T09:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 98
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 188
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 66
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 121
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-10T09:45",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-10T09:45",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Administrative assistant"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 40-64",
+              "performed": "2020-09-10T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-09-10T09:35"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2020",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit — Establish Care",
+              "date": "2020-09-10T10:05",
+              "author": "PCP",
+              "body": "45 y/o woman, new to the practice. Works as an administrative assistant; she wanted a doctor she could actually reach and liked the membership model.\n\nThyroid: Graves' in 2015, treated with radioactive iodine in 2016, hypothyroid since and on levothyroxine 125 mcg every morning. Has an endocrinologist she sees about once a year and plans to keep. Feels well on this dose. No palpitations, no heat or cold intolerance, energy fine.\n\nGyn: periods regular. Prior practice did a Pap/HPV co-test in 2019, normal. Mammogram 2019 normal.\nGI: colonoscopy at 40 because of her father, normal.\n\nPMH: as above. PSH: none.\nMeds: levothyroxine 125 mcg daily.\nAllergies: NKDA.\nFH: mother with rheumatoid arthritis. Father had autoimmune hypothyroidism and died of colon cancer at 65. Sister with lupus (SLE).\nSH: never smoker, does not drink, no drug use. Desk job with a fair amount of filing.\n\nROS: negative in full except as above.\n\nExam: well-appearing, NAD. BP and HR per vitals. HEENT unremarkable. Neck: no thyroid tissue palpable, no nodes. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Extremities without edema. Skin without rash. Neuro nonfocal. Mood and affect normal.\n\nA/P\n1. Hypothyroidism after RAI for Graves' — clinically euthyroid. TSH today. Continue 125 mcg. Endo stays involved.\n2. Health maintenance — Pap current (due 2024). Mammogram ordered. Colonoscopy due 2025 given FH. HCV and HIV once today. Flu shot given. Tdap 2017, current.\n3. Labs: CMP, CBC, lipids, TSH.\n\nRTC one year for physical, sooner as needed. She has the practice cell number."
+            }
+          ],
+          "state": {
+            "bp": [
+              116,
+              74
+            ],
+            "weight_kg": 72.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 2.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2020-09-11a",
+          "kind": "portal_message",
+          "start": "2020-09-11T12:20",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab results",
+              "date": "2020-09-11T12:20",
+              "author": "PCP",
+              "body": "Hi Jill — everything from yesterday came back fine. Thyroid level is right in range on the 125, so no change. Kidney and liver tests, blood count and cholesterol all normal, and the hepatitis C and HIV screens were negative. I put the mammogram order in; the imaging center should call you to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-15a",
+          "kind": "telephone",
+          "start": "2020-09-15T10:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request — endocrinology",
+              "date": "2020-09-15T10:30",
+              "author": "front desk",
+              "body": "Records release signed at intake. Requested last two years of notes and labs from her outside endocrinology group. Fax confirmation received."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "imaging",
+          "start": "2020-10-06T07:50",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2020-10-06T07:50",
+              "text": "Bilateral digital screening mammogram with tomosynthesis. Comparison: outside study 2019. The breasts are heterogeneously dense, which may obscure small masses. No suspicious mass, architectural distortion or suspicious calcifications. No change from prior.",
+              "conclusion": "BI-RADS 1: Negative. Routine annual screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2020",
+              "action": "done",
+              "date": "2020-10-06T07:50"
+            }
+          ]
+        },
+        {
+          "id": "2020-10-07a",
+          "kind": "portal_message",
+          "start": "2020-10-07T08:45",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "date": "2020-10-07T08:45",
+              "author": "PCP",
+              "body": "Your mammogram was normal. Dense breast tissue is common and was the same as before; no extra imaging needed. Next one in a year."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-08a",
+          "kind": "pharmacy",
+          "start": "2020-12-08T16:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request — levothyroxine",
+              "date": "2020-12-08T16:05",
+              "author": "MA",
+              "body": "Pharmacy fax: levothyroxine 125 mcg #90, needs new Rx from us (previous prescriber out of area). Last TSH 9/10 in range. Sent 90-day supply with 3 refills per PCP standing order."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-09a",
+          "kind": "telehealth_visit",
+          "start": "2021-03-09T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-03-04T07:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2021-03-09T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth — Thyroid Check",
+              "date": "2021-03-09T12:55",
+              "author": "PCP",
+              "body": "Video visit from her car on lunch break. Six-month check on levothyroxine. Endo appointment got pushed with everything this past year, so she asked us to check the TSH in between.\n\nFeels the same as always. Weight steady by her scale. No palpitations, tremor, constipation or cold intolerance.\n\nTSH 3/4 in range.\n\nA/P: Hypothyroidism after RAI, stable on 125 mcg. No change. She'll see endo when they can get her in. COVID vaccine: she has a pharmacy appointment next month — encouraged."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 2.0
+            }
+          }
+        },
+        {
+          "id": "2021-05-06a",
+          "kind": "outside_records",
+          "start": "2021-05-06T10:15",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-08T15:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-29T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Immunization record — COVID-19 primary series",
+              "date": "2021-05-06T10:15",
+              "author": "MA",
+              "body": "Patient uploaded her vaccination card through the portal. Pfizer dose 1 on 4/8/21 and dose 2 on 4/29/21 at a retail pharmacy. Entered in immunization history; matches state registry."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-17a",
+          "kind": "portal_message",
+          "start": "2021-06-17T19:42",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Scheduling question",
+              "date": "2021-06-17T19:42",
+              "author": "patient",
+              "body": "Hi, can I book my physical for September instead of waiting for the reminder? Work is quieter then. Also my endocrinologist finally rescheduled me for January so I'm all set there. Thanks, Jill"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Scheduling question",
+              "date": "2021-06-18T09:05",
+              "author": "front desk",
+              "body": "Hi Jill, you're booked for Thursday 9/23 at 8:20 am. Please come fasting for labs. See you then!"
+            }
+          ]
+        },
+        {
+          "id": "2021-09-23a",
+          "kind": "annual_physical",
+          "start": "2021-09-23T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              120,
+              70
+            ],
+            "hr": 89,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 72.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-23T08:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-23T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.65
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 256
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-23T08:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 90
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 173
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 118
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 114
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-23T08:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2021-09-23T08:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-09-23T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2021",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-09-23T09:10",
+              "author": "PCP",
+              "body": "Here for yearly physical. Doing well overall. Still on levothyroxine 125 mcg, taking it first thing with water. Periods regular. Mentions some warm spells at night the last couple of months, not bad enough to want to do anything yet — will watch.\n\nMeds: levothyroxine 125 mcg daily. NKDA.\nSH unchanged, never smoker, no alcohol.\n\nROS otherwise negative.\n\nExam: BP and pulse normal. Pleasant, well. HEENT normal. No thyroid tissue felt, no nodes. Heart regular without murmur. Lungs clear. Abdomen benign. No edema. Skin clear. Breast exam deferred to imaging per her preference.\n\nA/P\n- Health maintenance: mammogram ordered. Pap due 2024. Colonoscopy due 2025. Flu shot today. COVID series complete in April.\n- Hypothyroidism: TSH with today's labs.\n- Night warmth, likely early perimenopause; she will let me know if it gets disruptive.\n\nPHQ-2 negative. RTC 1 year."
+            }
+          ],
+          "state": {
+            "bp": [
+              114,
+              72
+            ],
+            "weight_kg": 72.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-09-24a",
+          "kind": "portal_message",
+          "start": "2021-09-24T13:10",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Annual labs reviewed",
+              "date": "2021-09-24T13:10",
+              "author": "PCP",
+              "body": "Labs from 9/23 reviewed: CMP, CBC, lipids normal. TSH in range. Released to portal with a note — no changes."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "imaging",
+          "start": "2021-10-12T16:30",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2021-10-12T16:30",
+              "text": "Bilateral screening mammogram with tomosynthesis compared with 10/2020 and 2019. Heterogeneously dense tissue. No mass, distortion or suspicious calcification. Stable.",
+              "conclusion": "BI-RADS 1: Negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2021",
+              "action": "done",
+              "date": "2021-10-12T16:30"
+            }
+          ]
+        },
+        {
+          "id": "2021-10-26a",
+          "kind": "office_visit",
+          "start": "2021-10-26T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hot flashes and night sweats",
+          "conditions": [
+            {
+              "label": "Menopausal and female climacteric states",
+              "action": "diagnosed",
+              "onset": "2021-08-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "estradiol 1 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Perimenopausal vasomotor symptoms"
+            },
+            {
+              "drug_text": "progesterone 200 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth at bedtime on days 1-12 of each calendar month",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "NIGHTLY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Endometrial protection with estrogen therapy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              79
+            ],
+            "hr": 63,
+            "weight_kg": 72.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-10-26T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Vasomotor Symptoms",
+              "date": "2021-10-26T16:20",
+              "author": "PCP",
+              "body": "S: Back to talk about the night sweats she mentioned at her physical. Now 3-4 hot flashes a day and waking soaked most nights, sleep is broken, dragging at work. Cycles still regular, roughly monthly. No abnormal bleeding. No personal or family history of clot, stroke, breast cancer. Never smoker. Wants something that will actually work.\n\nO: BP normal. Well-appearing. No further exam today.\n\nA: Perimenopausal vasomotor symptoms, moderate to severe, healthy 47 y/o.\n\nP: Discussed hormone therapy, nonhormonal options, risks in plain numbers. She chose HT.\n- Estradiol 1 mg PO daily.\n- Uterus intact: micronized progesterone 200 mg at bedtime days 1-12 each month. Expect a withdrawal bleed after the progesterone days.\n- Mammogram from 10/12 negative.\n- Check in 2-3 months. Message sooner with heavy or irregular bleeding."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-11-18a",
+          "kind": "portal_message",
+          "start": "2021-11-18T20:14",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-13T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Update on the hormone pills",
+              "date": "2021-11-18T20:14",
+              "author": "patient",
+              "body": "Just an update — sleeping through most nights now, hot flashes way down. Period came on schedule after the progesterone days like you said. Also got my COVID booster on Saturday at the pharmacy, not sure if that shows up for you."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Update on the hormone pills",
+              "date": "2021-11-19T08:50",
+              "author": "RN",
+              "body": "Great to hear, Jill. I've added the 11/13 booster to your record. Keep the follow-up with your endocrinologist in January and let us know if anything changes before then."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-31a",
+          "kind": "specialist_visit",
+          "start": "2022-01-31T10:20",
+          "service": "Endocrinology",
+          "reason": "Hypothyroidism follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-01-31T10:50",
+              "resulted": "2022-01-31T16:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 7.2
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Triiodothyronine, total",
+                  "loinc": "3053-6",
+                  "unit": "ng/dL",
+                  "value": 80
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up letter",
+              "date": "2022-02-03T11:40",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group — clinic letter\nDate of service: 01/31/2022\n\nDear Doctor,\n\nI saw Ms. Winslow today for her scheduled hypothyroidism review. She was treated with radioactive iodine for Graves' disease and has been well controlled on levothyroxine 125 mcg daily for several years.\n\nOver the last two months she has felt progressively more tired, her skin is drier, and she is cold in rooms that feel comfortable to others. She is taking her levothyroxine correctly and her sleep has not changed. Weight is unchanged. Of note, your office started oral estradiol with cyclic progesterone about three months ago for menopausal symptoms, which she says have improved a great deal.\n\nMedications: levothyroxine 125 mcg daily; estradiol 1 mg daily; micronized progesterone 200 mg days 1-12.\nAllergies: none known.\nFamily history: mother with RA, father with autoimmune hypothyroidism, sister with SLE.\nSocial: never smoker, no alcohol, administrative assistant.\n\nExamination is unremarkable apart from a mildly slow pulse. No thyroid tissue palpable.\n\nResults today:\n  TSH 7.2 mIU/L (0.4-4.0)\n  Free T4 0.7 ng/dL (0.8-1.8)\n  Total T3 80 ng/dL (100-200)\n\nImpression: She is under-replaced, and the timing fits the oral estrogen. Oral estradiol raises thyroxine-binding globulin, and a patient without her own thyroid reserve cannot compensate, so free hormone falls on an unchanged dose.\n\nRecommendations:\n1. Rather than chase this with a higher levothyroxine dose, I would suggest moving her to transdermal estradiol, which has little effect on binding proteins. She is agreeable. I will leave the hormone prescription with you.\n2. Keep levothyroxine at 125 mcg.\n3. Repeat TSH and free T4 in about 8 weeks after the switch. If still low we will increase the dose.\n4. Routine follow-up here in a year.\n\nThank you for letting me share in her care.\n\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2022-02-04a",
+          "kind": "telephone",
+          "start": "2022-02-04T09:15",
+          "medications": [
+            {
+              "drug_text": "estradiol 1 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Switched to transdermal per endocrinology"
+            },
+            {
+              "drug_text": "84 HR estradiol 0.00208 MG/HR Transdermal System",
+              "action": "start",
+              "sig": "Apply 1 patch to lower abdomen twice weekly; rotate sites",
+              "dose": {
+                "value": 0.05,
+                "unit": "mg/d"
+              },
+              "frequency": "TWICE_WEEKLY",
+              "route": "Transdermal",
+              "course": "chronic",
+              "reason": "Perimenopausal vasomotor symptoms"
+            }
+          ],
+          "orders": [
+            {
+              "id": "tft-2022-03",
+              "action": "placed",
+              "order": "TSH and free T4 in 8 weeks",
+              "category": "lab",
+              "reason": "Recheck after estrogen route change"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Endo recs — estrogen route change",
+              "date": "2022-02-04T09:30",
+              "author": "PCP",
+              "body": "Read the endo letter from 1/31: TSH 7.2, FT4 low, attributed to oral estradiol raising TBG. Called Jill. Stopping estradiol 1 mg tablets, starting estradiol 0.05 mg/day patch twice weekly. Same progesterone schedule. Levothyroxine stays at 125. TSH/FT4 in 8 weeks, standing order in. She asked whether the tiredness will lift — told her it should over a few weeks once levels settle; call if not."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-22a",
+          "kind": "office_visit",
+          "start": "2022-02-22T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Right shoulder pain",
+          "vitals": {
+            "bp": [
+              112,
+              71
+            ],
+            "hr": 82,
+            "weight_kg": 72.5
+          },
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-02-22T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-referral",
+              "action": "placed",
+              "order": "Orthopedics referral",
+              "category": "referral",
+              "to": "Orthopedics",
+              "reason": "Right shoulder pain with overhead reaching"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Right Shoulder",
+              "date": "2022-02-22T11:30",
+              "author": "PCP",
+              "body": "Right shoulder has hurt since around the holidays, so about 3 months. Worst when she reaches up to the top shelves of the filing cabinets at work, which she does all day. No fall, no injury. Not waking her at night most nights. Right-handed.\n\nShoulder exam brief today: no swelling or redness, sore with reaching overhead. Neck full ROM, no radicular symptoms.\n\nA/P: Right shoulder pain with overhead activity, sounds like a rotator cuff/impingement picture. She would rather go straight to orthopedics — her employer's plan covers it and a coworker had a good experience. Referral placed. Ice, avoid repetitive overhead reaching where she can (asked about a step stool at work)."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-03-16a",
+          "kind": "specialist_visit",
+          "start": "2022-03-16T14:00",
+          "service": "Orthopedics",
+          "reason": "Right shoulder pain",
+          "conditions": [
+            {
+              "label": "Impingement syndrome of right shoulder",
+              "action": "diagnosed",
+              "onset": "2021-12-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "naproxen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily with food as needed for shoulder pain, up to 3 weeks",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Right shoulder impingement"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Shoulder X-ray",
+              "performed": "2022-03-16T13:40",
+              "text": "Right shoulder, three views (AP, scapular Y, axillary). Bones are normally mineralized. No fracture or dislocation. Glenohumeral and acromioclavicular joints are preserved. Acromion type normal. No calcific tendinopathy. Soft tissues unremarkable.",
+              "conclusion": "No bony abnormality of the right shoulder."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-referral",
+              "action": "done",
+              "date": "2022-03-16T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedics consultation",
+              "date": "2022-03-18T08:20",
+              "author": "orthopedics",
+              "body": "ORTHOPAEDIC SURGERY — OFFICE CONSULTATION\nDOS 03/16/2022\nReferring: primary care\n\nCC: R shoulder pain x 3 mo.\n\nHPI: 47 yo RHD F, admin asst, endo saw her about two months ago for fatigue/cold intolerance on her thyroid replacement. R shoulder pain for 3 months, aggravated by overhead reaching to file on high shelves at work. Denies trauma.\n\nPMH: hypothyroid s/p RAI for Graves. PSH: none. Meds: levothyroxine, estradiol patch, progesterone. All: NKDA.\nSH: never smoker, no EtOH.\n\nEXAM R shoulder: TTP lateral shoulder. Neer +, Hawkins +. PROM full. AROM full but painful arc in abduction 60-120 deg. Strength 5/5 ER/IR/supraspinatus with pain on empty can. No erythema, warmth or swelling. NVI distally.\n\nIMAGING: XR R shoulder 3V today — no bony abnormality.\n\nIMPRESSION: R shoulder subacromial impingement syndrome.\n\nPLAN:\n- PT for scapular stabilization and cuff strengthening, 6-8 wks\n- Naproxen 500 mg BID with food PRN, 2-3 wks max\n- Activity modification at work (step stool, lower the heavy files)\n- If not improving at 6-8 weeks, return for subacromial corticosteroid injection\n\nOrthopaedic Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2022-03-29a",
+          "kind": "lab_only",
+          "start": "2022-03-29T07:35",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-03-29T07:35",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.4
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.1
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "tft-2022-03",
+              "action": "done",
+              "date": "2022-03-29T07:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "TSH/FT4 after patch switch",
+              "date": "2022-03-29T15:05",
+              "author": "PCP",
+              "body": "TSH 2.4, FT4 1.1 — back to normal on the patch with no dose change. Copy to endo. Portal note to patient: levels look good, keep everything the same. She replied that her energy is back to normal."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Free Thyroxine": 1.1,
+              "Thyroid Stimulating Hormone": 2.4
+            }
+          }
+        },
+        {
+          "id": "2022-04-05a",
+          "kind": "outside_records",
+          "start": "2022-04-05T13:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Physical therapy initial evaluation",
+              "date": "2022-04-05T13:00",
+              "author": "physical therapy",
+              "body": "OUTPATIENT PHYSICAL THERAPY — INITIAL EVALUATION\nDx: R shoulder impingement (per ortho)\nEval date: 03/31/2022\n\nSubjective: pain with overhead filing at work, 5/10 at worst. Goals: reach top shelf without pain.\nObjective: painful arc 60-120 abduction; mild scapular dyskinesis R; cuff strength 4+/5 ER with pain. Special tests consistent with impingement.\nAssessment: good rehab potential.\nPlan: 2x/week x 6 weeks: scapular stabilization, posterior capsule stretching, progressive cuff strengthening, HEP. Ergonomic advice for workstation."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "outside_records",
+          "start": "2022-05-17T10:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Physical therapy discharge summary",
+              "date": "2022-05-17T10:30",
+              "author": "physical therapy",
+              "body": "PT DISCHARGE SUMMARY — R shoulder\nVisits attended: 11 of 12.\nAt discharge: pain 1/10 with overhead reach, no painful arc, cuff strength 5/5. Independent with home exercise program. Patient reports using a step stool at work.\nGoals met. Discharged to HEP. Return to ortho as needed."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "office_visit",
+          "start": "2022-06-21T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Facial rash",
+          "vitals": {
+            "bp": [
+              115,
+              67
+            ],
+            "hr": 71,
+            "temp_c": 36.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-06-21T16:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral-2022",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "Facial rash worse with sun"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Facial Rash",
+              "date": "2022-06-21T16:40",
+              "author": "PCP",
+              "body": "Rash on her cheeks and nose that has been there since sometime in the winter and flares every time she is in the sun — worse since the days got longer. Not itchy, a little tender. Tried hydrocortisone OTC without much change. No joint pain, no mouth sores, no fevers. Feels fine otherwise. Shoulder much better after PT.\n\nExam: scaly red plaques on both cheeks and the bridge of the nose, some with lighter centers. Rest of skin not examined in detail today.\n\nA/P: Photosensitive facial rash. Not typical rosacea or seb derm to my eye and with the sister's lupus I want dermatology to see it and likely biopsy. Referral placed. Sunscreen SPF 50 and a hat in the meantime."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-08-01a",
+          "kind": "specialist_visit",
+          "start": "2022-08-01T09:30",
+          "service": "Dermatology",
+          "reason": "Facial rash",
+          "conditions": [
+            {
+              "label": "Discoid lupus erythematosus",
+              "action": "diagnosed",
+              "onset": "2022-01-01",
+              "icd10": "L93.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "clobetasol propionate 0.0005 MG/MG Topical Ointment",
+              "action": "start",
+              "sig": "Apply a thin layer to facial plaques twice daily on weekdays; none on weekends",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "chronic",
+              "reason": "Discoid lupus erythematosus"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2022-08-01T09:55",
+              "text": "Specimen: skin, left cheek, 4 mm punch biopsy.\nMicroscopic: Interface dermatitis with vacuolar change at the dermoepidermal junction. A perivascular and periadnexal mononuclear infiltrate is present in the superficial and deep dermis. Follicular plugging is noted.",
+              "conclusion": "Interface dermatitis with perivascular and periadnexal mononuclear infiltrate, consistent with discoid (chronic cutaneous) lupus erythematosus in the appropriate clinical setting.",
+              "issued": "2022-08-05T14:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Punch skin biopsy, single lesion",
+              "performed": "2022-08-01T09:55"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral-2022",
+              "action": "done",
+              "date": "2022-08-01T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology consultation",
+              "date": "2022-08-12T10:10",
+              "author": "dermatology",
+              "body": "Dermatology — new patient consultation\nService date 8/1/2022, letter completed after pathology\n\nThank you for sending Ms. Winslow, a 47-year-old woman with hypothyroidism after RAI for Graves' disease, for a facial eruption.\n\nShe describes several months of facial rash that is clearly worse after sun. She has no joint pains, no oral ulcers, and no systemic symptoms.\n\nMeds: levothyroxine, estradiol patch, progesterone. Allergies: none.\n\nOn examination there are sharply marginated red plaques over both malar cheeks and the nasal dorsum. Centers are hypopigmented with a hyperpigmented rim; several plaques carry adherent scale, and there is atrophy with early scarring. I found nothing similar elsewhere on full skin exam. No lymphadenopathy. Remainder of the exam unremarkable.\n\nA 4 mm punch biopsy from the left cheek shows an interface dermatitis with a perivascular and periadnexal mononuclear infiltrate.\n\nAssessment: Discoid lupus erythematosus, localized to the face. No clinical features of systemic lupus today; with her sister's SLE I have told her what to watch for.\n\nPlan:\n- Clobetasol 0.05% ointment twice daily on weekdays to active plaques, off at weekends; we discussed atrophy risk on the face and the reason for the pulsed schedule.\n- Daily broad-spectrum SPF 50+, wide-brim hat, sun avoidance midday.\n- Antimalarial therapy is the next step if lesions keep forming.\n- Follow up here as needed or if new lesions.\n\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2022-08-15a",
+          "kind": "portal_message",
+          "start": "2022-08-15T19:10",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Question about the skin cream",
+              "date": "2022-08-15T19:10",
+              "author": "patient",
+              "body": "The dermatologist's letter says discoid lupus. Does that mean I have what my sister has? And she gave me a strong steroid ointment for my face, is that safe to use for a long time?"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Question about the skin cream",
+              "date": "2022-08-16T07:30",
+              "author": "PCP",
+              "body": "Good questions. Discoid lupus is a skin-only form; it is related to lupus but most people with it never develop the whole-body kind your sister has. Your exam and history don't show signs of that, and we'll keep an eye out at your visits. The weekday-on, weekend-off schedule is exactly how dermatologists use the strong ointment on the face to keep it safe — stick to their plan and sunscreen every day."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "annual_physical",
+          "start": "2022-09-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Impingement syndrome of right shoulder",
+              "action": "resolved",
+              "onset": "2021-12-01"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              72
+            ],
+            "hr": 69,
+            "temp_c": 36.4,
+            "spo2": 98,
+            "weight_kg": 72.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-20T08:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 91
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Glucose",
+                  "value": 99
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-20T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.51
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 263
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-20T08:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 101
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 191
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 132
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 127
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-20T08:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-09-20T08:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-20T08:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-09-20T08:55",
+              "author": "PCP",
+              "body": "Yearly visit.\n\nInterval: endo in January — TSH had drifted up on oral estrogen, switched to the patch, recheck in March normal. Ortho for right shoulder impingement in March, did PT, discharged in May; reaches overhead without pain now. Dermatology in August diagnosed discoid lupus on the face by biopsy — using clobetasol on weekdays, wearing sunscreen religiously, plaques flatter.\n\nVasomotor symptoms controlled on patch plus cyclic progesterone; monthly withdrawal bleeds, nothing irregular.\n\nMeds: levothyroxine 125 mcg daily, estradiol 0.05 mg/day patch twice weekly, progesterone 200 mg nightly days 1-12, clobetasol 0.05% ointment to face weekdays.\nNKDA.\n\nExam: vitals fine. Face with a few flat pink plaques on cheeks, faint scarring, no active scale. Neck no nodes. Heart regular, lungs clear. Abdomen soft. R shoulder full ROM, negative Hawkins. No edema. No joint swelling.\n\nA/P\n1. Hypothyroidism after RAI: TSH today.\n2. Discoid lupus, face: per derm. No systemic features.\n3. R shoulder impingement: resolved after PT. Off problem list.\n4. Hormone therapy for vasomotor symptoms: continue, revisit yearly.\n5. HM: flu today. Mammogram ordered. Pap 2024. Colonoscopy 2025. Bivalent COVID booster at her pharmacy next month.\n\nRTC 1 year."
+            }
+          ],
+          "state": {
+            "bp": [
+              118,
+              76
+            ],
+            "weight_kg": 72.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-09-21a",
+          "kind": "portal_message",
+          "start": "2022-09-21T12:05",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Annual labs",
+              "date": "2022-09-21T12:05",
+              "author": "PCP",
+              "body": "9/20 labs all normal including TSH on 125 mcg. No changes. Released to portal."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-13a",
+          "kind": "imaging",
+          "start": "2022-10-13T12:15",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-10-13T12:15",
+              "text": "Bilateral screening digital breast tomosynthesis. Compared with 10/2021 and 10/2020. Heterogeneously dense breasts. No suspicious mass, calcification or distortion. Skin and nipples normal.",
+              "conclusion": "BI-RADS 1: Negative. Annual screening recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "done",
+              "date": "2022-10-13T12:15"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-27a",
+          "kind": "outside_records",
+          "start": "2022-10-27T09:20",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-22T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization notice",
+              "date": "2022-10-27T09:20",
+              "author": "MA",
+              "body": "Pharmacy notification: Pfizer bivalent COVID-19 booster given 10/22/22. Added to immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "specialist_visit",
+          "start": "2023-03-21T13:15",
+          "service": "Dermatology",
+          "reason": "Itchy rash on wrists, trunk and ankles",
+          "conditions": [
+            {
+              "label": "Lichen planus",
+              "action": "diagnosed",
+              "onset": "2022-09-15"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "triamcinolone acetonide 1 MG/ML Topical Cream",
+              "action": "start",
+              "sig": "Apply to itchy body lesions twice daily for up to 4 weeks at a time; not on the face",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "chronic",
+              "reason": "Lichen planus"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-03-21T13:40",
+              "text": "Specimen: skin, left volar wrist, 4 mm punch.\nMicroscopic: Compact hyperkeratosis with wedge-shaped hypergranulosis and irregular acanthosis. A dense band-like lymphocytic infiltrate hugs the dermoepidermal junction with basal vacuolar change and scattered colloid bodies.",
+              "conclusion": "Lichenoid interface dermatitis consistent with lichen planus.",
+              "issued": "2023-03-27T11:05"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Punch skin biopsy, single lesion",
+              "performed": "2023-03-21T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology return visit",
+              "date": "2023-03-31T15:30",
+              "author": "dermatology",
+              "body": "Dermatology — follow-up letter\nDate of visit: 03/21/2023\n\nDear colleague,\n\nMs. Winslow came back to us, this time not for her face (the discoid lupus is quiet on pulsed clobetasol and strict photoprotection) but for an itchy eruption of about six months. It began on both wrists and has spread to the trunk and ankles. The itch is intense. Nothing new in her soaps, lotions or medications.\n\nExamination: numerous flat-topped, violaceous, polygonal papules across the extremities and trunk, several with a fine white lacy surface pattern. Inside the cheeks there are white reticular patches on the buccal mucosa, which she had not noticed. No lymph nodes enlarged.\n\nPunch biopsy from the left wrist: hyperkeratosis, acanthosis and a band-like lymphocytic infiltrate at the dermoepidermal junction.\n\nAssessment: Lichen planus, cutaneous and reticular oral involvement.\n\nPlan:\n- Triamcinolone 0.1% cream twice daily to body lesions, in 4-week runs.\n- The oral lesions are asymptomatic; we will simply watch them. Dental checkups as usual.\n- Continue clobetasol for the face as before.\n- Return if not settling in 2-3 months.\n\nWith kind regards,\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2023-05-11a",
+          "kind": "portal_message",
+          "start": "2023-05-11T07:48",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Refill request",
+              "date": "2023-05-11T07:48",
+              "author": "patient",
+              "body": "Good morning, the skin doctor said I could ask you for refills of the triamcinolone cream instead of waiting for their office. The itching is so much better, the spots are flattening out, I just want a tube on hand. Thank you!"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill sent",
+              "date": "2023-05-11T10:20",
+              "author": "RN",
+              "body": "Triamcinolone 0.1% cream 80 g with 1 refill sent to her pharmacy per PCP. Reminded her not for the face."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              123,
+              79
+            ],
+            "hr": 80,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 73.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-19T08:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 93
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-19T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.66
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 277
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-19T08:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 102
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 189
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 65
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 112
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-19T08:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-09-19T08:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-19T09:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-09-19T09:20",
+              "author": "PCP",
+              "body": "Annual. Feels well.\n\nSkin: lichen planus diagnosed by derm in March; triamcinolone cleared the itch, only a few flat dark marks left on the wrists. Oral patches don't bother her. DLE on face quiet.\nThyroid: no symptoms, endo yearly.\nHT: still on patch + cyclic progesterone, happy with it, regular withdrawal bleeds. Discussed duration — she wants to keep going for now; revisit at 50.\n\nMeds: levothyroxine 125 mcg, estradiol patch 0.05 twice weekly, progesterone 200 mg days 1-12, clobetasol 0.05% oint face PRN flares, triamcinolone 0.1% cream body PRN.\nNKDA.\n\nPE: vitals normal. Skin: postinflammatory hyperpigmented macules volar wrists; faint atrophic scars cheeks; no active plaques. Mouth: faint lacy white streaks bilateral buccal mucosa. Neck, heart, lungs, abdomen normal. Joints without swelling. No edema.\n\nA/P\n- HM: flu today; mammogram ordered; updated COVID at pharmacy when available. Pap due next year.\n- Labs: CMP, CBC, lipids, TSH.\n- Chronic skin conditions per derm.\n\nPHQ-2: 1. RTC 1 yr."
+            }
+          ],
+          "state": {
+            "bp": [
+              120,
+              76
+            ],
+            "weight_kg": 73.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-09-20a",
+          "kind": "portal_message",
+          "start": "2023-09-20T11:40",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Annual labs",
+              "date": "2023-09-20T11:40",
+              "author": "PCP",
+              "body": "Labs from 9/19: CMP, CBC, lipids normal. TSH in range. Patient notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "imaging",
+          "start": "2023-10-12T17:05",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-10-12T17:05",
+              "text": "Screening bilateral DBT. Comparison 10/2022, 10/2021. Breast density: heterogeneously dense. No new mass, suspicious calcifications or architectural distortion.",
+              "conclusion": "BI-RADS 1: Negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "done",
+              "date": "2023-10-12T17:05"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "outside_records",
+          "start": "2023-10-24T14:40",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-21T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization notice",
+              "date": "2023-10-24T14:40",
+              "author": "MA",
+              "body": "2023-2024 COVID-19 vaccine (Pfizer) given at pharmacy 10/21/23 per state registry feed. Entered."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-06a",
+          "kind": "office_visit",
+          "start": "2023-11-06T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Joint stiffness and hand swelling",
+          "vitals": {
+            "bp": [
+              111,
+              80
+            ],
+            "hr": 68,
+            "temp_c": 36.4,
+            "spo2": 99,
+            "weight_kg": 71.2
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-11-06T11:20",
+              "resulted": "2023-11-07T09:40",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 50
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 30
+                },
+                {
+                  "test": "Rheumatoid Factor",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Cyclic Citrullinated Peptide Antibody",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Antinuclear Antibodies",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-11-06T11:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.71
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 283
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-11-06T11:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.83
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 86
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-11-06T10:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "rheum-referral",
+              "action": "placed",
+              "order": "Rheumatology referral",
+              "category": "referral",
+              "to": "Rheumatology",
+              "reason": "Inflammatory polyarthritis of hands and wrists"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Hand and Wrist Swelling",
+              "date": "2023-11-06T11:35",
+              "author": "PCP",
+              "body": "S: For about six months her hands are stiff every morning, takes well over an hour before she can type properly. Both hands and wrists puffy. Some evenings she runs a low-grade temperature. Down about 5 lb without trying (scale here agrees, 71.2 kg vs 73.5 in Sept). Mom has RA and she's \"pretty sure this is that.\" No rash beyond her known skin issues, no mouth ulcers, no Raynaud's, no chest pain.\n\nO: Vitals reviewed, afebrile now. Boggy swelling and tenderness over the MCPs and PIPs of both hands, wrists tender. No deformity, no nodules. Rest of joints unremarkable.\n\nA: Symmetric inflammatory small-joint polyarthritis, high suspicion for RA with the family history.\n\nP:\n- ESR, CRP, RF, anti-CCP, ANA, CBC with diff, CMP today.\n- Urgent rheumatology referral; staff to call for an expedited slot."
+            }
+          ],
+          "state": {
+            "weight_kg": 71.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2023-11-07a",
+          "kind": "telephone",
+          "start": "2023-11-07T12:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results call",
+              "date": "2023-11-07T12:10",
+              "author": "PCP",
+              "body": "Called Jill. ESR 50, CRP 30 mg/L (3.0 mg/dL), RF positive, anti-CCP positive, ANA negative. CBC and CMP normal. Explained this fits rheumatoid arthritis and that rheum will confirm and start treatment. Front desk got her in with rheumatology 11/27. Results faxed ahead."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-27a",
+          "kind": "specialist_visit",
+          "start": "2023-11-27T08:45",
+          "service": "Rheumatology",
+          "reason": "Inflammatory arthritis",
+          "conditions": [
+            {
+              "label": "Rheumatoid arthritis",
+              "action": "diagnosed",
+              "onset": "2023-05-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "hydroxychloroquine sulfate 200 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1½ tablets (300 mg) by mouth daily with food",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Rheumatoid arthritis; discoid lupus"
+            },
+            {
+              "drug": "prednisone 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "10 mg daily x 2 weeks, 7.5 mg daily x 2 weeks, 5 mg daily x 1 week, 2.5 mg daily x 1 week, then stop",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Rheumatoid arthritis bridge"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Hand X-ray",
+              "performed": "2023-11-27T08:20",
+              "text": "Bilateral hands, PA, oblique and lateral views. Periarticular osteopenia about the metacarpophalangeal and proximal interphalangeal joints. Small marginal erosions at the MCP joints. Joint spaces otherwise maintained. No fracture or subluxation. Soft tissue swelling over the MCP joints.",
+              "conclusion": "Periarticular osteopenia and marginal erosions, consistent with inflammatory (rheumatoid) arthritis."
+            }
+          ],
+          "orders": [
+            {
+              "id": "rheum-referral",
+              "action": "done",
+              "date": "2023-11-27T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology consultation",
+              "date": "2023-12-01T16:15",
+              "author": "rheumatology",
+              "body": "RHEUMATOLOGY CONSULTATION\nDate of service: November 27, 2023\n\nReason for referral: inflammatory arthritis.\n\nHistory: 49-year-old woman with hypothyroidism after RAI for Graves' disease and dermatology-diagnosed discoid lupus and lichen planus. She describes six months of morning stiffness lasting more than an hour that loosens with use, swelling of both hands and wrists, intermittent low-grade fevers and an unplanned 5-pound weight loss over the last few months.\n\nMedications: levothyroxine 125 mcg daily, estradiol patch, cyclic progesterone, topical clobetasol and triamcinolone.\nAllergies: NKDA.\nFamily: mother RA; father autoimmune hypothyroidism; sister SLE.\nSocial: never smoker, no alcohol, administrative assistant.\n\nExamination: soft-tissue swelling with tenderness across the MCP and PIP joints of both hands. No deformity. Remaining joints normal.\n\nData (drawn by referring office 11/6): ESR 50 mm/hr; CRP 3.0 mg/dL; RF positive; anti-CCP positive; ANA negative.\nHand radiographs today: periarticular osteopenia and marginal erosions.\n\nAssessment: Seropositive rheumatoid arthritis, already erosive. The negative ANA is reassuring that the joint disease is not a lupus arthropathy, and her discoid lupus remains skin-limited.\n\nPlan:\n1. Hydroxychloroquine 300 mg daily; it also treats her discoid lupus. Baseline retinal exam within the year.\n2. Prednisone taper starting at 10 mg to bridge symptoms over 6 weeks.\n3. If she has not responded adequately at follow-up, add a second agent.\n4. Return in 3 months with ESR and CRP.\n\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2023-12-04a",
+          "kind": "telephone",
+          "start": "2023-12-04T09:50",
+          "orders": [
+            {
+              "id": "ophtho-referral",
+              "action": "placed",
+              "order": "Ophthalmology referral",
+              "category": "referral",
+              "to": "Ophthalmology",
+              "reason": "Baseline exam, hydroxychloroquine"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Rheum letter reviewed",
+              "date": "2023-12-04T10:05",
+              "author": "PCP",
+              "body": "Rheum letter in: seropositive erosive RA, started hydroxychloroquine 300 mg daily and a prednisone taper from 10 mg. Med list updated. They want a baseline retinal exam — ophthalmology referral placed. Called Jill: tolerating both, stiffness already better on the prednisone. Reviewed taper schedule with her."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-10a",
+          "kind": "specialist_visit",
+          "start": "2024-01-10T15:20",
+          "service": "Ophthalmology",
+          "reason": "Baseline hydroxychloroquine retinal screening",
+          "orders": [
+            {
+              "id": "ophtho-referral",
+              "action": "done",
+              "date": "2024-01-10T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology — baseline hydroxychloroquine exam",
+              "date": "2024-01-12T09:00",
+              "author": "ophthalmology",
+              "body": "Eye clinic report, exam 1/10/2024\nIndication: baseline exam, hydroxychloroquine 300 mg daily started 11/2023 for RA.\n\nVA cc 20/20 OD, 20/20 OS. Pupils equal and reactive, no afferent defect. IOP normal both eyes. Anterior segment quiet. Dilated fundus: healthy optic nerves, flat maculae with normal foveal reflex, normal vessels and periphery OU.\nSD-OCT macula: normal foveal contour, intact ellipsoid zone both eyes.\nHumphrey 10-2: reliable, full both eyes.\n\nImpression: normal baseline exam, no retinopathy.\nPlan: annual screening can begin after 5 years of use given her dose and normal kidney function, sooner if risk factors change.\n\nOphthalmology"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-04a",
+          "kind": "specialist_visit",
+          "start": "2024-03-04T10:30",
+          "service": "Rheumatology",
+          "reason": "Rheumatoid arthritis follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-03-04T10:10",
+              "resulted": "2024-03-04T15:00",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 18
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 6
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology follow-up",
+              "date": "2024-03-06T13:45",
+              "author": "rheumatology",
+              "body": "Rheumatology clinic — follow-up note, 03/04/2024\n\nRA, seropositive, erosive. On hydroxychloroquine 300 mg daily since late November, prednisone taper finished in January.\n\nShe is much improved. Morning stiffness about 15 minutes, no swelling she can see, back to typing all day. No fevers. Weight stable.\n\nExam: no synovitis in hands, wrists, elbows, shoulders, knees or feet. Full fist both hands.\n\nESR 18 mm/hr, CRP 0.6 mg/dL today.\n\nAssessment: good response to hydroxychloroquine monotherapy. Baseline eye exam in January was normal.\nPlan: continue hydroxychloroquine 300 mg daily. We will not add a second agent while she stays in this range. Recheck here in 6-12 months, sooner with any flare.\n\nRheumatology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "C Reactive Protein": 6,
+              "Erythrocyte Sedimentation Rate": 18
+            }
+          }
+        },
+        {
+          "id": "2024-04-17a",
+          "kind": "pharmacy",
+          "start": "2024-04-17T11:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill — hydroxychloroquine",
+              "date": "2024-04-17T11:25",
+              "author": "MA",
+              "body": "Pharmacy request for hydroxychloroquine 200 mg tabs (takes 1.5 daily). Rheumatology is prescriber — called their office; they sent 90 days with refills directly. Pharmacy notified."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-18a",
+          "kind": "annual_physical",
+          "start": "2024-09-18T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2024-09-17T15:50",
+              "author": "front desk",
+              "body": "Patient called to cancel tomorrow's physical — end-of-quarter crunch at work. Said she'd call back to rebook when things calm down. Reminder flag set for 6 weeks."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "outside_records",
+          "start": "2024-10-10T10:00",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-05T13:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-05T13:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization notice",
+              "date": "2024-10-10T10:00",
+              "author": "MA",
+              "body": "Registry update: flu (trivalent) and 2024-25 Pfizer COVID-19 given at pharmacy 10/5/24. Entered. Physical still not rebooked — left voicemail."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-06a",
+          "kind": "office_visit",
+          "start": "2024-11-06T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Itching and yellow skin",
+          "vitals": {
+            "bp": [
+              126,
+              78
+            ],
+            "hr": 79,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 72.1
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-11-06T14:15",
+              "resulted": "2024-11-06T19:40",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.8
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 1.5
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 420
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 80
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 75
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-11-06T14:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.3
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-11-06T14:15",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 271
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.3
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-11-06T14:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-11-06T13:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "Cholestatic jaundice with pruritus"
+            },
+            {
+              "id": "ruq-us",
+              "action": "placed",
+              "order": "Right upper quadrant ultrasound",
+              "category": "imaging",
+              "reason": "Jaundice"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Pruritus and Jaundice",
+              "date": "2024-11-06T14:20",
+              "author": "PCP",
+              "body": "S: Booked herself in after a coworker told her she looked yellow. Itching since roughly May, all over, much worse at night — up scratching, sleeping badly. Tried cetirizine and diphenhydramine from the drugstore with no effect. Over the last two months she has noticed her skin and the whites of her eyes yellowing. Tired for months, which she had put down to work. No abdominal pain, no fevers, no change in stool color she has noticed. No alcohol ever. No new meds or supplements; skin creams are her usual ones. No travel.\n\nMeds: levothyroxine 125 mcg, estradiol patch 0.05 twice weekly, progesterone 200 mg days 1-12, hydroxychloroquine 300 mg daily, topical clobetasol and triamcinolone PRN.\n\nO: Afebrile, vitals normal. Clearly icteric skin and sclerae. Excoriations on forearms and shins. Abdomen soft, nontender, liver edge palpable below the right costal margin, no spleen felt, no ascites. No asterixis.\n\nA: Jaundice with pruritus, presumably cholestatic. Long list of autoimmune disease in her and her family puts PBC high on the list; obstruction has to be excluded.\n\nP:\n- Hepatic panel, INR, CBC, BMP now (stat to the lab).\n- RUQ ultrasound.\n- Urgent GI referral.\n- Will call her tonight or tomorrow with results."
+            }
+          ],
+          "state": {
+            "weight_kg": 71.8,
+            "labs": {
+              "Alanine Aminotransferase": 75,
+              "Alkaline Phosphatase": 420,
+              "Aspartate Aminotransferase": 80,
+              "Bilirubin, Direct": 1.5,
+              "Bilirubin, Total": 2.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-11-07a",
+          "kind": "telephone",
+          "start": "2024-11-07T08:10",
+          "orders": [
+            {
+              "id": "ama-2024",
+              "action": "placed",
+              "order": "Antimitochondrial antibody",
+              "category": "lab",
+              "reason": "Cholestatic liver tests"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results — liver tests",
+              "date": "2024-11-07T08:25",
+              "author": "PCP",
+              "body": "Called patient with yesterday's results. Total bili 2.8, direct 1.5, alk phos 420, AST 80, ALT 75 — cholestatic pattern. INR 1.0. CBC and BMP fine. Added AMA; she'll come in tomorrow morning for the draw. Ultrasound scheduled 11/12. GI has her 11/18 — told her to call us if she gets abdominal pain, fever, confusion or dark tarry stool before then."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-08a",
+          "kind": "lab_only",
+          "start": "2024-11-08T07:30",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-11-08T07:30",
+              "resulted": "2024-11-11T12:45",
+              "results": [
+                {
+                  "test": "Mitochondria Ab",
+                  "loinc": "14236-4",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "ama-2024",
+              "action": "done",
+              "date": "2024-11-11T12:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "AMA positive",
+              "date": "2024-11-11T13:30",
+              "author": "PCP",
+              "body": "Antimitochondrial antibody positive. With the cholestatic panel this points strongly to primary biliary cholangitis. Forwarded to GI ahead of 11/18 visit. Portal message to patient: the antibody test supports the diagnosis we talked about; GI will go over treatment next week."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "imaging",
+          "start": "2024-11-12T09:40",
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2024-11-12T09:40",
+              "text": "Indication: jaundice, cholestatic liver tests.\nLiver: enlarged, 19 cm in craniocaudal length, with normal homogeneous echotexture and smooth contour. No focal lesion. Hepatic and portal veins patent with normal flow direction.\nBiliary: no intrahepatic biliary dilatation. Common bile duct 4 mm. Gallbladder normally distended without stones, sludge or wall thickening. Sonographic Murphy sign negative.\nPancreas: visualized portions unremarkable.\nSpleen: normal size.\nNo ascites.",
+              "conclusion": "Hepatomegaly with normal echotexture. No biliary dilatation or gallstones. No ascites."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ruq-us",
+              "action": "done",
+              "date": "2024-11-12T09:40"
+            }
+          ]
+        },
+        {
+          "id": "2024-11-18a",
+          "kind": "specialist_visit",
+          "start": "2024-11-18T11:00",
+          "service": "Gastroenterology",
+          "reason": "Cholestatic jaundice and pruritus",
+          "conditions": [
+            {
+              "label": "Primary biliary cholangitis",
+              "action": "diagnosed",
+              "onset": "2024-05-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ursodiol 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Primary biliary cholangitis"
+            },
+            {
+              "drug_text": "cholestyramine resin 4000 MG Powder for Oral Suspension",
+              "action": "start",
+              "sig": "Mix 1 packet (4 g) in water and take once daily; take at least 4 hours apart from levothyroxine and ursodiol",
+              "dose": {
+                "value": 4,
+                "unit": "g"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Cholestatic pruritus"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              115,
+              74
+            ],
+            "hr": 76,
+            "temp_c": 36.8,
+            "spo2": 98
+          },
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "done",
+              "date": "2024-11-18T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology consultation",
+              "date": "2024-11-20T08:30",
+              "author": "gastroenterology",
+              "body": "Gastroenterology & Hepatology — Consultation\nVisit 11/18/2024\n\nThank you for the urgent referral of Ms. Winslow, 50, who carries a history of Graves' disease treated with radioactive iodine, hypothyroidism, discoid lupus, lichen planus and rheumatoid arthritis.\n\nFor about six months she has been tired and itchy, the itch worst at night and not touched by over-the-counter antihistamines. For two months her skin has been turning yellow.\n\nMedications: levothyroxine 125 mcg daily, hydroxychloroquine 300 mg daily, estradiol patch with cyclic progesterone, topical steroids.\nAllergies: NKDA.\nSocial: no alcohol history of any kind; no recent travel; no high-risk sexual exposures. Never smoker.\nFamily: mother RA, father hypothyroidism and colon cancer, sister SLE.\n\nExamination: afebrile, vital signs normal. Skin and sclerae icteric. Liver enlarged to palpation; no splenomegaly, no ascites. Murphy's sign negative.\n\nData reviewed from your office:\n  Total bilirubin 2.8 mg/dL, direct 1.5 mg/dL\n  Alkaline phosphatase 420 U/L (40-120)\n  AST 80 U/L (10-40), ALT 75 U/L (7-56)\n  INR 1.0\n  Antimitochondrial antibody: positive\n  RUQ ultrasound 11/12: hepatomegaly, normal echotexture, no ductal dilatation, no stones\n\nImpression: Primary biliary cholangitis. A cholestatic profile, positive AMA and a non-obstructed biliary tree make the diagnosis without a biopsy. Hydroxychloroquine is not a convincing culprit for this pattern.\n\nPlan:\n1. Ursodiol 500 mg twice daily (about 14 mg/kg/day).\n2. Cholestyramine 4 g daily for the itch. She must separate it by at least 4 hours from levothyroxine and ursodiol — reviewed a schedule with her (levothyroxine on waking, ursodiol with breakfast and dinner, cholestyramine mid-afternoon).\n3. I would stop systemic hormone therapy while she is jaundiced; I will leave that with you.\n4. Liver panel in 3 months, then follow-up here.\n5. Baseline DXA — PBC carries bone-loss risk.\n6. Confirm hepatitis A/B immunity and vaccinate as needed.\n\nWith thanks,\nGastroenterology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2024-11-20a",
+          "kind": "telephone",
+          "start": "2024-11-20T12:40",
+          "medications": [
+            {
+              "drug_text": "84 HR estradiol 0.00208 MG/HR Transdermal System",
+              "action": "stop",
+              "reason": "Cholestatic liver disease, per GI"
+            },
+            {
+              "drug_text": "progesterone 200 MG Oral Capsule",
+              "action": "stop",
+              "reason": "Estrogen stopped"
+            }
+          ],
+          "orders": [
+            {
+              "id": "tft-2025-01",
+              "action": "placed",
+              "order": "TSH and free T4 in 8 weeks",
+              "category": "lab",
+              "reason": "Recheck after stopping estrogen"
+            },
+            {
+              "id": "hbsab-2025",
+              "action": "placed",
+              "order": "Hepatitis B surface antibody",
+              "category": "lab",
+              "reason": "Immunity check, chronic liver disease"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "GI recs — hormone therapy stopped",
+              "date": "2024-11-20T12:55",
+              "author": "PCP",
+              "body": "GI letter in: PBC, started ursodiol and cholestyramine. Called Jill — she has both from the pharmacy and has the timing written on her fridge. Per GI, stopping the estradiol patch and progesterone now. She's fine with it; hot flashes have been mild this year. Warned she may get some vasomotor symptoms back and her cycles will go back to her own pattern.\nAlso: off estrogen her levothyroxine requirement can shift, so TSH/FT4 in 8 weeks, plus hep B surface antibody (GI wants immunity checked). Orders in."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-21a",
+          "kind": "telephone",
+          "start": "2024-11-21T16:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Med reconciliation after GI",
+              "date": "2024-11-21T16:20",
+              "author": "RN",
+              "body": "Reconciled list after GI visit: added ursodiol 500 mg BID and cholestyramine 4 g daily; estradiol patch and progesterone discontinued 11/20. Reviewed spacing with patient: levothyroxine on waking, ursodiol with breakfast and dinner, cholestyramine mid-afternoon. She repeated it back."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-11a",
+          "kind": "portal_message",
+          "start": "2024-12-11T21:05",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Itching",
+              "date": "2024-12-11T21:05",
+              "author": "patient",
+              "body": "Hi — just letting you know the itching is a lot better, first full nights of sleep in months. The yellow is fading too. The powder tastes terrible but I'll keep taking it. Is it still OK to come in January for the blood work?"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Itching",
+              "date": "2024-12-12T08:35",
+              "author": "RN",
+              "body": "So glad to hear it! Yes, the lab order is in for any time after January 15th — fasting not needed. You can also schedule the physical you missed in the fall while you're at it."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-22a",
+          "kind": "lab_only",
+          "start": "2025-01-22T07:20",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-01-22T07:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Negative (<10 mIU/mL)"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "tft-2025-01",
+              "action": "done",
+              "date": "2025-01-22T07:20"
+            },
+            {
+              "id": "hbsab-2025",
+              "action": "done",
+              "date": "2025-01-22T07:20"
+            },
+            {
+              "id": "colonoscopy-2025",
+              "action": "placed",
+              "order": "Screening colonoscopy",
+              "category": "procedure",
+              "to": "Gastroenterology",
+              "reason": "Family history of colon cancer, 10-year interval due"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "TSH/FT4 off estrogen; hep B immunity",
+              "date": "2025-01-22T16:10",
+              "author": "PCP",
+              "body": "TSH 1.9, FT4 1.0 off estrogen on levothyroxine 125 — in range, no change. Hep B surface antibody negative: not immune; nurse visit for Heplisav-B series, and she's 50 now so Shingrix at the same visit. Colonoscopy is due this year (last 2015, father with colon CA) — referral placed. Portal note sent."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Free Thyroxine": 1.0,
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          }
+        },
+        {
+          "id": "2025-02-05a",
+          "kind": "nurse_visit",
+          "start": "2025-02-05T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "vitals": {
+            "bp": [
+              107,
+              81
+            ],
+            "hr": 79
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-02-05T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2025-02-05T16:05"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-02-05T16:08"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit — Immunizations",
+              "date": "2025-02-05T16:25",
+              "author": "RN",
+              "body": "Heplisav-B dose 1, 0.5 mL IM left deltoid. Shingrix dose 1, 0.5 mL IM right deltoid. VIS given for both. Screening negative. Observed 15 min, no reaction. Heplisav #2 due in 1 month, Shingrix #2 in 2-6 months — booked 3/5 for hep B."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2025-02-10a",
+          "kind": "specialist_visit",
+          "start": "2025-02-10T14:40",
+          "service": "Rheumatology",
+          "reason": "Rheumatoid arthritis follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology follow-up",
+              "date": "2025-02-12T10:05",
+              "author": "rheumatology",
+              "body": "Rheumatology — return visit 2/10/2025\n\nRA on hydroxychloroquine 300 mg daily. Interval: diagnosed with PBC by GI in November, now on ursodiol; liver tests improving per her. Joints have stayed quiet; stiffness minutes only.\n\nExam: no synovitis, no deformity.\n\nAssessment: RA in low disease activity on hydroxychloroquine. Her liver disease argues further against methotrexate or leflunomide; hydroxychloroquine is liver-neutral and we will keep it.\nPlan: continue, return in one year or sooner with flare.\n\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2025-02-24a",
+          "kind": "specialist_visit",
+          "start": "2025-02-24T09:15",
+          "service": "Gastroenterology",
+          "reason": "Primary biliary cholangitis follow-up",
+          "medications": [
+            {
+              "drug_text": "cholestyramine resin 4000 MG Powder for Oral Suspension",
+              "action": "stop",
+              "reason": "Pruritus resolved"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-02-24T08:50",
+              "resulted": "2025-02-24T13:00",
+              "results": [
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 210
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 38
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 35
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.4
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.7
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.6
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology follow-up",
+              "date": "2025-02-26T15:40",
+              "author": "gastroenterology",
+              "body": "Hepatology follow-up — 02/24/2025\n\nPBC, three months on ursodiol 500 mg twice daily. Itch is gone and she has not needed cholestyramine for several weeks. Jaundice has cleared. Energy improving.\n\nExam: anicteric. Abdomen soft, liver edge just palpable.\n\nLabs today: ALP 210 U/L, total bilirubin 1.1 mg/dL, AST 38, ALT 35.\n\nAssessment: brisk biochemical improvement on ursodiol.\nPlan:\n- Stop cholestyramine; restart only if itch returns.\n- Continue ursodiol 500 mg twice daily.\n- DXA ordered.\n- Hepatology review with liver tests in ~9 months; primary care may check liver tests in between.\n\nGastroenterology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 35,
+              "Alkaline Phosphatase": 210,
+              "Aspartate Aminotransferase": 38,
+              "Bilirubin, Direct": 0.4,
+              "Bilirubin, Total": 1.1
+            }
+          }
+        },
+        {
+          "id": "2025-02-27a",
+          "kind": "telephone",
+          "start": "2025-02-27T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "GI follow-up letter reviewed",
+              "date": "2025-02-27T11:15",
+              "author": "PCP",
+              "body": "GI 2/24: ALP 210, bili 1.1, AST 38, ALT 35. Cholestyramine stopped — removed from list. DXA scheduled 3/12. Nothing further from us."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-05a",
+          "kind": "nurse_visit",
+          "start": "2025-03-05T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis B vaccine dose 2",
+          "vitals": {
+            "bp": [
+              119,
+              71
+            ],
+            "hr": 82
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-03-05T16:12"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2025-03-05T16:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit — Heplisav-B #2",
+              "date": "2025-03-05T16:30",
+              "author": "RN",
+              "body": "Heplisav-B dose 2 of 2, 0.5 mL IM left deltoid. Tolerated dose 1 with a sore arm only. No reaction today. Series complete. Shingrix #2 scheduled for April."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2025-03-12a",
+          "kind": "imaging",
+          "start": "2025-03-12T10:30",
+          "reports": [
+            {
+              "study": "DXA bone density, hip and spine",
+              "performed": "2025-03-12T10:30",
+              "text": "Indication: primary biliary cholangitis, baseline.\nLumbar spine L1-L4: T-score -0.4.\nLeft femoral neck: T-score -0.6.\nLeft total hip: T-score -0.2.\nNo prior study for comparison. Vertebral levels evaluable without artifact.",
+              "conclusion": "Normal bone density (lowest T-score -0.6, left femoral neck)."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-13a",
+          "kind": "portal_message",
+          "start": "2025-03-13T09:20",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Bone density result",
+              "date": "2025-03-13T09:20",
+              "author": "PCP",
+              "body": "Hi Jill, your bone density scan was normal at the spine and hips. Keep up calcium-rich foods and walking. Copy sent to your GI doctor."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-09a",
+          "kind": "procedure_visit",
+          "start": "2025-04-09T07:30",
+          "end": "2025-04-09T09:30",
+          "service": "Gastroenterology",
+          "reason": "Screening colonoscopy, family history",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, high risk",
+              "performed": "2025-04-09T08:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "colonoscopy-2025",
+              "action": "done",
+              "date": "2025-04-09T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Colonoscopy report",
+              "date": "2025-04-09T09:10",
+              "author": "gastroenterology",
+              "body": "Endoscopy unit — colonoscopy report\nIndication: screening; first-degree relative (father) with colon cancer at 65; prior colonoscopy 2015 normal.\nSedation: monitored anesthesia care. ASA II.\nPrep: Boston score 9 (3/3/3).\nCecum reached and identified by appendiceal orifice and ileocecal valve. Withdrawal time 11 minutes.\nFindings: normal mucosa throughout the colon and rectum. No polyps. Retroflexion in the rectum unremarkable.\nImpression: normal colonoscopy.\nRecommendation: repeat screening colonoscopy in 10 years. Resume usual diet and medications."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-23a",
+          "kind": "nurse_visit",
+          "start": "2025-04-23T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "vitals": {
+            "bp": [
+              126,
+              80
+            ],
+            "hr": 74
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-04-23T12:18"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-04-23T12:18"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit — Shingrix #2",
+              "date": "2025-04-23T12:35",
+              "author": "MA",
+              "body": "Shingrix 2 of 2, 0.5 mL IM R deltoid, lot recorded. After dose 1 she felt achy for a day. Observed, fine. Series complete."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2025-06-02a",
+          "kind": "pharmacy",
+          "start": "2025-06-02T14:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill — ursodiol",
+              "date": "2025-06-02T14:45",
+              "author": "MA",
+              "body": "Pharmacy asking for ursodiol 500 mg refills; GI's script ran out. PCP OK'd 90-day supply x1 until her hepatology visit. Sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-14a",
+          "kind": "office_visit",
+          "start": "2025-07-14T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, weight gain",
+          "vitals": {
+            "bp": [
+              116,
+              77
+            ],
+            "hr": 62,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 78.6
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-07-14T09:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 132
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 83
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-14T09:55",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.4
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-14T09:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 276
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-07-14T09:55",
+              "results": [
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 165
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 37
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 36
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.4
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-07-14T09:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2025",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "Hypothyroid symptoms with normal TSH"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Fatigue and Weight Gain",
+              "date": "2025-07-14T10:05",
+              "author": "PCP",
+              "body": "S: Since about April she's felt like she's moving through mud. Exhausted by mid-afternoon, cold all the time even in July, constipated for the first time in her life, cramps in her calves at night, and she says her thinking at work is sluggish — losing track of what she was doing. Up about 13 lb without eating differently. Periods have gone light and irregular since spring. Taking levothyroxine 125 every morning, nothing near it; ursodiol twice daily. No cholestyramine since February. No itching. Mood OK, just tired.\n\nO: Pulse low 60s, BP normal. Weight 78.6 kg. Skin dry. Not icteric. No thyroid tissue. Heart slow-regular. Lungs clear. No edema.\n\nPHQ-9: 4.\n\nA: Fatigue, cold intolerance, weight gain, constipation — reads like under-replacement, but she has been stable on this dose. Perimenopausal transition also in the mix for the cycles.\n\nP:\n- BMP, TSH, CBC, hepatic panel today.\n- Results to her this afternoon.\n\nAddendum 17:30: Na 132 (mild hyponatremia), rest of BMP normal. TSH 1.4 — normal. CBC normal. ALP 165, bili 0.8, still coming down. TSH doesn't explain how she feels; with her RAI history I'd like endo to look. Referral placed back to her endocrinologist; asked them to see her this month. Called and explained."
+            }
+          ],
+          "state": {
+            "hr": 60,
+            "weight_kg": 78.6,
+            "labs": {
+              "Alkaline Phosphatase": 165,
+              "Bilirubin, Total": 0.8,
+              "Sodium": 132,
+              "Thyroid Stimulating Hormone": 1.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-07-31a",
+          "kind": "specialist_visit",
+          "start": "2025-07-31T13:40",
+          "service": "Endocrinology",
+          "reason": "Fatigue, cold intolerance, weight gain",
+          "vitals": {
+            "bp": [
+              110,
+              70
+            ],
+            "hr": 58,
+            "weight_kg": 79.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-07-31T14:30",
+              "resulted": "2025-08-01T10:15",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.2
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2025",
+              "action": "done",
+              "date": "2025-07-31T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology visit",
+              "date": "2025-08-01T08:50",
+              "author": "endocrinology",
+              "body": "Endocrinology — clinic note\nSeen 7/31/2025, referred back by primary care\n\nMs. Winslow, 50, with Graves' disease treated by radioactive iodine and hypothyroidism on levothyroxine 125 mcg daily. I last saw her in 2022 for fatigue and cold intolerance, which settled after her estrogen was moved to a patch. She has since been diagnosed with discoid lupus, lichen planus, RA and PBC.\n\nOver four months: progressive fatigue, cold intolerance and a 6-kg weight gain. New constipation, muscle cramps, and what she calls sluggish thinking at work. Menses scant and irregular. No neck pain.\n\nMedications: levothyroxine 125 mcg daily, ursodiol 500 mg twice daily, hydroxychloroquine 300 mg daily, topical steroids.\nAllergies: NKDA.\n\nBP 110/70, HR 58.\nSkin cool and dry. Ankle jerks show delayed relaxation. Thyroid not palpable, not tender. Visual fields by confrontation in clinic: bitemporal peripheral loss.\n\nPrimary care's BMP of 7/14 is normal except mild hyponatremia (Na 132). TSH there 1.4.\n\nThyroid function drawn today; I will write again with results and a plan.\n\nEndocrinology"
+            }
+          ],
+          "state": {
+            "weight_kg": 79.0
+          },
+          "measure": [
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-04a",
+          "kind": "outside_records",
+          "start": "2025-08-04T11:20",
+          "conditions": [
+            {
+              "label": "Central hypothyroidism",
+              "action": "diagnosed",
+              "onset": "2025-04-01",
+              "icd10": "E03.8"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "levothyroxine sodium 0.125 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Dose increased"
+            },
+            {
+              "drug_text": "levothyroxine sodium 0.137 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every morning on an empty stomach",
+              "dose": {
+                "value": 137,
+                "unit": "ug"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Central hypothyroidism"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology results letter",
+              "date": "2025-08-04T11:20",
+              "author": "endocrinology",
+              "body": "Endocrinology — results and plan, 8/4/2025\n\nDear Doctor,\n\nThyroid tests from 7/31: TSH 1.2 mIU/L, free T4 0.6 ng/dL (0.8-1.8).\n\nFree T4 is low and the TSH is not raised to meet it. In someone with no meaningful thyroid of her own after RAI, that is the picture of central hypothyroidism: the pituitary is no longer driving the TSH response, and the TSH you checked on 7/14 was falsely reassuring. From here on her dose should be adjusted to free T4, not TSH.\n\nPlan:\n1. Levothyroxine increased to 137 mcg daily. New prescription sent.\n2. Free T4 (with TSH for completeness) in 6 weeks; she can have it drawn at her physical in September.\n3. Follow-up here in about a year.\n\nI have explained to her that the dose change should help the fatigue and cold intolerance over several weeks.\n\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2025-08-05a",
+          "kind": "portal_message",
+          "start": "2025-08-05T18:32",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "New thyroid dose",
+              "date": "2025-08-05T18:32",
+              "author": "patient",
+              "body": "The endocrinologist raised my thyroid pill to 137. Do I just finish the old 125 bottle first or start the new one right away? And can I still get the blood test at my physical in September or do I need a separate visit?"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: New thyroid dose",
+              "date": "2025-08-06T07:55",
+              "author": "PCP",
+              "body": "Start the 137 tomorrow morning and set the 125s aside. Your physical is a good time for the blood test — I'll make sure free T4 is on the order. I've updated your medication list here."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "annual_physical",
+          "start": "2025-09-16T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              120,
+              83
+            ],
+            "hr": 61,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 79.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-16T08:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 137
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 156
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 100
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 39
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 37
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-16T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.72
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 257
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-16T08:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 103
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 188
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 121
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 127
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-16T08:20",
+              "results": [
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 0.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2025-09-16T08:45",
+              "text": "Specimen: cervical, liquid-based. Satisfactory for evaluation; transformation zone component present. High-risk HPV DNA: not detected.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy. High-risk HPV negative.",
+              "issued": "2025-09-22T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-09-16T08:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2025-09-16T09:00"
+            },
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-16T09:02"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-09-16T09:04"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Breast cancer screening, overdue"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-16T09:15",
+              "author": "PCP",
+              "body": "Annual physical, first in two years (missed last fall, then the liver workup took over).\n\nInterval history:\n- PBC (GI, Nov 2024): on ursodiol, itch gone, ALP down to 165 in July. Off cholestyramine since Feb. DXA in March normal. Hep B series done.\n- Hormone therapy stopped Nov 2024 at GI's suggestion.\n- Central hypothyroidism (endo, Aug 2025): FT4 low with a normal TSH; levothyroxine to 137. Six weeks on it now — less wiped out in the afternoons, still not herself.\n- RA quiet on hydroxychloroquine; rheum yearly.\n- Colonoscopy April: normal, next 2035.\n- Skin: DLE and LP quiet.\nLMP in July; cycles had been light and irregular since spring.\n\nMeds: levothyroxine 137 mcg daily, ursodiol 500 mg BID, hydroxychloroquine 300 mg daily, clobetasol 0.05% oint and triamcinolone 0.1% cream PRN.\nNKDA.\n\nExam: vitals normal. Weight 79.4 kg. Not icteric. Skin without active plaques. Neck no nodes. Heart regular, lungs clear. Abdomen soft, liver edge not felt today. Joints without synovitis. Pelvic: normal external genitalia, vagina and cervix; Pap/HPV collected. No edema.\n\nA/P\n1. Central hypothyroidism on 137 mcg: FT4 (and TSH) today; endo dosing to FT4.\n2. Hyponatremia in July (132): recheck with CMP.\n3. PBC: per GI; LFTs in CMP.\n4. RA, DLE, LP: per specialists.\n5. HM: Pap/HPV today. Mammogram overdue — ordered. PCV20 today (chronic liver disease). Flu and COVID today.\n6. Irregular menses then none since July at 50 — likely the menopausal transition.\n\nPHQ-2: 1.\n\nAddendum 9/16 16:00: Na 137. FT4 1.0, TSH 0.9 on 137 mcg. CMP otherwise normal; ALP within the range GI expects on ursodiol. CBC, lipids fine. Copy to endo."
+            }
+          ],
+          "state": {
+            "hr": 66,
+            "weight_kg": 79.4,
+            "labs": {
+              "Free Thyroxine": 1.0,
+              "Sodium": 137,
+              "Thyroid Stimulating Hormone": 0.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-09-22a",
+          "kind": "portal_message",
+          "start": "2025-09-22T14:15",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Pap result",
+              "date": "2025-09-22T14:15",
+              "author": "PCP",
+              "body": "Hi Jill, your Pap came back normal and the HPV test was negative, so the next one isn't due for five years. Everything else from your physical I sent last week. Don't forget the mammogram — the order is in."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-10a",
+          "kind": "specialist_visit",
+          "start": "2025-11-10T10:45",
+          "service": "Gastroenterology",
+          "reason": "Primary biliary cholangitis follow-up",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-11-10T10:20",
+              "resulted": "2025-11-10T15:10",
+              "results": [
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 150
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 38
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 34
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.4
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology follow-up",
+              "date": "2025-11-12T09:30",
+              "author": "gastroenterology",
+              "body": "Hepatology — 1-year review, 11/10/2025\n\nPBC diagnosed November 2024, on ursodiol 500 mg twice daily (about 13 mg/kg at her current weight). No itch, no jaundice. She reports a diagnosis of central hypothyroidism this summer with a levothyroxine increase.\n\nExam: anicteric, no stigmata of chronic liver disease, no ascites.\n\nToday: ALP 150 U/L, total bilirubin 0.7 mg/dL.\n\nAssessment: adequate biochemical response to ursodiol at one year (ALP under 1.67 times the upper limit, normal bilirubin). No second-line therapy needed.\nPlan: continue ursodiol; liver panel every 6 months through primary care or here; hepatology review yearly.\n\nGastroenterology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alkaline Phosphatase": 150,
+              "Bilirubin, Total": 0.7
+            }
+          }
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "imaging",
+          "start": "2025-12-09T11:30",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-12-09T11:30",
+              "text": "Bilateral screening tomosynthesis. Comparison 10/2023 and earlier. Heterogeneously dense breasts. No suspicious mass, calcification or architectural distortion. Stable appearance.",
+              "conclusion": "BI-RADS 1: Negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "done",
+              "date": "2025-12-09T11:30"
+            }
+          ]
+        },
+        {
+          "id": "2025-12-10a",
+          "kind": "portal_message",
+          "start": "2025-12-10T13:00",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "date": "2025-12-10T13:00",
+              "author": "PCP",
+              "body": "Mammogram 12/9 normal (BI-RADS 1). Next due in a year."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-26a",
+          "kind": "specialist_visit",
+          "start": "2026-01-26T15:00",
+          "service": "Rheumatology",
+          "reason": "Rheumatoid arthritis follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology annual follow-up",
+              "date": "2026-01-28T12:20",
+              "author": "rheumatology",
+              "body": "Rheumatology — annual visit 1/26/2026\n\nSeropositive erosive RA on hydroxychloroquine 300 mg daily since 11/2023. No flares this year. Morning stiffness minimal. Working full time without limitation.\n\nOther: PBC on ursodiol with good response; central hypothyroidism diagnosed by endocrinology last summer, levothyroxine now 137 mcg.\n\nExam: no synovitis, no nodules, full grip both hands.\n\nAssessment: RA in sustained low disease activity on hydroxychloroquine.\nPlan: continue. Eye screening per ophthalmology schedule. Return in one year.\n\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-11a",
+          "kind": "lab_only",
+          "start": "2026-02-11T07:30",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-02-11T07:30",
+              "results": [
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 136
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 38
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 38
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.4
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-11T07:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 256
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-11T07:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 137
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-11T07:30",
+              "results": [
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.0
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Six-month labs",
+              "date": "2026-02-11T15:45",
+              "author": "PCP",
+              "body": "Six-month liver panel per GI plus CBC, BMP and FT4. ALP and bilirubin steady to slightly lower than November. FT4 in range on 137 mcg, sodium normal, CBC normal. Copies to GI and endo. Portal note sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-18a",
+          "kind": "portal_message",
+          "start": "2026-03-18T06:58",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Refill — levothyroxine 137",
+              "date": "2026-03-18T06:58",
+              "author": "patient",
+              "body": "Morning! Down to my last week of the 137 levothyroxine. The endocrinologist said you could do the refills between my visits with them. Same pharmacy. Thanks!"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill sent",
+              "date": "2026-03-18T09:40",
+              "author": "RN",
+              "body": "Levothyroxine 137 mcg #90 with 1 refill sent per PCP. Last FT4 1.0 on this dose (9/2025). Endo follow-up due this summer — reminded patient to book it."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "pharmacy",
+          "start": "2026-05-12T13:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy — ursodiol refill",
+              "date": "2026-05-12T13:30",
+              "author": "MA",
+              "body": "Pharmacy request: ursodiol 500 mg BID. GI prescriber, refills remain on file there — pharmacy had an old script queued. Clarified with pharmacy, they filled from GI's current Rx. Nothing needed from us."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-08a",
+          "kind": "office_visit",
+          "start": "2026-07-08T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Headaches and vision problems",
+          "vitals": {
+            "bp": [
+              129,
+              78
+            ],
+            "hr": 68,
+            "temp_c": 36.2,
+            "spo2": 98,
+            "weight_kg": 78.5
+          },
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2026-07-08T14:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mri-brain-2026",
+              "action": "placed",
+              "order": "MRI brain with and without contrast",
+              "category": "imaging",
+              "reason": "Progressive headaches, visual difficulty"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Headaches and Visual Difficulty",
+              "date": "2026-07-08T15:10",
+              "author": "PCP",
+              "body": "S: Two problems that she now thinks go together. (1) Dull, pressure-like headaches, frontal, that have been getting steadily worse over the past few months. (2) She keeps bumping into things — walked into a door frame at work last week, catches her hip on furniture at home. Says things \"come out of nowhere\" from the sides. Also: no period for about a year now. No hot flashes or sweats.\n\nMeds: levothyroxine 137 mcg, ursodiol 500 mg BID, hydroxychloroquine 300 mg daily, topical steroids PRN.\nNKDA.\n\nO: BP and pulse normal, afebrile. Alert, appropriate. Acuity grossly normal with near card both eyes. Confrontation fields: reduced in the temporal fields of both eyes. Pupils equal and reactive. Fundi difficult undilated; discs look sharp where seen. EOMs full. Face symmetric. Strength, sensation, reflexes, gait normal. Neck supple.\n\nA: Progressive headaches with bilateral temporal field loss and a year of amenorrhea in a woman with central hypothyroidism. Needs urgent imaging of the brain and sella.\n\nP:\n- MRI brain with and without contrast, marked urgent; staff to get the earliest slot.\n- Messaged her endocrinologist; her overdue follow-up there will be moved up.\n- Return or ED for sudden severe headache, double vision or sudden vision loss."
+            }
+          ],
+          "state": {
+            "hr": 72,
+            "weight_kg": 79.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-16a",
+          "kind": "imaging",
+          "start": "2026-07-16T07:15",
+          "reports": [
+            {
+              "study": "MRI brain with and without contrast",
+              "loinc": "24587-8",
+              "performed": "2026-07-16T07:15",
+              "text": "Indication: progressive headaches, bitemporal visual field loss, amenorrhea.\nTechnique: multiplanar multisequence MRI of the brain before and after IV gadolinium, with thin-section coronal and sagittal imaging through the sella.\nFindings: There is a 2.5 cm enhancing sellar and suprasellar mass, measured in craniocaudal dimension on coronal post-contrast images, extending upward from an expanded sella and compressing adjacent structures. The normal pituitary gland is not separately identified. No hemorrhage within the mass. The brain parenchyma is otherwise normal without mass effect elsewhere, hydrocephalus or abnormal enhancement. Ventricles normal in size. Major intracranial flow voids preserved.",
+              "conclusion": "2.5 cm suprasellar mass compressing adjacent structures, most consistent with a pituitary macroadenoma. Endocrine correlation recommended.",
+              "issued": "2026-07-16T11:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mri-brain-2026",
+              "action": "done",
+              "date": "2026-07-16T07:15"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-16b",
+          "kind": "telephone",
+          "start": "2026-07-16T13:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "MRI result discussed",
+              "date": "2026-07-16T13:25",
+              "author": "PCP",
+              "body": "Spoke with endocrinology this morning about the MRI read — they will see her Monday 7/20. Then called Jill and explained the scan shows a growth at the pituitary gland, about 2.5 cm, most likely a benign pituitary tumor, and that it explains the headaches, the side vision and probably the missing periods. Endocrinology will do blood tests to tell what kind it is; many are treated with a pill. She was shaken but asked good questions. Gave ED precautions again. Will follow up after her endo visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "specialist_visit",
+          "start": "2026-07-20T10:00",
+          "service": "Endocrinology",
+          "reason": "Pituitary mass",
+          "vitals": {
+            "bp": [
+              130,
+              78
+            ],
+            "hr": 72,
+            "weight_kg": 79.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-07-20T11:00",
+              "resulted": "2026-07-21T15:30",
+              "results": [
+                {
+                  "test": "Prolactin",
+                  "value": 2140
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Follicle Stimulating Hormone",
+                  "value": 2.6
+                },
+                {
+                  "test": "Luteinizing hormone",
+                  "loinc": "10501-5",
+                  "unit": "m[IU]/mL",
+                  "value": 1.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-21T08:00",
+              "resulted": "2026-07-21T15:30",
+              "results": [
+                {
+                  "test": "Cortisol, AM",
+                  "value": 13.6
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology visit — pituitary mass",
+              "date": "2026-07-20T17:10",
+              "author": "endocrinology",
+              "body": "Endocrinology — clinic note, 7/20/2026\n\nMs. Winslow returns, brought forward after her primary care physician's MRI. History: Graves' disease treated with radioactive iodine about ten years ago, longstanding hypothyroidism, and central hypothyroidism diagnosed here last summer.\n\nIn her words, \"I keep walking into furniture and door frames.\" She has dull, pressure-type headaches that have worsened over recent months. Her last menstrual period was about a year ago; before that she cycled regularly every 25-30 days, bleeding 3-4 days. She has had no hot flashes or night sweats.\n\nMedications: levothyroxine 137 mcg daily, ursodiol 500 mg twice daily, hydroxychloroquine 300 mg daily.\nAllergies: NKDA.\nFamily: father died of colon cancer at 65.\nSocial: never smoker, no alcohol, administrative assistant.\n\nBP 130/78, HR 72, BMI 29 kg/m2.\nVisual acuity 20/20 in each eye. Neurological examination otherwise normal. Breast examination: on palpation of the areola, milky discharge expressed bilaterally.\n\nMRI 7/16 reviewed: 2.5 cm suprasellar mass compressing adjacent structures.\n\nImpression: pituitary macroadenoma with galactorrhea and amenorrhea; a prolactinoma is the leading possibility. The bitemporal field loss needs formal measurement.\n\nPlan:\n- Prolactin (lab asked to run serial dilutions to avoid a hook effect), LH, FSH, free T4 today; 8 AM cortisol tomorrow morning.\n- Formal visual fields with ophthalmology this month.\n- I will call her with results and start treatment as indicated.\n\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-22a",
+          "kind": "outside_records",
+          "start": "2026-07-22T09:10",
+          "conditions": [
+            {
+              "label": "Prolactinoma",
+              "action": "diagnosed",
+              "onset": "2025-04-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "cabergoline 0.5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take ½ tablet (0.25 mg) by mouth twice weekly (Monday and Thursday)",
+              "dose": {
+                "value": 0.25,
+                "unit": "mg"
+              },
+              "frequency": "TWICE_WEEKLY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Prolactinoma"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology results letter — prolactinoma",
+              "date": "2026-07-22T09:10",
+              "author": "endocrinology",
+              "body": "Endocrinology — results and plan, 7/22/2026\n\nDear Doctor,\n\nResults:\n  Prolactin 2,140 ng/mL (after dilution)\n  LH 1.1 mIU/mL, FSH 2.6 mIU/mL — inappropriately low for her age and amenorrhea\n  Free T4 1.1 ng/dL on levothyroxine 137 mcg\n  8 AM cortisol 13.6 mcg/dL — adequate; no steroid cover needed\n\nA prolactin of this magnitude with a 2.5 cm sellar/suprasellar mass is diagnostic of a macroprolactinoma. It accounts for the galactorrhea and amenorrhea, the low gonadotropins, and in all likelihood the central hypothyroidism.\n\nTreatment is medical first, even with field loss; dopamine agonists usually shrink these tumors and visual fields often improve within weeks.\n\nPlan:\n1. Cabergoline 0.25 mg twice weekly, increasing to 0.5 mg twice weekly in two weeks if tolerated. Take with food at bedtime to limit nausea and lightheadedness.\n2. Humphrey visual fields with ophthalmology 7/29.\n3. Prolactin again in 4-5 weeks (order sent to your lab for convenience).\n4. Repeat pituitary MRI in about 3 months.\n5. Continue levothyroxine 137 mcg.\n6. She should seek care immediately for sudden severe headache or sudden change in vision.\n\nI spoke with her at length by phone this morning.\n\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-22b",
+          "kind": "telephone",
+          "start": "2026-07-22T16:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Endo results — prolactinoma",
+              "date": "2026-07-22T16:45",
+              "author": "PCP",
+              "body": "Endo letter in: prolactin 2,140, macroprolactinoma; cortisol fine; starting cabergoline 0.25 mg twice weekly. Called Jill — endo had already reached her; she sounded relieved that the plan is a pill. Added cabergoline to list. Ophthalmology fields 7/29. Prolactin draw here ~8/24, order expected from endo."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-23a",
+          "kind": "pharmacy",
+          "start": "2026-07-23T10:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization — cabergoline",
+              "date": "2026-07-23T10:50",
+              "author": "MA",
+              "body": "Pharmacy said cabergoline rejected for PA. Endocrinology's office handling it but asked us to fax the MRI report and last office note to support the diagnosis. Faxed 10:45. Insurer approved same afternoon per pharmacy callback at 15:20; patient picked up."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-29a",
+          "kind": "specialist_visit",
+          "start": "2026-07-29T08:30",
+          "service": "Ophthalmology",
+          "reason": "Formal visual fields, pituitary macroadenoma",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology — visual field assessment",
+              "date": "2026-07-30T16:00",
+              "author": "ophthalmology",
+              "body": "Neuro-ophthalmic assessment, 7/29/2026\nReferred by endocrinology: 2.5 cm pituitary macroadenoma (prolactinoma), cabergoline started 7/22.\n\nVA 20/20 OD, 20/20 OS. Pupils equal, no RAPD. Color vision full both eyes. IOP normal. Anterior segments quiet.\nDilated exam: optic discs pink and well-perfused without pallor, healthy rims. Maculae normal. No hydroxychloroquine changes.\nHumphrey 24-2 SITA: reliable both eyes. Dense temporal hemifield defects in each eye respecting the vertical meridian — bitemporal hemianopia.\n\nImpression: bitemporal hemianopia, in keeping with the known pituitary macroadenoma. No optic atrophy.\nPlan: repeat fields in 6-8 weeks on cabergoline. Same-day contact for any sudden vision change.\n\nOphthalmology"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-05a",
+          "kind": "outside_records",
+          "start": "2026-08-05T15:40",
+          "medications": [
+            {
+              "drug_text": "cabergoline 0.5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Dose increased"
+            },
+            {
+              "drug_text": "cabergoline 0.5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet (0.5 mg) by mouth twice weekly (Monday and Thursday) at bedtime with food",
+              "dose": {
+                "value": 0.5,
+                "unit": "mg"
+              },
+              "frequency": "TWICE_WEEKLY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Prolactinoma"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology telephone follow-up",
+              "date": "2026-08-05T15:40",
+              "author": "endocrinology",
+              "body": "Endocrinology — telephone note 8/5/2026\nTwo weeks on cabergoline 0.25 mg twice weekly. Taking it at bedtime with a snack and tolerating it. Increasing to 0.5 mg twice weekly as planned (1 whole tablet). Ophthalmology fields 7/29 confirmed bitemporal hemianopia; repeat in 6-8 weeks. Prolactin due around 8/24 at primary care's lab.\n\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "portal_message",
+          "start": "2026-08-12T20:22",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Checking in",
+              "date": "2026-08-12T20:22",
+              "author": "patient",
+              "body": "Hi, just wanted to give you an update since you asked. I'm on the full tablet twice a week now. The headaches are somewhat less, not gone. Vision on the sides feels the same so far. I have the blood test on the 24th with you guys. Thank you for pushing for the MRI so fast."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Checking in",
+              "date": "2026-08-13T07:40",
+              "author": "PCP",
+              "body": "Thanks for the update, Jill — good to hear the headaches are easing. Vision often lags behind; the eye doctor will repeat the fields in a few weeks. The prolactin order is in for the 24th. We'll see you at your physical in September, and reach out anytime before."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-24a",
+          "kind": "lab_only",
+          "start": "2026-08-24T07:45",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-08-24T07:45",
+              "pending": true,
+              "results": [
+                {
+                  "test": "Prolactin"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Lab draw",
+              "date": "2026-08-24T07:55",
+              "author": "MA",
+              "body": "Venipuncture L antecubital, 1 attempt. Prolactin (endocrinology order, copy to PCP) — sent to reference lab with dilution request noted. Patient tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-15a",
+          "kind": "annual_physical",
+          "start": "2026-09-15T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Central hypothyroidism|E03.8": {
+        "code": "E03.8",
+        "display": "Other specified hypothyroidism",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Discoid lupus erythematosus|L93.0": {
+        "code": "L93.0",
+        "display": "Discoid lupus erythematosus",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of Graves' disease treated with radioactive iodine ablation|Z86.39": {
+        "code": "Z86.39",
+        "display": "Personal history of other endocrine, nutritional and metabolic disease",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "84 HR estradiol 0.00208 MG/HR Transdermal System": {
+        "code": "242891",
+        "display": "84 HR estradiol 0.00208 MG/HR Transdermal System",
+        "ingredient": "hr",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "cabergoline 0.5 MG Oral Tablet": {
+        "code": "199703",
+        "display": "cabergoline 0.5 MG Oral Tablet",
+        "ingredient": "cabergoline",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "cholestyramine resin 4000 MG Powder for Oral Suspension": {
+        "code": "848943",
+        "display": "cholestyramine resin 4000 MG Powder for Oral Suspension",
+        "ingredient": "cholestyramine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "estradiol 1 MG Oral Tablet": {
+        "code": "197658",
+        "display": "estradiol 1 MG Oral Tablet",
+        "ingredient": "estradiol",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "levothyroxine sodium 0.137 MG Oral Tablet": {
+        "code": "966270",
+        "display": "levothyroxine sodium 0.137 MG Oral Tablet",
+        "ingredient": "levothyroxine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "progesterone 200 MG Oral Capsule": {
+        "code": "312641",
+        "display": "progesterone 200 MG Oral Capsule",
+        "ingredient": "progesterone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "ursodiol 500 MG Oral Tablet": {
+        "code": "858733",
+        "display": "ursodiol 500 MG Oral Tablet",
+        "ingredient": "ursodiol",
+        "receipt": "NLM RxNav drugs"
+      }
+    },
+    "labs": {
+      "Luteinizing hormone": {
+        "code": "10501-5",
+        "display": "Lutropin [Units/volume] in Serum or Plasma",
+        "unit": "m[IU]/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Mitochondria Ab": {
+        "code": "14236-4",
+        "display": "Mitochondria Ab [Presence] in Serum",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Triiodothyronine, total": {
+        "code": "3053-6",
+        "display": "Triiodothyronine (T3) [Mass/volume] in Serum or Plasma",
+        "unit": "ng/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "MRI brain with and without contrast": {
+        "code": "24587-8",
+        "display": "MR Brain WO and W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

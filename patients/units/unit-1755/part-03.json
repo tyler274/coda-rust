@@ -1,0 +1,845 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001755",
+      "events": [
+        {
+          "id": "2024-01-02b",
+          "kind": "telephone",
+          "start": "2024-01-02T14:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "author": "RN",
+              "date": "2024-01-02T14:25",
+              "body": "Transitional care call. Discharged 12/30 after 7 days of IV ceftriaxone for disseminated gonococcal infection. Home, no fevers, walking fine, knee and wrist better each day. No discharge meds to reconcile, takes nothing at home. Confirmed appointment Thursday 1/4 at 11. Knows to call for fever or a hot, swollen joint."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-04a",
+          "kind": "office_visit",
+          "start": "2024-01-04T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, disseminated gonococcal infection",
+          "state": {
+            "labs": {
+              "White Blood Cells": 6.8,
+              "Neutrophils %": 57,
+              "C Reactive Protein": 6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-01-04T11:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Neutrophils %"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-01-04T11:40",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2024-01-04T11:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-01-04T11:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2024-01-04T13:15",
+              "body": "Seen 5 days after discharge. Admitted 12/24-12/30 for disseminated gonococcal infection: fever, right knee and left wrist arthritis, left hand flexor tenosynovitis, pustular rash, cervicitis. Cervical NAAT positive for GC, CT negative. Blood and knee fluid cultures negative. 7 days of IV ceftriaxone completed inpatient. Discharge summary and ED record reviewed.\n\nSince home: no fevers. Knee and wrist much better, still a little stiff in the mornings. Spots on the arms and ankles scabbing over. No discharge or spotting now. Hasn't been sexually active since. Has told recent partners to get tested.\n\nMeds none. NKDA.\n\nExam: afebrile, vitals normal. Right knee with mild residual swelling, no warmth, flexes nearly fully. Left wrist mildly puffy, near-full range of motion, grip ok. Flexor tendons of the left hand not tender. Skin: crusted, fading lesions on the forearms and ankles.\n\nA/P:\n1. DGI, improving after a full course of ceftriaxone. CBC and CRP today to make sure they're trending down. Recheck in 2-3 weeks.\n2. Retest GC/CT around late March.\n3. Condoms every time going forward; we talked about partner testing and how she'd know if it came back."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-05a",
+          "kind": "portal_message",
+          "start": "2024-01-05T14:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from yesterday",
+              "author": "PCP",
+              "date": "2024-01-05T14:00",
+              "body": "White count is back to normal (6.8) and the inflammation marker CRP is down to 6 from 96 in the ED. Good recovery. See you on the 22nd."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-22a",
+          "kind": "office_visit",
+          "start": "2024-01-22T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, joint infection",
+          "conditions": [
+            {
+              "label": "Disseminated gonococcal infection",
+              "icd10": "A54.89",
+              "action": "resolved",
+              "onset": "2023-12-21"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ],
+          "orders": [
+            {
+              "id": "gc-ct-retest-2024",
+              "action": "placed",
+              "order": "Neisseria gonorrhoeae and Chlamydia trachomatis NAAT, retest",
+              "category": "lab",
+              "reason": "3-month retest after gonococcal infection"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-01-22T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-01-22T16:40",
+              "body": "Two-week recheck after DGI. Feels back to normal. No stiffness, walking and gripping without trouble, back at work full days.\n\nExam: right knee and left wrist normal, no effusion, full range of motion. Hand tendons nontender. Skin healed.\n\nA/P: DGI resolved. Standing order for GC/CT retest, due the last week of March. Reviewed condoms and testing with new partners."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-25a",
+          "kind": "lab_only",
+          "start": "2024-03-25T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "GC/CT retest",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-03-25T07:50",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gc-ct-retest-2024",
+              "action": "done",
+              "date": "2024-03-25T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Lab Visit",
+              "author": "MA",
+              "date": "2024-03-25T07:55",
+              "body": "Urine collected for GC/CT retest per standing order. Patient tolerated, no concerns."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-27a",
+          "kind": "portal_message",
+          "start": "2024-03-27T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Retest result",
+              "author": "PCP",
+              "date": "2024-03-27T12:10",
+              "body": "Your gonorrhea and chlamydia retest is negative. Nothing more needed for that."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Retest result",
+              "author": "patient",
+              "date": "2024-03-27T12:31",
+              "body": "Phew. Thank you"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-19a",
+          "kind": "annual_physical",
+          "start": "2024-09-19T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-09-19T08:40",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-19T08:45",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2024-09-19T08:35",
+              "issued": "2024-09-23T16:40",
+              "text": "ThinPrep cervical cytology. Adequacy: satisfactory, transformation zone present. Negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-19T08:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-19T08:52"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-19T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-19T08:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-19T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-19T10:30",
+              "body": "27F, annual. Fully recovered from last winter's gonococcal infection, no joint problems since. No genital symptoms.\n\nMeds: none. Allergies: NKDA.\nSH: never smoker; 1-2 drinks on weekend nights out. Sexual hx: men, several partners this year, condoms inconsistent. Still not interested in contraception.\nPHQ-2 0.\n\nExam: well. Vitals normal. HEENT, neck, heart, lungs, abdomen normal. Joints normal. Skin clear. Pelvic (chaperoned): normal external genitalia, no lesions; cervix normal. Pap and GC/CT collected.\n\nA/P:\n- Pap due today.\n- Annual STI testing (GC/CT, HIV, RPR).\n- Flu and 2024-25 COVID vaccine.\n- Labs otherwise not due this year."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "portal_message",
+          "start": "2024-09-24T09:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and STI results",
+              "author": "PCP",
+              "date": "2024-09-24T09:15",
+              "body": "Normal Pap, and every STI test came back negative. Next Pap 2027."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-18a",
+          "kind": "portal_message",
+          "start": "2024-12-18T07:32",
+          "orders": [
+            {
+              "id": "gyn-referral-2024",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Gynecology",
+              "reason": "painful genital lesions, dysuria, fever"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "really painful down there",
+              "author": "patient",
+              "date": "2024-12-18T07:32",
+              "body": "I've had fevers and chills since Sunday and it burns really bad when I pee. It's super painful down there, I can barely sit. Feel run down. Can someone see me?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: really painful down there",
+              "author": "PCP",
+              "date": "2024-12-18T08:05",
+              "body": "Sorry you're dealing with this. Your gynecologist's office has a slot tomorrow morning at 9:20 and I think that's the best place since they can swab and treat on the spot. I sent the referral and called them. If the fever gets high or you can't pee at all, go to urgent care or the ED today instead."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: really painful down there",
+              "author": "patient",
+              "date": "2024-12-18T08:20",
+              "body": "ok I'll go tomorrow. thanks"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-19a",
+          "kind": "specialist_visit",
+          "start": "2024-12-19T09:20",
+          "service": "Gynecology",
+          "reason": "Fever, malaise, dysuria and genital pain, 3 days",
+          "conditions": [
+            {
+              "label": "Primary genital herpes simplex virus infection",
+              "icd10": "A60.04",
+              "action": "diagnosed",
+              "onset": "2024-12-16"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "valacyclovir 1000 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily for 10 days",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "TWICE DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Primary genital herpes"
+            }
+          ],
+          "vitals": {
+            "temp_c": 37.0,
+            "hr": 80,
+            "bp": [
+              110,
+              70
+            ]
+          },
+          "measure": [
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-12-19T09:50",
+              "resulted": "2024-12-21T11:30",
+              "results": [
+                {
+                  "test": "Herpes simplex virus 2 DNA, lesion swab",
+                  "loinc": "92875-4",
+                  "text": "Detected"
+                },
+                {
+                  "test": "Herpes simplex virus 1 DNA, lesion swab",
+                  "loinc": "92872-1",
+                  "text": "Not detected"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-19T09:50",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral-2024",
+              "action": "done",
+              "date": "2024-12-19T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Visit",
+              "author": "gynecology",
+              "date": "2024-12-23T08:45",
+              "body": "GYNECOLOGY OFFICE NOTE\nDate of service: 12/19/2024\nCopy to primary care.\n\nCC: three days of fever, malaise, painful urination and worsening genital pain.\n\nHPI: 27 y/o seen here previously for condylomata, with a disseminated gonococcal infection last December. Three days of feeling feverish and achy with chills, burning on urination, and genital tenderness that keeps increasing; sitting is difficult because of vulvar pain. No abnormal discharge and no pelvic pain.\n\nProblem list: condylomata acuminata; molluscum contagiosum; disseminated gonococcal infection (treated 12/2023).\nMeds: none. Allergies: NKDA.\nFH: mother hypothyroidism; father hypertension; sibling healthy.\nSH: three male partners in the last six months. Condoms inconsistently. No contraception.\n\nVitals: T 37.0 C, P 80, BP 110/70.\n\nPelvic exam: multiple vesicles and shallow ulcers over the labia minora and majora, exquisitely tender to light touch. Bilateral inguinal lymph nodes enlarged, firm and tender.\n\nAssessment: primary genital herpes simplex infection.\n\nPlan:\n- Lesion swab for HSV PCR; GC/CT NAAT.\n- Valacyclovir 1 g twice daily for 10 days.\n- Sitz baths; urinating in a warm bath or with a peri bottle helps the burning.\n- Abstain until lesions are fully healed.\n\nAddendum 12/21: PCR positive for HSV-2, negative for HSV-1. GC/CT negative. Patient informed by phone; discussed lifelong latency, possible recurrences, asymptomatic shedding and disclosure to partners.\n\nGynecology"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-23b",
+          "kind": "outside_records",
+          "start": "2024-12-23T15:20",
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "author": "PCP",
+              "date": "2024-12-23T15:20",
+              "body": "Gyn note 12/19 reviewed. Primary genital herpes, HSV-2 on PCR, on 10 days of valacyclovir. GC/CT negative. Updated problem list."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-27a",
+          "kind": "portal_message",
+          "start": "2024-12-27T19:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "update",
+              "author": "patient",
+              "date": "2024-12-27T19:40",
+              "body": "Just wanted to say I'm a lot better. Fever gone after a couple days and the sores are healing. Gyn told me it's HSV-2. Kind of devastated honestly. Can we talk about it sometime?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: update",
+              "author": "PCP",
+              "date": "2024-12-28T10:15",
+              "body": "Really glad you're feeling better. Yes, of course. It's very common and very manageable, and I'm happy to go through it with you. I put you on for a video visit Monday 1/6 at 4."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-06a",
+          "kind": "telehealth_visit",
+          "start": "2025-01-06T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, genital herpes",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-01-06T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "author": "PCP",
+              "date": "2025-01-06T16:45",
+              "body": "Video visit, patient at home.\n\nFirst-episode genital herpes diagnosed by gyn 12/19, PCR HSV-2. Finished 10 days of valacyclovir. Sores healed, no fever, urinating comfortably.\n\nMostly wanted to talk. Covered: HSV-2 stays in the body and may or may not recur, first episodes are usually the worst; it can be passed on without symptoms; condoms lower risk; telling partners before sex. Answered her questions about dating. She seemed relieved.\n\nA/P: Primary genital HSV-2, episode resolved. Message at the first tingling or sores so we can arrange to be seen. Annual physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-24a",
+          "kind": "annual_physical",
+          "start": "2025-09-24T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-09-24T10:10",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-24T10:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-24T10:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-24T10:05",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-24T10:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-24T10:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-09-24T10:17"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-24T09:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-24T10:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-24T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-09-24T12:20",
+              "body": "Annual exam, age 28.\n\nInterval: no herpes outbreaks since the first episode last December. No other illness.\n\nMeds: none. NKDA.\nSocial: marketing work going well. Never smoker. Alcohol occasional, weekends. Sexually active with men, condoms inconsistent. Discloses HSV to partners. No contraception.\nFH: mother hypothyroidism, father hypertension.\nPHQ-2 0.\n\nExam: NAD. Vitals normal, weight steady around 61 kg. Thyroid without enlargement. Heart regular, lungs clear. Abdomen soft. Skin clear. External genital exam, chaperoned: no lesions.\n\nA/P:\n- Annual GC/CT, HIV, RPR.\n- CBC, CMP; TSH given family history.\n- Flu and COVID vaccines today.\n- Pap next due 2027."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-26a",
+          "kind": "portal_message",
+          "start": "2025-09-26T16:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2025-09-26T16:00",
+              "body": "Thyroid, blood counts and chemistry panel all normal. STI tests negative across the board."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-02a",
+          "kind": "portal_message",
+          "start": "2026-01-02T08:47",
+          "orders": [
+            {
+              "id": "gyn-referral-2026",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Gynecology",
+              "reason": "painful genital ulcers, dysuria"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "I think it's back",
+              "author": "patient",
+              "date": "2026-01-02T08:47",
+              "body": "Burning and tingling started a couple days ago and now there are little blisters again, some already popped and sore. Hurts to pee. Bit of a fever and really tired. Gyn or you?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: I think it's back",
+              "author": "PCP",
+              "date": "2026-01-02T09:30",
+              "body": "Sounds like a herpes recurrence. Gyn can see you Monday morning and can swab the sores to confirm, referral sent. If you're miserable over the weekend, text me."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-05a",
+          "kind": "specialist_visit",
+          "start": "2026-01-05T08:40",
+          "service": "Gynecology",
+          "reason": "Painful genital ulcers and dysuria, 4 days",
+          "conditions": [
+            {
+              "label": "Recurrent genital herpes",
+              "action": "diagnosed",
+              "onset": "2026-01-01"
+            },
+            {
+              "label": "Primary genital herpes simplex virus infection",
+              "icd10": "A60.04",
+              "action": "resolved",
+              "onset": "2024-12-16"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "valacyclovir 1000 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth once daily for 5 days",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Recurrent genital herpes"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-01-05T09:05",
+              "resulted": "2026-01-07T13:20",
+              "results": [
+                {
+                  "test": "Herpes simplex virus 2 DNA, lesion swab",
+                  "loinc": "92875-4",
+                  "text": "Detected"
+                },
+                {
+                  "test": "Herpes simplex virus 1 DNA, lesion swab",
+                  "loinc": "92872-1",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral-2026",
+              "action": "done",
+              "date": "2026-01-05T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Visit",
+              "author": "gynecology",
+              "date": "2026-01-09T14:05",
+              "body": "Gynecology office visit, 01/05/2026. cc: PCP.\n\nReason for visit: painful genital sores and burning with urination for 4 days.\n\nHistory: 28 year old with prior condylomata, DGI (2023), and a primary genital herpes episode in December 2024 (HSV-2 by PCR). This started with genital burning and tingling, then small fluid-filled blisters that opened into shallow, tender sores. Low-grade fevers, fatigue, sore lumps in the groin.\n\nProblems: condylomata acuminata; molluscum contagiosum; disseminated gonococcal infection; genital herpes.\nMedications: none. Allergies: NKDA.\nSocial: one new partner; condoms not consistently.\n\nExam: multiple shallow, red, clean-based ulcers on the vulva and outer labia. Bilateral inguinal lymphadenopathy.\n\nAssessment: recurrent genital herpes.\n\nPlan: swab of one ulcer for HSV PCR. Valacyclovir 1 g daily for 5 days. Comfort measures as before. Avoid sexual contact until healed and let her partner know.\n\nAddendum 01/07: PCR positive for HSV-2.\n\nGynecology"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-09b",
+          "kind": "outside_records",
+          "start": "2026-01-09T16:45",
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "author": "PCP",
+              "date": "2026-01-09T16:45",
+              "body": "Gyn note 1/5 reviewed. HSV-2 recurrence confirmed by PCR, 5 days of valacyclovir. Problem list updated to recurrent genital herpes."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-09a",
+          "kind": "portal_message",
+          "start": "2026-02-09T12:15",
+          "medications": [
+            {
+              "drug": "valacyclovir 1000 MG Oral Tablet",
+              "action": "start",
+              "sig": "At the first sign of an outbreak, take 1 tablet by mouth once daily for 5 days. Dispense 5, 2 refills.",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Recurrent genital herpes, episodic treatment as needed"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "valtrex on hand?",
+              "author": "patient",
+              "date": "2026-02-09T12:15",
+              "body": "All healed from last month. Gyn said I could ask you about having valtrex at home so I can start right away next time instead of waiting for an appt. Is that possible?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: valtrex on hand?",
+              "author": "PCP",
+              "date": "2026-02-09T16:40",
+              "body": "Yes, that's a good plan. I sent valacyclovir 1 g to your pharmacy: take one a day for 5 days, starting at the first tingle or sore. There's enough for three outbreaks. Let me know whenever you use it."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Medication Note",
+              "author": "PCP",
+              "date": "2026-02-09T16:42",
+              "body": "Recurrent genital HSV-2 (primary 12/2024, recurrence 1/2026, both PCR-confirmed). Episodic valacyclovir 1 g daily x5 days, #5 + 2 refills, patient-initiated."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-17a",
+          "kind": "portal_message",
+          "start": "2026-08-17T10:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical reminder",
+              "author": "front desk",
+              "date": "2026-08-17T10:05",
+              "body": "Hi Isabelle, it's time for your yearly physical. Would Wednesday 9/23 at 9:00 work?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical reminder",
+              "author": "patient",
+              "date": "2026-08-17T13:22",
+              "body": "Yes that works"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical reminder",
+              "author": "front desk",
+              "date": "2026-08-17T13:40",
+              "body": "You're booked for Wednesday 9/23 at 9:00."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-23a",
+          "kind": "annual_physical",
+          "start": "2026-09-23T09:00",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

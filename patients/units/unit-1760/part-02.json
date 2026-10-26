@@ -1,0 +1,210 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001760",
+      "events": [
+        {
+          "id": "2021-04-06a",
+          "kind": "portal_message",
+          "start": "2021-04-06T20:10",
+          "reason": "COVID vaccine record",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-11T16:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-01T16:30"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Vaccine card", "author": "patient", "date": "2021-04-06T20:10", "body": "Hi, I finally got both Pfizer shots through the teacher clinic at the pharmacy, 3/11 and 4/1. Photo of my card attached so you have it. Second one knocked me out for a day, that's it."},
+            {"type": "Patient Message", "title": "RE: Vaccine card", "author": "MA", "date": "2021-04-07T08:20", "body": "Thanks Melissa, both doses are entered in your chart now."}
+          ]
+        },
+        {
+          "id": "2021-08-17a",
+          "kind": "annual_physical",
+          "start": "2021-08-17T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical; not yet pregnant",
+          "state": {"labs": {"Thyroid Stimulating Hormone": 1.9}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-08-17T09:40", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2021-08-17T09:40", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2021-08-17T09:00"},
+            {"procedure": "Venipuncture", "performed": "2021-08-17T09:40"}
+          ],
+          "orders": [
+            {"id": "gyn-infertility", "action": "placed", "order": "Obstetrics and Gynecology referral", "category": "referral", "to": "Obstetrics & Gynecology", "reason": "infertility evaluation, 12 months trying"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2021-08-17T09:35", "body": "S: Here for her yearly. They've been trying for a year now, since last August, timed with an ovulation app the last few months. No pregnancy, no late periods. Cycles every 28 days like clockwork, 4-5 days of bleeding, light cramps on day one only. No pelvic pain, no pain with sex. Taking the prenatal daily. Husband healthy, has never been checked. Frustrated but not down. Has had both COVID shots.\n\nMeds: prenatal vitamin with folic acid daily. Allergies: NKDA.\nSH: wine is down to almost none. Never smoker.\n\nO: vitals as charted. Well. Neck supple, thyroid not enlarged. Heart regular. Lungs clear. Abdomen soft, nontender. Deferred pelvic today, normal last year.\n\nA/P\n1. Infertility, 12 months trying, age 32, regular ovulatory cycles. Given two prior chlamydia infections and PID with admission last year, tubal disease is the main concern. Referral to gynecology for infertility workup (expect HSG and semen analysis for husband). TSH and CBC today.\n2. Preventive: flu shot this fall. Pap current.\nPHQ-2 1. Return 1 year."},
+            {"type": "Referral", "title": "Referral to Obstetrics & Gynecology", "author": "PCP", "date": "2021-08-17T09:50", "body": "Reason for referral: infertility, 12 months of unprotected intercourse without conception.\n\n32 yo G0, regular 28-day cycles, no dysmenorrhea or pelvic pain. History of chlamydia x2 in her twenties, outpatient PID ~2014, and admission April 2020 for chlamydial PID (no TOA). On prenatal vitamin only. NKDA. Mother had endometriosis with hysterectomy at 42; maternal aunt with unexplained infertility.\nTSH and CBC pending, will forward.\n\nThank you for seeing her."}
+          ]
+        },
+        {
+          "id": "2021-08-19a",
+          "kind": "portal_message",
+          "start": "2021-08-19T13:15",
+          "reason": "Results and referral",
+          "documents": [
+            {"type": "Patient Message", "title": "Labs and gyn referral", "author": "PCP", "date": "2021-08-19T13:15", "body": "Your thyroid test and blood count are normal. The gynecology referral went out Tuesday; their office should call you to schedule. If you haven't heard in two weeks let us know."},
+            {"type": "Patient Message", "title": "RE: Labs and gyn referral", "author": "patient", "date": "2021-09-07T17:48", "body": "They called, first appointment is October 21. Long wait but okay."}
+          ]
+        },
+        {
+          "id": "2021-10-27a",
+          "kind": "outside_records",
+          "start": "2021-10-27T10:05",
+          "reason": "Gynecology consult note",
+          "conditions": [
+            {"label": "Female infertility of tubal origin", "icd10": "N97.1", "action": "diagnosed", "onset": "2021-10-21", "note": "Bilateral tubal occlusion on HSG"}
+          ],
+          "orders": [{"id": "gyn-infertility", "action": "done", "date": "2021-10-27T10:05"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology Consultation — Infertility", "author": "gynecology", "date": "2021-10-27T10:05", "body": "Outside OB/GYN group\nDate of visit: 10/21/2021\nReferring: primary care physician\n\nReason: primary infertility.\n\nMs. Pereira is a 32 year old G0 who has had regular unprotected intercourse with her husband for about 14 months without a pregnancy. Menses every 28 days, normal flow. She denies intermenstrual bleeding, painful periods or pelvic pain. Prior sexually transmitted infections: chlamydia twice and an episode of PID requiring admission in 2020.\n\nSurgical history: none.\nMedications: prenatal vitamin daily.\nAllergies: NKDA.\nFamily history: mother with endometriosis, hysterectomy at 42; maternal aunt with infertility of unknown cause; father hypertensive.\nSocial: second-grade teacher. Never smoker. Occasional wine.\n\nExam: well woman, normal vitals. Abdomen benign. Normal external genitalia and vagina, cervix without lesions, uterus normal size and mobile, no adnexal masses or tenderness.\n\nHysterosalpingogram performed in our office today (cycle day 8): normal uterine cavity. Neither tube fills beyond the proximal segment; no intraperitoneal spill on either side.\n\nImpression: infertility, tubal factor, with bilateral tubal occlusion on HSG, consistent with her history of pelvic infection.\n\nPlan: referral to reproductive endocrinology to discuss options, which with both tubes blocked will center on IVF. Semen analysis for her husband will be ordered by REI. Continue prenatal vitamin.\n\nThank you for this referral."}
+          ]
+        },
+        {
+          "id": "2021-10-29a",
+          "kind": "nurse_visit",
+          "start": "2021-10-29T15:20",
+          "reason": "Flu shot",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-29T15:25"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-29T15:25"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit — Influenza Vaccine", "author": "RN", "date": "2021-10-29T15:30", "body": "Flu vaccine given L deltoid. Pt asked whether flu shot is OK if she gets pregnant; told yes, recommended in pregnancy. VIS given."}
+          ]
+        },
+        {
+          "id": "2021-11-16a",
+          "kind": "pharmacy",
+          "start": "2021-11-16T09:00",
+          "reason": "Outside immunization record",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-11-13T11:00"}],
+          "documents": [
+            {"type": "Immunization Record", "title": "Pharmacy Immunization Notice", "author": "pharmacy", "date": "2021-11-16T09:00", "body": "Community pharmacy immunization notification. Patient: Pereira, Melissa, DOB 04/04/1989. Vaccine: COVID-19 mRNA (Pfizer-BioNTech) booster dose, 0.3 mL IM, left deltoid, administered 11/13/2021. Lot on file. No adverse event reported at 15 minutes."}
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "portal_message",
+          "start": "2022-01-11T21:30",
+          "reason": "REI wait time",
+          "documents": [
+            {"type": "Patient Message", "title": "Fertility clinic", "author": "patient", "date": "2022-01-11T21:30", "body": "The fertility clinic can't see me until April 20. Is there anything we should be doing in the meantime or anywhere faster? Kind of discouraged."},
+            {"type": "Patient Message", "title": "RE: Fertility clinic", "author": "PCP", "date": "2022-01-12T07:55", "body": "I'm sorry, the waits for reproductive endocrinology are long everywhere right now. Nothing medical needs to happen before then; keep taking the prenatal vitamin. Ask them to put you on the cancellation list. If you want to talk any of it through before April, book a visit or call."}
+          ]
+        },
+        {
+          "id": "2022-04-28a",
+          "kind": "outside_records",
+          "start": "2022-04-28T14:40",
+          "reason": "Reproductive endocrinology consult",
+          "documents": [
+            {"type": "Consult Note", "title": "Reproductive Endocrinology Consultation", "author": "reproductive endocrinology", "date": "2022-04-28T14:40", "body": "Outside reproductive endocrinology and infertility practice\nDate of visit: 04/20/2022\n\nDear colleague,\n\nI met Melissa and her husband today for infertility. She was referred by gynecology after about 14 months of trying; they are now at roughly 20 months. Cycles are regular, every 28 days. Her husband's semen analysis this month is normal in volume, concentration, motility and morphology.\n\nPertinent history: severe pelvic inflammatory disease two years ago that put her in the hospital on IV antibiotics, plus earlier chlamydia. No surgeries. Medications: prenatal vitamin. NKDA. Family history of endometriosis in her mother and infertility in a maternal aunt.\n\nVital signs stable. Pelvic examination unremarkable.\n\nI reviewed the hysterosalpingogram from October: both tubes are occluded proximally with no spill.\n\nAssessment: tubal factor infertility, bilateral, after pelvic infection. Male factor absent; ovulatory.\n\nRecommendation: with both tubes blocked, IVF is the treatment that gives them a real chance. We went over the process, timeline, success rates at her age and her coverage. They would like time to think it over and will call us.\n\nReproductive endocrinology"}
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "portal_message",
+          "start": "2022-05-10T19:05",
+          "reason": "Update after fertility consult",
+          "documents": [
+            {"type": "Patient Message", "title": "Update", "author": "patient", "date": "2022-05-10T19:05", "body": "Just wanted to let you know we met with the fertility doctor. We've decided to hold off on IVF for now, it's a lot to take on with everything this year. We may come back to it. Thank you for getting us there."},
+            {"type": "Patient Message", "title": "RE: Update", "author": "PCP", "date": "2022-05-11T08:10", "body": "Thanks for telling me. That's a reasonable choice and the door stays open. I'm here if you want to talk it through."}
+          ]
+        },
+        {
+          "id": "2022-07-21a",
+          "kind": "annual_physical",
+          "start": "2022-07-21T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical; pelvic pain",
+          "conditions": [
+            {"label": "Dysmenorrhea, unspecified", "icd10": "N94.6", "action": "diagnosed", "onset": "2022-04-15"}
+          ],
+          "medications": [
+            {"drug": "ibuprofen 600 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth every 6 to 8 hours as needed for pelvic pain or menstrual cramps, with food", "dose": {"value": 600, "unit": "mg"}, "frequency": "Q6-8H PRN", "route": "Oral", "course": "chronic", "reason": "Pelvic pain, dysmenorrhea"},
+            {"drug_text": "ethinyl estradiol 0.02 MG / norethindrone acetate 1 MG Oral Tablet", "action": "start", "sig": "Take 1 active tablet by mouth daily continuously; skip the placebo week", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Pelvic pain, suspected endometriosis"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2022-07-21T10:50", "results": [{"test": "Pregnancy Test, Urine", "text": "Negative"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 1},
+            {"survey": "Pain severity (0-10)", "value": 5}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2022-07-21T10:40"},
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-07-21T10:40"}
+          ],
+          "orders": [
+            {"id": "gyn-pain", "action": "placed", "order": "Obstetrics and Gynecology referral", "category": "referral", "to": "Obstetrics & Gynecology", "reason": "pelvic pain, dysmenorrhea, dyspareunia; suspected endometriosis"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical and Pelvic Pain", "author": "PCP", "date": "2022-07-21T11:30", "body": "Physical, and she wants to talk about pain.\n\nSince about April, aching low pelvic pain most days, a 5 out of 10 today, much worse the first 2-3 days of her period when it can keep her in bed. New this year: it hurts deep with intercourse, enough that they've mostly stopped. Around her period her stools go loose, no blood, no black stool, normal between. No fever, no discharge, no urinary symptoms. Has been taking 400 mg ibuprofen OTC with partial help. LMP 7/12, normal.\n\nAfter the REI visit in April they decided to hold off on IVF. She is not trying to prevent pregnancy but with blocked tubes doesn't expect one.\n\nMeds: prenatal vitamin, OTC ibuprofen. NKDA.\nFH reviewed, mother with endometriosis.\n\nExam: vitals as charted. Well, a little tired. Thyroid normal. Heart regular, lungs clear. Abdomen soft, mild suprapubic and bilateral lower quadrant tenderness, no guarding or rebound, no masses. Pelvic deferred to gyn, who she'd rather see for that.\nUrine hCG negative in office.\n\nA/P\n1. Pelvic pain with dysmenorrhea, deep dyspareunia and cyclic loose stools, ~3 months. Pattern and family history point toward endometriosis. Not infectious by history. Start ibuprofen 600 mg q6-8h prn with food. Start a combined pill (ethinyl estradiol 20 mcg / norethindrone acetate 1 mg) taken continuously, skipping placebos, for suppression; reviewed clot warning signs, she's a nonsmoker with no migraine with aura and normal BP. Back to her gynecologist for exam and imaging.\n2. Health maintenance: flu shot and updated COVID booster this fall. Pap due 2024.\nPHQ-2 1."}
+          ]
+        },
+        {
+          "id": "2022-08-30a",
+          "kind": "pharmacy",
+          "start": "2022-08-30T11:15",
+          "reason": "Quantity limit on continuous pill",
+          "documents": [
+            {"type": "Pharmacy Communication", "title": "Pharmacy Request — Early Refill", "author": "pharmacy", "date": "2022-08-30T11:15", "body": "Insurance rejecting refill of ethinyl estradiol/norethindrone acetate 1/20 as too soon (plan allows 1 pack per 28 days). Patient taking continuously, needs 1 pack per 21 days. Please submit quantity override or rewrite sig."},
+            {"type": "Prior Authorization", "title": "Quantity Override Submitted", "author": "MA", "date": "2022-08-30T14:05", "body": "Called PPO pharmacy benefit line. Quantity override requested for continuous use, dx pelvic pain/suspected endometriosis. Approved for 13 packs per year through 08/2023. Pharmacy notified, filling today."}
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "portal_message",
+          "start": "2022-09-27T20:40",
+          "reason": "Pelvic pain update",
+          "documents": [
+            {"type": "Patient Message", "title": "Pain", "author": "patient", "date": "2022-09-27T20:40", "body": "Quick update: two months on the continuous pill and the 600s. Honestly maybe a little better but not much, still having bad days. Gyn appointment is Oct 24. Should I do anything different before then?"},
+            {"type": "Patient Message", "title": "RE: Pain", "author": "PCP", "date": "2022-09-27T21:15", "body": "Thanks for the update. Stay the course until gyn sees you; they'll examine you and likely get an ultrasound. Make sure you're taking ibuprofen with food, and not more than 4 doses a day. Fever, vomiting or pain that's suddenly much worse means call us the same day."}
+          ]
+        },
+        {
+          "id": "2022-11-01a",
+          "kind": "outside_records",
+          "start": "2022-11-01T09:30",
+          "reason": "Gynecology note, pelvic pain",
+          "conditions": [
+            {"label": "Dysmenorrhea, unspecified", "icd10": "N94.6", "action": "resolved", "note": "Recoded after gynecology evaluation"},
+            {"label": "Endometriosis", "action": "diagnosed", "onset": "2022-04-15", "note": "Clinical diagnosis by gynecology"},
+            {"label": "Chronic pelvic pain", "action": "diagnosed", "onset": "2022-04-15"}
+          ],
+          "orders": [{"id": "gyn-pain", "action": "done", "date": "2022-11-01T09:30"}],
+          "state": {"labs": {"Erythrocyte Sedimentation Rate": 11, "C Reactive Protein": 1.6}},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-10-24T11:20", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": null, "collected": "2022-10-24T11:20", "results": [{"test": "Erythrocyte Sedimentation Rate"}, {"test": "C Reactive Protein"}]}
+          ],
+          "reports": [
+            {"study": "Pelvic ultrasound", "performed": "2022-10-24T10:30", "text": "Transvaginal ultrasound. Uterus retroverted, normal in size and contour, homogeneous myometrium. Endometrium thin and uniform. Right ovary normal in size with normal follicles. Left ovary normal in size with normal follicles. No adnexal mass or cyst. No hydrosalpinx. No free fluid.", "conclusion": "Normal pelvic ultrasound."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology Follow-Up — Chronic Pelvic Pain", "author": "gynecology", "date": "2022-11-01T09:30", "body": "Outside OB/GYN group\nDate of visit: 10/24/2022\n\nMelissa returns, seen last year for infertility (tubal factor, bilateral occlusion on HSG), now with half a year of pelvic pain that peaks with her periods. She describes deep pain with intercourse and loose, non-bloody stools that come and go with her cycle. For the past three months she has been on ibuprofen and a continuous combined pill started by her PCP, with little benefit.\n\nMeds: ethinyl estradiol/norethindrone acetate 1/20 continuously, ibuprofen 600 mg as needed, prenatal vitamin. NKDA.\n\nVitals normal. Abdomen soft without peritoneal signs. Speculum normal. Bimanual: retroverted uterus; tenderness in the posterior cul-de-sac; no adnexal mass.\n\nCBC and inflammatory markers (ESR, CRP) normal. Transvaginal ultrasound today normal.\n\nAssessment: chronic pelvic pain with dysmenorrhea, deep dyspareunia and cyclic bowel symptoms, consistent with endometriosis (clinical diagnosis; strong family history). Normal imaging does not exclude it.\n\nPlan: continue continuous combined pill and ibuprofen for now; recheck in about six months. If pain persists, diagnostic laparoscopy for diagnosis and excision.\n\nOB/GYN"}
+          ]
+        },
+        {
+          "id": "2022-11-03a",
+          "kind": "nurse_visit",
+          "start": "2022-11-03T15:30",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-11-03T15:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-11-03T15:38"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-11-03T15:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit — Vaccines", "author": "RN", "date": "2022-11-03T15:45", "body": "Influenza (L deltoid) and Pfizer bivalent booster (R deltoid). VIS and EUA fact sheet given. Observed 15 min, no reaction."}
+          ]
+        }
+      ]
+    }
+  ]
+}

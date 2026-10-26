@@ -1,0 +1,238 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002622",
+      "given": "Austin",
+      "family": "Morin",
+      "birth_date": "1990-08-10",
+      "address_line": "27 Chapman Street, Apt 2",
+      "phone": "+1-518-555-0155",
+      "email": "austin.morin@example.test",
+      "marital_status": "single",
+      "summary": "36-year-old international logistics consultant with remote injection drug use in remission and a resolved hepatitis at 24 that later serology shows was hepatitis B. Healthy through routine care until acute hepatitis A after a 2026 work trip to Southeast Asia, which resolved by August.",
+      "events": [
+        {
+          "id": "2021-09-14a",
+          "kind": "portal_message",
+          "start": "2021-09-14T10:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New patient appointment",
+              "author": "patient",
+              "date": "2021-09-14T10:12",
+              "body": "Hi, I'm booked as a new patient on the 21st at 9:00. I signed the release for my old doctor's office through the link you sent. Do I need to come in fasting for that first visit? I don't take any medications. Thanks, Austin"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: New patient appointment",
+              "author": "front desk",
+              "date": "2021-09-14T11:40",
+              "body": "Hi Austin, thanks for sending the release, we faxed the request to your prior office today. No need to fast. If the doctor orders bloodwork at the visit you can have it drawn here the same morning. Please bring your insurance card and any vaccine records you have. See you on the 21st."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-21a",
+          "kind": "establish_care",
+          "start": "2021-09-21T09:00",
+          "end": "2021-09-21T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {"label": "History of intravenous drug use, in remission", "icd10": "F19.91", "action": "history", "note": "Remote injection drug use; no current use."},
+            {"label": "History of resolved acute viral hepatitis (age 24)", "icd10": "Z86.19", "action": "history", "note": "Hepatitis after travel abroad around 2014; no antiviral treatment; full recovery by his account."}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 79.0, "height_cm": 180.0, "labs": {"Total Cholesterol": 174, "Low Density Lipoprotein": 103, "High Density Lipoprotein": 53, "Triglycerides": 91}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-09-21T10:15", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-09-21T10:15", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2021-09-21T10:15", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2021-09-21T10:15", "results": [
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"}
+            ]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 2}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per week"},
+            {"item": "Occupation", "value": "International logistics consultant"}
+          ],
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-08T14:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-29T14:00"},
+            {"vaccine": "Tdap", "date": "2021-09-21T10:00"},
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-09-21T10:00"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2021-09-21T09:00"},
+            {"procedure": "Immunization administration", "performed": "2021-09-21T10:00"},
+            {"procedure": "Venipuncture", "performed": "2021-09-21T10:15"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2021-09-21T10:05",
+              "body": "31 y/o man here to establish care. Previously followed at another primary care office; release signed, records requested. No complaints today.\n\nPMH:\n- Injection drug use in the past, in remission. He says this is well behind him and he has not used in years; prefers not to go into specifics and I did not press. No treatment program or medication needed currently. No other substance use.\n- Hepatitis at about age 24 (around 2014). Got sick after a trip overseas and was told it was \"hepatitis\"; no antiviral medication, no hospital stay that he recalls, and he recovered completely. Type not known to him. No records from that time.\nNo surgeries. Never had a blood transfusion.\n\nMeds: none.\nAllergies: NKDA.\n\nFamily hx: father with alcohol use disorder. Mother has high blood pressure.\n\nSocial: single, lives by himself in Greenfield. Works as an international logistics consultant, which means stretches of travel abroad for clients. Never smoked. Drinks socially, a drink or two a week. AUDIT-C 2. PHQ-2 0.\n\nROS: negative in full.\n\nExam: vitals in flowsheet. Well-appearing. Sclerae anicteric. Oropharynx clear, good dentition. Neck supple, no adenopathy, thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no hepatosplenomegaly. Skin: no rash, no track marks. Extremities without edema. Neuro grossly intact. Mood and affect appropriate.\n\nA/P:\n1. Health maintenance, new patient. CMP, CBC, lipids. One-time HIV and hepatitis C screening done today given history. Tdap today (last tetanus unknown). Flu shot today. COVID primary series this spring pulled from the state registry and entered.\n2. History of injection drug use, in remission. Supportive conversation; he knows he can bring it up any time.\n3. Remote hepatitis, resolved by history. Will look for anything in the old records.\nRTC for a physical in about a year."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-23a",
+          "kind": "portal_message",
+          "start": "2021-09-23T16:20",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2021-09-23T16:20",
+              "body": "Austin, your bloodwork from Tuesday came back normal. Kidney and liver function, blood counts and cholesterol are all fine. The HIV and hepatitis C screens were negative, so those don't need repeating unless something changes. Nice to have you with the practice."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-27a",
+          "kind": "outside_records",
+          "start": "2021-10-27T13:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "outside primary care",
+              "date": "2021-10-27T13:30",
+              "body": "Received by fax, 9 pages, in response to our request of 9/14. Covers office visits from 2019 to early 2021 only; the cover sheet says older charts were archived and are not included.\n\nSummary of contents: two routine physicals (2019 and 2020) with normal exams and normal vitals. Problem list carries \"hx IVDU, in remission\" and \"hx hepatitis, resolved\" with no further detail or labs. No medications on file. Allergies: NKDA. A basic metabolic panel and lipid panel from 2019, both within normal limits. Immunization page lists a tetanus booster with no date. No hospital or specialist records.\n\nNothing here changes our history. Scanned to chart.\n\nReviewed by PCP 10/28."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "annual_physical",
+          "start": "2022-10-20T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-10-20T09:10", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-10-20T09:10", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 2}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-20T09:05"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2022-10-20T08:30"},
+            {"procedure": "Immunization administration", "performed": "2022-10-20T09:05"},
+            {"procedure": "Venipuncture", "performed": "2022-10-20T09:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-10-20T09:00",
+              "body": "Annual exam. Feels well. Busy year with work, several trips abroad, no illnesses while away. Sleeping fine, exercising a few times a week (runs, some lifting).\n\nNo IV or other drug use; remains in remission. Alcohol unchanged, a drink or two on weekends. Never smoker. PHQ-2 0.\n\nMeds none. NKDA. No change to family history.\n\nROS negative.\n\nExam: BP and vitals per flowsheet, normal. Weight stable. HEENT unremarkable, sclerae white. Neck without nodes. Cor RRR. Lungs clear bilaterally. Abd soft, no organomegaly. Skin clear. No edema.\n\nPlan: CMP and lipids. Flu vaccine given today. Bivalent COVID booster recommended; he will come back for it after his next trip. Prior office records reviewed last fall, nothing outstanding.\nSee in a year."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-24a",
+          "kind": "portal_message",
+          "start": "2022-10-24T12:05",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2022-10-24T12:05",
+              "body": "Hi Austin, labs from your physical look good: normal kidney and liver numbers, normal sugar, and cholesterol in a healthy range. No action needed."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "nurse_visit",
+          "start": "2022-11-29T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID booster",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-11-29T15:45"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-11-29T15:45"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "author": "RN",
+              "date": "2022-11-29T15:55",
+              "body": "Pt in for bivalent COVID booster, Pfizer 0.3 mL IM left deltoid. Screened: no fever today, no prior reaction to vaccines, no allergies. Tolerated well, waited 15 min without issue. VIS given. Back from a work trip last week, feels fine."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-23a",
+          "kind": "nurse_visit",
+          "start": "2023-10-23T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-23T16:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-23T16:16"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-23T16:15"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "author": "RN",
+              "date": "2023-10-23T16:30",
+              "body": "Flu vaccine 0.5 mL IM left deltoid and 2023-24 COVID vaccine 0.3 mL IM right deltoid. Afebrile by report, no prior vaccine reactions, NKDA. Observed 15 minutes, no reaction. VIS provided for both. Reminded him his physical is booked for 11/9."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-09a",
+          "kind": "annual_physical",
+          "start": "2023-11-09T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-11-10a",
+          "kind": "portal_message",
+          "start": "2023-11-10T09:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed appointment",
+              "author": "front desk",
+              "date": "2023-11-10T09:15",
+              "body": "Hi Austin, we missed you for your physical yesterday morning. Please call or reply here and we can find a new time. The doctor has openings in December and January."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,313 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002556",
+      "events": [
+        {
+          "id": "2025-04-14a",
+          "kind": "portal_message",
+          "start": "2025-04-14T20:31",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Insurance letter",
+              "author": "patient",
+              "date": "2025-04-14T20:31",
+              "body": "Hi, the student health plan sent me a letter saying they need my PCP's NPI for next year's renewal. Can someone send it to me?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Insurance letter",
+              "author": "front desk",
+              "date": "2025-04-15T09:14",
+              "body": "Sure, I've attached a letter with your doctor's NPI and the practice address that you can forward to the plan."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "annual_physical",
+          "start": "2025-08-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-08-13a",
+          "kind": "telephone",
+          "start": "2025-08-13T11:05",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed physical",
+              "author": "front desk",
+              "date": "2025-08-13T11:05",
+              "body": "Called re: no-show for yesterday's physical. Pt apologized, it was not in his calendar after he switched phones. Rescheduled to Wed 9/3 at 8:30, reminder text set."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-03a",
+          "kind": "annual_physical",
+          "start": "2025-09-03T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 64.0},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-09-03T09:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-09-03T09:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "Graduate student"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-09-03T09:05"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-09-03T08:30"},
+            {"procedure": "Immunization administration", "performed": "2025-09-03T09:05"},
+            {"procedure": "Venipuncture", "performed": "2025-09-03T09:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-09-03T09:30",
+              "body": "27 y/o M, preventive visit (rescheduled after missed 8/12 slot).\n\nInterval hx: Last October, fatigue after a hiking trip with little food, mild dehydration by history, recovered within days. No lightheaded spells since. He has been training for a 10K in early November, running most days of the week, no exertional chest pain, palpitations or near-fainting while running.\nMeds: none. Allergies: NKDA.\nSocial: grad student, never smoker, no alcohol.\nROS: negative.\n\nExam: vitals as charted, weight back to his usual. Lean, comfortable. HEENT unremarkable. Neck supple, no LAD. Heart regular, no murmurs, rubs or gallops. Lungs clear bilaterally. Abd soft, NT, no organomegaly. Ext no edema. Skin clear.\nPHQ-2: 0.\n\nA/P:\n# Orthostatic hypotension, history of brief postural and fasting-related episodes. None in the past year. Discussed hydration around long runs and a cool-down walk after the race rather than stopping abruptly.\n# Health maintenance: flu vaccine today. CBC, CMP drawn. Tdap due next summer (last 2016). Will get this year's COVID vaccine at the pharmacy.\nRTC 1 yr, good luck with the race."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-05a",
+          "kind": "portal_message",
+          "start": "2025-09-05T08:05",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2025-09-05T08:05",
+              "body": "All normal, Vikram: blood counts, electrolytes, kidney and liver numbers, glucose. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-02a",
+          "kind": "ed_visit",
+          "start": "2025-11-02T10:18",
+          "end": "2025-11-02T12:50",
+          "service": "Emergency Medicine",
+          "reason": "Collapse after 10K race",
+          "vitals": [
+            {"time": "2025-11-02T10:22", "bp": [90, 60], "hr": 58, "temp_c": 36.8},
+            {"time": "2025-11-02T10:55", "bp": [108, 68], "hr": 64}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2025-11-02T10:30", "text": "Sinus bradycardia, rate 58. Normal axis. PR, QRS and QTc intervals within normal limits. No pre-excitation. No ST-segment or T-wave abnormality.", "conclusion": "Sinus bradycardia, otherwise normal ECG."}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, moderate MDM", "performed": "2025-11-02T10:18"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2025-11-02T10:30"}
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record, regional hospital",
+              "author": "emergency medicine",
+              "date": "2025-11-03T08:40",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nDate of service: 11/02/2025   Arrival 10:18 by race medical tent transport\nPatient: Vikram Rahman, 27M   DOB 03/27/1998\nCopy to: primary care physician\n\nChief complaint: dizziness and collapse at end of 10 km race\n\nHPI: 27-year-old man who crossed the finish line of a 10 km road race this morning, felt dizzy and lightheaded and went down to the ground just past the finish. He did not lose consciousness per himself and the medical tent staff. Reports good fluid intake before and during the race and has been training for several months. Felt better lying flat with his legs raised in the tent and on arrival here. No chest pain, palpitations before the collapse, head strike, or seizure-like activity. Patient reports prior episodes of lightheadedness on standing (2023) and during periods of fasting (2023, 2024).\n\nPMH: lightheaded spells with postural change and fasting, per patient. No daily medications.\nAllergies: no known drug allergies.\nFamily history: no cardiovascular disease, syncope, or sudden cardiac death.\nSocial: never smoker, no alcohol, graduate student.\n\nExam: BP 90/60, HR 58, temperature 36.8 C, afebrile. Alert and oriented, conversing normally. Skin cool and moist; capillary refill under 2 seconds. Heart: regular, no murmurs, rubs or gallops. Lungs clear bilaterally. Abdomen soft. No signs of head or limb injury. Neuro nonfocal. Remainder of exam unremarkable.\n\nED course: kept supine with legs elevated. ECG: sinus bradycardia 58, normal intervals, no pre-excitation, no ST or T changes. Repeat at 10:55 BP 108/68, HR 64, symptoms resolved. Stood and walked in the department without symptoms.\n\nMDM: collapse without syncope immediately after finishing exertion, resolving with recumbency, normal cardiac exam and ECG. Most consistent with post-exercise orthostatic hypotension (pooling once running stops). Exertional or arrhythmic syncope not suggested by history.\n\nImpression: post-exercise orthostatic hypotension with near-syncope.\nDisposition: discharged home 12:50 in stable condition. Advised: walk to cool down after races rather than stopping suddenly, maintain fluids, lie down with legs raised if lightheaded. Follow up with PCP within 1-2 weeks. Return for fainting, chest pain, palpitations, or collapse during exercise.\n\nEmergency medicine attending"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-03a",
+          "kind": "portal_message",
+          "start": "2025-11-03T07:58",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ER visit yesterday",
+              "author": "patient",
+              "date": "2025-11-03T07:58",
+              "body": "Hi, wanted to let you know I ended up in the ER yesterday after my 10K. I got really dizzy right after I crossed the finish and went down, didn't black out. They did an EKG which they said was fine, my BP was low at first and came back up after lying down. They told me to follow up with you. I feel fine today."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ER visit yesterday",
+              "author": "RN",
+              "date": "2025-11-03T09:20",
+              "body": "Thanks for the update, Vikram, and glad you're feeling better. The ED record came through this morning and the doctor has it. You're booked for a follow-up Monday 11/10 at 9:15. In the meantime no hard runs, keep up fluids, and call us or 911 if you faint or have chest pain or a racing heart."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-10a",
+          "kind": "office_visit",
+          "start": "2025-11-10T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, post-race collapse",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2025-11-10T09:15"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: ED follow-up",
+              "author": "PCP",
+              "date": "2025-11-10T09:50",
+              "body": "Follow-up after ED visit 11/2 (record reviewed). Went down just after the finish line of a 10K, lightheaded, no LOC, better lying with legs up. BP 90/60, HR 58 on arrival, ECG sinus brady 58 otherwise normal, repeat 108/68. Dx post-exercise orthostatic hypotension, sent home.\nSince then: completely well. Two easy runs this week, cooled down with a walk after each, no symptoms. No chest pain, palpitations, exertional dizziness. Never syncopal.\nNo meds, NKDA.\n\nVitals as charted.\nOrthostatics today: supine 116/72, HR 60. Standing 3 min 112/74, HR 72. Asymptomatic.\nWell appearing. Heart regular, no murmur at rest or standing. Lungs clear. No edema.\n\nA/P: Orthostatic hypotension: this episode fits the same pattern as before (rapid stand, prolonged fasting, now stopping abruptly after a hard run). Benign features: symptoms only after exertion stopped, resolved flat, normal exam and ECG, no family history of sudden death. No further testing needed.\n- Walk 5-10 min after races and hard runs, don't stop and stand still.\n- Fluids and a salty snack around long efforts.\n- Lie down with legs up at the first sign of lightheadedness.\n- Call same day for any fainting, collapse during exercise, chest pain or palpitations.\nOK to return to full training. Next visit annual physical."
+            },
+            {
+              "type": "Patient Instructions",
+              "title": "After Visit Summary",
+              "author": "PCP",
+              "date": "2025-11-10T09:55",
+              "body": "Today we talked about the dizziness after your race. Your exam and blood pressure lying and standing were normal today.\n- After a race or hard run, keep walking for 5 to 10 minutes before you stop.\n- Drink fluids before and after long runs.\n- If you feel lightheaded, lie down and raise your legs.\n- Call us the same day if you faint, collapse while running, or have chest pain or a racing heartbeat."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "portal_message",
+          "start": "2025-11-18T21:12",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-11-15T14:00"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID shot this year",
+              "author": "patient",
+              "date": "2025-11-18T21:12",
+              "body": "Got the 2025 COVID vaccine at the pharmacy on Saturday 11/15, Pfizer."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: COVID shot this year",
+              "author": "MA",
+              "date": "2025-11-19T08:50",
+              "body": "Thank you, it's in your record now."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "portal_message",
+          "start": "2026-02-10T13:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New insurance card",
+              "author": "patient",
+              "date": "2026-02-10T13:40",
+              "body": "The student plan issued new cards for the spring with a different member number. Photo of front and back attached."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: New insurance card",
+              "author": "front desk",
+              "date": "2026-02-10T15:02",
+              "body": "Thanks, updated your coverage with the new member number."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "annual_physical",
+          "start": "2026-07-21T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-07-21T08:35", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-07-21T08:35", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2026-07-21T08:35", "results": [{"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None"}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2026-07-21T08:30"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2026-07-21T08:00"},
+            {"procedure": "Immunization administration", "performed": "2026-07-21T08:30"},
+            {"procedure": "Venipuncture", "performed": "2026-07-21T08:35"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2026-07-21T08:55",
+              "body": "Annual exam, 28M.\nSince last visit: ED visit 11/2025 for near-syncope right after a 10K, post-exercise orthostatic hypotension, normal ECG; seen here 11/10 and fine. Back to running, always walks it off afterward now, no further dizzy spells, no syncope. No exertional symptoms.\nNo meds. NKDA. Never smoker, no alcohol.\nROS negative.\nExam: vitals as charted, weight stable. Well-appearing, lean. HEENT normal. Neck without nodes or thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, no masses or HSM. Skin intact. Extremities without edema.\nPHQ-2 0.\nA/P\n1. Orthostatic hypotension, episodic, quiet since November. Continue cool-down and hydration habits.\n2. Preventive: Tdap today (10 years since last). CBC, CMP, lipids drawn. Flu shot in the fall at nurse visit.\nReturn in a year."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-23a",
+          "kind": "portal_message",
+          "start": "2026-07-23T07:50",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2026-07-23T07:50",
+              "body": "Hi Vikram, your labs are all normal, including cholesterol. Next check in a year or two."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results",
+              "author": "patient",
+              "date": "2026-07-23T12:16",
+              "body": "Thanks! Arm was sore after the Tdap for a couple of days but it's fine now."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T16:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Flu shot",
+              "author": "patient",
+              "date": "2026-08-18T16:22",
+              "body": "Can I set up my flu shot for early October? Late afternoons work best, after 4."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Flu shot",
+              "author": "front desk",
+              "date": "2026-08-19T09:40",
+              "body": "You're all set for a nurse visit Tuesday 10/6 at 4:30."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-06a",
+          "kind": "nurse_visit",
+          "start": "2026-10-06T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

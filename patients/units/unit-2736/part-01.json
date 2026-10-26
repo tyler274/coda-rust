@@ -1,0 +1,583 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002736",
+      "given": "Jill",
+      "family": "Winslow",
+      "birth_date": "1974-09-16",
+      "address_line": "64 Haydenville Road",
+      "phone": "+1-617-555-0162",
+      "email": "jill.winslow@example.test",
+      "summary": "Administrative assistant with hypothyroidism after radioactive iodine for Graves' disease who joins in 2020 and over six years collects a run of autoimmune diagnoses at outside specialists: discoid lupus, lichen planus, seropositive rheumatoid arthritis, primary biliary cholangitis, then central hypothyroidism that turns out to be a macroprolactinoma found in July 2026 and just started on cabergoline.",
+      "events": [
+        {
+          "id": "2020-09-02a",
+          "kind": "outside_records",
+          "start": "2020-09-02T14:10",
+          "reason": "Records from prior primary care office",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records received",
+              "author": "front desk",
+              "date": "2020-09-02T14:10",
+              "body": "Records packet received by fax ahead of new-patient appointment 9/10. 38 pages. Scanned to chart.\n\nContents per cover summary from her previous office:\n- Problem list: hypothyroidism following radioactive iodine for Graves' disease (Graves' diagnosed 2015, I-131 ablation 2016, on replacement since)\n- Medication: levothyroxine 125 mcg daily\n- Allergies: NKDA\n- Colonoscopy 2015, age 40, early because of father's colon cancer: normal, no polyps, 10-year interval\n- Pap with HPV co-test 2019: NILM, HPV negative\n- Screening mammogram 2019: BI-RADS 1\n- Tdap 2017\n\nFlagged for PCP review."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-10a",
+          "kind": "establish_care",
+          "start": "2020-09-10T08:40",
+          "end": "2020-09-10T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient visit, establish care",
+          "conditions": [
+            {
+              "label": "Hypothyroidism",
+              "action": "history",
+              "onset": "2016-05-01"
+            },
+            {
+              "label": "History of Graves' disease treated with radioactive iodine ablation",
+              "icd10": "Z86.39",
+              "action": "history",
+              "onset": "2016-03-01"
+            },
+            {
+              "label": "Family history of colon cancer",
+              "action": "history"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "levothyroxine sodium 0.125 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning on an empty stomach",
+              "dose": {
+                "value": 125,
+                "unit": "ug"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypothyroidism"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              116,
+              74
+            ],
+            "weight_kg": 72.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 2.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-09-10T09:45",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-09-10T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-09-10T09:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-10T09:45",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-10T09:45",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Administrative assistant"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 40-64",
+              "performed": "2020-09-10T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-09-10T09:35"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2020",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit — Establish Care",
+              "author": "PCP",
+              "date": "2020-09-10T10:05",
+              "body": "45 y/o woman, new to the practice. Works as an administrative assistant; she wanted a doctor she could actually reach and liked the membership model.\n\nThyroid: Graves' in 2015, treated with radioactive iodine in 2016, hypothyroid since and on levothyroxine 125 mcg every morning. Has an endocrinologist she sees about once a year and plans to keep. Feels well on this dose. No palpitations, no heat or cold intolerance, energy fine.\n\nGyn: periods regular. Prior practice did a Pap/HPV co-test in 2019, normal. Mammogram 2019 normal.\nGI: colonoscopy at 40 because of her father, normal.\n\nPMH: as above. PSH: none.\nMeds: levothyroxine 125 mcg daily.\nAllergies: NKDA.\nFH: mother with rheumatoid arthritis. Father had autoimmune hypothyroidism and died of colon cancer at 65. Sister with lupus (SLE).\nSH: never smoker, does not drink, no drug use. Desk job with a fair amount of filing.\n\nROS: negative in full except as above.\n\nExam: well-appearing, NAD. BP and HR per vitals. HEENT unremarkable. Neck: no thyroid tissue palpable, no nodes. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Extremities without edema. Skin without rash. Neuro nonfocal. Mood and affect normal.\n\nA/P\n1. Hypothyroidism after RAI for Graves' — clinically euthyroid. TSH today. Continue 125 mcg. Endo stays involved.\n2. Health maintenance — Pap current (due 2024). Mammogram ordered. Colonoscopy due 2025 given FH. HCV and HIV once today. Flu shot given. Tdap 2017, current.\n3. Labs: CMP, CBC, lipids, TSH.\n\nRTC one year for physical, sooner as needed. She has the practice cell number."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-11a",
+          "kind": "portal_message",
+          "start": "2020-09-11T12:20",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2020-09-11T12:20",
+              "body": "Hi Jill — everything from yesterday came back fine. Thyroid level is right in range on the 125, so no change. Kidney and liver tests, blood count and cholesterol all normal, and the hepatitis C and HIV screens were negative. I put the mammogram order in; the imaging center should call you to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-15a",
+          "kind": "telephone",
+          "start": "2020-09-15T10:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request — endocrinology",
+              "author": "front desk",
+              "date": "2020-09-15T10:30",
+              "body": "Records release signed at intake. Requested last two years of notes and labs from her outside endocrinology group. Fax confirmation received."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "imaging",
+          "start": "2020-10-06T07:50",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2020-10-06T07:50",
+              "text": "Bilateral digital screening mammogram with tomosynthesis. Comparison: outside study 2019. The breasts are heterogeneously dense, which may obscure small masses. No suspicious mass, architectural distortion or suspicious calcifications. No change from prior.",
+              "conclusion": "BI-RADS 1: Negative. Routine annual screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2020",
+              "action": "done",
+              "date": "2020-10-06T07:50"
+            }
+          ]
+        },
+        {
+          "id": "2020-10-07a",
+          "kind": "portal_message",
+          "start": "2020-10-07T08:45",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "author": "PCP",
+              "date": "2020-10-07T08:45",
+              "body": "Your mammogram was normal. Dense breast tissue is common and was the same as before; no extra imaging needed. Next one in a year."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-08a",
+          "kind": "pharmacy",
+          "start": "2020-12-08T16:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request — levothyroxine",
+              "author": "MA",
+              "date": "2020-12-08T16:05",
+              "body": "Pharmacy fax: levothyroxine 125 mcg #90, needs new Rx from us (previous prescriber out of area). Last TSH 9/10 in range. Sent 90-day supply with 3 refills per PCP standing order."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-09a",
+          "kind": "telehealth_visit",
+          "start": "2021-03-09T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid follow-up",
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 2.0
+            }
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-03-04T07:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2021-03-09T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth — Thyroid Check",
+              "author": "PCP",
+              "date": "2021-03-09T12:55",
+              "body": "Video visit from her car on lunch break. Six-month check on levothyroxine. Endo appointment got pushed with everything this past year, so she asked us to check the TSH in between.\n\nFeels the same as always. Weight steady by her scale. No palpitations, tremor, constipation or cold intolerance.\n\nTSH 3/4 in range.\n\nA/P: Hypothyroidism after RAI, stable on 125 mcg. No change. She'll see endo when they can get her in. COVID vaccine: she has a pharmacy appointment next month — encouraged."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-06a",
+          "kind": "outside_records",
+          "start": "2021-05-06T10:15",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-08T15:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-29T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Immunization record — COVID-19 primary series",
+              "author": "MA",
+              "date": "2021-05-06T10:15",
+              "body": "Patient uploaded her vaccination card through the portal. Pfizer dose 1 on 4/8/21 and dose 2 on 4/29/21 at a retail pharmacy. Entered in immunization history; matches state registry."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-17a",
+          "kind": "portal_message",
+          "start": "2021-06-17T19:42",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Scheduling question",
+              "author": "patient",
+              "date": "2021-06-17T19:42",
+              "body": "Hi, can I book my physical for September instead of waiting for the reminder? Work is quieter then. Also my endocrinologist finally rescheduled me for January so I'm all set there. Thanks, Jill"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Scheduling question",
+              "author": "front desk",
+              "date": "2021-06-18T09:05",
+              "body": "Hi Jill, you're booked for Thursday 9/23 at 8:20 am. Please come fasting for labs. See you then!"
+            }
+          ]
+        },
+        {
+          "id": "2021-09-23a",
+          "kind": "annual_physical",
+          "start": "2021-09-23T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "bp": [
+              114,
+              72
+            ],
+            "weight_kg": 72.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-23T08:30",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-23T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-23T08:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-23T08:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2021-09-23T08:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-09-23T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2021",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2021-09-23T09:10",
+              "body": "Here for yearly physical. Doing well overall. Still on levothyroxine 125 mcg, taking it first thing with water. Periods regular. Mentions some warm spells at night the last couple of months, not bad enough to want to do anything yet — will watch.\n\nMeds: levothyroxine 125 mcg daily. NKDA.\nSH unchanged, never smoker, no alcohol.\n\nROS otherwise negative.\n\nExam: BP and pulse normal. Pleasant, well. HEENT normal. No thyroid tissue felt, no nodes. Heart regular without murmur. Lungs clear. Abdomen benign. No edema. Skin clear. Breast exam deferred to imaging per her preference.\n\nA/P\n- Health maintenance: mammogram ordered. Pap due 2024. Colonoscopy due 2025. Flu shot today. COVID series complete in April.\n- Hypothyroidism: TSH with today's labs.\n- Night warmth, likely early perimenopause; she will let me know if it gets disruptive.\n\nPHQ-2 negative. RTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-24a",
+          "kind": "portal_message",
+          "start": "2021-09-24T13:10",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Annual labs reviewed",
+              "author": "PCP",
+              "date": "2021-09-24T13:10",
+              "body": "Labs from 9/23 reviewed: CMP, CBC, lipids normal. TSH in range. Released to portal with a note — no changes."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "imaging",
+          "start": "2021-10-12T16:30",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2021-10-12T16:30",
+              "text": "Bilateral screening mammogram with tomosynthesis compared with 10/2020 and 2019. Heterogeneously dense tissue. No mass, distortion or suspicious calcification. Stable.",
+              "conclusion": "BI-RADS 1: Negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2021",
+              "action": "done",
+              "date": "2021-10-12T16:30"
+            }
+          ]
+        },
+        {
+          "id": "2021-10-26a",
+          "kind": "office_visit",
+          "start": "2021-10-26T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hot flashes and night sweats",
+          "conditions": [
+            {
+              "label": "Menopausal and female climacteric states",
+              "action": "diagnosed",
+              "onset": "2021-08-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "estradiol 1 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Perimenopausal vasomotor symptoms"
+            },
+            {
+              "drug_text": "progesterone 200 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth at bedtime on days 1-12 of each calendar month",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "NIGHTLY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Endometrial protection with estrogen therapy"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-10-26T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Vasomotor Symptoms",
+              "author": "PCP",
+              "date": "2021-10-26T16:20",
+              "body": "S: Back to talk about the night sweats she mentioned at her physical. Now 3-4 hot flashes a day and waking soaked most nights, sleep is broken, dragging at work. Cycles still regular, roughly monthly. No abnormal bleeding. No personal or family history of clot, stroke, breast cancer. Never smoker. Wants something that will actually work.\n\nO: BP normal. Well-appearing. No further exam today.\n\nA: Perimenopausal vasomotor symptoms, moderate to severe, healthy 47 y/o.\n\nP: Discussed hormone therapy, nonhormonal options, risks in plain numbers. She chose HT.\n- Estradiol 1 mg PO daily.\n- Uterus intact: micronized progesterone 200 mg at bedtime days 1-12 each month. Expect a withdrawal bleed after the progesterone days.\n- Mammogram from 10/12 negative.\n- Check in 2-3 months. Message sooner with heavy or irregular bleeding."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-18a",
+          "kind": "portal_message",
+          "start": "2021-11-18T20:14",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-13T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Update on the hormone pills",
+              "author": "patient",
+              "date": "2021-11-18T20:14",
+              "body": "Just an update — sleeping through most nights now, hot flashes way down. Period came on schedule after the progesterone days like you said. Also got my COVID booster on Saturday at the pharmacy, not sure if that shows up for you."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Update on the hormone pills",
+              "author": "RN",
+              "date": "2021-11-19T08:50",
+              "body": "Great to hear, Jill. I've added the 11/13 booster to your record. Keep the follow-up with your endocrinologist in January and let us know if anything changes before then."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

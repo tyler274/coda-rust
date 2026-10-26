@@ -1,0 +1,1976 @@
+{
+  "unit": "unit-2622",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002622",
+      "given": "Austin",
+      "family": "Morin",
+      "birth_date": "1990-08-10",
+      "address_line": "27 Chapman Street, Apt 2",
+      "phone": "+1-518-555-0155",
+      "email": "austin.morin@example.test",
+      "marital_status": "single",
+      "summary": "36-year-old international logistics consultant with remote injection drug use in remission and a resolved hepatitis at 24 that later serology shows was hepatitis B. Healthy through routine care until acute hepatitis A after a 2026 work trip to Southeast Asia, which resolved by August.",
+      "events": [
+        {
+          "id": "2021-09-14a",
+          "kind": "portal_message",
+          "start": "2021-09-14T10:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New patient appointment",
+              "date": "2021-09-14T10:12",
+              "author": "patient",
+              "body": "Hi, I'm booked as a new patient on the 21st at 9:00. I signed the release for my old doctor's office through the link you sent. Do I need to come in fasting for that first visit? I don't take any medications. Thanks, Austin"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: New patient appointment",
+              "date": "2021-09-14T11:40",
+              "author": "front desk",
+              "body": "Hi Austin, thanks for sending the release, we faxed the request to your prior office today. No need to fast. If the doctor orders bloodwork at the visit you can have it drawn here the same morning. Please bring your insurance card and any vaccine records you have. See you on the 21st."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-21a",
+          "kind": "establish_care",
+          "start": "2021-09-21T09:00",
+          "end": "2021-09-21T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "History of intravenous drug use, in remission",
+              "action": "history",
+              "note": "Remote injection drug use; no current use.",
+              "icd10": "F19.91"
+            },
+            {
+              "label": "History of resolved acute viral hepatitis (age 24)",
+              "action": "history",
+              "note": "Hepatitis after travel abroad around 2014; no antiviral treatment; full recovery by his account.",
+              "icd10": "Z86.19"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              67
+            ],
+            "hr": 75,
+            "rr": 15,
+            "temp_c": 37.1,
+            "spo2": 98,
+            "weight_kg": 78.6,
+            "height_cm": 180.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-21T10:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 114
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-21T10:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.89
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-21T10:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 165
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 94
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 53
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 89
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 112
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-21T10:15",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "International logistics consultant"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2021-09-21T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-09-21T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-09-21T10:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-08T14:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-29T14:00"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2021-09-21T10:00"
+            },
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-09-21T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-09-21T10:05",
+              "author": "PCP",
+              "body": "31 y/o man here to establish care. Previously followed at another primary care office; release signed, records requested. No complaints today.\n\nPMH:\n- Injection drug use in the past, in remission. He says this is well behind him and he has not used in years; prefers not to go into specifics and I did not press. No treatment program or medication needed currently. No other substance use.\n- Hepatitis at about age 24 (around 2014). Got sick after a trip overseas and was told it was \"hepatitis\"; no antiviral medication, no hospital stay that he recalls, and he recovered completely. Type not known to him. No records from that time.\nNo surgeries. Never had a blood transfusion.\n\nMeds: none.\nAllergies: NKDA.\n\nFamily hx: father with alcohol use disorder. Mother has high blood pressure.\n\nSocial: single, lives by himself in Greenfield. Works as an international logistics consultant, which means stretches of travel abroad for clients. Never smoked. Drinks socially, a drink or two a week. AUDIT-C 2. PHQ-2 0.\n\nROS: negative in full.\n\nExam: vitals in flowsheet. Well-appearing. Sclerae anicteric. Oropharynx clear, good dentition. Neck supple, no adenopathy, thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no hepatosplenomegaly. Skin: no rash, no track marks. Extremities without edema. Neuro grossly intact. Mood and affect appropriate.\n\nA/P:\n1. Health maintenance, new patient. CMP, CBC, lipids. One-time HIV and hepatitis C screening done today given history. Tdap today (last tetanus unknown). Flu shot today. COVID primary series this spring pulled from the state registry and entered.\n2. History of injection drug use, in remission. Supportive conversation; he knows he can bring it up any time.\n3. Remote hepatitis, resolved by history. Will look for anything in the old records.\nRTC for a physical in about a year."
+            }
+          ],
+          "state": {
+            "weight_kg": 79.0,
+            "height_cm": 180.0,
+            "labs": {
+              "High Density Lipoprotein": 53,
+              "Low Density Lipoprotein": 103,
+              "Total Cholesterol": 174,
+              "Triglycerides": 91
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-09-23a",
+          "kind": "portal_message",
+          "start": "2021-09-23T16:20",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2021-09-23T16:20",
+              "author": "PCP",
+              "body": "Austin, your bloodwork from Tuesday came back normal. Kidney and liver function, blood counts and cholesterol are all fine. The HIV and hepatitis C screens were negative, so those don't need repeating unless something changes. Nice to have you with the practice."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-27a",
+          "kind": "outside_records",
+          "start": "2021-10-27T13:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2021-10-27T13:30",
+              "author": "outside primary care",
+              "body": "Received by fax, 9 pages, in response to our request of 9/14. Covers office visits from 2019 to early 2021 only; the cover sheet says older charts were archived and are not included.\n\nSummary of contents: two routine physicals (2019 and 2020) with normal exams and normal vitals. Problem list carries \"hx IVDU, in remission\" and \"hx hepatitis, resolved\" with no further detail or labs. No medications on file. Allergies: NKDA. A basic metabolic panel and lipid panel from 2019, both within normal limits. Immunization page lists a tetanus booster with no date. No hospital or specialist records.\n\nNothing here changes our history. Scanned to chart.\n\nReviewed by PCP 10/28."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "annual_physical",
+          "start": "2022-10-20T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              94,
+              68
+            ],
+            "hr": 76,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 96,
+            "weight_kg": 78.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-10-20T09:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-10-20T09:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 180
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 107
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 53
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 100
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 127
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-10-20T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-20T09:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-10-20T09:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-20T09:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-10-20T09:00",
+              "author": "PCP",
+              "body": "Annual exam. Feels well. Busy year with work, several trips abroad, no illnesses while away. Sleeping fine, exercising a few times a week (runs, some lifting).\n\nNo IV or other drug use; remains in remission. Alcohol unchanged, a drink or two on weekends. Never smoker. PHQ-2 0.\n\nMeds none. NKDA. No change to family history.\n\nROS negative.\n\nExam: BP and vitals per flowsheet, normal. Weight stable. HEENT unremarkable, sclerae white. Neck without nodes. Cor RRR. Lungs clear bilaterally. Abd soft, no organomegaly. Skin clear. No edema.\n\nPlan: CMP and lipids. Flu vaccine given today. Bivalent COVID booster recommended; he will come back for it after his next trip. Prior office records reviewed last fall, nothing outstanding.\nSee in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-24a",
+          "kind": "portal_message",
+          "start": "2022-10-24T12:05",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2022-10-24T12:05",
+              "author": "PCP",
+              "body": "Hi Austin, labs from your physical look good: normal kidney and liver numbers, normal sugar, and cholesterol in a healthy range. No action needed."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "nurse_visit",
+          "start": "2022-11-29T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID booster",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-11-29T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-11-29T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "date": "2022-11-29T15:55",
+              "author": "RN",
+              "body": "Pt in for bivalent COVID booster, Pfizer 0.3 mL IM left deltoid. Screened: no fever today, no prior reaction to vaccines, no allergies. Tolerated well, waited 15 min without issue. VIS given. Back from a work trip last week, feels fine."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-23a",
+          "kind": "nurse_visit",
+          "start": "2023-10-23T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-23T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-23T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-23T16:16"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2023-10-23T16:30",
+              "author": "RN",
+              "body": "Flu vaccine 0.5 mL IM left deltoid and 2023-24 COVID vaccine 0.3 mL IM right deltoid. Afebrile by report, no prior vaccine reactions, NKDA. Observed 15 minutes, no reaction. VIS provided for both. Reminded him his physical is booked for 11/9."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-09a",
+          "kind": "annual_physical",
+          "start": "2023-11-09T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-11-10a",
+          "kind": "portal_message",
+          "start": "2023-11-10T09:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed appointment",
+              "date": "2023-11-10T09:15",
+              "author": "front desk",
+              "body": "Hi Austin, we missed you for your physical yesterday morning. Please call or reply here and we can find a new time. The doctor has openings in December and January."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "portal_message",
+          "start": "2024-03-12T07:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vaccine record for work",
+              "date": "2024-03-12T07:48",
+              "author": "patient",
+              "body": "Morning. One of our clients wants a copy of my vaccination record on file before I'm allowed on their warehouse floor. Can you send me whatever you have? A PDF here is fine. Thanks."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Vaccine record for work",
+              "date": "2024-03-12T13:22",
+              "author": "MA",
+              "body": "Hi Austin, your immunization record is attached as a PDF (Tdap 2021, flu 2021 to 2023, COVID 2021 to 2023). Let us know if the client needs it on a specific form and we can fill that out too."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "portal_message",
+          "start": "2024-11-19T10:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical overdue",
+              "date": "2024-11-19T10:02",
+              "author": "front desk",
+              "body": "Hi Austin, our records show you're due for a physical (last one October 2022). Reply here or call and we'll get you on the schedule."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical overdue",
+              "date": "2024-11-19T21:37",
+              "author": "patient",
+              "body": "Sorry, I lost track of time with travel. I'm home through the holidays. Anything the week of the 30th works, early is better."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical overdue",
+              "date": "2024-11-20T08:51",
+              "author": "front desk",
+              "body": "You're booked Monday 12/30 at 8:00. You'll probably have labs, so come a few minutes early."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-30a",
+          "kind": "annual_physical",
+          "start": "2024-12-30T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine health evaluation",
+          "vitals": {
+            "bp": [
+              108,
+              64
+            ],
+            "hr": 78,
+            "rr": 16,
+            "temp_c": 36.8,
+            "spo2": 96,
+            "weight_kg": 79.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-12-30T08:50",
+              "resulted": "2025-01-02T11:30",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Hepatitis B Core Antibody, Total",
+                  "loinc": "16933-4",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Hepatitis B e Antigen",
+                  "loinc": "13954-3",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis B e Antibody",
+                  "loinc": "13953-5",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-12-30T08:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-30T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 270
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.73
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-12-30T08:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 167
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 101
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 116
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per week"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-12-30T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-12-30T08:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-12-30T08:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-12-30T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-12-30T08:40",
+              "author": "PCP",
+              "body": "Here for a routine checkup, first in two years (missed the 2023 visit; travel). No symptoms at all. Energy good, weight steady, no GI complaints, no jaundice ever since the episode at 24.\n\nHx reviewed with him:\n- Injection drug use in the past, in remission. Confirms no IV drug use now.\n- Hepatitis about ten years ago after a trip abroad, never treated, got completely better. Still doesn't know which kind.\n- Has never received blood products.\nMeds: none. NKDA.\nFHx: father, alcohol use disorder; mother, hypertension. Unchanged.\nSocial: still consulting in international logistics, on the road abroad several times a year. Never smoker. 1 to 2 drinks a week. PHQ-2 0, AUDIT-C 2.\n\nROS: 12-point negative.\n\nExam: vitals per flowsheet, normal BP. NAD. Sclerae anicteric. TMs and pharynx normal. No cervical or supraclavicular nodes. Heart regular rate, no murmurs. Lungs clear to auscultation. Abdomen soft, nontender, liver edge not palpable, no splenomegaly. Skin without rash or stigmata of liver disease. No edema. Neuro nonfocal.\n\nAssessment/plan:\n- Routine adult exam. CMP, CBC, lipids.\n- Hepatitis B: adults are now screened once regardless of risk, and with his history it is worth knowing his status. Sending surface antigen, surface antibody and core antibody, with e antigen and e antibody.\n- Flu vaccine today (missed it in the fall).\n- History of injection drug use, remains in remission.\nOne year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-02a",
+          "kind": "portal_message",
+          "start": "2025-01-02T15:10",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Hepatitis B and routine labs",
+              "date": "2025-01-02T15:10",
+              "author": "PCP",
+              "body": "Austin, your routine labs (kidney, liver, blood counts, cholesterol) are all normal.\n\nThe hepatitis B tests show that you had hepatitis B at some point in the past and your body cleared it. The surface antigen is negative, which means there is no active or chronic infection. The core antibody is positive, which is the footprint of an old infection, and the surface antibody is positive, which means you are immune now. The e antigen is negative and e antibody positive, which fits with a cleared infection too.\n\nThis most likely explains the hepatitis you had at 24. Nothing needs treatment, you don't need the hepatitis B vaccine, and you can't pass it on."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-03a",
+          "kind": "portal_message",
+          "start": "2025-01-03T09:44",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "RE: Hepatitis B and routine labs",
+              "date": "2025-01-03T09:44",
+              "author": "patient",
+              "body": "Thanks for explaining. Just so I'm clear, this isn't something I need to tell people about or get checked on every year?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hepatitis B and routine labs",
+              "date": "2025-01-03T12:18",
+              "author": "PCP",
+              "body": "Correct. It's a past infection that's gone, not a current one. No yearly testing, no precautions with partners or anyone else. If a blood bank or a doctor ever asks, \"had hepatitis B in the past, resolved\" is the accurate answer."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-06a",
+          "kind": "nurse_visit",
+          "start": "2025-10-06T17:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-06T17:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-06T17:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Influenza vaccine",
+              "date": "2025-10-06T17:20",
+              "author": "RN",
+              "body": "Seasonal flu vaccine 0.5 mL IM R deltoid, lot in MAR. Feeling well, no fever, no egg or vaccine reactions in the past. 15 min observation unremarkable. Offered this season's COVID vaccine, he declined for now; will think about it. Physical scheduled 12/11."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-11a",
+          "kind": "annual_physical",
+          "start": "2025-12-11T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              116,
+              74
+            ],
+            "hr": 84,
+            "rr": 17,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 79.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-12-11T08:25",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-12-11T08:25",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 174
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 103
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 52
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 95
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-12-11T07:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-11T08:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-12-11T08:20",
+              "author": "PCP",
+              "body": "Yearly visit. Doing well. Travel schedule heavy again this year; feels healthy, no complaints. Got his flu shot here in October; still not interested in the COVID booster.\n\nRemains in remission from injection drug use, no use of any kind. Social drinker, unchanged. Never smoker. PHQ-2 negative.\n\nPMH reviewed: remote IVDU in remission; resolved hepatitis at 24, which last year's serology showed was hepatitis B, cleared and immune. No meds. NKDA. FHx unchanged.\n\nROS negative.\n\nExam: vitals normal (flowsheet). Well-appearing. Anicteric. Neck: no LAD. CV: regular, no murmur. Resp: clear. Abd: soft, nontender, nondistended, no HSM. Ext: warm, no edema. Skin: no lesions of concern.\n\nA/P: healthy 35 y/o. CMP and lipids. Nothing else due. Back in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-12a",
+          "kind": "portal_message",
+          "start": "2025-12-12T11:35",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2025-12-12T11:35",
+              "author": "PCP",
+              "body": "Labs from yesterday are normal across the board. Have a good holiday and safe travels."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-19a",
+          "kind": "ed_visit",
+          "start": "2026-06-19T18:50",
+          "end": "2026-06-19T23:40",
+          "service": "Emergency Medicine",
+          "reason": "Malaise, fatigue, dark urine",
+          "vitals": [
+            {
+              "time": "2026-06-19T18:58",
+              "bp": [
+                128,
+                78
+              ],
+              "hr": 88,
+              "rr": 16,
+              "temp_c": 37.3,
+              "spo2": 98
+            },
+            {
+              "time": "2026-06-19T23:15",
+              "bp": [
+                122,
+                74
+              ],
+              "hr": 80,
+              "rr": 16,
+              "temp_c": 37.1,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-19T19:20",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "unit": "U/L",
+                  "value": 980
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "unit": "U/L",
+                  "value": 1150
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "unit": "mg/dL",
+                  "value": 3.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "unit": "U/L",
+                  "value": 110
+                },
+                {
+                  "test": "Albumin",
+                  "unit": "g/dL",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-06-19T19:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 11.9
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-06-19T19:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 268
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.95
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.8
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2026-06-19T21:05",
+              "text": "Indication: jaundice, right upper quadrant tenderness, elevated transaminases.\nTechnique: grayscale and color Doppler imaging of the right upper quadrant.\nLiver: normal in size and echotexture. No focal hepatic lesion.\nBiliary: no intrahepatic or extrahepatic ductal dilatation. Common bile duct 3 mm.\nGallbladder: normally distended, no stones, no wall thickening, no pericholecystic fluid. Sonographic Murphy sign negative.\nPortal vein: patent with normal hepatopetal flow.\nPancreas: visualized portions unremarkable.\nRight kidney: normal size, no hydronephrosis.\nNo ascites.",
+              "conclusion": "Normal right upper quadrant ultrasound. No biliary obstruction."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-06-19T18:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Provider Note",
+              "date": "2026-07-10T14:05",
+              "author": "emergency medicine",
+              "body": "Community hospital, Emergency Department. Date of visit 06/19/2026, arrived 18:50, discharged 23:40. Faxed to primary care 07/10/2026 on request.\n\nCHIEF COMPLAINT: feeling unwell x1 week, urine dark.\n\nHPI: 35M, generally healthy, about a week of malaise and tiredness. Noticed his urine turning dark, \"like tea,\" over the same week. Some mild nausea, has not vomited. Denies abdominal pain. No fever he has measured. Got back from a work trip to Southeast Asia earlier this month. History of remote IV drug use, none currently. Had hepatitis at 24 which resolved on its own. No acetaminophen beyond a couple of doses, no supplements or herbal products, no new medications.\n\nPMH: IVDU, in remission. Hepatitis age 24, resolved.\nMEDS: none.\nALLERGIES: NKDA.\nFAMILY HX: father with alcohol use disorder; mother with HTN.\nSOCIAL: never smoker. EtOH socially, 1 to 2 per week. International logistics consultant.\n\nROS: positive as in HPI. Negative for chest pain, SOB, confusion, bleeding or bruising, rash.\n\nEXAM: T 37.3, HR 88, BP 128/78, RR 16, SpO2 98% RA.\nGen: tired-appearing, nontoxic, alert and oriented.\nEyes: sclerae mildly icteric.\nCV: regular, no murmur. Lungs: clear.\nAbd: soft, nondistended, tender to palpation in the right upper quadrant. Liver not enlarged. No splenomegaly. No ascites.\nSkin: no rash, no petechiae, no spider angiomata.\nNeuro: nonfocal, no asterixis.\n\nRESULTS:\nAST 980 U/L, ALT 1150 U/L, total bilirubin 3.2 mg/dL, alk phos 110 U/L, albumin 4.2 g/dL. INR 1.0. Remainder of CMP and CBC unremarkable.\nRUQ US: normal liver, no biliary dilatation, gallbladder normal.\nAcute hepatitis panel sent, pending at discharge.\n\nMDM: marked hepatocellular transaminase elevation with mild hyperbilirubinemia, preserved synthetic function (normal INR and albumin), normal mental status, imaging without obstruction. Picture is acute hepatitis, most likely viral given recent travel. Tolerating PO. No indication for admission.\n\nDIAGNOSIS: acute hepatitis, likely viral.\n\nDISPOSITION: home. Avoid alcohol. Limit acetaminophen. Hydrate. Follow up with PCP in 2 to 3 days for repeat labs and serology results. Return for confusion, vomiting and unable to keep fluids down, bleeding, worsening yellowing or abdominal pain.\n\nElectronically signed, ED attending physician."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-20a",
+          "kind": "portal_message",
+          "start": "2026-06-20T08:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Went to the ER last night",
+              "date": "2026-06-20T08:14",
+              "author": "patient",
+              "body": "Hi, wanted to give you a heads up. I've felt run down for about a week and my pee got really dark so I went to the ER last night. They said my liver numbers were way up and it's probably a virus, maybe from my trip, and to see you in a couple days. They did an ultrasound which was fine. They sent some hepatitis tests but those weren't back when I left. I still feel crummy but ok, eating a little. When can you see me?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Went to the ER last night",
+              "date": "2026-06-20T09:02",
+              "author": "PCP",
+              "body": "Thanks for letting me know, Austin, and sorry you're feeling lousy. I can see you Monday or Tuesday morning, whichever is easier. Until then: no alcohol, no more than a couple of Tylenol a day if any, keep drinking fluids. If you get confused or very sleepy, can't keep anything down, notice bleeding or bruising, or the yellow color gets worse, go back to the ER. I'll ask the hospital for the records."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Went to the ER last night",
+              "date": "2026-06-20T10:30",
+              "author": "patient",
+              "body": "Tuesday works. Thank you."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "office_visit",
+          "start": "2026-06-23T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, acute hepatitis",
+          "vitals": {
+            "bp": [
+              112,
+              65
+            ],
+            "hr": 71,
+            "rr": 17,
+            "temp_c": 36.5,
+            "spo2": 99,
+            "weight_kg": 76.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-23T09:05",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "unit": "U/L",
+                  "value": 412
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "unit": "U/L",
+                  "value": 688
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "unit": "mg/dL",
+                  "value": 2.7
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "unit": "U/L",
+                  "value": 121
+                },
+                {
+                  "test": "Albumin",
+                  "unit": "g/dL",
+                  "value": 4.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-06-23T09:05",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.1
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-23T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 246
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.83
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-23T09:05",
+              "resulted": "2026-06-24T10:40",
+              "results": [
+                {
+                  "test": "Hepatitis A Virus IgM Antibody",
+                  "loinc": "13950-1",
+                  "text": "Reactive"
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis B Core IgM Antibody",
+                  "loinc": "31204-1",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-06-23T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-23T09:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2026-06-23T09:00",
+              "author": "PCP",
+              "body": "Seen Friday night in the ED for about a week of malaise, fatigue and dark urine. ED records not here yet; requested today. History from him.\n\nHe got back in early June from roughly three weeks working in Southeast Asia, client sites and a lot of meals out. Started feeling off around the 12th: tired, no appetite, queasy, then dark urine. ED told him his liver enzymes were very high, ultrasound normal, hepatitis tests sent. Since then about the same, maybe slightly better today. Mild nausea, no vomiting. No abdominal pain to speak of. No fever. Stools normal color. No itching, no confusion, no bleeding or bruising. Took two Tylenol total last week, nothing since. No supplements. No alcohol since before the trip ended. No IV drug use. NKDA, no meds.\n\nExam: vitals in flowsheet, afebrile. Weight 76 kg, about 3 kg below December. Tired but comfortable, fully alert and conversant. Sclerae mildly icteric. Skin without jaundice of note, no excoriations, no bruises, no spider angiomata. Heart regular. Lungs clear. Abdomen soft, mildly tender in the RUQ, liver edge not palpable, no splenomegaly, no ascites. No asterixis.\n\nAssessment: acute hepatitis, presumed viral, after travel to an area where hepatitis A is common. Hepatitis B unlikely given his immune serology last year. Checking synthetic function today.\n\nPlan:\n- CMP, PT/INR, CBC, acute hepatitis panel (HAV IgM, HBsAg, HBc IgM, HCV Ab).\n- Supportive care. No alcohol until liver tests normal. Acetaminophen 2 g/day max. Small frequent meals, fluids.\n- Out of work through 7/6, letter given; no travel for now.\n- Reviewed warning signs that need same-day call or ED.\n- Will call with results. Recheck in about 2 weeks.\n- ED record request faxed with his signed release."
+            },
+            {
+              "type": "Letter",
+              "title": "Work note",
+              "date": "2026-06-23T09:10",
+              "author": "PCP",
+              "body": "To whom it may concern:\n\nAustin Morin was seen in this office today and is under my care for a medical illness. He is unable to work from 6/19/2026 through 7/6/2026 and should not travel during this time. I expect him to be able to return after that; I will update this note if anything changes.\n\nPrimary Care Physician"
+            }
+          ],
+          "state": {
+            "weight_kg": 76.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-24a",
+          "kind": "telephone",
+          "start": "2026-06-24T11:20",
+          "conditions": [
+            {
+              "label": "Hepatitis A without hepatic coma",
+              "action": "diagnosed",
+              "onset": "2026-06-12",
+              "icd10": "B15.9"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results call: acute hepatitis A",
+              "date": "2026-06-24T11:20",
+              "author": "PCP",
+              "body": "Called pt with results. Hepatitis A IgM reactive: acute hepatitis A. HBsAg and HBc IgM nonreactive, HCV Ab nonreactive. Yesterday's labs: AST 412, ALT 688, T bili 2.7, ALP 121, albumin 4.0, INR 1.0, CBC normal. Liver is making its proteins normally.\n\nExplained: likely picked up through food or water on the trip, usually clears completely in weeks to a couple of months, no chronic form, and afterward he is immune for life. Contagious mainly before and in the first week or so of jaundice: careful handwashing, don't prepare food for others for now. Lives alone; nobody else at home. Not a food handler. Reportable, so the health department may call him.\n\nSame precautions: no alcohol, acetaminophen limit. Recheck visit 7/8 with labs. He was relieved to have an answer."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-26a",
+          "kind": "telephone",
+          "start": "2026-06-26T14:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from public health nurse",
+              "date": "2026-06-26T14:45",
+              "author": "RN",
+              "body": "Public health nurse from the local health department called regarding the reportable hepatitis A result on this patient. Confirmed the lab, collection date 6/23, and symptom onset about 6/12. Provided travel history as documented. Confirmed he is not a food handler or health care worker. She has already spoken with the patient and is handling contact follow-up on their end. No action needed from us. FYI to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-06a",
+          "kind": "telephone",
+          "start": "2026-07-06T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request and check-in",
+              "date": "2026-07-06T10:05",
+              "author": "RN",
+              "body": "Still no ED records from the 6/19 visit. Called the hospital's health information office; they have our 6/23 request logged but nothing went out. Re-faxed the request and signed release, they say 3 to 5 business days.\n\nAlso called pt to check in before his Wednesday visit. Says energy is noticeably better, eating normally again, urine back to normal color, eyes look less yellow. No nausea. Working a little from home. Reminded him of labs at the visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-08a",
+          "kind": "office_visit",
+          "start": "2026-07-08T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis A follow-up",
+          "vitals": {
+            "bp": [
+              123,
+              74
+            ],
+            "hr": 70,
+            "temp_c": 37.0,
+            "spo2": 97,
+            "weight_kg": 77.3
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-07-08T09:40",
+              "resulted": "2026-07-09T08:10",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "unit": "U/L",
+                  "value": 98
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "unit": "U/L",
+                  "value": 214
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "unit": "mg/dL",
+                  "value": 1.3
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "unit": "mg/dL",
+                  "value": 0.6
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "unit": "U/L",
+                  "value": 104
+                },
+                {
+                  "test": "Albumin",
+                  "unit": "g/dL",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-07-08T09:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-07-08T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up: acute hepatitis A",
+              "date": "2026-07-08T09:35",
+              "author": "PCP",
+              "body": "Follow-up of acute hepatitis A (HAV IgM reactive 6/24, onset ~6/12 after travel).\n\nMuch improved. Energy perhaps 80 percent of normal, appetite back, nausea gone. Urine normal color for about a week. Stools normal. No abdominal pain, no itching. Still no alcohol. No acetaminophen. Has been working half days from home since last week and wants to go back fully. Has a client trip abroad penciled in for late August and asks if that's realistic.\n\nExam: vitals per flowsheet, afebrile. Weight 77 kg, up 1 kg. Sclerae anicteric today. Abdomen soft, nontender, no hepatomegaly. No asterixis.\n\nA/P: acute hepatitis A, resolving as expected.\n- Hepatic panel today.\n- OK to return to work, remote or in the office, now. Hold on international travel until liver tests are normal.\n- Continue no alcohol until normal.\n- Repeat hepatic panel in 3 weeks, then again if not normal. No visit needed if trending down.\n- ED records still outstanding; RN re-requested Monday."
+            }
+          ],
+          "state": {
+            "weight_kg": 77.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-09a",
+          "kind": "portal_message",
+          "start": "2026-07-09T12:40",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Liver tests",
+              "date": "2026-07-09T12:40",
+              "author": "PCP",
+              "body": "Good news, Austin: your liver tests have come down a lot. ALT is now 214 (it was 688 two weeks ago) and bilirubin 1.3, close to normal. Albumin is normal. This is exactly the direction we want. Next blood draw around July 29; you can just come in for the lab, no appointment with me needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-10a",
+          "kind": "outside_records",
+          "start": "2026-07-10T14:05",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "ED record received and reviewed",
+              "date": "2026-07-10T16:30",
+              "author": "PCP",
+              "body": "ED record from 6/19 finally received by fax (second request): provider note, labs and RUQ ultrasound report. Reviewed.\n\nAt the ED: AST 980, ALT 1150, T bili 3.2, ALP 110, albumin 4.2, INR 1.0, CBC normal. RUQ US normal liver, no ductal dilatation, normal gallbladder. Exam with mild scleral icterus and RUQ tenderness, no enlarged liver. Discharged home with dx acute hepatitis, likely viral. The ED's own hepatitis panel is listed as pending; no result included in what they sent.\n\nConsistent with what he told us and with our 6/23 and 7/8 labs showing steady improvement. Nothing new to act on."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-29a",
+          "kind": "lab_only",
+          "start": "2026-07-29T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Repeat liver tests",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-07-29T07:55",
+              "resulted": "2026-07-29T15:20",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "unit": "U/L",
+                  "value": 36
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "unit": "U/L",
+                  "value": 61
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "unit": "mg/dL",
+                  "value": 0.8
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "unit": "mg/dL",
+                  "value": 0.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "unit": "U/L",
+                  "value": 86
+                },
+                {
+                  "test": "Albumin",
+                  "unit": "g/dL",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-07-29T07:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Liver tests",
+              "date": "2026-07-29T17:05",
+              "author": "PCP",
+              "body": "Austin, almost there. Bilirubin is normal now (0.8) and AST is normal. ALT is 61, still a bit above the normal range but way down from where it was. One more check in about 3 weeks, mid-August. If that's normal you're cleared for the trip and for a drink again."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Liver tests",
+              "date": "2026-07-29T19:48",
+              "author": "patient",
+              "body": "Great, feeling basically normal now. I'll come in Monday the 17th first thing. The trip is the last week of August so that timing works if it's good."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-17a",
+          "kind": "lab_only",
+          "start": "2026-08-17T07:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Repeat liver tests",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-08-17T07:40",
+              "resulted": "2026-08-17T15:55",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "unit": "U/L",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "unit": "U/L",
+                  "value": 27
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "unit": "mg/dL",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "unit": "mg/dL",
+                  "value": 0.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "unit": "U/L",
+                  "value": 74
+                },
+                {
+                  "test": "Albumin",
+                  "unit": "g/dL",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-17T07:40"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T08:25",
+          "conditions": [
+            {
+              "label": "Hepatitis A without hepatic coma",
+              "action": "resolved",
+              "icd10": "B15.9"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Liver tests normal",
+              "date": "2026-08-18T08:25",
+              "author": "PCP",
+              "body": "Austin, yesterday's liver tests are completely normal: ALT 27, AST 23, bilirubin 0.6. The hepatitis A is over. You're cleared to travel and back to your usual drinking is fine. You now have lifelong immunity to hepatitis A, so you won't need the vaccine. No more blood tests for this. See you for your physical in December."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Liver tests normal",
+              "date": "2026-08-18T09:10",
+              "author": "patient",
+              "body": "That's a relief, thanks for staying on top of it. Weight's back to about 78 too. See you in December."
+            }
+          ]
+        },
+        {
+          "id": "2026-12-08a",
+          "kind": "annual_physical",
+          "start": "2026-12-08T08:00",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Hepatitis A without hepatic coma|B15.9": {
+        "code": "B15.9",
+        "display": "Hepatitis A without hepatic coma",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of intravenous drug use, in remission|F19.91": {
+        "code": "F19.91",
+        "display": "Other psychoactive substance use, unspecified, in remission",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of resolved acute viral hepatitis (age 24)|Z86.19": {
+        "code": "Z86.19",
+        "display": "Personal history of other infectious and parasitic diseases",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "Hepatitis A Virus IgM Antibody": {
+        "code": "13950-1",
+        "display": "Hepatitis A virus IgM Ab [Presence] in Serum or Plasma by Immunoassay",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hepatitis B Core Antibody, Total": {
+        "code": "16933-4",
+        "display": "Hepatitis B virus core Ab [Presence] in Serum",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hepatitis B Core IgM Antibody": {
+        "code": "31204-1",
+        "display": "Hepatitis B virus core IgM Ab [Presence] in Serum",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hepatitis B e Antibody": {
+        "code": "13953-5",
+        "display": "Hepatitis B virus e Ab [Presence] in Serum or Plasma by Immunoassay",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hepatitis B e Antigen": {
+        "code": "13954-3",
+        "display": "Hepatitis B virus e Ag [Presence] in Serum or Plasma by Immunoassay",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

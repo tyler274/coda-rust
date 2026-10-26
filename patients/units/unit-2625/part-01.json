@@ -1,0 +1,495 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002625",
+      "given": "Austin",
+      "family": "Crowley",
+      "birth_date": "1992-04-05",
+      "address_line": "27 Pleasant Street",
+      "phone": "+1-646-555-0133",
+      "email": "austin.crowley@example.test",
+      "marital_status": "single",
+      "summary": "Financial analyst in his thirties with ulcerative colitis since 2015 on mesalamine, followed by an outside GI group. Joins in 2022; primary sclerosing cholangitis is found on MRCP in October 2025, and worsening cholestasis in spring 2026 leads to ERCP dilation of a dominant bile duct stricture with negative brushings.",
+      "events": [
+        {
+          "id": "2022-08-30a",
+          "kind": "portal_message",
+          "start": "2022-08-30T16:42",
+          "reason": "New patient intake",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New patient paperwork",
+              "author": "patient",
+              "date": "2022-08-30T16:42",
+              "body": "Hi, I filled out the intake forms online and signed the records release for my old primary care office. I have my first appointment on 9/12. I see a GI doctor every year for colitis, should I bring anything from them or will you request those too? Thanks, Austin"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: New patient paperwork",
+              "author": "front desk",
+              "date": "2022-08-31T09:10",
+              "body": "Hi Austin, got your forms and the release, thank you. We faxed the request to your prior primary care office this morning. For GI, just bring your current medication bottle or a photo of the label and the name of the practice; the doctor will ask GI for notes if needed. See you on the 12th at 9:00. Please arrive 10 minutes early to scan your insurance card."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-12a",
+          "kind": "establish_care",
+          "start": "2022-09-12T09:00",
+          "end": "2022-09-12T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Ulcerative colitis",
+              "action": "history",
+              "onset": "2015-06-01",
+              "note": "Diagnosed 2015 by outside GI; on mesalamine since."
+            }
+          ],
+          "medications": [
+            {
+              "drug": "mesalamine 1200 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 1200,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Ulcerative colitis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 77.0,
+            "height_cm": 180.3,
+            "labs": {
+              "Total Cholesterol": 164,
+          "Low Density Lipoprotein": 93
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Financial analyst"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-09-12T10:15",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-09-12T10:15",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-12T10:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-12T10:15",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2022-09-12T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2022-09-12T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-12T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-12T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-09-12T10:05",
+              "body": "New patient, 30M, moving his primary care here. Previous PCP was fine, wanted easier access. Works as a financial analyst, long weeks around quarter close.\n\nUC: diagnosed 2015, around age 23. Has been on mesalamine 1.2 g twice a day ever since. Followed by an outside GI group, sees them about once a year and they do his GI labs. Says he has been in remission a long time, no bleeding, normal stools, no abdominal pain. Takes the mesalamine reliably. GI refills it.\n\nNo other medical problems. No surgeries. NKDA.\n\nFamily: maternal grandmother had UC. Father has primary sclerosing cholangitis. Mother has autoimmune hypothyroidism.\n\nSocial: never smoked, does not drink at all, no drugs. Lives in Easthampton. Exercises a few times a week.\n\nROS: negative except as above. No fatigue, no itching, no weight change.\n\nExam: well appearing. Vitals as charted. HEENT unremarkable, no scleral icterus. Neck supple, no adenopathy. Heart regular rate and rhythm, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. No edema. Skin without rash.\n\nA/P\n1. Ulcerative colitis, in remission per patient on mesalamine. Continue with GI. Will request their most recent note. Mesalamine needs renal function checked; doing a BMP today.\n2. Health maintenance: CBC, BMP, lipids. HIV and hep C screening today, he agrees. Tdap given, no record of one in the last 10 years. Flu and COVID boosters next month when available. PHQ-2 0.\n3. Return in a year for a physical, sooner as needed. He has my cell for questions."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "portal_message",
+          "start": "2022-09-14T12:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent lab results",
+              "author": "PCP",
+              "date": "2022-09-14T12:20",
+              "body": "Austin, your blood counts, kidney function, electrolytes and cholesterol all look good. HIV and hepatitis C screens were nonreactive, which is what we expected; no need to repeat those unless something changes. Kidney numbers are the main thing we watch on mesalamine and yours are normal."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your recent lab results",
+              "author": "patient",
+              "date": "2022-09-14T18:03",
+              "body": "Great, thanks for the quick turnaround."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "outside_records",
+          "start": "2022-09-27T11:30",
+          "reason": "Records from prior primary care office",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "author": "outside primary care",
+              "date": "2022-09-27T11:30",
+              "body": "Records packet, 14 pages, faxed by prior primary care office in response to release dated 08/30/2022.\n\nContents: annual exams 2018 through 2021, immunization record, medication list, labs.\n\nProblem list: ulcerative colitis, managed by gastroenterology.\nMedications: mesalamine DR 1.2 g twice daily (prescribed by GI).\nAllergies: NKDA.\n\nAnnual exams each unremarkable; weight stable in the high 70s kg; blood pressure normal at each visit. Basic metabolic panels and blood counts in 2019 and 2021 within normal limits. Immunizations listed: childhood series complete, influenza in most years, COVID-19 primary series 2021. No Tdap recorded since adolescence.\n\nReviewed and scanned to chart. Nothing outstanding. -- MA"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-19a",
+          "kind": "nurse_visit",
+          "start": "2022-10-19T17:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-19T17:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-19T17:22"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-19T17:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2022-10-19T17:35",
+              "body": "Here after work for flu and bivalent COVID booster. Screening questions negative. Flu vaccine 0.5 mL IM left deltoid. Pfizer bivalent 0.3 mL IM right deltoid. VIS given for both. Waited 15 minutes, no reaction. Told him a sore arm or a tired day afterward is common."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-24a",
+          "kind": "pharmacy",
+          "start": "2023-01-24T10:05",
+          "reason": "Refill request, mesalamine",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy Refill Request",
+              "author": "MA",
+              "date": "2023-01-24T10:05",
+              "body": "Fax from pharmacy requesting refill of mesalamine DR 1.2 g, 1 tab BID, #180. Prescriber on the bottle is his GI. Called pharmacy, told them to send to GI office; we do not manage this one. Pharmacy said they had sent to us because GI's fax line was busy. Patient has 6 days left. Left a message for patient letting him know."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "RE: Pharmacy Refill Request",
+              "author": "MA",
+              "date": "2023-01-25T14:40",
+              "body": "Patient called back, GI sent the refill this morning, he picked it up. Closing."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "nurse_visit",
+          "start": "2023-03-14T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis B vaccine, dose 1",
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2023-03-14T08:15"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-03-14T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2023-03-14T08:25",
+              "body": "Hep B series, dose 1 of 2 (Heplisav-B), per PCP recommendation for all adults under 60; no prior hep B vaccine on his records. 0.5 mL IM left deltoid. VIS reviewed. No reaction during 15 minute wait. Dose 2 due in 4 weeks, booked for 4/13."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-13a",
+          "kind": "nurse_visit",
+          "start": "2023-04-13T08:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis B vaccine, dose 2",
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2023-04-13T08:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-04-13T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2023-04-13T08:20",
+              "body": "Heplisav-B dose 2 of 2, 0.5 mL IM right deltoid. Said the first one left his arm sore for a day, nothing else. Observed, fine. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-19T08:20",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-09-19T08:20",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-19T08:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-19T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-19T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-09-19T08:25",
+              "body": "Early slot before work. Feeling well. UC quiet, no bleeding or urgency, on mesalamine 1.2 g BID, saw GI earlier this year and everything was fine per him. Busy at work but sleeping ok. Running and some weights.\n\nMeds: mesalamine DR 1.2 g BID. NKDA.\nNever smoker, no alcohol.\n\nExam: well, no distress. No scleral icterus. Neck no nodes or thyromegaly. Heart RRR without murmur. Lungs clear. Abdomen soft and nontender, no masses or organomegaly. No edema. Skin normal.\n\nPHQ-2 0.\n\nA/P\nUC in remission, GI following. BMP for mesalamine, CBC, lipids today.\nHep B series done in the spring. Flu and COVID next month.\nRTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-21a",
+          "kind": "portal_message",
+          "start": "2023-09-21T07:55",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results from your physical",
+              "author": "PCP",
+              "date": "2023-09-21T07:55",
+              "body": "Labs from Tuesday are all normal, kidneys included. Cholesterol is fine. Nothing to do."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "nurse_visit",
+          "start": "2023-10-24T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-24T12:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-24T12:17"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-24T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2023-10-24T12:30",
+              "body": "Lunch-hour visit for flu and the 2023-24 COVID vaccine. No fever today, no prior reactions besides a sore arm. Flu 0.5 mL IM L deltoid, Pfizer 2023-24 formula 0.3 mL IM R deltoid. VIS provided. 15 min observation without problems."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

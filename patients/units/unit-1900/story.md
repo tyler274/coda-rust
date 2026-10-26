@@ -1,0 +1,16 @@
+# unit-1900 story
+
+- 2025-07-30 new-patient visit: cough 3 weeks after a cold, night-worse, drip sensation; UACS diagnosed; URI history (S, R1, R5, P weight/height)
+- 2025-08-06 outside records from prior primary care: normal 2023 cervical co-test, Tdap 2021 (P)
+- 2025-08-25 portal: cough gone (P)
+- 2025-10-08 annual physical: UACS resolved, screening labs, PHQ-2, flu and COVID vaccines (P)
+- 2025-10-09 portal result note: labs normal (P)
+- 2026-01-21 office visit cancelled by patient, nothing pending (P)
+- 2026-04-21 portal: neck pain, fullness, fevers, palpitations; same-day visit (P, S)
+- 2026-04-21 PCP visit: tender enlarged thyroid, temp 37.9, TSH/FT4/ESR/CRP drawn (P, S, A1, R2)
+- 2026-04-22 results TSH <0.01, FT4 2.5, ESR 70, CRP 8; PCP call; urgent endocrinology referral (S, P)
+- 2026-04-29 outside endocrinology consult, letter received 04-30: subacute thyroiditis, HR 88, BP 132/85, no drug, recheck in 6 weeks (S, R2, R3, R4)
+- 2026-06-10 lab only: TSH 2.4, FT4 1.2; result note, copy to endocrinology (P)
+- 2026-06-17 telehealth follow-up: symptoms gone, thyroiditis resolved (P)
+- 2026-08-12 portal: schedules physical (P)
+- 2026-10-07 annual physical booked (P)

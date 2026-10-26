@@ -1,0 +1,369 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001101",
+      "events": [
+        {
+          "id": "2024-02-13a",
+          "kind": "office_visit",
+          "start": "2024-02-13T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-02-15a",
+          "kind": "telephone",
+          "start": "2024-02-15T09:20",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-show follow-up call",
+              "author": "front desk",
+              "date": "2024-02-15T09:20",
+              "body": "Called re: missed 2/13 appointment. Pt apologized, says it was a busy week at work and it slipped his mind. Confirmed cell number and email for reminders. Rebooked 3/6 at 1:40. Asked if any chest symptoms changed - he says no, same as before. Message to PCP FYI."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-06a",
+          "kind": "office_visit",
+          "start": "2024-03-06T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes, hypertension, angina follow-up",
+          "state": {
+            "weight_kg": 86.0,
+            "labs": {
+              "Hemoglobin A1c": 6.8,
+              "Glucose": 150
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-06T14:20",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-06T14:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-03-06T14:25"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-06T13:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-03-06T14:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Chronic disease follow-up",
+              "author": "PCP",
+              "date": "2024-03-06T15:00",
+              "body": "Rescheduled from 2/13 no-show.\n\nS: No change in the angina pattern: chest pressure on stairs or the hill, settles with a few minutes of rest, no rest symptoms. Says he is \"used to working around it.\" Cardiology f/u is set for July. Diabetes: following his eating plan, weight stable around 86.7 kg. Feet numb as before. Meds unchanged, no side effects.\n\nO: BP 150/86, HR 82.\nHeart regular, no murmur. Lungs clear. No edema. Foot check: skin intact, no ulcer.\n\nA/P:\n- Stable angina: stable pattern, cardiology in July.\n- T2DM/CKD 1/neuropathy: A1c and BMP today.\n- HTN: office reading higher than his usual today; says home readings are at goal. Recheck next visit, no change for now (amlodipine 5).\n- Hyperlipidemia: atorvastatin 20.\n- HM: PCV20 today (PPSV23 given 10/2019); pneumococcal series complete.\n\nRTC fall for annual labs.\n\nAddendum 3/7: A1c 7.1%."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-08a",
+          "kind": "portal_message",
+          "start": "2024-03-08T08:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "A1c",
+              "author": "PCP",
+              "date": "2024-03-08T08:40",
+              "body": "Gary - A1c 7.1%, kidney function normal. All steady. See you in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-26a",
+          "kind": "outside_records",
+          "start": "2024-06-26T10:25",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Optometry diabetic eye exam (exam 06/21/2024)",
+              "author": "optometry",
+              "date": "2024-06-26T10:25",
+              "body": "To the primary care office:\nYour patient Gary Kowalczyk was seen 06/21/2024 for his annual diabetic eye exam. Dilated fundus exam shows no diabetic retinopathy in either eye and no macular edema. Visual acuity and eye pressures stable.\nWe will see him again in one year.\nOptometry"
+            }
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "outside_records",
+          "start": "2024-07-23T14:15",
+          "reason": "Cardiology follow-up letter",
+          "medications": [
+            {
+              "drug_text": "nitroglycerin 0.4 MG Sublingual Tablet",
+              "action": "historical",
+              "sig": "Dissolve 1 tablet under the tongue at onset of chest pain, then sit down. May repeat every 5 minutes, up to 3 tablets. Call 911 if pain is not better 5 minutes after the first tablet. Do not use within 24 hours of sildenafil.",
+              "dose": {
+                "value": 0.4,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Sublingual",
+              "course": "chronic",
+              "reason": "Stable angina (prescribed by cardiology)"
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2024-07-17T09:10",
+              "text": "Cardiology clinic resting ECG. Sinus rhythm. Normal intervals. Nonspecific ST-T wave changes. No pathologic Q waves.",
+              "conclusion": "Sinus rhythm with nonspecific ST-T changes."
+            },
+            {
+              "study": "Exercise stress test",
+              "performed": "2024-07-17T10:05",
+              "text": "Treadmill exercise ECG, Bruce protocol.\nIndication: follow-up of stable angina with ongoing exertional symptoms.\nST-segment depression developed during exercise, consistent with inducible ischemia, resolving in recovery. No sustained arrhythmia. Blood pressure response appropriate.",
+              "conclusion": "Positive for inducible ischemia."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up (visit 07/17/2024)",
+              "author": "cardiology",
+              "date": "2024-07-23T14:15",
+              "body": "CARDIOVASCULAR ASSOCIATES - FOLLOW-UP\nDate of visit: 07/17/2024\nPatient: Gary Kowalczyk, 63 y/o M\nDiagnosis: stable angina pectoris\n\nInterval history: Returns one year after his initial evaluation. Continues to have dull, central pressure-like chest discomfort after climbing stairs, resolving within a few minutes of rest. No rest pain, no nocturnal episodes, no syncope.\n\nMedications (patient list): amlodipine, atorvastatin, metformin; lisinopril 20 mg daily; aspirin 81 mg daily. Also sildenafil as needed (urology).\nSocial: no tobacco or alcohol.\n\nExam: BP 138/84, heart rate 72/min. Cardiopulmonary exam normal.\n\nStudies:\n- ECG: nonspecific ST-T changes.\n- Exercise stress test: positive for inducible ischemia.\n\nAssessment: Stable angina with persistent exertional symptoms.\n\nPlan:\n1. Start sublingual nitroglycerin 0.4 mg: one tablet under the tongue at the onset of chest discomfort; sit down after taking it, as it can drop blood pressure and cause lightheadedness. May repeat every 5 minutes up to 3 doses; call 911 if the discomfort is not improved 5 minutes after the first dose.\n2. IMPORTANT: Never take nitroglycerin within 24 hours of sildenafil (or any erectile dysfunction medication of that class). The combination can cause a severe drop in blood pressure. If chest pain occurs within 24 hours of sildenafil, call 911 and tell the responders.\n3. Continue aspirin, atorvastatin and current antihypertensive therapy.\n4. Clinic follow-up after a period on nitroglycerin to review symptom frequency.\n\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2024-07-24a",
+          "kind": "portal_message",
+          "start": "2024-07-24T07:10",
+          "reason": "Question about nitroglycerin and sildenafil",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Nitro and the other pill",
+              "author": "patient",
+              "date": "2024-07-24T07:10",
+              "body": "Good morning. The heart doctor gave me nitroglycerin tablets last week. It works, the pressure goes away in a couple of minutes, I sit on the stairs when I take it. He said never with the sildenafil from urology within 24 hours. Should I just stop the sildenafil to be safe? I don't want to mix them up. Also do I tell you every time I use the nitro?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Nitro and the other pill",
+              "author": "PCP",
+              "date": "2024-07-24T12:30",
+              "body": "Good questions, Gary.\n1. You don't have to stop sildenafil, but the rule is absolute: no nitroglycerin within 24 hours after a sildenafil dose. If you get chest pain during that window, don't take the nitro - call 911 and tell them you took sildenafil. If you'd rather not have to think about it, stopping the sildenafil is a perfectly reasonable choice, and that is up to you.\n2. You don't need to message every use, but keep a simple note of how often you need it. If you are needing it more often, it takes more than one tablet, or it comes on with less activity or at rest, call cardiology or us that day.\nI've added nitroglycerin to your medication list here. Your cardiology letter came through yesterday."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "nurse_visit",
+          "start": "2024-10-09T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-09T16:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-09T16:21"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-09T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Fall vaccines",
+              "author": "MA",
+              "date": "2024-10-09T16:35",
+              "body": "Flu (trivalent) R deltoid; 2024-25 COVID (Pfizer) L deltoid. VIS x2. Observed 15 min, no issues. Next PCP visit 10/23."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-15a",
+          "kind": "outside_records",
+          "start": "2024-10-15T11:40",
+          "reason": "Cardiology follow-up note",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology telephone follow-up (10/09/2024)",
+              "author": "cardiology",
+              "date": "2024-10-15T11:40",
+              "body": "CARDIOVASCULAR ASSOCIATES - TELEPHONE FOLLOW-UP\nDate: 10/09/2024\nRe: Gary Kowalczyk, stable angina\n\nScheduled follow-up after starting sublingual nitroglycerin in July. Patient reports anginal episodes are now less frequent and milder; when they occur with stairs they settle with rest or a single tablet within minutes. No rest pain or prolonged episodes. Using nitroglycerin correctly, seated. Understands and follows the 24-hour separation from sildenafil.\n\nPlan: continue current regimen. Annual cardiology visit; call sooner for any change.\n\nCopy to primary care."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-23a",
+          "kind": "office_visit",
+          "start": "2024-10-23T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up, annual labs",
+          "state": {
+            "weight_kg": 86.4,
+            "labs": {
+              "Hemoglobin A1c": 7.7,
+              "Glucose": 152,
+              "Low Density Lipoprotein": 128,
+              "Total Cholesterol": 209,
+              "Triglycerides": 244,
+              "High Density Lipoprotein": 44,
+              "Microalbumin/Creatinine Ratio": 44
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-23T10:35",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-23T10:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-23T10:35",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-23T10:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-10-23T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-23T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual chronic care visit",
+              "author": "PCP",
+              "date": "2024-10-23T11:30",
+              "body": "Cardiology 7/17: repeat stress test still positive for ischemia, ECG nonspecific ST-T changes, started SL nitroglycerin. Cardiology phone f/u 10/9: fewer, milder episodes.\n\nS: Confirms the angina is less frequent since the nitro, and milder; uses a tablet maybe a couple of times a month, always sitting. Keeps sildenafil and nitro at least a day apart. Diet steady, walking on level routes. Feet unchanged. Flu and COVID shots 10/9.\nMeds: metformin 1000 BID, amlodipine 5, atorvastatin 20, aspirin 81, nitroglycerin 0.4 SL prn (cardiology), sildenafil 50 prn (urology).\n\nO: BP 137/78, HR 68, SpO2 97%, wt 86.5 kg.\nPleasant, no distress. Heart regular. Lungs clear. No edema. Feet: no breakdown, sensation reduced, pulses diminished.\n\nA/P:\n1. Stable angina - improved on prn nitroglycerin. Nitrate/PDE5 inhibitor separation reviewed again.\n2. T2DM, CKD 1, neuropathy - annual labs today.\n3. HTN - amlodipine 5.\n4. Hyperlipidemia - atorvastatin 20, lipids today.\n5. PAD - stable.\n\nRTC 5-6 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-25a",
+          "kind": "portal_message",
+          "start": "2024-10-25T14:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "October labs",
+              "author": "PCP",
+              "date": "2024-10-25T14:05",
+              "body": "Hi Gary, your results:\n- A1c 7.2%\n- Kidney: eGFR 99, urine albumin 43 (same mild range as always)\n- Cholesterol: total 211, LDL 125, HDL 41, triglycerides 254\n- Liver tests and blood count normal\nNo changes. See you in the spring."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

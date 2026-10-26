@@ -1,0 +1,2154 @@
+{
+  "unit": "unit-2676",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00002676/2021-08-10a: allergen \"Hymenoptera venom (bees, wasps)\" not in catalog (text only)",
+    "MRN00002676/2021-08-10a: allergen \"Dust mites\" not in catalog (text only)",
+    "MRN00002676/2021-08-10a: reaction \"Rhinitis\" not in catalog (text only)",
+    "MRN00002676/2021-08-10a: allergen \"Timothy grass pollen\" not in catalog (text only)",
+    "MRN00002676/2021-08-10a: reaction \"Rhinitis\" not in catalog (text only)"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002676",
+      "given": "Randall",
+      "family": "McDermott",
+      "birth_date": "1988-11-25",
+      "address_line": "29 Fearing Street",
+      "phone": "+1-508-555-0184",
+      "email": "randall.mcdermott@example.test",
+      "marital_status": "single",
+      "summary": "High school math teacher with systemic mastocytosis, allergic asthma, persistent allergic rhinitis and mild generalized anxiety who joins the practice in August 2021 on a stable mast-cell regimen. Two outside ED visits for anaphylaxis: during a dental procedure in 2023 and after multiple insect stings in July 2026, after which an allergy/immunology referral is still open.",
+      "events": [
+        {
+          "id": "2021-08-10a",
+          "kind": "establish_care",
+          "start": "2021-08-10T09:00",
+          "end": "2021-08-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish primary care",
+          "conditions": [
+            {
+              "label": "Systemic mastocytosis",
+              "action": "history",
+              "icd10": "D47.02"
+            },
+            {
+              "label": "Allergic asthma",
+              "action": "history",
+              "icd10": "J45.909"
+            },
+            {
+              "label": "Allergic rhinitis",
+              "action": "history",
+              "note": "Persistent; dust mite and Timothy grass sensitization"
+            },
+            {
+              "label": "Generalized anxiety disorder",
+              "action": "history"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "NDA019430 0.3 ML epinephrine 1 MG/ML Auto-Injector",
+              "action": "historical",
+              "sig": "Inject 0.3 mg into the outer thigh as needed for anaphylaxis. Carry two at all times.",
+              "dose": {
+                "value": 0.3,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Intramuscular",
+              "course": "chronic",
+              "reason": "Anaphylaxis risk (systemic mastocytosis, venom and latex allergy)"
+            },
+            {
+              "drug": "cetirizine hydrochloride 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Systemic mastocytosis; allergic rhinitis"
+            },
+            {
+              "drug": "famotidine 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Systemic mastocytosis"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheezing",
+              "dose": {
+                "value": 180,
+                "unit": "mcg"
+              },
+              "frequency": "PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "Allergic asthma"
+            },
+            {
+              "drug": "fluticasone propionate 0.05 MG/ACTUAT Metered Dose Nasal Spray",
+              "action": "historical",
+              "sig": "Use 2 sprays in each nostril once daily",
+              "dose": {
+                "value": 200,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Nasal",
+              "course": "chronic",
+              "reason": "Persistent allergic rhinitis"
+            },
+            {
+              "drug_text": "cromolyn sodium 20 MG/ML Oral Solution",
+              "action": "historical",
+              "sig": "Take 200 mg (10 mL, two 5 mL ampules) by mouth four times daily, 30 minutes before meals and at bedtime",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "QID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Systemic mastocytosis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Hymenoptera venom (bees, wasps)",
+              "reaction": "Anaphylaxis",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            },
+            {
+              "substance": "Latex",
+              "reaction": "Anaphylaxis",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            },
+            {
+              "substance": "Dust mites",
+              "reaction": "Rhinitis",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Timothy grass pollen",
+              "reaction": "Rhinitis",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              76
+            ],
+            "hr": 79,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 77.8,
+            "height_cm": 180.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-08-10T09:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.04
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 295
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-08-10T09:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 100
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 83
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-08-10T09:55",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 105
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 174
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 105
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 126
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-10T09:55",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 8
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional (1-2 drinks per month)"
+            },
+            {
+              "item": "Occupation",
+              "value": "High school mathematics teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-08-10T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-08-10T09:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-08-10T10:20",
+              "author": "PCP",
+              "body": "NEW PATIENT — establishing care\n\n32 y/o M, teaches high school math locally, transferring in after his old PCP retired. Comes in with a typed med list and an allergy wallet card.\n\nSystemic mastocytosis: diagnosed and followed at an outside allergy/immunology clinic, which writes his oral cromolyn. Daily H1 + H2 blockade (cetirizine, famotidine) plus cromolyn QID before meals and at bedtime. Carries two epinephrine auto-injectors. Paternal uncle also has SM. He'll sign a release so we can get the allergist's summary.\n\nAllergic asthma: albuterol only, uses it now and then, mostly around spring pollen or a dusty classroom. No ED visits for asthma, no oral steroids in years. No night symptoms.\n\nPersistent allergic rhinitis: dust mite and Timothy grass. Fluticasone nasal daily keeps it quiet.\n\nGAD: longstanding, mild. Worries more in the run-up to the school year, sleeps OK. Not interested in medication or counseling right now, prefers to keep an eye on it. GAD-7 8, PHQ-9 3.\n\nAllergies: Hymenoptera venom (bees/wasps) — anaphylaxis. Latex — anaphylaxis. Dust mites, Timothy grass — rhinitis.\n\nMeds:\n- epinephrine 0.3 mg auto-injector IM PRN anaphylaxis, carries two\n- cetirizine 10 mg daily\n- famotidine 20 mg BID\n- albuterol HFA 2 puffs q4-6h PRN wheeze\n- fluticasone nasal 2 sprays each nostril daily\n- cromolyn oral solution 200 mg QID (30 min before meals and HS)\n\nPSH: tonsillectomy age 8; wisdom teeth out age 22.\nFH: father — bad bee/wasp allergy, HTN. Mother — asthma, allergic rhinitis. Sister — eczema, food allergies. Paternal uncle — systemic mastocytosis.\nSH: never smoker, a drink or two a month, no drugs. Lives in Amherst. Bikes to school when the weather allows.\n\nROS otherwise negative.\n\nExam: Well-appearing, relaxed. HEENT: TMs clear, nasal mucosa normal, no polyps, oropharynx clear (tonsils surgically absent). Neck supple, no adenopathy. Heart RRR, no murmur. Lungs clear bilaterally, good air movement, no wheeze. Abdomen soft, no hepatosplenomegaly. Skin: no urticaria or dermatographism on exam. Extremities without edema. Neuro grossly normal.\n\nA/P:\n1. Systemic mastocytosis — stable on current regimen. Get outside allergy/immunology records. We'll refill cetirizine, famotidine and the auto-injectors here; cromolyn stays with his allergist. Latex flag added to the chart.\n2. Allergic asthma — controlled on PRN albuterol.\n3. Persistent allergic rhinitis — controlled.\n4. GAD — mild, stable, watchful waiting per his preference. Revisit at each visit.\n5. Health maintenance: CBC, CMP, lipids today; one-time HIV and hep C screening, he agrees. Prior records for immunization history. Flu shot in October.\n\nReturn for a physical next summer, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 78.0,
+            "height_cm": 180.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-08-12a",
+          "kind": "portal_message",
+          "start": "2021-08-12T13:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2021-08-12T13:40",
+              "author": "PCP",
+              "body": "Hi Randall,\n\nYour labs from Tuesday are back. Blood counts, kidney and liver tests, and cholesterol all look good. The HIV and hepatitis C screens were negative. No changes needed.\n\nOnce your old allergist's office sends records I'll file them.\n\nBest,\nYour primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2021-08-26a",
+          "kind": "outside_records",
+          "start": "2021-08-26T11:15",
+          "reason": "Records from prior primary care and allergy/immunology",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "date": "2021-08-26T11:15",
+              "author": "outside primary care",
+              "body": "Records packet from prior primary care office (closed practice), covering 2014-2021. Scanned and indexed.\n\nProblem list: systemic mastocytosis (managed by allergy/immunology), allergic asthma, allergic rhinitis, generalized anxiety disorder.\nAllergies: bee/wasp venom (anaphylaxis), latex (anaphylaxis), dust mite, Timothy grass.\nImmunizations: Tdap 2016. Seasonal influenza most years.\nPreventive: annual exams with routine labs, unremarkable.\nNo hospitalizations recorded.\n\nFiled to chart. — MA"
+            },
+            {
+              "type": "Outside Records",
+              "title": "Allergy/Immunology Clinical Summary",
+              "date": "2021-08-26T11:20",
+              "author": "allergy/immunology",
+              "body": "OUTSIDE ALLERGY/IMMUNOLOGY — CLINICAL SUMMARY (received by fax)\n\nPatient: Randall McDermott, DOB 11/25/1988\n\nDiagnosis: Systemic mastocytosis, followed in our clinic. Original diagnostic pathology report not included with this summary.\nMost recent baseline serum tryptase: 28 ng/mL (2020).\n\nCurrent regimen:\n- cetirizine 10 mg daily\n- famotidine 20 mg twice daily\n- cromolyn sodium oral solution 200 mg four times daily, 30 minutes before meals and at bedtime (prescribed by this clinic)\n- epinephrine 0.3 mg auto-injector, two carried at all times\n\nAlso: allergic asthma on albuterol as needed; allergic rhinitis on fluticasone nasal.\n\nAllergies: Hymenoptera venom — anaphylaxis. Natural rubber latex — anaphylaxis. Dust mite and Timothy grass sensitization.\n\nEmergency plan: epinephrine IM at the first sign of a systemic reaction, then call 911.\n\nWe will continue to see him in follow-up and renew the cromolyn.\n\n— Attending, Allergy and Immunology"
+            }
+          ]
+        },
+        {
+          "id": "2021-10-07a",
+          "kind": "nurse_visit",
+          "start": "2021-10-07T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-07T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-07T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "date": "2021-10-07T16:10",
+              "author": "RN",
+              "body": "Came by after school for flu vaccine. Allergy list reviewed with him — latex-free gloves and supplies used. Quadrivalent flu 0.5 mL IM, left deltoid. Waited 15 min in the lobby, no reaction. Has both auto-injectors in his bag."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-18a",
+          "kind": "nurse_visit",
+          "start": "2021-11-18T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID-19 booster",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-11-18T15:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-18T15:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "date": "2021-11-18T16:20",
+              "author": "RN",
+              "body": "COVID booster (Pfizer) 0.3 mL IM right deltoid. Primary series done this spring through the school district clinic, card seen. Latex-free supplies. Observed 15 minutes, felt fine, left for a parent-teacher conference."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-12a",
+          "kind": "telephone",
+          "start": "2022-01-12T10:05",
+          "reason": "Prior authorization, oral cromolyn",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy call — prior auth",
+              "date": "2022-01-12T10:05",
+              "author": "RN",
+              "body": "Retail pharmacy called: cromolyn oral solution rejected, plan wants a new prior auth for 2022. Prescriber on file is his allergist. Called the allergist's office, they're submitting it today. Let pt know by text that it's in process — he has about 5 days of ampules left."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior auth follow-up",
+              "date": "2022-01-14T14:30",
+              "author": "RN",
+              "body": "Allergist's office confirms the cromolyn PA was approved through end of year. Pharmacy filled. Pt aware."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-09a",
+          "kind": "office_visit",
+          "start": "2022-03-09T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up asthma, rhinitis, anxiety",
+          "vitals": {
+            "bp": [
+              127,
+              80
+            ],
+            "hr": 79,
+            "spo2": 97,
+            "weight_kg": 78.1
+          },
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 7
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-03-09T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2022-03-09T16:35",
+              "author": "PCP",
+              "body": "Routine check-in before pollen season.\n\nAsthma: albuterol maybe twice this winter, both after shoveling. No nighttime cough or wheeze.\nRhinitis: on fluticasone daily, nose clear right now.\nSM: no flushing episodes, no GI flares, keeping up with cromolyn. Allergist PA went through in January.\nAnxiety: GAD-7 7. Midyear grading crunch is behind him. Still no interest in meds.\n\nMeds unchanged. Allergies: venom, latex (both anaphylaxis), dust mite, Timothy grass.\n\nExam: comfortable. Nares clear. Lungs clear, no wheeze, normal expiratory phase. Heart regular.\n\nA/P:\n- Allergic asthma — controlled. Albuterol refill sent.\n- Allergic rhinitis — controlled, continue fluticasone; ok to start it a bit early if grass season ramps up.\n- SM — stable on regimen.\n- GAD — mild, steady.\nPhysical in August."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-05-23a",
+          "kind": "portal_message",
+          "start": "2022-05-23T19:12",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Nose spray refill",
+              "date": "2022-05-23T19:12",
+              "author": "patient",
+              "body": "Hi — down to the last few days on the fluticasone, and the grass is out in full force. Could you send a refill to my usual pharmacy? Thanks, Randy"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Nose spray refill",
+              "date": "2022-05-24T08:20",
+              "author": "MA",
+              "body": "Refill sent this morning with 3 refills. Should be ready this afternoon."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-16a",
+          "kind": "annual_physical",
+          "start": "2022-08-16T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              135,
+              79
+            ],
+            "hr": 78,
+            "rr": 16,
+            "temp_c": 37.0,
+            "spo2": 99,
+            "weight_kg": 78.7,
+            "height_cm": 179.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-16T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.33
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 287
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-08-16T09:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.0
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-08-16T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-08-16T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-08-16T09:25",
+              "author": "PCP",
+              "body": "ANNUAL PREVENTIVE EXAM\n\n33M, two weeks before teachers report back. Good summer, did a lot of biking.\n\nInterval: no reactions, no ED visits. Saw his allergist in the spring, no changes. Albuterol a handful of times since March. Nose controlled.\n\nMeds: cetirizine 10 daily, famotidine 20 BID, cromolyn oral 200 mg QID, fluticasone nasal daily, albuterol PRN, epinephrine auto-injector x2.\nAllergies: Hymenoptera venom — anaphylaxis; latex — anaphylaxis; dust mite; Timothy grass.\nSocial: never smoker, rare alcohol (AUDIT-C 1).\nScreens: GAD-7 6, PHQ-9 2.\n\nExam: NAD. HEENT unremarkable. Neck without nodes, thyroid normal. Heart RRR, no murmur. Lungs clear. Abdomen soft, no organomegaly. Skin: no lesions of concern, no urticaria. Ext no edema. Neuro normal.\n\nA/P:\n- Health maintenance: CBC and CMP today. Tdap good until 2026. Flu and the updated COVID booster this fall.\n- SM, asthma, rhinitis — stable, regimen unchanged.\n- GAD — mild, stable.\nAuto-injectors expire next summer — reminded him to check the dates."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-08-18a",
+          "kind": "portal_message",
+          "start": "2022-08-18T12:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2022-08-18T12:05",
+              "author": "PCP",
+              "body": "Randall — blood count and chemistry panel from Tuesday are normal. Have a good start to the year."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "nurse_visit",
+          "start": "2022-10-20T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-20T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-20T15:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-20T15:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2022-10-20T16:15",
+              "author": "RN",
+              "body": "Flu (quadrivalent) L deltoid and bivalent COVID booster R deltoid. Latex precautions. No reaction during the 15-minute wait."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-22a",
+          "kind": "portal_message",
+          "start": "2023-03-22T20:30",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Inhaler",
+              "date": "2023-03-22T20:30",
+              "author": "patient",
+              "body": "My albuterol says it expired in February — I barely use it but want a fresh one before spring. Same pharmacy please."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Inhaler",
+              "date": "2023-03-23T07:50",
+              "author": "PCP",
+              "body": "Done, sent one inhaler with a refill. Good call checking the date. Let me know if you find yourself reaching for it more than a couple of times a week this season."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-14a",
+          "kind": "ed_visit",
+          "start": "2023-07-14T10:20",
+          "end": "2023-07-14T16:05",
+          "service": "Emergency Medicine",
+          "reason": "Hypotension and bronchospasm during dental procedure",
+          "conditions": [
+            {
+              "label": "Anaphylaxis",
+              "action": "diagnosed",
+              "onset": "2023-07-14",
+              "note": "During a dental procedure; trigger not established",
+              "icd10": "T78.2XXA"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2023-07-14T10:22",
+              "bp": [
+                84,
+                52
+              ],
+              "hr": 116,
+              "rr": 24,
+              "spo2": 92
+            },
+            {
+              "time": "2023-07-14T10:45",
+              "bp": [
+                116,
+                74
+              ],
+              "hr": 102
+            },
+            {
+              "time": "2023-07-14T15:50",
+              "bp": [
+                124,
+                78
+              ],
+              "hr": 88,
+              "spo2": 98
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2023-07-14T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2023-07-17T09:10",
+              "author": "emergency medicine",
+              "body": "REGIONAL EMERGENCY DEPARTMENT — PHYSICIAN RECORD\nVisit date: 07/14/2023   Arrival 10:20 by EMS\n\nCC: Low blood pressure and wheezing during dental work.\n\nHPI: 34-year-old man with systemic mastocytosis, allergic asthma and allergic rhinitis. He was in the chair for a scheduled dental procedure when his blood pressure dropped suddenly and he began wheezing; office staff called EMS. Arrives hypotensive with bronchospasm. Inciting exposure not clear from the history available.\n\nPMH: systemic mastocytosis; allergic asthma; persistent allergic rhinitis; generalized anxiety disorder.\nPSH: tonsillectomy (childhood); third molar extraction.\nHome meds: epinephrine auto-injector 0.3 mg PRN; cetirizine 10 mg daily; famotidine 20 mg BID; albuterol HFA PRN; fluticasone nasal daily; cromolyn oral solution 200 mg QID.\nAllergies: Hymenoptera venom (anaphylaxis), latex (anaphylaxis), dust mite, Timothy grass pollen.\nSocial: never smoker, occasional alcohol, teaches high school math.\nFamily: father with severe sting allergy and hypertension; paternal uncle with systemic mastocytosis.\n\nVitals on arrival: BP 84/52, HR 116, RR 24, SpO2 92% RA.\n\nExam: alert. Expiratory wheeze throughout. Heart tachycardic, regular. Abdomen soft. Skin warm.\n\nED course: Epinephrine 0.5 mg IM to the anterolateral thigh at 10:24. Within about 15 minutes pressure up to 116/74, HR 102, wheeze cleared and breathing comfortably. No further doses needed. Monitored on telemetry for observation; remained stable.\n\nDischarge vitals: BP 124/78, HR 88, SpO2 98% RA.\n\nImpression: Anaphylaxis during a dental procedure; trigger not established.\n\nDisposition: Home at 16:05 on his usual regimen. Carry both auto-injectors. Follow up with PCP this week. Return for any recurrence of symptoms.\n\nAllergies reviewed: venom, latex."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-14b",
+          "kind": "telephone",
+          "start": "2023-07-14T18:40",
+          "reason": "Patient call after ED visit",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from patient",
+              "date": "2023-07-14T18:55",
+              "author": "PCP",
+              "body": "Randall called my cell from home. Had a reaction in the dentist's chair this morning — pressure dropped, wheezing — EMS took him to the ED, got IM epi there and improved quickly. Home since 4, feels wiped out but breathing fine. No recurrence. Reviewed: if any return of symptoms, use the auto-injector and call 911, don't wait. Booked him Wednesday. Asked him to bring the ED paperwork."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-19a",
+          "kind": "office_visit",
+          "start": "2023-07-19T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, anaphylaxis",
+          "conditions": [
+            {
+              "label": "Anaphylaxis",
+              "action": "resolved",
+              "icd10": "T78.2XXA"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              75
+            ],
+            "hr": 85,
+            "rr": 15,
+            "spo2": 98,
+            "weight_kg": 78.5
+          },
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 9
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-07-19T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2023-07-19T11:15",
+              "author": "PCP",
+              "body": "ED follow-up.\n\nFriday 7/14: anaphylaxis in the dental chair — hypotension and bronchospasm, IM epinephrine x1 in the ED with quick recovery, observed ~6 h, home same day. ED record received and reviewed. Trigger not established.\n\nSince then: no recurrence. Tired for a day, back to normal now. Has not reused albuterol. Taking cetirizine, famotidine and cromolyn as usual.\n\nHis auto-injectors at home are past their date. New prescription today.\n\nGAD-7 9, PHQ-9 4 — a bit more on edge this week, understandable; not asking for treatment.\n\nAllergies: Hymenoptera venom, latex (anaphylaxis); dust mite; Timothy grass.\n\nExam: well, no distress. Lungs clear, no wheeze. Heart regular. Skin clear.\n\nA/P:\n1. Anaphylaxis 7/14 — resolved. Epinephrine auto-injector 0.3 mg two-pack sent; carry both.\n2. Systemic mastocytosis — regimen unchanged.\n3. Allergic asthma — quiet.\n4. GAD — slightly up after the event, follow at the physical next month.\nHe'll let the dental office know about this episode before rescheduling."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-08-29a",
+          "kind": "annual_physical",
+          "start": "2023-08-29T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              141,
+              72
+            ],
+            "hr": 75,
+            "rr": 17,
+            "temp_c": 37.2,
+            "spo2": 97,
+            "weight_kg": 78.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-29T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.93
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 292
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-29T08:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 7
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-08-29T08:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-29T08:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-08-29T09:10",
+              "author": "PCP",
+              "body": "Physical. 34M.\n\nSince the July ED visit for anaphylaxis during dental work, no further reactions. Picked up the new auto-injectors. School starts next week.\n\nAsthma: no albuterol since spring. Rhinitis: controlled on daily fluticasone.\nSM: same regimen, cetirizine/famotidine/oral cromolyn.\nGAD-7 7, back near his usual.\n\nMeds and allergies reviewed, no changes. Never smoker, AUDIT-C 1.\n\nExam: HEENT normal. Neck no nodes. Heart RRR without murmur. Lungs clear throughout. Abdomen benign, no organomegaly. Skin unremarkable. Neuro intact.\n\nPlan:\n- CBC, CMP.\n- Flu and updated COVID vaccine in October.\n- Continue current meds.\n- Next physical August."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-08-31a",
+          "kind": "portal_message",
+          "start": "2023-08-31T16:45",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "date": "2023-08-31T16:45",
+              "author": "PCP",
+              "body": "Your CBC and metabolic panel are normal across the board. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "nurse_visit",
+          "start": "2023-10-19T15:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-19T15:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-19T15:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-19T15:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2023-10-19T16:05",
+              "author": "RN",
+              "body": "Influenza (quad) 0.5 mL IM L deltoid; 2023-24 COVID (Pfizer) 0.3 mL IM R deltoid. Latex-free supplies, chart flag confirmed. Auto-injectors with him. Observed 15 min without incident."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "office_visit",
+          "start": "2024-02-13T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up asthma, rhinitis, anxiety",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-02-14a",
+          "kind": "portal_message",
+          "start": "2024-02-14T09:30",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed you yesterday",
+              "date": "2024-02-14T09:30",
+              "author": "front desk",
+              "body": "Hi Randall, we missed you at your 4:00 follow-up yesterday. Want to rebook? Video works too if after-school is tight."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Missed you yesterday",
+              "date": "2024-02-14T12:10",
+              "author": "patient",
+              "body": "So sorry — staff meeting ran way over and I completely forgot. Video would be great, any afternoon after 3:30 the first week of March."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-06a",
+          "kind": "telehealth_visit",
+          "start": "2024-03-06T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up asthma, rhinitis, anxiety",
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-03-06T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2024-03-06T16:10",
+              "author": "PCP",
+              "body": "Video visit, pt at home. Identity confirmed.\n\nAsthma: one albuterol use all winter. No cough at night.\nRhinitis: fine on fluticasone.\nSM: no reactions since July. Allergist saw him in the fall, regimen the same.\nAnxiety: GAD-7 6. Busy but manageable. Declines treatment again, which is reasonable at this level.\n\nMeds reviewed, unchanged. Allergies unchanged.\n\nAssessment: allergic asthma and rhinitis controlled; systemic mastocytosis stable; GAD mild.\nPlan: continue all. Physical in August."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-24a",
+          "kind": "portal_message",
+          "start": "2024-06-24T11:20",
+          "reason": "Epinephrine auto-injector refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "EpiPens",
+              "date": "2024-06-24T11:20",
+              "author": "patient",
+              "body": "Both my auto-injectors expire next month. Could you send a new two-pack before I head out for summer stuff? Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: EpiPens",
+              "date": "2024-06-24T14:05",
+              "author": "RN",
+              "body": "Sent a new two-pack to your pharmacy. Insurance covered it with the usual copay. Keep the old ones until the new ones are in hand."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "annual_physical",
+          "start": "2024-08-21T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              131,
+              72
+            ],
+            "hr": 84,
+            "rr": 14,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 77.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-21T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.21
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 287
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-21T09:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 7
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-08-21T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-21T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-08-21T09:30",
+              "author": "PCP",
+              "body": "Annual exam — 35 y/o male teacher.\n\nQuiet year. No reactions, no urgent visits. Auto-injectors renewed in June. Albuterol barely used. Nasal symptoms controlled. Keeps cromolyn going faithfully.\n\nScreens: GAD-7 7, PHQ-9 2, AUDIT-C 1. Never smoker.\n\nMedications: cetirizine 10 mg daily; famotidine 20 mg BID; cromolyn oral solution 200 mg QID; fluticasone nasal 2 sprays/nostril daily; albuterol HFA PRN; epinephrine 0.3 mg auto-injector x2.\nAllergies: Hymenoptera venom — anaphylaxis; latex — anaphylaxis; dust mite; Timothy grass.\n\nExam: Healthy-appearing. Eyes, ears, throat normal. No lymphadenopathy. Cardiac exam regular, no murmurs. Lungs clear, no wheezing. Abdomen nontender, no masses. Skin without rash. Normal gait and strength.\n\nPlan: CBC and CMP today. Vaccines in the fall. Tdap due in 2026. All meds continued."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-23a",
+          "kind": "portal_message",
+          "start": "2024-08-23T13:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-08-23T13:15",
+              "author": "PCP",
+              "body": "Hi Randall, your labs from Wednesday are all within normal limits. See you in the fall for shots."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "nurse_visit",
+          "start": "2024-10-24T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-24T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-24T15:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-24T15:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2024-10-24T16:10",
+              "author": "MA",
+              "body": "Flu (trivalent) right arm, 2024-25 COVID left arm. Latex-free. 15-minute wait, no problems."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-13a",
+          "kind": "pharmacy",
+          "start": "2025-01-13T09:40",
+          "reason": "Prior authorization, oral cromolyn",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy — cromolyn PA",
+              "date": "2025-01-13T09:40",
+              "author": "MA",
+              "body": "Pharmacy fax: cromolyn sodium oral solution needs PA renewal for 2025. Forwarded to allergist's office (prescriber). Texted pt a heads-up."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Cromolyn PA approved",
+              "date": "2025-01-16T11:25",
+              "author": "MA",
+              "body": "Allergist's office says PA approved for 12 months. Pharmacy notified, pt picking up today."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-09a",
+          "kind": "office_visit",
+          "start": "2025-04-09T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up asthma, rhinitis",
+          "vitals": {
+            "bp": [
+              132,
+              79
+            ],
+            "hr": 78,
+            "spo2": 97,
+            "weight_kg": 78.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-04-09T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-04-09T16:20",
+              "author": "PCP",
+              "body": "Spring check, his usual timing.\n\nAsthma — rescue inhaler twice since the fall. No night waking.\nRhinitis — on daily fluticasone, doing fine heading into grass season.\nSM — no flushing or reactions. Cromolyn PA went through in January.\nAnxiety — steady, not discussed at length.\n\nMeds/allergies reviewed, no changes.\n\nExam: comfortable, nares clear, lungs clear with normal air entry, heart regular.\n\nA/P: allergic asthma and allergic rhinitis controlled; systemic mastocytosis stable. Continue everything. Physical in August."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "annual_physical",
+          "start": "2025-08-19T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              128,
+              82
+            ],
+            "hr": 83,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 78.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-19T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.08
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 303
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-19T09:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 99
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 112
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-08-19T09:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 102
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 174
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 117
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 125
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-08-19T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-19T09:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-08-19T09:20",
+              "author": "PCP",
+              "body": "ANNUAL EXAM — 36M\n\nInterval history: no reactions this year, no ED or urgent visits. Saw the allergist in the spring; nothing changed. Albuterol rarely. Nose controlled. Ready for the school year.\n\nCurrent meds: cetirizine 10 daily, famotidine 20 BID, cromolyn oral 200 mg QID, fluticasone nasal daily, albuterol PRN, epinephrine 0.3 mg auto-injector x2.\nAllergies: bee/wasp venom (anaphylaxis), latex (anaphylaxis), dust mite, Timothy grass.\n\nGAD-7 6. PHQ-9 3. AUDIT-C 1. Nonsmoker.\n\nExam: Pleasant, in no distress. Head and neck normal, no nodes, thyroid not palpable. Heart sounds normal, regular rhythm. Lungs clear to auscultation. Abdomen soft, nontender, no hepatosplenomegaly. Skin: no urticaria. No edema.\n\nPlan:\n1. CBC, CMP, lipids today (last lipids 2021).\n2. Fall flu and COVID shots.\n3. Tdap next year.\n4. Continue all meds."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-21a",
+          "kind": "portal_message",
+          "start": "2025-08-21T17:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your results",
+              "date": "2025-08-21T17:30",
+              "author": "PCP",
+              "body": "Randall — CBC, metabolic panel and cholesterol are all normal. No follow-up needed until next year's physical."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your results",
+              "date": "2025-08-21T19:02",
+              "author": "patient",
+              "body": "Great, thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-23a",
+          "kind": "nurse_visit",
+          "start": "2025-10-23T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-23T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-23T15:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-23T15:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2025-10-23T16:15",
+              "author": "RN",
+              "body": "Influenza (trivalent) 0.5 mL IM L deltoid; COVID 2025-26 formula 0.3 mL IM R deltoid. Latex-free gloves. Observed 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-11a",
+          "kind": "telehealth_visit",
+          "start": "2026-03-11T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up asthma, rhinitis, anxiety",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2026-03-11T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2026-03-11T16:00",
+              "author": "PCP",
+              "body": "Video follow-up from his kitchen after school.\n\nBreathing fine this winter, rescue inhaler once. Nasal spray daily. No mast-cell symptoms. Anxiety at his baseline.\n\nNo med changes. Refilled cetirizine and famotidine for the year.\n\nImpression: allergic asthma, allergic rhinitis, systemic mastocytosis and GAD all stable.\nPlan: physical late summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-22a",
+          "kind": "ed_visit",
+          "start": "2026-07-22T15:50",
+          "end": "2026-07-23T09:30",
+          "service": "Emergency Medicine",
+          "reason": "Collapse after multiple insect stings",
+          "conditions": [
+            {
+              "label": "Anaphylaxis",
+              "action": "diagnosed",
+              "onset": "2026-07-22",
+              "note": "After multiple insect stings",
+              "icd10": "T78.2XXA"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-07-22T15:52",
+              "bp": [
+                75,
+                45
+              ],
+              "hr": 120,
+              "rr": 26,
+              "spo2": 89
+            },
+            {
+              "time": "2026-07-22T16:12",
+              "bp": [
+                104,
+                66
+              ],
+              "hr": 108
+            },
+            {
+              "time": "2026-07-23T09:15",
+              "bp": [
+                122,
+                76
+              ],
+              "hr": 84,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-22T15:58",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.87
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 325
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-22T15:58",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-22T15:58",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "value": 3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-22T18:05",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "value": 3
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-07-22T15:56",
+              "text": "Sinus tachycardia. Normal axis. Normal PR, QRS and QT intervals. No ST-segment elevation or depression. No T-wave inversions.",
+              "conclusion": "Sinus tachycardia without ST changes.",
+              "issued": "2026-07-22T16:40"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-07-22T15:50"
+            },
+            {
+              "procedure": "Nebulizer treatment",
+              "performed": "2026-07-22T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-07-24T08:40",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT RECORD — regional hospital\nDate of visit: 07/22/2026, arrived 15:50 via ambulance. Observation unit overnight; discharged 07/23/2026 09:30.\n\nChief complaint: collapsed after multiple insect stings.\n\nHistory: 37-year-old man with systemic mastocytosis and a prior ED visit in 2023 for hypotension and bronchospasm during a dental procedure. Today he was working in his backyard garden on a warm afternoon. Per the neighbor who called 911, he was stung several times, grabbed at his chest and went down moments later.\n\nPMH: systemic mastocytosis; allergic asthma; persistent allergic rhinitis; generalized anxiety disorder.\nPSH: tonsillectomy in childhood; wisdom teeth removed.\nMedications: epinephrine 0.3 mg auto-injector PRN, cetirizine 10 mg daily, famotidine 20 mg BID, albuterol HFA PRN, fluticasone nasal daily, cromolyn oral solution 200 mg QID.\nAllergies: Hymenoptera venom — anaphylaxis; latex — anaphylaxis; dust mite; Timothy grass.\nFamily history: father with severe Hymenoptera allergy and hypertension; mother asthma and allergic rhinitis; sister atopic dermatitis and food allergies; paternal uncle systemic mastocytosis.\nSocial: never smoker, alcohol 1-2 drinks a month, high school math teacher.\n\nArrival vitals: BP 75/45, HR 120, RR 26, SpO2 89% on room air.\n\nExam on arrival: Obtunded. Skin flushed. Periorbital swelling. Diffuse wheezing in both lung fields. Extremities cool, capillary refill delayed. No sign of trauma; no seizure activity witnessed or observed. Multiple sting sites; no retained stingers.\n\nED course: Nonrebreather oxygen, supine positioning, two large-bore IVs. Initial crystalloid bolus without blood pressure response. Epinephrine 0.5 mg IM anterolateral thigh at 15:58, repeated at 16:03. Diphenhydramine 50 mg IV, famotidine 20 mg IV and methylprednisolone 125 mg IV given. Nebulized albuterol for the wheeze. By 16:12 BP 104/66, HR 108, becoming responsive and following commands; mentation back to baseline over the next hour, wheeze resolved.\n\nResults: ECG sinus tachycardia, no ST changes. High-sensitivity troponin I normal at arrival and on 2-hour repeat. CBC and BMP within normal limits.\n\nObservation: held overnight on monitor for possible biphasic reaction. No recurrence.\n\nDischarge vitals 07/23 09:15: BP 122/76, HR 84, SpO2 98% on room air.\n\nDiagnosis: Anaphylaxis following multiple insect stings, in a patient with systemic mastocytosis.\n\nDischarge: home on his usual medications. See PCP within one week. Return at once for recurrent symptoms; use epinephrine first."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Troponin I, High Sensitivity": 3
+            }
+          }
+        },
+        {
+          "id": "2026-07-23a",
+          "kind": "portal_message",
+          "start": "2026-07-23T13:15",
+          "reason": "Home after ED",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Home",
+              "date": "2026-07-23T13:15",
+              "author": "patient",
+              "body": "Wanted you to hear it from me — got stung a bunch in the garden yesterday and passed out. Spent the night in the ED, they gave me two shots of epi plus IV meds. Home now and feel OK, just exhausted. They said to see you within a week."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Home",
+              "date": "2026-07-23T14:02",
+              "author": "PCP",
+              "body": "I'm glad you're home and that you messaged. Front desk will put you in Tuesday morning. Please rest, keep both pens on you even indoors, and if anything starts again use the pen and call 911 first, me second. I'll ask the ED to send their record."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "office_visit",
+          "start": "2026-07-28T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, anaphylaxis after insect stings",
+          "conditions": [
+            {
+              "label": "Anaphylaxis",
+              "action": "resolved",
+              "icd10": "T78.2XXA"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              69
+            ],
+            "hr": 79,
+            "rr": 15,
+            "spo2": 97,
+            "weight_kg": 78.8
+          },
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 9
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-07-28T09:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "allergy-referral-2026",
+              "action": "placed",
+              "order": "Allergy and immunology referral",
+              "category": "referral",
+              "to": "Allergy and Immunology",
+              "reason": "Systemic reaction to insect stings in a patient with systemic mastocytosis; expedited follow-up"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2026-07-28T10:20",
+              "author": "PCP",
+              "body": "Post-ED visit.\n\n7/22 — multiple stings while gardening, collapsed. In the ED: obtunded, BP 75/45, HR 120, flushed, periorbital swelling, diffuse wheeze, cool with delayed cap refill. Fluids alone didn't move the pressure; IM epinephrine x2 plus IV diphenhydramine, famotidine, methylprednisolone and nebulized albuterol. ECG sinus tach without ST changes, troponins normal, CBC/BMP normal. Overnight observation, no biphasic reaction, home 7/23. ED record reviewed in full.\n\nToday: feels back to himself. No hives, no wheeze, no chest symptoms. Taking cetirizine, famotidine and cromolyn as prescribed. Understandably shaken: GAD-7 9, PHQ-9 4. Not asking for medication.\n\nAllergies: Hymenoptera venom — anaphylaxis; latex — anaphylaxis; dust mite; Timothy grass.\n\nExam: BP and HR normal today. No facial swelling. Lungs clear. Heart regular, no murmur.\n\nA/P:\n1. Anaphylaxis after insect stings, 7/22 — resolved. New epinephrine 0.3 mg auto-injector two-pack sent today; carry both everywhere, outdoors included.\n2. Systemic mastocytosis — second severe systemic reaction in three years. Referral placed to allergy/immunology for an expedited visit; I'll send them the ED record and my note.\n3. Allergic asthma — quiet now.\n4. GAD — up after this; we'll keep checking in.\nPhysical already booked for September."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T10:45",
+          "reason": "School medication form",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "School form",
+              "date": "2026-08-18T10:45",
+              "author": "patient",
+              "body": "Our school nurse wants a signed form saying I carry an epinephrine auto-injector and what to do if I react at school. Can you fill out the attached? Also — haven't heard from the allergy clinic yet about an appointment."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: School form",
+              "date": "2026-08-18T15:30",
+              "author": "PCP",
+              "body": "Form signed and attached: epinephrine 0.3 mg IM to the thigh at the first sign of a serious reaction, call 911, keep your second pen nearby. Front desk checked with the allergy clinic — they have the referral and are working on a date. If you don't hear by early September let us know and we'll push."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-17a",
+          "kind": "annual_physical",
+          "start": "2026-09-17T15:45",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Allergic asthma|J45.909": {
+        "code": "J45.909",
+        "display": "Unspecified asthma, uncomplicated",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Anaphylaxis|T78.2XXA": {
+        "code": "T78.2XXA",
+        "display": "Anaphylactic shock, unspecified, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Systemic mastocytosis|D47.02": {
+        "code": "D47.02",
+        "display": "Systemic mastocytosis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "cromolyn sodium 20 MG/ML Oral Solution": {
+        "code": "831261",
+        "display": "cromolyn sodium 20 MG/ML Oral Solution",
+        "ingredient": "cromolyn",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    }
+  }
+}

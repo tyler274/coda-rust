@@ -1,0 +1,1548 @@
+{
+  "unit": "unit-2807",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002807",
+      "given": "Abigail",
+      "family": "Paquette",
+      "birth_date": "1980-07-27",
+      "address_line": "37 Fuller Street",
+      "phone": "+1-646-555-0176",
+      "email": "abigail.paquette@example.test",
+      "marital_status": "single",
+      "summary": "Healthy corporate project manager who joins in 2023. From early 2025 she has intermittent dysphagia and chest discomfort that fail a PPI trial; ENT calls it esophageal dysmotility, a barium swallow shows corkscrew contractions, EGD is normal and manometry in 2026 shows distal esophageal spasm managed without medication.",
+      "events": [
+        {
+          "id": "2023-08-29a",
+          "kind": "portal_message",
+          "start": "2023-08-29T19:42",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New patient - records",
+              "date": "2023-08-29T19:42",
+              "author": "patient",
+              "body": "Hi, I'm booked for my first appointment on 9/12. My old doctor's office said they can fax my records if you send them a request. Is there a form I should sign? Thanks, Abby Paquette"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: New patient - records",
+              "date": "2023-08-30T09:15",
+              "author": "front desk",
+              "body": "Hi Abigail, welcome! I've attached a records release form. Sign it and send it back through the portal and we'll request everything from your prior office before your visit. See you on the 12th."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-07a",
+          "kind": "outside_records",
+          "start": "2023-09-07T14:05",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "date": "2023-09-07T14:05",
+              "author": "front desk",
+              "body": "Records received by fax, 14 pages, from patient's previous primary care practice. Scanned to chart.\n\nSummary for provider review:\n- Problem list: none.\n- Medications: none.\n- Allergies: NKDA.\n- Screening mammogram 10/2022: BI-RADS 1, negative.\n- Pap with HPV co-test 06/2021: NILM, high-risk HPV not detected.\n- Immunizations: Tdap 05/2019.\n- Last annual exam there 10/2022, unremarkable."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T08:30",
+          "end": "2023-09-12T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care and annual exam",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              75
+            ],
+            "hr": 77,
+            "rr": 14,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 63.6,
+            "height_cm": 165.0
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-09-12T09:35",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 214
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.64
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-12T09:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 88
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-12T09:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 176
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 58
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 110
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 118
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T09:35",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T09:35",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T09:35",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional (1-2 drinks per week)"
+            },
+            {
+              "item": "Occupation",
+              "value": "Corporate Project Manager"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 40-64",
+              "performed": "2023-09-12T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-12T09:25"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-12T09:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-12T09:25"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Routine breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit - Establish Care",
+              "date": "2023-09-12T10:10",
+              "author": "PCP",
+              "body": "43 y/o woman new to the practice, transferring for the membership model; her previous office was hard to reach by phone. Feels well. No active concerns today.\n\nPMH: none. No surgeries. No hospitalizations.\nMeds: none, no supplements.\nAllergies: NKDA.\nFamily hx: mother - hypothyroidism. Father - essential HTN.\nSocial: project manager at a large company, long days at a desk, some deadline stress she describes as manageable. Never smoked. 1-2 drinks a week. No drugs. Walks most evenings.\nGyn: menses regular.\nHealth maintenance from prior records: mammogram 10/2022 negative, Pap/HPV 6/2021 negative (next co-test 2026), Tdap 5/2019.\n\nROS: negative across systems.\n\nExam: NAD, pleasant. HEENT clear, TMs normal. Neck supple, thyroid normal size without nodules, no adenopathy. Heart RRR, no murmur. Lungs CTA bilaterally. Abd soft, NT, no masses. Skin without suspicious lesions. Extremities warm, no edema. Neuro nonfocal.\n\nA/P:\n1. Adult preventive exam. Healthy. CBC, CMP, lipids. TSH given mom's thyroid disease. One-time hep C and HIV screens, she agreed.\n2. Breast screening - mammogram ordered for October.\n3. Flu vaccine today.\n4. PHQ-2 0, AUDIT-C low risk.\nPortal for results. Annual next September."
+            },
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2023-09-12T09:27",
+              "author": "MA",
+              "body": "Influenza vaccine 0.5 mL IM given L deltoid after screening questions reviewed (no prior reaction, not ill today). VIS provided. Tolerated well."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.5,
+            "height_cm": 165.1,
+            "labs": {
+              "Low Density Lipoprotein": 92,
+              "Thyroid Stimulating Hormone": 1.8,
+              "Total Cholesterol": 170
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T16:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2023-09-14T16:20",
+              "author": "PCP",
+              "body": "Abby - everything from Tuesday came back fine. Blood counts, kidney and liver numbers, cholesterol and thyroid are all in the normal range, and the hepatitis C and HIV screens were nonreactive. No changes needed. Mammogram order is in; radiology will call you to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-06a",
+          "kind": "pharmacy",
+          "start": "2023-10-06T17:40",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-06T17:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization record",
+              "date": "2023-10-09T10:02",
+              "author": "front desk",
+              "body": "Immunization registry update from community pharmacy: COVID-19 2023-2024 formula vaccine given 10/06/2023. Added to immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "imaging",
+          "start": "2023-10-19T11:00",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-10-19T11:00",
+              "text": "Bilateral digital screening mammogram with tomosynthesis. Comparison: 10/2022 from outside facility. Breast composition: scattered areas of fibroglandular density. No suspicious mass, architectural distortion or suspicious calcifications in either breast. Skin and nipples unremarkable.",
+              "conclusion": "BI-RADS 1: Negative. Routine annual screening recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "done",
+              "date": "2023-10-19T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "date": "2023-10-20T13:12",
+              "author": "RN",
+              "body": "Screening mammogram negative, BI-RADS 1. Result released to portal with a note that the next one is due in a year."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-11a",
+          "kind": "portal_message",
+          "start": "2024-03-11T12:31",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vaccine record",
+              "date": "2024-03-11T12:31",
+              "author": "patient",
+              "body": "Could you send me a printable copy of my vaccine history? HR needs it for a client site visit next month."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Vaccine record",
+              "date": "2024-03-11T15:48",
+              "author": "front desk",
+              "body": "Hi Abigail, your immunization record is now under Documents in the portal as a PDF. Let us know if HR needs it on letterhead."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "annual_physical",
+          "start": "2024-09-10T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment rescheduled",
+              "date": "2024-09-09T08:52",
+              "author": "front desk",
+              "body": "Pt called, work travel this week. Cancelled 9/10 physical, rebooked 9/17 8:00. Lab draw same morning, fasting not required."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "annual_physical",
+          "start": "2024-09-17T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              121,
+              74
+            ],
+            "hr": 74,
+            "rr": 14,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 63.9
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-09-17T08:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 263
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.83
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 56
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 34
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-17T08:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-17T08:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 166
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 54
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 102
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 92
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 112
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-09-17T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-17T08:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-17T08:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-09-17T08:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Annual breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-17T11:40",
+              "author": "PCP",
+              "body": "Annual exam. Abby has been well this year - no visits, no illnesses worth mentioning. Busy at work with a big rollout over the summer; sleeping okay. Still walking evenings.\n\nMeds: none. Allergies: NKDA.\nFH unchanged (mother hypothyroid, father HTN). Never smoker, light alcohol.\n\nROS: no chest pain, dyspnea, GI or GU complaints. Menses regular.\n\nExam: well-appearing. Vitals reviewed, BP normal. Thyroid without enlargement or nodules. No cervical or supraclavicular nodes. Cardiac exam regular, no murmur or rub. Lungs clear. Abdomen benign. No edema. Skin: no concerning moles on full check.\n\nAssessment/plan:\n- Well adult. CBC, CMP, lipid panel today.\n- Mammogram due next month, order placed.\n- Pap/HPV next due 2026.\n- Colon cancer screening starts at 45 - will bring up next year.\n- Flu shot given. Updated COVID shot at her pharmacy when it's out.\n- PHQ-2 negative.\nRTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-19a",
+          "kind": "portal_message",
+          "start": "2024-09-19T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-09-19T07:55",
+              "author": "PCP",
+              "body": "Hi Abby, labs from your physical look good - counts, chemistries and cholesterol all normal. Nothing to follow up on."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-04a",
+          "kind": "pharmacy",
+          "start": "2024-10-04T18:10",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-04T18:10"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "imaging",
+          "start": "2024-10-24T09:40",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-10-24T09:40",
+              "text": "Digital breast tomosynthesis screening, both breasts. Compared with 10/19/2023 and 10/2022. Scattered fibroglandular densities. No new mass, distortion or grouped calcifications. Stable appearance.",
+              "conclusion": "Negative (BI-RADS 1). Return for screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "done",
+              "date": "2024-10-24T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "date": "2024-10-25T10:30",
+              "author": "RN",
+              "body": "Mammogram 10/24 negative. Patient notified via portal. Recall set for 10/2025."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-27a",
+          "kind": "office_visit",
+          "start": "2025-01-27T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chest discomfort and trouble swallowing",
+          "medications": [
+            {
+              "drug": "omeprazole 20 MG Delayed Release Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth daily 30 minutes before breakfast",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Presumed reflux"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              77
+            ],
+            "hr": 81,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 96,
+            "weight_kg": 63.4
+          },
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-01-27T16:20",
+              "text": "Sinus rhythm. Normal axis. PR, QRS and QT intervals normal. No ST elevation or depression. No T wave inversion. No Q waves.",
+              "conclusion": "Normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-27T16:00"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2025-01-27T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Can I come in this week?",
+              "date": "2025-01-26T21:14",
+              "author": "patient",
+              "body": "For the past week and a half I keep getting this feeling that food gets caught partway down, and sometimes a tight ache in my chest when it happens. It goes away on its own. Not an emergency I don't think but it's freaking me out a bit. Any chance of an appointment tomorrow after 3?"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Chest discomfort / dysphagia",
+              "date": "2025-01-27T17:05",
+              "author": "PCP",
+              "body": "S: 44F, about 10 days of intermittent episodes where food or a drink feels like it stops behind the sternum, sometimes with a tight discomfort in the same spot. Happens with solids and with liquids. Comes and goes on its own. Not exertional. No dyspnea, palpitations, diaphoresis. Denies weight loss, vomiting up undigested food, pain with swallowing, or any long-standing heartburn. No new meds. Work has been heavy this month.\n\nPMH none. Meds none. NKDA. Never smoker. FH: father HTN, mother hypothyroid; no premature CAD she knows of.\n\nO: vitals normal. Comfortable. Oropharynx clear, neck without mass or nodes, thyroid normal. Heart RRR, no murmur. Lungs clear. Chest wall nontender. Abdomen soft, no epigastric tenderness. No edema.\nECG in office: sinus rhythm, normal intervals, no ST-T changes.\n\nA/P: Intermittent dysphagia to solids and liquids with retrosternal discomfort. Not anginal by history, ECG normal. Most likely reflux-related - trial of omeprazole 20 mg each morning before breakfast. Let me know in 3-4 weeks if not better; if no response, will get her to a specialist for a swallowing workup. Go to the ED for chest pain that is constant, exertional, or with shortness of breath, or if food truly will not pass."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-19a",
+          "kind": "portal_message",
+          "start": "2025-02-19T10:22",
+          "medications": [
+            {
+              "drug": "omeprazole 20 MG Delayed Release Oral Capsule",
+              "action": "stop",
+              "reason": "No benefit"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-referral",
+              "action": "placed",
+              "order": "Otolaryngology referral",
+              "category": "referral",
+              "to": "Otolaryngology",
+              "reason": "Dysphagia not improved on PPI"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Omeprazole update",
+              "date": "2025-02-19T10:22",
+              "author": "patient",
+              "body": "Checking in like you asked. I've taken the omeprazole every morning for over 3 weeks and honestly no difference. Still getting the stuck feeling a few times a week, and very cold water seems to set it off. Do I keep taking it?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Omeprazole update",
+              "date": "2025-02-19T13:47",
+              "author": "PCP",
+              "body": "Thanks for the update. Since it hasn't helped at all, go ahead and stop the omeprazole. I'm sending a referral to ENT to look at the swallowing problem - their office will call you. If it gets worse before then, or food won't go down, call me."
+            },
+            {
+              "type": "Referral",
+              "title": "Referral to Otolaryngology",
+              "date": "2025-02-19T13:52",
+              "author": "PCP",
+              "body": "Reason: 44F with ~5 weeks intermittent dysphagia to solids and liquids with retrosternal discomfort, no response to 3+ weeks of omeprazole 20 mg daily. Normal office ECG 1/27/25. Please evaluate. No medications. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-28a",
+          "kind": "specialist_visit",
+          "start": "2025-02-28T10:30",
+          "service": "Otolaryngology",
+          "reason": "Dysphagia and chest discomfort",
+          "conditions": [
+            {
+              "label": "Esophageal dysmotility",
+              "action": "diagnosed",
+              "onset": "2025-01-17",
+              "note": "ENT clinical impression",
+              "icd10": "K22.4"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-referral",
+              "action": "done",
+              "date": "2025-02-28T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology Consultation",
+              "date": "2025-03-04T09:20",
+              "author": "otolaryngology",
+              "body": "Outside otolaryngology group - consultation letter\nDate of visit: 02/28/2025\nRe: Abigail Paquette, DOB 07/27/1980\n\nThank you for asking us to see Ms. Paquette, a 44-year-old project manager, for six weeks of swallowing trouble and chest discomfort.\n\nShe describes episodes in which a bite, or a sip, lodges at about the level of the mid-sternum. Some episodes bring a sharp, squeezing pain there that can travel through to her back. They last anywhere from a few minutes up to an hour, happen several times a week and usually pass without her doing anything. Very hot or very cold drinks can set them off, and she suspects pressure at work sometimes does as well. A course of omeprazole made no difference.\n\nShe has no meaningful past medical history and takes nothing regularly. Drug allergies: none known. No food allergy, no asthma. Family history notable for maternal hypothyroidism and paternal hypertension. She has never smoked and drinks one or two drinks a week.\n\nReview of systems: no weight loss, no vomiting of undigested food, no odynophagia, no chronic heartburn.\n\nExamination: vital signs stable. Well appearing. No pallor or other sign of anemia. Ears, nose and oral cavity normal. Oropharynx and neck without mass; no cervical lymphadenopathy; thyroid unremarkable. Heart and lung sounds normal.\n\nHer ECG from your office on 01/27/2025, which I reviewed, is unremarkable.\n\nImpression: The pattern - dysphagia to liquids as well as solids, a mid-chest level, thermal triggers, chest pain and no response to acid suppression - points to an esophageal motility disorder rather than an oropharyngeal or structural problem. I have recorded this as esophageal dysmotility.\n\nRecommendations:\n1. Gastroenterology evaluation for esophageal workup.\n2. In the meantime, avoid very hot or very cold beverages and take smaller bites.\n3. No ENT follow-up needed unless new throat or voice symptoms.\n\nThank you for involving our service.\nOtolaryngology"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-05a",
+          "kind": "portal_message",
+          "start": "2025-03-05T08:40",
+          "orders": [
+            {
+              "id": "gi-referral-1",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "Esophageal dysmotility, ENT recommends GI evaluation"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ENT letter",
+              "date": "2025-03-05T08:40",
+              "author": "PCP",
+              "body": "Abby, I got the ENT letter. They think the esophagus muscle isn't squeezing in a coordinated way, which fits the cold-drink trigger and why omeprazole did nothing. Next step is GI. I've put the referral in. Their scheduling line can be slow, so let me know if you haven't heard in two weeks."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ENT letter",
+              "date": "2025-03-05T12:03",
+              "author": "patient",
+              "body": "Makes sense, thank you. Will keep an eye out for their call."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "telephone",
+          "start": "2025-04-22T11:15",
+          "orders": [
+            {
+              "id": "gi-referral-1",
+              "action": "cancelled",
+              "date": "2025-04-22T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "GI referral on hold",
+              "date": "2025-04-22T11:24",
+              "author": "RN",
+              "body": "Pt returned call re GI scheduling. States the swallowing episodes have quieted down over the past few weeks and she would rather hold off on GI for now given her work schedule. Advised to call if they return. Referral closed per pt request; PCP aware.\n\nPCP addendum: fine. Low threshold to re-refer."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical; swallowing symptoms back",
+          "vitals": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 78,
+            "rr": 14,
+            "temp_c": 36.4,
+            "spo2": 96,
+            "weight_kg": 63.7
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-09-23T09:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 261
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.64
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-23T09:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 86
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 62
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-23T09:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 171
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 57
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 122
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 90
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 114
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-23T09:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-09-23T08:15"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-23T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-23T09:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-23T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "barium-swallow",
+              "action": "placed",
+              "order": "Barium swallow (esophagram)",
+              "category": "imaging",
+              "reason": "Recurrent dysphagia, esophageal dysmotility"
+            },
+            {
+              "id": "gi-referral-2",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "Recurrent dysphagia with regurgitation, esophageal dysmotility"
+            },
+            {
+              "id": "fit-2025",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "Average-risk colorectal cancer screening"
+            },
+            {
+              "id": "mammo-2025",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Annual breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-23T12:30",
+              "author": "PCP",
+              "body": "Annual. Also the swallowing problem is back.\n\nInterval: the episodes from the winter faded out by April and she was fine over the summer. Starting about three weeks ago they returned - food and liquids hanging up mid-chest, and now some bringing back of undigested food after meals, which she did not have before. Occasional pressure-like pain behind the breastbone during episodes. Worse on high-stress days at work. Weight stable by our scale. No vomiting, no black stools or blood. No heartburn.\n\nMeds: none. NKDA. Problem list: esophageal dysmotility (ENT impression 2/2025).\nSocial and family history unchanged.\n\nROS otherwise negative.\n\nExam: well. Vitals normal. HEENT benign, no cervical nodes, thyroid normal. Heart regular without murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. No edema. Skin unremarkable.\n\nA/P:\n1. Esophageal dysmotility, symptoms recurrent with new regurgitation. Barium swallow ordered and GI referral placed again - she is ready to go this time. Same precautions: if food impacts and won't pass, ED.\n2. Health maintenance: turned 45 this summer - discussed colon screening options, she prefers FIT; kit given. Mammogram order placed. Pap/HPV due next year. Labs: CBC, CMP, lipids, TSH. Flu vaccine today. PHQ-2 0.\nRTC 1 yr, sooner as needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-25a",
+          "kind": "portal_message",
+          "start": "2025-09-25T17:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "date": "2025-09-25T17:02",
+              "author": "PCP",
+              "body": "All of Tuesday's labs are normal, including thyroid. Barium swallow is the next piece - radiology should be reaching out."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "imaging",
+          "start": "2025-10-07T13:30",
+          "reports": [
+            {
+              "study": "Barium swallow (esophagram)",
+              "loinc": "30633-2",
+              "performed": "2025-10-07T13:30",
+              "text": "Indication: dysphagia to solids and liquids. Technique: single- and double-contrast esophagram with thin barium, followed by a barium tablet.\nOropharyngeal phase: normal bolus transit, no laryngeal penetration or aspiration.\nEsophagus: on several swallows the distal esophagus shows intermittent non-propulsive contractions producing a corkscrew appearance, between which primary peristalsis is normal. The esophagus is not dilated. No stricture, ring, web, mass or diverticulum. Mucosa smooth. The barium tablet passed into the stomach without delay.\nGastroesophageal junction opens normally. No hiatal hernia. No reflux observed during the exam.",
+              "conclusion": "Intermittent corkscrew-like esophageal contractions, suggestive of a spastic motility disorder. No structural abnormality."
+            }
+          ],
+          "orders": [
+            {
+              "id": "barium-swallow",
+              "action": "done",
+              "date": "2025-10-07T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Barium swallow",
+              "date": "2025-10-08T08:10",
+              "author": "PCP",
+              "body": "Esophagram shows intermittent corkscrew contractions without stricture or mass - fits a spastic motility problem. Messaged pt. Sent report to GI with the referral so they can plan scope/manometry."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Barium swallow result",
+              "date": "2025-10-08T08:14",
+              "author": "PCP",
+              "body": "Abby, the swallow study showed the esophagus squeezing in an uncoordinated, corkscrew pattern at times - nothing blocking it, no narrowing or growth. That matches the motility problem ENT suspected. I sent the images to GI along with the referral; they will likely want a scope and possibly a pressure test of the esophagus."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-10a",
+          "kind": "pharmacy",
+          "start": "2025-10-10T12:20",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-10T12:20"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "lab_only",
+          "start": "2025-10-14T10:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-13T07:30",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "done",
+              "date": "2025-10-14T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "date": "2025-10-15T09:05",
+              "author": "RN",
+              "body": "FIT negative. Portal message sent; repeat in one year. Health maintenance updated."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-30a",
+          "kind": "imaging",
+          "start": "2025-10-30T15:10",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-10-30T15:10",
+              "text": "Screening mammography with 3D tomosynthesis. Prior exams 10/24/2024 and 10/19/2023 reviewed. Breasts contain scattered fibroglandular tissue. No suspicious finding in either breast; no change from priors.",
+              "conclusion": "BI-RADS 1, negative. Annual screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "done",
+              "date": "2025-10-30T15:10"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "telephone",
+          "start": "2026-01-20T14:35",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "GI scheduling",
+              "date": "2026-01-20T14:41",
+              "author": "front desk",
+              "body": "Call from outside GI office. Referral reviewed by their physician and triaged to direct-access upper endoscopy first: EGD booked 2/10/26, clinic follow-up with GI 3/3/26. They asked for the barium swallow report and last office note - faxed both. Pt already notified by them."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "procedure_visit",
+          "start": "2026-02-10T07:45",
+          "end": "2026-02-10T09:30",
+          "service": "Gastroenterology",
+          "reason": "Dysphagia, esophageal dysmotility",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-02-10T08:20",
+              "text": "Specimen A: esophagus, distal, biopsies. Specimen B: esophagus, proximal/mid, biopsies.\nGross: A and B - multiple tan soft tissue fragments.\nMicroscopic: squamous mucosa with normal maturation. No increase in intraepithelial eosinophils. No basal cell hyperplasia, no intestinal metaplasia, no dysplasia. No fungal organisms.",
+              "conclusion": "A and B: benign squamous mucosa. No increased intraepithelial eosinophils. Negative for dysplasia.",
+              "issued": "2026-02-13T15:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Upper endoscopy with biopsy",
+              "performed": "2026-02-10T08:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2",
+              "action": "done",
+              "date": "2026-02-10T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Upper Endoscopy Report",
+              "date": "2026-02-12T11:05",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology - endoscopy unit\nProcedure date: 02/10/2026\nPatient: Abigail Paquette, DOB 07/27/1980\nProcedure: esophagogastroduodenoscopy with cold forceps biopsy\nIndication: dysphagia to solids and liquids; esophagram with corkscrew contractions.\nSedation: monitored anesthesia care, propofol per anesthesia record.\nAllergies: NKDA.\n\nFindings:\n- Esophagus: normal caliber and mucosa throughout. No rings, furrows, exudate, stricture or mass. Z-line regular. Biopsies taken from the distal and the proximal/mid esophagus to exclude eosinophilic esophagitis.\n- Stomach: normal mucosa; retroflexion normal, no hiatal hernia.\n- Duodenum: normal through the second portion.\nThe scope traversed the GE junction without resistance.\n\nImpression: normal upper endoscopy; no structural cause for dysphagia. Pathology pending.\nRecommendations: follow up in GI clinic 03/03/2026 as scheduled. Resume regular diet today.\nNo complications. Discharged home with an escort."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Pathology received",
+              "date": "2026-02-16T09:30",
+              "author": "front desk",
+              "body": "Pathology for 2/10 EGD biopsies received from outside GI and scanned. Routed to PCP."
+            },
+            {
+              "type": "Result Note",
+              "title": "EGD pathology",
+              "date": "2026-02-16T12:15",
+              "author": "PCP",
+              "body": "Esophageal biopsies benign, no eosinophilic esophagitis. GI will go over at her 3/3 visit. No action from me."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-03a",
+          "kind": "specialist_visit",
+          "start": "2026-03-03T13:00",
+          "service": "Gastroenterology",
+          "reason": "Follow-up, dysphagia",
+          "orders": [
+            {
+              "id": "hrm",
+              "action": "placed",
+              "order": "High-resolution esophageal manometry",
+              "category": "procedure",
+              "to": "Gastroenterology",
+              "reason": "Esophageal dysmotility with corkscrew esophagram"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Clinic Note",
+              "date": "2026-03-06T10:40",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology group\nVisit date: 03/03/2026\nPatient: Abigail Paquette, 45 y/o F\nReferring: primary care physician\n\nReason for visit: return visit after EGD; dysphagia.\n\nHPI: Ms. Paquette comes back to clinic roughly a year after ENT first saw her for this. Over the past six months she has had on-and-off trouble getting both solids and liquids down, episodes of undigested food coming back up, and now and then pain behind the sternum. She ties many episodes to emotionally stressful stretches at work. No weight loss, no vomiting, no hematemesis or melena.\n\nProblem list: esophageal dysmotility.\nMedications: none.\nAllergies: no known drug allergies.\nFamily history: hypothyroidism in her mother, hypertension in her father.\nSocial: never smoker, 1-2 alcoholic drinks weekly, works as a corporate project manager.\n\nExam: normal. Well appearing, abdomen soft and nontender, no lymphadenopathy.\n\nData reviewed:\n- Barium esophagram 10/07/2025: intermittent corkscrew-type contractions of the esophagus, no structural lesion.\n- EGD 02/10/2026: no structural abnormality. Biopsies benign without eosinophilia.\n\nAssessment: esophageal dysmotility. The corkscrew pattern with a structurally normal esophagus most suggests a spastic disorder such as distal esophageal spasm; achalasia needs to be excluded before treatment is chosen.\n\nPlan:\n1. High-resolution esophageal manometry - ordered.\n2. Avoid very hot and very cold drinks, eat slowly with smaller bites, stay upright for a while after meals.\n3. No medication for now; will decide after manometry.\n4. Telehealth follow-up after the study.\n\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-08a",
+          "kind": "procedure_visit",
+          "start": "2026-04-08T08:00",
+          "end": "2026-04-08T09:00",
+          "service": "Gastroenterology",
+          "reason": "High-resolution esophageal manometry",
+          "reports": [
+            {
+              "study": "High-resolution esophageal manometry",
+              "loinc": "51393-7",
+              "performed": "2026-04-08T08:00",
+              "text": "Solid-state high-resolution manometry, Chicago Classification v4.0 protocol. Upper esophageal sphincter: normal resting pressure and relaxation. EGJ: median IRP 9 mmHg (normal). Esophageal body, 10 supine wet swallows: 4 premature (distal latency under 4.5 s), 6 normal peristalsis; no failed or hypercontractile swallows. Upright and multiple rapid swallows concordant.",
+              "conclusion": "Distal esophageal spasm (Chicago Classification v4.0). Normal EGJ relaxation; no achalasia.",
+              "issued": "2026-04-10T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "hrm",
+              "action": "done",
+              "date": "2026-04-08T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "High-Resolution Esophageal Manometry",
+              "date": "2026-04-10T14:20",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology - motility laboratory\nStudy date: 04/08/2026\nPatient: Abigail Paquette, DOB 07/27/1980\nIndication: dysphagia; esophagram with corkscrew contractions; normal EGD.\n\nProtocol: solid-state high-resolution catheter placed transnasally without difficulty. Supine 10 water swallows, followed by upright swallows and multiple rapid swallows per Chicago Classification v4.0. Patient tolerated well.\n\nUpper esophageal sphincter: normal resting pressure and relaxation.\nEsophagogastric junction: median integrated relaxation pressure 9 mmHg (normal).\nEsophageal body (supine): 10 wet swallows evaluated. 4 of 10 premature (distal latency less than 4.5 seconds). The remaining 6 showed normal peristalsis. No failed and no hypercontractile swallows.\nUpright and provocative maneuvers: consistent with the supine findings.\n\nInterpretation: normal EGJ relaxation with premature contractions in 40% of swallows. Meets criteria for distal esophageal spasm (Chicago Classification v4.0). No evidence of achalasia.\n\nMotility laboratory, gastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "specialist_visit",
+          "start": "2026-04-21T15:30",
+          "service": "Gastroenterology",
+          "reason": "Telehealth follow-up, manometry results",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Telehealth Follow-up",
+              "date": "2026-04-24T08:55",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology group - video visit 04/21/2026\nPatient: Abigail Paquette\n\nReviewed her manometry with her: normal sphincter relaxation and premature contractions on 4 of 10 swallows, which classifies her esophageal dysmotility as distal esophageal spasm. Achalasia excluded. This matches the corkscrew esophagram and her symptom triggers.\n\nWe talked through management. Episodes remain intermittent. Because they are intermittent and she does well between them, she would like to keep to the measures already in place rather than start a medication. Reasonable. If episodes become more frequent or harder to tolerate, a trial of a calcium channel blocker is the next step, and we would revisit other options after that.\n\nPlan: continue avoiding temperature extremes in drinks, small bites, eating slowly, upright after meals. No medications started. Return to GI clinic in about six months, sooner as needed. Medications: none. Allergies: NKDA.\n\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-04a",
+          "kind": "portal_message",
+          "start": "2026-05-04T20:11",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "GI results",
+              "date": "2026-05-04T20:11",
+              "author": "patient",
+              "body": "Hi - I assume you got the GI notes. Just wanted to make sure you're in the loop that it's esophageal spasm and we're not doing any meds for now. I see them again in the fall."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: GI results",
+              "date": "2026-05-05T07:48",
+              "author": "PCP",
+              "body": "Got them, thanks Abby. I agree with the plan. Glad to finally have a name for it. If the episodes pick up before your GI visit, tell me and we can move things along."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "portal_message",
+          "start": "2026-07-28T13:26",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "date": "2026-07-28T13:26",
+              "author": "patient",
+              "body": "Time for my yearly physical. Any Tuesday morning in late September works."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "date": "2026-07-28T16:02",
+              "author": "front desk",
+              "body": "You're booked for Tuesday 9/22 at 8:15. The doctor will also do your Pap that day, since it's due."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T08:15",
+          "reason": "Annual physical, Pap with HPV due",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Esophageal dysmotility|K22.4": {
+        "code": "K22.4",
+        "display": "Dyskinesia of esophagus",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "reports": {
+      "Barium swallow (esophagram)": {
+        "code": "30633-2",
+        "display": "RF Esophagus Views W barium contrast PO",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "High-resolution esophageal manometry": {
+        "code": "51393-7",
+        "display": "Esophageal manometry study",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

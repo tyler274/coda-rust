@@ -1,0 +1,2396 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001680",
+      "events": [
+        {
+          "id": "2024-01-22a",
+          "kind": "specialist_visit",
+          "start": "2024-01-22T09:15",
+          "service": "Rheumatology",
+          "reason": "Rheumatology visit",
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.4,
+              "White Blood Cells": 4.2,
+              "Platelets": 150,
+              "Erythrocyte Sedimentation Rate": 18,
+              "C Reactive Protein": 3
+            }
+          },
+          "medications": [
+            {
+              "drug": "prednisone 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Systemic lupus erythematosus"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-01-22T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-01-22T09:50",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-01-22T09:50",
+              "results": [
+                {
+                  "test": "C Reactive Protein"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up",
+              "author": "rheumatology",
+              "date": "2024-01-25T10:40",
+              "body": "OUTSIDE RHEUMATOLOGY GROUP\nFollow-up 01/22/2024\n\nSeen after the December ED visit for lupus pericarditis, which followed about a month off hydroxychloroquine and prednisone. Chest pain gone for two weeks. No fever. On colchicine 0.6 mg daily, tolerating it. Prednisone taper reached 5 mg last week. Back on hydroxychloroquine and using auto-refills.\n\nExam: comfortable, no rub, lungs clear. No synovitis. No rash or oral ulcers.\n\nLabs today: counts back toward her usual, inflammatory markers much lower.\n\nAssessment: autoimmune pericarditis, settled. SLE otherwise quiet.\nPlan: complete colchicine through mid-March. Hydroxychloroquine 200 mg BID, prednisone 5 mg daily. We discussed that stopping hydroxychloroquine is the single biggest risk for flares. Return 4 months; labs via PCP in between."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-27a",
+          "kind": "pharmacy",
+          "start": "2024-02-27T08:30",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Pharmacy refill request — prednisone",
+              "author": "MA",
+              "date": "2024-02-27T08:30",
+              "body": "E-refill request from pharmacy: prednisone 5 mg tab, 1 daily, #90. Last filled 11/2023 by our office. Pt on auto-refill. Pended for PCP."
+            },
+            {
+              "type": "Refill Request",
+              "title": "RE: refill request",
+              "author": "PCP",
+              "date": "2024-02-27T11:45",
+              "body": "Signed. 90 days, 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "office_visit",
+          "start": "2024-03-12T15:40",
+          "end": "2024-03-12T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up pericarditis, SLE",
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.6,
+              "Platelets": 165,
+              "White Blood Cells": 4.5,
+              "Erythrocyte Sedimentation Rate": 12,
+              "C Reactive Protein": 2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Autoimmune pericarditis",
+              "icd10": "M32.12",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "colchicine 0.6 MG Oral Tablet",
+              "action": "stop",
+              "reason": "3-month course complete"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-03-12T16:05",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-12T16:05",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-03-12T16:05",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Trace"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-12T16:05",
+              "results": [
+                {
+                  "test": "Protein/Creatinine ratio, urine",
+                  "loinc": "2890-2",
+                  "unit": "g/g",
+                  "value": 0.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-12T16:05",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-12T16:05",
+              "results": [
+                {
+                  "test": "C Reactive Protein"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-12T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — SLE, Pericarditis Follow-up",
+              "author": "PCP",
+              "date": "2024-03-12T16:35",
+              "body": "Follow-up. Took the last colchicine Sunday, 3 months done. No chest pain since early January. Exercise tolerance normal, back to walking 30 min most days. HCQ and pred 5 every day, auto-refill working. Rheum note 1/22 reviewed.\n\nROS: no fever, rash, oral sores, joint swelling, leg swelling, foamy urine.\n\nExam: vitals as charted. Well. Heart regular, no rub. Lungs clear. No synovitis. No edema.\n\nA/P\n1. Autoimmune pericarditis - resolved. Colchicine course complete.\n2. SLE, quiet. CBC, ESR, CRP.\n3. Lupus nephritis, quiet. BMP, UA, UPCR; copy to nephrology.\n4. Bone health on long-term prednisone: on D3 and calcium.\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-14a",
+          "kind": "portal_message",
+          "start": "2024-03-14T13:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Tuesday's labs",
+              "author": "PCP",
+              "date": "2024-03-14T13:10",
+              "body": "Inflammation markers are normal now, blood counts are at your usual, kidney function normal and urine protein low at 0.3. Nice work staying on the medicines."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "office_visit",
+          "start": "2024-05-21T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "SLE follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "No-show",
+              "author": "front desk",
+              "date": "2024-05-21T09:30",
+              "body": "Pt did not arrive for 8:40 follow-up. Called, left voicemail to reschedule. Portal message sent."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-22a",
+          "kind": "portal_message",
+          "start": "2024-05-22T07:05",
+          "reason": "Reschedule",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sorry about yesterday",
+              "author": "patient",
+              "date": "2024-05-22T07:05",
+              "body": "So sorry, I had it in my calendar for the 28th. Can I get something in June? Mornings are best. Everything is fine, no new problems."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Sorry about yesterday",
+              "author": "front desk",
+              "date": "2024-05-22T10:20",
+              "body": "No problem. You're booked Tuesday June 25 at 8:20 am."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-23a",
+          "kind": "ed_visit",
+          "start": "2024-06-23T13:50",
+          "end": "2024-06-23T21:15",
+          "service": "Emergency Medicine",
+          "reason": "Fatigue, weakness, headaches, dark urine",
+          "state": {
+            "bp": [
+              150,
+              90
+            ],
+            "labs": {
+              "Hemoglobin": 7.0,
+              "Platelets": 20,
+              "Creatinine": 2.5
+            }
+          },
+          "vitals": [
+            {
+              "time": "2024-06-23T13:58",
+              "temp_c": 37.0,
+              "hr": 110,
+              "bp": [
+                150,
+                90
+              ],
+              "rr": 18,
+              "spo2": 98
+            },
+            {
+              "time": "2024-06-23T19:40",
+              "temp_c": 36.9,
+              "hr": 104,
+              "bp": [
+                146,
+                88
+              ],
+              "rr": 16,
+              "spo2": 98
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Thrombocytopenia",
+              "action": "diagnosed",
+              "onset": "2024-06-16"
+            },
+            {
+              "label": "Senile purpura",
+              "icd10": "D69.2",
+              "action": "diagnosed",
+              "onset": "2024-06-23"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-06-23T14:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 7.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 20
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-06-23T14:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 2.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-23T14:15",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 600
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-23T14:15",
+              "results": [
+                {
+                  "test": "Haptoglobin",
+                  "loinc": "4542-7",
+                  "unit": "mg/dL",
+                  "text": "<10"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-23T14:15",
+              "results": [
+                {
+                  "test": "Schistocytes",
+                  "loinc": "800-6",
+                  "text": "Numerous schistocytes on peripheral smear"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-06-23T14:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-23T14:15",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-06-23T13:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Record",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2024-06-25T08:30",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nDate of service: 06/23/2024\nPatient: Fatou Bryant, 30F\n\nCC: weak, tired, dark urine.\n\nHPI: 30-year-old woman with SLE, lupus nephritis and a prior episode of autoimmune pericarditis. For about a week she has felt progressively more tired and weak, with headaches that come and go. Urine has been dark for two days. No recent infections. No medication changes.\n\nHome meds: hydroxychloroquine 200 mg BID, prednisone 5 mg daily, vitamin D3, calcium carbonate. NKDA.\n\nVitals on arrival: afebrile, BP 150/90, HR 110.\nExam: jaundiced, scleral icterus. Mildly confused, slow to answer and has trouble concentrating. No focal weakness. Heart tachycardic, regular. Lungs clear.\n\nLabs: Hgb 7.0, platelets 20,000, LDH 600, haptoglobin <10, creatinine 2.5. Smear: numerous schistocytes. INR normal. Urine hCG negative.\n\nMDM: Microangiopathic hemolytic anemia with severe thrombocytopenia, renal involvement and neurologic symptoms in a patient with SLE. TTP must be excluded; ADAMTS13 sent. Hematology consulted from the ED; plasma exchange to start tonight. Admitted to medicine.\n\nED diagnoses (coded): Thrombocytopenia. Anemia. Senile purpura. Systemic lupus erythematosus.\n\nDisposition: admitted, stepdown."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-23b",
+          "kind": "hospital_admission",
+          "start": "2024-06-23T21:15",
+          "end": "2024-06-28T13:30",
+          "service": "Hospital Medicine",
+          "reason": "Hemolytic anemia and thrombocytopenia in SLE",
+          "state": {
+            "bp": [
+              124,
+              78
+            ],
+            "labs": {
+              "Hemoglobin": 8.4,
+              "Platelets": 138,
+              "Creatinine": 1.4
+            }
+          },
+          "medications": [
+            {
+              "drug": "prednisone 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "changed to higher dose after hemolysis admission"
+            },
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 3 tablets (60 mg) by mouth daily, then taper as directed by rheumatology",
+              "dose": {
+                "value": 60,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "SLE-related hemolysis and thrombocytopenia"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-06-23T14:15",
+              "resulted": "2024-06-25T16:00",
+              "results": [
+                {
+                  "test": "ADAMTS13 activity",
+                  "loinc": "53622-7",
+                  "unit": "%",
+                  "value": 52
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-06-28T06:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 138
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-06-28T06:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-06-23T21:15"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2024-06-28T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary",
+              "author": "hospital medicine",
+              "date": "2024-07-01T14:20",
+              "body": "REGIONAL HOSPITAL — DISCHARGE SUMMARY\nAdmitted 06/23/2024  Discharged 06/28/2024\nPatient: Fatou Bryant, 30F\nAttending service: hospital medicine; consultants hematology, rheumatology, nephrology.\n\nReason for admission: microangiopathic hemolytic anemia with platelets 20,000, creatinine 2.5 and confusion in a patient with SLE and lupus nephritis.\n\nHospital course:\nTTP was the immediate concern. Daily therapeutic plasma exchange began the night of admission, along with IV methylprednisolone 1 g daily for three doses. ADAMTS13 activity returned on 06/25 at 52%, which argues against TTP, and plasma exchange was stopped after the third session. Hemolysis and thrombocytopenia were attributed to active lupus. Antiphospholipid testing was repeated: lupus anticoagulant not detected, anticardiolipin and anti-beta-2 glycoprotein I antibodies negative. Headache and confusion cleared by hospital day 2 and the remaining neurologic exam was normal. Jaundice faded. Platelets and hemoglobin rose steadily after steroids; no transfusion needed. Creatinine improved with treatment of the flare. Blood pressure normalized as she improved.\n\nDischarge data: platelets 138,000, hemoglobin 8.4, creatinine 1.4.\n\nDischarge diagnoses: SLE flare with microangiopathic hemolysis and thrombocytopenia; lupus nephritis.\n\nDischarge medications:\n- Prednisone 60 mg daily; rheumatology to direct the taper.\n- Hydroxychloroquine 200 mg BID (continue).\n- Vitamin D3 2000 units daily, calcium carbonate 600 mg BID (continue).\nStopped: prednisone 5 mg (replaced by above).\n\nFollow-up: PCP within one week (CBC, BMP, hepatic panel). Hematology in 6 weeks. Rheumatology in 2 weeks.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-26a",
+          "kind": "telephone",
+          "start": "2024-06-26T12:30",
+          "reason": "Hospital update",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call with inpatient team",
+              "author": "PCP",
+              "date": "2024-06-26T12:30",
+              "body": "Pt texted Monday that she was admitted. Spoke with the hospitalist today. ADAMTS13 back at 52%, so not TTP; plasma exchange stopping. On pulse steroids, counts climbing. Mental status back to normal. Expect discharge late this week. Asked for summary to be faxed and arranged TCM visit for 7/2. Cancelled her 6/25 follow-up here."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-02a",
+          "kind": "office_visit",
+          "start": "2024-07-02T10:20",
+          "end": "2024-07-02T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "state": {
+            "bp": [
+              124,
+              78
+            ],
+            "labs": {
+              "Hemoglobin": 8.9,
+              "Platelets": 182,
+              "Creatinine": 1.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-07-02T10:55",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-07-02T10:55",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-07-02T10:55",
+              "results": [
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2024-07-02T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "author": "PCP",
+              "date": "2024-07-02T11:30",
+              "body": "TCM visit, discharged 6/28 after admission for lupus-related microangiopathic hemolysis with severe thrombocytopenia (plt 20k, Hgb 7, LDH 600, Cr 2.5, confusion). Plasma exchange x3 and pulse methylpred; ADAMTS13 52%, not TTP. aPL panel again negative. Discharge plt 138k, Hgb 8.4, Cr 1.4. Discharge summary and ED record reviewed and reconciled.\n\nToday: tired but much better than last week. No headache, thinking clear. Urine normal color. No bruising or bleeding. Eating a lot on prednisone 60, sleeping poorly. Out of work this week and next.\n\nMeds reconciled: prednisone 60 mg daily (taper per rheum, appointment 7/8), HCQ 200 BID, D3 2000 units, calcium carbonate 600 BID.\n\nExam: vitals as charted, BP normal. No icterus. No petechiae. Heart regular. Lungs clear. Neuro: alert, oriented, fluent, no focal deficit. No edema.\n\nA/P\n1. SLE flare with hemolysis and thrombocytopenia, recovering. CBC, BMP, hepatic panel today; results to hematology and rheum.\n2. Lupus nephritis - creatinine improving.\n3. High-dose steroids: glucose on BMP. Discussed sleep, appetite, mood.\n4. Work note through 7/15.\nRTC after taper or sooner."
+            },
+            {
+              "type": "Letter",
+              "title": "Work note",
+              "author": "PCP",
+              "date": "2024-07-02T11:35",
+              "body": "To whom it may concern,\n\nFatou Bryant was hospitalized from 06/23/2024 to 06/28/2024 and is under my care. She may return to work on 07/16/2024 without restrictions.\n\nPrimary Care Physician"
+            }
+          ]
+        },
+        {
+          "id": "2024-07-03a",
+          "kind": "portal_message",
+          "start": "2024-07-03T16:45",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Yesterday's labs",
+              "author": "PCP",
+              "date": "2024-07-03T16:45",
+              "body": "Platelets are back to normal, hemoglobin is coming up (still low but rising), bilirubin normal and kidney function better again. Sugar fine on the high prednisone. Sent to hematology and rheumatology. Keep the taper going as rheumatology tells you."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-08a",
+          "kind": "specialist_visit",
+          "start": "2024-07-08T11:00",
+          "service": "Rheumatology",
+          "reason": "Rheumatology visit",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up",
+              "author": "rheumatology",
+              "date": "2024-07-10T15:20",
+              "body": "OUTSIDE RHEUMATOLOGY GROUP\nVisit 07/08/2024\n\nSeen 10 days after discharge for SLE-associated microangiopathic hemolysis with thrombocytopenia (ADAMTS13 52%, not TTP; antiphospholipid panel negative). Feels better each day. No headache, confusion, dark urine or bleeding. PCP labs from 7/2 reviewed: platelets normal, hemoglobin recovering, bilirubin normal, creatinine improving.\n\nExam: no icterus, no petechiae, no synovitis, no rash.\n\nPlan: prednisone 60 mg daily through 7/14, then 50 mg for a week, 40 mg for a week, 30 mg for a week, then 20 mg for two weeks, 15 mg and 10 mg for two weeks each, then back to 5 mg. Continue hydroxychloroquine 200 mg BID, vitamin D and calcium. CBC monthly through PCP while tapering. Return after the taper."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-12a",
+          "kind": "specialist_visit",
+          "start": "2024-08-12T13:00",
+          "service": "Hematology",
+          "reason": "Hematology follow-up",
+          "state": {
+            "labs": {
+              "Hemoglobin": 10.9,
+              "Platelets": 210,
+              "Creatinine": 1.0
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-12T13:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 210
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-12T13:20",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "text": "Within normal limits"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Follow-up",
+              "author": "hematology",
+              "date": "2024-08-15T09:00",
+              "body": "OUTSIDE HEMATOLOGY-ONCOLOGY GROUP\nVisit 08/12/2024\n\nMs. Bryant is seen 6 weeks after admission for SLE-associated microangiopathic hemolysis with thrombocytopenia. ADAMTS13 52% on admission; plasma exchange stopped after 3 sessions. Repeat antiphospholipid panel negative.\n\nFeels close to normal. No bleeding, no dark urine, no headaches. Prednisone now 20 mg daily on rheumatology's taper.\n\nExam: no icterus, no petechiae, no splenomegaly.\n\nLabs: hemoglobin 10.9, platelets 210,000, LDH normal.\n\nImpression: hemolysis resolved; counts recovering on steroids. Not TTP.\nPlan: CBC monthly through PCP until steroids are back to maintenance, then every 3 months. She knows to come in for dark urine, bleeding, confusion or headache. See again in 6 months or as needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "office_visit",
+          "start": "2024-09-17T08:20",
+          "end": "2024-09-17T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "SLE follow-up, end of prednisone taper",
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.6,
+              "Platelets": 172,
+              "White Blood Cells": 4.4,
+              "Creatinine": 1.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Thrombocytopenia",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "prednisone 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Systemic lupus erythematosus"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-09-17T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets",
+                  "value": 168
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 4.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-17T08:45",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-09-17T08:45",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Trace"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-17T08:45",
+              "results": [
+                {
+                  "test": "Protein/Creatinine ratio, urine",
+                  "loinc": "2890-2",
+                  "unit": "g/g",
+                  "value": 0.3
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-17T08:48"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-09-17T08:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-17T08:48"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — SLE Follow-up",
+              "author": "PCP",
+              "date": "2024-09-17T09:15",
+              "body": "Follow-up. Finished the prednisone taper last week per rheum; back on 5 mg. Feels well, energy nearly normal, back at work since mid-July. No bleeding, bruising, dark urine, headaches. Hematology 8/12 letter reviewed: counts recovering, LDH normal.\n\nMeds: HCQ 200 BID, prednisone 5 daily (new Rx today, rheum asked us to manage maintenance), D3, calcium.\n\nExam: vitals as charted. Well. No icterus or petechiae. Heart regular, lungs clear. No synovitis. No edema.\n\nA/P\n1. SLE with hemolysis/thrombocytopenia episode in June - platelets normal since July, thrombocytopenia resolved. CBC today and every 3 months per hematology.\n2. Lupus nephritis: CMP, UA, UPCR.\n3. Anemia: Hgb back toward her usual.\n4. Flu shot today. COVID booster at pharmacy.\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-19a",
+          "kind": "portal_message",
+          "start": "2024-09-19T11:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Tuesday's labs",
+              "author": "PCP",
+              "date": "2024-09-19T11:05",
+              "body": "Platelets normal, hemoglobin back to your usual, kidney function and urine protein where they were before June. Good to see. Next check in December."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-26a",
+          "kind": "ed_visit",
+          "start": "2024-10-26T10:15",
+          "end": "2024-10-26T15:40",
+          "service": "Emergency Medicine",
+          "reason": "Vomiting and diarrhea",
+          "state": {
+            "bp": [
+              90,
+              60
+            ],
+            "labs": {
+              "Creatinine": 1.2,
+              "Potassium": 3.2,
+              "Blood Urea Nitrogen": 28,
+              "Sodium": 135,
+              "Chloride": 98,
+              "Bicarbonate": 24
+            }
+          },
+          "vitals": [
+            {
+              "time": "2024-10-26T10:22",
+              "temp_c": 37.1,
+              "hr": 110,
+              "bp": [
+                90,
+                60
+              ],
+              "rr": 18,
+              "spo2": 98
+            },
+            {
+              "time": "2024-10-26T14:50",
+              "temp_c": 36.9,
+              "hr": 86,
+              "bp": [
+                112,
+                70
+              ],
+              "rr": 16,
+              "spo2": 99
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Dehydration",
+              "icd10": "E86.0",
+              "action": "diagnosed",
+              "onset": "2024-10-24"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ondansetron 4 MG Disintegrating Oral Tablet",
+              "action": "historical",
+              "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "nausea"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-10-26T10:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 135
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 98
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 28
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.2
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-10-26T11:30",
+              "results": [
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.03
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Trace"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-26T10:40",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2024-10-26T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Record",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2024-10-28T09:10",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nDate of service: 10/26/2024\nPatient: Fatou Bryant, 31F\n\nCC: vomiting and diarrhea.\n\nHPI: 31-year-old with SLE, lupus nephritis and past autoimmune pericarditis. Two days of nausea, vomiting and diarrhea; nothing stays down, food or liquid. Has not traveled, no one sick around her.\n\nPMH/problem list: SLE, lupus nephritis, prior nephritis flares, autoimmune pericarditis (resolved), senile purpura, photosensitivity, suspected APS history.\nMeds: hydroxychloroquine 200 mg BID, prednisone 5 mg daily, vitamin D3, calcium carbonate. NKDA.\n\nVitals: BP 90/60, HR 110, afebrile.\nExam: lethargic. Dry mucous membranes, skin turgor reduced. Abdomen soft, nontender. Lungs clear.\n\nLabs: Na 135, K 3.2, Cl 98, HCO3 24, BUN 28, creatinine 1.2. Urine specific gravity 1.030. Urine hCG negative.\n\nMDM: Volume depletion from a GI illness, prerenal pattern. Creatinine a little above her baseline.\nTreatment: normal saline 2 L IV, ondansetron 4 mg IV, potassium chloride 40 mEq by mouth. Tolerated oral fluids afterward. Repeat BP 112/70, HR 86.\n\nDiagnosis: dehydration.\nDisposition: discharged home. Ondansetron ODT 4 mg q8h prn. Oral fluids. Recheck BMP with PCP in 2-3 days. Return for inability to keep fluids down, fainting, decreased urine."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-29a",
+          "kind": "telephone",
+          "start": "2024-10-29T09:20",
+          "reason": "ED follow-up call",
+          "orders": [
+            {
+              "id": "bmp-2024-10",
+              "action": "placed",
+              "order": "Basic metabolic panel",
+              "category": "lab",
+              "reason": "recheck potassium and creatinine after ED visit"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "RN follow-up after ED",
+              "author": "RN",
+              "date": "2024-10-29T09:20",
+              "body": "Called after ED visit Saturday for dehydration. Vomiting stopped Sunday, loose stools tapering. Drinking well, eating toast and soup. Urine back to normal color and amount. Used 2 ondansetron. Kept taking HCQ and prednisone. BMP ordered per ED, she will come Thursday morning. Reviewed precautions. Pt agrees."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-31a",
+          "kind": "lab_only",
+          "start": "2024-10-31T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab recheck",
+          "state": {
+            "bp": [
+              118,
+              74
+            ],
+            "labs": {
+              "Creatinine": 0.95,
+              "Potassium": 4.0,
+              "Blood Urea Nitrogen": 14,
+              "Sodium": 139,
+              "Chloride": 103,
+              "Bicarbonate": 25
+            }
+          },
+          "conditions": [
+            {
+              "label": "Dehydration",
+              "icd10": "E86.0",
+              "action": "resolved"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-10-31T07:45",
+              "results": [
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-31T07:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-2024-10",
+              "action": "done",
+              "date": "2024-10-31T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "BMP after ED visit",
+              "author": "PCP",
+              "date": "2024-10-31T14:10",
+              "body": "Potassium and creatinine back to normal, BUN normal. Dehydration resolved. Portal message sent to pt."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-09a",
+          "kind": "pharmacy",
+          "start": "2024-11-09T12:30",
+          "reason": "COVID-19 vaccine",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-11-09T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy immunization report",
+              "author": "pharmacy",
+              "date": "2024-11-11T08:00",
+              "body": "Community pharmacy immunization report. COVID-19 vaccine 2024-2025 formula, Pfizer-BioNTech, 0.3 mL IM L deltoid, 11/09/2024."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "office_visit",
+          "start": "2025-02-11T16:00",
+          "end": "2025-02-11T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "SLE follow-up",
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.7,
+              "Platelets": 178,
+              "White Blood Cells": 4.6,
+              "25-hydroxy Vitamin D": 33
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-11T16:25",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-02-11T16:25",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-02-11T16:25",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Trace"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-11T16:25",
+              "results": [
+                {
+                  "test": "Protein/Creatinine ratio, urine",
+                  "loinc": "2890-2",
+                  "unit": "g/g",
+                  "value": 0.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-11T16:25",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-11T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — SLE Follow-up",
+              "author": "PCP",
+              "date": "2025-02-11T16:55",
+              "body": "Quarterly follow-up. Good winter. No flares since June. Taking meds daily. Some winter dryness of skin, otherwise no complaints. ROS negative for fever, rash, oral ulcers, joint swelling, edema, foamy or dark urine, bleeding, chest pain.\n\nMeds: HCQ 200 BID, prednisone 5 daily, D3 2000 units, calcium carbonate 600 BID. NKDA.\n\nExam: vitals as charted. Well. Skin dry on forearms, no rash. No oral ulcers. Heart regular, no rub. Lungs clear. No synovitis. No edema.\n\nPHQ-2 1.\n\nA/P\nSLE, lupus nephritis, anemia - stable. CBC, CMP, UA, UPCR, vitamin D. Continue current regimen. Emollient for the skin.\nRTC 3-4 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-13a",
+          "kind": "portal_message",
+          "start": "2025-02-13T10:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2025-02-13T10:15",
+              "body": "Everything is steady: blood counts at your usual, kidney function normal, urine protein 0.2 (the lowest it has been), vitamin D fine."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-27a",
+          "kind": "hospital_admission",
+          "start": "2025-04-27T08:40",
+          "end": "2025-04-30T12:15",
+          "service": "Nephrology",
+          "reason": "Vomiting, diarrhea, acute kidney injury",
+          "state": {
+            "bp": [
+              90,
+              60
+            ],
+            "labs": {
+              "Creatinine": 2.1,
+              "Blood Urea Nitrogen": 40,
+              "Potassium": 3.5,
+              "Bicarbonate": 24
+            }
+          },
+          "vitals": [
+            {
+              "time": "2025-04-27T08:48",
+              "temp_c": 37.2,
+              "hr": 110,
+              "bp": [
+                90,
+                60
+              ],
+              "rr": 18,
+              "spo2": 98
+            },
+            {
+              "time": "2025-04-28T08:00",
+              "temp_c": 36.8,
+              "hr": 88,
+              "bp": [
+                108,
+                68
+              ],
+              "rr": 16,
+              "spo2": 99
+            },
+            {
+              "time": "2025-04-30T08:00",
+              "temp_c": 36.7,
+              "hr": 76,
+              "bp": [
+                118,
+                74
+              ],
+              "rr": 16,
+              "spo2": 99
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Acute kidney injury",
+              "icd10": "N17.9",
+              "action": "diagnosed",
+              "onset": "2025-04-27"
+            },
+            {
+              "label": "Dehydration",
+              "icd10": "E86.0",
+              "action": "diagnosed",
+              "onset": "2025-04-24"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ibuprofen 200 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Took 2 tablets by mouth every 4 hours for abdominal pain (over the counter)",
+              "dose": {
+                "value": 400,
+                "unit": "mg"
+              },
+              "frequency": "Q4H",
+              "route": "Oral",
+              "course": "short",
+              "reason": "abdominal pain"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-04-27T09:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 2.1
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 40
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.5
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-27T10:10",
+              "results": [
+                {
+                  "test": "Urine sodium",
+                  "loinc": "2955-3",
+                  "unit": "mmol/L",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-27T10:10",
+              "results": [
+                {
+                  "test": "Urine osmolality",
+                  "loinc": "2695-5",
+                  "unit": "mosm/kg",
+                  "value": 500
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-27T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-27T09:05",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-04-30T06:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-04-27T13:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-04-30T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary — Nephrology",
+              "author": "nephrology",
+              "date": "2025-05-02T15:30",
+              "body": "REGIONAL HOSPITAL — NEPHROLOGY SERVICE DISCHARGE SUMMARY\nAdmitted 04/27/2025 via the emergency department. Discharged 04/30/2025.\nPatient: Fatou Bryant, 31F. NKDA.\n\nPresentation: Three days of severe vomiting and diarrhea, unable to keep fluids down, much like the illness that brought her to the ED last October. For abdominal cramping she had been taking ibuprofen every 4 hours.\nOn arrival BP 90/60, HR 110. Lethargic, mucous membranes dry, poor skin turgor.\n\nData: creatinine 2.1 (baseline 0.9), BUN 40, potassium 3.5, bicarbonate 24. Urine sodium 10, urine osmolality 500.\n\nAssessment: acute kidney injury, prerenal from volume depletion, with NSAID use contributing; dehydration from gastrointestinal losses.\n\nCourse: IV isotonic fluids, antiemetics, ibuprofen stopped. Hydroxychloroquine and prednisone continued. Diarrhea settled by day 2, tolerating diet day 3. Creatinine 1.1 on the morning of discharge.\n\nDischarge medications: hydroxychloroquine 200 mg BID, prednisone 5 mg daily, vitamin D3, calcium carbonate. STOP ibuprofen and all NSAIDs; acetaminophen for pain.\nFollow-up: PCP within one week with BMP. Nephrology clinic as scheduled."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-06a",
+          "kind": "office_visit",
+          "start": "2025-05-06T11:10",
+          "end": "2025-05-06T11:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, AKI",
+          "state": {
+            "bp": [
+              118,
+              74
+            ],
+            "labs": {
+              "Creatinine": 0.95,
+              "Blood Urea Nitrogen": 15,
+              "Potassium": 4.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Acute kidney injury",
+              "icd10": "N17.9",
+              "action": "resolved"
+            },
+            {
+              "label": "Dehydration",
+              "icd10": "E86.0",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ibuprofen 200 MG Oral Tablet",
+              "action": "stop",
+              "reason": "acute kidney injury; avoid NSAIDs"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-06T11:35",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-05-06T11:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Discharge Visit",
+              "author": "PCP",
+              "date": "2025-05-06T12:05",
+              "body": "Seen after nephrology admission 4/27-4/30 for prerenal AKI (Cr 2.1, BUN 40, UNa 10, Uosm 500) from vomiting/diarrhea plus ibuprofen every 4 hours. Discharge Cr 1.1. Summary reviewed.\n\nFeels back to normal. Eating and drinking fine, no GI symptoms since day 2. No ibuprofen since. She didn't realize ibuprofen mattered for her kidneys when she was sick; she had been told to avoid it but took it because the cramping was bad. Talked it through again without blame: acetaminophen only; call us early when she can't keep fluids down so we can see her same day or arrange fluids before it gets to this.\n\nExam: vitals as charted, BP normal. Mucous membranes moist. Abdomen soft, nontender. No edema.\n\nA/P\n1. AKI - resolved clinically; BMP today to confirm.\n2. Dehydration - resolved.\n3. NSAID avoidance added to the chart alert and med list; ibuprofen removed.\n4. SLE, lupus nephritis - stable.\nRTC for physical in August."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-08a",
+          "kind": "portal_message",
+          "start": "2025-05-08T09:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Kidney test",
+              "author": "PCP",
+              "date": "2025-05-08T09:30",
+              "body": "Your creatinine is back to your normal. Kidneys have fully recovered. Remember: acetaminophen (Tylenol) only for pain, and message me early if you get another stomach bug."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Kidney test",
+              "author": "patient",
+              "date": "2025-05-08T12:47",
+              "body": "Thank you!! I put a note in my phone. Lesson learned."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "pharmacy",
+          "start": "2025-06-17T08:15",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Pharmacy refill request — hydroxychloroquine",
+              "author": "MA",
+              "date": "2025-06-17T08:15",
+              "body": "E-refill request: hydroxychloroquine sulfate 200 mg, 1 tab BID, #180. Last eye exam 05/2022 normal (annual screening starts 2027). Last labs 05/2025. Pended."
+            },
+            {
+              "type": "Refill Request",
+              "title": "RE: refill request",
+              "author": "PCP",
+              "date": "2025-06-17T13:00",
+              "body": "Approved, 90 days x 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "annual_physical",
+          "start": "2025-08-26T08:30",
+          "end": "2025-08-26T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.8,
+              "White Blood Cells": 4.7,
+              "Platelets": 184,
+              "Creatinine": 0.92
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-08-26T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-26T09:05",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-08-26T09:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-08-26T09:05",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Trace"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-26T09:05",
+              "results": [
+                {
+                  "test": "Protein/Creatinine ratio, urine",
+                  "loinc": "2890-2",
+                  "unit": "g/g",
+                  "value": 0.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-08-26T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-08-26T09:40",
+              "body": "Annual exam, 31 y/o.\n\nInterval: April admission for prerenal AKI with GI illness and ibuprofen, fully recovered. No lupus flares in over a year. Taking HCQ and prednisone daily. Working full time. Walks 3-4 days a week. Sleep fine. Mood good.\n\nProblems: SLE; lupus nephritis (flares 10/2022, 6/2023); autoimmune pericarditis 12/2023, resolved; hemolysis with thrombocytopenia 6/2024 (ADAMTS13 normal), resolved; photosensitivity; anemia; hx suspected APS, panels negative.\nMeds: HCQ 200 BID, prednisone 5 daily, D3 2000 units, calcium carbonate 600 BID. No NSAIDs.\nAllergies: NKDA.\nFH and SH unchanged. Never smoker, alcohol rarely.\n\nExam: vitals as charted. Well appearing. Skin: no rash. Mouth: no ulcers. Thyroid normal. Heart regular, no rub. Lungs clear. Abdomen benign. Joints without synovitis. No edema. Neuro nonfocal.\n\nPHQ-9 1.\n\nA/P\n- Labs: CBC, CMP, lipids, UA, UPCR.\n- Pap/HPV 2023 normal, next 2028.\n- Flu and COVID in the fall.\n- Contraception/pregnancy planning: not planning; knows to tell rheum and us first.\n- Eye screening for HCQ: annual starting 2027.\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-28a",
+          "kind": "portal_message",
+          "start": "2025-08-28T15:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2025-08-28T15:20",
+              "body": "Labs look good. Blood count at your usual, kidneys normal, urine protein low, cholesterol fine."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-23a",
+          "kind": "ed_visit",
+          "start": "2025-10-23T09:25",
+          "end": "2025-10-23T15:10",
+          "service": "Emergency Medicine",
+          "reason": "Weakness, fever, dark urine, nosebleeds",
+          "state": {
+            "bp": [
+              130,
+              85
+            ],
+            "labs": {
+              "Hemoglobin": 7.8,
+              "Platelets": 20,
+              "Creatinine": 1.2
+            }
+          },
+          "vitals": [
+            {
+              "time": "2025-10-23T09:32",
+              "temp_c": 37.1,
+              "hr": 100,
+              "bp": [
+                130,
+                85
+              ],
+              "rr": 18,
+              "spo2": 98
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Thrombocytopenia",
+              "action": "diagnosed",
+              "onset": "2025-10-20"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-23T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 7.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 20
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-23T09:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.2
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-10-23T09:50",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-23T09:50",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "text": "Elevated"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-23T09:50",
+              "results": [
+                {
+                  "test": "Haptoglobin",
+                  "loinc": "4542-7",
+                  "unit": "mg/dL",
+                  "text": "<10"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-23T09:50",
+              "results": [
+                {
+                  "test": "Schistocytes",
+                  "loinc": "800-6",
+                  "text": "Schistocytes present on peripheral smear"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-10-23T10:20",
+              "results": [
+                {
+                  "test": "Urine Blood",
+                  "text": "Large"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "text": "None seen"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-10-23T09:50",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-10-23T09:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Record",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2025-10-24T11:00",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nDate of service: 10/23/2025\nPatient: Fatou Bryant, 32F\n\nCC: weakness, dark urine, nosebleeds.\n\nHPI: Patient with SLE and lupus nephritis, back in the ED with a picture like her June 2024 admission. Three days of generalized weakness, fevers at home and dark urine. Several nosebleeds over the last two days, each stopping with pressure.\n\nProblem list: SLE, lupus nephritis, autoimmune pericarditis (resolved), senile purpura, dehydration and AKI (resolved), photosensitivity, suspected APS history.\nMeds: prednisone 5 mg daily, vitamin D3, calcium carbonate; takes hydroxychloroquine. NKDA.\n\nVitals: afebrile here, BP 130/85, HR 100.\nExam: no skin rash. No active nasal bleeding. No focal neuro deficit; alert and oriented. Heart regular. Lungs clear.\n\nLabs: Hgb 7.8, platelets 20,000, LDH elevated, total bilirubin 2.2, haptoglobin <10, schistocytes on smear, creatinine 1.2. INR normal. ADAMTS13 activity sent, pending.\nUrine: dipstick strongly positive for blood, but no red cells on microscopy (hemoglobinuria).\n\nMDM: Recurrent microangiopathic hemolysis with severe thrombocytopenia in SLE. TTP not excluded until ADAMTS13 returns. Hematology at bedside; plasma exchange and pulse steroids to start. Admit.\n\nDisposition: admitted to medicine."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-23b",
+          "kind": "hospital_admission",
+          "start": "2025-10-23T15:10",
+          "end": "2025-10-29T12:40",
+          "service": "Hospital Medicine",
+          "reason": "Recurrent hemolysis and thrombocytopenia in SLE",
+          "state": {
+            "bp": [
+              122,
+              76
+            ],
+            "labs": {
+              "Hemoglobin": 8.9,
+              "Platelets": 146
+            }
+          },
+          "medications": [
+            {
+              "drug": "prednisone 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "changed to higher dose after hemolysis admission"
+            },
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 3 tablets (60 mg) by mouth daily, then taper as directed by rheumatology",
+              "dose": {
+                "value": 60,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "SLE-related hemolysis and thrombocytopenia"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-23T09:50",
+              "resulted": "2025-10-25T15:30",
+              "results": [
+                {
+                  "test": "ADAMTS13 activity",
+                  "loinc": "53622-7",
+                  "unit": "%",
+                  "value": 58
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-29T06:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 146
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-10-23T15:10"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-10-29T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary",
+              "author": "hospital medicine",
+              "date": "2025-11-03T10:15",
+              "body": "REGIONAL HOSPITAL — DISCHARGE SUMMARY\nAdmitted 10/23/2025  Discharged 10/29/2025\nPatient: Fatou Bryant, 32F. NKDA.\nConsultants: hematology, rheumatology.\n\nReason for admission: second episode of microangiopathic hemolysis with platelets 20,000 and hemoglobin 7.8 in SLE; epistaxis.\n\nCourse: Plasma exchange was started on arrival while ADAMTS13 was pending, with IV methylprednisolone 1 g daily x 3. ADAMTS13 activity resulted 58% on 10/25; TTP excluded and plasma exchange stopped after two sessions. Antiphospholipid antibodies again negative. Hematology and rheumatology agree this is recurrent lupus-related hemolysis with thrombocytopenia, same as June 2024. No further nosebleeds after day 1. No transfusion. Hemolysis markers improved through the stay. Creatinine stayed near baseline.\n\nDischarge data: platelets 146,000, hemoglobin 8.9.\n\nDischarge medications: prednisone 60 mg daily with rheumatology-directed taper; hydroxychloroquine 200 mg BID; vitamin D3 2000 units; calcium carbonate 600 mg BID. Prednisone 5 mg stopped (replaced). Continue to avoid NSAIDs.\n\nFollow-up: PCP within 1 week with CBC and CMP; hematology and rheumatology in about 12 weeks, sooner per rheumatology for taper."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-27a",
+          "kind": "telephone",
+          "start": "2025-10-27T17:40",
+          "reason": "Hospital update",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call with patient in hospital",
+              "author": "PCP",
+              "date": "2025-10-27T17:40",
+              "body": "Pt called from the hospital, wanted to talk it through. ADAMTS13 normal again, plasma exchange stopped. Platelets climbing. Frustrated it happened again, wants to know if more can be done to prevent it. Told her that is the right question for rheum and hematology together and I will make sure they hear it; I will see her the week she gets out. TCM booked 11/4."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "office_visit",
+          "start": "2025-11-04T09:00",
+          "end": "2025-11-04T09:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "state": {
+            "bp": [
+              122,
+              76
+            ],
+            "labs": {
+              "Hemoglobin": 9.4,
+              "Platelets": 176,
+              "Creatinine": 1.0,
+              "White Blood Cells": 4.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-04T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.4
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-11-04T09:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-11-04T09:42"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-11-04T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-11-04T09:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "author": "PCP",
+              "date": "2025-11-04T10:20",
+              "body": "TCM. Admitted 10/23-10/29 for recurrent lupus-related microangiopathic hemolysis with plt 20k, Hgb 7.8, bili 2.2; ADAMTS13 58%, plasma exchange x2, pulse methylpred, now prednisone 60 with taper per rheum. Discharge summary reviewed; med rec done.\n\nFeels weak but improving daily. No nosebleeds since the hospital. Urine clear. No fever. Appetite big, sleep broken on the steroid. Out of work until 11/17.\n\nMeds: prednisone 60 mg daily (taper), HCQ 200 BID, D3, calcium. No NSAIDs.\n\nExam: vitals as charted. No icterus. No petechiae. Nares clear. Heart regular, lungs clear. No edema. Neuro normal.\n\nA/P\n1. Recurrent SLE hemolysis with thrombocytopenia: CBC, CMP today; next CBC with hematology in January unless symptoms. She asked about prevention of another episode - forwarded her question to rheum and hematology with today's labs.\n2. Steroid effects: glucose today; sleep hygiene.\n3. Flu shot today (counts adequate, no contraindication).\n4. Work note; FMLA forms to complete.\nRTC 6-8 weeks."
+            },
+            {
+              "type": "Letter",
+              "title": "Work note",
+              "author": "PCP",
+              "date": "2025-11-04T10:25",
+              "body": "To whom it may concern,\n\nFatou Bryant was hospitalized 10/23/2025 to 10/29/2025 and remains under my care. She may return to work on 11/17/2025.\n\nPrimary Care Physician"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-06a",
+          "kind": "portal_message",
+          "start": "2025-11-06T08:50",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Tuesday's labs",
+              "author": "PCP",
+              "date": "2025-11-06T08:50",
+              "body": "Platelets are back in the normal range and hemoglobin is rising. Bilirubin is normal again, kidneys fine, sugar OK on the prednisone. Sent to hematology and rheumatology."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "portal_message",
+          "start": "2025-11-12T11:30",
+          "reason": "FMLA paperwork",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "FMLA forms",
+              "author": "front desk",
+              "date": "2025-11-12T11:30",
+              "body": "FMLA certification from employer completed by PCP and faxed to HR. Covers 10/23/2025 through 11/16/2025 continuous, plus intermittent leave for flares and appointments for one year. Copy to pt via portal."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-17a",
+          "kind": "specialist_visit",
+          "start": "2025-11-17T13:30",
+          "service": "Rheumatology",
+          "reason": "Rheumatology visit",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Visit — Taper Plan",
+              "author": "rheumatology",
+              "date": "2025-11-19T10:45",
+              "body": "OUTSIDE RHEUMATOLOGY GROUP\nVisit 11/17/2025\n\nSeen after the October admission, the second episode of SLE-associated microangiopathic hemolysis with thrombocytopenia; ADAMTS13 58%, antiphospholipid antibodies negative. Back at work today. No bleeding or dark urine. PCP labs from 11/4 reviewed: platelets normal, hemoglobin rising, bilirubin normal.\n\nExam: no petechiae, no synovitis, no rash.\n\nPlan: prednisone taper from 60 mg, down 10 mg weekly to 20 mg, then 15 mg and 10 mg for two weeks each, then 5 mg daily by mid-January. Continue hydroxychloroquine 200 mg BID. Her question about preventing another episode noted from the PCP; we will go through it at the January visit with hematology's input. Return January."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "specialist_visit",
+          "start": "2026-01-20T10:00",
+          "service": "Hematology",
+          "reason": "Hematology follow-up",
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.4,
+              "Platelets": 205,
+              "White Blood Cells": 4.5,
+              "Creatinine": 0.95
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-20T10:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 205
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-20T10:15",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "text": "Within normal limits"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-20T10:15",
+              "results": [
+                {
+                  "test": "Haptoglobin",
+                  "loinc": "4542-7",
+                  "unit": "mg/dL",
+                  "text": "Within normal limits"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Follow-up",
+              "author": "hematology",
+              "date": "2026-01-22T09:20",
+              "body": "OUTSIDE HEMATOLOGY-ONCOLOGY GROUP\nVisit 01/20/2026\n\nSeen 12 weeks after the October admission for the second episode of SLE-associated microangiopathic hemolysis with thrombocytopenia. ADAMTS13 normal on both occasions (52% in 2024, 58% in 2025); antiphospholipid testing repeatedly negative. TTP and APS are not the explanation.\n\nFeels well. No bleeding, dark urine or neurologic symptoms. Prednisone taper finished this week.\n\nLabs: hemoglobin 11.4, platelets 205,000, LDH and haptoglobin normal.\n\nImpression: in remission. Further prevention rests on lupus control, which rheumatology is directing.\nPlan: CBC every 3 months via PCP, and urgently with dark urine, bleeding, headache or confusion. Return 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20b",
+          "kind": "specialist_visit",
+          "start": "2026-01-20T14:30",
+          "service": "Rheumatology",
+          "reason": "Rheumatology visit",
+          "conditions": [
+            {
+              "label": "Thrombocytopenia",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "prednisone 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Systemic lupus erythematosus"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up",
+              "author": "rheumatology",
+              "date": "2026-01-23T13:50",
+              "body": "OUTSIDE RHEUMATOLOGY GROUP\nVisit 01/20/2026\n\nMs. Bryant returns after the October hemolysis admission. Taper complete; back on prednisone 5 mg daily as of this week. Taking hydroxychloroquine faithfully. No joint pain, rash, oral ulcers, chest pain or swelling. Hematology saw her this morning: counts normal.\n\nExam: well. No synovitis, no rash, no rub, no edema.\n\nAssessment: SLE, currently quiet after a second hematologic flare; thrombocytopenia resolved. Kidney function and proteinuria stable per her PCP's labs.\n\nPlan: continue hydroxychloroquine 200 mg BID and prednisone 5 mg daily, vitamin D and calcium. She asked how to prevent another episode; we went over daily hydroxychloroquine, steady prednisone and early calls for dark urine or bleeding. Labs every 3 months through PCP. Return 4 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "office_visit",
+          "start": "2026-02-10T15:20",
+          "end": "2026-02-10T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "SLE follow-up",
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.6,
+              "Platelets": 190,
+              "Creatinine": 0.93
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-10T15:45",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-10T15:45",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-02-10T15:45",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Trace"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-10T15:45",
+              "results": [
+                {
+                  "test": "Protein/Creatinine ratio, urine",
+                  "loinc": "2890-2",
+                  "unit": "g/g",
+                  "value": 0.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-02-10T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — SLE Follow-up",
+              "author": "PCP",
+              "date": "2026-02-10T16:15",
+              "body": "Follow-up after hematology and rheum in January (letters reviewed: counts normal, taper done, prednisone 5 again, staying on current regimen). Back at work since November. Energy good. No bleeding, dark urine, headache, rash, joint pain or swelling.\n\nMeds: HCQ 200 BID, prednisone 5 daily, D3, calcium. No NSAIDs.\n\nExam: vitals as charted. Well. No pallor or petechiae. Heart regular, lungs clear. No synovitis. No edema.\n\nA/P\n1. SLE, quiet. CBC every 3 months per heme.\n2. Lupus nephritis: BMP, UA, UPCR today.\n3. Anemia, at her usual.\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "portal_message",
+          "start": "2026-02-12T16:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from Tuesday",
+              "author": "PCP",
+              "date": "2026-02-12T16:20",
+              "body": "Everything stable: blood counts at your usual, kidney function normal, urine protein 0.3. See you in May."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-07a",
+          "kind": "portal_message",
+          "start": "2026-04-07T20:10",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill",
+              "author": "patient",
+              "date": "2026-04-07T20:10",
+              "body": "Hi, the pharmacy says my hydroxychloroquine needs a new prescription. I have about a week left."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill",
+              "author": "RN",
+              "date": "2026-04-08T09:05",
+              "body": "Sent a new 90-day prescription with 3 refills to your pharmacy this morning."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "office_visit",
+          "start": "2026-05-19T08:20",
+          "end": "2026-05-19T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "SLE follow-up",
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.7,
+              "Platelets": 186,
+              "White Blood Cells": 4.6,
+              "Creatinine": 0.94,
+              "25-hydroxy Vitamin D": 35
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-05-19T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-05-19T08:45",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-05-19T08:45",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Trace"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-19T08:45",
+              "results": [
+                {
+                  "test": "Protein/Creatinine ratio, urine",
+                  "loinc": "2890-2",
+                  "unit": "g/g",
+                  "value": 0.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-19T08:45",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-19T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — SLE Follow-up",
+              "author": "PCP",
+              "date": "2026-05-19T09:10",
+              "body": "3-month follow-up. Doing well. Summer coming; reviewed sun plan, she has it down. No bleeding, dark urine, headaches, rash, joint swelling, edema. No GI illnesses.\n\nMeds: HCQ 200 BID, prednisone 5 daily, D3 2000 units, calcium carbonate 600 BID.\n\nExam: vitals as charted. Well. Skin clear. No oral ulcers. Heart regular, no rub. Lungs clear. No synovitis. No edema.\n\nPHQ-2 0.\n\nA/P\nSLE, lupus nephritis, anemia: stable. CBC, CMP, UA, UPCR, vitamin D.\nRTC September."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-21a",
+          "kind": "portal_message",
+          "start": "2026-05-21T12:00",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2026-05-21T12:00",
+              "body": "All steady. Counts at your usual, kidney function normal, urine protein 0.2, vitamin D good. Enjoy the summer and keep the sunscreen going."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "portal_message",
+          "start": "2026-07-14T13:25",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "September appointment",
+              "author": "patient",
+              "date": "2026-07-14T13:25",
+              "body": "Hi, can I move my September appointment to a Thursday? Tuesdays are hard with my new work schedule."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: September appointment",
+              "author": "front desk",
+              "date": "2026-07-14T15:40",
+              "body": "Moved you to Thursday September 10 at 4:00 pm. Lab draw same visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "SLE follow-up and labs",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

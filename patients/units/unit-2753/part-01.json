@@ -1,0 +1,1342 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002753",
+   "given": "Tracy",
+   "family": "Bianchi",
+   "birth_date": "1975-01-14",
+   "address_line": "118 Maple Street, Apt 3",
+   "phone": "+1-860-555-0199",
+   "email": "tracy.bianchi@example.test",
+   "marital_status": "single",
+   "summary": "51-year-old woman with Crohn's disease, short bowel syndrome and long-term home TPN, recurrent severe depression and anxiety, who joined in 2020. Her course includes temporal lobe epilepsy, a right superior gluteal nerve palsy, acalculous cholecystitis with cholecystectomy, a provoked PE after knee arthroscopy, psychotic depression in 2024, and central pontine myelinolysis after hyponatremia correction in 2025 with partial recovery.",
+   "events": [
+    {
+     "id": "2020-07-10a",
+     "kind": "outside_records",
+     "start": "2020-07-10T10:20",
+     "reason": "Records from prior primary care office",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior Primary Care Records (summary)",
+       "author": "front desk",
+       "date": "2020-07-10T10:20",
+       "body": "Records received by fax from her previous primary care office, 38 pages, scanned to chart. Summary for the new-patient visit:\n\n- Crohn's disease, small bowel, with several small bowel resections over the years; short bowel syndrome. Home TPN nightly through a tunneled central line, managed by an outside GI/intestinal rehabilitation team and a home infusion pharmacy.\n- Recurrent major depression and generalized anxiety, followed by an outside psychiatrist.\n- Low back pain for years. Tried NSAIDs (stomach could not tolerate them, no benefit) and gabapentin (no benefit). Completed a course of physical therapy; patient felt it did not help.\n- Weight 62.0 kg at last visit there (11/2019).\n- Cervical cytology 2019: negative for intraepithelial lesion or malignancy.\n- Med list on file: sertraline 100 mg daily, bupropion XL 150 mg daily, alprazolam 0.25 mg prn, diphenhydramine 25 mg qhs prn, norethindrone acetate/ethinyl estradiol 1/20 daily, multivitamin, TPN nightly; vedolizumab 300 mg IV every 8 weeks at the GI infusion center (Crohn's maintenance, started by GI in 2018).\n- Allergy list: NSAIDs, gabapentin (both listed as ineffective / GI intolerance)."
+      }
+     ]
+    },
+    {
+     "id": "2020-07-14a",
+     "kind": "establish_care",
+     "start": "2020-07-14T09:40",
+     "end": "2020-07-14T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient, establish primary care",
+     "conditions": [
+      {
+       "label": "Crohn disease",
+       "action": "history"
+      },
+      {
+       "label": "Short bowel syndrome",
+       "action": "history"
+      },
+      {
+       "label": "Dependence on total parenteral nutrition",
+       "icd10": "Z99.89",
+       "action": "history"
+      },
+      {
+       "label": "Presence of tunneled central venous catheter",
+       "icd10": "Z95.828",
+       "action": "history"
+      },
+      {
+       "label": "Major depressive disorder, recurrent, severe without psychotic features",
+       "icd10": "F33.2",
+       "action": "history",
+       "onset": "2020-04-01"
+      },
+      {
+       "label": "Generalized anxiety disorder",
+       "action": "history"
+      },
+      {
+       "label": "Chronic low back pain",
+       "action": "history"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "sertraline 100 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 100,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Depression"
+      },
+      {
+       "drug": "24 HR bupropion hydrochloride 150 MG Extended Release Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth every morning",
+       "dose": {
+        "value": 150,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Depression"
+      },
+      {
+       "drug_text": "alprazolam 0.25 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth as needed for anxiety",
+       "dose": {
+        "value": 0.25,
+        "unit": "mg"
+       },
+       "frequency": "PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Anxiety"
+      },
+      {
+       "drug_text": "diphenhydramine hydrochloride 25 MG Oral Capsule",
+       "action": "historical",
+       "sig": "Take 1 capsule by mouth at bedtime as needed for sleep",
+       "dose": {
+        "value": 25,
+        "unit": "mg"
+       },
+       "frequency": "PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Sleep"
+      },
+      {
+       "drug_text": "norethindrone acetate 1 MG / ethinyl estradiol 0.02 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 1,
+        "unit": "tablet"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Contraception"
+      },
+      {
+       "drug_text": "multivitamin Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 1,
+        "unit": "tablet"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic"
+      },
+      {
+       "drug_text": "parenteral nutrition",
+       "action": "historical",
+       "sig": "Infuse via central line over 12 hours nightly per home infusion regimen",
+       "frequency": "NIGHTLY",
+       "route": "Intravenous",
+       "course": "chronic",
+       "reason": "Short bowel syndrome"
+      },
+      {
+       "drug_text": "vedolizumab 300 MG Injection",
+       "action": "historical",
+       "sig": "300 mg IV infusion every 8 weeks at the GI infusion center",
+       "dose": {
+        "value": 300,
+        "unit": "mg"
+       },
+       "frequency": "Q8W",
+       "route": "Intravenous",
+       "course": "chronic",
+       "reason": "Crohn disease, maintenance"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "NSAIDs",
+       "reaction": "GI intolerance; ineffective",
+       "severity": "mild",
+       "criticality": "low",
+       "type": "intolerance"
+      },
+      {
+       "substance": "Gabapentin",
+       "reaction": "Ineffective",
+       "severity": "mild",
+       "criticality": "low",
+       "type": "intolerance"
+      }
+     ],
+     "state": {
+      "weight_kg": 57.4,
+      "height_cm": 165.0,
+      "labs": {
+       "Thyroid Stimulating Hormone": 2.5,
+       "Total Cholesterol": 182,
+       "Low Density Lipoprotein": 104,
+       "High Density Lipoprotein": 58,
+       "Triglycerides": 96,
+       "Hemoglobin A1c": 5.3,
+       "Vitamin B12": 540
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-07-14T10:45",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-07-14T10:45",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-07-14T10:45",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2020-07-14T10:45",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-07-14T10:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-07-14T10:45",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-07-14T10:45",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 21
+      },
+      {
+       "survey": "GAD-7 total score",
+       "value": 12
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current some day smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "Social, 1-2 cocktails on weekends"
+      },
+      {
+       "item": "Occupation",
+       "value": "Unemployed, on disability leave; former administrative assistant"
+      },
+      {
+       "item": "Housing status",
+       "value": "Lives alone in an apartment"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, high MDM",
+       "performed": "2020-07-14T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2020-07-14T11:30",
+       "body": "NEW PATIENT — establishing care\n\n45F transferring from prior PCP (records reviewed, see 7/10 scan). Came alone.\n\nHPI: Complicated GI history. Crohn's of the small bowel, multiple resections, now short bowel and on home TPN 12 h every night through a tunneled line. TPN and line are run by her GI/intestinal rehab team and the home infusion company; she wants us for \"everything else.\" GI also gives her vedolizumab infusions every 8 weeks for the Crohn's; no flares in years.\n\nMain concern today is mood. Since roughly April she's felt flat and sad, stopped doing the things she likes, can't focus to read or follow a show, sleeping badly. Thinks she's lost weight. Feels she's \"no good to anybody.\" Has been through this twice before (late 20s, mid-30s), both times needed medication. Has an outside psychiatrist who prescribes sertraline and bupropion; last saw them in the spring, next appt not until the fall. Takes alprazolam 0.25 now and then for anxiety, sometimes 2 at night. Diphenhydramine most nights to sleep. No thoughts of harming herself.\n\nBack pain: years of low back pain, worse some weeks than others. NSAIDs upset her stomach and did nothing, gabapentin did nothing, PT \"didn't do anything.\"\n\nPMH: Crohn's/short bowel/TPN as above; recurrent major depression; generalized anxiety; chronic low back pain.\nPSH: several small bowel resections; tunneled central venous catheter for TPN.\nMeds: sertraline 100 daily, bupropion XL 150 qAM, alprazolam 0.25 prn, diphenhydramine 25 qhs prn, norethindrone/EE 1/20 daily, multivitamin daily, TPN nightly, vedolizumab 300 IV q8wk (GI infusion center).\nAllergies: NSAIDs (GI intolerance, ineffective); gabapentin (ineffective).\nFH: mother — depression, type 2 diabetes. Father — Crohn's. Sister — anxiety; sister is her main support. Maternal aunt — DVT.\nSH: On disability leave, used to be an administrative assistant. Lives alone in an apartment in Florence. Smokes lightly, about a pack a week. Drinks socially, a cocktail or two on weekends. No drugs.\n\nROS: as above; no fevers, no abdominal pain beyond baseline, no line problems.\n\nExam: thin, tired-appearing, cooperative, affect flat. HEENT unremarkable. Neck supple, no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, well-healed midline and prior surgical scars. Right chest tunneled catheter, dressing clean and dry, no erythema or tenderness at exit site. No edema. Neuro grossly nonfocal.\nPHQ-9 21. GAD-7 12.\n\nA/P:\n1. Recurrent major depression, current episode severe — PHQ-9 21, no SI. Will call her psychiatrist's office today to get her seen sooner. No med changes from me; they manage. Safety plan reviewed, crisis line numbers given.\n2. Generalized anxiety — as above. Discussed limiting alprazolam to the prescribed dose.\n3. Crohn's / short bowel / TPN — stable per patient, on vedolizumab through GI. Will get GI's latest letter.\n4. Low back pain, chronic — no new red flags. Revisit at follow-up.\n5. Weight down from 62 kg last fall to 56.9 today — likely mood. Recheck next visit.\n6. Health maintenance: baseline CBC, BMP, TSH, lipids, A1c (mom has diabetes). Hep C and HIV screening, she agrees. Pap 2019 normal per old records. Mammogram due — will order at next visit after we sort out mood.\n7. Tobacco — advised quitting; not ready yet.\n\nRTC 6-8 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2020-07-16a",
+     "kind": "portal_message",
+     "start": "2020-07-16T14:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2020-07-16T14:05",
+       "body": "Hi Tracy, all of your labs from Tuesday came back normal — blood counts, kidney function and electrolytes, thyroid, cholesterol and sugar. The hepatitis C and HIV screens were negative. I spoke with your psychiatrist's office; expect a call from them about an earlier appointment. Hang in there and reach out any time."
+      }
+     ]
+    },
+    {
+     "id": "2020-07-21a",
+     "kind": "telephone",
+     "start": "2020-07-21T12:15",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Call with outside psychiatry office",
+       "author": "RN",
+       "date": "2020-07-21T12:15",
+       "body": "Spoke with the front desk at her psychiatry practice. PCP's note from 7/14 and PHQ-9 of 21 faxed over. They have her booked 8/24, first available with her psychiatrist; she is on their cancellation list. Called patient to let her know — she was aware and says she is \"hanging on.\" Denies any thoughts of self-harm. Knows to call us or 988 if that changes."
+      }
+     ]
+    },
+    {
+     "id": "2020-08-24a",
+     "kind": "specialist_visit",
+     "start": "2020-08-24T13:00",
+     "service": "Psychiatry",
+     "reason": "Follow-up, persistent depressive symptoms",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Psychiatry Follow-up",
+       "author": "psychiatry",
+       "date": "2020-08-26T09:10",
+       "body": "OUTPATIENT PSYCHIATRY — FOLLOW-UP\nDate of service: 08/24/2020\nPatient: Tracy Bianchi, 45-year-old woman\n\nDear Doctor,\n\nThank you for your note about Ms. Bianchi. I saw her in follow-up for depressive symptoms that have persisted since about April. She describes four months of constant low mood, loss of pleasure in things she used to enjoy, and trouble holding her concentration. She has lost a meaningful amount of weight, is sleeping poorly, and voices a sense of being worthless.\n\nThis is her third major depressive episode; the first came in her late twenties and the second in her mid-thirties, and each needed antidepressant treatment. Her mother has a history of depression. She tells me she is not using any substances.\n\nCurrent medications: sertraline 100 mg daily, bupropion XL 150 mg daily, alprazolam 0.25 mg as needed (she acknowledges sometimes taking two at night), diphenhydramine 25 mg at bedtime as needed, combined oral contraceptive daily, multivitamin, nightly TPN through her central line, and vedolizumab infusions every 8 weeks through her GI team.\nAllergies/intolerances: NSAIDs (ineffective, poor GI tolerance); gabapentin (ineffective).\n\nMental status: depressed mood and constricted affect; no psychotic features. General physical exam today was unremarkable.\nRecent labs from your office (CBC, TSH, basic metabolic panel) are within normal limits.\n\nImpression: Recurrent major depression, current episode severe. Generalized anxiety disorder.\n\nPlan: Continue her current regimen without changes for now. I will see her back in about two months.\n\nSincerely,\nOutpatient Psychiatry"
+      }
+     ]
+    },
+    {
+     "id": "2020-09-22a",
+     "kind": "office_visit",
+     "start": "2020-09-22T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up depression, weight",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 18
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2020",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "Breast cancer screening"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-09-22T15:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2020-09-22T16:05",
+       "body": "S: F/u mood. Saw psychiatry 8/24, no changes made, they'll see her again in the fall. Says she's \"a little less underwater\" but still low most days. Sleep poor, still using diphenhydramine. Alprazolam \"most nights, sometimes two.\" No SI. TPN running fine, no line issues. Back the same.\nO: Vitals reviewed. Weight about where it was in July. Affect flat but brighter than last time, makes eye contact. Line site clean. PHQ-9 18.\nA/P:\n- Recurrent MDD, severe episode — slightly better. Continue per psychiatry. Encouraged her to ask them about therapy referral.\n- Anxiety — talked about alprazolam limits again.\n- Weight — stable since July.\n- HM: screening mammogram ordered. Flu shot at nurse visit next month.\nRTC 3 mo."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-06a",
+     "kind": "nurse_visit",
+     "start": "2020-10-06T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2020-10-06T10:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-10-06T10:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Flu Vaccine",
+       "author": "RN",
+       "date": "2020-10-06T10:45",
+       "body": "Influenza vaccine 0.5 mL IM left deltoid. Screening questions answered no. VIS given. Patient waited 15 min, no reaction."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-20a",
+     "kind": "imaging",
+     "start": "2020-10-20T08:30",
+     "reason": "Screening mammogram",
+     "orders": [
+      {
+       "id": "mammo-2020",
+       "action": "done",
+       "date": "2020-10-20T08:30"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2020-10-20T08:30",
+       "text": "Bilateral digital screening mammogram with tomosynthesis. No prior studies available for comparison. The breasts are scattered areas of fibroglandular density. No suspicious mass, architectural distortion or suspicious calcifications in either breast.",
+       "conclusion": "BI-RADS 1: Negative. Routine screening recommended."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-28a",
+     "kind": "specialist_visit",
+     "start": "2020-10-28T11:00",
+     "service": "Gastroenterology",
+     "reason": "Intestinal rehabilitation follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Intestinal Rehabilitation Clinic Letter",
+       "author": "gastroenterology",
+       "date": "2020-10-30T08:40",
+       "body": "INTESTINAL REHABILITATION / GASTROENTEROLOGY\nVisit date: 10/28/2020\n\nDear Doctor,\n\nThank you for taking over Ms. Bianchi's primary care. She was seen today for her routine review of home parenteral nutrition.\n\nShe has Crohn's disease of the small bowel with short bowel syndrome after several resections and remains dependent on TPN, infused over 12 hours each night through her tunneled central venous catheter. She has had no catheter infections or line malfunctions since her last visit and no Crohn's flares. She continues vedolizumab 300 mg IV every 8 weeks at our infusion center for Crohn's maintenance and tolerates it well. Her weekly home infusion labs have been stable and we made no change to her formula.\n\nExam: thin, no distress. Abdomen soft and nontender. Catheter exit site clean without erythema.\n\nPlan: continue current TPN prescription and vedolizumab every 8 weeks; weekly labs through home infusion; return in one year or sooner as needed.\n\nAllergies/intolerances: NSAIDs, gabapentin.\n\nKind regards,\nGastroenterology / Intestinal Rehabilitation"
+      }
+     ]
+    },
+    {
+     "id": "2020-12-06a",
+     "kind": "telephone",
+     "start": "2020-12-06T17:40",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "After-hours call from sister",
+       "author": "PCP",
+       "date": "2020-12-06T17:55",
+       "body": "Sister called the after-hours line (pt gave verbal OK, was on the call). This afternoon at the kitchen table Tracy stopped mid-sentence and stared for maybe 45 seconds, wouldn't answer, then was foggy for a few minutes and doesn't remember any of it. No shaking, didn't fall, no incontinence, no injury. Back to herself now, talking normally, no headache, no weakness. No fever. Took no extra pills today per pt.\nTold them to call 911 for any repeat episode, shaking, or if she doesn't come back to baseline. No driving. Will see her first thing tomorrow."
+      }
+     ]
+    },
+    {
+     "id": "2020-12-07a",
+     "kind": "office_visit",
+     "start": "2020-12-07T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Staring spell yesterday",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-12-07T09:10",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-12-07T09:10",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-12-07T09:10",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-12-07T09:10",
+       "results": [
+        {
+         "test": "Vitamin B12"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "neuro-2020",
+       "action": "placed",
+       "order": "Neurology referral",
+       "category": "referral",
+       "to": "Neurology",
+       "reason": "Episode of unresponsive staring with post-event confusion"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-12-07T08:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Acute Visit",
+       "author": "PCP",
+       "date": "2020-12-07T09:30",
+       "body": "S: Here with sister re: yesterday's episode (see after-hours note). Sitting at kitchen table, abruptly stopped talking, stared ~45 sec, unresponsive to sister, no recall, confused several minutes after. Sister saw no jerking, she didn't slump or fall. Nothing like it before that either of them knows of. Pt says she's felt \"slowed down\" and foggy for a while and has trouble concentrating — had blamed the depression. No head injury, no new meds, no alcohol yesterday. Sleep poor as usual.\nO: Vitals reviewed, afebrile. Alert, oriented x3, speech fluent, flat. CN II-XII intact, strength 5/5 throughout, sensation intact, reflexes symmetric, finger-nose normal, gait normal. Line site clean.\nA/P: Transient episode of unresponsiveness with amnesia and post-event confusion — concerning for a focal seizure. Ddx includes medication effect (alprazolam/diphenhydramine), metabolic.\n- CBC, BMP, TSH, B12 today.\n- Urgent neurology referral — called; they can see her tomorrow.\n- No driving until cleared by neurology. Seizure precautions reviewed (no baths alone, no heights).\n- ED if recurs or any convulsion."
+      }
+     ]
+    },
+    {
+     "id": "2020-12-08a",
+     "kind": "specialist_visit",
+     "start": "2020-12-08T10:00",
+     "service": "Neurology",
+     "reason": "Staring episode",
+     "orders": [
+      {
+       "id": "neuro-2020",
+       "action": "done",
+       "date": "2020-12-08T10:00"
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Temporal lobe epilepsy",
+       "icd10": "G40.209",
+       "action": "diagnosed",
+       "onset": "2020-12-06"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology Consultation",
+       "author": "neurology",
+       "date": "2020-12-10T15:20",
+       "body": "NEUROLOGY CONSULTATION\nDate of service: 12/08/2020\n\nDear Doctor,\n\nThank you for the same-week referral of Ms. Bianchi, a 45-year-old woman with Crohn's disease and short bowel syndrome on home TPN and recurrent major depression, last seen by her psychiatrist about three months ago.\n\nHistory: Earlier this week, while seated at her kitchen table, she abruptly stopped speaking and stared ahead for roughly 45 seconds. She did not respond during the spell and has no memory of it; her sister, who witnessed it, says she was muddled for several minutes afterward. Her sister did not see any shaking and she did not lose consciousness or fall. Over recent weeks she has felt mentally \"slowed\" and has had trouble concentrating, which she had put down to her mood.\n\nMedications: bupropion, sertraline, alprazolam as needed, over-the-counter diphenhydramine at night, oral contraceptive, multivitamin, nightly TPN, vedolizumab infusions every 8 weeks.\nAllergies/intolerances: NSAIDs, gabapentin.\nFamily history: mother with depression and type 2 diabetes; father with Crohn's disease; sister with generalized anxiety (her main support); maternal aunt with DVT.\nSocial: She reports that she does not drink. She admits that when she cannot sleep she will sometimes take more than one alprazolam.\n\nExamination: vital signs normal. Oriented, with a flat affect; frequent pauses in conversation. Cranial nerves, motor, sensory, reflexes, coordination and gait are normal — no focal findings.\nLaboratory (drawn by your office 12/07): CBC, basic metabolic panel, TSH and B12 normal.\n\nImpression: The episode is typical of a focal seizure with impaired awareness arising from the temporal lobe. Diagnosis: temporal lobe epilepsy.\n\nPlan:\n1. Start lamotrigine, chosen with her depression in mind and because it does not lower sodium. Titration: 25 mg daily for 2 weeks, 50 mg daily for 2 weeks, 50 mg twice daily for 1 week, 75 mg twice daily for 1 week, then 100 mg twice daily. The target allows for her estrogen-containing contraceptive, which lowers lamotrigine levels. She is to stop it and call us for any rash, and never to stop it suddenly.\n2. Routine EEG, scheduled.\n3. Seizure precautions and Massachusetts driving restrictions discussed; she understands she should not drive.\n4. I will review the EEG and see her back.\n\nSincerely,\nNeurology"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "lamotrigine 100 MG Oral Tablet",
+       "action": "start",
+       "sig": "Titrate: 25 mg daily for 2 weeks, 50 mg daily for 2 weeks, 50 mg twice daily for 1 week, 75 mg twice daily for 1 week, then 100 mg twice daily",
+       "dose": {
+        "value": 100,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Temporal lobe epilepsy"
+      }
+     ]
+    },
+    {
+     "id": "2020-12-22a",
+     "kind": "procedure_visit",
+     "start": "2020-12-22T09:00",
+     "service": "Neurology",
+     "reason": "Routine EEG",
+     "reports": [
+      {
+       "study": "Electroencephalogram, routine",
+       "loinc": "11523-8",
+       "performed": "2020-12-22T09:00",
+       "issued": "2020-12-23T13:00",
+       "text": "Routine awake and drowsy EEG, 21 electrodes, international 10-20 system, with photic stimulation and hyperventilation. Posterior dominant rhythm 9.5 Hz, symmetric and reactive. Intermittent sharp waves over the left temporal region, maximal at T7/F7, seen in wakefulness and drowsiness. No electrographic seizures. Normal response to photic stimulation and hyperventilation.",
+       "conclusion": "Abnormal EEG: intermittent left temporal sharp waves on a normal background, consistent with a left temporal epileptogenic focus."
+      }
+     ]
+    },
+    {
+     "id": "2020-12-15a",
+     "kind": "portal_message",
+     "start": "2020-12-15T20:10",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "EEG question",
+       "author": "patient",
+       "date": "2020-12-15T20:10",
+       "body": "Neurology scheduled my EEG for the 22nd. They said come \"sleep deprived\" — does that mean I should skip my TPN that night? And can I take my alprazolam the night before?\n— Tracy\n\nReply (RN, 12/16): Please run your TPN as usual — it doesn't affect the EEG. Neurology asked for less sleep, not less nutrition. Take your regular medicines unless the neurology office told you otherwise; I left a message with them to confirm about the alprazolam and will call you back.\nAddendum (RN, 12/16 15:40): Neurology office says take medications as usual. Patient informed."
+      }
+     ]
+    },
+    {
+     "id": "2021-01-20a",
+     "kind": "office_visit",
+     "start": "2021-01-20T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up mood; new epilepsy diagnosis",
+     "state": {
+      "weight_kg": 59.0,
+      "labs": {
+       "Magnesium": 1.9
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 15
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-01-20T14:45",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-01-20T14:45",
+       "results": [
+        {
+         "test": "Magnesium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-01-20T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2021-01-20T14:40",
+       "body": "Subjective: Back for routine f/u. Neurology saw her 12/8, diagnosed temporal lobe epilepsy; EEG 12/22 showed left temporal sharp waves. Neuro started lamotrigine 12/8 and she followed the titration card — at 100 mg twice daily since yesterday, no rash, a little dizzy the first few days. No further spells since 12/6 per pt and sister. Not driving — sister and a friend are getting her to appointments. Mood \"maybe a notch better,\" still flat in the mornings. Sleep unchanged. TPN without problems.\nObjective: Vitals reviewed. Weight 57.5 (56.9 in July). Alert, more animated. Line site clean.\nPHQ-9 15.\nAssessment/Plan:\n1. Temporal lobe epilepsy — added to problem list. Lamotrigine 100 bid per neuro, no rash. Neuro to follow; she has a f/u with them in March. Precautions reinforced.\n2. Recurrent MDD — improving slowly. Psych following.\n3. GAD — stable.\n4. Weight — holding, slightly up.\n5. Short bowel/TPN — CMP and magnesium today for our records (GI gets weekly infusion labs).\nNext visit spring; mammogram done in Oct, normal."
+      }
+     ]
+    },
+    {
+     "id": "2021-02-09a",
+     "kind": "pharmacy",
+     "start": "2021-02-09T11:30",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Oral contraceptive refill",
+       "author": "MA",
+       "date": "2021-02-09T11:30",
+       "body": "Pharmacy refill request for norethindrone acetate/ethinyl estradiol 1-20, 3 packs with 3 refills. Last BP in normal range 1/20. Routed to PCP — approved and sent."
+      }
+     ]
+    },
+    {
+     "id": "2021-03-08a",
+     "kind": "specialist_visit",
+     "start": "2021-03-08T15:30",
+     "service": "Neurology",
+     "reason": "Epilepsy follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology Follow-up",
+       "author": "neurology",
+       "date": "2021-03-10T10:05",
+       "body": "NEUROLOGY — RETURN VISIT\nDate of service: 03/08/2021\n\nDear Doctor,\n\nMs. Bianchi returns after her EEG. The recording showed intermittent left temporal sharp waves over a normal background, which supports the diagnosis of left temporal lobe epilepsy. She and her sister report no further events since the episode in December.\n\nShe completed the lamotrigine titration and has taken 100 mg twice daily since 01/19 without rash or other side effects. Given her short bowel we checked a trough level today to confirm absorption: 4.8 mcg/mL (reference 2.5-15.0), in range.\n\nNeurologic examination remains normal.\n\nContinue lamotrigine 100 mg twice daily; refills from our office. We reviewed seizure precautions again. She will continue to hold off on driving until she has been event-free for the required interval. She knows to call us with any further spells.\n\nFollow-up in neurology in one year, or sooner as needed.\n\nSincerely,\nNeurology"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-03-08T15:45",
+       "results": [
+        {
+         "test": "Lamotrigine, trough",
+         "loinc": "74944-0",
+         "unit": "ug/mL",
+         "value": 4.8
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "2021-04-20a",
+     "kind": "office_visit",
+     "start": "2021-04-20T10:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Low back pain flare",
+     "state": {
+      "labs": {
+       "25-hydroxy Vitamin D": 30,
+       "Erythrocyte Sedimentation Rate": 20
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-04-20T10:50",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-04-20T10:50",
+       "results": [
+        {
+         "test": "Erythrocyte Sedimentation Rate",
+         "value": 20
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-04-20T10:50",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone",
+         "value": 2.5
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-04-20T10:50",
+       "results": [
+        {
+         "test": "25-hydroxy Vitamin D",
+         "value": 30
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 17
+      },
+      {
+       "survey": "Pain severity (0-10)",
+       "value": 8
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-03-23T13:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-04-13T13:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "pain-2021",
+       "action": "placed",
+       "order": "Pain management referral",
+       "category": "referral",
+       "to": "Pain Management",
+       "reason": "Chronic low back pain, worsening"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-04-20T10:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit — back pain",
+       "author": "PCP",
+       "date": "2021-04-20T11:15",
+       "body": "CC: back pain\n\nLow back pain much worse the last few weeks, \"unbearable\" some days, across the low back, no radiation down the legs. No numbness, no weakness, no bowel/bladder change from her baseline, no fever, no trauma. Has tried \"everything\" — NSAIDs and gabapentin in the past did nothing, PT did nothing. Heat helps a little. Tearful talking about it, feels nobody can fix it.\nQuit smoking ~2 months ago, about a pack a week before. Proud of that.\nCOVID vaccines at the pharmacy 3/23 and 4/13 — recorded.\n\nExam: uncomfortable changing position. Tender over lumbar paraspinals bilaterally, no midline bony tenderness. SLR negative bilaterally. Strength 5/5 LE, sensation intact, reflexes symmetric. Gait normal.\nPain 8/10. PHQ-9 17.\n\nA/P\n# Chronic low back pain, flare — mechanical by exam, no red flags. Labs to make sure we're not missing inflammation/thyroid/vit D: CBC, ESR, TSH, 25-OH D. Referral to pain management; she's open to it. Heat, gentle stretching.\n# Recurrent MDD — worse with the pain. Letting psych know.\n# Tobacco — quit ~Feb 2021, congratulated."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-22a",
+     "kind": "portal_message",
+     "start": "2021-04-22T17:20",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2021-04-22T17:20",
+       "body": "Tracy — your blood count is normal, the inflammation marker (ESR) is 20, thyroid 2.5 and vitamin D 30, all in the normal range. Nothing here explains the back pain flare, which fits with a muscular/mechanical cause. Pain management will call you to schedule."
+      }
+     ]
+    },
+    {
+     "id": "2021-05-10a",
+     "kind": "specialist_visit",
+     "start": "2021-05-10T09:30",
+     "service": "Pain Management",
+     "reason": "Low back pain",
+     "orders": [
+      {
+       "id": "pain-2021",
+       "action": "done",
+       "date": "2021-05-10T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Pain Management Consultation",
+       "author": "pain management",
+       "date": "2021-05-12T16:45",
+       "body": "INTERVENTIONAL PAIN MANAGEMENT — NEW CONSULTATION\nDate of service: 05/10/2021\n\nReferring: Primary care\nReason: worsening low back pain\n\nMs. Bianchi is a 46-year-old woman with Crohn's disease, short bowel syndrome and home TPN, who was seen by psychiatry last August and by neurology in December. She comes in for low back pain that has escalated to the point she calls it unbearable. In her words she has tried \"everything\": NSAIDs and a gabapentin trial gave no meaningful relief, and she describes an earlier course of physical therapy as \"useless.\" She feels hopeless that it will ever get better. She was tearful through much of the visit and said more than once that no one is able to help her.\n\nMedications: sertraline 100 mg daily; bupropion XL 150 mg daily; alprazolam 0.25 mg as needed (at times two at night); diphenhydramine 25 mg at night as needed; combined oral contraceptive; lamotrigine 100 mg twice daily; multivitamin; nightly TPN via central line; vedolizumab IV every 8 weeks.\nAllergies/intolerances: NSAIDs (ineffective, poor GI tolerance); gabapentin (ineffective).\nSocial: former light smoker, stopped about three months ago (had been about one pack a week); social drinker, one to two cocktails on weekends; on disability leave, previously an administrative assistant.\nFamily: mother — depression, type 2 diabetes; father — Crohn's; sister — anxiety; maternal aunt — DVT.\n\nExam: tenderness to palpation of the lumbar paraspinal muscles. Neurologic examination of the lower extremities is normal — no motor, sensory or reflex deficit.\nLabs drawn by primary care 04/20/2021: CBC normal, ESR of 20 mm/hr, vitamin D 30 ng/mL, TSH 2.5 mIU/L.\n\nAssessment: Chronic mechanical low back pain without radiculopathy. I do not see a target for an injection or other procedure.\n\nRecommendations:\n1. Daily home exercise and staying active; I gave her a written core and hip program.\n2. Her mood is clearly tied up with her pain; please continue to coordinate with her psychiatrist.\n3. No medication changes from our side.\n4. Follow up with us as needed.\n\nThank you for the referral.\nPain Management"
+      }
+     ]
+    },
+    {
+     "id": "2021-06-14a",
+     "kind": "specialist_visit",
+     "start": "2021-06-14T13:30",
+     "service": "Psychiatry",
+     "reason": "Medication management",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Psychiatry Follow-up",
+       "author": "psychiatry",
+       "date": "2021-06-16T08:55",
+       "body": "Outpatient Psychiatry — medication follow-up, 06/14/2021\n\nMs. Bianchi continues sertraline 100 mg and bupropion XL 150 mg daily with alprazolam 0.25 mg as needed. Mood is gradually lifting; she is sleeping a little better and leaving the house more. Back pain remains a major stressor. We again talked about keeping alprazolam to one tablet. No safety concerns today.\n\nPlan: no changes. Return in three months.\n\nOutpatient Psychiatry"
+      }
+     ]
+    },
+    {
+     "id": "2021-07-13a",
+     "kind": "annual_physical",
+     "start": "2021-07-13T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual preventive visit",
+     "state": {
+      "weight_kg": 60.2,
+      "labs": {
+       "Ferritin": 64,
+       "Iron": 82,
+       "Total Iron-Binding Capacity": 318
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-07-13T09:45",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-07-13T09:45",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-07-13T09:45",
+       "results": [
+        {
+         "test": "Magnesium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-07-13T09:45",
+       "results": [
+        {
+         "test": "Vitamin B12"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-07-13T09:45",
+       "results": [
+        {
+         "test": "25-hydroxy Vitamin D"
+        }
+       ]
+      },
+      {
+       "panel": "Iron Studies",
+       "collected": "2021-07-13T09:45",
+       "results": [
+        {
+         "test": "Iron"
+        },
+        {
+         "test": "Ferritin"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 13
+      },
+      {
+       "survey": "GAD-7 total score",
+       "value": 10
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 2
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2021-07-13T09:40"
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2021",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "Breast cancer screening"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2021-07-13T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-07-13T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2021-07-13T10:20",
+       "body": "ANNUAL PREVENTIVE VISIT — 46F\n\nInterval: Pain management 5/10 — mechanical LBP, home exercise, no procedure. She does the exercises \"some days.\" Psych 6/14, no med changes, mood slowly better. No seizures since Dec 2020. Not smoking since Feb. Alcohol: a cocktail or two on weekends. TPN nightly, no line problems this year.\n\nMeds: sertraline 100, bupropion XL 150, alprazolam 0.25 prn, diphenhydramine 25 qhs prn, lamotrigine 100 bid, norethindrone/EE 1/20, MVI, TPN, vedolizumab q8wk (GI).\nAllergies: NSAIDs (GI intolerance, ineffective); gabapentin (ineffective).\n\nROS negative except back pain and low mood.\n\nExam: Well-appearing, thin. Weight 59.7. HEENT normal, TMs clear. Neck without nodes or thyroid enlargement. Heart regular, no murmur. Lungs clear. Breasts deferred to imaging per pt preference. Abdomen soft, nontender, healed scars. Tunneled line R chest, site clean. Back: paraspinal tenderness, full strength. Skin no rashes. Mood fair, affect more reactive than last year.\nPHQ-9 13. GAD-7 10. AUDIT-C 2.\n\nPlan:\n- Tdap today (no record of one in prior chart).\n- Mammogram — order placed for the fall.\n- Pap 2019 normal; next due 2022.\n- Labs: CBC, CMP, Mg, B12, vit D, iron studies (short bowel/TPN monitoring alongside GI's labs).\n- Colon screening: she'll ask GI about colonoscopy timing at her fall visit given Crohn's.\n- Tobacco: former since 2/2021.\n- Mood/anxiety per psych; back per home program.\nRTC 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2021-07-15a",
+     "kind": "portal_message",
+     "start": "2021-07-15T12:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Physical labs",
+       "author": "PCP",
+       "date": "2021-07-15T12:40",
+       "body": "Hi Tracy, your physical labs look good: blood count, kidney and liver tests, magnesium, B12, vitamin D and iron are all normal. I'll send a copy to your GI team."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-17a",
+     "kind": "pharmacy",
+     "start": "2021-08-17T10:05",
+     "documents": [
+      {
+       "type": "Administrative Note",
+       "title": "Home infusion supply authorization",
+       "author": "front desk",
+       "date": "2021-08-17T10:05",
+       "body": "Fax from home infusion pharmacy: MassHealth prior authorization renewal for TPN supplies and catheter care kits. Ordering provider is her GI/intestinal rehab team, not us. Called the infusion pharmacy and gave them the GI clinic's fax; forwarded the form there. Pt notified."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-21a",
+     "kind": "office_visit",
+     "start": "2021-09-21T13:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Right leg instability",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "orders": [
+      {
+       "id": "ortho-2021",
+       "action": "placed",
+       "order": "Orthopedics referral",
+       "category": "referral",
+       "to": "Orthopedics",
+       "reason": "Right leg instability and difficulty walking"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-09-21T13:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2021-09-21T14:20",
+       "body": "S: Since around spring she's had trouble walking — the right leg feels unstable when she stands on it and the right hip \"gives way\" going up stairs. No fall yet. No injury she can remember. Back pain unchanged, not radiating. No numbness or tingling.\nO: Vitals reviewed. Slight limp on the right. Sensation intact to light touch both legs, reflexes 2+ and symmetric. Hip ROM full and painless. Back as before.\nA/P: Right leg instability with gait change, months in duration — likely hip girdle weakness; needs orthopedic eval. Referral placed. Railing on stairs, take her time. Back pain unchanged, continue home exercises."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-05a",
+     "kind": "nurse_visit",
+     "start": "2021-10-05T11:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-05T11:20"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-05T11:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Influenza vaccine",
+       "author": "MA",
+       "date": "2021-10-05T11:25",
+       "body": "Flu vaccine given, R deltoid, 0.5 mL IM. Tolerated well. VIS provided."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-19a",
+     "kind": "specialist_visit",
+     "start": "2021-10-19T10:30",
+     "service": "Gastroenterology",
+     "reason": "Intestinal rehabilitation follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Intestinal Rehabilitation Clinic Letter",
+       "author": "gastroenterology",
+       "date": "2021-10-21T14:10",
+       "body": "GASTROENTEROLOGY / INTESTINAL REHABILITATION — annual review, 10/19/2021\n\nDear Doctor,\n\nMs. Bianchi remains on nightly home parenteral nutrition over 12 hours via her tunneled catheter for short bowel syndrome from Crohn's-related resections. No line infections, occlusions or admissions this year, and no symptoms of Crohn's activity. She continues vedolizumab every 8 weeks at our infusion center. Weight is up a little since last year. Home infusion labs have been stable.\n\nShe asked about colon cancer screening. Given her Crohn's, we will schedule a colonoscopy with us in the spring.\n\nPlan: no change to TPN or vedolizumab. Colonoscopy spring 2022. Return in one year.\n\nGastroenterology / Intestinal Rehabilitation"
+      }
+     ]
+    },
+    {
+     "id": "2021-10-25a",
+     "kind": "specialist_visit",
+     "start": "2021-10-25T08:45",
+     "service": "Orthopedics",
+     "reason": "Right leg instability",
+     "orders": [
+      {
+       "id": "ortho-2021",
+       "action": "done",
+       "date": "2021-10-25T08:45"
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Right superior gluteal nerve palsy",
+       "icd10": "G57.81",
+       "action": "diagnosed",
+       "onset": "2021-04-26"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Orthopedic Consultation",
+       "author": "orthopedics",
+       "date": "2021-10-27T11:30",
+       "body": "ORTHOPAEDIC SURGERY — HIP CLINIC\nNew consultation, 10/25/2021\n\nDear Doctor,\n\nThank you for asking us to see Ms. Bianchi, who has chronic mechanical low back pain followed by pain management (seen there in May). For about six months she has found walking harder, and she feels unsteady whenever her weight is on the right leg. Climbing stairs, the right hip tends to buckle.\n\nMedications and allergies reviewed (intolerances: NSAIDs, gabapentin).\nSocial: former light smoker, social alcohol, on disability leave.\n\nExamination: She walks with a mild limp. Asked to balance on the right leg alone, the pelvis sags on the opposite (left) side below level — a positive Trendelenburg sign on the right. Right hip abduction is weak on manual testing. Sensation is intact throughout and reflexes are preserved. Hip range of motion is full without pain.\n\nImpression: Right hip abductor weakness with a Trendelenburg gait, in keeping with right superior gluteal nerve palsy.\n\nPlan:\n- Physical therapy for hip abductor (gluteus medius/minimus) strengthening and gait training; referral sent from our office.\n- Return to clinic as needed if she is not improving.\n\nThank you,\nOrthopaedic Surgery"
+      }
+     ]
+    },
+    {
+     "id": "2021-11-04a",
+     "kind": "outside_records",
+     "start": "2021-11-04T09:00",
+     "reason": "Physical therapy evaluation",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Physical Therapy Initial Evaluation",
+       "author": "physical therapy",
+       "date": "2021-11-04T09:00",
+       "body": "OUTPATIENT PHYSICAL THERAPY — INITIAL EVALUATION (eval date 11/03/2021)\nReferral: orthopaedics, right superior gluteal nerve palsy.\n\nSubjective: right leg feels unstable, hip buckles on stairs. Chronic low back pain. Goals: stairs without the hip giving way, walk to the store.\nObjective: Trendelenburg gait on the right. Right hip abduction 3+/5, left 5/5. Single-leg stance on the right brief, with pelvic drop; left normal. Sensation intact.\nAssessment: right hip abductor weakness consistent with referral diagnosis; good rehab potential.\nPlan: 2x/week for 8-10 weeks — progressive hip abductor strengthening, balance and gait training, home exercise program."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-16a",
+     "kind": "imaging",
+     "start": "2021-11-16T09:15",
+     "reason": "Screening mammogram",
+     "orders": [
+      {
+       "id": "mammo-2021",
+       "action": "done",
+       "date": "2021-11-16T09:15"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2021-11-16T09:15",
+       "text": "Bilateral screening mammogram with tomosynthesis, compared with 10/20/2020. Scattered fibroglandular density. No suspicious mass, calcification or distortion. Stable appearance.",
+       "conclusion": "BI-RADS 1: Negative."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-23a",
+     "kind": "portal_message",
+     "start": "2021-11-23T19:50",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-11-19T15:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Booster",
+       "author": "patient",
+       "date": "2021-11-23T19:50",
+       "body": "Got my covid booster at the pharmacy Friday (Pfizer). Arm was sore and I was tired the next day, fine now. Can you put it in my record? Also PT is going ok, hard work.\n— Tracy\n\nReply (MA): Added to your chart, thanks for letting us know!"
+      }
+     ]
+    },
+    {
+     "id": "2021-12-14a",
+     "kind": "portal_message",
+     "start": "2021-12-14T10:20",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Holiday refills",
+       "author": "patient",
+       "date": "2021-12-14T10:20",
+       "body": "I'm going to my sister's for a week over Christmas. Home infusion is delivering TPN there, that's set. Do I need anything from you? My psych meds are through the psychiatrist.\n— Tracy\n\nReply (MA): Nothing needed from us — have a good holiday! If anything comes up you can still message or call the office line."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

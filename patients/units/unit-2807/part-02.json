@@ -1,0 +1,276 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002807",
+      "events": [
+        {
+          "id": "2025-01-27a",
+          "kind": "office_visit",
+          "start": "2025-01-27T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chest discomfort and trouble swallowing",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "medications": [
+            {"drug": "omeprazole 20 MG Delayed Release Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth daily 30 minutes before breakfast", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Presumed reflux"}
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-01-27T16:20",
+              "text": "Sinus rhythm. Normal axis. PR, QRS and QT intervals normal. No ST elevation or depression. No T wave inversion. No Q waves.",
+              "conclusion": "Normal ECG."
+            }
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-27T16:00"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2025-01-27T16:20"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Can I come in this week?",
+              "author": "patient",
+              "date": "2025-01-26T21:14",
+              "body": "For the past week and a half I keep getting this feeling that food gets caught partway down, and sometimes a tight ache in my chest when it happens. It goes away on its own. Not an emergency I don't think but it's freaking me out a bit. Any chance of an appointment tomorrow after 3?"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Chest discomfort / dysphagia",
+              "author": "PCP",
+              "date": "2025-01-27T17:05",
+              "body": "S: 44F, about 10 days of intermittent episodes where food or a drink feels like it stops behind the sternum, sometimes with a tight discomfort in the same spot. Happens with solids and with liquids. Comes and goes on its own. Not exertional. No dyspnea, palpitations, diaphoresis. Denies weight loss, vomiting up undigested food, pain with swallowing, or any long-standing heartburn. No new meds. Work has been heavy this month.\n\nPMH none. Meds none. NKDA. Never smoker. FH: father HTN, mother hypothyroid; no premature CAD she knows of.\n\nO: vitals normal. Comfortable. Oropharynx clear, neck without mass or nodes, thyroid normal. Heart RRR, no murmur. Lungs clear. Chest wall nontender. Abdomen soft, no epigastric tenderness. No edema.\nECG in office: sinus rhythm, normal intervals, no ST-T changes.\n\nA/P: Intermittent dysphagia to solids and liquids with retrosternal discomfort. Not anginal by history, ECG normal. Most likely reflux-related - trial of omeprazole 20 mg each morning before breakfast. Let me know in 3-4 weeks if not better; if no response, will get her to a specialist for a swallowing workup. Go to the ED for chest pain that is constant, exertional, or with shortness of breath, or if food truly will not pass."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-19a",
+          "kind": "portal_message",
+          "start": "2025-02-19T10:22",
+          "medications": [
+            {"drug": "omeprazole 20 MG Delayed Release Oral Capsule", "action": "stop", "reason": "No benefit"}
+          ],
+          "orders": [
+            {"id": "ent-referral", "action": "placed", "order": "Otolaryngology referral", "category": "referral", "to": "Otolaryngology", "reason": "Dysphagia not improved on PPI"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Omeprazole update",
+              "author": "patient",
+              "date": "2025-02-19T10:22",
+              "body": "Checking in like you asked. I've taken the omeprazole every morning for over 3 weeks and honestly no difference. Still getting the stuck feeling a few times a week, and very cold water seems to set it off. Do I keep taking it?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Omeprazole update",
+              "author": "PCP",
+              "date": "2025-02-19T13:47",
+              "body": "Thanks for the update. Since it hasn't helped at all, go ahead and stop the omeprazole. I'm sending a referral to ENT to look at the swallowing problem - their office will call you. If it gets worse before then, or food won't go down, call me."
+            },
+            {
+              "type": "Referral",
+              "title": "Referral to Otolaryngology",
+              "author": "PCP",
+              "date": "2025-02-19T13:52",
+              "body": "Reason: 44F with ~5 weeks intermittent dysphagia to solids and liquids with retrosternal discomfort, no response to 3+ weeks of omeprazole 20 mg daily. Normal office ECG 1/27/25. Please evaluate. No medications. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-28a",
+          "kind": "specialist_visit",
+          "start": "2025-02-28T10:30",
+          "service": "Otolaryngology",
+          "reason": "Dysphagia and chest discomfort",
+          "conditions": [
+            {"label": "Esophageal dysmotility", "icd10": "K22.4", "action": "diagnosed", "onset": "2025-01-17", "note": "ENT clinical impression"}
+          ],
+          "orders": [
+            {"id": "ent-referral", "action": "done", "date": "2025-02-28T10:30"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology Consultation",
+              "author": "otolaryngology",
+              "date": "2025-03-04T09:20",
+              "body": "Outside otolaryngology group - consultation letter\nDate of visit: 02/28/2025\nRe: Abigail Paquette, DOB 07/27/1980\n\nThank you for asking us to see Ms. Paquette, a 44-year-old project manager, for six weeks of swallowing trouble and chest discomfort.\n\nShe describes episodes in which a bite, or a sip, lodges at about the level of the mid-sternum. Some episodes bring a sharp, squeezing pain there that can travel through to her back. They last anywhere from a few minutes up to an hour, happen several times a week and usually pass without her doing anything. Very hot or very cold drinks can set them off, and she suspects pressure at work sometimes does as well. A course of omeprazole made no difference.\n\nShe has no meaningful past medical history and takes nothing regularly. Drug allergies: none known. No food allergy, no asthma. Family history notable for maternal hypothyroidism and paternal hypertension. She has never smoked and drinks one or two drinks a week.\n\nReview of systems: no weight loss, no vomiting of undigested food, no odynophagia, no chronic heartburn.\n\nExamination: vital signs stable. Well appearing. No pallor or other sign of anemia. Ears, nose and oral cavity normal. Oropharynx and neck without mass; no cervical lymphadenopathy; thyroid unremarkable. Heart and lung sounds normal.\n\nHer ECG from your office on 01/27/2025, which I reviewed, is unremarkable.\n\nImpression: The pattern - dysphagia to liquids as well as solids, a mid-chest level, thermal triggers, chest pain and no response to acid suppression - points to an esophageal motility disorder rather than an oropharyngeal or structural problem. I have recorded this as esophageal dysmotility.\n\nRecommendations:\n1. Gastroenterology evaluation for esophageal workup.\n2. In the meantime, avoid very hot or very cold beverages and take smaller bites.\n3. No ENT follow-up needed unless new throat or voice symptoms.\n\nThank you for involving our service.\nOtolaryngology"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-05a",
+          "kind": "portal_message",
+          "start": "2025-03-05T08:40",
+          "orders": [
+            {"id": "gi-referral-1", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "Esophageal dysmotility, ENT recommends GI evaluation"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ENT letter",
+              "author": "PCP",
+              "date": "2025-03-05T08:40",
+              "body": "Abby, I got the ENT letter. They think the esophagus muscle isn't squeezing in a coordinated way, which fits the cold-drink trigger and why omeprazole did nothing. Next step is GI. I've put the referral in. Their scheduling line can be slow, so let me know if you haven't heard in two weeks."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ENT letter",
+              "author": "patient",
+              "date": "2025-03-05T12:03",
+              "body": "Makes sense, thank you. Will keep an eye out for their call."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "telephone",
+          "start": "2025-04-22T11:15",
+          "orders": [
+            {"id": "gi-referral-1", "action": "cancelled", "date": "2025-04-22T11:15"}
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "GI referral on hold",
+              "author": "RN",
+              "date": "2025-04-22T11:24",
+              "body": "Pt returned call re GI scheduling. States the swallowing episodes have quieted down over the past few weeks and she would rather hold off on GI for now given her work schedule. Advised to call if they return. Referral closed per pt request; PCP aware.\n\nPCP addendum: fine. Low threshold to re-refer."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical; swallowing symptoms back",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-09-23T09:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-09-23T09:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2025-09-23T09:10", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2025-09-23T09:10", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-09-23T09:00"}
+          ],
+          "orders": [
+            {"id": "barium-swallow", "action": "placed", "order": "Barium swallow (esophagram)", "category": "imaging", "reason": "Recurrent dysphagia, esophageal dysmotility"},
+            {"id": "gi-referral-2", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "Recurrent dysphagia with regurgitation, esophageal dysmotility"},
+            {"id": "fit-2025", "action": "placed", "order": "Fecal immunochemical test", "category": "lab", "reason": "Average-risk colorectal cancer screening"},
+            {"id": "mammo-2025", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "Annual breast cancer screening"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-09-23T08:15"},
+            {"procedure": "Immunization administration", "performed": "2025-09-23T09:00"},
+            {"procedure": "Venipuncture", "performed": "2025-09-23T09:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-09-23T12:30",
+              "body": "Annual. Also the swallowing problem is back.\n\nInterval: the episodes from the winter faded out by April and she was fine over the summer. Starting about three weeks ago they returned - food and liquids hanging up mid-chest, and now some bringing back of undigested food after meals, which she did not have before. Occasional pressure-like pain behind the breastbone during episodes. Worse on high-stress days at work. Weight stable by our scale. No vomiting, no black stools or blood. No heartburn.\n\nMeds: none. NKDA. Problem list: esophageal dysmotility (ENT impression 2/2025).\nSocial and family history unchanged.\n\nROS otherwise negative.\n\nExam: well. Vitals normal. HEENT benign, no cervical nodes, thyroid normal. Heart regular without murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. No edema. Skin unremarkable.\n\nA/P:\n1. Esophageal dysmotility, symptoms recurrent with new regurgitation. Barium swallow ordered and GI referral placed again - she is ready to go this time. Same precautions: if food impacts and won't pass, ED.\n2. Health maintenance: turned 45 this summer - discussed colon screening options, she prefers FIT; kit given. Mammogram order placed. Pap/HPV due next year. Labs: CBC, CMP, lipids, TSH. Flu vaccine today. PHQ-2 0.\nRTC 1 yr, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-25a",
+          "kind": "portal_message",
+          "start": "2025-09-25T17:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "author": "PCP",
+              "date": "2025-09-25T17:02",
+              "body": "All of Tuesday's labs are normal, including thyroid. Barium swallow is the next piece - radiology should be reaching out."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "imaging",
+          "start": "2025-10-07T13:30",
+          "orders": [
+            {"id": "barium-swallow", "action": "done", "date": "2025-10-07T13:30"}
+          ],
+          "reports": [
+            {
+              "study": "Barium swallow (esophagram)",
+              "loinc": "30633-2",
+              "performed": "2025-10-07T13:30",
+              "text": "Indication: dysphagia to solids and liquids. Technique: single- and double-contrast esophagram with thin barium, followed by a barium tablet.\nOropharyngeal phase: normal bolus transit, no laryngeal penetration or aspiration.\nEsophagus: on several swallows the distal esophagus shows intermittent non-propulsive contractions producing a corkscrew appearance, between which primary peristalsis is normal. The esophagus is not dilated. No stricture, ring, web, mass or diverticulum. Mucosa smooth. The barium tablet passed into the stomach without delay.\nGastroesophageal junction opens normally. No hiatal hernia. No reflux observed during the exam.",
+              "conclusion": "Intermittent corkscrew-like esophageal contractions, suggestive of a spastic motility disorder. No structural abnormality."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Barium swallow",
+              "author": "PCP",
+              "date": "2025-10-08T08:10",
+              "body": "Esophagram shows intermittent corkscrew contractions without stricture or mass - fits a spastic motility problem. Messaged pt. Sent report to GI with the referral so they can plan scope/manometry."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Barium swallow result",
+              "author": "PCP",
+              "date": "2025-10-08T08:14",
+              "body": "Abby, the swallow study showed the esophagus squeezing in an uncoordinated, corkscrew pattern at times - nothing blocking it, no narrowing or growth. That matches the motility problem ENT suspected. I sent the images to GI along with the referral; they will likely want a scope and possibly a pressure test of the esophagus."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-10a",
+          "kind": "pharmacy",
+          "start": "2025-10-10T12:20",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-10T12:20"}
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "lab_only",
+          "start": "2025-10-14T10:00",
+          "orders": [
+            {"id": "fit-2025", "action": "done", "date": "2025-10-14T10:00"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-10-13T07:30", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "author": "RN",
+              "date": "2025-10-15T09:05",
+              "body": "FIT negative. Portal message sent; repeat in one year. Health maintenance updated."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-30a",
+          "kind": "imaging",
+          "start": "2025-10-30T15:10",
+          "orders": [
+            {"id": "mammo-2025", "action": "done", "date": "2025-10-30T15:10"}
+          ],
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-10-30T15:10",
+              "text": "Screening mammography with 3D tomosynthesis. Prior exams 10/24/2024 and 10/19/2023 reviewed. Breasts contain scattered fibroglandular tissue. No suspicious finding in either breast; no change from priors.",
+              "conclusion": "BI-RADS 1, negative. Annual screening."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

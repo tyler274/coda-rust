@@ -1,0 +1,367 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002222",
+      "given": "Gordon",
+      "family": "Rossi",
+      "birth_date": "1954-05-31",
+      "address_line": "47 Pine Brook Road",
+      "phone": "+1-917-555-0154",
+      "email": "gordon.rossi@example.test",
+      "marital_status": "married",
+      "summary": "Retired construction foreman with diabetes, hypertension, permanent AF on warfarin, prior stroke and PAD who joins in 2019. An exam-found AAA is repaired by EVAR in 2022 and complicated by cholesterol embolism; inclusion body myositis, distal esophageal adenocarcinoma, high-grade T1 bladder cancer and Waldenström macroglobulinemia follow, each treated, with an E. coli UTI in early 2026.",
+      "events": [
+        {
+          "id": "2019-09-03a",
+          "kind": "telephone",
+          "start": "2019-09-03T10:20",
+          "reason": "New patient intake",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient intake call", "author": "front desk", "date": "2019-09-03T10:20",
+             "body": "Pt called to join the practice, membership paperwork mailed and signed today. Moving care from his previous PCP office, which he says he never could get on the phone. Medicare primary. Release of records signed and faxed to prior office. New patient visit booked 9/10 at 9:00, asked to bring all pill bottles. He also wants to know if we can do his INR checks here instead of the outside lab - told him yes, the doctor will set that up at the first visit."}
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "establish_care",
+          "start": "2019-09-10T09:00",
+          "end": "2019-09-10T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {"label": "Type 2 diabetes mellitus without complications", "action": "history", "onset": "2009-01-01"},
+            {"label": "Essential hypertension", "action": "history", "onset": "2005-01-01"},
+            {"label": "Permanent atrial fibrillation", "action": "history", "onset": "2012-01-01"},
+            {"label": "Long-term current use of anticoagulants", "action": "history", "onset": "2012-01-01"},
+            {"label": "Hyperlipidemia", "action": "history", "onset": "2008-01-01"},
+            {"label": "History of stroke without residual deficits", "action": "history", "onset": "2017-03-01"},
+            {"label": "Gastroesophageal reflux disease without esophagitis", "action": "history", "onset": "2010-01-01"},
+            {"label": "Peripheral arterial disease", "action": "history", "onset": "2018-01-01"},
+            {"label": "Obesity, unspecified", "action": "diagnosed", "onset": "2015-01-01"},
+            {"label": "History of tobacco dependence", "action": "history", "onset": "2017-03-01"}
+          ],
+          "medications": [
+            {"drug": "metformin hydrochloride 1000 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with meals", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Type 2 diabetes"},
+            {"drug": "lisinopril 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"},
+            {"drug": "hydrochlorothiazide 12.5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 12.5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"},
+            {"drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Atrial fibrillation rate control"},
+            {"drug": "warfarin sodium 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily or as directed per INR", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Atrial fibrillation, prior stroke"},
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Peripheral arterial disease"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hyperlipidemia"},
+            {"drug": "omeprazole 20 MG Delayed Release Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth daily before breakfast", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "GERD"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [136, 82], "weight_kg": 97.0, "height_cm": 178.0,
+                    "labs": {"Hemoglobin A1c": 6.8, "Low Density Lipoprotein": 104, "Total Cholesterol": 182, "High Density Lipoprotein": 44, "Triglycerides": 170, "Creatinine": 1.0, "Glucose": 131, "Prothrombin Time-International Normalized Ratio": 2.5, "Microalbumin/Creatinine Ratio": 12}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "rr", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-09-10T10:15", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-09-10T10:15", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2019-09-10T10:15", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2019-09-10T10:15", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2019-09-10T10:15", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "Occupation", "value": "Retired construction foreman"},
+            {"item": "History of alcohol use", "value": "Social drinker, a glass of red wine most nights with dinner"}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, high MDM", "performed": "2019-09-10T09:00"}],
+          "orders": [
+            {"id": "ldct-2019", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "40 pack-year former smoker, quit 2017"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2019-09-10T10:10",
+             "body": "NEW PATIENT - establishing care\n\n65M, retired construction foreman (ran crews for a commercial builder, mostly steel and concrete), here to take over primary care from his old office. Brought a bag of bottles. Old records requested, not here yet, so history is mostly from him and the bottles.\n\nHe has had sugar for about ten years, pressure longer than that. Has had AF for years and has been on warfarin the whole time; INRs were done at an outside lab with phone calls from the old office and he says nobody ever called back. Had a mild stroke in 2017, a few days in the hospital, fully recovered with no lingering problems. That's what made him quit smoking. Told he has blockages in the leg arteries a year or two ago, no claudication he can point to. Reflux controlled on omeprazole. Sees an outside cardiologist once a year for the AF.\n\nMeds (verified with bottles):\n- metformin 1000 mg BID\n- lisinopril 20 mg daily\n- HCTZ 12.5 mg daily\n- metoprolol succinate 50 mg daily\n- warfarin 5 mg daily, adjusted per INR\n- aspirin 81 mg daily\n- atorvastatin 40 mg daily\n- omeprazole 20 mg daily\n\nAllergies: NKDA\n\nFamily: father died at 72 of a ruptured abdominal aortic aneurysm. Mother had type 2 diabetes and macular degeneration. Paternal uncle had Waldenstrom macroglobulinemia. Brother with high blood pressure.\n\nSocial: married, lives in Florence. Smoked about 40 pack-years, quit 2017. Glass of red wine with dinner most nights, no more than that. Walks the dog, putters in the garage.\n\nROS: no chest pain, no shortness of breath, no palpitations he notices, no leg pain with walking, no bleeding problems on warfarin, no heartburn on the PPI. Otherwise negative.\n\nExam: well appearing, heavyset. Heart irregularly irregular, rate controlled, no murmur. Lungs clear. Abdomen obese, soft, nontender. Feet: skin intact, DP pulses palpable but faint bilaterally, monofilament intact. Neuro grossly nonfocal, symmetric grip, steady gait.\n\nA/P:\n1. T2DM - on metformin. A1c, UACR today. Eye exam is with an outside eye doctor yearly; will request.\n2. HTN - acceptable today on lisinopril/HCTZ. CMP.\n3. Permanent AF on warfarin, hx of stroke 2017 - continue metoprolol and warfarin. We will manage INRs here going forward: INR today, then about monthly, RN to call results. Keeps his yearly cardiology visit.\n4. HLD - atorvastatin 40, lipids today.\n5. PAD - aspirin, statin. Asked old office for any vascular studies.\n6. GERD - stable on omeprazole.\n7. Obesity - BMI over 30, talked about portions and walking more.\n8. Former smoker, 40 pk-yr, quit 2017 - discussed annual low-dose CT screening, he is in favor. Ordered.\n9. HM - Hep C and HIV screening today. Flu and shingles vaccine at a nurse visit next month. Will look for colonoscopy and tetanus dates in records.\n\nRTC 3 months, INR monthly."}
+          ]
+        },
+        {
+          "id": "2019-09-13a",
+          "kind": "portal_message",
+          "start": "2019-09-13T14:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2019-09-13T14:05",
+             "body": "Mr. Rossi - welcome again. Your labs are back. A1c is in a good range for you, kidney function and potassium are normal, cholesterol is about where it was on your old reports. Hep C and HIV screens were negative. INR was in range, so stay on the same 5 mg dose; our nurse will call you about the next check in early October. Talk soon."}
+          ]
+        },
+        {
+          "id": "2019-09-19a",
+          "kind": "outside_records",
+          "start": "2019-09-19T11:30",
+          "reason": "Records from prior primary care office",
+          "reports": [
+            {"study": "Ankle-brachial index", "loinc": "77194-8", "performed": "2018-04-17T10:00", "text": "Outside study (prior primary care office records). Resting ankle-brachial index with Doppler pressures. Right ABI 0.84. Left ABI 0.79. Triphasic to biphasic waveforms at the ankles bilaterally.", "conclusion": "Mild bilateral peripheral arterial disease."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care office", "author": "MA", "date": "2019-09-19T11:30",
+             "body": "Records received by fax from prior PCP, 61 pages, scanned to chart. Summary for the doctor:\n- Hospital discharge summary 03/2017: mild ischemic stroke, full recovery, on warfarin for AF.\n- ABI 04/2018: R 0.84, L 0.79 (mild PAD). Result entered.\n- Colonoscopy 2018: normal, repeat in 10 years.\n- Tdap 2016.\n- Med list matches what he brought in. NKDA.\n- No vascular imaging of the abdomen found in what they sent."}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2016-06-14T10:00"}
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check, vaccines",
+          "measure": ["bp", "hr"],
+          "labs": [
+            {"panel": "Prothrombin Time with INR", "collected": "2019-10-08T10:45", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2019-10-08T10:50"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2019-10-08T10:52"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-08T10:50"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse visit - INR and vaccines", "author": "RN", "date": "2019-10-08T11:05",
+             "body": "Fingerstick INR in range today, no missed doses, no bleeding or bruising, no new meds or antibiotics. Continue warfarin 5 mg daily. Next INR in about 4-5 weeks.\nFlu high-dose given L deltoid, Shingrix #1 given R deltoid. VIS reviewed. Waited 15 min, no reaction. Told him the shingles shot can make the arm sore and him tired for a day or two. Dose 2 due in 2-6 months, booked January."}
+          ]
+        },
+        {
+          "id": "2019-11-06a",
+          "kind": "imaging",
+          "start": "2019-11-06T08:30",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2019-11-06T08:30",
+             "text": "INDICATION: Annual lung cancer screening. 65-year-old former smoker, 40 pack-years, quit 2017. Baseline exam.\nTECHNIQUE: Low-dose helical CT of the chest without contrast.\nFINDINGS: No pulmonary nodules. Lungs clear. No consolidation or effusion. Heart size normal. No mediastinal or hilar adenopathy. Visualized upper abdomen unremarkable.",
+             "conclusion": "Lung-RADS 1: negative. Continue annual screening in 12 months."}
+          ],
+          "orders": [{"id": "ldct-2019", "action": "done", "date": "2019-11-06T08:30"}]
+        },
+        {
+          "id": "2019-11-12a",
+          "kind": "lab_only",
+          "start": "2019-11-12T08:15",
+          "reason": "INR",
+          "labs": [
+            {"panel": "Prothrombin Time with INR", "collected": "2019-11-12T08:15", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "INR result call", "author": "RN", "date": "2019-11-12T13:40",
+             "body": "Called pt with INR, in range. Same dose. Also told him the lung CT from last week was clear per Dr's note. Next INR mid December."}
+          ]
+        },
+        {
+          "id": "2019-12-10a",
+          "kind": "office_visit",
+          "start": "2019-12-10T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2019-12-10T14:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2019-12-10T14:30", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2019-12-10T14:30", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-12-10T14:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up visit", "author": "PCP", "date": "2019-12-10T14:35",
+             "body": "3 month f/u DM, HTN, AF.\n\nDoing fine. Taking everything. Home sugars in the morning 120s-140s. No lows. No bleeding on warfarin. No chest pain, palpitations, dyspnea, leg pain walking.\n\nReviewed old records: stroke 2017 fully resolved, ABI 2018 mild PAD bilaterally, colonoscopy 2018 normal, Tdap 2016.\n\nExam: NAD. Irregularly irregular, rate ok. Lungs clear. No edema.\n\nA/P:\nT2DM - A1c today. Same metformin.\nHTN - fine, same.\nAF on warfarin - INR today with the other labs, saves him a stick.\nPAD - mild by ABI, asymptomatic, aspirin/statin.\nLDCT 11/2019 Lung-RADS 1, repeat 1 yr.\nShingrix #2 in Jan.\nRTC 3-4 months."}
+          ]
+        },
+        {
+          "id": "2020-01-14a",
+          "kind": "nurse_visit",
+          "start": "2020-01-14T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix #2, INR",
+          "labs": [
+            {"panel": "Prothrombin Time with INR", "collected": "2020-01-14T09:35", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2020-01-14T09:40"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-01-14T09:40"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse visit", "author": "RN", "date": "2020-01-14T09:55",
+             "body": "Shingrix #2 R deltoid, series complete. Had a sore arm and was tired a day after the first one, nothing else. INR in range, continue 5 mg daily, recheck in a month."}
+          ]
+        },
+        {
+          "id": "2020-02-19a",
+          "kind": "lab_only",
+          "start": "2020-02-19T08:05",
+          "reason": "INR",
+          "labs": [
+            {"panel": "Prothrombin Time with INR", "collected": "2020-02-19T08:05", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ]
+        },
+        {
+          "id": "2020-03-24a",
+          "kind": "office_visit",
+          "start": "2020-03-24T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2020-03-24b",
+          "kind": "telephone",
+          "start": "2020-03-24T09:10",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Visit converted", "author": "front desk", "date": "2020-03-24T09:10",
+             "body": "Called pt to cancel today's in-person visit per new office policy. He is fine with video. Rebooked as a video visit 4/7. Lab still open for drive-up draws, he will get his INR and A1c drawn the morning of the visit."}
+          ]
+        },
+        {
+          "id": "2020-04-07a",
+          "kind": "telehealth_visit",
+          "start": "2020-04-07T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and hypertension follow-up (video)",
+          "state": {"labs": {"Hemoglobin A1c": 7.0}},
+          "labs": [
+            {"panel": null, "collected": "2020-04-07T08:10", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2020-04-07T08:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2020-04-07T08:10", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2020-04-07T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video visit", "author": "PCP", "date": "2020-04-07T11:30",
+             "body": "Video visit from home, identity confirmed, consents to video.\n\nStaying home, getting groceries delivered. Admits more snacking and less walking the last month. Home BP cuff readings low-mid 130s/80s. Fasting sugars a bit higher, 130-150. No lows. No bleeding. Feels well.\n\nLabs this morning: A1c 7.4, up from 7.1. Kidney function and potassium fine. INR in range.\n\nA/P:\nT2DM - A1c 7.4, higher with the lockdown. Not changing meds for this; back to walking now the weather is turning. Recheck at the fall visit.\nHTN - home readings acceptable, continue.\nAF/warfarin - in range, same dose. Drive-up INR monthly.\nRTC fall for wellness visit."}
+          ]
+        },
+        {
+          "id": "2020-05-19a",
+          "kind": "lab_only",
+          "start": "2020-05-19T08:20",
+          "reason": "INR",
+          "labs": [
+            {"panel": "Prothrombin Time with INR", "collected": "2020-05-19T08:20", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ]
+        },
+        {
+          "id": "2020-06-30a",
+          "kind": "lab_only",
+          "start": "2020-06-30T08:00",
+          "reason": "INR",
+          "labs": [
+            {"panel": "Prothrombin Time with INR", "collected": "2020-06-30T08:00", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "INR", "author": "RN", "date": "2020-06-30T12:15",
+             "body": "INR in range. Left VM with result, same dose, next draw early August. Asked him to call if he starts any antibiotic."}
+          ]
+        },
+        {
+          "id": "2020-07-21a",
+          "kind": "outside_records",
+          "start": "2020-07-21T15:00",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {"type": "Outside Records", "title": "Eye examination report", "author": "ophthalmology", "date": "2020-07-21T15:00",
+             "body": "Diabetic eye examination, dilated. Visual acuity 20/25 OD, 20/25 OS with correction. Anterior segments quiet. Fundus: no diabetic retinopathy either eye, maculae flat, no drusen. Impression: type 2 diabetes without retinopathy. Return one year. Copy to primary care."}
+          ]
+        },
+        {
+          "id": "2020-08-18a",
+          "kind": "lab_only",
+          "start": "2020-08-18T08:10",
+          "reason": "INR",
+          "labs": [
+            {"panel": "Prothrombin Time with INR", "collected": "2020-08-18T08:10", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ]
+        },
+        {
+          "id": "2020-09-15a",
+          "kind": "annual_physical",
+          "start": "2020-09-15T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "state": {"weight_kg": 96.0, "labs": {"Hemoglobin A1c": 6.9}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-09-15T08:30", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-09-15T08:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2020-09-15T08:30", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2020-09-15T08:30", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2020-09-15T08:30", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Annual wellness visit, initial", "performed": "2020-09-15T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Medicare Annual Wellness Visit", "author": "PCP", "date": "2020-09-15T09:50",
+             "body": "Initial Medicare AWV + chronic disease f/u.\n\nFeels good. Back to walking the dog twice a day once things opened up. Weight down a kilo. Eye doctor in July: no retinopathy. No falls. Independent in all ADLs and IADLs, still drives. Hearing ok. Two-story house, bedroom upstairs, no trouble with the stairs. PHQ-2 negative. No health care proxy or advance directive yet, forms given.\n\nNo chest pain, dyspnea, palpitations, bleeding, claudication, heartburn.\n\nExam: BMI ~30. Irregularly irregular, controlled. Lungs clear. Abdomen soft, nontender. Feet intact, faint DP pulses as before, monofilament normal. Gait steady, gets up from the chair without using his arms.\n\nLabs today: A1c 7.0, back down. CMP, CBC normal. LDL ~100s on atorvastatin 40. UACR normal. INR in range.\n\nA/P:\nT2DM - fine, continue metformin.\nHTN - at goal today.\nAF/warfarin, hx stroke - monthly INR, stable.\nHLD/PAD - continue statin, aspirin.\nObesity - small loss, encouraged.\nLung screening due November, ordered.\nFlu shot next month at the nurse visit. Shingrix done. Colonoscopy due 2028.\nRTC 6 months."}
+          ],
+          "orders": [
+            {"id": "ldct-2020", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Annual lung cancer screening"}
+          ]
+        },
+        {
+          "id": "2020-10-13a",
+          "kind": "nurse_visit",
+          "start": "2020-10-13T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot, INR",
+          "labs": [
+            {"panel": "Prothrombin Time with INR", "collected": "2020-10-13T10:20", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2020-10-13T10:25"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-13T10:25"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse visit", "author": "RN", "date": "2020-10-13T10:40",
+             "body": "Masked, screened at door. High-dose flu L deltoid, tolerated. INR in range, continue same. Next INR in about 6 weeks given steady results."}
+          ]
+        },
+        {
+          "id": "2020-11-10a",
+          "kind": "imaging",
+          "start": "2020-11-10T09:15",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2020-11-10T09:15",
+             "text": "INDICATION: Annual lung cancer screening, former smoker.\nCOMPARISON: 11/2019.\nTECHNIQUE: Low-dose CT chest without contrast.\nFINDINGS: No pulmonary nodules. No consolidation, effusion or adenopathy. Heart size normal. No change.",
+             "conclusion": "Lung-RADS 1: negative. Annual screening in 12 months."}
+          ],
+          "orders": [{"id": "ldct-2020", "action": "done", "date": "2020-11-10T09:15"}]
+        },
+        {
+          "id": "2020-12-01a",
+          "kind": "lab_only",
+          "start": "2020-12-01T08:25",
+          "reason": "INR",
+          "labs": [
+            {"panel": "Prothrombin Time with INR", "collected": "2020-12-01T08:25", "results": [{"test": "Prothrombin Time-International Normalized Ratio", "value": 1.7}]}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "INR low", "author": "RN", "date": "2020-12-01T14:10",
+             "body": "INR 1.7, below range. Pt thinks he missed a dose or two over the holiday weekend away from home. No new meds, diet otherwise the same. Per protocol: take 7.5 mg (1.5 tabs) tonight only, then back to 5 mg daily. Recheck one week. Pt repeated back instructions."}
+          ]
+        },
+        {
+          "id": "2020-12-08a",
+          "kind": "lab_only",
+          "start": "2020-12-08T08:15",
+          "reason": "INR recheck",
+          "labs": [
+            {"panel": "Prothrombin Time with INR", "collected": "2020-12-08T08:15", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "INR recheck", "author": "RN", "date": "2020-12-08T12:30",
+             "body": "INR back in range. Continue 5 mg daily. Bought a weekly pill box. Next check in 4 weeks."}
+          ]
+        },
+        {
+          "id": "2020-12-17a",
+          "kind": "portal_message",
+          "start": "2020-12-17T19:42",
+          "documents": [
+            {"type": "Patient Message", "title": "covid vaccine", "author": "patient", "date": "2020-12-17T19:42",
+             "body": "Doc, I want the covid shot as soon as we can get it. Is it ok with the warfarin? Do we sign up with you or somewhere else"},
+            {"type": "Patient Message", "title": "RE: covid vaccine", "author": "PCP", "date": "2020-12-18T08:15",
+             "body": "Yes, you should get it and the warfarin is not a reason to wait. Hold firm pressure on the spot for a couple of minutes after the shot. For now it is going through the state sign-up and the pharmacies, not through us. You will be in an early group because of age. Send me the dates when you have them and we will put them in your chart."}
+          ]
+        }
+      ]
+    }
+  ]
+}

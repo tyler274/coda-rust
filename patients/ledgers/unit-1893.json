@@ -1,0 +1,2002 @@
+{
+  "unit": "unit-1893",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00001893/2020-01-10a: procedure \"Diagnostic laparoscopy\" not in catalog (text only, no CPT)",
+    "MRN00001893/2020-01-10a: procedure \"Open reduction and internal fixation of right femur fracture\" not in catalog (text only, no CPT)",
+    "left text-only (not verified): report \"CT temporal bones without contrast\" LOINC 30620-7 not found"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001893",
+      "given": "Abigail",
+      "family": "Whitcomb",
+      "birth_date": "1987-09-01",
+      "address_line": "27 Pleasant Street, Apt 3",
+      "phone": "+1-518-555-0108",
+      "email": "abigail.whitcomb@example.test",
+      "marital_status": "single",
+      "summary": "Elementary school teacher who joined the practice in 2019 with only seasonal allergic rhinitis. A January 2020 car crash left a mild TBI, a repaired right femur fracture and PTSD that psychiatry follows yearly, worsened by a 2021 robbery and a 2022 crash that killed a friend. In January 2026 a hard nose blow caused a perilymphatic fistula that settled with conservative ENT care.",
+      "events": [
+        {
+          "id": "2019-09-10a",
+          "kind": "establish_care",
+          "start": "2019-09-10T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care and physical",
+          "conditions": [
+            {
+              "label": "Allergic rhinitis due to pollen",
+              "action": "diagnosed",
+              "onset": "2004-05-01",
+              "note": "spring and late-summer symptoms since high school"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              77
+            ],
+            "hr": 69,
+            "rr": 13,
+            "temp_c": 36.7,
+            "spo2": 96,
+            "weight_kg": 63.1,
+            "height_cm": 164.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-09-10T16:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 246
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-09-10T16:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-09-10T16:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 85
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 170
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 108
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-10T16:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "No current use"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2019-09-10T15:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-09-10T15:55"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-09-10T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-09-10T15:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit and Physical",
+              "date": "2019-09-10T16:30",
+              "author": "PCP",
+              "body": "New patient, 32F, here to establish care. Moved her primary care here after her old office stopped taking new appointments for months at a time. Teaches second grade in town.\n\nNo active complaints. Hay fever every spring and again in late summer since high school: sneezing, itchy watery eyes, runny nose. Gets through it without anything; has not wanted a daily pill. No asthma.\n\nPMH: seasonal allergic rhinitis. No surgeries. No hospitalizations.\nMeds: none.\nAllergies: no known drug allergies.\nFHx: mother has generalized anxiety; father with high blood pressure and high cholesterol; one younger sibling, healthy.\nSocial: never smoked. Doesn't drink at present, no drug use. Single, lives in an apartment on Pleasant St.\n\nROS otherwise negative.\n\nExam: vitals per flowsheet. Well appearing. HEENT: TMs clear, nasal mucosa a little pale, oropharynx clear. Neck supple, no adenopathy or thyroid enlargement. Heart RRR no murmur. Lungs clear. Abdomen soft, nontender. Extremities no edema. Skin no rashes. Neuro grossly intact. Mood and affect normal.\nPHQ-9: 1.\n\nA/P\n1. Preventive care: baseline CBC, CMP, lipids, TSH. One-time HIV and hepatitis C screening, she agrees. Tdap today (last tetanus she can recall was in her teens). Flu shot when the clinic gets supply in October. Pap per old records, will request them.\n2. Seasonal allergic rhinitis: mild, she prefers to ride it out. Revisit if it starts interfering with sleep or work.\n\nRTC 1 year, sooner as needed."
+            },
+            {
+              "type": "Administrative",
+              "title": "Records Request",
+              "date": "2019-09-10T16:40",
+              "author": "front desk",
+              "body": "Signed release on file. Records request faxed to prior primary care office for last 5 years of notes, labs, immunizations and cervical screening."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Free Thyroxine": 1.2,
+              "Glucose": 87,
+              "Low Density Lipoprotein": 88,
+              "Thyroid Stimulating Hormone": 1.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2019-09-12a",
+          "kind": "portal_message",
+          "start": "2019-09-12T08:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2019-09-12T08:10",
+              "author": "PCP",
+              "body": "Hi Abigail, your blood counts, kidney and liver tests, thyroid and cholesterol all came back normal. HIV and hepatitis C screens were negative. Nothing to follow up on. It was good to meet you."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your lab results",
+              "date": "2019-09-12T19:42",
+              "author": "patient",
+              "body": "Thank you! Great to hear."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-24a",
+          "kind": "outside_records",
+          "start": "2019-09-24T11:00",
+          "reason": "Prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from Prior Primary Care Office",
+              "date": "2019-09-24T11:00",
+              "author": "outside primary care",
+              "body": "Records received from prior primary care office, 2014 to 2019, 38 pages. Summary for chart:\n- Yearly physicals, generally well. Seasonal allergic rhinitis listed; no prescriptions on file.\n- Cervical cytology 2017-06: negative for intraepithelial lesion or malignancy.\n- Immunizations: childhood series documented including MMR x2 and varicella; influenza most years.\n- No surgeries, no hospitalizations.\nScanned to media. Reviewed by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T15:45",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-08T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-08T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "date": "2019-10-08T15:55",
+              "author": "RN",
+              "body": "Here after school for flu vaccine. Screening questions negative. Influenza vaccine 0.5 mL IM left deltoid, lot in MAR. VIS given. Waited 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2020-01-10a",
+          "kind": "hospital_admission",
+          "start": "2020-01-10T17:40",
+          "end": "2020-01-14T12:30",
+          "service": "Trauma Surgery — outside hospital",
+          "reason": "Motor vehicle collision with multiple injuries",
+          "conditions": [
+            {
+              "label": "Unspecified fracture of right femur, initial encounter for closed fracture",
+              "action": "diagnosed",
+              "onset": "2020-01-10",
+              "icd10": "S72.91XA"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "pain after femur fixation"
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2020-01-10T18:25",
+              "text": "Technique: noncontrast axial CT of the head with coronal and sagittal reformats.\nFindings: No intracranial hemorrhage, mass effect or midline shift. Gray-white differentiation preserved. Ventricles and sulci normal for age. Basal cisterns patent. No skull fracture. Visualized paranasal sinuses and mastoid air cells clear. No scalp hematoma.",
+              "conclusion": "No acute intracranial abnormality."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Diagnostic laparoscopy",
+              "performed": "2020-01-10T21:10"
+            },
+            {
+              "procedure": "Open reduction and internal fixation of right femur fracture",
+              "performed": "2020-01-10T22:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Trauma Surgery Discharge Summary",
+              "date": "2020-01-16T09:15",
+              "author": "trauma surgery",
+              "body": "Regional trauma center, Trauma Surgery service\nAdmitted 01/10/2020, discharged 01/14/2020\nPatient: Abigail Whitcomb, DOB 09/01/1987\nAllergies: NKDA\n\nAdmission diagnosis: Motor vehicle collision, multiple injuries.\n\nDischarge diagnoses:\n1. Mild traumatic brain injury (concussion)\n2. Right femur fracture, status post open reduction and internal fixation 01/10/2020\n3. Blunt abdominal trauma, diagnostic laparoscopy negative 01/10/2020\n\nHospital course: 32-year-old woman brought in by EMS after a severe collision. Hemodynamically stable throughout. Imaging showed a closed right femur fracture. CT head without intracranial injury; clinical picture consistent with mild TBI. Given the mechanism and concern for intra-abdominal injury, taken to the OR with general surgery for diagnostic laparoscopy, which showed no solid organ or hollow viscus injury, followed by orthopedics for open reduction and internal fixation of the right femur the same evening. Mechanical and pharmacologic DVT prophylaxis while inpatient. Mobilized with PT on hospital day 1, weight bearing as tolerated on the right with a walker. Tolerating diet, pain controlled on oral agents, incisions clean.\n\nNeuro at discharge: alert and oriented, no focal deficits. Concussion precautions reviewed.\n\nDischarge medications: acetaminophen 500 mg tablet, 1 tab every 6 hours as needed for pain.\nNo other home medications.\n\nDisposition: home with family support. Walker. Outpatient physical therapy referral sent.\nFollow-up: orthopedic clinic in 2 weeks for wound check; primary care within 1 week."
+            }
+          ]
+        },
+        {
+          "id": "2020-01-17a",
+          "kind": "telephone",
+          "start": "2020-01-17T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "date": "2020-01-17T10:20",
+              "author": "RN",
+              "body": "Discharge summary from the trauma center received yesterday. Called pt. She is home, mother staying with her this week. Getting around the apartment with the walker. Pain manageable with Tylenol. Incisions dry, no fever. No headache or vomiting. PT eval set up for next week. Booked with PCP Tues 1/21; mother will drive her."
+            }
+          ]
+        },
+        {
+          "id": "2020-01-21a",
+          "kind": "office_visit",
+          "start": "2020-01-21T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after car accident",
+          "conditions": [
+            {
+              "label": "History of mild traumatic brain injury",
+              "action": "history",
+              "onset": "2020-01-10",
+              "icd10": "Z87.820"
+            },
+            {
+              "label": "History of blunt abdominal trauma",
+              "action": "history",
+              "onset": "2020-01-10",
+              "note": "negative diagnostic laparoscopy 01/2020",
+              "icd10": "Z87.828"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              70
+            ],
+            "hr": 66,
+            "temp_c": 36.3,
+            "spo2": 97
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2020-01-21T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2020-01-21T11:50",
+              "author": "PCP",
+              "body": "Post-discharge visit. Trauma center discharge summary reviewed in full.\n\nCollision 1/10. Admitted 1/10 to 1/14: mild TBI with a clean head CT, right femur fracture with ORIF the night of admission, and diagnostic laparoscopy for blunt abdominal trauma that was negative.\n\nToday: one week out of the hospital. Using the walker, weight bearing as tolerated. Pain at the thigh incision mostly at night, Tylenol a couple of times a day is enough. No headaches since discharge, no vomiting, no confusion; her mother has not noticed anything off. Sleeping OK. Starts PT Monday. Out of work for now; school is covering her class.\n\nExam: vitals per flowsheet. Comfortable sitting. Lateral right thigh incision healing well, staples in, no erythema or drainage. Calf soft, nontender. Small laparoscopy port sites clean. Abdomen soft, nontender. Neuro nonfocal, gait with walker steady.\n\nA/P\n1. Right femur fracture s/p ORIF: per ortho. Wound check with them next week. PT.\n2. Mild TBI: doing well, no post-concussive symptoms today. Reviewed what to watch for. Gradual return to screens and work.\n3. Blunt abdominal trauma, negative laparoscopy: nothing further.\n4. Med rec: acetaminophen PRN only.\n\nWork note given through 2/14, to be revisited with ortho. Call with any headache, new weakness, calf swelling or shortness of breath."
+            },
+            {
+              "type": "Administrative",
+              "title": "Work Note",
+              "date": "2020-01-21T11:55",
+              "author": "PCP",
+              "body": "To whom it may concern: Ms. Whitcomb is under my care following a hospitalization and is unable to work through February 14, 2020. Her return date will be reassessed with her orthopedic surgeon."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2020-04-28a",
+          "kind": "specialist_visit",
+          "start": "2020-04-28T09:30",
+          "service": "Orthopedic Surgery — outside",
+          "reason": "Follow-up right femur ORIF",
+          "conditions": [
+            {
+              "label": "Unspecified fracture of right femur, initial encounter for closed fracture",
+              "action": "resolved",
+              "icd10": "S72.91XA"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic Follow-up Letter",
+              "date": "2020-05-01T14:10",
+              "author": "orthopedic surgery",
+              "body": "Orthopaedic Trauma Clinic\nDate of visit: 04/28/2020\nRe: Abigail Whitcomb, DOB 09/01/1987\nAllergies: NKDA\n\nDear colleague,\n\nI saw Ms. Whitcomb on 4/28, about 15 weeks after open reduction and internal fixation of her right femur fracture. She finished her course of outpatient physical therapy last week and is walking without an assistive device. She reports no thigh pain.\n\nExam: well-healed lateral thigh incision. Full knee and hip range of motion. Quadriceps strength 5/5. Gait normal, no limp. Neurovascularly intact distally.\n\nRadiographs of the right femur at the visit: fracture healed with bridging callus, hardware intact and in good position, no loosening.\n\nAssessment: healed right femur fracture after ORIF.\nPlan: no restrictions, full activity. Home exercise program. Hardware may stay unless it becomes symptomatic. Follow up with us as needed.\n\nThank you for allowing us to participate in her care.\nOrthopaedic Trauma Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2020-06-09a",
+          "kind": "telehealth_visit",
+          "start": "2020-06-09T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Nightmares and anxiety since accident",
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 15
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2020-06-09T16:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral",
+              "action": "placed",
+              "order": "Psychiatry referral",
+              "category": "referral",
+              "to": "Psychiatry",
+              "reason": "trauma-related nightmares, flashbacks and anxiety after January car crash"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2020-06-09T16:40",
+              "author": "PCP",
+              "body": "Video visit, pt at home, identity confirmed, consents to telehealth.\n\nShe wrote last week asking to talk about how she's been since the crash in January. Leg fully healed, walking normally.\n\nBut since the accident: nightmares most nights where she is back in the car, wakes terrified. Flashbacks during the day. Anxious most of the time. She has not driven since January; gets rides or walks. Car horns or a siren outside make her extremely anxious and she has to stop what she's doing. Remote teaching this spring has made it easier to hide. Not drinking, no substances. No thoughts of self-harm or of not wanting to be alive. Mother has an anxiety disorder; she has never been treated for anything like this herself.\n\nGAD-7 15. PHQ-9 7, item 9 zero.\n\nObs on video: anxious, coherent, linear, good eye contact.\n\nA/P\nTrauma-related symptoms for ~5 months after the January collision; picture strongly suggests PTSD. Discussed that this is common after an injury like hers and very treatable. She wants an evaluation and is interested in therapy first. Referral to psychiatry placed; front desk to help with first available. Gave crisis line number. Check in after she's seen."
+            }
+          ]
+        },
+        {
+          "id": "2020-07-07a",
+          "kind": "specialist_visit",
+          "start": "2020-07-07T10:00",
+          "service": "Psychiatry — outside",
+          "reason": "Psychiatric evaluation",
+          "conditions": [
+            {
+              "label": "Post-traumatic stress disorder",
+              "action": "diagnosed",
+              "onset": "2020-01-10"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-07-07T11:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.61
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-07-07T11:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.68
+                },
+                {
+                  "test": "Glucose",
+                  "unit": "mg/dL",
+                  "value": 91
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 119
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-07-07T11:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral",
+              "action": "done",
+              "date": "2020-07-14T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Consultation",
+              "date": "2020-07-14T13:30",
+              "author": "psychiatry",
+              "body": "Outpatient Psychiatry\nDate of service: 07/07/2020\nRe: Abigail Whitcomb, DOB 09/01/1987, age 32\nReferred by: primary care\nAllergies: NKDA. Medications: none.\n\nReason for referral: nightmares, flashbacks and anxiety after a motor vehicle collision.\n\nHistory: Ms. Whitcomb is a 32-year-old elementary school teacher who was seriously injured in a car crash in January of this year (mild TBI, right femur fracture repaired surgically, negative laparoscopy). Over the six months since, she has had recurring nightmares in which she relives the crash, waking with overwhelming fear and a sense of helplessness. She has intrusive flashbacks during the day. She has avoided driving entirely and becomes acutely anxious at the sound of car horns or sirens. Anxiety is present most of the day. She denies suicidal ideation, psychotic symptoms or manic symptoms. No prior psychiatric history or treatment.\n\nPast medical: seasonal allergic rhinitis; mild TBI and femur ORIF 01/2020; diagnostic laparoscopy 01/2020, negative.\nFamily: mother with generalized anxiety disorder; father with hypertension and hyperlipidemia; younger sibling healthy.\nSocial: teacher, single, lives alone. Never smoker. No current alcohol; denies any substance use history.\n\nVital signs within normal limits.\nMental status / exam: casually dressed, restless in the chair, shifting frequently. Startles visibly when a door closes in the hallway. Speech normal rate. Mood \"on edge\". Affect anxious, congruent. Thought process linear; no SI/HI; no perceptual disturbances. Insight and judgment good.\n\nLabs drawn today: CBC, TSH and basic metabolic panel all within normal limits.\n\nAssessment: Post-traumatic stress disorder following the January 2020 collision.\n\nPlan:\n- Trauma-focused psychotherapy: cognitive processing therapy with one of our therapists, weekly; intake scheduled.\n- Psychiatry follow-up in about a year, sooner if needed.\n- Safety planning reviewed.\n\nThank you for this referral.\nOutpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2020-07-16a",
+          "kind": "portal_message",
+          "start": "2020-07-16T07:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Psychiatry visit",
+              "date": "2020-07-16T07:50",
+              "author": "PCP",
+              "body": "Hi Abigail, I got the letter from psychiatry. Glad you were able to get in and that therapy is lined up. Their blood work was all normal. Let me know how it's going, and we'll catch up at your physical this fall."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Psychiatry visit",
+              "date": "2020-07-16T20:05",
+              "author": "patient",
+              "body": "Thanks. First therapy session is next week. Nervous but hopeful."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-20a",
+          "kind": "annual_physical",
+          "start": "2020-10-20T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              124,
+              73
+            ],
+            "hr": 72,
+            "rr": 15,
+            "temp_c": 36.4,
+            "spo2": 96,
+            "weight_kg": 63.0
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-10-20T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-20T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-20T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-10-20T16:30",
+              "author": "PCP",
+              "body": "Annual. Masked visit.\n\nInterval: crash in January with femur ORIF, mild TBI, negative laparoscopy; leg fully healed per ortho in April. Diagnosed with PTSD by psychiatry in July and has been doing weekly cognitive processing therapy since. She says the nightmares are less frequent, maybe once or twice a week now, and she can hear a siren without leaving the room. Still not driving. Back in the classroom in person this fall, hybrid schedule.\n\nNo headaches, memory or concentration complaints from the TBI. Allergies were a nuisance in August as usual.\n\nMeds: none. Allergies: NKDA.\n\nExam: vitals per flowsheet. Well appearing. HEENT normal. Neck no nodes or thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft. Right thigh scar well healed; normal gait. Neuro nonfocal. Affect mildly anxious, appropriate.\nPHQ-9 6, item 9 zero.\n\nA/P\n1. PTSD: improving with CPT. Continue with psychiatry/therapist.\n2. History of mild TBI: no residual symptoms.\n3. Allergic rhinitis: seasonal, untreated by choice.\n4. Health maintenance: flu vaccine today. Labs last year normal, none needed. Pap 2017 normal, due 2022.\n\nRTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-02-02a",
+          "kind": "portal_message",
+          "start": "2021-02-02T19:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID vaccine for teachers?",
+              "date": "2021-02-02T19:15",
+              "author": "patient",
+              "body": "Hi, do you know when teachers will be able to get the COVID vaccine? Our district keeps saying soon. Should I sign up somewhere through you?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: COVID vaccine for teachers?",
+              "date": "2021-02-03T08:30",
+              "author": "RN",
+              "body": "Hi Abigail, we aren't vaccinating in the office yet. Educators are expected to become eligible in the state's next phase. Once you are, you can book at any of the regional clinics or pharmacies through the state's sign-up site. Let us know once you get it and we'll update your record."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-20a",
+          "kind": "outside_records",
+          "start": "2021-04-20T10:05",
+          "reason": "Immunization registry update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-16T15:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-06T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Administrative",
+              "title": "Immunization Registry Reconciliation",
+              "date": "2021-04-20T10:05",
+              "author": "MA",
+              "body": "State immunization registry queried. Two doses of Pfizer-BioNTech COVID-19 vaccine given at a regional vaccination clinic, 03/16/2021 and 04/06/2021. Added to immunization history. Pt also uploaded a photo of her card."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-26a",
+          "kind": "annual_physical",
+          "start": "2021-10-26T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              124,
+              68
+            ],
+            "hr": 66,
+            "rr": 15,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 63.2
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-10-26T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-26T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-26T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Rooming",
+              "date": "2021-10-26T15:45",
+              "author": "MA",
+              "body": "Roomed for annual. Vitals entered. Meds reviewed: none. Allergies: NKDA. PHQ-9 completed, 9, question 9 answered 0. Flu shot requested."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-10-26T16:35",
+              "author": "PCP",
+              "body": "Annual.\n\nPTSD after the January 2020 crash: she had a good stretch through last winter after CPT, nightmares rare by the end. Then in January of this year she was robbed at gunpoint in her own neighborhood. Did not seek any medical care. Was OK for a while, but since about July the nightmares and flashbacks are back, now of the robbery, and she goes out of her way to avoid a few streets near her apartment. Jumpy, on edge, hard to concentrate grading. Says she feels far away from her friends and family, even her mom. No SI, no substances, no alcohol.\n\nShe has not been back to psychiatry since last year and wants to go back; she will call them this week. She was due for a psychiatry follow-up anyway.\n\nOtherwise well. Completed COVID series in the spring. Seasonal allergies as usual in August.\n\nMeds: none. Allergies: NKDA.\n\nExam: vitals per flowsheet. Well appearing, a bit guarded. HEENT normal. Neck supple. Heart regular, no murmur. Lungs clear. Abdomen soft. Extremities no edema, right thigh scar healed. Neuro nonfocal.\nPHQ-9 9, item 9 zero.\n\nA/P\n1. PTSD with recurrence after a second trauma (armed robbery 1/2021): she is reconnecting with psychiatry and her therapist. Offered to place a new referral; she doesn't need one, still established there. Crisis resources reviewed.\n2. Allergic rhinitis: no change.\n3. Health maintenance: flu vaccine today. COVID booster when eligible as an educator. Pap due next year.\n\nRTC 1 year or sooner."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-11-09a",
+          "kind": "outside_records",
+          "start": "2021-11-09T09:40",
+          "reason": "Immunization registry update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-06T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Administrative",
+              "title": "Immunization Registry Reconciliation",
+              "date": "2021-11-09T09:40",
+              "author": "MA",
+              "body": "Registry shows Pfizer-BioNTech COVID-19 booster given at a community pharmacy 11/06/2021. Added."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-03a",
+          "kind": "specialist_visit",
+          "start": "2022-01-03T13:00",
+          "service": "Psychiatry — outside",
+          "reason": "Psychiatry follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up",
+              "date": "2022-01-10T11:20",
+              "author": "psychiatry",
+              "body": "Outpatient Psychiatry, follow-up\nDate of service: 01/03/2022\nRe: Abigail Whitcomb, DOB 09/01/1987, age 34\nAllergies: NKDA. Current medications: none.\n\nMs. Whitcomb was evaluated here in July 2020 for PTSD after a motor vehicle collision and completed a course of cognitive processing therapy with good response. She returns now after a second trauma: in January 2021 she was mugged at gunpoint near her home. About six months later her symptoms returned, and for the last six months she has had recurrent nightmares, flashbacks and avoidance of parts of her neighborhood. She describes feeling keyed up, having trouble focusing, and startling easily. She has felt cut off from friends and family. No suicidal ideation. No alcohol or substance use.\n\nVital signs within normal limits. Physical examination normal.\nMental status: well groomed, cooperative, mood \"wound up\", affect anxious and somewhat constricted, thought process goal directed, no SI/HI, no psychotic features, insight good.\n\nAssessment: Post-traumatic stress disorder, recurrence of symptoms following a second traumatic event.\n\nPlan:\n- Resume trauma-focused psychotherapy (CPT) with her therapist here, weekly, now addressing the robbery as well.\n- Psychiatry follow-up in about a year, sooner as needed.\n\nThank you for your continued involvement in her care.\nOutpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "portal_message",
+          "start": "2022-01-11T07:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Psychiatry note",
+              "date": "2022-01-11T07:45",
+              "author": "PCP",
+              "body": "Hi Abigail, I saw the note from your psychiatry visit last week. Glad you're back in therapy. Reach out any time if things get harder in between."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Psychiatry note",
+              "date": "2022-01-11T21:10",
+              "author": "patient",
+              "body": "Thank you, I will. It helps knowing you all talk to each other."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-05a",
+          "kind": "portal_message",
+          "start": "2022-07-05T10:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Wanted you to know",
+              "date": "2022-07-05T10:30",
+              "author": "patient",
+              "body": "Hi. I wanted to let you know I was in another car accident on June 24. I was in the passenger seat, my friend was driving and she died. I only had minor injuries and didn't go to the hospital. I've already called my therapist and I'm seeing her weekly again. I'm not sure what I need from you, I just didn't want you to hear it later."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Wanted you to know",
+              "date": "2022-07-05T13:05",
+              "author": "PCP",
+              "body": "Abigail, I am so sorry about your friend. Thank you for telling me. I'm glad you reached out to your therapist right away. If anything isn't healing, or you're not sleeping or eating, let me know and I'll see you sooner than September. If you ever feel unsafe, call 911 or go to the nearest ED."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "annual_physical",
+          "start": "2022-09-27T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, Pap",
+          "vitals": {
+            "bp": [
+              117,
+              66
+            ],
+            "hr": 66,
+            "rr": 14,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 61.7
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 8
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-09-27T16:05",
+              "text": "Specimen: liquid-based cervical cytology with high-risk HPV testing.\nSpecimen adequacy: satisfactory for evaluation; transformation zone component present.\nInterpretation: negative for intraepithelial lesion or malignancy.\nHigh-risk HPV: not detected.",
+              "conclusion": "NILM. High-risk HPV negative.",
+              "issued": "2022-10-03T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-09-27T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-27T16:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-27T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-09-27T16:40",
+              "author": "PCP",
+              "body": "Annual, Pap today.\n\nIn June she was the passenger in a crash in which the friend driving was killed (portal message 7/5). Her own injuries were minor and healed without care. Since then: nightmares again, flashbacks, very anxious; she won't drive and cannot go past the intersection where it happened. Sleep broken, concentration poor, worried about the school year that just started. Back in weekly therapy since early July. Has a psychiatry follow-up set for late December. No SI, no alcohol or drugs.\n\nPrior: PTSD since the 2020 crash, recurrence after the robbery in 2021.\n\nMeds: none. Allergies: NKDA.\n\nExam: vitals per flowsheet. Tired appearing, appropriate. HEENT normal. Neck supple, no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Pelvic: normal external genitalia, vaginal mucosa normal, cervix without lesions; Pap with HPV collected. Extremities no edema. Neuro nonfocal.\nPHQ-9 8, item 9 zero.\n\nA/P\n1. PTSD, worse after a third trauma and the loss of her friend. In therapy; psychiatry in December. Discussed asking psychiatry to see her sooner if she isn't sleeping; she'd like to stay the course with therapy for now.\n2. Cervical screening: Pap with HPV today.\n3. Flu vaccine today. Bivalent COVID booster at pharmacy.\n\nRTC 1 year, or sooner."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "portal_message",
+          "start": "2022-10-04T08:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "date": "2022-10-04T08:05",
+              "author": "PCP",
+              "body": "Your Pap smear was normal and HPV was negative. Next screening in 5 years, 2027."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-25a",
+          "kind": "outside_records",
+          "start": "2022-10-25T11:15",
+          "reason": "Immunization registry update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-22T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Administrative",
+              "title": "Immunization Registry Reconciliation",
+              "date": "2022-10-25T11:15",
+              "author": "MA",
+              "body": "Registry: Pfizer-BioNTech bivalent COVID-19 booster 10/22/2022, community pharmacy. Added to record."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-30a",
+          "kind": "specialist_visit",
+          "start": "2022-12-30T10:30",
+          "service": "Psychiatry — outside",
+          "reason": "Psychiatry follow-up",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-12-30T11:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.66
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 211
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-12-30T11:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Sodium",
+                  "value": 143
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-12-30T11:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up",
+              "date": "2023-01-06T15:40",
+              "author": "psychiatry",
+              "body": "Outpatient Psychiatry, follow-up\nDate of service: 12/30/2022\nRe: Abigail Whitcomb, DOB 09/01/1987, age 35\nAllergies: NKDA. Current medications: none.\n\nInterval: Ms. Whitcomb carries a diagnosis of PTSD after a 2020 car crash, with a recurrence after an armed robbery in 2021. In late June 2022 she was a passenger in a serious crash; she was only lightly hurt but saw her friend killed. For the six months since, she has had recurring nightmares, flashbacks and marked anxiety. She refuses to drive and becomes very upset if her route takes her past the site of the crash. Sleep is poor and she struggles to concentrate at work. Engaged in weekly trauma-focused therapy since July. She denies substance use. No SI.\n\nVital signs within normal limits.\nExam: restless, with a fine tremor of both hands when she holds them out.\nMental status: cooperative, mood \"exhausted\", affect anxious, linear thought, no SI/HI, no psychosis.\n\nLabs today: CBC, thyroid function (TSH and free T4) and basic metabolic panel all normal.\n\nAssessment: Post-traumatic stress disorder, exacerbated by a third traumatic event with traumatic loss.\n\nPlan:\n- Continue weekly cognitive processing therapy.\n- Return in about a year, sooner if needed.\n\nOutpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2023-01-09a",
+          "kind": "portal_message",
+          "start": "2023-01-09T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Psychiatry visit and labs",
+              "date": "2023-01-09T07:55",
+              "author": "PCP",
+              "body": "Hi Abigail, psychiatry's note from 12/30 came through. The blood work they drew, including your thyroid, was all normal. Thinking of you this winter. If you'd like a check-in visit with me in the spring, just book it."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "office_visit",
+          "start": "2023-05-16T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in visit",
+          "documents": [
+            {
+              "type": "Administrative",
+              "title": "Missed Appointment",
+              "date": "2023-05-16T16:30",
+              "author": "front desk",
+              "body": "Pt did not arrive for 4:00 check-in visit. Called, left voicemail with callback number. Portal reminder sent to reschedule."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-05-17a",
+          "kind": "portal_message",
+          "start": "2023-05-17T20:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sorry about yesterday",
+              "date": "2023-05-17T20:40",
+              "author": "patient",
+              "body": "So sorry I missed yesterday. Field trip ran late and I completely forgot. I'm doing OK, still seeing my therapist every week. I'll just come in for my physical in the fall if that's alright."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Sorry about yesterday",
+              "date": "2023-05-18T09:10",
+              "author": "front desk",
+              "body": "No problem at all! We have you down for your annual in October. We'll send a reminder."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "annual_physical",
+          "start": "2023-10-17T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              116,
+              72
+            ],
+            "hr": 67,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 96,
+            "weight_kg": 63.1
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-10-17T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Rooming",
+              "date": "2023-10-17T15:45",
+              "author": "MA",
+              "body": "Roomed. Vitals entered. No meds. NKDA. PHQ-9 7, item 9 = 0. Wants flu shot today; will get COVID at pharmacy."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-10-17T16:35",
+              "author": "PCP",
+              "body": "Annual.\n\nPTSD: still in weekly therapy, a year and a bit out from last summer's crash. Psychiatry saw her in December. Flashbacks less often than last fall but still there; she does not drive and plans her walks and rides around that intersection. Stays alert to traffic constantly, doesn't sleep well on school nights. Says teaching is the part of the day that feels normal. No SI. No alcohol.\n\nNo headaches. Allergies were mild this year.\n\nMeds: none. Allergies: NKDA.\n\nExam: vitals per flowsheet. Well appearing. HEENT normal. Neck no nodes. Heart regular, no murmur. Lungs clear. Abdomen soft. Extremities no edema. Neuro nonfocal. Mood mildly anxious, affect full.\n\nA/P\n1. PTSD: chronic, followed by psychiatry with weekly therapy. Next psychiatry visit January.\n2. History of mild TBI, remote femur ORIF: no issues.\n3. Allergic rhinitis: seasonal, no treatment.\n4. Health maintenance: flu today; updated COVID vaccine at pharmacy. Pap 2022 normal. Labs next year.\n\nRTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-11-01a",
+          "kind": "outside_records",
+          "start": "2023-11-01T10:30",
+          "reason": "Immunization registry update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-28T12:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Administrative",
+              "title": "Immunization Registry Reconciliation",
+              "date": "2023-11-01T10:30",
+              "author": "MA",
+              "body": "Registry: 2023-2024 formula Pfizer-BioNTech COVID-19 vaccine 10/28/2023 at community pharmacy. Entered."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "specialist_visit",
+          "start": "2024-01-09T14:00",
+          "service": "Psychiatry — outside",
+          "reason": "Psychiatry follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up",
+              "date": "2024-01-16T10:50",
+              "author": "psychiatry",
+              "body": "Outpatient Psychiatry, follow-up\nDate of service: 01/09/2024\nRe: Abigail Whitcomb, DOB 09/01/1987, age 36\nAllergies: NKDA. Current medications: none.\n\nInterval history: 36-year-old teacher with PTSD tied to a 2020 collision, a 2021 armed robbery and the June 2022 crash in which she was a passenger and her friend was killed. Symptoms persist. She continues to have flashbacks of the 2022 crash, avoids the site and still does not drive. She is hypervigilant and feels on edge most of the time, finds it hard to stay focused at work, and has ongoing insomnia. Continues weekly therapy. No SI, no substance use, no alcohol.\n\nVital signs within normal limits.\nExam notable for a heightened startle response (jumped when a cart was wheeled past the door).\nMental status: cooperative, anxious affect, goal-directed, no SI/HI, no psychotic features.\n\nAssessment: Post-traumatic stress disorder, chronic, ongoing symptoms.\n\nPlan:\n- Continue trauma-focused psychotherapy weekly.\n- Sleep hygiene reviewed.\n- Return in about a year.\n\nOutpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "annual_physical",
+          "start": "2024-10-22T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              113,
+              61
+            ],
+            "hr": 63,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 62.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-22T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.45
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 192
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-22T16:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Glucose",
+                  "unit": "mg/dL",
+                  "value": 89
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 99
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-22T16:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 92
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 174
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 58
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 120
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 116
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-22T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T16:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-22T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-22T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-10-22T16:45",
+              "author": "PCP",
+              "body": "Annual. 37F.\n\nPTSD: psychiatry in January, continues therapy weekly. She feels she has plateaued: some weeks are good, but sleep is still the hard part and she still won't drive. Not interested in changing anything right now; next psychiatry visit is January. No SI. No alcohol.\n\nNo other concerns. Allergy season OK.\n\nMeds: none. Allergies: NKDA.\nFHx reviewed: father's blood pressure and cholesterol, mother's anxiety. No changes.\n\nExam: vitals per flowsheet. Well appearing. HEENT normal. Neck supple, no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Extremities no edema. Neuro nonfocal. Affect anxious but engaged.\nPHQ-9 6, item 9 zero.\n\nA/P\n1. PTSD: chronic, stable, followed by psychiatry.\n2. Health maintenance: CBC, CMP, lipids today (last 2019; family history of hyperlipidemia). Flu today. COVID updated vaccine at pharmacy. Pap 2022 normal, next 2027.\n\nRTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "portal_message",
+          "start": "2024-10-24T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-10-24T12:15",
+              "author": "PCP",
+              "body": "Hi Abigail, your labs from Tuesday look good: normal blood counts, kidney and liver function, and your cholesterol is in a healthy range. See you next fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-04a",
+          "kind": "outside_records",
+          "start": "2024-11-04T09:20",
+          "reason": "Immunization registry update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-11-02T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Administrative",
+              "title": "Immunization Registry Reconciliation",
+              "date": "2024-11-04T09:20",
+              "author": "MA",
+              "body": "Registry: 2024-2025 formula Pfizer-BioNTech COVID-19 vaccine 11/02/2024, community pharmacy. Entered."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-06a",
+          "kind": "specialist_visit",
+          "start": "2025-01-06T16:30",
+          "service": "Psychiatry — outside (telehealth)",
+          "reason": "Psychiatry follow-up, video",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Telehealth Follow-up",
+              "date": "2025-01-13T09:30",
+              "author": "psychiatry",
+              "body": "Outpatient Psychiatry, telehealth follow-up\nDate of service: 01/06/2025 (video; patient at home)\nRe: Abigail Whitcomb, DOB 09/01/1987, age 37\nAllergies: NKDA. Current medications: none.\n\nInterval: Seen yearly here for PTSD. The symptoms she describes now go back to the June 2022 crash in which she was a passenger and her friend, who was driving, died; earlier traumas were the 2020 collision and the 2021 robbery. She currently has trouble getting to sleep and frequent nightmares. Sudden loud sounds, a car backfiring for example, make her jump and she feels for a moment that she is back at the crash. She also describes spells in which her surroundings feel unreal and far away. Continues therapy. No SI, no alcohol, no substances.\n\nVitals: not obtained, video visit.\nObservation on video: appears anxious; startled noticeably when a door slammed in her apartment building during the visit.\nMental status: cooperative, mood \"tired\", affect anxious, linear, no SI/HI, no psychotic features.\n\nAssessment: Post-traumatic stress disorder, chronic, with episodes of feeling detached from her surroundings.\n\nPlan:\n- Continue trauma-focused therapy; therapist to address the detachment spells and sleep.\n- Return in about a year, or sooner by request.\n\nOutpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "portal_message",
+          "start": "2025-01-14T08:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Psychiatry note received",
+              "date": "2025-01-14T08:20",
+              "author": "PCP",
+              "body": "Hi Abigail, I read psychiatry's note from your video visit. Sounds like a rough stretch with sleep. I'm here too if you want to talk anything through; otherwise see you in the fall."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Psychiatry note received",
+              "date": "2025-01-14T19:55",
+              "author": "patient",
+              "body": "Thanks, I appreciate it. Winter is always harder. I'm hanging in."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "annual_physical",
+          "start": "2025-10-21T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              128,
+              70
+            ],
+            "hr": 75,
+            "rr": 15,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 63.7
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-10-21T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-21T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-21T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Rooming",
+              "date": "2025-10-21T15:44",
+              "author": "MA",
+              "body": "Roomed for annual. Vitals in flowsheet. Meds none, NKDA. PHQ-9 5, item 9 negative. Flu shot today."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-10-21T16:35",
+              "author": "PCP",
+              "body": "Annual. 38F.\n\nPTSD: psychiatry by video in January; continues therapy. Startle with loud noises still, and the odd spell of feeling detached, less than last winter. Sleep somewhat better this fall. Still not driving. Enjoying her class this year. No SI, no alcohol.\n\nAllergies: usual late-summer symptoms, settled now.\n\nMeds: none. Allergies: NKDA.\n\nExam: vitals per flowsheet. Well appearing. HEENT normal, nasal mucosa normal today. Neck supple. Heart regular, no murmur. Lungs clear. Abdomen soft. Extremities no edema. Neuro nonfocal. Mood good, affect slightly anxious.\nPHQ-9 5, item 9 zero.\n\nA/P\n1. PTSD, chronic: psychiatry and therapy, continue.\n2. Allergic rhinitis, seasonal: no treatment needed.\n3. Health maintenance: flu today, COVID at pharmacy. Labs 2024 normal. Pap due 2027.\n\nRTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-03a",
+          "kind": "outside_records",
+          "start": "2025-11-03T10:10",
+          "reason": "Immunization registry update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-11-01T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Administrative",
+              "title": "Immunization Registry Reconciliation",
+              "date": "2025-11-03T10:10",
+              "author": "MA",
+              "body": "Registry: 2025-2026 formula Pfizer-BioNTech COVID-19 vaccine 11/01/2025 at community pharmacy. Entered."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "ed_visit",
+          "start": "2026-01-06T18:50",
+          "end": "2026-01-06T23:05",
+          "service": "Emergency Medicine — outside",
+          "reason": "Dizziness and nausea",
+          "vitals": {
+            "bp": [
+              125,
+              72
+            ],
+            "hr": 76,
+            "rr": 14,
+            "temp_c": 36.8,
+            "spo2": 97
+          },
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-01-06T18:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-01-07T08:40",
+              "author": "emergency medicine",
+              "body": "Emergency Department physician record\nDate of service: 01/06/2026\nPatient: Abigail Whitcomb, 38F, DOB 09/01/1987\nAllergies: NKDA. Home medications: none.\n\nCC: dizziness\n\nHPI: 38-year-old woman with PTSD, a history of mild TBI from a car crash in 2020, and seasonal allergic rhinitis. About a week ago she blew her nose very forcefully and right away felt the room spin, with nausea. Since then, loud noises have been setting off dizziness: a slammed door, the TV turned up. Today the dizziness has been severe and she came in because it was not easing. No headache, no new hearing loss reported, no weakness, numbness, speech or vision change. No fever.\n\nPMH: PTSD; mild TBI 2020; seasonal allergic rhinitis. PSH: ORIF right femur 2020; diagnostic laparoscopy 2020, negative.\nSocial: teacher, never smoker, no alcohol, no drugs.\n\nExam: vitals reviewed, within normal limits. Anxious appearing. HEENT: otoscopic exam unremarkable bilaterally. Neck supple. Heart regular. Lungs clear. Neuro: alert and oriented, cranial nerves II-XII intact, strength and sensation normal, finger-to-nose normal. Romberg positive. Gait: has difficulty keeping her balance walking.\n\nMDM: Vertigo with a clear pressure trigger (forceful nose blowing) followed by sound-induced vertigo. Picture fits a perilymphatic fistula. Neurologic exam otherwise nonfocal.\n\nImpression: Vertigo; suspected perilymphatic fistula.\n\nDisposition: discharged home, accompanied. ENT referral; follow up with primary care this week. Instructions: no nose blowing (dab only), sneeze with mouth open, avoid straining, bending and heavy lifting, head of bed up, no driving. Return for worsening vertigo, hearing loss, severe headache, weakness or vomiting that won't stop."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-01-07a",
+          "kind": "telephone",
+          "start": "2026-01-07T10:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "ED Follow-up Call",
+              "date": "2026-01-07T10:15",
+              "author": "RN",
+              "body": "ED record from last night received. Called pt. Still dizzy, worse with noise; lying low at home today, her mother is with her. No vomiting since. Booked with PCP tomorrow 11:20. Reviewed ED precautions."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-08a",
+          "kind": "office_visit",
+          "start": "2026-01-08T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, vertigo",
+          "vitals": {
+            "bp": [
+              120,
+              76
+            ],
+            "hr": 79,
+            "temp_c": 36.3,
+            "spo2": 98
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-08T11:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-referral",
+              "action": "placed",
+              "order": "ENT (otology) referral",
+              "category": "referral",
+              "to": "Otolaryngology",
+              "reason": "suspected perilymphatic fistula after forceful nose blowing"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2026-01-08T12:05",
+              "author": "PCP",
+              "body": "Seen in the ED 1/6 for vertigo; record reviewed.\n\nAbout 10 days ago she blew her nose hard and the room spun, with nausea. Since then loud sounds bring the dizziness on; a pan dropped in the kitchen this morning did it. Following the ED precautions. No hearing change she has noticed. No headache. She is anxious about it and about going back to work Monday.\n\nMeds: none. Allergies: NKDA.\n\nExam: vitals per flowsheet. Anxious, comfortable at rest. TMs normal. Cranial nerves intact. Strength normal. Romberg positive, as in the ED. Walks carefully, a bit unsteady.\n\nA/P\nSuspected perilymphatic fistula (pressure event, then sound-induced vertigo). Urgent ENT/otology referral placed; front desk to push for first available. Continue precautions: no nose blowing, straining or lifting. Out of work until ENT sees her. Return or ED for hearing loss, worsening vertigo or neuro symptoms."
+            },
+            {
+              "type": "Administrative",
+              "title": "Referral Scheduling",
+              "date": "2026-01-08T14:30",
+              "author": "front desk",
+              "body": "Urgent ENT referral faxed with ED record and today's note. ENT office called back: appointment 1/21 at 9:40, first available with otology. Pt notified by phone."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "specialist_visit",
+          "start": "2026-01-21T09:40",
+          "service": "Otolaryngology — outside",
+          "reason": "Otology consult",
+          "conditions": [
+            {
+              "label": "Labyrinthine fistula, unspecified ear",
+              "action": "diagnosed",
+              "onset": "2025-12-30",
+              "note": "perilymphatic fistula after forceful nose blowing",
+              "icd10": "H83.19"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Audiogram",
+              "performed": "2026-01-21T09:15",
+              "text": "Pure-tone air and bone conduction thresholds within normal limits, 250 to 8000 Hz, both ears. No air-bone gap. Speech reception thresholds agree with pure-tone averages. Word recognition excellent bilaterally. Tympanometry type A bilaterally.",
+              "conclusion": "Normal hearing thresholds bilaterally."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-referral",
+              "action": "done",
+              "date": "2026-01-23T13:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otology Consultation",
+              "date": "2026-01-23T13:10",
+              "author": "otolaryngology",
+              "body": "Otolaryngology / Otology\nDate of visit: 01/21/2026\nRe: Abigail Whitcomb, DOB 09/01/1987\nAllergies: NKDA. Medications: none.\n\nDear colleague,\n\nThank you for sending Ms. Whitcomb, a 38-year-old teacher, seen in the ED on 1/6. On about 12/30 she blew her nose very forcefully and had immediate vertigo and nausea. Since then, loud sounds trigger dizziness. She has followed the ED's precautions and has been out of work. No hearing loss noticed. Background: PTSD, mild TBI in 2020, seasonal allergic rhinitis.\n\nExam: anxious but pleasant. Otoscopy: external canals and tympanic membranes normal bilaterally. Cranial nerves intact. Romberg positive.\n\nAudiogram today: normal hearing thresholds in both ears.\n\nImpression: perilymphatic fistula, diagnosed clinically from the pressure-related onset and sound-induced vertigo.\n\nPlan:\n- Conservative management: relative rest, head of bed elevated, no nose blowing, straining, bending or heavy lifting; sneeze with mouth open.\n- Out of work for two weeks, through 2/4, then return as tolerated.\n- CT temporal bones without contrast to exclude superior canal dehiscence.\n- Recheck in about 6 weeks, sooner for any hearing loss or worsening vertigo.\n\nThank you for allowing me to see her.\nOtology"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-22a",
+          "kind": "portal_message",
+          "start": "2026-01-22T07:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Work note",
+              "date": "2026-01-22T07:30",
+              "author": "patient",
+              "body": "ENT says it's a perilymphatic fistula and wants me out two more weeks. Their note won't be ready for a couple of days and HR at school is asking for something now. Could you send a note covering 1/7 to 2/4?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Work note",
+              "date": "2026-01-22T11:45",
+              "author": "PCP",
+              "body": "Done, letter is attached here. It covers 1/7 through 2/4 with return after that per ENT. Hope the rest helps. Keep following their precautions."
+            },
+            {
+              "type": "Administrative",
+              "title": "Work Note",
+              "date": "2026-01-22T11:40",
+              "author": "PCP",
+              "body": "To whom it may concern: Ms. Whitcomb has been under medical care for an inner ear condition and is unable to work from January 7 through February 4, 2026. She may return on February 5, 2026, as directed by her ENT specialist."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-27a",
+          "kind": "imaging",
+          "start": "2026-01-27T08:30",
+          "service": "Radiology — outside",
+          "reason": "CT temporal bones",
+          "reports": [
+            {
+              "study": "CT temporal bones without contrast",
+              "loinc": "30620-7",
+              "performed": "2026-01-27T08:30",
+              "text": "Indication: sound-induced vertigo after a pressure event; evaluate for superior canal dehiscence.\nTechnique: thin-section axial CT of both temporal bones without contrast, with Poschl and Stenver reformats.\nFindings: The superior semicircular canals are covered by bone bilaterally; no dehiscence. Posterior and lateral semicircular canals, vestibules and cochleae are normal. Oval and round windows unremarkable. Ossicular chains intact and normally aligned. Middle ear cavities and mastoid air cells clear. External auditory canals normal. Internal auditory canals symmetric and normal in caliber.",
+              "conclusion": "Normal CT of the temporal bones. No superior semicircular canal dehiscence.",
+              "issued": "2026-01-27T13:40"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-28a",
+          "kind": "portal_message",
+          "start": "2026-01-28T08:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "CT result",
+              "date": "2026-01-28T08:10",
+              "author": "PCP",
+              "body": "Hi Abigail, your CT of the inner ears came back normal, with no thinning over the balance canals. ENT will go over it at your follow-up. Hope you're feeling steadier."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-04a",
+          "kind": "specialist_visit",
+          "start": "2026-03-04T10:20",
+          "service": "Otolaryngology — outside",
+          "reason": "Otology follow-up",
+          "conditions": [
+            {
+              "label": "Labyrinthine fistula, unspecified ear",
+              "action": "resolved",
+              "icd10": "H83.19"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otology Follow-up",
+              "date": "2026-03-06T09:25",
+              "author": "otolaryngology",
+              "body": "Otolaryngology / Otology\nDate of visit: 03/04/2026\nRe: Abigail Whitcomb, DOB 09/01/1987\nAllergies: NKDA. Medications: none.\n\nDear colleague,\n\nMs. Whitcomb returns for follow-up of her perilymphatic fistula. She went back to teaching on 2/5. The dizziness with loud sounds faded over the first weeks of February and she has had none for several weeks now. Balance feels normal to her.\n\nCT temporal bones 1/27 was normal, with no superior canal dehiscence; reviewed with her.\n\nExam: otoscopy normal. Gait normal, tandem gait normal. Romberg negative.\n\nImpression: perilymphatic fistula, resolved with conservative care.\n\nPlan: resume full activity. Gentle nose blowing, one side at a time, going forward. Follow up with us as needed if symptoms recur.\n\nOtology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "portal_message",
+          "start": "2026-03-10T19:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update",
+              "date": "2026-03-10T19:20",
+              "author": "patient",
+              "body": "Just wanted to say thank you for getting me in with ENT so fast. The dizziness is completely gone and I've been back in my classroom for a month. They signed off on me last week."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Update",
+              "date": "2026-03-11T07:40",
+              "author": "PCP",
+              "body": "That's great news, thanks for letting me know. I got their note. See you in the fall for your physical."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T14:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Fall physical",
+              "date": "2026-08-11T14:05",
+              "author": "patient",
+              "body": "Hi, can I book my physical for late September? After school on a Tuesday is best."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Fall physical",
+              "date": "2026-08-12T09:15",
+              "author": "front desk",
+              "body": "You're booked Tuesday 9/22 at 3:40. We'll have your flu shot ready."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "History of blunt abdominal trauma|Z87.828": {
+        "code": "Z87.828",
+        "display": "Personal history of other (healed) physical injury and trauma",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of mild traumatic brain injury|Z87.820": {
+        "code": "Z87.820",
+        "display": "Personal history of traumatic brain injury",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Labyrinthine fistula, unspecified ear|H83.19": {
+        "code": "H83.19",
+        "display": "Labyrinthine fistula, unspecified ear",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Unspecified fracture of right femur, initial encounter for closed fracture|S72.91XA": {
+        "code": "S72.91XA",
+        "display": "Unspecified fracture of right femur, initial encounter for closed fracture",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "rejected": [
+      "report \"CT temporal bones without contrast\" LOINC 30620-7 not found"
+    ]
+  }
+}

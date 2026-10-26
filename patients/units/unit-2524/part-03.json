@@ -1,0 +1,239 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002524",
+      "events": [
+        {
+          "id": "2024-01-09a",
+          "kind": "office_visit",
+          "start": "2024-01-09T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, tuberculosis treatment",
+          "medications": [
+            {"drug_text": "pyrazinamide 500 MG Oral Tablet", "action": "stop", "reason": "intensive phase completed 1/2 per health department"},
+            {"drug_text": "ethambutol hydrochloride 400 MG Oral Tablet", "action": "stop", "reason": "intensive phase completed 1/2 per health department"}
+          ],
+          "state": {"weight_kg": 63.0, "labs": {"Hemoglobin": 11.2}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-01-09T15:35", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2024-01-09T15:35", "results": [{"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}, {"test": "Bilirubin, Total"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-01-09T15:00"},
+            {"procedure": "Venipuncture", "performed": "2024-01-09T15:35"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2024-01-09T15:50", "body": "TB f/u. Health dept letter: 2-month intensive phase completed 1/2; pyrazinamide and ethambutol stopped. Continues rifampin + isoniazid + B6 through about the end of April, still DOT.\nFeels \"almost normal.\" No fever or sweats since November, cough gone. Eating well, weight 63 (up almost 3). No numbness or tingling, vision fine, no abdominal pain.\nHIV: on dolutegravir BID + Truvada. Saw ID clinic in December — no numbers in hand.\nUC: formed stools, no blood.\n\nExam: looks better. Vitals per flowsheet. Lungs clear. Heart regular. Abdomen soft, no liver edge. Skin: no jaundice; graft sites well healed.\n\nA/P\n1. Miliary TB, continuation phase. LFTs today.\n2. Anemia improving — CBC.\n3. HIV/AIDS per ID; back to Biktarvy two weeks after rifampin ends, per their plan.\nRTC 3-4 months; physical in the summer."}
+          ]
+        },
+        {
+          "id": "2024-01-11a",
+          "kind": "portal_message",
+          "start": "2024-01-11T08:30",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Result Note", "title": "Results", "author": "PCP", "date": "2024-01-11T08:30", "body": "Liver tests still normal. Hemoglobin up to 11 — heading the right way. Copy faxed to the health department TB program."}
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "portal_message",
+          "start": "2024-02-13T20:02",
+          "reason": "refill request",
+          "documents": [
+            {"type": "Patient Message", "title": "mesalamine refill", "author": "patient", "date": "2024-02-13T20:02", "body": "Could you send a refill of the mesalamine? GI said you could keep it going between their visits."},
+            {"type": "Refill Request", "title": "RE: mesalamine refill", "author": "PCP", "date": "2024-02-14T07:45", "body": "Sent mesalamine DR 1.2 g, 4 daily, 90-day supply with 3 refills."}
+          ]
+        },
+        {
+          "id": "2024-04-25a",
+          "kind": "hospital_admission",
+          "start": "2024-04-25T11:30",
+          "end": "2024-05-09T14:00",
+          "service": "Emergency Medicine",
+          "reason": "headache, fever, neck stiffness",
+          "conditions": [
+            {"label": "Cryptococcal meningitis", "icd10": "B45.1", "action": "diagnosed", "onset": "2024-04-11"}
+          ],
+          "vitals": [{"time": "2024-04-25T11:40", "temp_c": 38.9}],
+          "labs": [
+            {"panel": null, "collected": "2024-04-25T14:20", "results": [
+              {"test": "Leukocytes, CSF", "loinc": "806-0", "unit": "/uL", "value": 20},
+              {"test": "Protein, CSF", "loinc": "2880-3", "unit": "mg/dL", "value": 100},
+              {"test": "Glucose, CSF", "loinc": "2342-4", "unit": "mg/dL", "value": 20},
+              {"test": "Glucose", "value": 90}
+            ]}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2024-04-30T10:10", "body": "Date of service: 04/25/2024\nCC: headache x 2 weeks, fever, stiff neck\n\n37M, HIV/AIDS, recent miliary TB (on rifampin/isoniazid), UC. Two weeks of headache that keeps getting worse, fevers, and neck stiffness. Acetaminophen hasn't touched it. CD4 50 at his HIV clinic a month ago.\nMeds: dolutegravir BID, emtricitabine/tenofovir DF, rifampin, isoniazid, pyridoxine, mesalamine. NKDA.\n\nExam: T 38.9. Uncomfortable. Resists neck flexion, painful. Fundi: no papilledema. Nonfocal otherwise.\n\nLP: opening pressure 250 mm H2O. CSF WBC 20/mm3, 90% lymphocytes; protein 100 mg/dL; glucose 20 mg/dL (serum 90). India ink: encapsulated yeast seen. Culture sent.\n\nImpression: cryptococcal meningitis.\nPlan: ID consulted, induction antifungal therapy to start in ED; admit to medicine.\nAllergies: NKDA"}
+          ]
+        },
+        {
+          "id": "2024-04-26a",
+          "kind": "portal_message",
+          "start": "2024-04-26T18:15",
+          "reason": "hospital admission",
+          "documents": [
+            {"type": "Patient Message", "title": "Back in the hospital", "author": "patient", "date": "2024-04-26T18:15", "body": "It's Raul's partner again. He's in the hospital since yesterday with meningitis, they said it's a fungus (cryptococcus). He'll be there about two weeks for IV treatment. He's more comfortable today."},
+            {"type": "Patient Message", "title": "RE: Back in the hospital", "author": "PCP", "date": "2024-04-26T19:40", "body": "Thank you for telling us. Please call when he's going home so we can see him that week."}
+          ]
+        },
+        {
+          "id": "2024-05-16a",
+          "kind": "office_visit",
+          "start": "2024-05-16T09:00",
+          "end": "2024-05-16T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-discharge visit, cryptococcal meningitis",
+          "conditions": [
+            {"label": "Miliary tuberculosis", "icd10": "A19.9", "action": "resolved", "note": "6 months of therapy completed 5/1/2024"},
+            {"label": "Personal history of tuberculosis", "action": "history", "onset": "2023-10-09"}
+          ],
+          "medications": [
+            {"drug_text": "rifampin 300 MG Oral Capsule", "action": "stop", "reason": "TB therapy completed"},
+            {"drug_text": "isoniazid 300 MG Oral Tablet", "action": "stop", "reason": "TB therapy completed"},
+            {"drug_text": "vitamin B6 50 MG Oral Tablet", "action": "stop", "reason": "isoniazid completed"},
+            {"drug_text": "dolutegravir 50 MG Oral Tablet", "action": "stop", "reason": "back to Biktarvy per HIV clinic"},
+            {"drug_text": "emtricitabine 200 MG / tenofovir disoproxil fumarate 300 MG Oral Tablet", "action": "stop", "reason": "back to Biktarvy per HIV clinic"},
+            {"drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "HIV infection; restarted 5/15 by HIV clinic"},
+            {"drug_text": "fluconazole 200 MG Oral Tablet", "action": "historical", "sig": "Take 4 tablets (800 mg) by mouth daily for 8 weeks", "dose": {"value": 800, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "cryptococcal meningitis, consolidation; hospital prescription"}
+          ],
+          "state": {"weight_kg": 60.0, "labs": {"Hemoglobin": 10.9, "Magnesium": 2.0}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-05-16T09:50", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-05-16T09:50", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2024-05-16T09:50", "results": [{"test": "Magnesium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2024-05-16T09:00"},
+            {"procedure": "Venipuncture", "performed": "2024-05-16T09:50"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Discharge Visit", "author": "PCP", "date": "2024-05-16T10:30", "body": "Admitted 4/25-5/9 for cryptococcal meningitis. ED record received 4/30; no discharge summary yet. History from Raul, partner and his bottles/fill list.\n\nPer them: spinal fluid culture grew Cryptococcus; two weeks of IV liposomal amphotericin plus flucytosine pills; finished his last TB doses in the hospital on 5/1 (health dept confirmed by phone). Sent home on fluconazole 800 mg daily (4 x 200 mg) for 8 weeks, then a lower dose. HIV clinic switched him back to Biktarvy yesterday — dolutegravir and Truvada stopped.\n\nNow: headache gone. No fever. Tired. No vision change. Eating OK.\n\nExam: thin. Vitals per flowsheet; weight 59. Alert, oriented, fluent. Neck supple. CN intact, strength and gait normal. Lungs clear. Heart regular.\n\nA/P\n1. Cryptococcal meningitis, consolidation fluconazole 800 mg. CMP/Mg after amphotericin.\n2. Miliary TB — treatment complete 5/1. Resolved; personal history of TB on the list.\n3. HIV/AIDS — back on Biktarvy daily. Talked again, plainly, about how these infections tie to missed doses. He gets it; asked for help setting up pharmacy blister packs — sent request.\n4. Anemia — CBC.\n5. Med list reconciled: Biktarvy, fluconazole 800, mesalamine 4.8 g, multivitamin.\nRTC July for physical."}
+          ]
+        },
+        {
+          "id": "2024-05-17a",
+          "kind": "portal_message",
+          "start": "2024-05-17T14:10",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Result Note", "title": "Results", "author": "PCP", "date": "2024-05-17T14:10", "body": "Kidney function, potassium and magnesium are all normal after the amphotericin. Hemoglobin a bit under 11. No changes."}
+          ]
+        },
+        {
+          "id": "2024-07-09a",
+          "kind": "annual_physical",
+          "start": "2024-07-09T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "medications": [
+            {"drug_text": "fluconazole 200 MG Oral Tablet", "action": "stop", "reason": "8-week consolidation completed 7/4"},
+            {"drug_text": "fluconazole 200 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 200, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "cryptococcal meningitis, maintenance; prescribed by HIV clinic"}
+          ],
+          "state": {"weight_kg": 62.0, "labs": {"Hemoglobin": 11.8}},
+          "measure": ["bp", "hr", "temp_c", "rr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2024-07-09T08:45", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-07-09T08:45", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-07-09T08:45", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-07-09T08:45", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 5}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-07-09T08:00"},
+            {"procedure": "Venipuncture", "performed": "2024-07-09T08:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-07-09T09:10", "body": "Physical, 37M.\n\nThe last year: miliary TB (treated, done 5/1), cryptococcal meningitis (April-May), on top of last year's burns and the 2022 neurocysticercosis. Doing better than he has in a while. Finished 8 weeks of fluconazole 800 on 7/4; HIV clinic changed it to 200 mg daily for maintenance, plan is to continue long term until his counts come up.\nBiktarvy: pharmacy blister packs started in June; he thinks he's missed \"maybe three days\" since.\nUC quiet. Headaches none.\nMood: tired of being sick, but sleeping and enjoying things; partner supportive. PHQ-9 5.\n\nMeds: Biktarvy, fluconazole 200 daily, mesalamine DR 4.8 g daily, multivitamin. NKDA.\n\nExam: thin but better color. Vitals per flowsheet; weight 62. HEENT: no thrush. Neck supple, no nodes. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Skin: healed graft sites. Neuro: oriented, strength and gait normal.\n\nA/P\n- HIV/AIDS on Biktarvy + blister packs; HIV clinic labs next month.\n- Cryptococcal meningitis, on maintenance fluconazole.\n- Anemia improving — CBC.\n- UC — CMP, continue mesalamine.\n- Prevention: lipids, A1c. Vaccines up to date; flu/COVID in fall.\nRTC 6 months."}
+          ]
+        },
+        {
+          "id": "2024-07-11a",
+          "kind": "portal_message",
+          "start": "2024-07-11T11:25",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Result Note", "title": "Results", "author": "PCP", "date": "2024-07-11T11:25", "body": "Your physical labs are fine: cholesterol and A1c normal, kidney and liver normal, hemoglobin over 12 — the best it's been since the fall."}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T16:30",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-08T16:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T16:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-08T16:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit — Vaccines", "author": "RN", "date": "2024-10-08T16:45", "body": "Influenza R deltoid, 2024-25 COVID L deltoid. Tolerated."}
+          ]
+        },
+        {
+          "id": "2024-10-16a",
+          "kind": "telephone",
+          "start": "2024-10-16T09:40",
+          "reason": "left arm weakness, trouble walking",
+          "orders": [
+            {"id": "neuro-referral", "action": "placed", "order": "Neurology referral, urgent", "category": "referral", "to": "Neurology", "reason": "progressive left arm weakness, gait difficulty"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call from Partner", "author": "PCP", "date": "2024-10-16T10:05", "body": "Partner called with Raul on speaker. About two weeks of a weak left arm — dropping things — and trouble walking, \"like he's drunk but he isn't.\" Mild headache. No fever, no stiff neck, no light sensitivity. Partner adds he's been forgetful and \"not himself\" in his personality.\nGiven AIDS and prior CNS infections, needs imaging and neurology now. Spoke with neurology on call: urgent clinic slot Friday 10/18 with MRI the same morning. Advised ED immediately for any fever, neck stiffness, seizure, sudden worsening or new trouble speaking or swallowing. Partner will drive. They agree."}
+          ]
+        },
+        {
+          "id": "2024-10-18a",
+          "kind": "specialist_visit",
+          "start": "2024-10-18T13:00",
+          "service": "Neurology",
+          "reason": "progressive left arm weakness, gait difficulty",
+          "conditions": [
+            {"label": "Progressive multifocal leukoencephalopathy", "icd10": "A81.2", "action": "diagnosed", "onset": "2024-10-04"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2024-10-18T14:00", "results": [{"test": "CD4 Count", "value": 150}]}
+          ],
+          "reports": [
+            {"study": "MRI brain without and with contrast", "loinc": "24590-2", "performed": "2024-10-18T08:30", "text": "Multiplanar multisequence MRI of the brain before and after gadolinium. Multiple T2/FLAIR hyperintense white matter lesions that do not enhance. No mass effect or surrounding edema. No hydrocephalus. No acute infarct on diffusion imaging. No abnormal meningeal enhancement.", "conclusion": "Multiple nonenhancing white matter lesions without mass effect or edema."}
+          ],
+          "orders": [
+            {"id": "neuro-referral", "action": "done", "date": "2024-10-18T13:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology Consultation", "author": "neurology", "date": "2024-10-29T15:30", "body": "Date of visit: 10/18/2024\n\nThank you for the urgent referral of Mr. Ramos, 37, with poorly controlled HIV/AIDS and cryptococcal meningitis earlier this year. Two weeks of progressive weakness of the left arm and difficulty walking, with a mild headache. No fever, neck stiffness or photophobia. His partner describes increasing forgetfulness and a change in personality. He says his ART has been irregular because of social circumstances.\n\nMeds: Biktarvy, fluconazole 200 mg daily, mesalamine, multivitamin. NKDA.\n\nExam: alert, attentive enough for the exam. Left hemiparesis. Gait ataxic. No meningismus.\n\nData: CD4 150 today; viral load elevated per HIV clinic. MRI brain (this morning): multiple nonenhancing white matter lesions without mass effect or edema.\n\nImpression: progressive multifocal leukoencephalopathy in the setting of uncontrolled HIV.\nPlan: lumbar puncture for CSF JC virus PCR. There is no specific antiviral treatment; immune recovery on consistent ART is the treatment, coordinated with his HIV clinic. Outpatient physical therapy. Neurology follow-up in 3 months.\n\nAddendum 10/28/2024: LP performed 10/22. CSF JC virus PCR positive, confirming PML.\n\nNeurology"}
+          ]
+        },
+        {
+          "id": "2024-11-05a",
+          "kind": "office_visit",
+          "start": "2024-11-05T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, PML",
+          "state": {"weight_kg": 61.0},
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "orders": [
+            {"id": "pt-referral", "action": "placed", "order": "Physical therapy referral", "category": "referral", "to": "Physical Therapy", "reason": "left hemiparesis, ataxic gait from PML"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2024-11-05T10:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2024-11-05T11:20", "body": "Here with partner after neurology. Letter received 10/29: PML, CSF JC virus PCR positive. No specific treatment beyond getting the HIV controlled. Neurology asked for outpatient PT.\n\nHe's frustrated. Left hand clumsy, walks with a wide, unsteady gait, needs a hand on the wall on stairs. Partner says memory is about the same as two weeks ago. No headache now, no fever. Taking Biktarvy from blister packs; admits a few missed days in September. Fluconazole daily.\n\nExam: vitals per flowsheet; weight 61. Alert, oriented. Left arm and leg weaker than right. Wide-based ataxic gait. Lungs clear. Heart regular.\n\nA/P\n1. PML. PT referral placed today. Home safety: shower chair, rails on stairs. No driving for now — discussed with both.\n2. HIV/AIDS — the whole plan rests on daily ART. HIV clinic visit 11/12.\n3. Cryptococcal meningitis on maintenance fluconazole.\nRTC January for physical."}
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "portal_message",
+          "start": "2024-12-10T12:00",
+          "reason": "physical therapy",
+          "documents": [
+            {"type": "Patient Message", "title": "PT", "author": "patient", "date": "2024-12-10T12:00", "body": "Started PT last week, twice a week. They gave me exercises for home. Just letting you know."},
+            {"type": "Patient Message", "title": "RE: PT", "author": "PCP", "date": "2024-12-10T16:40", "body": "Great — keep at the home exercises. See you in January."}
+          ]
+        }
+      ]
+    }
+  ]
+}

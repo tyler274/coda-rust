@@ -1,0 +1,498 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002210",
+      "events": [
+        {
+          "id": "2023-02-07a",
+          "kind": "office_visit",
+          "start": "2023-02-07T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Heart failure and diabetes follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-02-07T11:15", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-02-07T10:40"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-02-07T11:20",
+              "body": "Chronic f/u: HFrEF (ICM, EF 35% 10/2022), CAD, DM2, HTN, CKD 3b.\n\nHe says the winter has been quiet. Morning weights 194-197 lb, logged on a calendar on the fridge. Still gets winded on the hill, no worse. Two pillows. No swelling, no chest pain. Has cut out canned soup.\n\nMeds reviewed, bottles not brought; he reads them off his list: aspirin, metoprolol succinate 50, lisinopril 20, atorvastatin 40, metformin 1000 twice daily, furosemide 40 in the morning. Refills through mail order, says 'I think they're all coming.'\n\nExam: NAD, speaking easily. JVP not elevated. Heart regular, soft apical systolic murmur. Lungs clear. No edema.\n\nA/P:\n- HFrEF: stable by symptoms and weights. Continue regimen. Cardiology follow-up spring.\n- DM2: A1c in July.\n- CKD 3b/K on lisinopril + furosemide: BMP today.\n- HTN at goal.\nRTC 4-5 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-06a",
+          "kind": "ed_visit",
+          "start": "2023-04-06T21:15",
+          "end": "2023-04-07T02:40",
+          "service": "Emergency Medicine",
+          "reason": "Worsening shortness of breath, orthopnea and leg swelling",
+          "vitals": {"bp": [102, 68], "hr": 106, "rr": 26},
+          "measure": ["temp_c"],
+          "reports": [
+            {"study": "Chest X-ray, 1 view", "performed": "2023-04-06T21:50", "text": "Portable AP view of the chest. The cardiac silhouette is enlarged. Pulmonary vascular congestion with Kerley B lines. No pneumothorax.", "conclusion": "Cardiomegaly with pulmonary vascular congestion and Kerley B lines."},
+            {"study": "12-lead ECG", "performed": "2023-04-06T21:25", "text": "Sinus tachycardia, rate 106. Q waves in the inferior leads.", "conclusion": "Sinus tachycardia; inferior Q waves."}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2023-04-06T21:15"}],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2023-04-10T10:30",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT - PHYSICIAN RECORD\nDate of service: 04/06/2023, 21:15\nPatient: Howard Marino, 68 M\n\nChief complaint: shortness of breath x 2 days, can't lie flat, legs swollen.\n\nHPI: 68-year-old man with ischemic cardiomyopathy with LV aneurysm and chronic systolic heart failure, seen by cardiology about six months ago for progressive dyspnea. Over two days he has become so breathless that walking across his bedroom winds him, and he has spent the last two nights sleeping sitting up in a chair. Feet and lower legs have swollen up. He ran out of his furosemide and his lisinopril roughly a week ago and had not gotten them refilled.\n\nPMH: CAD with prior MI and PCI/DES; chronic systolic HF; DM2; hyperlipidemia; HTN; CKD 3.\nHome meds (still taking): aspirin 81, metoprolol succinate 50, atorvastatin 40, metformin 1000 BID. Out of furosemide and lisinopril x ~1 week.\nAllergies: NKDA.\nSocial: no tobacco, no alcohol.\n\nExam: BP 102/68, HR 106, RR 26. Looks tired and is mildly confused. JVD up to the angle of the jaw. Crackles across both lung bases. Apical impulse displaced laterally; S3 present. Moderate pitting edema of both legs.\n\nECG: sinus tachycardia, inferior Q waves.\nCXR: big heart, vascular congestion, Kerley B lines.\n\nED course: oxygen by nasal cannula. IV furosemide. Cardiology and ICU contacted; pulmonary artery catheter placed for hemodynamic monitoring.\n\nImpression: acute on chronic systolic heart failure, decompensated, after running out of diuretic and ACE inhibitor.\nDisposition: admitted to the cardiac ICU."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-07a",
+          "kind": "hospital_admission",
+          "start": "2023-04-07T02:40",
+          "end": "2023-04-11T13:00",
+          "service": "Cardiology",
+          "reason": "Acute on chronic systolic heart failure",
+          "procedures": [{"procedure": "Initial hospital inpatient care", "performed": "2023-04-07T02:40"}],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "hospitalist",
+              "date": "2023-04-12T08:45",
+              "body": "DISCHARGE SUMMARY\nAdmitted: 04/06/2023 (via ED)   Discharged: 04/11/2023\nAttending service: Cardiology\n\nPrincipal diagnosis: acute on chronic systolic (reduced EF) heart failure.\nPrecipitant: ran out of furosemide and lisinopril about one week before admission.\nOther: ischemic cardiomyopathy with LV aneurysm; CAD s/p PCI; type 2 diabetes; hypertension; hyperlipidemia; CKD stage 3.\n\nHospital course: Admitted to the cardiac ICU from the ED in decompensated heart failure, tachycardic, with a pulmonary artery catheter placed in the ED. Diuresed with IV furosemide guided by the catheter numbers. Breathing improved over the first 48 hours and his confusion cleared. Catheter removed on hospital day 3 and he moved to the cardiac floor. Home lisinopril restarted once pressures allowed and changed back to oral furosemide 40 mg daily before discharge. Walking the halls without oxygen at discharge.\n\nDischarge medications (no changes from his prior regimen):\n- aspirin 81 mg daily\n- metoprolol succinate 50 mg daily\n- lisinopril 20 mg daily\n- atorvastatin 40 mg daily\n- metformin 1000 mg twice daily\n- furosemide 40 mg every morning\n\nAllergies: NKDA.\nInstructions: daily weights, 2 g sodium, do not let prescriptions lapse. Follow up with PCP within 7 days and with cardiology."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-13a",
+          "kind": "telephone",
+          "start": "2023-04-13T11:05",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge nurse call",
+              "author": "RN",
+              "date": "2023-04-13T11:05",
+              "body": "Called within 2 business days of discharge. Spoke with patient and his wife on speaker. Home since Tuesday. Breathing much better, sleeping in bed on 2 pillows. Weight this morning 190 lb. Has all six meds in hand; wife picked up furosemide and lisinopril from the local pharmacy the day he came home. Reviewed: daily weight, call if up 3 lb in a day or 5 in a week, or if the breathlessness comes back. Gave him our number for refills in the future, we can bridge locally. TCM visit booked 4/19."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-19a",
+          "kind": "office_visit",
+          "start": "2023-04-19T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up (transitional care)",
+          "state": {"weight_kg": 86.0, "bp": [122, 74], "labs": {"Creatinine": 1.9}},
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-04-19T14:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2023-04-19T13:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "author": "PCP",
+              "date": "2023-04-19T14:20",
+              "body": "TCM visit. Discharge summary and ED record reviewed (admitted 4/6-4/11, decompensated HFrEF after a week without furosemide and lisinopril; PA catheter, IV diuresis, regimen resumed unchanged).\n\nHe feels 'like before.' Back to walking the street, not the hill yet. Sleeps on 2 pillows. No swelling. Home weights 189-190.\n\nMed reconciliation against the discharge list: all six present, matched bottle by bottle. Moved his refills to auto-ship and set every med to the same 90-day cycle. Wife is adding the refill date to the fridge calendar.\n\nExam: Alert, oriented, conversational. Weight down from his pre-admission baseline. JVP flat. Heart regular, soft apical systolic murmur, no S3. Lungs clear. No edema.\n\nA/P:\n1. HFrEF, recent decompensation from medication lapse: euvolemic today. Continue current doses. BMP today after the IV diuresis. Cardiology follow-up in June already booked.\n2. CKD 3b: check creatinine.\n3. DM2, HTN, CAD: unchanged.\nRTC July."
+            },
+            {
+              "type": "Result Note",
+              "title": "Post-hospital BMP",
+              "author": "PCP",
+              "date": "2023-04-20T09:00",
+              "body": "Creatinine 1.9 after diuresis, a little above his 1.8. Potassium and sodium fine. Will recheck in July; no change today."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-14a",
+          "kind": "specialist_visit",
+          "start": "2023-06-14T10:00",
+          "service": "Cardiology",
+          "reason": "Heart failure follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up letter",
+              "author": "cardiology",
+              "date": "2023-06-19T14:25",
+              "body": "Cardiology follow-up, 06/14/2023\nRe: Howard Marino\n\nDear Doctor,\n\nI saw Mr. Marino after his April admission for decompensated heart failure, which followed a week off furosemide and lisinopril. He is back to his usual activity. Mild breathlessness on inclines. Sleeps on two pillows. No chest pain, palpitations or lightheadedness. Weights steady.\n\nMedications: aspirin 81 mg, metoprolol succinate 50 mg, lisinopril 20 mg, atorvastatin 40 mg, metformin 1000 mg BID, furosemide 40 mg daily.\nAllergies: NKDA.\n\nExam: comfortable. Apical systolic murmur unchanged. Lungs clear. No edema.\n\nAssessment: ischemic cardiomyopathy with LV aneurysm, HFrEF, euvolemic on his current regimen. CAD without angina.\nPlan: no changes. We stressed the importance of never running out of the diuretic. Return in one year, sooner if needed.\n\nSincerely,\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2023-07-20a",
+          "kind": "office_visit",
+          "start": "2023-07-20T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.6}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-07-20T10:10", "results": [{"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2023-07-20T10:10", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-07-20T09:40"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-07-20T10:25",
+              "body": "DM / HF f/u.\nDoing okay in the heat, stays in during the afternoons. Weights 189-192 lb. Walks early mornings. Admits more ice cream this summer. No CP, no worsening SOB, no edema. Taking all meds; auto-ship working.\nSeen by cardiology 6/14, no changes, back in a year.\nExam: well. Heart regular, soft systolic murmur at apex. Lungs clear. No edema. Feet: intact skin, normal sensation.\nA/P:\n- DM2: A1c today.\n- HFrEF: stable, continue.\n- CKD 3b: BMP.\n- HTN: fine.\nEye exam due, he has one in August.\nRTC fall wellness visit."
+            },
+            {
+              "type": "Patient Message",
+              "title": "A1c result",
+              "author": "PCP",
+              "date": "2023-07-21T13:15",
+              "body": "Howard, your A1c is 7.7, up from 7.5 last November. The summer ice cream may be part of it. For now let's see if cutting back brings it down by the November visit. Kidney numbers are the same as April."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-17a",
+          "kind": "outside_records",
+          "start": "2023-08-17T09:30",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Optometry diabetic eye exam",
+              "author": "optometry",
+              "date": "2023-08-17T09:30",
+              "body": "Diabetic Eye Exam - 08/09/2023\nHoward Marino\n\nDilated exam OU. VA cc 20/25 OD, 20/30 OS. IOP normal. Mild nuclear sclerosis both eyes. Discs, vessels and maculae normal; no diabetic retinopathy either eye.\nPlan: annual or biennial dilated exam. No change in glasses.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "nurse_visit",
+          "start": "2023-10-03T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-10-03T15:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-03T15:07"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-03T15:05"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu/COVID",
+              "author": "RN",
+              "date": "2023-10-03T15:20",
+              "body": "Fluzone High-Dose R deltoid, updated COVID (Pfizer) L deltoid. No contraindications on screening. 15 min obs, fine. He asked about the new RSV shot; pharmacy has it, PCP okays it, he will go next week. Asked him to send us the date."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-18a",
+          "kind": "portal_message",
+          "start": "2023-10-18T17:45",
+          "reason": "RSV vaccine record",
+          "immunizations": [{"vaccine": "RSV, adjuvanted (Arexvy)", "date": "2023-10-18T10:15"}],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "RSV shot",
+              "author": "patient",
+              "date": "2023-10-18T17:45",
+              "body": "Got the RSV shot today at the pharmacy, Arexvy is what it says on the paper."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: RSV shot",
+              "author": "MA",
+              "date": "2023-10-19T08:30",
+              "body": "Got it, it's entered in your record. Thanks for letting us know."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-09a",
+          "kind": "annual_physical",
+          "start": "2023-11-09T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "state": {"labs": {"Hemoglobin A1c": 7.2}},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-11-09T08:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-11-09T08:40", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Lipid Panel", "collected": "2023-11-09T08:40", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-11-09T08:40", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": null, "collected": "2023-11-09T08:40", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2023-11-09T08:20"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2023-11-09T09:15",
+              "body": "Medicare AWV.\n\nInterval: April HF admission after a medication lapse, none since. Cardiology 6/2023 no changes. Eye exam August no retinopathy. Flu, COVID, RSV done this fall.\n\nFunction: independent ADLs/IADLs. Wife does the driving at night now. No falls. PHQ-2 0. Memory fine per both.\n\nMeds: ASA 81, metoprolol succ 50, lisinopril 20, atorvastatin 40, metformin 1000 BID, furosemide 40.\nAllergies: NKDA.\n\nExam: Pleasant. Heart RRR, apical systolic murmur. Lungs clear. No edema. Feet normal, monofilament intact.\n\nPlan:\n- Labs: CMP, CBC, lipids, A1c, UACR.\n- Colonoscopy due 2024: he would like to talk about options next year, nervous about anesthesia with his heart.\n- PSA: declines.\n- Advance directive: packet again; he keeps saying his wife knows what he wants.\nRTC 3 months."
+            },
+            {
+              "type": "Result Note",
+              "title": "Wellness labs",
+              "author": "PCP",
+              "date": "2023-11-10T16:05",
+              "body": "A1c down to 6.9. LDL 64. Creatinine 2.0, about where it runs. Urine albumin normal. CBC normal. Letter to patient."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-25a",
+          "kind": "office_visit",
+          "start": "2024-01-25T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-01-25b",
+          "kind": "telephone",
+          "start": "2024-01-25T11:30",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-show follow-up",
+              "author": "front desk",
+              "date": "2024-01-25T11:30",
+              "body": "Pt no-show for 10:00 today. Reached him at home, he had it written down for next Thursday. Rebooked 2/6 at 1:15. He says he's fine, no new problems."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "office_visit",
+          "start": "2024-02-06T13:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "state": {"bp": [136, 82], "weight_kg": 87.5},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-02-06T13:50", "results": [{"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-02-06T13:15"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2024-02-06T13:55",
+              "body": "Rescheduled f/u (no-showed 1/25, date mix-up).\n\nWinter: indoors a lot, walking less, weight up a few pounds to 192-193 at home. Breathing the same as fall. 2 pillows. No edema, no CP. Meds all taken, he thinks. Home BP cuff readings 130s/80s more often lately.\n\nExam: BP a bit higher than his usual. Heart regular, systolic murmur at apex. Lungs clear. No edema.\n\nA/P:\nHTN: running a little higher this winter; home and office agree. On lisinopril 20 and metoprolol. Recheck in spring once walking resumes before changing anything.\nHFrEF: stable.\nDM2: A1c with summer visit.\nCKD 3b: BMP.\nRTC 4-5 months, cardiology due June."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-08a",
+          "kind": "ed_visit",
+          "start": "2024-04-08T04:10",
+          "end": "2024-04-08T08:30",
+          "service": "Emergency Medicine",
+          "reason": "Sudden severe shortness of breath",
+          "vitals": {"bp": [168, 102], "hr": 112, "rr": 32, "spo2": 86},
+          "measure": ["temp_c"],
+          "reports": [
+            {"study": "Chest X-ray, 1 view", "performed": "2024-04-08T04:35", "text": "Portable AP chest. Diffuse bilateral alveolar infiltrates. Bilateral pleural effusions. Enlarged cardiac silhouette. No pneumothorax.", "conclusion": "Diffuse alveolar infiltrates with bilateral pleural effusions, consistent with pulmonary edema."}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2024-04-08T04:10"}],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2024-04-11T13:20",
+              "body": "EMERGENCY DEPARTMENT RECORD - regional hospital\nArrival 04/08/2024 04:10 by ambulance\nHoward Marino, 69-year-old male\n\nCC: can't breathe.\n\nHPI: Known ischemic cardiomyopathy with LV aneurysm and HFrEF, admitted here in April 2023 for decompensation. Severe shortness of breath came on suddenly over the past several hours. His ankles have been getting progressively more swollen over the past week, and lately he has had more trouble lying flat at night. Similar to last year's episode but faster.\n\nPMH: longstanding HTN, CAD with prior MI and stent, HFrEF, DM2, HLD, CKD 3.\nMeds: aspirin 81, metoprolol succinate 50, lisinopril 20, atorvastatin 40, metformin 1000 BID, furosemide 40. Taking them per patient.\nAllergies: NKDA.\nSH: never smoker, no alcohol. Retired postal worker.\n\nExam: RR 32, SpO2 86% on room air, BP 168/102, HR 112. Anxious and sweaty. JVD present. Crackles throughout both lung fields. S3 gallop.\n\nCXR: diffuse alveolar infiltrates, bilateral effusions.\n\nAssessment: acute decompensated heart failure with pulmonary edema.\n\nED course: placed on supplemental oxygen, IV furosemide, nesiritide infusion started. Admitted to the step-down unit."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-08b",
+          "kind": "hospital_admission",
+          "start": "2024-04-08T08:30",
+          "end": "2024-04-12T11:30",
+          "service": "Cardiology",
+          "reason": "Acute decompensated heart failure with pulmonary edema",
+          "procedures": [{"procedure": "Initial hospital inpatient care", "performed": "2024-04-08T08:30"}],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "hospitalist",
+              "date": "2024-04-15T09:30",
+              "body": "Discharge Summary\nAdmission 4/8/2024 - Discharge 4/12/2024\n\nDiagnosis: acute decompensated heart failure with pulmonary edema (HFrEF, ischemic cardiomyopathy with LV aneurysm).\nComorbid: CAD s/p stent, hypertension, type 2 diabetes, hyperlipidemia, CKD 3.\n\nCourse: Came in with abrupt-onset pulmonary edema and hypoxemia (SpO2 86% RA) and a BP of 168/102. Treated with a nesiritide infusion and IV furosemide in the step-down unit. Oxygen weaned to room air by day 3. Nesiritide stopped day 2. Converted to oral furosemide. Ambulating independently at discharge.\n\nDischarge medications - unchanged:\naspirin 81 mg daily; metoprolol succinate 50 mg daily; lisinopril 20 mg daily; atorvastatin 40 mg daily; metformin 1000 mg BID; furosemide 40 mg daily.\nAllergies: no known drug allergies.\n\nFollow-up: primary care within one week; cardiology as scheduled. Daily weights, sodium restriction."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "telephone",
+          "start": "2024-04-16T09:50",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge nurse call",
+              "author": "RN",
+              "date": "2024-04-16T09:50",
+              "body": "TCM call. Discharged Friday 4/12. Pt says he is 'tired but breathing fine.' Weight 190 this am. Has all meds, nothing new or stopped per his discharge sheet. No swelling. Sleeping in bed. Reviewed weight rules and 911 for sudden breathlessness. Visit Thursday 4/18 confirmed; wife will drive."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-18a",
+          "kind": "office_visit",
+          "start": "2024-04-18T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up (transitional care)",
+          "state": {"bp": [130, 78]},
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-04-18T11:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2024-04-18T11:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "author": "PCP",
+              "date": "2024-04-18T11:50",
+              "body": "Post-hospital visit. ED record and discharge summary reviewed: 4/8-4/12, sudden pulmonary edema with hypoxemia, BP 168/102 on arrival, treated with nesiritide and IV furosemide; regimen unchanged at discharge.\n\nThis time he had not run out of anything; bottles checked, counts match. Swelling had crept up over a week and he didn't call. He knows now.\n\nToday: tired, short of breath only on stairs. 2 pillows. Weight at home 189-190.\n\nExam: no distress. BP at goal today. JVP not elevated. Heart regular, apical systolic murmur, no gallop. Lungs clear. No edema.\n\nMed rec: aspirin 81, metoprolol succinate 50, lisinopril 20, atorvastatin 40, metformin 1000 BID, furosemide 40. Matches discharge.\n\nA/P\n1. HFrEF s/p 2nd admission: euvolemic. Continue. Call for 3 lb/day or 5 lb/week gain or ankle swelling. Cardiology 6/12.\n2. HTN: fine today.\n3. CKD 3b: BMP.\nRTC July."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "specialist_visit",
+          "start": "2024-06-12T14:20",
+          "service": "Cardiology",
+          "reason": "Heart failure follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up letter",
+              "author": "cardiology",
+              "date": "2024-06-17T10:40",
+              "body": "Cardiology clinic, 6/12/2024\nPatient: Howard Marino\n\nInterval: second heart failure admission in April with flash pulmonary edema, treated with nesiritide and IV diuretic. He has done well since. Breathless on stairs and hills. Two pillows. No angina. No palpitations, presyncope or syncope.\n\nMeds: aspirin 81, metoprolol succinate 50, lisinopril 20, atorvastatin 40, metformin 1000 BID, furosemide 40.\nNKDA.\n\nExam: well. Apical holosystolic murmur. Clear lungs. No edema.\n\nImpression: ischemic cardiomyopathy with LV aneurysm and HFrEF, two admissions in 12 months; compensated today. CAD stable.\nPlan: continue current medications. Sodium and fluid guidance reviewed again. Follow up one year.\n\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2024-07-18a",
+          "kind": "office_visit",
+          "start": "2024-07-18T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and lipid follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.4, "Low Density Lipoprotein": 81}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-07-18T09:20", "results": [{"test": "Potassium"}, {"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2024-07-18T09:20", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-07-18T09:20", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-07-18T08:50"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2024-07-18T09:30",
+              "body": "S: DM/lipids/HF. Cardiology 6/12, no changes. Feels steady. Weight 191-193 at home. Walking mornings. No CP, edema. Sugars on meter 130s-160s fasting.\nO: NAD. Heart regular, soft apical systolic murmur. Lungs clear. No edema. Feet intact.\nA: DM2 on metformin; HFrEF stable; CKD 3b; HTN controlled; HLD on atorvastatin 40.\nP: A1c, lipids, BMP today. Fall: flu/COVID, AWV in November, colon screening decision then."
+            },
+            {
+              "type": "Result Note",
+              "title": "Labs",
+              "author": "PCP",
+              "date": "2024-07-19T12:10",
+              "body": "A1c 7.2. LDL 75, up from 64 last fall; still under 100, he says he has been 'pretty good' with the statin. Creatinine stable at 1.9. Portal message sent. No change."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-01a",
+          "kind": "nurse_visit",
+          "start": "2024-10-01T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-10-01T10:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-01T10:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-01T10:35"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "author": "MA",
+              "date": "2024-10-01T10:50",
+              "body": "High-dose flu (trivalent) L deltoid. 2024-25 COVID (Pfizer) R deltoid. Screening questions negative, VIS provided. Observed, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-07a",
+          "kind": "annual_physical",
+          "start": "2024-11-07T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "state": {"labs": {"Hemoglobin A1c": 7.1}},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-11-07T09:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-11-07T09:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2024-11-07T09:30", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": null, "collected": "2024-11-07T09:30", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "orders": [
+            {"id": "fit-2024", "action": "placed", "order": "Fecal immunochemical test", "category": "lab", "reason": "Colorectal cancer screening"}
+          ],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2024-11-07T09:10"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2024-11-07T10:00",
+              "body": "AWV 2024.\n\nYear: HF admission in April (pulmonary edema, nesiritide), none since. Cardiology June, no changes. Vaccines done 10/1.\n\nHRA: lives with wife. Independent ADLs. Wife handles the pills and the calendar now. No falls. Stopped driving at night. PHQ-2 0. No memory complaints.\n\nMeds unchanged x6. Allergies NKDA.\n\nExam: Heart regular with an apical systolic murmur. Lungs clear. No edema. Feet: monofilament intact, pulses palpable.\n\nPrevention:\n- Colorectal: colonoscopy 2014 normal, due now. He does not want a scope with his heart; FIT kit given, reviewed how to collect.\n- PSA declined.\n- Immunizations current.\n- Labs today: CMP, CBC, A1c, urine albumin.\n- Advance directive: declined to do today.\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "lab_only",
+          "start": "2024-12-03T09:00",
+          "reason": "FIT returned",
+          "labs": [
+            {"panel": null, "collected": "2024-11-29T08:00", "resulted": "2024-12-03T09:00", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}
+          ],
+          "orders": [
+            {"id": "fit-2024", "action": "done", "date": "2024-12-03T09:00"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Stool test result",
+              "author": "RN",
+              "date": "2024-12-03T14:30",
+              "body": "Hi Mr. Marino, your stool test (FIT) was negative. We'll send another kit next fall. Your other November labs were already reviewed: A1c 7.1 and kidney function stable."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1086 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001705",
+   "events": [
+    {
+     "id": "2024-01-09a",
+     "kind": "specialist_visit",
+     "start": "2024-01-09T09:30",
+     "service": "Endocrinology",
+     "reason": "Cushing syndrome follow-up",
+     "vitals": {
+      "bp": [
+       142,
+       88
+      ]
+     },
+     "measure": [
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-01-09T08:00",
+       "results": [
+        {
+         "test": "Cortisol, free, 24 hour urine",
+         "loinc": "2147-7",
+         "unit": "ug/(24.h)",
+         "value": 162
+        }
+       ],
+       "resulted": "2024-01-11T15:20"
+      },
+      {
+       "panel": null,
+       "collected": "2024-01-09T10:05",
+       "results": [
+        {
+         "test": "Corticotropin",
+         "loinc": "2141-0",
+         "unit": "pg/mL",
+         "value": 46
+        }
+       ],
+       "resulted": "2024-01-10T13:40"
+      }
+     ],
+     "orders": [
+      {
+       "id": "pit-mri-2024",
+       "action": "placed",
+       "order": "MRI pituitary with and without contrast",
+       "category": "imaging",
+       "reason": "ACTH-dependent hypercortisolism"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Endocrinology Follow-up",
+       "author": "endocrinology",
+       "date": "2024-01-12T11:00",
+       "body": "ENDOCRINOLOGY -- Follow-up 01/09/2024\n\nMs. Strong returns after missing her September visit. Seen 6/2023 for cushingoid features; 1 mg overnight dexamethasone test 6/20/2023 did not suppress (8 AM cortisol 4.1 mcg/dL).\n\nInterval: still bruising easily, face still round, weight up (also on olanzapine since May). Cycles irregular. No fractures. Mood steady with psychiatry.\n\nMeds: metformin 1000 mg BID, lisinopril 10 mg daily, metoprolol succinate 50 mg daily, olanzapine 10 mg nightly. NKDA.\n\nExam: BP 142/88. Rounded facies, dorsocervical fat pad, thin skin with forearm bruises, violaceous lower abdominal striae. Proximal strength normal.\n\nToday: ACTH drawn; 24-hour urine free cortisol collection completed this morning.\n\nPlan: MRI pituitary with and without contrast. We will call with results and see her in February to choose treatment.\n\nAddendum 1/11: ACTH 46 pg/mL (ref 7.2-63) -- not suppressed, so this is ACTH-dependent. 24-hour urine free cortisol 162 mcg/24 h (ref 4-50), about three times the upper limit. MRI booked 1/30; patient informed.\n\nEndocrinology"
+      }
+     ]
+    },
+    {
+     "id": "2024-01-30a",
+     "kind": "imaging",
+     "start": "2024-01-30T15:30",
+     "service": "Radiology",
+     "reports": [
+      {
+       "study": "MRI pituitary with and without contrast",
+       "loinc": "24879-9",
+       "performed": "2024-01-30T15:30",
+       "issued": "2024-01-31T09:40",
+       "text": "EXAM: MRI pituitary (sella) without and with IV gadolinium, including dynamic coronal sequences.\nINDICATION: ACTH-dependent hypercortisolism.\nCOMPARISON: MRI brain 12/14/2022.\nFINDINGS: Pituitary gland normal in size, height 6 mm, with homogeneous enhancement on dynamic and delayed images; no focal hypoenhancing lesion. Infundibulum midline. Optic chiasm normal. Cavernous sinuses normal. Sella not enlarged.",
+       "conclusion": "Normal pituitary MRI. No adenoma identified."
+      }
+     ],
+     "orders": [
+      {
+       "id": "pit-mri-2024",
+       "action": "done",
+       "date": "2024-01-30T15:30"
+      }
+     ]
+    },
+    {
+     "id": "2024-02-06a",
+     "kind": "telephone",
+     "start": "2024-02-06T10:05",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill request",
+       "author": "MA",
+       "date": "2024-02-06T10:10",
+       "body": "Pharmacy fax: refill request lisinopril 10 mg and metoprolol succinate ER 50 mg. Last BP visit 12/12/23. Approved per protocol, 90 days x 1 refill. Pt has f/u 3/12."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-13a",
+     "kind": "specialist_visit",
+     "start": "2024-02-13T10:00",
+     "service": "Endocrinology",
+     "reason": "ACTH-dependent Cushing syndrome, treatment",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-02-13T10:40",
+       "results": [
+        {
+         "test": "Alanine Aminotransferase",
+         "value": 21
+        }
+       ],
+       "resulted": "2024-02-13T14:30"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Electrocardiogram, 12-lead, with interpretation",
+       "performed": "2024-02-13T10:30"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "ketoconazole 200 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth twice daily with food",
+       "dose": {
+        "value": 200,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Cushing syndrome"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Endocrinology Follow-up",
+       "author": "endocrinology",
+       "date": "2024-02-15T16:00",
+       "body": "ENDOCRINOLOGY -- 02/13/2024\n\nResults reviewed with Ms. Strong:\n- 1 mg dexamethasone test 6/2023: cortisol 4.1, not suppressed.\n- 24-hour urine free cortisol 162 mcg/24 h (ref 4-50).\n- ACTH 46 pg/mL, not suppressed: ACTH-dependent Cushing syndrome.\n- MRI pituitary 1/30: normal gland, no adenoma.\n- Adrenal glands and pancreas normal on her MRI abdomen 2/2023 (VHL surveillance).\n\nNo source has been found that surgery could target, so we will control the cortisol medically.\n\nMeds: metformin 1000 mg BID, lisinopril 10 mg daily, metoprolol succinate 50 mg daily, olanzapine 10 mg nightly. NKDA.\n\nExam: vitals as charted. Cushingoid features unchanged.\nBaseline today: ALT 21 U/L. ECG: sinus rhythm, normal intervals, QTc 426 ms.\n\nPlan:\n- Start ketoconazole 200 mg by mouth twice daily with food. Avoid antacids and acid reducers around doses.\n- It is not safe in pregnancy; she will avoid pregnancy while taking it.\n- Signs of low cortisol reviewed (unusual tiredness, nausea, dizziness, poor appetite) -- call us if they occur.\n- ALT and 24-hour urine free cortisol 4 weeks after starting and 4 weeks after any dose change, then at visits every 6 months. Goal urine free cortisol 50 or less. Stop for ALT above 168 (3 times the upper limit).\n\nEndocrinology"
+      }
+     ]
+    },
+    {
+     "id": "2024-03-05a",
+     "kind": "imaging",
+     "start": "2024-03-05T17:20",
+     "service": "Radiology",
+     "reports": [
+      {
+       "study": "MRI abdomen with and without contrast",
+       "loinc": "24557-1",
+       "performed": "2024-03-05T17:20",
+       "issued": "2024-03-06T11:05",
+       "text": "EXAM: MRI abdomen without and with IV gadolinium, renal protocol.\nINDICATION: VHL, surveillance of right renal lesion, solitary kidney.\nCOMPARISON: MRI 02/13/2023.\nFINDINGS: Right interpolar solid enhancing lesion now 2.2 x 2.0 cm (previously 2.0 x 1.9 cm). Simple right renal cysts unchanged, largest 1.4 cm. No new solid lesion. No hydronephrosis. Left nephrectomy bed clear. Adrenal glands normal. Pancreas normal. No adenopathy.",
+       "conclusion": "Slight interval growth of the solid right renal lesion, now 2.2 cm. Stable simple cysts. Adrenals and pancreas unremarkable."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-07a",
+     "kind": "specialist_visit",
+     "start": "2024-03-07T15:15",
+     "service": "Urology",
+     "reason": "VHL renal surveillance",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Urology Follow-up",
+       "author": "urology",
+       "date": "2024-03-14T08:40",
+       "body": "UROLOGY -- follow-up 03/07/2024\n\nMs. Strong returns for VHL renal surveillance. MRI 3/5/24: dominant right renal solid lesion 2.2 cm (2.0 cm last year), cysts stable. No flank pain or hematuria. Creatinine stable at 1.0 per your office.\n\nMeds: metformin, lisinopril, metoprolol, olanzapine, ketoconazole. NKDA.\n\nPlan: Continue active surveillance; threshold for intervention remains 3 cm. Repeat MRI abdomen in 12 months.\n\nUrology"
+      }
+     ]
+    },
+    {
+     "id": "2024-03-12a",
+     "kind": "office_visit",
+     "start": "2024-03-12T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "weight_kg": 77.6,
+      "bp": [
+       138,
+       86
+      ],
+      "labs": {
+       "Hemoglobin A1c": 6.7,
+       "Glucose": 118
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-03-12T09:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ],
+       "resulted": "2024-03-12T15:00"
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-03-12T09:05",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ],
+       "resulted": "2024-03-12T15:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-03-12T08:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2024-03-12T09:20",
+       "body": "DM/HTN f/u.\n\nUrology 3/7: R renal lesion 2.2 cm, continuing surveillance. Endocrinology 1/9 and 2/13: cortisol excess, ACTH-dependent; pituitary MRI normal. Started ketoconazole 200 BID 2/13; liver and urine cortisol labs through them this week.\n\nFasting sugars 100s-120s. No lows. Mood stable on olanzapine. Weight up another few pounds. Headaches about the same, no new neuro symptoms.\n\nExam: vitals as charted. Heart RRR, lungs clear, no edema.\n\nA/P\nT2DM -- A1c today. Continue metformin 1000 BID.\nHTN -- 153/89 today; lower at most visits. Continue, recheck at physical.\nVHL -- urology surveillance. Neurology MRI due this year -- she'll call neurology.\nCushing syndrome -- ketoconazole per endocrinology, who are following liver tests and cortisol.\nRTC 4 months for physical."
+      },
+      {
+       "type": "Result Note",
+       "title": "A1c 3/12",
+       "author": "PCP",
+       "date": "2024-03-12T17:05",
+       "body": "A1c 6.5 -- best yet. Kidney function and potassium normal."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-14a",
+     "kind": "lab_only",
+     "start": "2024-03-14T08:00",
+     "service": "Endocrinology",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-03-14T08:00",
+       "results": [
+        {
+         "test": "Cortisol, free, 24 hour urine",
+         "loinc": "2147-7",
+         "unit": "ug/(24.h)",
+         "value": 84
+        }
+       ],
+       "resulted": "2024-03-15T15:00"
+      },
+      {
+       "panel": null,
+       "collected": "2024-03-14T08:15",
+       "results": [
+        {
+         "test": "Alanine Aminotransferase",
+         "value": 29
+        }
+       ],
+       "resulted": "2024-03-14T13:10"
+      }
+     ]
+    },
+    {
+     "id": "2024-03-19a",
+     "kind": "telehealth_visit",
+     "start": "2024-03-19T11:30",
+     "service": "Endocrinology",
+     "reason": "Ketoconazole dose review",
+     "medications": [
+      {
+       "drug_text": "ketoconazole 200 MG Oral Tablet",
+       "action": "stop",
+       "sig": "Take 1 tablet by mouth twice daily with food",
+       "dose": {
+        "value": 200,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Dose increased"
+      },
+      {
+       "drug_text": "ketoconazole 200 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth three times daily with food",
+       "dose": {
+        "value": 200,
+        "unit": "mg"
+       },
+       "frequency": "TID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Cushing syndrome"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Endocrinology Telehealth",
+       "author": "endocrinology",
+       "date": "2024-03-19T12:00",
+       "body": "ENDOCRINOLOGY -- video visit 03/19/2024\n\nFive weeks on ketoconazole 200 mg twice daily. Taking it with meals, no nausea, no rash, no dark urine. No tiredness or dizziness beyond her usual.\n\nLabs 3/14: ALT 29 U/L (21 at baseline). 24-hour urine free cortisol 84 mcg/24 h (162 before treatment) -- coming down, not yet at goal.\n\nPlan: increase ketoconazole to 200 mg three times daily with meals. ALT and 24-hour urine free cortisol again in 4 weeks.\n\nEndocrinology"
+      }
+     ]
+    },
+    {
+     "id": "2024-04-16a",
+     "kind": "lab_only",
+     "start": "2024-04-16T08:00",
+     "service": "Endocrinology",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-04-16T08:00",
+       "results": [
+        {
+         "test": "Cortisol, free, 24 hour urine",
+         "loinc": "2147-7",
+         "unit": "ug/(24.h)",
+         "value": 41
+        }
+       ],
+       "resulted": "2024-04-17T14:45"
+      },
+      {
+       "panel": null,
+       "collected": "2024-04-16T08:15",
+       "results": [
+        {
+         "test": "Alanine Aminotransferase",
+         "value": 33
+        }
+       ],
+       "resulted": "2024-04-16T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Endocrinology Addendum",
+       "author": "endocrinology",
+       "date": "2024-04-19T10:20",
+       "body": "ENDOCRINOLOGY -- ADDENDUM\n\nOn ketoconazole 200 mg three times daily for 4 weeks: ALT 33 U/L; 24-hour urine free cortisol 41 mcg/24 h -- at goal, and not low. Continue the same dose. Patient informed by phone. Visit with labs in July, then every 6 months.\n\nEndocrinology"
+      }
+     ]
+    },
+    {
+     "id": "2024-05-27a",
+     "kind": "ed_visit",
+     "start": "2024-05-27T16:40",
+     "end": "2024-05-27T21:10",
+     "service": "Emergency Medicine",
+     "reason": "Recurrent confusion and sweating relieved by eating",
+     "state": {
+      "weight_kg": 79.0,
+      "bp": [
+       130,
+       85
+      ]
+     },
+     "vitals": {
+      "bp": [
+       130,
+       85
+      ],
+      "hr": 78
+     },
+     "measure": [
+      "temp_c",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-05-27T16:50",
+       "results": [
+        {
+         "test": "Glucose",
+         "value": 45
+        }
+       ],
+       "resulted": "2024-05-27T16:51"
+      },
+      {
+       "panel": null,
+       "collected": "2024-05-27T18:25",
+       "results": [
+        {
+         "test": "Glucose",
+         "value": 40
+        }
+       ],
+       "resulted": "2024-05-27T19:00"
+      },
+      {
+       "panel": null,
+       "collected": "2024-05-27T18:25",
+       "results": [
+        {
+         "test": "Insulin",
+         "loinc": "20448-7",
+         "unit": "u[IU]/mL",
+         "value": 45
+        },
+        {
+         "test": "C-peptide",
+         "loinc": "1986-9",
+         "unit": "ng/mL",
+         "value": 1.2
+        }
+       ],
+       "resulted": "2024-05-28T09:40"
+      },
+      {
+       "panel": null,
+       "collected": "2024-05-27T18:25",
+       "results": [
+        {
+         "test": "Sulfonylurea screen",
+         "loinc": "15374-2",
+         "text": "Negative"
+        }
+       ],
+       "resulted": "2024-05-31T14:00"
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-05-27T17:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ],
+       "resulted": "2024-05-27T17:50"
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-05-27T17:00",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        }
+       ],
+       "resulted": "2024-05-27T17:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2024-05-27T16:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency Department Record",
+       "author": "emergency medicine",
+       "date": "2024-05-29T08:00",
+       "body": "Emergency Department -- Physician Record\nVisit: 05/27/2024, arrived 16:40\n\nCC: episodes of confusion and sweating.\n\nHPI: 35-year-old woman with Von Hippel-Lindau syndrome, Cushing syndrome and type 2 diabetes presents with recurrent spells of confusion and diaphoresis, mostly in the late afternoon. Each resolves after she eats candy. Diabetes managed with metformin and diet. Denies insulin, sulfonylureas, any other prescription or over-the-counter medications, or herbal supplements.\n\nPMH: VHL (cerebellar/spinal hemangioblastomas, retinal angiomas, right renal lesion), clear cell RCC s/p L nephrectomy, T2DM, HTN, Cushing syndrome, PCOS, bipolar I.\nMeds: ketoconazole 200 mg tid, olanzapine 10 mg qhs, lisinopril 10 mg daily, metoprolol succinate 50 mg daily (metformin per HPI).\nAllergies: NKDA.\nFH: father VHL; mother T2DM, HTN; maternal uncle bipolar.\nSH: never smoker, 1-2 drinks monthly, part-time administrative assistant.\n\nExam: BP 130/85, HR 78, afebrile. Well-appearing. BMI 29. Alert and oriented, no focal deficits. Heart regular, lungs clear, abdomen benign.\n\nED course: fingerstick glucose 45 on arrival during a spell; given juice and crackers with resolution. A second episode was observed in the department at 18:20: serum glucose 40. Critical-sample labs drawn at that time (insulin, C-peptide, sulfonylurea screen), then treated with oral glucose.\n\nMDM: Recurrent hypoglycemia; her only glucose-lowering drug is metformin, which does not cause hypoglycemia. Concern for endogenous hyperinsulinism vs. surreptitious agent. Labs pending.\n\nDisposition: placed in observation for glucose monitoring.\n\nEmergency Medicine"
+      }
+     ]
+    },
+    {
+     "id": "2024-05-27b",
+     "kind": "hospital_admission",
+     "start": "2024-05-27T21:10",
+     "end": "2024-05-28T14:30",
+     "service": "Hospital Medicine",
+     "reason": "Observation for hypoglycemia",
+     "conditions": [
+      {
+       "label": "Hyperinsulinemia",
+       "icd10": "E16.1",
+       "action": "diagnosed",
+       "onset": "2024-05-27",
+       "note": "Endogenous hyperinsulinemic hypoglycemia"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "spo2"
+     ],
+     "procedures": [
+      {
+       "procedure": "Hospital discharge day management, 30 minutes or less",
+       "performed": "2024-05-28T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Observation Discharge Summary",
+       "author": "hospital medicine",
+       "date": "2024-05-30T10:30",
+       "body": "OBSERVATION DISCHARGE SUMMARY\nAdmit: 05/27/2024 (observation)   Discharge: 05/28/2024\n\nReason: recurrent hypoglycemia.\n\nCourse: Admitted from the ED to observation with fingerstick checks every 2 hours and frequent meals. No further hypoglycemia overnight. Critical-sample results from the ED episode: serum glucose 40 mg/dL, insulin 45 uIU/mL (ref 2-25), C-peptide 1.2 ng/mL (ref 1.1-4.4). Insulin and C-peptide inappropriately unsuppressed during hypoglycemia, consistent with endogenous hyperinsulinemia. Sulfonylurea screen sent out, pending at discharge.\n\nDischarge diagnosis: hyperinsulinemic hypoglycemia (hyperinsulinemia).\n\nDischarge medications: no changes -- metformin 1000 mg BID, olanzapine 10 mg qhs, lisinopril 10 mg daily, metoprolol succinate 50 mg daily, ketoconazole 200 mg tid.\nAllergies: NKDA.\n\nInstructions: small frequent meals and a bedtime snack; carry glucose tablets; check fingerstick with any spell. Follow up with PCP within one week and with her endocrinologist for further evaluation.\n\nHospital Medicine"
+      }
+     ]
+    },
+    {
+     "id": "2024-06-03a",
+     "kind": "outside_records",
+     "start": "2024-06-03T09:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Send-out result: sulfonylurea screen",
+       "author": "MA",
+       "date": "2024-06-03T09:15",
+       "body": "Faxed from regional hospital lab: sulfonylurea screen (serum), collected 05/27/2024 -- NEGATIVE. Scanned, routed to PCP for tomorrow's visit."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-04a",
+     "kind": "office_visit",
+     "start": "2024-06-04T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after ED/observation stay for hypoglycemia",
+     "state": {
+      "bp": [
+       132,
+       84
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-06-04T11:05",
+       "results": [
+        {
+         "test": "Glucose"
+        }
+       ],
+       "resulted": "2024-06-04T11:06"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-06-04T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2024-06-04T11:40",
+       "body": "Post-ED / observation follow-up.\n\nSeen at regional hospital ED 5/27 for late-afternoon spells of confusion and sweating that went away with candy. Glucose 45 by fingerstick, 40 on serum during an observed spell. Insulin 45 and C-peptide 1.2 at that time; sulfonylurea screen came back negative (fax 6/3). Observed overnight, no further lows, discharged 5/28 with diagnosis of hyperinsulinemia.\n\nSince discharge: eating every 3-4 hours plus bedtime snack. No further spells. Carries glucose tabs. Fingersticks 80s-110s.\n\nMeds unchanged: metformin 1000 BID, olanzapine 10 qhs, lisinopril 10, metoprolol succ 50, ketoconazole 200 tid (endo).\n\nExam: vitals as charted. Alert, well. Heart RRR, lungs clear. Neuro nonfocal.\nOffice fingerstick 126 (ate breakfast).\n\nA/P\nHyperinsulinemic hypoglycemia -- hospital recommends endocrinology follow-up; she sees her endocrinologist 7/16 for the Cushing care, discharge summary faxed to them. Continue frequent meals. Metformin doesn't cause lows -- continue.\nT2DM -- as above.\nHTN -- 130/90.\nPhysical in July as planned."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-18a",
+     "kind": "specialist_visit",
+     "start": "2024-06-18T15:30",
+     "service": "Psychiatry",
+     "reason": "Bipolar I follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Psychiatry Follow-up",
+       "author": "psychiatry",
+       "date": "2024-06-21T09:00",
+       "body": "Community Behavioral Health -- Medication Follow-up, 6/18/2024\n\nBipolar I disorder. Mood stable since last visit, sleep good, functioning at work. No SI/HI. Recent ED visit for low blood sugars noted; following with PCP.\n\nPlan: continue olanzapine 10 mg nightly. Return 6 months.\n\nPsychiatry"
+      }
+     ]
+    },
+    {
+     "id": "2024-07-16a",
+     "kind": "specialist_visit",
+     "start": "2024-07-16T10:00",
+     "service": "Endocrinology",
+     "reason": "Cushing syndrome on ketoconazole",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-07-16T08:00",
+       "results": [
+        {
+         "test": "Cortisol, free, 24 hour urine",
+         "loinc": "2147-7",
+         "unit": "ug/(24.h)",
+         "value": 37
+        }
+       ],
+       "resulted": "2024-07-17T15:10"
+      },
+      {
+       "panel": null,
+       "collected": "2024-07-16T08:15",
+       "results": [
+        {
+         "test": "Alanine Aminotransferase",
+         "value": 30
+        }
+       ],
+       "resulted": "2024-07-16T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Endocrinology Follow-up",
+       "author": "endocrinology",
+       "date": "2024-07-19T09:30",
+       "body": "ENDOCRINOLOGY -- 07/16/2024\n\nACTH-dependent Cushing syndrome, no source found on pituitary MRI or her abdominal MRIs, on ketoconazole since 2/2024 (200 mg three times daily since 3/19).\n\nInterval: bruising much less, face less full. Seen at a regional hospital ED with an overnight observation stay 5/27-5/28 for low blood sugars; eating frequent meals since, no further spells. No nausea, rash or dark urine. Taking every dose with food.\n\nMeds: ketoconazole 200 mg three times daily, metformin 1000 mg BID, lisinopril 10 mg daily, metoprolol succinate 50 mg daily, olanzapine 10 mg nightly. NKDA.\n\nExam: vitals as charted. Face less rounded; striae fading to pink; no new bruises.\n\nLabs today: ALT 30 U/L. 24-hour urine free cortisol 37 mcg/24 h (resulted 7/17) -- controlled, not low.\n\nPlan: continue ketoconazole 200 mg three times daily. ALT and 24-hour urine free cortisol with each visit. Return in 6 months.\n\nEndocrinology"
+      }
+     ]
+    },
+    {
+     "id": "2024-07-23a",
+     "kind": "annual_physical",
+     "start": "2024-07-23T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "weight_kg": 79.2,
+      "bp": [
+       134,
+       86
+      ],
+      "labs": {
+       "Hemoglobin A1c": 6.6,
+       "Glucose": 108
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "rr",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 4
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-07-23T09:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ],
+       "resulted": "2024-07-23T15:30"
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-07-23T09:50",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        }
+       ],
+       "resulted": "2024-07-23T13:45"
+      },
+      {
+       "panel": null,
+       "collected": "2024-07-23T09:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ],
+       "resulted": "2024-07-23T15:30"
+      },
+      {
+       "panel": null,
+       "collected": "2024-07-23T09:50",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ],
+       "resulted": "2024-07-24T10:20"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2024-07-23T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2024-07-23T10:25",
+       "body": "ANNUAL PHYSICAL -- 35 y/o F\n\nInterval: ED/observation 5/27-5/28 for hyperinsulinemic hypoglycemia; no spells since. Endocrinology 7/16: urine cortisol normal on ketoconazole 200 tid, liver tests fine. Psychiatry 6/18 stable. Urology 3/2024 lesion 2.2 cm, next MRI 3/2025.\n\nMeds: metformin 1000 BID, lisinopril 10 daily, metoprolol succinate 50 daily, olanzapine 10 qhs, ketoconazole 200 tid.\nNKDA.\nNever smoker, rare alcohol. Working part time.\n\nROS: occasional headaches, unchanged. No chest pain, dyspnea, GI or urinary complaints. Cycles still irregular.\n\nEXAM\nVitals as charted.\nGeneral well. HEENT normal. Neck supple. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, healed L flank scar, abdominal striae. Ext no edema. Feet: monofilament intact, pulses 2+, skin intact. Neuro nonfocal, gait normal.\n\nPHQ-9: 4.\n\nA/P\n1. Preventive -- Pap/HPV normal 2023, next 2028. Hep B series done. Flu in October; COVID at pharmacy.\n2. T2DM -- labs today: A1c, CMP, CBC, urine microalbumin. Eye exam overdue (retina said yearly) -- she'll call.\n3. Hyperinsulinemia -- no recurrence. Continue frequent meals.\n4. HTN -- 142/85, continue.\n5. Cushing -- controlled on ketoconazole via endocrinology. VHL, PCOS, bipolar -- as above.\nRTC 4 months."
+      },
+      {
+       "type": "Result Note",
+       "title": "Physical labs",
+       "author": "PCP",
+       "date": "2024-07-24T16:00",
+       "body": "A1c 6.6. Kidney and liver tests normal, creatinine stable for your single kidney. Blood counts normal. Urine protein normal."
+      }
+     ]
+    },
+    {
+     "id": "2024-07-25a",
+     "kind": "telephone",
+     "start": "2024-07-25T13:30",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Endocrinology records",
+       "author": "front desk",
+       "date": "2024-07-25T13:35",
+       "body": "Requested endocrinology's 7/16 visit note and labs for our chart. Received by fax, scanned to media and routed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-08a",
+     "kind": "office_visit",
+     "start": "2024-10-08T14:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Headaches, dizziness, left eye vision",
+     "state": {
+      "bp": [
+       140,
+       88
+      ],
+      "weight_kg": 79.4
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-10-08T14:20"
+      }
+     ],
+     "orders": [
+      {
+       "id": "neuro-referral-2024",
+       "action": "placed",
+       "order": "Neurology referral",
+       "category": "referral",
+       "to": "Neurology",
+       "reason": "Headaches and dizziness, known cerebellar hemangioblastoma"
+      },
+      {
+       "id": "ophtho-referral-2024",
+       "action": "placed",
+       "order": "Ophthalmology referral",
+       "category": "referral",
+       "to": "Ophthalmology",
+       "reason": "Left eye blurring and partial vision loss, VHL retinal angiomas"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2024-10-08T15:00",
+       "body": "CC: headaches, dizziness, left eye.\n\nSince about the spring her headaches are more frequent and she gets spells of dizziness. Over the last few weeks the left eye is blurry and she thinks part of the vision in that eye is missing. No falls, no weakness, no numbness, no vomiting. No hypoglycemia spells -- fingersticks normal during the dizzy episodes she has checked.\n\nExam: BP 156/88. Alert. Confrontation fields full OD; OS she describes part of the field as missing, hard to map in the office. Pupils equal and reactive. EOM full. Rest of CN intact. Strength and sensation normal. Finger-nose normal. Gait normal, tandem slightly cautious.\n\nA/P\nHeadaches/dizziness with known cerebellar hemangioblastoma -- overdue for neurology follow-up and MRI. Neurology referral, asked for earliest available.\nL eye vision change, h/o L retinal angiomas -- ophthalmology referral, urgent.\nReturn precautions: worst headache, vomiting, imbalance, weakness -- ED.\nFlu shot nurse visit later this month."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-22a",
+     "kind": "nurse_visit",
+     "start": "2024-10-22T08:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2024-10-22T08:15"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-10-12T11:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-10-22T08:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit - Flu Vaccine",
+       "author": "RN",
+       "date": "2024-10-22T08:20",
+       "body": "Flu vaccine given R deltoid, tolerated. Updated COVID vaccine at pharmacy 10/12 per patient, recorded. Neurology appointment confirmed for 11/26; ophthalmology scheduling in December."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-26a",
+     "kind": "specialist_visit",
+     "start": "2024-11-26T09:40",
+     "service": "Neurology",
+     "reason": "Headaches, dizziness, left eye vision loss; VHL",
+     "state": {
+      "bp": [
+       160,
+       95
+      ],
+      "labs": {
+       "Glucose": 88,
+       "Calcium": 9.6,
+       "Normetanephrine, Free, Plasma": 568,
+       "Metanephrine, Free, Plasma": 42
+      }
+     },
+     "vitals": {
+      "bp": [
+       160,
+       95
+      ]
+     },
+     "measure": [
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-11-26T10:30",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 13.2
+        },
+        {
+         "test": "Hematocrit",
+         "value": 39.8
+        }
+       ],
+       "resulted": "2024-11-26T14:00"
+      },
+      {
+       "panel": null,
+       "collected": "2024-11-26T10:30",
+       "results": [
+        {
+         "test": "Fasting Glucose",
+         "value": 88
+        }
+       ],
+       "resulted": "2024-11-26T14:00"
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-11-26T10:30",
+       "results": [
+        {
+         "test": "Calcium",
+         "value": 9.6
+        },
+        {
+         "test": "Creatinine"
+        }
+       ],
+       "resulted": "2024-11-26T14:00"
+      },
+      {
+       "panel": null,
+       "collected": "2024-11-26T10:30",
+       "results": [
+        {
+         "test": "Normetanephrine, Free, Plasma",
+         "value": 568
+        },
+        {
+         "test": "Metanephrine, Free, Plasma",
+         "value": 42
+        }
+       ],
+       "resulted": "2024-12-02T12:00"
+      }
+     ],
+     "reports": [
+      {
+       "study": "MRI brain with and without contrast",
+       "loinc": "24587-8",
+       "performed": "2024-11-26T12:30",
+       "issued": "2024-11-27T08:50",
+       "text": "EXAM: MRI brain without and with IV gadolinium.\nINDICATION: VHL, headaches and dizziness.\nCOMPARISON: MRI 12/14/2022.\nFINDINGS: Left cerebellar hemisphere mass with nodular enhancement, now 1.4 cm (previously 1.1 cm), abutting the pial surface, without cyst or surrounding edema. Small inferior vermian enhancing nodule unchanged at 0.6 cm. Fourth ventricle normal; no hydrocephalus. No new lesion. Supratentorial brain normal.",
+       "conclusion": "Left cerebellar mass with nodular enhancement consistent with hemangioblastoma, 1.4 cm, mildly enlarged since 2022. Stable vermian lesion. No hydrocephalus."
+      }
+     ],
+     "orders": [
+      {
+       "id": "neuro-referral-2024",
+       "action": "done",
+       "date": "2024-11-26T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology Follow-up",
+       "author": "neurology",
+       "date": "2024-12-03T16:20",
+       "body": "Neurology -- return visit 11/26/2024\n\nMs. Strong, known VHL, returns with six months of headaches and episodic dizziness and, more recently, blurring and partial loss of vision in the left eye.\n\nPMH: VHL with cerebellar and spinal hemangioblastomas and left retinal angiomas, clear cell RCC s/p left radical nephrectomy, T2DM, HTN, Cushing syndrome, PCOS, bipolar I, hyperinsulinemia.\nMeds: olanzapine 10 mg qhs, metformin 1000 mg BID, lisinopril 10 mg daily, metoprolol succinate 50 mg daily, ketoconazole 200 mg tid. NKDA.\nFamily history: a cousin had a similar kidney tumor and an uncle died of complications from a brain tumor (in addition to her father's VHL and brother's brain tumor).\nSocial: never smoker, 1-2 drinks monthly, part-time administrative assistant.\n\nExam: BP 160/95. Fundoscopy shows retinal angiomas. Cranial nerves otherwise intact; strength, reflexes, sensation and coordination normal; gait steady.\n\nLabs today: hemoglobin 13.2, hematocrit 39.8%, fasting glucose 88, calcium 9.6. Plasma free normetanephrine 568 pg/mL (ref <148), metanephrine 42 -- resulted 12/2.\n\nMRI brain 11/26: left cerebellar hemangioblastoma with nodular enhancement, 1.4 cm (1.1 cm in 2022), no cyst or hydrocephalus.\n\nImpression: Mild growth of the left cerebellar hemangioblastoma; no mass effect. Headaches/dizziness may relate, though no cerebellar signs on exam. Left eye symptoms more likely retinal -- ophthalmology already scheduled. Normetanephrine remains elevated; defer to PCP/endocrinology.\nPlan: Observation; repeat MRI brain in 6 months. Neurosurgical opinion if further growth, cyst formation or progressive symptoms.\n\nNeurology"
+      }
+     ]
+    },
+    {
+     "id": "2024-12-10a",
+     "kind": "specialist_visit",
+     "start": "2024-12-10T10:45",
+     "service": "Ophthalmology",
+     "reason": "Left eye vision loss, VHL",
+     "orders": [
+      {
+       "id": "ophtho-referral-2024",
+       "action": "done",
+       "date": "2024-12-10T10:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Ophthalmology Follow-up",
+       "author": "ophthalmology",
+       "date": "2024-12-13T11:30",
+       "body": "OPHTHALMOLOGY -- RETINA, 12/10/2024\n\nReturning (last seen 1/2023) with several weeks of blurred and partially lost vision in the left eye.\n\nVA: 20/20 OD, 20/40 OS. IOP normal. Anterior segments quiet.\nDilated exam:\nOD -- normal; no angioma; no diabetic retinopathy.\nOS -- one of the previously treated temporal peripheral angiomas has enlarged, with a prominent feeder vessel; the second treated lesion is scarred and flat. Macula flat. No diabetic retinopathy.\n\nImpression: Enlarging retinal angioma, left eye, VHL.\nProcedure: laser photocoagulation to the enlarging lesion OS today, tolerated well.\nPlan: recheck every 6-12 months. Call for any new vision change.\n\nRetina Service"
+      }
+     ]
+    },
+    {
+     "id": "2024-12-17a",
+     "kind": "office_visit",
+     "start": "2024-12-17T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "state": {
+      "bp": [
+       142,
+       90
+      ],
+      "labs": {
+       "Hemoglobin A1c": 6.5,
+       "Glucose": 104
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-12-17T09:25",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ],
+       "resulted": "2024-12-17T14:40"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-12-17T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2024-12-17T09:35",
+       "body": "F/u.\n\nNeurology 11/26: L cerebellar hemangioblastoma 1.4 cm (from 1.1), observation, MRI in 6 months. BP was 160/95 there. Normetanephrine 568.\nRetina 12/10: one L eye angioma had enlarged, lasered again; VA 20/40 OS.\n\nToday: headaches a bit less, dizziness occasional. Vision in left eye still blurry but she thinks slightly better since the laser. No hypoglycemia spells. Fingersticks fine.\n\nExam: BP 136/90. Well appearing. Heart RRR, lungs clear, no edema. Neuro nonfocal.\n\nA/P\nHTN -- above goal today; she will check home BP and send readings.\nT2DM -- A1c today.\nVHL -- neuro MRI ~May, urology MRI March, retina 6-12 months.\nCushing -- on ketoconazole, endocrinology visit in January.\nRTC 3 months."
+      },
+      {
+       "type": "Result Note",
+       "title": "A1c 12/17",
+       "author": "PCP",
+       "date": "2024-12-17T16:00",
+       "body": "A1c 6.3 -- well controlled. Send those home blood pressures when you have a week's worth."
+      }
+     ]
+    },
+    {
+     "id": "2024-12-30a",
+     "kind": "specialist_visit",
+     "start": "2024-12-30T14:00",
+     "service": "Psychiatry",
+     "reason": "Bipolar I follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Psychiatry Follow-up",
+       "author": "psychiatry",
+       "date": "2025-01-03T10:10",
+       "body": "Community Behavioral Health -- Medication Follow-up, 12/30/2024\n\nBipolar I disorder, stable. Mood even, sleeping well, no SI/HI. Some stress around her eye treatment, coping well.\n\nContinue olanzapine 10 mg qhs. Return 6-12 months.\n\nPsychiatry"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

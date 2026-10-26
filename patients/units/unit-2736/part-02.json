@@ -1,0 +1,954 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002736",
+      "events": [
+        {
+          "id": "2022-01-31a",
+          "kind": "specialist_visit",
+          "start": "2022-01-31T10:20",
+          "service": "Endocrinology",
+          "reason": "Hypothyroidism follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-01-31T10:50",
+              "resulted": "2022-01-31T16:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 7.2
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Triiodothyronine, total",
+                  "loinc": "3053-6",
+                  "unit": "ng/dL",
+                  "value": 80
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up letter",
+              "author": "endocrinology",
+              "date": "2022-02-03T11:40",
+              "body": "Outside endocrinology group — clinic letter\nDate of service: 01/31/2022\n\nDear Doctor,\n\nI saw Ms. Winslow today for her scheduled hypothyroidism review. She was treated with radioactive iodine for Graves' disease and has been well controlled on levothyroxine 125 mcg daily for several years.\n\nOver the last two months she has felt progressively more tired, her skin is drier, and she is cold in rooms that feel comfortable to others. She is taking her levothyroxine correctly and her sleep has not changed. Weight is unchanged. Of note, your office started oral estradiol with cyclic progesterone about three months ago for menopausal symptoms, which she says have improved a great deal.\n\nMedications: levothyroxine 125 mcg daily; estradiol 1 mg daily; micronized progesterone 200 mg days 1-12.\nAllergies: none known.\nFamily history: mother with RA, father with autoimmune hypothyroidism, sister with SLE.\nSocial: never smoker, no alcohol, administrative assistant.\n\nExamination is unremarkable apart from a mildly slow pulse. No thyroid tissue palpable.\n\nResults today:\n  TSH 7.2 mIU/L (0.4-4.0)\n  Free T4 0.7 ng/dL (0.8-1.8)\n  Total T3 80 ng/dL (100-200)\n\nImpression: She is under-replaced, and the timing fits the oral estrogen. Oral estradiol raises thyroxine-binding globulin, and a patient without her own thyroid reserve cannot compensate, so free hormone falls on an unchanged dose.\n\nRecommendations:\n1. Rather than chase this with a higher levothyroxine dose, I would suggest moving her to transdermal estradiol, which has little effect on binding proteins. She is agreeable. I will leave the hormone prescription with you.\n2. Keep levothyroxine at 125 mcg.\n3. Repeat TSH and free T4 in about 8 weeks after the switch. If still low we will increase the dose.\n4. Routine follow-up here in a year.\n\nThank you for letting me share in her care.\n\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2022-02-04a",
+          "kind": "telephone",
+          "start": "2022-02-04T09:15",
+          "medications": [
+            {
+              "drug_text": "estradiol 1 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Switched to transdermal per endocrinology"
+            },
+            {
+              "drug_text": "84 HR estradiol 0.00208 MG/HR Transdermal System",
+              "action": "start",
+              "sig": "Apply 1 patch to lower abdomen twice weekly; rotate sites",
+              "dose": {
+                "value": 0.05,
+                "unit": "mg/d"
+              },
+              "frequency": "TWICE_WEEKLY",
+              "route": "Transdermal",
+              "course": "chronic",
+              "reason": "Perimenopausal vasomotor symptoms"
+            }
+          ],
+          "orders": [
+            {
+              "id": "tft-2022-03",
+              "action": "placed",
+              "order": "TSH and free T4 in 8 weeks",
+              "category": "lab",
+              "reason": "Recheck after estrogen route change"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Endo recs — estrogen route change",
+              "author": "PCP",
+              "date": "2022-02-04T09:30",
+              "body": "Read the endo letter from 1/31: TSH 7.2, FT4 low, attributed to oral estradiol raising TBG. Called Jill. Stopping estradiol 1 mg tablets, starting estradiol 0.05 mg/day patch twice weekly. Same progesterone schedule. Levothyroxine stays at 125. TSH/FT4 in 8 weeks, standing order in. She asked whether the tiredness will lift — told her it should over a few weeks once levels settle; call if not."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-22a",
+          "kind": "office_visit",
+          "start": "2022-02-22T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Right shoulder pain",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-02-22T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-referral",
+              "action": "placed",
+              "order": "Orthopedics referral",
+              "category": "referral",
+              "to": "Orthopedics",
+              "reason": "Right shoulder pain with overhead reaching"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Right Shoulder",
+              "author": "PCP",
+              "date": "2022-02-22T11:30",
+              "body": "Right shoulder has hurt since around the holidays, so about 3 months. Worst when she reaches up to the top shelves of the filing cabinets at work, which she does all day. No fall, no injury. Not waking her at night most nights. Right-handed.\n\nShoulder exam brief today: no swelling or redness, sore with reaching overhead. Neck full ROM, no radicular symptoms.\n\nA/P: Right shoulder pain with overhead activity, sounds like a rotator cuff/impingement picture. She would rather go straight to orthopedics — her employer's plan covers it and a coworker had a good experience. Referral placed. Ice, avoid repetitive overhead reaching where she can (asked about a step stool at work)."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-16a",
+          "kind": "specialist_visit",
+          "start": "2022-03-16T14:00",
+          "service": "Orthopedics",
+          "reason": "Right shoulder pain",
+          "conditions": [
+            {
+              "label": "Impingement syndrome of right shoulder",
+              "action": "diagnosed",
+              "onset": "2021-12-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "naproxen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily with food as needed for shoulder pain, up to 3 weeks",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Right shoulder impingement"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Shoulder X-ray",
+              "performed": "2022-03-16T13:40",
+              "text": "Right shoulder, three views (AP, scapular Y, axillary). Bones are normally mineralized. No fracture or dislocation. Glenohumeral and acromioclavicular joints are preserved. Acromion type normal. No calcific tendinopathy. Soft tissues unremarkable.",
+              "conclusion": "No bony abnormality of the right shoulder."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-referral",
+              "action": "done",
+              "date": "2022-03-16T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedics consultation",
+              "author": "orthopedics",
+              "date": "2022-03-18T08:20",
+              "body": "ORTHOPAEDIC SURGERY — OFFICE CONSULTATION\nDOS 03/16/2022\nReferring: primary care\n\nCC: R shoulder pain x 3 mo.\n\nHPI: 47 yo RHD F, admin asst, endo saw her about two months ago for fatigue/cold intolerance on her thyroid replacement. R shoulder pain for 3 months, aggravated by overhead reaching to file on high shelves at work. Denies trauma.\n\nPMH: hypothyroid s/p RAI for Graves. PSH: none. Meds: levothyroxine, estradiol patch, progesterone. All: NKDA.\nSH: never smoker, no EtOH.\n\nEXAM R shoulder: TTP lateral shoulder. Neer +, Hawkins +. PROM full. AROM full but painful arc in abduction 60-120 deg. Strength 5/5 ER/IR/supraspinatus with pain on empty can. No erythema, warmth or swelling. NVI distally.\n\nIMAGING: XR R shoulder 3V today — no bony abnormality.\n\nIMPRESSION: R shoulder subacromial impingement syndrome.\n\nPLAN:\n- PT for scapular stabilization and cuff strengthening, 6-8 wks\n- Naproxen 500 mg BID with food PRN, 2-3 wks max\n- Activity modification at work (step stool, lower the heavy files)\n- If not improving at 6-8 weeks, return for subacromial corticosteroid injection\n\nOrthopaedic Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2022-03-29a",
+          "kind": "lab_only",
+          "start": "2022-03-29T07:35",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-03-29T07:35",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.4
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.1
+                }
+              ]
+            }
+          ],
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 2.4,
+              "Free Thyroxine": 1.1
+            }
+          },
+          "orders": [
+            {
+              "id": "tft-2022-03",
+              "action": "done",
+              "date": "2022-03-29T07:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "TSH/FT4 after patch switch",
+              "author": "PCP",
+              "date": "2022-03-29T15:05",
+              "body": "TSH 2.4, FT4 1.1 — back to normal on the patch with no dose change. Copy to endo. Portal note to patient: levels look good, keep everything the same. She replied that her energy is back to normal."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-05a",
+          "kind": "outside_records",
+          "start": "2022-04-05T13:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Physical therapy initial evaluation",
+              "author": "physical therapy",
+              "date": "2022-04-05T13:00",
+              "body": "OUTPATIENT PHYSICAL THERAPY — INITIAL EVALUATION\nDx: R shoulder impingement (per ortho)\nEval date: 03/31/2022\n\nSubjective: pain with overhead filing at work, 5/10 at worst. Goals: reach top shelf without pain.\nObjective: painful arc 60-120 abduction; mild scapular dyskinesis R; cuff strength 4+/5 ER with pain. Special tests consistent with impingement.\nAssessment: good rehab potential.\nPlan: 2x/week x 6 weeks: scapular stabilization, posterior capsule stretching, progressive cuff strengthening, HEP. Ergonomic advice for workstation."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "outside_records",
+          "start": "2022-05-17T10:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Physical therapy discharge summary",
+              "author": "physical therapy",
+              "date": "2022-05-17T10:30",
+              "body": "PT DISCHARGE SUMMARY — R shoulder\nVisits attended: 11 of 12.\nAt discharge: pain 1/10 with overhead reach, no painful arc, cuff strength 5/5. Independent with home exercise program. Patient reports using a step stool at work.\nGoals met. Discharged to HEP. Return to ortho as needed."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "office_visit",
+          "start": "2022-06-21T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Facial rash",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-06-21T16:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral-2022",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "Facial rash worse with sun"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Facial Rash",
+              "author": "PCP",
+              "date": "2022-06-21T16:40",
+              "body": "Rash on her cheeks and nose that has been there since sometime in the winter and flares every time she is in the sun — worse since the days got longer. Not itchy, a little tender. Tried hydrocortisone OTC without much change. No joint pain, no mouth sores, no fevers. Feels fine otherwise. Shoulder much better after PT.\n\nExam: scaly red plaques on both cheeks and the bridge of the nose, some with lighter centers. Rest of skin not examined in detail today.\n\nA/P: Photosensitive facial rash. Not typical rosacea or seb derm to my eye and with the sister's lupus I want dermatology to see it and likely biopsy. Referral placed. Sunscreen SPF 50 and a hat in the meantime."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-01a",
+          "kind": "specialist_visit",
+          "start": "2022-08-01T09:30",
+          "service": "Dermatology",
+          "reason": "Facial rash",
+          "conditions": [
+            {
+              "label": "Discoid lupus erythematosus",
+              "icd10": "L93.0",
+              "action": "diagnosed",
+              "onset": "2022-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "clobetasol propionate 0.0005 MG/MG Topical Ointment",
+              "action": "start",
+              "sig": "Apply a thin layer to facial plaques twice daily on weekdays; none on weekends",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "chronic",
+              "reason": "Discoid lupus erythematosus"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Punch skin biopsy, single lesion",
+              "performed": "2022-08-01T09:55"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2022-08-01T09:55",
+              "issued": "2022-08-05T14:20",
+              "text": "Specimen: skin, left cheek, 4 mm punch biopsy.\nMicroscopic: Interface dermatitis with vacuolar change at the dermoepidermal junction. A perivascular and periadnexal mononuclear infiltrate is present in the superficial and deep dermis. Follicular plugging is noted.",
+              "conclusion": "Interface dermatitis with perivascular and periadnexal mononuclear infiltrate, consistent with discoid (chronic cutaneous) lupus erythematosus in the appropriate clinical setting."
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral-2022",
+              "action": "done",
+              "date": "2022-08-01T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology consultation",
+              "author": "dermatology",
+              "date": "2022-08-12T10:10",
+              "body": "Dermatology — new patient consultation\nService date 8/1/2022, letter completed after pathology\n\nThank you for sending Ms. Winslow, a 47-year-old woman with hypothyroidism after RAI for Graves' disease, for a facial eruption.\n\nShe describes several months of facial rash that is clearly worse after sun. She has no joint pains, no oral ulcers, and no systemic symptoms.\n\nMeds: levothyroxine, estradiol patch, progesterone. Allergies: none.\n\nOn examination there are sharply marginated red plaques over both malar cheeks and the nasal dorsum. Centers are hypopigmented with a hyperpigmented rim; several plaques carry adherent scale, and there is atrophy with early scarring. I found nothing similar elsewhere on full skin exam. No lymphadenopathy. Remainder of the exam unremarkable.\n\nA 4 mm punch biopsy from the left cheek shows an interface dermatitis with a perivascular and periadnexal mononuclear infiltrate.\n\nAssessment: Discoid lupus erythematosus, localized to the face. No clinical features of systemic lupus today; with her sister's SLE I have told her what to watch for.\n\nPlan:\n- Clobetasol 0.05% ointment twice daily on weekdays to active plaques, off at weekends; we discussed atrophy risk on the face and the reason for the pulsed schedule.\n- Daily broad-spectrum SPF 50+, wide-brim hat, sun avoidance midday.\n- Antimalarial therapy is the next step if lesions keep forming.\n- Follow up here as needed or if new lesions.\n\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2022-08-15a",
+          "kind": "portal_message",
+          "start": "2022-08-15T19:10",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Question about the skin cream",
+              "author": "patient",
+              "date": "2022-08-15T19:10",
+              "body": "The dermatologist's letter says discoid lupus. Does that mean I have what my sister has? And she gave me a strong steroid ointment for my face, is that safe to use for a long time?"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Question about the skin cream",
+              "author": "PCP",
+              "date": "2022-08-16T07:30",
+              "body": "Good questions. Discoid lupus is a skin-only form; it is related to lupus but most people with it never develop the whole-body kind your sister has. Your exam and history don't show signs of that, and we'll keep an eye out at your visits. The weekday-on, weekend-off schedule is exactly how dermatologists use the strong ointment on the face to keep it safe — stick to their plan and sunscreen every day."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "annual_physical",
+          "start": "2022-09-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Impingement syndrome of right shoulder",
+              "action": "resolved",
+              "onset": "2021-12-01"
+            }
+          ],
+          "state": {
+            "bp": [
+              118,
+              76
+            ],
+            "weight_kg": 72.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-20T08:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-20T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-20T08:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-20T08:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-09-20T08:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-20T08:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-09-20T08:55",
+              "body": "Yearly visit.\n\nInterval: endo in January — TSH had drifted up on oral estrogen, switched to the patch, recheck in March normal. Ortho for right shoulder impingement in March, did PT, discharged in May; reaches overhead without pain now. Dermatology in August diagnosed discoid lupus on the face by biopsy — using clobetasol on weekdays, wearing sunscreen religiously, plaques flatter.\n\nVasomotor symptoms controlled on patch plus cyclic progesterone; monthly withdrawal bleeds, nothing irregular.\n\nMeds: levothyroxine 125 mcg daily, estradiol 0.05 mg/day patch twice weekly, progesterone 200 mg nightly days 1-12, clobetasol 0.05% ointment to face weekdays.\nNKDA.\n\nExam: vitals fine. Face with a few flat pink plaques on cheeks, faint scarring, no active scale. Neck no nodes. Heart regular, lungs clear. Abdomen soft. R shoulder full ROM, negative Hawkins. No edema. No joint swelling.\n\nA/P\n1. Hypothyroidism after RAI: TSH today.\n2. Discoid lupus, face: per derm. No systemic features.\n3. R shoulder impingement: resolved after PT. Off problem list.\n4. Hormone therapy for vasomotor symptoms: continue, revisit yearly.\n5. HM: flu today. Mammogram ordered. Pap 2024. Colonoscopy 2025. Bivalent COVID booster at her pharmacy next month.\n\nRTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-21a",
+          "kind": "portal_message",
+          "start": "2022-09-21T12:05",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Annual labs",
+              "author": "PCP",
+              "date": "2022-09-21T12:05",
+              "body": "9/20 labs all normal including TSH on 125 mcg. No changes. Released to portal."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-13a",
+          "kind": "imaging",
+          "start": "2022-10-13T12:15",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-10-13T12:15",
+              "text": "Bilateral screening digital breast tomosynthesis. Compared with 10/2021 and 10/2020. Heterogeneously dense breasts. No suspicious mass, calcification or distortion. Skin and nipples normal.",
+              "conclusion": "BI-RADS 1: Negative. Annual screening recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "done",
+              "date": "2022-10-13T12:15"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-27a",
+          "kind": "outside_records",
+          "start": "2022-10-27T09:20",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-22T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization notice",
+              "author": "MA",
+              "date": "2022-10-27T09:20",
+              "body": "Pharmacy notification: Pfizer bivalent COVID-19 booster given 10/22/22. Added to immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "specialist_visit",
+          "start": "2023-03-21T13:15",
+          "service": "Dermatology",
+          "reason": "Itchy rash on wrists, trunk and ankles",
+          "conditions": [
+            {
+              "label": "Lichen planus",
+              "action": "diagnosed",
+              "onset": "2022-09-15"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "triamcinolone acetonide 1 MG/ML Topical Cream",
+              "action": "start",
+              "sig": "Apply to itchy body lesions twice daily for up to 4 weeks at a time; not on the face",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "chronic",
+              "reason": "Lichen planus"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Punch skin biopsy, single lesion",
+              "performed": "2023-03-21T13:40"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-03-21T13:40",
+              "issued": "2023-03-27T11:05",
+              "text": "Specimen: skin, left volar wrist, 4 mm punch.\nMicroscopic: Compact hyperkeratosis with wedge-shaped hypergranulosis and irregular acanthosis. A dense band-like lymphocytic infiltrate hugs the dermoepidermal junction with basal vacuolar change and scattered colloid bodies.",
+              "conclusion": "Lichenoid interface dermatitis consistent with lichen planus."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology return visit",
+              "author": "dermatology",
+              "date": "2023-03-31T15:30",
+              "body": "Dermatology — follow-up letter\nDate of visit: 03/21/2023\n\nDear colleague,\n\nMs. Winslow came back to us, this time not for her face (the discoid lupus is quiet on pulsed clobetasol and strict photoprotection) but for an itchy eruption of about six months. It began on both wrists and has spread to the trunk and ankles. The itch is intense. Nothing new in her soaps, lotions or medications.\n\nExamination: numerous flat-topped, violaceous, polygonal papules across the extremities and trunk, several with a fine white lacy surface pattern. Inside the cheeks there are white reticular patches on the buccal mucosa, which she had not noticed. No lymph nodes enlarged.\n\nPunch biopsy from the left wrist: hyperkeratosis, acanthosis and a band-like lymphocytic infiltrate at the dermoepidermal junction.\n\nAssessment: Lichen planus, cutaneous and reticular oral involvement.\n\nPlan:\n- Triamcinolone 0.1% cream twice daily to body lesions, in 4-week runs.\n- The oral lesions are asymptomatic; we will simply watch them. Dental checkups as usual.\n- Continue clobetasol for the face as before.\n- Return if not settling in 2-3 months.\n\nWith kind regards,\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2023-05-11a",
+          "kind": "portal_message",
+          "start": "2023-05-11T07:48",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Refill request",
+              "author": "patient",
+              "date": "2023-05-11T07:48",
+              "body": "Good morning, the skin doctor said I could ask you for refills of the triamcinolone cream instead of waiting for their office. The itching is so much better, the spots are flattening out, I just want a tube on hand. Thank you!"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill sent",
+              "author": "RN",
+              "date": "2023-05-11T10:20",
+              "body": "Triamcinolone 0.1% cream 80 g with 1 refill sent to her pharmacy per PCP. Reminded her not for the face."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-19T08:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-19T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-19T08:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-19T08:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-09-19T08:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-19T09:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-09-19T09:20",
+              "body": "Annual. Feels well.\n\nSkin: lichen planus diagnosed by derm in March; triamcinolone cleared the itch, only a few flat dark marks left on the wrists. Oral patches don't bother her. DLE on face quiet.\nThyroid: no symptoms, endo yearly.\nHT: still on patch + cyclic progesterone, happy with it, regular withdrawal bleeds. Discussed duration — she wants to keep going for now; revisit at 50.\n\nMeds: levothyroxine 125 mcg, estradiol patch 0.05 twice weekly, progesterone 200 mg days 1-12, clobetasol 0.05% oint face PRN flares, triamcinolone 0.1% cream body PRN.\nNKDA.\n\nPE: vitals normal. Skin: postinflammatory hyperpigmented macules volar wrists; faint atrophic scars cheeks; no active plaques. Mouth: faint lacy white streaks bilateral buccal mucosa. Neck, heart, lungs, abdomen normal. Joints without swelling. No edema.\n\nA/P\n- HM: flu today; mammogram ordered; updated COVID at pharmacy when available. Pap due next year.\n- Labs: CMP, CBC, lipids, TSH.\n- Chronic skin conditions per derm.\n\nPHQ-2: 1. RTC 1 yr."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 73.5
+          },
+          "state": {
+            "bp": [
+              120,
+              76
+            ],
+            "weight_kg": 73.5
+          }
+        },
+        {
+          "id": "2023-09-20a",
+          "kind": "portal_message",
+          "start": "2023-09-20T11:40",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Annual labs",
+              "author": "PCP",
+              "date": "2023-09-20T11:40",
+              "body": "Labs from 9/19: CMP, CBC, lipids normal. TSH in range. Patient notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "imaging",
+          "start": "2023-10-12T17:05",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-10-12T17:05",
+              "text": "Screening bilateral DBT. Comparison 10/2022, 10/2021. Breast density: heterogeneously dense. No new mass, suspicious calcifications or architectural distortion.",
+              "conclusion": "BI-RADS 1: Negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "done",
+              "date": "2023-10-12T17:05"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "outside_records",
+          "start": "2023-10-24T14:40",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-21T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization notice",
+              "author": "MA",
+              "date": "2023-10-24T14:40",
+              "body": "2023-2024 COVID-19 vaccine (Pfizer) given at pharmacy 10/21/23 per state registry feed. Entered."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-06a",
+          "kind": "office_visit",
+          "start": "2023-11-06T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Joint stiffness and hand swelling",
+          "state": {
+            "weight_kg": 71.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-11-06T11:20",
+              "resulted": "2023-11-07T09:40",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 50
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 30
+                },
+                {
+                  "test": "Rheumatoid Factor",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Cyclic Citrullinated Peptide Antibody",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Antinuclear Antibodies",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-11-06T11:20",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-11-06T11:20",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-11-06T10:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "rheum-referral",
+              "action": "placed",
+              "order": "Rheumatology referral",
+              "category": "referral",
+              "to": "Rheumatology",
+              "reason": "Inflammatory polyarthritis of hands and wrists"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Hand and Wrist Swelling",
+              "author": "PCP",
+              "date": "2023-11-06T11:35",
+              "body": "S: For about six months her hands are stiff every morning, takes well over an hour before she can type properly. Both hands and wrists puffy. Some evenings she runs a low-grade temperature. Down about 5 lb without trying (scale here agrees, 71.2 kg vs 73.5 in Sept). Mom has RA and she's \"pretty sure this is that.\" No rash beyond her known skin issues, no mouth ulcers, no Raynaud's, no chest pain.\n\nO: Vitals reviewed, afebrile now. Boggy swelling and tenderness over the MCPs and PIPs of both hands, wrists tender. No deformity, no nodules. Rest of joints unremarkable.\n\nA: Symmetric inflammatory small-joint polyarthritis, high suspicion for RA with the family history.\n\nP:\n- ESR, CRP, RF, anti-CCP, ANA, CBC with diff, CMP today.\n- Urgent rheumatology referral; staff to call for an expedited slot."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 71.2
+          }
+        },
+        {
+          "id": "2023-11-07a",
+          "kind": "telephone",
+          "start": "2023-11-07T12:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results call",
+              "author": "PCP",
+              "date": "2023-11-07T12:10",
+              "body": "Called Jill. ESR 50, CRP 30 mg/L (3.0 mg/dL), RF positive, anti-CCP positive, ANA negative. CBC and CMP normal. Explained this fits rheumatoid arthritis and that rheum will confirm and start treatment. Front desk got her in with rheumatology 11/27. Results faxed ahead."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-27a",
+          "kind": "specialist_visit",
+          "start": "2023-11-27T08:45",
+          "service": "Rheumatology",
+          "reason": "Inflammatory arthritis",
+          "conditions": [
+            {
+              "label": "Rheumatoid arthritis",
+              "action": "diagnosed",
+              "onset": "2023-05-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "hydroxychloroquine sulfate 200 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1½ tablets (300 mg) by mouth daily with food",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Rheumatoid arthritis; discoid lupus"
+            },
+            {
+              "drug": "prednisone 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "10 mg daily x 2 weeks, 7.5 mg daily x 2 weeks, 5 mg daily x 1 week, 2.5 mg daily x 1 week, then stop",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Rheumatoid arthritis bridge"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Hand X-ray",
+              "performed": "2023-11-27T08:20",
+              "text": "Bilateral hands, PA, oblique and lateral views. Periarticular osteopenia about the metacarpophalangeal and proximal interphalangeal joints. Small marginal erosions at the MCP joints. Joint spaces otherwise maintained. No fracture or subluxation. Soft tissue swelling over the MCP joints.",
+              "conclusion": "Periarticular osteopenia and marginal erosions, consistent with inflammatory (rheumatoid) arthritis."
+            }
+          ],
+          "orders": [
+            {
+              "id": "rheum-referral",
+              "action": "done",
+              "date": "2023-11-27T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology consultation",
+              "author": "rheumatology",
+              "date": "2023-12-01T16:15",
+              "body": "RHEUMATOLOGY CONSULTATION\nDate of service: November 27, 2023\n\nReason for referral: inflammatory arthritis.\n\nHistory: 49-year-old woman with hypothyroidism after RAI for Graves' disease and dermatology-diagnosed discoid lupus and lichen planus. She describes six months of morning stiffness lasting more than an hour that loosens with use, swelling of both hands and wrists, intermittent low-grade fevers and an unplanned 5-pound weight loss over the last few months.\n\nMedications: levothyroxine 125 mcg daily, estradiol patch, cyclic progesterone, topical clobetasol and triamcinolone.\nAllergies: NKDA.\nFamily: mother RA; father autoimmune hypothyroidism; sister SLE.\nSocial: never smoker, no alcohol, administrative assistant.\n\nExamination: soft-tissue swelling with tenderness across the MCP and PIP joints of both hands. No deformity. Remaining joints normal.\n\nData (drawn by referring office 11/6): ESR 50 mm/hr; CRP 3.0 mg/dL; RF positive; anti-CCP positive; ANA negative.\nHand radiographs today: periarticular osteopenia and marginal erosions.\n\nAssessment: Seropositive rheumatoid arthritis, already erosive. The negative ANA is reassuring that the joint disease is not a lupus arthropathy, and her discoid lupus remains skin-limited.\n\nPlan:\n1. Hydroxychloroquine 300 mg daily; it also treats her discoid lupus. Baseline retinal exam within the year.\n2. Prednisone taper starting at 10 mg to bridge symptoms over 6 weeks.\n3. If she has not responded adequately at follow-up, add a second agent.\n4. Return in 3 months with ESR and CRP.\n\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2023-12-04a",
+          "kind": "telephone",
+          "start": "2023-12-04T09:50",
+          "orders": [
+            {
+              "id": "ophtho-referral",
+              "action": "placed",
+              "order": "Ophthalmology referral",
+              "category": "referral",
+              "to": "Ophthalmology",
+              "reason": "Baseline exam, hydroxychloroquine"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Rheum letter reviewed",
+              "author": "PCP",
+              "date": "2023-12-04T10:05",
+              "body": "Rheum letter in: seropositive erosive RA, started hydroxychloroquine 300 mg daily and a prednisone taper from 10 mg. Med list updated. They want a baseline retinal exam — ophthalmology referral placed. Called Jill: tolerating both, stiffness already better on the prednisone. Reviewed taper schedule with her."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

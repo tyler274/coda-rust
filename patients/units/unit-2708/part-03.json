@@ -1,0 +1,906 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002708",
+      "events": [
+        {
+          "id": "2024-01-05a",
+          "kind": "outside_records",
+          "start": "2024-01-05T13:20",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Consultation",
+              "author": "nephrology",
+              "date": "2024-01-05T13:20",
+              "body": "Outside nephrology group\nDate of service: 01/01/2024 (holiday urgent session)\n\nDear Doctor,\nThanks for the same-week referral of Ms. Lambert, a 51-year-old with longstanding hepatitis C, a resected pheochromocytoma and lichen planus.\n\nShe describes two weeks of aching, symmetric pain in the wrists and knees, a rash over the lower legs, fatigue beyond her usual, and episodic tingling of the hands and feet. No recent infection and no new medication.\n\nMedications: hydrochlorothiazide 25 mg daily; acetaminophen as needed. NKDA.\n\nExam: T 37.2 C, BP 130/80, pulse 78. Palpable purpura over both legs. Joints without synovitis.\n\nData: your 12/22 labs: creatinine 1.2 (baseline 0.9), urinalysis with protein and blood, normal CBC, mildly elevated AST/ALT. Today: C4 low with normal C3; rheumatoid factor positive; serum protein electrophoresis shows a polyclonal gammopathy, no monoclonal band. Serum cryoglobulins sent, kept warm, result to follow.\n\nImpression: picture of mixed cryoglobulinemia secondary to hepatitis C with skin, joint, nerve and kidney involvement.\n\nPlan: await cryoglobulins. Recheck creatinine and urinalysis in about 6 weeks; this can be done with you. Acetaminophen rather than NSAIDs. We will send an addendum.\n\nNephrology"
+            }
+          ]
+        },
+        {
+          "id": "2024-01-12a",
+          "kind": "outside_records",
+          "start": "2024-01-12T10:40",
+          "conditions": [
+            {
+              "label": "Cryoglobulinemia",
+              "icd10": "D89.1",
+              "action": "diagnosed",
+              "onset": "2024-01-01",
+              "note": "Mixed type II, secondary to chronic hepatitis C."
+            }
+          ],
+          "orders": [
+            {
+              "id": "nephro-referral-2023",
+              "action": "done",
+              "date": "2024-01-12T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Addendum",
+              "author": "nephrology",
+              "date": "2024-01-12T10:40",
+              "body": "Addendum to 01/01/2024 consultation, Ms. Julie Lambert.\n\nSerum cryoglobulins: POSITIVE. Immunofixation of the cryoprecipitate: monoclonal IgM kappa with polyclonal IgG, consistent with mixed (type II) cryoglobulinemia.\n\nDiagnosis: cryoglobulinemia, mixed type II, related to hepatitis C.\n\nTreatment: the cryoglobulinemia is driven by her hepatitis C, and clearing the virus is its treatment. Please refer her to hepatology for direct-acting antiviral therapy; we will follow along.\n\nPlease repeat creatinine and urinalysis in mid-February as planned and send us the results.\n\nNephrology"
+            }
+          ]
+        },
+        {
+          "id": "2024-02-12a",
+          "kind": "office_visit",
+          "start": "2024-02-12T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up cryoglobulinemia, kidney labs, yearly metanephrines",
+          "state": {
+            "labs": {
+              "Creatinine": 1.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-02-12T09:20",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Total Protein"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-02-12T09:20",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Red Cell Distribution Width"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-02-12T09:10",
+              "results": [
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity"
+                },
+                {
+                  "test": "Urine pH"
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Trace"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Trace"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-02-12T09:20",
+              "resulted": "2024-02-15T11:00",
+              "results": [
+                {
+                  "test": "Metanephrine, Free, Plasma"
+                },
+                {
+                  "test": "Normetanephrine, Free, Plasma"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-02-12T08:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "hep-referral-2024",
+              "action": "placed",
+              "order": "Hepatology referral",
+              "category": "referral",
+              "to": "Hepatology",
+              "reason": "Chronic hepatitis C with mixed cryoglobulinemia, antiviral treatment"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-02-12T09:30",
+              "body": "F/u cryoglobulinemia (nephrology addendum 1/12: mixed type II, HCV-related).\n\nThe purple spots on her legs faded over January; joints better, still stiff some mornings. Tingling in the feet comes and goes. Tired at the end of the work day.\n\nMeds: HCTZ 25, acetaminophen PRN. NKDA.\nExam: BP as charted. Shins with faint brown staining where the purpura was, no active lesions. Wrists and knees without swelling. Lichen planus papules on the wrists, quiet. Heart regular. Lungs clear. No edema.\n\nA/P\n1. Cryoglobulinemia: creatinine, UA and CBC today for nephrology.\n2. Pheo history: yearly plasma metanephrines today.\n3. HTN: fine.\n4. Hep C: CMP today. Nephrology advises antiviral treatment as the treatment for the cryoglobulinemia; hepatology referral placed. She is glad to finally finish what she started in 2012.\nResults to nephrology and endocrinology. RTC at the physical."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-15a",
+          "kind": "portal_message",
+          "start": "2024-02-15T16:05",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "February labs",
+              "author": "PCP",
+              "date": "2024-02-15T16:05",
+              "body": "Hi Julie, creatinine is 1.1, better than the 1.2 in December, and the urine shows only a trace of protein and blood now. Blood counts normal. The metanephrine levels came back normal again, so no sign the adrenal tumor has come back. I sent everything to nephrology and endocrinology, and sent the hepatology referral nephrology recommended for treating the hepatitis C. Their office will call you to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-22a",
+          "kind": "pharmacy",
+          "start": "2024-04-22T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "author": "RN",
+              "date": "2024-04-22T09:30",
+              "body": "HCTZ 25 mg #90 requested. K and creatinine checked 2/12. Approved with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-20a",
+          "kind": "portal_message",
+          "start": "2024-05-20T21:14",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Mouth sores",
+              "author": "patient",
+              "date": "2024-05-20T21:14",
+              "body": "The white patches inside my cheeks have been sore for a couple of months now, some spots feel raw when I eat anything spicy or salty. My wrists are actually better. Should I see you or go back to dermatology?"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Mouth sores",
+              "author": "RN",
+              "date": "2024-05-21T08:45",
+              "body": "Hi Julie, since dermatology already knows the mouth findings, it makes sense to go back to them. You don't need a new referral, the old one covers a return visit. Their scheduling line is on your last letter from them. If you can't get in within a month, let us know and we'll call."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-14a",
+          "kind": "outside_records",
+          "start": "2024-06-14T14:20",
+          "orders": [
+            {
+              "id": "hep-referral-2024",
+              "action": "done",
+              "date": "2024-06-14T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hepatology Consultation",
+              "author": "hepatology",
+              "date": "2024-06-14T14:20",
+              "body": "Outside hepatology group\nDate of visit: 06/10/2024\n\nDear Doctor,\nThank you for referring Ms. Lambert, 52, for treatment of chronic hepatitis C, now complicated by mixed cryoglobulinemia.\n\nHepatitis C genotype 1a was found in 2011. An interferon-based course around 2012 was stopped partway through, and she has had no treatment since. Alcohol use disorder, abstinent since 2018. Nephrology diagnosed mixed type II cryoglobulinemia in January (purpura, joint pain, tingling, creatinine 1.2 with protein and blood in the urine); the purpura has faded and creatinine was 1.1 in February. Lichen planus. Pheochromocytoma resected 2023. Cholecystectomy 2014.\n\nMedications: hydrochlorothiazide 25 mg daily; acetaminophen as needed. NKDA.\n\nExam: anicteric. No spider angiomata or palmar erythema. Abdomen soft, liver edge not palpable, no splenomegaly, no fluid wave. No edema. No asterixis.\n\nLabs today: HCV RNA 1,860,000 IU/mL, genotype 1a. AST 55, ALT 67, platelets 248,000. FIB-4 1.41, no advanced fibrosis. Hepatitis B surface antigen and core antibody negative.\n\nImpression: chronic hepatitis C genotype 1a with prior interferon exposure, no advanced fibrosis, with HCV-related mixed cryoglobulinemia. Antiviral treatment addresses both.\n\nPlan:\n1. Sofosbuvir 400 mg/velpatasvir 100 mg, one tablet daily for 12 weeks. No interactions with her current medicines; no antacids or acid-reducing medicines, and check with us before any new prescription or supplement. Our specialty pharmacy will ship once insurance approves; we will write when she starts.\n2. No routine labs during treatment.\n3. HCV RNA 12 weeks or more after the last dose; this can be drawn at your office. Please send us the result.\n4. No alcohol.\n\nSincerely,\nHepatology"
+            }
+          ]
+        },
+        {
+          "id": "2024-07-03a",
+          "kind": "outside_records",
+          "start": "2024-07-03T15:10",
+          "conditions": [
+            {
+              "label": "Leukoplakia of oral mucosa",
+              "icd10": "K13.21",
+              "action": "diagnosed",
+              "onset": "2024-06-24",
+              "note": "Biopsy left buccal mucosa: keratosis without dysplasia."
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-06-24T10:30",
+              "issued": "2024-06-28T12:00",
+              "text": "Specimen: left buccal mucosa, punch biopsy, 4 mm.\nMicroscopic: squamous mucosa with hyperkeratosis and parakeratosis. No epithelial dysplasia. No invasive carcinoma.",
+              "conclusion": "Left buccal mucosa: keratosis without epithelial dysplasia, consistent with benign leukoplakia."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Follow-up",
+              "author": "dermatology",
+              "date": "2024-07-03T15:10",
+              "body": "Outside dermatology practice\nDate of service: 06/24/2024\n\nMs. Lambert returns, now also followed by nephrology for hepatitis C-related cryoglobulinemia and seen by hepatology this month, with antiviral treatment about to start. Her mouth has hurt for several months. The itchy wrist lesions are still there but improving; she used the clobetasol for the two weeks last summer and nothing since. No recent dental procedures and no trauma to the mouth.\n\nMedications: hydrochlorothiazide 25 mg daily. NKDA.\n\nExam: both buccal mucosae carry white, net-like papules and plaques; in places the mucosa is red with ulcerated centers. Wrists with fading violaceous papules.\n\nLabs today: CBC normal. AST and ALT mildly elevated. HCV RNA detected. ANA and anti-LKM-1 antibodies negative.\n\nProcedure: 4 mm punch biopsy, left buccal plaque, after local anesthesia. Hemostasis with pressure. Tolerated well.\n\nPathology (06/28): keratosis without dysplasia.\n\nAssessment: benign oral leukoplakia, left buccal mucosa. Cutaneous lichen planus, improving.\n\nPlan: dexamethasone 0.5 mg/5 mL solution, swish 5 mL for 5 minutes and spit out, four times daily until the sore areas heal, up to 4 weeks. Soft, bland diet when sore. Oral examination here once a year to watch the white patches; return sooner for any new, thickening, red or non-healing area.\n\nDermatology"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "dexamethasone 0.1 MG/ML Oral Solution",
+              "action": "historical",
+              "sig": "Swish 5 mL in the mouth for 5 minutes and spit out, four times daily until the sore areas heal (up to 4 weeks)",
+              "frequency": "QID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Painful oral mucosal lesions"
+            }
+          ]
+        },
+        {
+          "id": "2024-07-10a",
+          "kind": "outside_records",
+          "start": "2024-07-10T11:05",
+          "medications": [
+            {
+              "drug_text": "sofosbuvir 400 MG / velpatasvir 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily for 12 weeks",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Chronic hepatitis C, genotype 1a, with mixed cryoglobulinemia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hepatology Treatment Start",
+              "author": "hepatology",
+              "date": "2024-07-10T11:05",
+              "body": "Outside hepatology group\n\nInsurance approval received. Ms. Lambert started sofosbuvir 400 mg/velpatasvir 100 mg, one tablet by mouth daily, on 07/08/2024 for 12 weeks; last dose 09/29/2024. Teaching completed with our pharmacist: same time each day, a missed dose taken the same day, no acid-reducing medicines.\n\nCurrent medications: sofosbuvir/velpatasvir daily; hydrochlorothiazide 25 mg daily; dexamethasone mouth rinse (swish and spit) from dermatology; acetaminophen as needed. NKDA.\n\nNext: HCV RNA from late December on, 12 weeks after the last dose, at your office. Please send us the result.\n\nHepatology"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-16a",
+          "kind": "annual_physical",
+          "start": "2024-09-16T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, employer TB screening form",
+          "state": {
+            "labs": {
+              "Creatinine": 1.0,
+              "Hemoglobin A1c": 5.7,
+              "Aspartate Aminotransferase": 41,
+              "Alanine Aminotransferase": 44,
+              "Low Density Lipoprotein": 122,
+              "Total Cholesterol": 206
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-16T08:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Total Protein"
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 41
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 44
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-16T08:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Red Cell Distribution Width"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-16T08:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-09-16T08:40",
+              "results": [
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity"
+                },
+                {
+                  "test": "Urine pH"
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-16T08:50",
+              "resulted": "2024-09-19T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.7
+                },
+                {
+                  "test": "Quantiferon-TB Gold",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-09-16T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-16T09:05",
+              "body": "Annual. Brought the yearly health form from her employer, which now asks for a TB blood test.\n\nInterval: cryoglobulinemia diagnosed in January, purpura gone, joints mostly fine. Dermatology biopsied the cheek in June: benign leukoplakia, no dysplasia. Mouth much better after the dexamethasone rinse, tender at times with spicy food. Wrists better. No spells. Hep C: week 10 of sofosbuvir/velpatasvir from hepatology, no missed doses, last dose 9/29.\n\nMeds: HCTZ 25 mg daily, sofosbuvir/velpatasvir 1 tab daily (through 9/29), acetaminophen PRN. NKDA.\nSH: still at the same office job. No alcohol for 6.5 years. Never smoker.\n\nExam: well, anicteric. White reticulated plaques both cheeks. Neck without nodes. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly, no fluid wave. Legs without purpura or edema.\n\nA/P\n1. Prevention: PHQ-2 1, AUDIT-C 0. Mammogram November. Colonoscopy 2021, Pap 2022. Flu and COVID next month.\n2. Employer TB screen: QuantiFERON today.\n3. Cryoglobulinemia: creatinine, UA.\n4. Hep C: on treatment with hepatology. CMP, CBC.\n5. Lipids, A1c (brother with diabetes; last 5.6).\n6. HTN: controlled, HCTZ."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              78
+            ]
+          }
+        },
+        {
+          "id": "2024-09-19a",
+          "kind": "telephone",
+          "start": "2024-09-19T14:30",
+          "orders": [
+            {
+              "id": "cxr-ltbi-2024",
+              "action": "placed",
+              "order": "Chest X-ray, 2 views",
+              "category": "imaging",
+              "reason": "Positive QuantiFERON"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "QuantiFERON result",
+              "author": "PCP",
+              "date": "2024-09-19T14:30",
+              "body": "Called pt with results. QuantiFERON positive. No cough, fever, night sweats or weight loss. Explained this most likely means an old, inactive TB infection, but we need a chest X-ray to make sure there's nothing active. Ordered, she'll go Tuesday. Rest of labs: creatinine down to 1.0, urine clean, A1c 5.7, liver enzymes the lowest in years on the hep C pills (AST 41, ALT 44). Will fill out the employer form once the CXR is read."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "imaging",
+          "start": "2024-09-24T12:20",
+          "service": "Radiology",
+          "reason": "Positive TB blood test",
+          "orders": [
+            {
+              "id": "cxr-ltbi-2024",
+              "action": "done",
+              "date": "2024-09-24T12:20"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2024-09-24T12:20",
+              "text": "PA and lateral views. Lungs clear without nodule, consolidation, cavitation or calcified granuloma. No hilar or mediastinal adenopathy. No pleural effusion. Heart size normal. Cholecystectomy clips in the right upper quadrant.",
+              "conclusion": "Normal chest. No radiographic evidence of active or prior tuberculosis."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-25a",
+          "kind": "telephone",
+          "start": "2024-09-25T12:10",
+          "conditions": [
+            {
+              "label": "Latent tuberculosis",
+              "action": "diagnosed",
+              "onset": "2024-09-19"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Latent TB",
+              "author": "PCP",
+              "date": "2024-09-25T12:10",
+              "body": "CXR normal. Spoke with pt: latent TB infection, not contagious, cleared for work; employer form completed and faxed with her permission. Discussed treating to prevent future active TB. She wants to talk options in person and would rather start after the hep C pills finish on 9/29. Visit booked for November after a busy stretch at work."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-07a",
+          "kind": "nurse_visit",
+          "start": "2024-10-07T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-07T12:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-07T12:36"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-07T12:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "author": "MA",
+              "date": "2024-10-07T12:45",
+              "body": "2024-25 flu (trivalent) R deltoid and Pfizer COVID L deltoid. Afebrile, no prior reactions. Tolerated."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-08a",
+          "kind": "office_visit",
+          "start": "2024-11-08T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Latent TB treatment",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "medications": [
+            {
+              "drug_text": "isoniazid 300 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Latent tuberculosis"
+            },
+            {
+              "drug_text": "pyridoxine hydrochloride 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily with isoniazid",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Prevent isoniazid neuropathy"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-11-08T16:10",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 41
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 44
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Bilirubin, Direct"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Total Protein"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-11-08T15:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "lft-inh-2024",
+              "action": "placed",
+              "order": "Hepatic function panel in 4 weeks",
+              "category": "lab",
+              "reason": "Isoniazid monitoring"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-11-08T16:15",
+              "body": "Here to decide on latent TB treatment. Positive QuantiFERON 9/19, normal CXR 9/24, no symptoms. Finished sofosbuvir/velpatasvir 9/29 without missed doses; hepatology wants an HCV RNA from late December on.\n\nTalked through the choices. She wants a single pill once a day she can take at breakfast with her HCTZ, so isoniazid 300 mg daily for 9 months with pyridoxine 50 mg. Her liver enzymes ran mildly high for years from hep C and were near normal in September (AST 41, ALT 44); reviewed that isoniazid can injure the liver and that her risk is higher. Monthly symptom check and liver tests. Stop and call for nausea, poor appetite, dark urine, yellow eyes, belly pain, unusual tiredness. Absolutely no alcohol, which she says is a non-issue.\n\nExam: well, anicteric. Abdomen soft, nontender. No edema.\n\nPlan\n- Isoniazid 300 mg daily + pyridoxine 50 mg daily, start today.\n- Baseline hepatic panel today; repeat in 4 weeks (lab visit booked 12/9).\n- Acetaminophen no more than 2 g/day while on INH.\n- HCV RNA for hepatology with the January labs."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-18a",
+          "kind": "imaging",
+          "start": "2024-11-18T10:00",
+          "service": "Radiology",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-11-18T10:00",
+              "text": "Bilateral screening tomosynthesis, compared with 2021-2023. Scattered fibroglandular densities. Right intramammary node unchanged. No suspicious mass, calcifications or distortion.",
+              "conclusion": "BI-RADS 2: Benign."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "author": "PCP",
+              "date": "2024-11-19T07:55",
+              "body": "Benign, stable. Normal letter."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-09a",
+          "kind": "nurse_visit",
+          "start": "2024-12-09T07:30",
+          "appointment": "no-show",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab draw, liver tests on isoniazid"
+        },
+        {
+          "id": "2024-12-23a",
+          "kind": "outside_records",
+          "start": "2024-12-23T09:50",
+          "conditions": [
+            {
+              "label": "Toxic liver disease with acute hepatitis",
+              "icd10": "K71.2",
+              "action": "diagnosed",
+              "onset": "2024-12-06",
+              "note": "Isoniazid-induced liver injury."
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "isoniazid 300 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Drug-induced liver injury"
+            },
+            {
+              "drug_text": "pyridoxine hydrochloride 50 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Isoniazid stopped"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record with GI Consultation",
+              "author": "emergency medicine",
+              "date": "2024-12-23T09:50",
+              "body": "Regional hospital emergency department\nVisit: 12/20/2024, 14:05-21:40\n\nChief complaint: tired, not eating, dark urine.\n\nHPI: 52-year-old woman with hepatitis C genotype 1a (12 weeks of sofosbuvir/velpatasvir, last dose 09/29/2024), HCV-related cryoglobulinemia and alcohol use disorder in sustained remission, started isoniazid for latent TB six weeks ago. For two weeks: fatigue, anorexia, tea-colored urine. No alcohol. No travel. No known hepatitis contacts. No acetaminophen beyond the occasional tablet.\n\nMedications: isoniazid 300 mg daily, pyridoxine 50 mg daily, hydrochlorothiazide 25 mg daily. NKDA.\n\nExam: afebrile, hemodynamically stable. Scleral icterus. Mild right upper quadrant tenderness without guarding. No hepatomegaly or splenomegaly. No peripheral edema. Alert, no asterixis.\n\nLabs: AST 450 U/L, ALT 520 U/L, alkaline phosphatase 120 U/L, total bilirubin 3.2 mg/dL, direct bilirubin 2.1 mg/dL, INR 1.1. Hepatitis A IgM, hepatitis B surface antigen and hepatitis B core IgM negative. HCV RNA not detected.\n\nRUQ ultrasound: liver normal in size without focal lesion; no intra- or extrahepatic biliary dilation; gallbladder surgically absent; spleen normal in size; no ascites.\n\nGI consult (ED): hepatocellular injury pattern with jaundice, timing typical for isoniazid hepatotoxicity; HCV RNA negative after her recent hepatitis C treatment, so not a viral relapse. INR normal, no encephalopathy; safe for outpatient management.\n\nDisposition: isoniazid and pyridoxine discontinued, do not rechallenge. Discharged home. Repeat liver tests with primary care within 10 days; return for confusion, bleeding, vomiting or worsening jaundice.\n\nDiagnosis: isoniazid-induced liver injury (drug-induced liver injury)."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-30a",
+          "kind": "office_visit",
+          "start": "2024-12-30T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, liver injury from isoniazid",
+          "state": {
+            "labs": {
+              "Aspartate Aminotransferase": 268,
+              "Alanine Aminotransferase": 315,
+              "Alkaline Phosphatase": 116,
+              "Bilirubin, Total": 2.3,
+              "Bilirubin, Direct": 1.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-12-30T10:25",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 268
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 315
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 116
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.3
+                },
+                {
+                  "test": "Bilirubin, Direct"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Total Protein"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-12-30T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "lft-inh-2024",
+              "action": "done",
+              "date": "2024-12-30T10:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-12-30T10:45",
+              "body": "ED follow-up. Seen 12/20 for isoniazid liver injury (AST 450, ALT 520, bili 3.2, INR 1.1); INH and B6 stopped there.\n\nShe stopped both on the 20th. Appetite coming back over the last few days, urine lighter, still tired. No confusion, no bleeding, no vomiting. No alcohol, no acetaminophen.\n\nExam: mild scleral icterus, less than she says it was. Abdomen soft, minimal RUQ tenderness, no hepatomegaly, no fluid. No asterixis. No edema.\n\nA/P\n1. Isoniazid-induced liver injury, improving clinically. Hepatic panel today.\n2. Latent TB: isoniazid stopped.\n3. Labs again in 3 weeks, with the HCV RNA hepatology wants.\n\nAddendum 12/31: AST 268, ALT 315, alk phos 116, total bilirubin 2.3. Falling. Called pt."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

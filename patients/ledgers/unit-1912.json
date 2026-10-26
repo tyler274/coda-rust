@@ -1,0 +1,1501 @@
+{
+  "unit": "unit-1912",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00001912/2022-09-13a: allergen \"Dust mites\" not in catalog (text only)",
+    "MRN00001912/2022-09-13a: allergen \"Pollen (seasonal)\" not in catalog (text only)",
+    "left text-only (not verified): drug \"petrolatum Topical Ointment\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001912",
+      "given": "Taylor",
+      "family": "Coolidge",
+      "birth_date": "1999-09-10",
+      "address_line": "38 Crescent Street, Apt 2",
+      "phone": "+1-603-555-0175",
+      "email": "taylor.coolidge@example.test",
+      "marital_status": "single",
+      "summary": "Healthy young swim instructor with mild intermittent atopic dermatitis who joins the practice in 2022. In 2025 she has a left swimmer's ear treated by ENT and a first anaphylaxis to shrimp; a second shrimp anaphylaxis in February 2026 precedes her allergy consult.",
+      "events": [
+        {
+          "id": "2022-09-13a",
+          "kind": "establish_care",
+          "start": "2022-09-13T09:00",
+          "end": "2022-09-13T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care and physical",
+          "conditions": [
+            {
+              "label": "Atopic dermatitis",
+              "action": "diagnosed",
+              "onset": "2005-06-01",
+              "note": "mild, intermittent; since childhood"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "triamcinolone acetonide 1 MG/ML Topical Cream",
+              "action": "historical",
+              "sig": "Apply a thin layer to affected areas twice daily as needed for eczema flare",
+              "frequency": "BID PRN",
+              "route": "Topical",
+              "course": "chronic",
+              "reason": "Atopic dermatitis"
+            },
+            {
+              "drug_text": "petrolatum Topical Ointment",
+              "action": "historical",
+              "sig": "Apply liberally to dry skin daily for maintenance",
+              "frequency": "DAILY",
+              "route": "Topical",
+              "course": "chronic",
+              "reason": "Atopic dermatitis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            },
+            {
+              "substance": "Dust mites",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Pollen (seasonal)",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              108,
+              82
+            ],
+            "hr": 64,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 62.1,
+            "height_cm": 168.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-13T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 248
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.69
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-13T09:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.67
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 126
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-13T09:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 172
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 65
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 82
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 91
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 107
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T09:50",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T09:55",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social (1-2 drinks per week)"
+            },
+            {
+              "item": "Occupation",
+              "value": "Swim instructor"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2022-09-13T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-13T09:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-13T09:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2022-09-13T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-09-13T10:20",
+              "author": "PCP",
+              "body": "NEW PATIENT / PREVENTIVE\n\n23 y/o woman joining the practice. Previously seen at another primary care office; records request signed today.\n\nConcerns: none acute. Has had eczema since she was little, mostly backs of knees, inner elbows and hands. Flares a few times a year, usually winter. Uses triamcinolone 0.1% cream BID for a few days when it flares and plain petroleum jelly daily the rest of the time. Wants refills to be possible through us.\n\nPMH: atopic dermatitis, mild/intermittent.\nPSH: wisdom teeth out at 18.\nMeds: triamcinolone 0.1% cream BID prn flare; petroleum jelly daily.\nAllergies: no drug allergies. Dust mites and seasonal pollen.\nFHx: mother asthma and allergic rhinitis. Father eczema. Maternal uncle allergic to shellfish.\nSocial: swim instructor, teaches lessons at an indoor pool most weekdays plus Saturday mornings. Never smoked. 1-2 drinks a week. Single, lives in Northampton. Exercises in the pool, obviously.\nGYN: regular cycles. Last Pap 2021 per pt, normal. Sexually active, condoms. Agrees to GC/CT screen.\n\nROS: negative except skin as above.\n\nExam: vitals per flowsheet, BMI about 22. Well appearing. HEENT: canals clear, TMs normal. Neck supple, no nodes, thyroid normal. Heart RRR no murmur. Lungs clear. Abd soft, NT. Skin: a little dryness of the dorsal hands and both antecubital fossae, no active plaques, no excoriation. Neuro grossly normal.\n\nPHQ-2: 0.\n\nA/P\n1. Atopic dermatitis, mild intermittent: well controlled. Continue emollient daily and triamcinolone for short flare courses. Discussed rinsing off and moisturizing right after the pool.\n2. Health maintenance: CBC, CMP, lipids, one-time HIV and hep C screen, GC/CT urine. Tdap today (last one she thinks was middle school; will confirm with old records). Flu and COVID booster at a nurse visit next month. Pap due 2024 if 2021 result confirmed.\n3. Return yearly for physical, sooner prn. She knows she can text/call."
+            },
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "date": "2022-09-13T09:46",
+              "author": "MA",
+              "body": "Tdap 0.5 mL IM L deltoid. Screening questions answered no. VIS given. Tolerated without issue."
+            }
+          ],
+          "state": {
+            "weight_kg": 62.0,
+            "height_cm": 168.0,
+            "labs": {
+              "High Density Lipoprotein": 63,
+              "Low Density Lipoprotein": 90,
+              "Total Cholesterol": 168,
+              "Triglycerides": 74
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-09-16a",
+          "kind": "portal_message",
+          "start": "2022-09-16T14:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your results",
+              "date": "2022-09-16T14:10",
+              "author": "PCP",
+              "body": "Hi Taylor, everything from Tuesday came back normal: blood counts, kidney and liver tests, cholesterol, and the HIV, hepatitis C, gonorrhea and chlamydia screens were all negative. Nothing to follow up on. See you for your flu shot next month."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "outside_records",
+          "start": "2022-09-20T11:30",
+          "reason": "Prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "date": "2022-09-20T11:30",
+              "author": "front desk",
+              "body": "Records from prior primary care office received by secure fax, 22 pages, scanned to chart.\n\nAbstracted by PCP:\n- Problem: eczema since childhood, topical steroid as needed.\n- Immunizations: childhood series complete; HPV series complete; Tdap 2011.\n- Pap 2021: negative for intraepithelial lesion or malignancy.\n- Wisdom teeth extracted 2018, oral surgeon, uneventful.\n- No hospitalizations. No drug allergies.\nNext Pap due 2024."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T16:30",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-11T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-11T16:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-11T16:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2022-10-11T16:45",
+              "author": "RN",
+              "body": "Here after work for vaccines. No fever or illness today, no prior vaccine reactions. Influenza quadrivalent 0.5 mL IM R deltoid. Pfizer bivalent COVID booster 0.3 mL IM L deltoid. Observed 15 min, no reaction. Next due fall 2023."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-07a",
+          "kind": "portal_message",
+          "start": "2023-02-07T08:12",
+          "reason": "Eczema flare, cream refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Eczema cream",
+              "date": "2023-02-07T08:12",
+              "author": "patient",
+              "body": "Hi! My hands are doing the winter thing again, cracking around the knuckles. I'm almost out of the triamcinolone, can you send a new tube to my pharmacy? Thanks"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Eczema cream",
+              "date": "2023-02-07T12:40",
+              "author": "PCP",
+              "body": "Sent - 80 g tube with a refill. Twice a day on the cracked spots for up to two weeks, then back to just the petroleum jelly. Gloves for dishes help, and a thick layer at night under cotton gloves if it's bad. If it isn't settling in two weeks or looks infected (weeping, yellow crust) send me a picture."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "annual_physical",
+          "start": "2023-10-03T08:30",
+          "reason": "Annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Appointment",
+              "date": "2023-10-03T09:05",
+              "author": "front desk",
+              "body": "Pt did not arrive for 8:30 physical. Called, she apologized, had a lesson schedule change and forgot. Rebooked 10/17 at 8:00."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "annual_physical",
+          "start": "2023-10-17T08:00",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              108,
+              78
+            ],
+            "hr": 71,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 62.2
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-10-17T08:40",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social (1-2 drinks per week)"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-10-17T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T08:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T08:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T08:36"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-10-17T09:10",
+              "author": "PCP",
+              "body": "ANNUAL\n\nDoing well. Busy fall teaching season. Skin: one flare last February on the hands, cleared with the cream; otherwise just moisturizer. No other concerns.\n\nMeds: triamcinolone 0.1% cream prn, petroleum jelly daily.\nAllergies: NKDA; dust mites, seasonal pollen.\nSocial unchanged: never smoker, a drink or two a week. Condoms.\n\nROS negative.\n\nExam: vitals reviewed, weight stable. Well. HEENT normal, canals clear. Neck no nodes. Heart RRR. Lungs clear. Abd benign. Skin mildly dry on hands, no active eczema.\n\nPHQ-2 0.\n\nA/P\n- Atopic dermatitis, quiet. Continue routine.\n- GC/CT urine today (under 25).\n- Flu + updated COVID today.\n- Pap next year.\n- RTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "portal_message",
+          "start": "2023-10-19T17:02",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "date": "2023-10-19T17:02",
+              "author": "PCP",
+              "body": "Your urine screen from Tuesday was negative. All set until next fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-08a",
+          "kind": "office_visit",
+          "start": "2024-02-08T15:40",
+          "reason": "Eczema flare",
+          "vitals": {
+            "bp": [
+              118,
+              80
+            ],
+            "hr": 64,
+            "temp_c": 37.2,
+            "weight_kg": 62.6
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-02-08T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-02-08T16:15",
+              "author": "PCP",
+              "body": "S: Eczema flare x3 weeks, both hands and inner elbows, itchy, worse at night. Been in the pool more than usual covering for another instructor. Used the triamcinolone a few days and stopped when it looked better, then it came right back. No oozing, no fever.\n\nO: Vitals per flowsheet. Dorsal hands with ill-defined erythematous, dry, lichenified patches with a few excoriations; similar patches both antecubital fossae. No crusting, no vesicles, no signs of infection.\n\nA: Atopic dermatitis flare, mild, partially treated.\n\nP: Use the triamcinolone 0.1% BID for a full 2 weeks this time, then twice weekly on the usual spots for a month. Shower right after the pool and put the petroleum jelly on within a few minutes while skin is damp. Fragrance-free soap. Refill sent. Return if not clearly better in 3 weeks."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-08b",
+          "kind": "pharmacy",
+          "start": "2024-02-08T16:20",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Pharmacy",
+              "title": "Prescription Sent",
+              "date": "2024-02-08T16:20",
+              "author": "PCP",
+              "body": "triamcinolone acetonide 0.1% cream, 80 g, 1 refill. Apply to affected areas twice daily for 2 weeks, then twice weekly to usual areas. E-prescribed to patient's pharmacy."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "annual_physical",
+          "start": "2024-10-22T08:00",
+          "reason": "Annual physical, Pap",
+          "vitals": {
+            "bp": [
+              117,
+              77
+            ],
+            "hr": 68,
+            "temp_c": 37.0,
+            "spo2": 96,
+            "weight_kg": 62.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-10-22T08:30",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social (1-2 drinks per week)"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2024-10-22T08:25",
+              "text": "Specimen: cervical, liquid-based preparation.\nSpecimen adequacy: satisfactory for evaluation; transformation zone component present.\nInterpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy (NILM).",
+              "issued": "2024-10-25T13:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-22T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-22T08:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T08:41"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-10-22T09:05",
+              "author": "PCP",
+              "body": "Annual exam, turned 25 last month.\n\nInterval: February eczema flare on the hands settled after the full 2-week course; using the cream once in a while since. No ER or urgent care visits. Feels well.\n\nMeds: triamcinolone 0.1% cream prn; petroleum jelly.\nAllergies: NKDA; dust mites; seasonal pollen.\nSocial: still teaching swim, never smoker, 1-2 drinks/wk.\nGYN: regular cycles, condoms. Last Pap 2021 normal.\n\nExam: vitals per flowsheet. General well. HEENT: canals clear, TMs pearly. Neck no nodes or thyromegaly. Heart regular, no murmur. Lungs clear. Abd soft. Pelvic: normal external genitalia, vaginal mucosa normal, cervix without lesions; Pap collected. Skin: faint dryness dorsal hands only.\n\nPHQ-9: 1.\n\nA/P\n- Health maintenance: Pap (cytology) sent. GC/CT urine. Flu and updated COVID today.\n- Atopic dermatitis: quiet, continue.\n- See next fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-28a",
+          "kind": "portal_message",
+          "start": "2024-10-28T12:15",
+          "reason": "Pap and lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "date": "2024-10-28T12:15",
+              "author": "PCP",
+              "body": "Hi Taylor - your Pap came back normal and the urine screen was negative. Next Pap would be in 3 years, fall 2027."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pap result",
+              "date": "2024-10-28T19:48",
+              "author": "patient",
+              "body": "Great, thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-05a",
+          "kind": "office_visit",
+          "start": "2025-06-05T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Left ear pain",
+          "conditions": [
+            {
+              "label": "Otitis externa",
+              "action": "diagnosed",
+              "onset": "2025-06-03",
+              "note": "acute diffuse, left ear"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              75
+            ],
+            "hr": 66,
+            "temp_c": 36.6,
+            "spo2": 96
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-06-05T13:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-referral",
+              "action": "placed",
+              "order": "Otolaryngology referral",
+              "category": "referral",
+              "to": "Otolaryngology",
+              "reason": "left otitis externa, canal too swollen for drops; cleaning and wick"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-Day Visit",
+              "date": "2025-06-05T14:05",
+              "author": "PCP",
+              "body": "Texted this morning, seen same day.\n\nS: L ear pain since Tuesday. Hurts a lot when she tugs on the ear lobe. Feels plugged and she can't hear well out of it. No fever, no cold symptoms, hasn't been sick. In the water most of the day for work, including diving instruction off the blocks.\nMeds: triamcinolone cream prn, petroleum jelly. Allergies: NKDA; dust mites, seasonal pollen.\n\nO: Afebrile, vitals per flowsheet. R ear: canal clear, TM normal. L ear: tragal tenderness, exam painful for her. Canal red and swollen nearly shut with greenish discharge; I can't see the TM past the swelling. No preauricular or postauricular swelling, no nodes. Pharynx normal.\n\nA: Acute diffuse otitis externa, L.\n\nP: Canal is too swollen for drops to get where they need to go. Called ENT, who can see her first thing tomorrow to clean it out under the microscope and put in a wick; they'll start the drops then. Keep the ear dry, cotton ball with a little petroleum jelly in the shower, no pool until cleared. Work note for tomorrow."
+            },
+            {
+              "type": "Letter",
+              "title": "Work Note",
+              "date": "2025-06-05T14:10",
+              "author": "PCP",
+              "body": "Taylor Coolidge was seen in our office today. She should stay out of the water through at least 6/16/2025 and may return to dry-land duties as she feels able."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-06-06a",
+          "kind": "specialist_visit",
+          "start": "2025-06-06T08:30",
+          "service": "Otolaryngology",
+          "reason": "Left ear pain, fullness and decreased hearing",
+          "medications": [
+            {
+              "drug_text": "ciprofloxacin 3 MG/ML / dexamethasone 1 MG/ML Otic Suspension",
+              "action": "start",
+              "sig": "Instill 4 drops into the left ear twice daily for 7 days",
+              "frequency": "BID",
+              "route": "Otic",
+              "course": "short",
+              "reason": "Acute otitis externa, left"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office consultation, comprehensive",
+              "performed": "2025-06-06T08:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-referral",
+              "action": "done",
+              "date": "2025-06-06T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology Consultation",
+              "date": "2025-06-09T10:00",
+              "author": "otolaryngology",
+              "body": "OTOLARYNGOLOGY CONSULTATION\nDate of service: 06/06/2025\nReferred by: primary care physician\nReason: left otalgia\n\nHistory: 25-year-old swim instructor with three days of left ear pain that is worse with traction on the auricle, plus a blocked sensation and muffled hearing on that side. She denies fever, recent upper respiratory infection or other illness. She spends most of her working day in the pool and dives regularly.\n\nPast history: atopic dermatitis, mild and intermittent. Wisdom teeth extracted at 18.\nMedications: triamcinolone 0.1% cream as needed; petroleum jelly.\nAllergies: no drug allergies; dust mites; seasonal pollen.\nFamily history: mother asthma, allergic rhinitis; father atopic dermatitis; maternal uncle shellfish allergy.\nSocial: never smoker; social alcohol.\n\nExamination: Vital signs within normal limits. Right ear normal. Left external auditory canal diffusely erythematous and edematous with green purulent debris. Tympanic membrane cannot be adequately seen because of canal swelling. Tragal tenderness present; otoscopy is uncomfortable for her. No periauricular cellulitis. Facial nerve intact.\n\nProcedure: Under the microscope the left canal was suctioned of debris. A compressed ear wick was placed. She tolerated this well.\n\nImpression: Acute diffuse otitis externa, left ear.\n\nPlan:\n1. Ciprofloxacin/dexamethasone otic suspension 4 drops to the left ear (onto the wick) twice daily for 7 days.\n2. The wick will likely fall out on its own in 2 to 3 days; continue the drops afterward.\n3. Strict water precautions. No swimming for 10 days.\n4. Return or call if no improvement within 72 hours.\n\nThank you for this referral.\nOtolaryngology"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-12a",
+          "kind": "portal_message",
+          "start": "2025-06-12T07:55",
+          "reason": "Ear follow-up",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Ear update",
+              "date": "2025-06-12T07:55",
+              "author": "patient",
+              "body": "Hi, quick update: the wick fell out Monday and I've kept doing the drops. Pain is basically gone and I can hear normally again. Am I ok to get back in the pool Monday? I'll be done with the drops Friday."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Ear update",
+              "date": "2025-06-12T11:30",
+              "author": "PCP",
+              "body": "Great to hear. Finish all 7 days of drops. Monday the 16th is fine if the ear still feels normal. Going forward: well-fitting swim earplugs, tip your head and dry the ear after each session, and a hair dryer on the low setting at arm's length if water feels trapped. If it comes back let me know early."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-17a",
+          "kind": "ed_visit",
+          "start": "2025-08-17T19:45",
+          "end": "2025-08-18T01:40",
+          "service": "Emergency Medicine",
+          "reason": "Difficulty breathing, facial swelling and hives after eating shrimp",
+          "conditions": [
+            {
+              "label": "Anaphylactic reaction due to shellfish (crustaceans)",
+              "action": "diagnosed",
+              "onset": "2025-08-17",
+              "note": "shrimp",
+              "icd10": "T78.02XA"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "NDA019430 0.3 ML epinephrine 1 MG/ML Auto-Injector",
+              "action": "start",
+              "sig": "Inject 0.3 mg into the outer thigh at the first sign of a severe allergic reaction, then call 911. May repeat once after 5 to 15 minutes. Dispense 2-pack.",
+              "frequency": "PRN",
+              "route": "Intramuscular",
+              "course": "chronic",
+              "reason": "Shellfish anaphylaxis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Shellfish",
+              "reaction": "Anaphylaxis",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-08-17T19:48",
+              "bp": [
+                90,
+                50
+              ],
+              "hr": 110,
+              "rr": 25,
+              "spo2": 92
+            },
+            {
+              "time": "2025-08-17T23:50",
+              "bp": [
+                108,
+                68
+              ],
+              "hr": 92,
+              "rr": 18,
+              "spo2": 98
+            },
+            {
+              "time": "2025-08-18T01:30",
+              "bp": [
+                114,
+                72
+              ],
+              "hr": 84,
+              "rr": 16,
+              "temp_c": 36.8,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-08-17T20:50",
+              "results": [
+                {
+                  "test": "Tryptase",
+                  "loinc": "21582-2",
+                  "unit": "ng/mL",
+                  "value": 21.8
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-08-17T20:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 219
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.75
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.6
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-08-17T20:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.69
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 123
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-08-17T19:45"
+            },
+            {
+              "procedure": "Nebulizer treatment",
+              "performed": "2025-08-17T20:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-08-18T09:15",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nArrival: 08/17/2025 19:45 by private vehicle (driven by friend)\n\nCC: trouble breathing, swollen face, itchy rash after shrimp\n\nHPI: 25 y/o F with mild eczema on topical steroid and emollient, seen in June by ENT for a left ear infection that has since cleared. Ate shrimp at a friend's dinner about half an hour before arrival. Within minutes developed a diffuse itchy rash, facial swelling and difficulty breathing. Has eaten shrimp in the past without any reaction. No new medications, no stings or bites.\n\nPMH: atopic dermatitis. PSH: third molar extraction.\nMeds: triamcinolone 0.1% cream prn, petroleum jelly.\nAllergies: dust mites, seasonal pollen. NKDA.\nFH: maternal uncle with shellfish allergy; mother asthma; father eczema.\nSH: swim instructor; never smoker; social EtOH.\n\nTriage: BP 90/50, HR 110, RR 25, SpO2 92% RA.\n\nExam: Anxious. Face visibly swollen. No stridor. Diffuse expiratory wheeze audible. Tachycardic, regular. Urticaria over the trunk and both arms. Abdomen soft.\n\nCourse:\n19:50 epinephrine 0.5 mg IM, L anterolateral thigh.\n19:55 NS 1 L bolus. Albuterol nebulizer x1.\n20:05 diphenhydramine 50 mg IV, famotidine 20 mg IV, methylprednisolone 125 mg IV.\nWheeze cleared and pressure responded after the first epinephrine dose; no repeat needed.\n23:50 reassessment: BP 108/68, HR 92, RR 18, SpO2 98% RA. Facial swelling and hives fading. Lungs clear.\n01:30 BP 114/72, HR 84, RR 16, SpO2 99% RA, T 36.8. Asymptomatic.\n\nResults: Tryptase 21.8 ng/mL (ref <=11.4), drawn about one hour after arrival. CBC within normal limits. BMP within normal limits.\n\nDiagnosis: Anaphylaxis due to shellfish (shrimp).\n\nDisposition: Discharged home 01:40 after about 6 hours of observation, with friend.\nDischarge prescription: epinephrine 0.3 mg auto-injector, 2-pack. Taught use. Avoid shrimp and other shellfish. Use the injector for any recurrence and call 911.\nFollow up with primary care this week and with an allergist.\n\nAllergy list updated: shellfish (anaphylaxis)."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "office_visit",
+          "start": "2025-08-19T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, shellfish anaphylaxis",
+          "conditions": [
+            {
+              "label": "Otitis externa",
+              "action": "resolved",
+              "note": "left ear, healed after June treatment"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              109,
+              73
+            ],
+            "hr": 73,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 61.9
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-08-19T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "allergy-referral",
+              "action": "placed",
+              "order": "Allergy and Immunology referral",
+              "category": "referral",
+              "to": "Allergy and Immunology",
+              "reason": "shrimp anaphylaxis 8/17/2025"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2025-08-19T11:50",
+              "author": "PCP",
+              "body": "ED record reviewed (8/17).\n\nS: Sunday night ate shrimp at a friend's, within half an hour had itching, hives, a swollen face and trouble breathing. Friend drove her in. Got one dose of epinephrine plus the usual adjuncts and was home by 2 am. Back to normal by Monday afternoon. Very shaken. She's eaten shrimp many times without a problem, which is what scared her most. Her mom's brother has a shellfish allergy, she says. Filled the EpiPens yesterday, has them in her bag.\n\nL ear: no symptoms since June.\n\nO: Vitals per flowsheet, normal. Well appearing. No facial or lip swelling. Lungs clear, no wheeze. Skin clear of hives; usual mild dryness of the hands. L canal clear, TM intact and normal. R ear normal.\n\nA/P\n1. Anaphylaxis to shrimp, first episode, tryptase 21.8 in the ED. Shellfish allergy added to the allergy list.\n - Avoid shrimp and all crustacean shellfish (crab, lobster, crawfish) until allergy sorts out the rest. Ask about ingredients and shared fryers when eating out.\n - Carry two auto-injectors at all times. Walked through it with a trainer pen: blue to the sky, orange to the thigh, hold 3 seconds, call 911 after. Second dose if not improving in 5 to 15 minutes.\n - Referral to allergy/immunology.\n - Suggested she tell her aquatics director and keep a pen in the pool office.\n2. Otitis externa, L: resolved.\n\nFollow up at the physical in October, sooner for anything."
+            },
+            {
+              "type": "Letter",
+              "title": "Referral Letter",
+              "date": "2025-08-19T12:05",
+              "author": "PCP",
+              "body": "Re: Taylor Coolidge, DOB 09/10/1999\n\nThank you for seeing this 25-year-old swim instructor for evaluation after anaphylaxis to shrimp on 8/17/2025: urticaria, facial swelling, wheeze and hypotension (90/50) within 30 minutes of eating shrimp, responded to one IM epinephrine dose. ED tryptase 21.8 ng/mL. She had previously tolerated shrimp. History of mild atopic dermatitis; environmental sensitivity to dust mites and pollen. Maternal uncle with shellfish allergy.\n\nShe has an epinephrine auto-injector. We'd appreciate guidance on the extent of shellfish avoidance and an action plan.\n\nPrimary care physician"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-04a",
+          "kind": "portal_message",
+          "start": "2025-09-04T15:22",
+          "reason": "Employer emergency action plan form",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Form for work",
+              "date": "2025-09-04T15:22",
+              "author": "patient",
+              "body": "My aquatics director wants a medical action plan on file for staff with severe allergies now that I told her. I attached their form. Could you fill it out? No rush, just before the fall session starts on the 15th."
+            },
+            {
+              "type": "Letter",
+              "title": "Anaphylaxis Emergency Action Plan",
+              "date": "2025-09-05T09:40",
+              "author": "PCP",
+              "body": "Staff member: Taylor Coolidge\nAllergy: shellfish (shrimp). History of anaphylaxis.\nCarries: epinephrine 0.3 mg auto-injector x2.\n\nIf she has trouble breathing, throat tightness, swelling of the face or lips, widespread hives, faintness or vomiting after possible shellfish exposure: give epinephrine in the outer thigh right away, call 911, have her lie down with legs raised (or sit up if breathing is hard). A second dose may be given in 5 to 15 minutes if symptoms persist. Do not wait to see if it gets better.\n\nPrimary care physician"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Form for work",
+              "date": "2025-09-05T09:42",
+              "author": "PCP",
+              "body": "Done - signed copy attached here and a copy is in your chart. Hope the fall session goes well."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "annual_physical",
+          "start": "2025-10-21T08:00",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              123,
+              89
+            ],
+            "hr": 67,
+            "temp_c": 36.9,
+            "spo2": 96,
+            "weight_kg": 62.2
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social (1-2 drinks per week)"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-10-21T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-21T08:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-21T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-10-21T08:55",
+              "author": "PCP",
+              "body": "Annual.\n\nInterval: L otitis externa in June (ENT, wick and drops), resolved. Shrimp anaphylaxis in August, one ED visit. Nothing since. Strictly avoiding shellfish, carrying both pens, action plan on file at work. Allergy new-patient visit is booked for November. Skin quiet.\n\nMeds: epinephrine 0.3 mg auto-injector prn; triamcinolone 0.1% cream prn; petroleum jelly.\nAllergies: shellfish (anaphylaxis); dust mites; seasonal pollen. No drug allergies.\nSocial: unchanged.\n\nExam: vitals per flowsheet, weight stable. Well. HEENT: canals clear bilaterally, TMs normal. Neck supple. Heart regular, no murmur. Lungs clear. Skin: no active eczema.\n\nPHQ-2: 0.\n\nA/P\n- Shellfish anaphylaxis: avoidance, auto-injectors; allergy visit pending.\n- Atopic dermatitis: quiet.\n- Health maintenance: flu shot today. She'd rather skip a COVID shot this year; fine, offered anytime. Pap up to date (2024), next 2027. GC/CT screening no longer routine at 26; offered, she declines.\n- Next physical October 2026."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "telephone",
+          "start": "2025-11-18T09:20",
+          "reason": "Allergy appointment cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside Office Call",
+              "date": "2025-11-18T09:20",
+              "author": "front desk",
+              "body": "Allergy office called: provider out, they are cancelling her 11/20 new patient appointment. Next available new patient slot is 4/14/2026; they booked it and will call her if anything earlier opens. Called pt and left voicemail with the new date."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-02a",
+          "kind": "ed_visit",
+          "start": "2026-02-02T20:10",
+          "end": "2026-02-03T08:30",
+          "service": "Emergency Medicine",
+          "reason": "Facial swelling, shortness of breath and hives after eating at a seafood restaurant",
+          "vitals": [
+            {
+              "time": "2026-02-02T20:12",
+              "bp": [
+                92,
+                60
+              ],
+              "hr": 118,
+              "rr": 24,
+              "temp_c": 37.0,
+              "spo2": 93
+            },
+            {
+              "time": "2026-02-02T22:15",
+              "bp": [
+                106,
+                66
+              ],
+              "hr": 100,
+              "rr": 20,
+              "spo2": 97
+            },
+            {
+              "time": "2026-02-03T08:10",
+              "bp": [
+                112,
+                70
+              ],
+              "hr": 78,
+              "rr": 16,
+              "temp_c": 36.7,
+              "spo2": 99
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-02-02T20:10"
+            },
+            {
+              "procedure": "Nebulizer treatment",
+              "performed": "2026-02-02T20:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-02-03T11:00",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT RECORD\nDate of service: 02/02/2026, arrived 20:10 by EMS. Observation overnight, discharged 02/03/2026 08:30.\n\nCC: facial swelling, SOB, hives\n\nHPI: 26-year-old woman with mild atopic dermatitis and known shellfish anaphylaxis (ED visit August 2025). Tonight at a seafood restaurant with friends she ordered a dish she was told had no shellfish; about 15 minutes after eating, her face swelled, she became short of breath and broke out in an itchy rash all over. Shrimp was later found in the dish. She gave herself her own epinephrine auto-injector at the table and friends called 911. Same picture as August, by her report. Denies stings, new medications or new soaps/lotions.\n\nPMH: atopic dermatitis; shellfish anaphylaxis 2025.\nMeds: epinephrine auto-injector prn (one used tonight); triamcinolone 0.1% cream prn; petroleum jelly.\nAllergies: shellfish - anaphylaxis; dust mites; pollen.\nSH: never smoker, social alcohol. Swim instructor.\n\nArrival vitals: T 37.0 C, BP 92/60, HR 118, RR 24, SpO2 93% RA.\n\nExam: Alert, anxious, dyspneic. Periorbital edema. Inspiratory stridor; bilateral wheezing. Urticaria across chest and arms. Heart tachycardic, regular. Abdomen soft.\n\nED course: IV placed, oxygen by face mask. Epinephrine 0.5 mg IM R thigh (second dose overall). Racemic epinephrine nebulized for stridor, then albuterol nebulizer. NS 2 L. Methylprednisolone 125 mg IV, diphenhydramine 50 mg IV, famotidine 20 mg IV.\nStridor resolved within the hour. 22:15: BP 106/66, HR 100, RR 20, SpO2 97% RA, off oxygen. Wheeze cleared.\nGiven two doses of epinephrine and airway involvement, kept overnight in ED observation. No recurrence.\n08:10: T 36.7, BP 112/70, HR 78, RR 16, SpO2 99% RA. Swelling resolved, skin clear.\n\nImpression: Anaphylaxis due to shellfish (shrimp), recurrent, with upper airway involvement.\n\nDisposition: home. New prescription for epinephrine 0.3 mg auto-injector 2-pack to replace the one used. Follow up with PCP in 2 to 3 days and with allergy/immunology, sooner appointment advised."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-03a",
+          "kind": "pharmacy",
+          "start": "2026-02-03T10:45",
+          "reason": "Auto-injector fill",
+          "documents": [
+            {
+              "type": "Pharmacy",
+              "title": "Fill Notice",
+              "date": "2026-02-03T10:45",
+              "author": "pharmacy",
+              "body": "Filled: epinephrine 0.3 mg/0.3 mL auto-injector, 2-pack (prescriber: emergency department). Patient picked up."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-05a",
+          "kind": "office_visit",
+          "start": "2026-02-05T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, second shellfish anaphylaxis",
+          "vitals": {
+            "bp": [
+              113,
+              84
+            ],
+            "hr": 67,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 61.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-02-05T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2026-02-05T11:05",
+              "author": "PCP",
+              "body": "ED record from 2/2-2/3 reviewed.\n\nS: Second reaction. Ordered something off the non-shellfish side of the menu and asked the server; shrimp was in it anyway. Used her pen at the table within a couple of minutes, needed a second dose in the ED for stridor and stayed overnight. Home Tuesday morning. Fine now, a little tired. Frustrated and nervous about eating out. She has a fresh 2-pack from the ED script.\n\nO: Vitals per flowsheet, normal. Well. No facial swelling. Oropharynx clear. No stridor, lungs clear. Skin without hives.\n\nA/P\nShellfish anaphylaxis, recurrent, from hidden shrimp.\n- Using the pen right away was exactly right.\n- Restaurants: tell staff it is a severe allergy, not a preference; ask about sauces, stocks and shared fryers; seafood restaurants are higher risk for cross-contact. A chef card can help.\n- Always two pens; check expiry dates.\n- Her allergy appointment isn't until April. Our RN will call the allergy office today to ask for an earlier slot given two reactions.\n- Return as needed."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Call to Allergy Office",
+              "date": "2026-02-05T14:30",
+              "author": "RN",
+              "body": "Called allergy office re: second anaphylaxis 2/2, requested earlier new patient appointment. Moved from 4/14 to 3/10/2026 at 9:00. ED record faxed to them. Pt notified by portal and confirmed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "specialist_visit",
+          "start": "2026-03-10T09:00",
+          "service": "Allergy and Immunology",
+          "reason": "Shellfish anaphylaxis",
+          "vitals": {
+            "bp": [
+              109,
+              75
+            ],
+            "hr": 74,
+            "spo2": 97
+          },
+          "procedures": [
+            {
+              "procedure": "Office consultation, comprehensive",
+              "performed": "2026-03-10T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "allergy-referral",
+              "action": "done",
+              "date": "2026-03-10T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Allergy and Immunology Consultation",
+              "date": "2026-03-12T08:30",
+              "author": "allergy and immunology",
+              "body": "ALLERGY AND IMMUNOLOGY - NEW PATIENT CONSULTATION\nDate of visit: 03/10/2026\nReferring: primary care\n\nThank you for asking us to see Ms. Coolidge, a 26-year-old swim instructor, regarding reactions to shrimp.\n\nHistory: Two episodes. August 2025: about 30 minutes after shrimp at a friend's home, urticaria, facial swelling, wheeze and hypotension; one dose of IM epinephrine in the ED; tryptase 21.8 ng/mL. February 2026: about 15 minutes after a restaurant dish that turned out to contain shrimp, periorbital swelling, stridor, wheeze and urticaria; self-injected epinephrine at the table and a second dose in the ED, observed overnight. She had previously eaten shrimp without symptoms. No reactions to fish or other foods reported. Mild atopic dermatitis, controlled with intermittent topical triamcinolone. Dust mite and seasonal pollen sensitivity by history. Family: maternal uncle with shellfish allergy; mother asthma, allergic rhinitis; father atopic dermatitis.\n\nMedications: epinephrine 0.3 mg auto-injector; triamcinolone 0.1% cream prn; petroleum jelly.\nNo antihistamine in the past 7 days.\n\nExam: Vitals normal. No respiratory distress. Nasal mucosa unremarkable. Lungs clear. Skin: mild xerosis of the hands; no urticaria.\n\nSkin prick testing: shrimp positive, 9 mm wheal. Histamine control 6 mm. Saline control 0 mm.\n\nAssessment: IgE-mediated shrimp allergy with two episodes of anaphylaxis, the second with upper airway involvement.\n\nRecommendations:\n1. Strict avoidance of all crustacean shellfish (shrimp, crab, lobster, crawfish).\n2. Carry two epinephrine auto-injectors at all times. Written anaphylaxis action plan given and reviewed; copy enclosed.\n3. Read labels; communicate the allergy clearly when eating out.\n4. Follow up here in one year, sooner if any reaction.\n\nAllergy and Immunology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-03-12a",
+          "kind": "portal_message",
+          "start": "2026-03-12T16:05",
+          "reason": "Allergy consult received",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Allergy visit",
+              "date": "2026-03-12T16:05",
+              "author": "PCP",
+              "body": "Got the allergist's letter. Matches what you told me: clear shrimp allergy on testing, avoid all crustacean shellfish, two pens always, back to them in a year. Their action plan is in your chart now too, if work wants the updated version."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-27a",
+          "kind": "pharmacy",
+          "start": "2026-05-27T09:10",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Pharmacy",
+              "title": "Refill Request",
+              "date": "2026-05-27T09:10",
+              "author": "pharmacy",
+              "body": "Refill request: triamcinolone acetonide 0.1% cream 80 g. Last filled 02/2024. Apply to affected areas twice daily as needed."
+            },
+            {
+              "type": "Pharmacy",
+              "title": "Refill Approved",
+              "date": "2026-05-27T12:30",
+              "author": "PCP",
+              "body": "Approved, 80 g, 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "portal_message",
+          "start": "2026-06-09T06:48",
+          "reason": "Question about ears for summer",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Ears this summer",
+              "date": "2026-06-09T06:48",
+              "author": "patient",
+              "body": "Morning! Summer camp swim lessons start next week and I'll be in the water 6 hours a day. Last June was miserable with my ear. Anything I should be doing so it doesn't happen again?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Ears this summer",
+              "date": "2026-06-09T12:15",
+              "author": "PCP",
+              "body": "Same tricks as last year: swim plugs that actually seal, tilt and shake out water after each session, towel dry the outer ear, and a hair dryer on low held well away if it feels wet inside. Don't use cotton swabs in the canal. If you get ear pain or that plugged feeling, message me the same day, it's much easier to treat early."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-24a",
+          "kind": "portal_message",
+          "start": "2026-08-24T19:30",
+          "reason": "Auto-injector expiring",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "EpiPen expiration",
+              "date": "2026-08-24T19:30",
+              "author": "patient",
+              "body": "Hi, the one EpiPen left from my first pack (the one I keep at the pool office) expires end of September. Can I get a new prescription so I have a full pair at work? The ones from February are fine till next year."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: EpiPen expiration",
+              "date": "2026-08-25T08:20",
+              "author": "PCP",
+              "body": "Sent a new 2-pack to your pharmacy this morning. Keep the old pair until the new ones are in hand. See you in October for your physical."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-25a",
+          "kind": "pharmacy",
+          "start": "2026-08-25T08:22",
+          "reason": "New prescription",
+          "documents": [
+            {
+              "type": "Pharmacy",
+              "title": "Prescription Sent",
+              "date": "2026-08-25T08:22",
+              "author": "PCP",
+              "body": "epinephrine 0.3 mg/0.3 mL auto-injector, 2-pack, 1 refill. Inject into outer thigh for anaphylaxis; call 911. E-prescribed."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-20a",
+          "kind": "annual_physical",
+          "start": "2026-10-20T08:00",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Anaphylactic reaction due to shellfish (crustaceans)|T78.02XA": {
+        "code": "T78.02XA",
+        "display": "Anaphylactic reaction due to shellfish (crustaceans), initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "ciprofloxacin 3 MG/ML / dexamethasone 1 MG/ML Otic Suspension": {
+        "code": "403908",
+        "display": "ciprofloxacin 3 MG/ML / dexamethasone 1 MG/ML Otic Suspension",
+        "ingredient": "ciprofloxacin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Tryptase": {
+        "code": "21582-2",
+        "display": "Tryptase [Mass/volume] in Serum or Plasma",
+        "unit": "ng/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"petrolatum Topical Ointment\""
+    ]
+  }
+}

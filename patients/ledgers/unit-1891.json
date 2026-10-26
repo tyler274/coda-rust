@@ -1,0 +1,1930 @@
+{
+  "unit": "unit-1891",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001891",
+      "given": "Abigail",
+      "family": "Lemieux",
+      "birth_date": "1999-10-08",
+      "address_line": "14 Loudville Road, Apt 3, Easthampton, MA 01027",
+      "phone": "+1-978-555-0111",
+      "email": "abigail.lemieux@example.test",
+      "marital_status": "single",
+      "summary": "Graduate student with type 1 diabetes since 2019 on basal-bolus insulin through outside endocrinology, joined in 2022. In 2025 she had left malignant otitis externa after lake swimming, treated with six weeks of ciprofloxacin under ENT; in 2026 a severe hypoglycemic episode with loss of consciousness after skipping breakfast, reversed by EMS glucagon.",
+      "events": [
+        {
+          "id": "2022-08-30a",
+          "kind": "telephone",
+          "start": "2022-08-30T10:12",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "date": "2022-08-30T10:12",
+              "author": "front desk",
+              "body": "Caller is a 22 y/o grad student who moved to Easthampton for her program and wants a PCP here. Student health plan through the university; membership paperwork emailed. Has type 1 diabetes, sees an outside endocrinology group and plans to keep them. Booked new patient physical 9/13 at 9:00. Asked her to bring her insulin pens or a med list and to sign a release for her old student health records. Release form sent by email."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "establish_care",
+          "start": "2022-09-13T09:00",
+          "end": "2022-09-13T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical, establish care",
+          "conditions": [
+            {
+              "label": "Type 1 diabetes mellitus without complications",
+              "action": "history",
+              "onset": "2019-03-01",
+              "note": "basal-bolus insulin since diagnosis; managed by outside endocrinology"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+              "action": "historical",
+              "sig": "Inject 20 units under the skin at bedtime",
+              "dose": {
+                "value": 20,
+                "unit": "units"
+              },
+              "frequency": "DAILY",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "type 1 diabetes; prescribed by endocrinology"
+            },
+            {
+              "drug_text": "3 ML insulin aspart, human 100 UNT/ML Pen Injector",
+              "action": "historical",
+              "sig": "Inject 8 units under the skin before meals",
+              "dose": {
+                "value": 8,
+                "unit": "units"
+              },
+              "frequency": "TID",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "type 1 diabetes; prescribed by endocrinology"
+            },
+            {
+              "drug_text": "glucagon (rDNA) 1 MG Injection",
+              "action": "historical",
+              "sig": "Inject 1 mg into the muscle as needed for severe hypoglycemia",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Intramuscular",
+              "course": "chronic",
+              "reason": "severe hypoglycemia rescue; prescribed by endocrinology"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              69
+            ],
+            "hr": 68,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 57.2,
+            "height_cm": 166.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-13T09:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 121
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 92
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-13T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.83
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 289
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-13T09:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 91
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 172
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 109
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 113
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.8
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 7
+                },
+                {
+                  "test": "Tissue Transglutaminase IgA",
+                  "text": "Negative"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Rare, less than 1 drink per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Graduate student"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2022-09-13T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-13T09:50"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-13T09:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2022-09-13T09:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "date": "2022-09-13T10:20",
+              "author": "PCP",
+              "body": "22 y/o woman establishing primary care. Started a graduate program this fall and moved to Easthampton.\n\nType 1 diabetes: diagnosed in 2019, on basal-bolus insulin from the start. Glargine 20 units at bedtime, aspart 8 units with meals, has a glucagon kit. Sees an outside endocrinology group about twice a year and wants to stay with them; they write all her insulin scripts. Fingersticks several times a day. Denies any severe lows, ED visits or DKA since diagnosis. Runs most days.\n\nPMH: T1DM as above. PSH: wisdom teeth out at 18. Meds as above. Allergies: NKDA.\nFH: maternal aunt with Hashimoto thyroiditis; paternal grandfather with type 2 diabetes.\nSH: grad student, lives with a roommate. Never smoker. Alcohol rarely, less than one drink a month. No drugs.\n\nROS negative in full: no polyuria, vision change, numbness, chest pain, dyspnea, GI or GU complaints.\n\nExam: well appearing, vitals as charted. HEENT normal, TMs clear. Thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Abdomen soft, insulin sites on abdomen and thighs without lipohypertrophy. Skin clear. Feet: no lesions or calluses, DP and PT pulses 2+, monofilament and vibration intact bilaterally. Neuro grossly normal.\nPHQ-2: 0.\n\nA/P\n1. Type 1 diabetes, by her report well controlled. Continue regimen per endocrinology. A1c, CMP, lipids, TSH (family history of Hashimoto plus T1DM), urine microalbumin/creatinine, CBC. Celiac screen with tTG IgA once since we have no record of one. Will request her endocrinology notes.\n2. Health maintenance: HIV and hep C screening today. Tdap given, last one was around age 11. Flu and COVID booster in a few weeks when the fall vaccines are in. Old student health records requested for Pap and vaccine history. Yearly dilated eye exam: she will book with an optometrist.\n3. Return in a year for a physical, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 57.2,
+            "height_cm": 165.0,
+            "labs": {
+              "Hemoglobin A1c": 6.9,
+              "Low Density Lipoprotein": 90,
+              "Microalbumin/Creatinine Ratio": 7,
+              "Thyroid Stimulating Hormone": 1.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-09-16a",
+          "kind": "portal_message",
+          "start": "2022-09-16T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent lab results",
+              "date": "2022-09-16T14:40",
+              "author": "PCP",
+              "body": "Hi Abigail, your labs from Tuesday are back. Kidney and liver tests, blood counts, cholesterol and thyroid are all normal, and there is no protein leaking into the urine. The celiac antibody, HIV and hepatitis C screens were negative. Your A1c is right where your endocrinologist would want it. Nothing to change. Good to meet you this week."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "outside_records",
+          "start": "2022-09-27T11:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "prior records received",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2010-11-09T10:00"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2010-11-09T10:00"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2010-11-09T10:00"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2011-01-11T10:00"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2011-05-17T10:00"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2016-10-18T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-06T13:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-27T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from Prior University Student Health Service",
+              "date": "2022-09-27T11:05",
+              "author": "MA",
+              "body": "Records received by fax from her undergraduate student health service, 2017 to 2021, scanned to media.\n\nAbstracted:\n- Type 1 diabetes diagnosed spring 2019; care transferred to endocrinology at that time, basal-bolus insulin.\n- Wisdom teeth removed by oral surgery in 2018, uncomplicated.\n- Pap 2021: negative for intraepithelial lesion or malignancy.\n- Allergies: none recorded.\n- Immunizations: childhood series documented complete (hep B, MMR x2, varicella x2). Tdap and MenACWY at 11, MenACWY booster at 17, HPV quadrivalent x3 2010-2011, COVID Pfizer x2 April 2021. Entered into the immunization record.\n\nNo other problems listed. Forwarded to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-04T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-04T16:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-04T16:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2022-10-04T16:50",
+              "author": "RN",
+              "body": "In for fall vaccines after class. Screening questions negative, VIS given. Flu quadrivalent 0.5 mL IM left deltoid. Pfizer bivalent booster IM right deltoid. Lot numbers in the immunization record. Sat 15 min, no reaction. Reminded her to check her sugar if she feels off tonight; she laughed and said she checks anyway."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-23a",
+          "kind": "portal_message",
+          "start": "2023-03-23T20:14",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "endocrinology visit update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Endo appointment",
+              "date": "2023-03-23T20:14",
+              "author": "patient",
+              "body": "Hi, just letting you know I saw my endocrinologist on Tuesday. Everything was fine and nothing changed. You said you wanted their notes so I wasn't sure if they send them automatically?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Endo appointment",
+              "date": "2023-03-24T09:02",
+              "author": "RN",
+              "body": "Thanks for the heads up. They don't always send them on their own, so I faxed a request to their office this morning. We'll let you know if anything in it needs attention."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-29a",
+          "kind": "outside_records",
+          "start": "2023-03-29T13:20",
+          "service": "Endocrinology",
+          "reason": "endocrinology follow-up letter",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-03-21T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.7
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2023-03-29T13:20",
+              "author": "endocrinology",
+              "body": "Date of visit: 03/21/2023\nRe: Abigail Lemieux, DOB 10/08/1999\n\nDear colleague,\n\nMs. Lemieux returns for routine follow-up of type 1 diabetes, diagnosed 2019. She remains on insulin glargine 20 units at bedtime and insulin aspart 8 units before meals, with a glucagon kit at home. Meter download reviewed: readings mostly in range, a few post-meal highs, no values below 70 and no symptomatic lows. Running regularly, adjusting food around runs on her own.\n\nExam: BP and weight stable. Injection sites without lipohypertrophy. Feet with normal sensation.\n\nA1c today at target.\n\nAssessment and plan: Type 1 diabetes, well controlled on a basal-bolus regimen. No dose change. Prescriptions renewed for glargine, aspart, pen needles, strips and glucagon. Return in 6 months with A1c.\n\nAllergies: NKDA.\n\nThank you for allowing us to share in her care.\n\nOutside endocrinology group"
+            }
+          ]
+        },
+        {
+          "id": "2023-07-11a",
+          "kind": "outside_records",
+          "start": "2023-07-11T10:40",
+          "service": "Optometry",
+          "reason": "diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Diabetic Eye Examination",
+              "date": "2023-07-11T10:40",
+              "author": "optometry",
+              "body": "Diabetic eye examination report\nPatient: Abigail Lemieux   DOB: 10/08/1999\nExam date: 06/27/2023\n\nHistory: type 1 diabetes since 2019, on insulin. No visual complaints. No allergies to medications.\n\nCorrected visual acuity normal in each eye. Pupils equal and reactive, no APD. Intraocular pressures normal. Anterior segment unremarkable OU.\nDilated fundus exam: optic nerves pink and sharp with healthy cupping OU. Macula flat with good foveal reflex OU. Vessels normal caliber. No hemorrhages, microaneurysms or exudates in either eye.\n\nImpression: type 1 diabetes without diabetic retinopathy, both eyes.\nPlan: dilated exam again in 12 months.\n\nOutside optometry practice"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              132,
+              70
+            ],
+            "hr": 63,
+            "rr": 16,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 57.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-19T09:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 122
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 87
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-19T09:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 85
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 163
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 58
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 99
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 105
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-19T09:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-19T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-19T09:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-19T09:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-09-19T09:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2023-09-19T09:40",
+              "author": "PCP",
+              "body": "Annual physical. Second year of her program, doing fine.\n\nT1DM: endocrinology letter from March reviewed, A1c at goal, no dose change. Still glargine 20 qhs, aspart 8 with meals, glucagon kit in her backpack. No lows needing help from anyone. Dilated eye exam in June, no retinopathy, report on file. Running 4-5 days a week.\n\nNo new problems. No new meds. NKDA. FH and SH unchanged; never smoker, alcohol rare.\n\nROS: negative.\nPHQ-9: 2, mostly sleep around deadlines.\n\nExam: vitals as charted, weight steady. HEENT normal. Neck supple, thyroid normal. Heart RRR. Lungs clear. Abdomen benign, injection sites fine. Feet: skin intact, pulses 2+, monofilament normal both feet. Neuro intact.\n\nA/P\n1. Type 1 diabetes, controlled per endo. CMP, lipids, TSH, urine microalbumin today. A1c deferred to endocrinology.\n2. Prevention: PCV20 today given diabetes. Flu and updated COVID next month once in stock. Pap due 2024. HIV/HCV already done.\n3. Physical next fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-21a",
+          "kind": "portal_message",
+          "start": "2023-09-21T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2023-09-21T12:15",
+              "author": "PCP",
+              "body": "Abigail, your labs are all normal: kidney function, liver, cholesterol, thyroid, and the urine protein check. Nothing to do. See you next fall, or sooner if anything comes up."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T15:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T15:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2023-10-10T16:05",
+              "author": "RN",
+              "body": "Fall vaccines. Screening negative, VIS reviewed. Flu 0.5 mL IM L deltoid; 2023-24 Pfizer COVID IM R deltoid. Observed 15 minutes, tolerated well, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "portal_message",
+          "start": "2024-01-09T07:48",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "glucagon kit refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Glucagon kit",
+              "date": "2024-01-09T07:48",
+              "author": "patient",
+              "body": "Hi! Cleaning out my bag and realized my glucagon kit expired in November. I've never used it. Can you send a new one or do I need to go through endo? Same pharmacy as always."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Glucagon kit",
+              "date": "2024-01-09T11:30",
+              "author": "RN",
+              "body": "Good catch. Since endocrinology manages your insulin and the kit, I called their office and they're sending a new glucagon kit to your pharmacy today. If it isn't there by tomorrow afternoon, message us back and we'll chase it."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "telephone",
+          "start": "2024-04-16T13:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "outside records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request",
+              "date": "2024-04-16T13:05",
+              "author": "MA",
+              "body": "Called the outside endocrinology office to request notes since March 2023; nothing received for her fall visit. Spoke with their records desk, who said the fall note and any newer ones would be faxed this week. Release on file. Will watch for it."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "telephone",
+          "start": "2024-09-12T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "reschedule physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Change",
+              "date": "2024-09-12T08:20",
+              "author": "front desk",
+              "body": "Pt called to move next Tuesday's physical, has a conflict that morning. Rebooked 10/1 at 8:30. Lab slip left as is."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "annual_physical",
+          "start": "2024-09-17T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "outside_records",
+          "start": "2024-09-24T15:10",
+          "service": "Endocrinology",
+          "reason": "endocrinology follow-up letter",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-09-10T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.8
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2024-09-24T15:10",
+              "author": "endocrinology",
+              "body": "Date of visit: 09/10/2024\nRe: Abigail Lemieux, DOB 10/08/1999\n\nDear colleague,\n\nI saw Ms. Lemieux for her scheduled follow-up of type 1 diabetes. She has used basal-bolus insulin for five years now and control remains good: her most recent A1c is 6.8%. No hypoglycemic episodes since her last visit.\n\nCurrent regimen: insulin glargine 20 units subcutaneously at bedtime; insulin aspart 8 units subcutaneously before meals; glucagon 1 mg IM emergency kit on hand.\nAllergies: no known drug allergies.\nFamily history: maternal aunt with Hashimoto thyroiditis; paternal grandfather with type 2 diabetes.\nSocial: graduate student, never smoker, drinks rarely. She is a committed runner and is about to start marathon training, with daily runs that will go beyond an hour.\n\nHer main question today was how to handle insulin and food once the long runs start.\n\nVitals within normal limits. Examination unremarkable.\n\nAssessment and plan:\nType 1 diabetes, well controlled. Doses unchanged. We went through exercise planning in detail: check glucose before she sets out, periodically during any run longer than an hour, and again afterward and at bedtime on long-run days; carry fast-acting carbohydrate on every run; she may take a smaller aspart dose with the meal before a long run, using her own judgment and her logs. Late lows after long runs were discussed.\nReturn in 6 months.\n\nWith thanks,\nOutside endocrinology group"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-01a",
+          "kind": "annual_physical",
+          "start": "2024-10-01T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              130,
+              72
+            ],
+            "hr": 74,
+            "rr": 16,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 56.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-01T09:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.67
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 125
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 94
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-01T09:15",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 89
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 168
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 57
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 109
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 111
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-01T09:15",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2024-10-01T08:55",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2024-10-08T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-01T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-01T09:15"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-01T09:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-01T09:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-01T09:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2024-10-01T09:50",
+              "author": "PCP",
+              "body": "Physical, rescheduled from 9/17. Turns 25 next week.\n\nDiabetes: endocrinology letter from 9/10 in, A1c 6.8, no lows, doses unchanged (glargine 20 qhs, aspart 8 AC, glucagon kit). She has started marathon training and is following the plan endo gave her: checks before and after long runs, gels in her pocket, trims the pre-run aspart a bit. No lows so far. Eye exam with her optometrist this summer, told no changes; report not received yet.\n\nFall 2023 endo note never arrived despite our request in April; the new letter covers it.\n\nNo new symptoms. NKDA. SH: never smoker, rare alcohol.\n\nROS negative.\nPHQ-2: 0.\n\nExam: vitals as charted. Lean, well. HEENT and neck normal. Heart RRR, no murmur. Lungs clear. Abdomen soft. Pelvic: normal external genitalia, vagina and cervix normal, Pap obtained. Feet: intact skin, pulses full, monofilament and vibration normal. Neuro normal.\n\nA/P\n1. Type 1 diabetes: well controlled per endo. Yearly CMP, lipids, TSH, urine microalbumin drawn.\n2. Running: no issues; reviewed staying hydrated and the late-low risk endo raised.\n3. Cervical screening: Pap today, three years after 2021.\n4. Flu and COVID given today.\n5. Back next fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-04a",
+          "kind": "portal_message",
+          "start": "2024-10-04T10:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-10-04T10:25",
+              "author": "PCP",
+              "body": "Hi Abigail, blood work from Tuesday is all normal: kidneys, liver, cholesterol, thyroid and urine protein. Pap result usually takes about a week, I'll send it when it's in. Good luck with the training."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "portal_message",
+          "start": "2024-10-09T08:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pap result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "date": "2024-10-09T08:05",
+              "author": "PCP",
+              "body": "Your Pap came back normal. Next one in three years, fall 2027."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-09a",
+          "kind": "ed_visit",
+          "start": "2025-05-09T17:40",
+          "end": "2025-05-09T21:15",
+          "service": "Emergency Medicine",
+          "reason": "left ear pain",
+          "conditions": [
+            {
+              "label": "Malignant otitis externa, left ear",
+              "action": "diagnosed",
+              "onset": "2025-05-06",
+              "icd10": "H60.22"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ciprofloxacin 750 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 750,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "malignant otitis externa, left ear"
+            },
+            {
+              "drug_text": "ofloxacin 3 MG/ML Otic Solution",
+              "action": "start",
+              "sig": "Instill 10 drops in the left ear twice daily for 14 days",
+              "dose": {
+                "value": 10,
+                "unit": "drops"
+              },
+              "frequency": "BID",
+              "route": "Otic",
+              "course": "short",
+              "reason": "malignant otitis externa, left ear"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              67
+            ],
+            "hr": 73,
+            "rr": 15,
+            "temp_c": 36.5,
+            "spo2": 98
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-05-09T17:55",
+              "results": [
+                {
+                  "test": "Glucose, capillary (point of care)",
+                  "loinc": "41653-7",
+                  "unit": "mg/dL",
+                  "value": 180
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2025-05-09T17:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Physician Record",
+              "date": "2025-05-27T11:40",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Date of service 05/09/2025, 17:40.\n\nCC: L ear pain x3 days.\n\nHPI: 25F with type 1 diabetes on insulin, well controlled, followed by endocrinology (last seen about 8 months ago). Three days of left ear pain, much worse when she tugs on the ear lobe. Ear feels plugged and she hears less on that side. No discharge from the ear. No fever, chills, headache, dizziness or facial weakness. Went swimming in a lake about 5 days ago.\n\nPMH: T1DM. PSH: third molar extraction at 18.\nMeds: insulin glargine 20 units SC qhs; insulin aspart 8 units SC before meals; glucagon 1 mg IM PRN.\nAllergies: NKDA.\nFH: maternal aunt Hashimoto; paternal grandfather T2DM.\nSH: graduate student. Never smoker. Alcohol rare.\n\nExam: vitals reviewed, afebrile. Uncomfortable but nontoxic. L external auditory canal erythematous and swollen nearly shut, marked tenderness over the tragus; TM cannot be seen past the swelling. No discharge. No periauricular swelling or mastoid tenderness. Facial nerve intact. R ear normal. No cervical adenopathy.\n\nData: fingerstick glucose 180 mg/dL.\n\nMDM: painful otitis externa of the left ear in an insulin-dependent diabetic after freshwater exposure. Given diabetes, treated as malignant otitis externa with antipseudomonal coverage and prompt ENT evaluation.\n\nDx: Malignant otitis externa, left ear.\n\nRx: ciprofloxacin 750 mg PO BID; ofloxacin otic 0.3% 10 drops L ear BID x14 days. Keep the ear dry, no swimming. Monitor glucose more often while ill.\n\nDisposition: discharged home in stable condition. Follow up with ENT within days, call PCP Monday. Return for fever, spreading swelling, facial weakness, severe headache or worsening pain."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-05-10a",
+          "kind": "portal_message",
+          "start": "2025-05-10T09:22",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED visit for ear infection",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Went to the ER last night",
+              "date": "2025-05-10T09:22",
+              "author": "patient",
+              "body": "Hi, I went to the ER last night for my left ear. It's been hurting since Tuesday and I can barely hear out of it. They said it's an outer ear infection and because I have diabetes they called it malignant otitis externa?? They gave me cipro pills and ear drops and said I need to see ENT soon. I don't have an ENT. Sugars have been running a little higher than usual. Pain is about the same this morning."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Went to the ER last night",
+              "date": "2025-05-10T11:48",
+              "author": "PCP",
+              "body": "Thanks for letting me know. Keep taking both, keep the ear dry, and keep a closer eye on your sugars; infections and cipro can both push them around. I'll do a video visit with you Monday morning and get ENT lined up. If you get a fever, swelling around the ear, a headache that won't quit or any weakness in your face, go back to the ER."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-10b",
+          "kind": "pharmacy",
+          "start": "2025-05-10T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fill history reconciliation",
+          "documents": [
+            {
+              "type": "Medication Reconciliation",
+              "title": "Outside Fill Review",
+              "date": "2025-05-10T13:30",
+              "author": "MA",
+              "body": "Pharmacy fill history pulled after pt's message: ciprofloxacin 750 mg tablets and ofloxacin 0.3% otic solution, both dispensed 5/9 evening, prescriber ED. Added to med list as outside meds. No ED record in our inbox yet; request sent to the hospital's HIM department."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-12a",
+          "kind": "telehealth_visit",
+          "start": "2025-05-12T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit for ear infection",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2025-05-12T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-referral",
+              "action": "placed",
+              "order": "Otolaryngology referral",
+              "category": "referral",
+              "to": "Otolaryngology",
+              "reason": "malignant otitis externa, left ear, urgent"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2025-05-12T09:15",
+              "author": "PCP",
+              "body": "Video visit, pt at home in Easthampton, identity confirmed.\n\nSeen in a regional ED Friday evening for 3 days of left ear pain after lake swimming 5 days before that. Per her and her discharge paperwork: canal swollen shut, tragal tenderness, TM not visible, fingerstick 180. Diagnosed with malignant otitis externa given her T1DM; started ciprofloxacin 750 mg BID and ofloxacin otic drops. ED record not yet received.\n\nToday: day 3 of treatment. Pain about the same, maybe slightly less at night. Ear still plugged, hearing muffled on the left. No drainage, no fever, no headache, no facial droop. Glucose running higher than her usual; no lows. Taking cipro with food, drops twice a day.\n\nObserved on video: comfortable, no visible swelling behind or in front of the ear, face symmetric.\n\nA/P\n1. Malignant otitis externa, left, on ciprofloxacin and ofloxacin drops from the ED. Needs ENT this week given diabetes. Urgent ENT referral placed and called through.\n2. T1DM: expect some rise in sugars with infection; correction per her endo plan, call endo if readings stay high or she has ketones. Cipro can also cause lows, keep checking.\n3. Cipro and tendons: hold the long runs until the course is done, stop and call for any heel or calf pain.\nReturn precautions reviewed."
+            },
+            {
+              "type": "Referral",
+              "title": "ENT Referral Scheduling",
+              "date": "2025-05-12T11:10",
+              "author": "front desk",
+              "body": "Urgent ENT referral faxed with today's note and the fill history. ENT office able to see her Wed 5/14 at 1:30. Pt notified by phone, will bring her ED discharge papers."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-14a",
+          "kind": "specialist_visit",
+          "start": "2025-05-14T13:30",
+          "service": "Otolaryngology",
+          "reason": "malignant otitis externa, left ear",
+          "vitals": {
+            "bp": [
+              122,
+              75
+            ],
+            "hr": 71,
+            "temp_c": 36.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-05-14T14:20",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 41
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-14T13:50",
+              "resulted": "2025-05-17T10:00",
+              "results": [
+                {
+                  "test": "Bacteria identified in Ear by Aerobe culture",
+                  "loinc": "608-0",
+                  "text": "Pseudomonas aeruginosa. Susceptible to ciprofloxacin."
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT temporal bones without contrast",
+              "loinc": "36866-2",
+              "performed": "2025-05-14T15:05",
+              "text": "Technique: axial thin-section images through both temporal bones without intravenous contrast, with coronal reformats.\nComparison: none.\nFindings: Soft-tissue thickening of the left external auditory canal with narrowing of the canal lumen. The bony canal walls are intact with no erosion. The left middle ear cavity and ossicles are normal. Left mastoid air cells are well aerated and clear. No soft-tissue collection in the periauricular region. Skull base and temporomandibular joint normal. The right temporal bone is normal.",
+              "conclusion": "Soft-tissue thickening and narrowing of the left external auditory canal without bony erosion. Middle ear and mastoid clear."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office consultation, comprehensive",
+              "performed": "2025-05-14T13:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-referral",
+              "action": "done",
+              "date": "2025-05-14T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology Consultation",
+              "date": "2025-05-30T09:15",
+              "author": "otolaryngology",
+              "body": "Outside otolaryngology group\nDate of consultation: 05/14/2025\nReferring: primary care\n\nThank you for asking us to see Abigail Lemieux, a 25-year-old graduate student with type 1 diabetes, for left ear pain treated in an ED on 5/9 as malignant otitis externa.\n\nShe developed left otalgia after swimming in a lake, with fullness and reduced hearing. On ciprofloxacin 750 mg twice daily and ofloxacin otic drops since 5/9; pain now slowly easing. No otorrhea, fever, vertigo or facial weakness.\n\nMeds: glargine 20 units qhs, aspart 8 units before meals, glucagon kit, ciprofloxacin, ofloxacin otic.\nAllergies: none known.\n\nExam: left canal edematous and erythematous; tragal tenderness and pain with traction on the pinna. Under the microscope the canal was debrided and a sample sent for culture; no granulation tissue at the bony-cartilaginous junction. After cleaning the TM could be glimpsed only partly. A wick was placed. Right ear normal. Facial nerve function intact and symmetric. No cervical lymphadenopathy.\n\nCT temporal bones today: soft-tissue thickening of the left canal without bony erosion; middle ear and mastoid clear.\nESR 41.\nCulture (final 5/17): Pseudomonas aeruginosa, ciprofloxacin sensitive.\n\nImpression: early necrotizing (malignant) otitis externa, left, in a patient with type 1 diabetes. Imaging shows no bone involvement.\n\nPlan:\n- Continue ciprofloxacin 750 mg twice daily for a total of six weeks from the start on 5/9.\n- Ofloxacin drops to finish 14 days; wick to come out on its own or at a nurse check.\n- Strict water precautions.\n- Good glucose control with her endocrinologist.\n- Return in about five weeks with a repeat ESR; sooner for worsening pain, drainage, headache or facial weakness.\n\nSincerely,\nOtolaryngology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-06-20a",
+          "kind": "specialist_visit",
+          "start": "2025-06-20T10:15",
+          "service": "Otolaryngology",
+          "reason": "follow-up, malignant otitis externa",
+          "medications": [
+            {
+              "drug_text": "ciprofloxacin 750 MG Oral Tablet",
+              "action": "stop",
+              "reason": "six-week course complete"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              80
+            ],
+            "hr": 72,
+            "temp_c": 36.9
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-06-20T10:50",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-06-20T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology Follow-up",
+              "date": "2025-08-04T14:30",
+              "author": "otolaryngology",
+              "body": "Outside otolaryngology group\nDate of visit: 06/20/2025\n\nMs. Lemieux returns six weeks into treatment for left necrotizing otitis externa. Pain resolved within the first two weeks. Hearing back to normal by her report. Finished the drops in May; wick fell out on its own. Tolerated ciprofloxacin without tendon pain. Sugars back to her usual.\n\nExam: left canal healed, skin normal, no debris, no granulation. TM intact, mobile, normal landmarks. Right ear normal. Facial nerve intact.\n\nESR today 12, down from 41.\n\nImpression: left necrotizing otitis externa, resolved after six weeks of oral ciprofloxacin.\n\nPlan: stop ciprofloxacin today. Keep the ear dry while swimming for the rest of the summer (ear plugs). Return as needed; she knows to come back promptly for any recurrence of ear pain given her diabetes.\n\nOtolaryngology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-06-23a",
+          "kind": "portal_message",
+          "start": "2025-06-23T19:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ENT follow-up update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Ear update",
+              "date": "2025-06-23T19:05",
+              "author": "patient",
+              "body": "Saw ENT on Friday. They said the ear is healed and the blood test came down, so I'm done with the cipro! Hearing is normal again. Can I start doing long runs again?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Ear update",
+              "date": "2025-06-24T08:10",
+              "author": "PCP",
+              "body": "Great news. Yes, ease back into the long runs over a couple of weeks now that the cipro is done, and stop if you get any Achilles or calf pain. Earplugs if you swim. We haven't received the ENT note yet; I'll keep an eye out for it."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "outside_records",
+          "start": "2025-07-22T10:05",
+          "service": "Optometry",
+          "reason": "diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Diabetic Eye Examination",
+              "date": "2025-07-22T10:05",
+              "author": "optometry",
+              "body": "Diabetic eye examination\nPatient: Abigail Lemieux, DOB 10/08/1999\nDate of exam: 07/15/2025\n\nType 1 diabetes, insulin. No eye complaints. NKDA.\n\nBest corrected acuity normal each eye. Pupils normal. Pressures normal. Anterior segments quiet.\nDilated fundus: discs healthy both eyes; maculae normal; vessels normal; no hemorrhage, microaneurysm or exudate OU.\n\nAssessment: no diabetic retinopathy either eye.\nRecommend dilated exam in one year.\n\nOutside optometry practice"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "conditions": [
+            {
+              "label": "Malignant otitis externa, left ear",
+              "action": "resolved",
+              "note": "resolved after six weeks of ciprofloxacin per ENT 06/2025",
+              "icd10": "H60.22"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              82
+            ],
+            "hr": 70,
+            "rr": 18,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 58.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-23T09:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 90
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-23T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.59
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 274
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-23T09:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 90
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 169
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 56
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 114
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 113
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-23T09:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-23T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-23T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2025-09-23T09:45",
+              "author": "PCP",
+              "body": "Yearly physical.\n\nInterval: left necrotizing (malignant) otitis externa in May after lake swimming. ED 5/9, ENT 5/14 (CT without bone involvement, ESR 41, Pseudomonas on culture), six weeks of ciprofloxacin; ENT follow-up 6/20 healed, ESR 12, cipro stopped. ENT follow-up letter arrived in August. No ear symptoms since. Uses earplugs swimming. Resolving on the problem list today.\n\nDiabetes: still with the outside endocrinology group, seen in the spring per her, no changes; no letter from them since last fall's. Glargine 20 qhs, aspart 8 before meals, glucagon kit current. No lows. Optometry in July: no retinopathy.\n\nBack to running long distances without problems.\nNKDA. Never smoker. Alcohol rare.\n\nROS negative. PHQ-9: 1.\n\nExam: vitals as charted. Ears: both canals clean, TMs intact and normal. Rest of HEENT normal. Neck and thyroid normal. Heart RRR. Lungs clear. Abdomen benign. Feet: no lesions, pulses intact, monofilament normal. Neuro normal.\n\nA/P\n1. Malignant otitis externa, left: resolved.\n2. T1DM: controlled per endo. Yearly CMP, lipids, TSH, urine microalbumin, CBC today.\n3. Prevention: Pap normal 2024, next 2027. Flu and COVID in October when the clinic gets supply.\n4. Physical next fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-25a",
+          "kind": "portal_message",
+          "start": "2025-09-25T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2025-09-25T16:20",
+              "author": "PCP",
+              "body": "All of Tuesday's labs are normal, including blood counts, kidney and liver tests, cholesterol, thyroid and the urine protein screen. Nothing to change. We'll text when flu and COVID shots are in."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T12:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T12:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T12:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2025-10-14T12:30",
+              "author": "RN",
+              "body": "Flu and 2025-26 COVID vaccines on her lunch break. Screening questions negative, VIS offered. Flu IM left deltoid, COVID IM right deltoid, lots recorded. No reaction after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "portal_message",
+          "start": "2026-01-06T08:55",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pen needle refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pen needles",
+              "date": "2026-01-06T08:55",
+              "author": "patient",
+              "body": "Hi, I'm almost out of pen needles and my endo's office is closed until next week for the holidays. Pharmacy says the script ran out of refills. Is there any way you can help?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pen needles",
+              "date": "2026-01-06T10:40",
+              "author": "RN",
+              "body": "Reached the covering provider for your endocrinology group; they sent a new pen needle prescription with refills to your pharmacy this morning. Should be ready this afternoon."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-17a",
+          "kind": "ed_visit",
+          "start": "2026-05-17T11:05",
+          "end": "2026-05-17T15:20",
+          "service": "Emergency Medicine",
+          "reason": "hypoglycemia, found unresponsive",
+          "conditions": [
+            {
+              "label": "Type 1 diabetes mellitus with hypoglycemia with coma",
+              "action": "diagnosed",
+              "onset": "2026-05-17",
+              "note": "found unresponsive; EMS glucagon",
+              "icd10": "E10.641"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              73
+            ],
+            "hr": 61,
+            "rr": 15,
+            "temp_c": 36.8,
+            "spo2": 97
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-17T10:42",
+              "results": [
+                {
+                  "test": "Glucose, capillary (point of care)",
+                  "loinc": "41653-7",
+                  "unit": "mg/dL",
+                  "value": 38
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-17T11:08",
+              "results": [
+                {
+                  "test": "Glucose, capillary (point of care)",
+                  "loinc": "41653-7",
+                  "unit": "mg/dL",
+                  "value": 96
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-05-17T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Physician Record",
+              "date": "2026-05-19T08:30",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Date of service 05/17/2026, arrival 11:05 by ambulance.\n\nCC: hypoglycemia, found unresponsive.\n\nHPI: 26F with type 1 diabetes on basal-bolus insulin, followed by endocrinology; seen here a year ago for an ear infection. Roommate found her unresponsive in her room late this morning and called 911. She had been up very late studying and had not eaten breakfast. Per EMS run sheet: diaphoretic and unresponsive on their arrival, fingerstick glucose 38; glucagon 1 mg IM given at once, and she began to wake within minutes. By arrival here she is awake, oriented and answering questions, amnestic for the event. Took her usual glargine 20 units at bedtime. Did not take any aspart this morning since she didn't eat. No alcohol. No recent illness, no extra exercise yesterday. No seizure activity witnessed, no incontinence, no injury per roommate.\n\nPMH: T1DM; left malignant otitis externa 2025, resolved.\nMeds: insulin glargine 20 units SC qhs; insulin aspart 8 units SC with meals; glucagon 1 mg IM PRN.\nAllergies: NKDA.\nSH: graduate student, lives with a roommate. Never smoker. Alcohol rare.\n\nExam: vitals reviewed. Awake, alert, oriented x3, conversant. Skin warm, drying. No head or tongue injury. Pupils equal and reactive. Heart regular. Lungs clear. Neuro nonfocal, gait steady.\n\nData: EMS fingerstick 38. ED point-of-care glucose on arrival 96.\n\nCourse: given juice and a meal tray, which she finished. Repeat glucose checks over the observation period stayed in range. Glucagon had brought her glucose back up in the field.\n\nImpression: severe hypoglycemia with loss of consciousness in type 1 diabetes, from a missed meal after bedtime basal insulin.\n\nDisposition: observed and discharged home the same afternoon with her roommate. Insulin doses unchanged. Eat before studying late, check glucose at bedtime and on waking. Keep her glucagon kit with her; roommate should know how to use it. Follow up with primary care and endocrinology this week. Return for any further severe low."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-05-18a",
+          "kind": "telephone",
+          "start": "2026-05-18T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Patient Call After ED Visit",
+              "date": "2026-05-18T08:15",
+              "author": "RN",
+              "body": "Pt called. Was in the ED yesterday after her roommate found her passed out with a low sugar; EMS gave glucagon. Discharged same day. Feels tired but OK this morning, ate breakfast, fingerstick normal before calling. No lows overnight. Has not called endo yet; encouraged her to call them today. Booked with PCP Wed 5/20 at 10:30. Advised no driving until she has been seen. ED record requested."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-20a",
+          "kind": "office_visit",
+          "start": "2026-05-20T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit for severe hypoglycemia",
+          "conditions": [
+            {
+              "label": "Type 1 diabetes mellitus with hypoglycemia with coma",
+              "action": "resolved",
+              "note": "single episode 05/17/2026 after a missed meal",
+              "icd10": "E10.641"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              135,
+              71
+            ],
+            "hr": 65,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 56.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-20T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Follow-up",
+              "date": "2026-05-20T11:15",
+              "author": "PCP",
+              "body": "Follow-up after ED visit 5/17. ED record received yesterday and reviewed.\n\nSunday morning her roommate found her unresponsive after she had stayed up late studying and skipped breakfast. EMS: diaphoretic, unresponsive, fingerstick 38; glucagon 1 mg IM, woke quickly. 96 on ED arrival, ate, observed, sent home same day. Her first severe low since diagnosis; she had none at her last endo visit and none before.\n\nSince then: feels back to normal. Eating on schedule. Checking before bed and when she wakes; no readings she'd call low. Same doses: glargine 20 at bedtime, aspart 8 before meals. Has her endocrinology appointment in June and left a message with them Monday. Her own glucagon kit was never used and is in date; she has shown her roommate where it is.\n\nExam: vitals as charted. Alert, well. No bruising or injury. Heart RRR. Lungs clear. Neuro nonfocal.\n\nA/P\n1. Severe hypoglycemia with loss of consciousness, single episode, explained by a missed meal on her usual bedtime glargine. Resolved. No dose change today; dosing stays with endocrinology, who I am messaging.\n- Don't skip meals on glargine nights, especially during exam weeks; eat something when studying late.\n- Check glucose at bedtime and on waking, and before any drive.\n- Roommate to be shown how to give the glucagon kit, not just where it is.\n- No driving until endocrinology has gone over the episode with her.\n2. T1DM otherwise stable.\nPhysical due in the fall."
+            },
+            {
+              "type": "Letter",
+              "title": "Message to Endocrinology",
+              "date": "2026-05-20T11:30",
+              "author": "PCP",
+              "body": "To the endocrinology group following Abigail Lemieux (DOB 10/08/1999):\n\nFYI, she was seen in a regional ED on 5/17 for severe hypoglycemia with loss of consciousness after a missed breakfast; EMS glucose 38, glucagon IM, 96 on arrival, discharged the same day. I saw her today and she is well. Current doses unchanged (glargine 20 units qhs, aspart 8 units AC). I have deferred any regimen change to you and advised no driving until you have reviewed the episode. She has a visit with you in June. ED record attached.\n\nPrimary care"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "portal_message",
+          "start": "2026-06-16T18:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "endocrinology visit update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Endo visit",
+              "date": "2026-06-16T18:40",
+              "author": "patient",
+              "body": "Hi, saw endo last week. We went over what happened in May. They didn't change any doses and said the plan you gave me (not skipping meals, checking at night and in the morning) is the right one. No more lows since then."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Endo visit",
+              "date": "2026-06-17T07:55",
+              "author": "PCP",
+              "body": "Thanks for the update, glad it's been quiet. We haven't gotten their note, so I'll ask them for a copy. See you at your physical."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T13:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "schedule physical",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Scheduling my physical",
+              "date": "2026-08-11T13:10",
+              "author": "patient",
+              "body": "Hi! Can I book my yearly physical for September? Tuesdays are best for me, mornings."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Scheduling my physical",
+              "date": "2026-08-11T15:02",
+              "author": "front desk",
+              "body": "You're booked for Tuesday 9/22 at 8:30 am. Please come fasting; labs will be drawn at the visit. Flu and COVID shots should be in by then too."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Malignant otitis externa, left ear|H60.22": {
+        "code": "H60.22",
+        "display": "Malignant otitis externa, left ear",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Type 1 diabetes mellitus with hypoglycemia with coma|E10.641": {
+        "code": "E10.641",
+        "display": "Type 1 diabetes mellitus with hypoglycemia with coma",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "3 ML insulin aspart, human 100 UNT/ML Pen Injector": {
+        "code": "1653202",
+        "display": "3 ML insulin aspart, human 100 UNT/ML Pen Injector",
+        "ingredient": "ml",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "ciprofloxacin 750 MG Oral Tablet": {
+        "code": "197512",
+        "display": "ciprofloxacin 750 MG Oral Tablet",
+        "ingredient": "ciprofloxacin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "glucagon (rDNA) 1 MG Injection": {
+        "code": "310497",
+        "display": "glucagon (rDNA) 1 MG Injection",
+        "ingredient": "glucagon",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "ofloxacin 3 MG/ML Otic Solution": {
+        "code": "242446",
+        "display": "ofloxacin 3 MG/ML Otic Solution",
+        "ingredient": "ofloxacin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Bacteria identified in Ear by Aerobe culture": {
+        "code": "608-0",
+        "display": "Bacteria identified in Ear by Aerobe culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Glucose, capillary (point of care)": {
+        "code": "41653-7",
+        "display": "Glucose [Mass/volume] in Capillary blood by Glucometer",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "CT temporal bones without contrast": {
+        "code": "36866-2",
+        "display": "CT Temporal bone WO contrast",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

@@ -1,0 +1,562 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002118",
+      "given": "Dale",
+      "family": "Bradley",
+      "birth_date": "1981-04-05",
+      "address_line": "17 Mill River Lane",
+      "phone": "+1-617-555-0186",
+      "email": "dale.bradley@example.test",
+      "marital_status": "single",
+      "summary": "Forty-year-old international business development manager with bipolar disorder on lithium and stage 3a CKD who joins in 2021. Lithium-era nephrogenic diabetes insipidus is found in 2024, then ciguatera on vacation, saline-induced hyperchloremic acidosis during home IV hydration in 2025, and Ebola virus disease after a 2026 work trip to Guinea, from which he recovers.",
+      "events": [
+        {
+          "id": "2021-08-11a",
+          "kind": "outside_records",
+          "start": "2021-08-11T10:20",
+          "reason": "Records from prior primary care office",
+          "conditions": [
+            {
+              "label": "Chronic kidney disease, stage 3a",
+              "action": "history",
+              "onset": "2020-01-01"
+            },
+            {
+              "label": "Bipolar disorder, unspecified",
+              "action": "history",
+              "onset": "2019-01-01"
+            },
+            {
+              "label": "Acquired absence of other specified parts of digestive tract",
+              "icd10": "Z90.49",
+              "action": "history",
+              "onset": "1999-06-01",
+              "note": "appendectomy at age 18"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "lithium carbonate 300 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth twice daily",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Bipolar disorder"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-09T09:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-30T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "outside primary care",
+              "date": "2021-08-11T10:20",
+              "body": "Summary of care, prior primary care office, sent at patient request ahead of transfer.\n\nPatient: Dale Bradley, DOB 04/05/1981.\n\nProblems:\n1. Bipolar disorder. Lithium started 2019 by his psychiatrist at the time. Mood has been stable on it and he has had no episodes since. Once he was stable the psychiatrist handed prescribing back to us; we have refilled it since.\n2. Chronic kidney disease. Creatinine 1.6 in 2020, 1.7 in spring 2021. eGFR around 50. No proteinuria on prior UA.\n3. S/p appendectomy at 18.\n\nMedications: lithium carbonate 300 mg capsule, 1 cap twice a day.\nAllergies: NKDA.\nImmunizations: COVID-19 Pfizer x2, April 2021. Tdap date not on file.\nFamily hx: father bipolar disorder; mother hypertension.\nSocial: never smoker, a few drinks a week, works in international business development.\n\nLast lithium level 0.7 (spring 2021). TSH and calcium normal at that draw."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-24a",
+          "kind": "establish_care",
+          "start": "2021-08-24T09:00",
+          "end": "2021-08-24T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care and physical",
+          "state": {
+            "weight_kg": 74.5,
+            "height_cm": 180.0,
+            "labs": {
+              "Creatinine": 1.7,
+              "Lithium": 0.7,
+              "Low Density Lipoprotein": 108,
+              "High Density Lipoprotein": 54,
+              "Triglycerides": 91,
+              "Thyroid Stimulating Hormone": 2.1,
+              "Hemoglobin A1c": 5.3,
+              "Microalbumin/Creatinine Ratio": 11,
+              "Blood Urea Nitrogen": 21
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-08-24T10:05",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-08-24T10:05",
+              "results": []
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-08-24T10:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2021-08-24T10:05",
+              "results": []
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-24T10:05",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 2-3 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "International business development manager"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2021-08-24T09:50"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 40-64",
+              "performed": "2021-08-24T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-08-24T09:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-08-24T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit and Physical",
+              "author": "PCP",
+              "date": "2021-08-24T10:00",
+              "body": "New patient. 40M moving his care here after relocating to Haydenville. Records from his prior office reviewed before today.\n\nHe is here mostly to get established. Feels well. Works in international business development, on the road abroad several times a year. Sleeps fine, exercises a few times a week.\n\nBipolar disorder: on lithium since 2019, started by a psychiatrist; prior PCP had been refilling. Mood steady, no highs or lows he can remember in the last two years, no thoughts of self-harm. Takes it twice a day with meals and rarely misses. Happy to keep labs here.\n\nKidneys: knows he has 'reduced kidney function' — creatinine 1.6-1.7 on outside labs. No swelling, no urinary complaints.\n\nPMH: bipolar disorder; CKD stage 3a. PSH: appendectomy at 18.\nMeds: lithium carbonate 300 mg BID.\nAllergies: NKDA.\nFH: father with bipolar disorder; mother with hypertension.\nSH: never smoker, 2-3 drinks a week, no drug use. Single.\n\nROS otherwise negative.\n\nExam: well-appearing, calm, good eye contact, organized thought. HEENT unremarkable. Thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Abdomen soft, old RLQ scar. No edema. No tremor at rest or with arms outstretched. Skin clear.\n\nA/P\n1. Bipolar disorder, stable on lithium — continue 300 mg BID. Lithium level, TSH, calcium today, then every 6 months with kidney labs. PHQ-9 2.\n2. CKD 3a — CMP, UA, urine albumin/creatinine. Avoid NSAIDs; told him why.\n3. Health maintenance — lipids, A1c, one-time HIV and hep C screens. Tdap today (no date on file). COVID primary series done in April. Flu shot in the fall.\n\nRTC 6 months for labs, 1 year for physical."
+            },
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "author": "MA",
+              "date": "2021-08-24T09:52",
+              "body": "Tdap 0.5 mL IM left deltoid. VIS given. Pt tolerated well, no reaction after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-26a",
+          "kind": "portal_message",
+          "start": "2021-08-26T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2021-08-26T16:40",
+              "body": "Hi Dale,\n\nYour labs from Tuesday are in. Lithium level is in the target range. Kidney function is about where your old office had it (creatinine 1.7) — stable, and there's no protein in the urine, which is good. Thyroid, calcium, blood count, sugar and cholesterol all normal. HIV and hepatitis C screens negative.\n\nNo changes. We'll repeat the lithium and kidney labs in about six months.\n\n— your primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2021-10-14a",
+          "kind": "nurse_visit",
+          "start": "2021-10-14T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-14T08:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-14T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Influenza Vaccine",
+              "author": "RN",
+              "date": "2021-10-14T08:25",
+              "body": "In for flu vaccine before a work trip next week. Denies fever or illness today. Influenza quadrivalent 0.5 mL IM right deltoid. Waited 15 min, fine."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-08a",
+          "kind": "portal_message",
+          "start": "2021-11-08T07:55",
+          "reason": "COVID booster received",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-06T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Booster",
+              "author": "patient",
+              "date": "2021-11-08T07:55",
+              "body": "Got my COVID booster Saturday at the pharmacy (Pfizer). Sending a photo of the card for my record. Arm was sore that night, nothing else."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Booster",
+              "author": "MA",
+              "date": "2021-11-08T11:30",
+              "body": "Thanks Dale — added the 11/6 booster to your immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-23a",
+          "kind": "lab_only",
+          "start": "2022-02-23T07:40",
+          "reason": "Lithium and kidney monitoring",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-02-23T07:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-02-23T07:40",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-02-23T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab review",
+              "author": "PCP",
+              "date": "2022-02-24T12:10",
+              "body": "Trough lithium level in range. Creatinine steady at baseline, lytes and calcium normal. Continue current dose. Portal message sent."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-09a",
+          "kind": "portal_message",
+          "start": "2022-05-09T13:05",
+          "reason": "Early refill before travel",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill before trip",
+              "author": "patient",
+              "date": "2022-05-09T13:05",
+              "body": "I'm leaving for two weeks overseas for work on the 20th and I'll run out of lithium while I'm gone. Can you send the 90-day refill early? Same pharmacy."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill before trip",
+              "author": "RN",
+              "date": "2022-05-09T15:20",
+              "body": "Sent. The pharmacy may need to run a vacation override with your insurance — if they give you trouble, call us and we'll talk to them. Safe travels."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "pharmacy",
+          "start": "2022-05-10T10:00",
+          "reason": "Vacation override",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy call",
+              "author": "RN",
+              "date": "2022-05-10T10:00",
+              "body": "Pharmacy called — early fill of lithium rejected by insurer. Gave travel dates; pharmacy submitted vacation override and it went through. 90-day supply ready today. Pt notified by text."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-30a",
+          "kind": "annual_physical",
+          "start": "2022-08-30T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-08-30T09:15",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-30T09:15",
+              "results": []
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-08-30T09:15",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-08-30T09:15",
+              "results": []
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-30T09:15",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2022-08-30T09:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-08-30T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-08-30T09:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-08-30T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-08-30T09:20",
+              "body": "Annual. Doing well. Busy year — trips to Europe and Asia, no illness on the road. Mood even; sleeping 7 hours. Lithium BID without missed doses. No tremor, no thirst or urinary change, no GI upset.\n\nMeds: lithium carbonate 300 mg BID. NKDA.\nSH unchanged: never smoker, 2-3 drinks/week.\n\nExam: NAD. HEENT normal. Neck no thyromegaly. Heart regular without murmur. Lungs clear. Abd soft, nontender. No edema. Neuro nonfocal, no tremor. Affect bright, appropriate.\n\nPHQ-9 1.\n\nA/P\n- Bipolar disorder: stable. Continue lithium; level and TSH today.\n- CKD 3a: CMP, UA, urine albumin/creatinine. Remains off NSAIDs.\n- Prevention: hepatitis B series — Heplisav dose 1 today, dose 2 in a month with flu shot. Lipids today. Colon screening starts at 45.\n\nRTC 1 year; labs again in about 6 months."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab review",
+              "author": "PCP",
+              "date": "2022-08-31T17:00",
+              "body": "Lithium therapeutic, TSH normal, creatinine at his baseline, lipids fine, urine albumin normal. No changes. Released to portal with a short note."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-06a",
+          "kind": "nurse_visit",
+          "start": "2022-10-06T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu, hepatitis B #2, COVID booster",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-06T16:15"
+            },
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2022-10-06T16:16"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-06T16:18"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-06T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Vaccines",
+              "author": "RN",
+              "date": "2022-10-06T16:35",
+              "body": "Three vaccines today per PCP plan. Feels well, no fever.\n- Influenza quadrivalent 0.5 mL IM L deltoid\n- Heplisav-B dose 2, 0.5 mL IM R deltoid (series complete)\n- COVID-19 Pfizer bivalent 0.3 mL IM L deltoid, separate site\nVIS given for each. Observed 15 min without reaction."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-12a",
+          "kind": "nurse_visit",
+          "start": "2022-12-12T07:30",
+          "reason": "Lab draw: lithium and kidney monitoring",
+          "appointment": "no-show",
+          "service": "Internal Medicine — Primary Care"
+        },
+        {
+          "id": "2022-12-12b",
+          "kind": "telephone",
+          "start": "2022-12-12T14:45",
+          "reason": "Missed lab appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed lab draw",
+              "author": "front desk",
+              "date": "2022-12-12T14:45",
+              "body": "Pt missed 7:30 lab draw. Reached him — he's traveling until the holidays. Rebooked for 1/9 at 7:30."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

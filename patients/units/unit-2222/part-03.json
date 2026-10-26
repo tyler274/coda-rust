@@ -1,0 +1,329 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002222",
+      "events": [
+        {
+          "id": "2022-10-10a",
+          "kind": "hospital_admission",
+          "start": "2022-10-10T15:40",
+          "end": "2022-10-14T12:30",
+          "service": "Vascular Surgery",
+          "reason": "Rising creatinine and leg skin changes after EVAR",
+          "conditions": [
+            {"label": "Atheroembolism of kidney", "icd10": "I75.81", "action": "diagnosed", "onset": "2022-10-03", "note": "Cholesterol embolism after EVAR 09/2022"},
+            {"label": "Atheroembolism of bilateral lower extremities", "icd10": "I75.023", "action": "diagnosed", "onset": "2022-10-03", "note": "Livedo reticularis and blue toes; skin biopsy with cholesterol clefts"},
+            {"label": "Acute kidney failure, unspecified", "icd10": "N17.9", "action": "diagnosed", "onset": "2022-10-08"}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-10-10T16:30", "results": [{"test": "Creatinine", "value": 1.8}]},
+            {"panel": "CBC with Differential", "collected": "2022-10-10T16:30", "results": [{"test": "Eosinophils %", "value": 9}]},
+            {"panel": "Urinalysis", "collected": "2022-10-10T17:10", "results": [{"test": "Urine White Blood Cells", "text": "3-5 /HPF"}, {"test": "Urine Protein", "text": "Trace"}, {"test": "Urine Blood", "text": "Negative"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-10-12T05:40", "results": [{"test": "Creatinine", "value": 1.9}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-10-14T05:45", "results": [{"test": "Creatinine", "value": 1.6}]}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2022-10-11T14:00", "issued": "2022-10-13T16:00",
+             "text": "SPECIMEN: Skin, left lateral calf, punch biopsy (area of livedo).\nGROSS: 4 mm skin punch.\nMICROSCOPIC: Epidermis unremarkable. Small arterioles in the deep dermis contain biconvex, needle-shaped empty clefts consistent with dissolved cholesterol crystals.",
+             "conclusion": "Cholesterol emboli within small dermal arterioles."}
+          ],
+          "procedures": [
+            {"procedure": "Punch skin biopsy, single lesion", "performed": "2022-10-11T14:00"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge summary - cholesterol embolism", "author": "vascular surgery", "date": "2022-10-14T12:30",
+             "body": "OUTSIDE HOSPITAL DISCHARGE SUMMARY\nAdmitted 10/10/2022, discharged 10/14/2022. Service: Vascular Surgery.\n\nPrincipal diagnosis: cholesterol embolism syndrome after EVAR, with acute kidney injury and lower extremity skin involvement.\n\nHistory: 68 year old man seen two weeks after elective EVAR (9/26) with a creatinine that had climbed on outpatient labs and new mottling of both legs with painful, bluish toes. Baseline creatinine 1.0.\n\nExam on admission: lacy livedo reticularis over both lower legs and thighs; toes tender with bluish discoloration; pedal pulses present. Groin access sites healed.\n\nData: creatinine 1.8 on admission, peak 1.9 on 10/12, 1.6 at discharge. Eosinophils 9%. Urinalysis with a few white cells and no significant proteinuria. Skin punch biopsy of the left calf: cholesterol clefts within small dermal arterioles.\n\nCourse: supportive care with IV fluids and avoidance of further contrast and catheter procedures. Metformin held while in hospital and resumed at discharge as creatinine improved. Statin and other home medications continued. Toes less tender by discharge; livedo persists.\n\nAllergies: NKDA.\nDischarge medications: unchanged from admission list - metformin 1000 mg BID, lisinopril 20 mg daily, hydrochlorothiazide 12.5 mg daily, metoprolol succinate 50 mg daily, warfarin 5 mg daily, aspirin 81 mg daily, atorvastatin 40 mg daily, omeprazole 20 mg daily.\n\nFollow-up: PCP within one week with BMP. Vascular surgery clinic with duplex in about 5 weeks."}
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "office_visit",
+          "start": "2022-10-18T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "state": {"weight_kg": 89.5, "labs": {"Creatinine": 1.4}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-10-18T11:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2022-10-18T11:30", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2022-10-18T11:35"}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, moderate complexity", "performed": "2022-10-18T11:00"},
+            {"procedure": "Immunization administration", "performed": "2022-10-18T11:35"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-hospital visit", "author": "PCP", "date": "2022-10-18T11:45",
+             "body": "Post-discharge visit. Discharge summary and path reviewed.\n\nAdmitted 10/10-10/14 to vascular surgery with cholesterol embolism two weeks after his EVAR: AKI (Cr 1.0 baseline, peak 1.9, 1.6 at discharge), eosinophils 9%, livedo on both legs and blue tender toes, skin biopsy with cholesterol clefts. Supportive care.\n\nToday: toes much less sore, he can wear his work boots again. Legs still blotchy but fading. Urinating normally. Appetite ok. Taking all meds, metformin back on since discharge.\n\nExam: Livedo reticularis faint over both shins and thighs. Toes warm, color better, still a little tender. DP pulses present. Groins healed. Heart irreg irreg. Lungs clear.\n\nLabs today: Cr 1.4, K normal. INR back in range.\n\nA/P:\n1. Cholesterol embolism after EVAR with AKI - improving. Recheck BMP in ~6 weeks. Avoid NSAIDs and contrast where possible. Metformin ok at this kidney function; will hold if it goes the other way.\n2. AAA s/p EVAR 9/26 - vascular f/u with duplex in November.\n3. AF on warfarin - INR in range today, routine checks.\n4. DM2, HTN, HLD - no changes.\nFlu shot today. Bivalent covid booster at the pharmacy."}
+          ]
+        },
+        {
+          "id": "2022-10-27a",
+          "kind": "pharmacy",
+          "start": "2022-10-27T16:00",
+          "reason": "COVID-19 booster",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-27T16:00"}
+          ]
+        },
+        {
+          "id": "2022-11-21a",
+          "kind": "specialist_visit",
+          "start": "2022-11-21T13:30",
+          "service": "Vascular Surgery",
+          "reason": "Post-EVAR follow-up",
+          "reports": [
+            {"study": "Abdominal ultrasound", "performed": "2022-11-21T13:00",
+             "text": "EXAM: Duplex ultrasound of the abdominal aorta and endograft.\nINDICATION: Surveillance after EVAR 09/26/2022.\nFINDINGS: Bifurcated endograft in place, main body and both limbs patent with normal flow. No endoleak identified on color or spectral Doppler. Excluded aneurysm sac maximal diameter 4.8 cm.",
+             "conclusion": "Patent endograft without endoleak. Aneurysm sac 4.8 cm."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Vascular surgery follow-up", "author": "vascular surgery", "date": "2022-11-21T16:10",
+             "body": "OUTSIDE VASCULAR SURGERY - follow-up after EVAR. Date of service 11/21/2022.\n\nEight weeks after EVAR, five weeks after admission for cholesterol embolism. Feels well. Toes no longer painful.\n\nExam: livedo now very faint on the thighs, resolving. Toes pink and warm. Pedal pulses present. Access sites healed.\n\nDuplex today: endograft patent, no endoleak, sac 4.8 cm.\n\nPlan: annual duplex surveillance; next in about one year. Continue aspirin, statin and warfarin. Kidney function per his PCP. Thank you."}
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "lab_only",
+          "start": "2022-11-29T08:20",
+          "reason": "Kidney function and INR",
+          "state": {"labs": {"Creatinine": 1.2}},
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-11-29T08:20", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2022-11-29T08:20", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "BMP and INR", "author": "PCP", "date": "2022-11-29T15:30",
+             "body": "Cr 1.2, continuing to come down. INR in range. RN to let him know; recheck kidney function in about 6 weeks."}
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "office_visit",
+          "start": "2022-12-06T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Leg and arm weakness",
+          "state": {"weight_kg": 88.0, "labs": {"Creatine Kinase": 118, "Thyroid Stimulating Hormone": 1.9}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "conditions": [
+            {"label": "Muscle weakness (generalized)", "icd10": "M62.81", "action": "diagnosed", "onset": "2021-01-01"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2022-12-06T10:00", "results": [{"test": "Creatine Kinase"}, {"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-12-06T10:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Calcium"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-12-06T09:30"}],
+          "orders": [
+            {"id": "neuro-referral-2022", "action": "placed", "order": "Neurology referral", "category": "referral", "to": "Neurology", "reason": "Progressive proximal and distal weakness"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office visit - weakness", "author": "PCP", "date": "2022-12-06T10:15",
+             "body": "CC: legs and hands getting weak.\n\nHPI: He brings this up himself today. Thinks it has been creeping on for a couple of years, well before the surgery. Started as heavy thighs going up stairs. Now he has trouble getting up out of a low chair or the couch, uses his arms. Dropped a coffee mug and a socket wrench recently - grip lets go - and has trouble lifting things onto the high shelf in the garage. No pain, no numbness or tingling, no muscle twitching. No falls. No trouble swallowing. Toes fine now, livedo gone except faintly on the thighs.\n\nExam: Wt 89. Quads look thin for him. Hip flexors, quads and shoulders weak on both sides, grip weak bilaterally. Reflexes 2+ and symmetric. Sensation intact to light touch. Needs arms to rise from the exam chair. Gait slow, no ataxia.\n\nA/P:\n1. Progressive weakness, proximal and distal, legs and arms, over ~2 years - not explained by anything obvious. CK, TSH, electrolytes/calcium today. Neurology referral; asked for the first opening.\n2. Cholesterol embolism/AKI - recovering; Cr recheck next month.\n3. Other chronic problems unchanged.\nFollow up by portal with labs."}
+          ]
+        },
+        {
+          "id": "2022-12-09a",
+          "kind": "portal_message",
+          "start": "2022-12-09T12:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2022-12-09T12:15",
+             "body": "Your CK (muscle enzyme), thyroid test and electrolytes all came back normal. That doesn't explain the weakness, so the neurology visit is the next step - their office has you on Feb 16. If anything changes before then, like falls or trouble swallowing, let me know."}
+          ]
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "imaging",
+          "start": "2023-01-10T09:00",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2023-01-10T09:00",
+             "text": "INDICATION: Annual lung cancer screening, former smoker. Delayed from fall.\nCOMPARISON: 11/2021.\nTECHNIQUE: Low-dose CT chest without contrast.\nFINDINGS: No pulmonary nodules. No consolidation, effusion or adenopathy. Heart size normal.",
+             "conclusion": "Lung-RADS 1: negative. Continue annual screening."}
+          ]
+        },
+        {
+          "id": "2023-01-10b",
+          "kind": "lab_only",
+          "start": "2023-01-10T09:40",
+          "reason": "Kidney function and INR",
+          "state": {"labs": {"Creatinine": 1.1}},
+          "conditions": [
+            {"label": "Acute kidney failure, unspecified", "icd10": "N17.9", "action": "resolved"}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-01-10T09:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2023-01-10T09:40", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "BMP, INR, LDCT", "author": "PCP", "date": "2023-01-10T16:20",
+             "body": "Cr 1.1 - essentially back to baseline after the cholesterol embolism AKI. Resolving the AKI. INR in range. Lung CT negative. Portal message sent."}
+          ]
+        },
+        {
+          "id": "2023-02-16a",
+          "kind": "specialist_visit",
+          "start": "2023-02-16T10:00",
+          "service": "Neurology",
+          "reason": "Progressive weakness",
+          "reports": [
+            {"study": "Nerve conduction study and EMG", "performed": "2023-02-16T13:30",
+             "text": "Nerve conduction studies of the right arm and leg: sensory and motor responses with normal amplitudes, latencies and conduction velocities. Needle EMG of selected proximal and distal muscles of the right arm and leg: findings nonspecific, without a definite myopathic or neurogenic pattern.",
+             "conclusion": "Nonspecific study. No evidence of a large-fiber polyneuropathy."}
+          ],
+          "orders": [{"id": "neuro-referral-2022", "action": "done", "date": "2023-02-16T10:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology consultation", "author": "neurology", "date": "2023-02-16T17:00",
+             "body": "OUTSIDE NEUROLOGY - new consultation. Date of service 02/16/2023.\n\nReferred by his primary care physician for weakness.\n\nHPI: 68 year old man, four months after a hospital stay for cholesterol emboli following elective EVAR. Two years of slowly progressive trouble walking and weakness. It started as a sense of heavy thighs on stairs. It has worsened to the point that rising from low seats is hard, and he loses his grip on tools or drops things when reaching overhead. No pain, numbness or fasciculations. No injury, infection or medication changes around the onset.\n\nPMH: T2DM, hypertension, permanent AF on warfarin, hyperlipidemia, mild ischemic stroke 2017 fully recovered, GERD, PAD, AAA s/p EVAR 9/2022 with cholesterol embolism.\nMeds: metformin, lisinopril, hydrochlorothiazide, metoprolol succinate, warfarin, aspirin, atorvastatin, omeprazole. NKDA.\nFamily: paternal uncle with Waldenstrom macroglobulinemia; no family neuromuscular disease known.\nSocial: retired construction foreman, former smoker, a glass of wine most evenings.\n\nExam: Mild wasting of the quadriceps and the forearm flexors. Weakness in proximal and distal muscles of both arms and both legs. Reflexes normal and symmetric. Light touch, vibration and joint position sense intact. Cranial nerves normal.\n\nData: CK, electrolytes and TSH from his PCP in December normal. EMG/NCS today nonspecific.\n\nImpression: slowly progressive weakness with a mixed proximal and distal pattern and quadriceps/forearm flexor atrophy. An inflammatory or degenerative myopathy remains the leading concern despite a normal CK.\n\nPlan: muscle biopsy - booked 3/2. He will need to hold warfarin; instructions to him and to your office. Will follow up with results."}
+          ]
+        },
+        {
+          "id": "2023-02-23a",
+          "kind": "telephone",
+          "start": "2023-02-23T11:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Warfarin hold for muscle biopsy", "author": "RN", "date": "2023-02-23T11:15",
+             "body": "Neurology office called re biopsy 3/2. Pt to take last warfarin 2/25, hold 2/26-3/1, no bridging. Called pt and went over it. Restart evening of 3/2 if the surgeon okays. INR 3/7."}
+          ]
+        },
+        {
+          "id": "2023-03-02a",
+          "kind": "procedure_visit",
+          "start": "2023-03-02T08:00",
+          "service": "Neurology",
+          "reason": "Muscle biopsy",
+          "documents": [
+            {"type": "Procedure Note", "title": "Muscle biopsy", "author": "general surgery", "date": "2023-03-02T10:30",
+             "body": "OUTSIDE PROCEDURE NOTE. Date 03/02/2023.\nProcedure: open muscle biopsy, right vastus lateralis.\nIndication: progressive weakness, evaluation for myopathy.\nAnesthesia: local.\nINR this morning acceptable after warfarin hold.\nFindings: specimen obtained and sent fresh to pathology. Hemostasis good. Closed in layers.\nComplications: none.\nPlan: may resume warfarin this evening. Keep dressing dry 48 hours."}
+          ]
+        },
+        {
+          "id": "2023-03-07a",
+          "kind": "lab_only",
+          "start": "2023-03-07T08:30",
+          "reason": "INR after restart",
+          "labs": [
+            {"panel": "Prothrombin Time with INR", "collected": "2023-03-07T08:30", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "INR", "author": "RN", "date": "2023-03-07T12:40",
+             "body": "INR in range already after restart. Same dose. Biopsy site healing, no bleeding. Next INR in 4 weeks."}
+          ]
+        },
+        {
+          "id": "2023-03-13a",
+          "kind": "outside_records",
+          "start": "2023-03-13T15:00",
+          "reason": "Muscle biopsy pathology",
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2023-03-02T09:30", "issued": "2023-03-13T11:00",
+             "text": "SPECIMEN: Skeletal muscle, right vastus lateralis, open biopsy.\nMICROSCOPIC: Frozen and paraffin sections. Scattered myofibers contain basophilic rimmed vacuoles lined by granular material.",
+             "conclusion": "Skeletal muscle with rimmed vacuoles. In the clinical setting, consistent with inclusion body myositis. Correlation with neurology."}
+          ]
+        },
+        {
+          "id": "2023-03-20a",
+          "kind": "specialist_visit",
+          "start": "2023-03-20T14:00",
+          "service": "Neurology",
+          "reason": "Muscle biopsy results",
+          "conditions": [
+            {"label": "Inclusion body myositis", "icd10": "G72.41", "action": "diagnosed", "onset": "2021-01-01"},
+            {"label": "Muscle weakness (generalized)", "icd10": "M62.81", "action": "resolved"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology follow-up", "author": "neurology", "date": "2023-03-20T16:45",
+             "body": "OUTSIDE NEUROLOGY - follow-up. Date of service 03/20/2023.\n\nReviewed the muscle biopsy with Mr. Rossi: rimmed vacuoles within myofibers. Together with the pattern of weakness (quadriceps and finger/forearm flexors), slow course and nonspecific EMG, this fits inclusion body myositis.\n\nHe denies swallowing difficulty at present. Weakness unchanged since February.\n\nDiscussion: IBM is slowly progressive, and steroids and other immune treatments have not been shown to help, so we do not recommend them. Focus is on keeping strength and preventing falls: referral to physical therapy for a strengthening and balance program, home safety (rails, raised seats). Report any new choking or trouble swallowing, as IBM can affect swallowing over time.\n\nDiagnosis: inclusion body myositis.\nPlan: PT; neurology follow-up in 6-12 months. We asked his PCP to place the PT referral close to home. Thank you."}
+          ]
+        },
+        {
+          "id": "2023-03-22a",
+          "kind": "telephone",
+          "start": "2023-03-22T09:40",
+          "orders": [
+            {"id": "pt-referral-2023", "action": "placed", "order": "Physical therapy referral", "category": "referral", "to": "Physical Therapy", "reason": "Inclusion body myositis - strengthening, balance, fall prevention"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "IBM diagnosis, PT referral", "author": "PCP", "date": "2023-03-22T09:40",
+             "body": "Called pt after the neurology letter. He understands the diagnosis - inclusion body myositis - and that there isn't a pill for it. Upset but practical about it. PT referral placed to an outpatient PT office near his home. Talked about grab bars and a raised toilet seat. Watch for swallowing trouble. He'll keep his May visit."}
+          ]
+        },
+        {
+          "id": "2023-04-04a",
+          "kind": "outside_records",
+          "start": "2023-04-04T15:30",
+          "reason": "Physical therapy evaluation",
+          "procedures": [
+            {"procedure": "Physical therapy evaluation, moderate complexity", "performed": "2023-03-30T10:00"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "PT initial evaluation", "author": "physical therapy", "date": "2023-04-04T15:30",
+             "body": "OUTPATIENT PHYSICAL THERAPY - initial evaluation, 03/30/2023.\nDx: inclusion body myositis (per neurology).\nSubjective: difficulty with stairs and getting up from low chairs, grip gives out with tools. No falls.\nObjective: hip flexor and quadriceps weakness bilaterally, weak grip; sit-to-stand requires both arms from a standard chair; stair climbing step-to with rail; gait slow but steady without device.\nAssessment: proximal and distal weakness limiting transfers and stairs; fall risk.\nPlan: 2x/week for 8 weeks - submaximal strengthening, balance training, transfer training, home exercise program, home safety review."}
+          ],
+          "orders": [{"id": "pt-referral-2023", "action": "done", "date": "2023-03-30T10:00"}]
+        },
+        {
+          "id": "2023-04-18a",
+          "kind": "lab_only",
+          "start": "2023-04-18T08:15",
+          "reason": "INR",
+          "labs": [
+            {"panel": "Prothrombin Time with INR", "collected": "2023-04-18T08:15", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ]
+        },
+        {
+          "id": "2023-05-23a",
+          "kind": "office_visit",
+          "start": "2023-05-23T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "state": {"weight_kg": 85.5, "labs": {"Hemoglobin A1c": 6.5}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2023-05-23T10:30", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-05-23T10:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2023-05-23T10:30", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-05-23T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office visit", "author": "PCP", "date": "2023-05-23T10:40",
+             "body": "F/u DM, HTN, AF, IBM.\n\nPT twice a week, almost done; does the home exercises. Grab bars in. Stairs about the same, chairs a little easier with the technique they taught him. No falls. No choking or trouble swallowing. Toes and legs fine.\n\nExam: Wt 85.5. Heart irreg irreg. Lungs clear. Thin quads, needs arms to stand. No edema. Feet intact, monofilament normal.\n\nLabs: A1c 6.7. Cr 1.1. INR in range.\n\nA/P:\n- IBM: per neurology, PT and home program. f/u neuro later this year.\n- DM2: good, same.\n- HTN: 145/79 here, home readings 130s/80s. Recheck next visit.\n- AF/warfarin: stable.\n- AAA s/p EVAR: duplex in the fall.\n- HLD/PAD: same.\nAWV in September."}
+          ]
+        },
+        {
+          "id": "2023-05-31a",
+          "kind": "outside_records",
+          "start": "2023-05-31T14:10",
+          "reason": "Physical therapy discharge",
+          "procedures": [
+            {"procedure": "Physical therapy, therapeutic exercise", "performed": "2023-05-25T10:00"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "PT discharge summary", "author": "physical therapy", "date": "2023-05-31T14:10",
+             "body": "OUTPATIENT PT DISCHARGE SUMMARY. 15 visits 03/30-05/25/2023. Dx inclusion body myositis.\nProgress: independent with home exercise program; improved transfer technique from standard-height chairs; stairs reciprocal with rail. Strength essentially unchanged, as expected. No falls during the episode of care.\nDischarged to home program. Re-refer with any decline or falls."}
+          ]
+        },
+        {
+          "id": "2023-07-05a",
+          "kind": "lab_only",
+          "start": "2023-07-05T08:00",
+          "reason": "INR",
+          "labs": [
+            {"panel": "Prothrombin Time with INR", "collected": "2023-07-05T08:00", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ]
+        },
+        {
+          "id": "2023-07-25a",
+          "kind": "outside_records",
+          "start": "2023-07-25T16:00",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {"type": "Outside Records", "title": "Eye examination report", "author": "ophthalmology", "date": "2023-07-25T16:00",
+             "body": "Diabetic eye exam, dilated. VA 20/25 OD, 20/30 OS. No diabetic retinopathy either eye. Maculae normal. See in one year."}
+          ]
+        }
+      ]
+    }
+  ]
+}

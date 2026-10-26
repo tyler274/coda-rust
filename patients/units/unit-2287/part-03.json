@@ -1,0 +1,473 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002287",
+      "events": [
+        {
+          "id": "2026-01-20a",
+          "kind": "annual_physical",
+          "start": "2026-01-20T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Welcome to Medicare preventive visit",
+          "measure": ["bp", "hr", "temp_c", "rr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": null, "collected": "2026-01-20T09:15", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-20T09:15", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 1}
+          ],
+          "procedures": [
+            {"procedure": "Initial preventive physical examination (Welcome to Medicare)", "performed": "2026-01-20T09:30"},
+            {"procedure": "Venipuncture", "performed": "2026-01-20T09:15"}
+          ],
+          "orders": [
+            {"id": "aaa-us", "action": "placed", "order": "Abdominal ultrasound", "category": "imaging", "reason": "One-time abdominal aortic aneurysm screening, male ever-smoker age 65"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Initial Preventive Physical Exam (Welcome to Medicare)",
+              "author": "PCP",
+              "date": "2026-01-20T10:20",
+              "body": "IPPE. Turned 65 on 12/1; Medicare Part B active.\n\nReviewed: medical and family history, current meds and supplements (none beyond his list), functional status, home safety, fall risk, depression screen, hearing, vision.\n- PMH: T2DM on insulin, poorly controlled; CKD 3a; HTN; L knee OA. Former smoker 30 pack-years, quit 2018.\n- PSH: none.\n- FH: father T2DM, mother OA, brother CKD.\n- Meds: glargine 30 u qhs, lispro sliding scale AC, lisinopril 10 mg daily, atorvastatin 40 mg daily, acetaminophen 500 mg q6h prn. NKDA.\n- Function: independent in all daily activities, drives, manages his own meds. No falls in the past year. Stairs at home are fine aside from the knee on bad days.\n- PHQ-9: 1.\n- Hearing: whispered voice test passed both ears. Vision: optometry yearly, last 6/2025.\n- Alcohol 1-2 a week. No tobacco since 2018.\n\nExam: vitals reviewed. Well appearing. Heart regular. Lungs clear. Abdomen soft, no pulsatile mass. No edema. L knee with chronic OA changes, no effusion. Feet intact, monofilament normal.\n\nPersonalized prevention plan, written copy given:\n- One-time AAA screening ultrasound (male, ever-smoker): ordered.\n- LDCT annually through the screening window, next 10/2026.\n- Colonoscopy due 2029.\n- Vaccines: flu and COVID done this season; PCV20, Shingrix x2, Tdap 2024, RSV 2024 all complete.\n- Diabetes: A1c and BMP today. Regimen unchanged.\n- Advance directives: he will think about a health care proxy; form given.\nNext chronic visit April."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-05a",
+          "kind": "telephone",
+          "start": "2026-02-05T07:52",
+          "reason": "Left knee swelling with fever",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Nurse Triage Call",
+              "author": "RN",
+              "date": "2026-02-05T07:52",
+              "body": "Pt called the practice line at 7:50. Left knee started hurting two days ago, now big and swollen, red, hot to touch, and since last night he can't stand on it. No fall, no injury he can think of. Had chills last night and a fever on his thermometer this morning. No other joints involved.\n\nAdvised he needs to be seen in the emergency department today, not in the office: a hot swollen joint with fever needs a tap. Neighbor can drive him. Pt agreeable.\n\nPCP notified: agree, ED now. Will call the ED to give them a heads up."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-05b",
+          "kind": "hospital_admission",
+          "start": "2026-02-05T09:40",
+          "end": "2026-02-10T13:30",
+          "service": "Emergency Medicine; Hospital Medicine",
+          "reason": "Left knee pain and swelling with fever",
+          "conditions": [
+            {"label": "Staphylococcal arthritis, left knee", "icd10": "M00.062", "action": "diagnosed", "onset": "2026-02-03"}
+          ],
+          "medications": [
+            {"drug": "cephalexin 500 MG Oral Capsule", "action": "start", "sig": "Take 2 capsules (1000 mg) by mouth four times daily through 03/05/2026", "dose": {"value": 1000, "unit": "mg"}, "frequency": "QID", "route": "Oral", "course": "short", "reason": "MSSA septic arthritis, left knee"}
+          ],
+          "vitals": {"temp_c": 38.3, "hr": 102},
+          "measure": ["bp", "rr", "spo2"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-02-05T10:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-02-05T10:05", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2026-02-05T10:05", "results": [{"test": "Blood Culture", "text": "No growth at 5 days (set 1 of 2)", "resulted": "2026-02-10T08:00"}]},
+            {"panel": null, "collected": "2026-02-05T10:10", "results": [{"test": "Blood Culture", "text": "No growth at 5 days (set 2 of 2)", "resulted": "2026-02-10T08:00"}]},
+            {"panel": null, "collected": "2026-02-05T10:40", "resulted": "2026-02-05T12:10", "results": [
+              {"test": "Appearance of Synovial fluid", "loinc": "29605-3", "text": "Cloudy"},
+              {"test": "Leukocytes [#/volume] in Synovial fluid", "loinc": "26469-7", "unit": "/uL", "value": 50000},
+              {"test": "Neutrophils/Leukocytes in Synovial fluid", "loinc": "17836-8", "unit": "%", "value": 90},
+              {"test": "Microscopic observation [Identifier] in Synovial fluid by Gram stain", "loinc": "14363-6", "text": "No organisms seen"},
+              {"test": "Glucose [Mass/volume] in Synovial fluid", "loinc": "2348-1", "unit": "mg/dL", "value": 40},
+              {"test": "Protein [Mass/volume] in Synovial fluid", "loinc": "2886-0", "unit": "g/dL", "value": 4.5},
+              {"test": "Crystals [Presence] in Synovial fluid by Light microscopy", "loinc": "38458-6", "text": "None seen"}
+            ]},
+            {"panel": null, "collected": "2026-02-05T10:40", "results": [{"test": "Bacteria identified in Synovial fluid by Culture", "loinc": "621-3", "text": "Staphylococcus aureus, methicillin-susceptible (MSSA); susceptible to oxacillin and cefazolin", "resulted": "2026-02-07T09:30"}]}
+          ],
+          "reports": [
+            {
+              "study": "Knee X-ray",
+              "performed": "2026-02-05T10:25",
+              "text": "LEFT KNEE, AP AND LATERAL. History: pain, swelling, fever, unable to bear weight. Comparison: none available. Findings: Medial and patellofemoral joint space narrowing with marginal osteophytes. Large suprapatellar joint effusion. No fracture or dislocation. No soft tissue gas. No radiopaque foreign body.",
+              "conclusion": "Degenerative change consistent with osteoarthritis. Large joint effusion. No fracture or soft tissue gas."
+            }
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2026-02-05T09:40"},
+            {"procedure": "Arthrocentesis or injection, major joint", "performed": "2026-02-05T10:40"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2026-02-05T15:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-02-10T12:00"}
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Physician Record",
+              "author": "emergency medicine",
+              "date": "2026-02-06T07:30",
+              "body": "Community hospital ED. Date of service 02/05/2026, arrival 09:40. Copy to PCP.\n\nCHIEF COMPLAINT: Painful swollen left knee, unable to walk on it, fever.\n\nHPI: 65 y/o M with insulin-requiring type 2 diabetes (poor control by report), CKD 3a, and known left knee osteoarthritis. Two days of worsening L knee pain and swelling, now cannot bear weight. Denies fall, twisting injury or skin wound. Subjective fevers and rigors at home. Sent in by his PCP's office this morning.\n\nPMH: T2DM, CKD stage 3a, HTN, L knee OA. PSH: none.\nMEDS: insulin glargine 30 units qHS; insulin lispro sliding scale with meals; lisinopril 10 mg daily; atorvastatin 40 mg daily; acetaminophen 500 mg q6h PRN.\nALLERGIES: NKDA.\nSOCIAL: ex-smoker (30 pk-yr, quit 2018), occasional alcohol, retired construction foreman.\nFAMILY: father with T2DM, mother with OA, brother with CKD.\n\nTRIAGE VITALS: Temp 38.3 C (100.9 F), HR 102. BP, RR and SpO2 within normal limits.\n\nEXAM: Uncomfortable, holding L leg still. L knee red, hot and tensely swollen with an obvious effusion; any passive flexion is very painful and arc of motion is markedly limited. No overlying wound or cellulitis. R knee normal. Other joints without synovitis. Heart tachycardic, regular. Lungs clear. Distal pulses intact, sensation intact.\n\nPROCEDURE: Arthrocentesis, L knee. Consent obtained. Superolateral approach under sterile technique, cloudy fluid aspirated, sent for cell count, Gram stain, crystals, chemistry and culture. Tolerated well.\n\nRESULTS:\nSynovial fluid: cloudy. WBC 50,000/uL, 90% neutrophils. Gram stain: no organisms seen. Glucose 40 mg/dL. Protein 4.5 g/dL. No crystals.\nXR L knee: OA changes, large effusion, no fracture, no gas.\nCBC, BMP resulted (see lab section); glucose elevated. Blood cultures x2 drawn before antibiotics.\n\nMDM: Inflammatory, purulent-range synovial fluid with low glucose in a febrile diabetic. Negative Gram stain does not exclude bacterial infection. No crystals. Treating as septic arthritis. Vancomycin and ceftriaxone IV given after cultures. Orthopedics consulted from the ED, plan arthroscopic washout. Admit to the hospitalist service.\n\nED DIAGNOSIS: Septic arthritis, left knee.\nDISPOSITION: Admitted, inpatient."
+            },
+            {
+              "type": "Operative Note",
+              "title": "Operative Report - Left Knee Arthroscopy",
+              "author": "orthopedic surgery",
+              "date": "2026-02-10T15:45",
+              "body": "Operative report, received with discharge packet.\nDate of surgery: 02/06/2026.\nPreoperative diagnosis: Septic arthritis, left knee.\nPostoperative diagnosis: Same.\nProcedure: Left knee arthroscopy with irrigation and debridement.\nSurgeon: orthopedic surgery attending. Anesthesia: general. EBL minimal. Complications: none.\n\nIndications: 65 y/o male with fever and purulent-range aspirate from the left knee, Gram stain negative, cultures pending.\n\nFindings: Turbid joint fluid on entry. Diffusely inflamed, hyperemic synovium. Articular cartilage with degenerative wear of the medial compartment and patellofemoral joint, consistent with known osteoarthritis. Menisci and cruciate ligaments intact. No loose bodies.\n\nDescription: Standard anterolateral and anteromedial portals. Diagnostic arthroscopy performed. Inflamed synovium debrided with shaver in the suprapatellar pouch and gutters. Joint irrigated with 9 L normal saline. Portals closed with nylon. Sterile dressing, knee immobilizer for comfort.\n\nPlan: WBAT as tolerated with walker initially. IV antibiotics per primary team and ID. Sutures out 10-14 days in clinic."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospital medicine",
+              "date": "2026-02-10T15:45",
+              "body": "DISCHARGE SUMMARY\nAdmitted: 02/05/2026 via ED. Discharged: 02/10/2026, home.\nAttending: hospitalist. Consultants: orthopedic surgery, infectious disease.\nAllergies: NKDA.\n\nPrincipal diagnosis: Septic arthritis of the left knee, methicillin-susceptible Staphylococcus aureus.\nOther active problems: type 2 diabetes mellitus on insulin, poorly controlled; CKD stage 3a; hypertension; L knee osteoarthritis.\n\nHospital course:\n65 y/o man who presented with two days of a hot, swollen L knee, fever to 38.3 and tachycardia. Arthrocentesis in the ED: cloudy fluid, WBC 50,000 with 90% PMNs, glucose 40, protein 4.5, Gram stain negative, no crystals. Started empirically on vancomycin and ceftriaxone. Orthopedics took him for arthroscopic irrigation and debridement on 2/6. The ED synovial culture finalized 2/7 as MSSA (oxacillin and cefazolin susceptible), and antibiotics were narrowed to IV cefazolin. Blood cultures x2 from admission: no growth at 5 days. Fever resolved by hospital day 2. Knee pain and swelling improved steadily; ambulating with a walker, then independently, with PT before discharge.\n\nDiabetes: glucoses ran high in the 200s early with the infection, home glargine 30 units and lispro scale continued. Renal function at his baseline throughout; cefazolin dosed for his eGFR.\n\nID recommended 4 weeks total therapy from source control, transitioning to oral cephalexin at discharge.\n\nDischarge medications:\n- NEW: cephalexin 500 mg capsules, 2 capsules (1000 mg) four times daily, last dose 03/05/2026\n- insulin glargine 30 units subcut at bedtime (unchanged)\n- insulin lispro per sliding scale before meals (unchanged)\n- lisinopril 10 mg daily (unchanged)\n- atorvastatin 40 mg daily (unchanged)\n- acetaminophen 500 mg every 6 hours as needed for pain (unchanged)\n\nFollow-up:\n- PCP within 1 week\n- Orthopedics 2/19 for wound check and suture removal\n- Infectious disease clinic 3/5\nReturn precautions for recurrent fever, increasing knee swelling or redness, or diarrhea on antibiotics."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "office_visit",
+          "start": "2026-02-12T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, left knee septic arthritis",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [
+            {"procedure": "Transitional care management, moderate complexity", "performed": "2026-02-12T11:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "author": "PCP",
+              "date": "2026-02-12T12:05",
+              "body": "Post-discharge visit. Interactive contact by phone with patient on 2/11 (RN). Discharge summary, op note and ED record reviewed.\n\nAdmitted 2/5-2/10 for L knee septic arthritis, MSSA from the joint fluid, blood cultures negative. Scope washout 2/6. Now on cephalexin 1 g QID through 3/5.\n\nToday: feels a lot better. No fevers at home. Knee still a bit puffy and stiff but he's walking on it without the walker since the weekend. Taking cephalexin on schedule, set up a pill box. No GI upset. Sugars running 160s-220s.\n\nMed reconciliation done against the discharge list: cephalexin added; glargine 30 qhs, lispro scale, lisinopril 10, atorvastatin 40, acetaminophen prn unchanged. NKDA.\n\nExam: afebrile, comfortable. L knee: portals clean and dry with sutures in place, no drainage or surrounding redness, mild warmth, small effusion, flexion limited but improving. Calf soft. Heart regular. Lungs clear.\n\nA/P\n1. Septic arthritis L knee, MSSA, improving on oral cephalexin. Complete course through 3/5. Ortho 2/19 for sutures, ID 3/5. Call for fever or more swelling.\n2. T2DM: high during infection, continue current insulin.\n3. CKD 3a, HTN: renal function at baseline in hospital. Continue lisinopril.\nSee him after ID clears him, in April."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-19a",
+          "kind": "specialist_visit",
+          "start": "2026-02-19T14:00",
+          "service": "Orthopedic Surgery",
+          "reason": "Post-op check, left knee washout",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedics Post-operative Visit",
+              "author": "orthopedic surgery",
+              "date": "2026-02-20T09:10",
+              "body": "Orthopaedic clinic, 02/19/2026. Regarding Stanley Allard, DOB 12/01/1960.\nAllergies: NKDA.\n\nThirteen days out from L knee arthroscopic I&D for MSSA septic arthritis. On oral cephalexin per ID. No fevers. Walking without aids.\n\nExam: portals well healed, no drainage, no erythema. Trace effusion. Range of motion near his baseline. Neurovascularly intact.\n\nSutures removed, Steri-Strips applied. Quad sets, straight leg raises and heel slides reviewed for home. He can return to normal activity as tolerated. Baseline OA changes noted at surgery were discussed with him.\n\nFollow up with us as needed; ID managing antibiotic duration.\n— Orthopedic surgery"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-05a",
+          "kind": "specialist_visit",
+          "start": "2026-03-05T10:30",
+          "service": "Infectious Disease",
+          "reason": "Septic arthritis follow-up",
+          "conditions": [
+            {"label": "Staphylococcal arthritis, left knee", "icd10": "M00.062", "action": "resolved"}
+          ],
+          "medications": [
+            {"drug": "cephalexin 500 MG Oral Capsule", "action": "stop", "reason": "Course completed"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Clinic Letter",
+              "author": "infectious disease",
+              "date": "2026-03-06T13:40",
+              "body": "Dear colleague,\n\nI saw Mr. Allard in the infectious disease clinic on 03/05/2026 to follow his MSSA septic arthritis of the left knee, treated with arthroscopic washout on 02/06 followed by IV cefazolin in hospital and oral cephalexin at home.\n\nHe takes his last cephalexin dose today. He has had no fevers, chills or sweats since discharge and the knee is back to what he calls his 'old bad knee.' He tolerated the antibiotics without side effects.\n\nAllergies: NKDA.\nExam: afebrile. Left knee portals healed, no warmth, no effusion, full extension and good flexion. No rash.\n\nImpression: MSSA septic arthritis of the left knee, clinically resolved after four weeks of therapy.\n\nPlan: stop antibiotics after today's dose as planned. No routine follow-up needed with us. Should he develop recurrent joint pain with fever, or any new focal pain with fever, please have him evaluated promptly, given the prior S. aureus infection.\n\nThank you for the referral.\n— Infectious disease"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-07a",
+          "kind": "office_visit",
+          "start": "2026-04-07T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and CKD follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 9.2, "Glucose": 180}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2026-04-07T09:30", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-04-07T09:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-04-07T09:40"},
+            {"procedure": "Venipuncture", "performed": "2026-04-07T09:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2026-04-07T10:15",
+              "body": "Here for routine f/u after the knee infection. ID letter 3/5 reviewed: course finished, resolved, no further follow-up there.\n\nKnee: back to his usual arthritic ache, no swelling, no fevers since. Doing the home exercises some days. Tylenol a few times a week.\nDiabetes: morning sugars 150s-200s. Still misses lunch lispro.\nAAA ultrasound never got scheduled with everything in February; he'll go 4/14.\n\nMeds: glargine 30 u qhs, lispro sliding scale, lisinopril 10, atorvastatin 40, acetaminophen prn. Off cephalexin. NKDA.\n\nExam: well. L knee healed portal scars, no effusion, no warmth, crepitus. Heart RRR. Lungs clear. No edema.\n\nA/P\n- Septic arthritis L knee, resolved.\n- L knee OA: back to baseline. Acetaminophen.\n- T2DM, poorly controlled: A1c drawn today. Same regimen.\n- CKD 3a: BMP today.\n- HTN: continue lisinopril.\n- AAA screen 4/14.\nReturn July."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "imaging",
+          "start": "2026-04-14T08:30",
+          "reason": "AAA screening",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2026-04-14T08:30",
+              "text": "EXAM: Ultrasound abdominal aorta, screening for abdominal aortic aneurysm.\nINDICATION: 65-year-old male, former smoker.\nFINDINGS: The abdominal aorta is visualized from the diaphragm to the bifurcation. Maximal anteroposterior diameter 2.0 cm proximal, 1.8 cm mid, 1.7 cm distal. No aneurysmal dilatation. Common iliac arteries normal in caliber where seen.",
+              "conclusion": "Normal caliber abdominal aorta. No abdominal aortic aneurysm."
+            }
+          ],
+          "orders": [
+            {"id": "aaa-us", "action": "done", "date": "2026-04-14T08:30"}
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "AAA Screening Result",
+              "author": "PCP",
+              "date": "2026-04-14T16:00",
+              "body": "Aorta normal size. One-time screen complete, no repeat needed. Letter to pt via portal."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "portal_message",
+          "start": "2026-06-16T20:12",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "author": "patient",
+              "date": "2026-06-16T20:12",
+              "body": "Need refills on the lisinopril and the atorvastatin, pharmacy says no refills left. Also the pen needles. Thanks, Stan"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "author": "MA",
+              "date": "2026-06-17T09:05",
+              "body": "Hi Mr. Allard, the PCP sent new 90-day prescriptions for lisinopril 10 mg, atorvastatin 40 mg and pen needles to your pharmacy this morning. You're due for your diabetes check in July; you're booked July 7 at 1:40."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-07a",
+          "kind": "office_visit",
+          "start": "2026-07-07T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2026-07-07T13:30", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2026-07-07T13:40"},
+            {"procedure": "Venipuncture", "performed": "2026-07-07T13:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-07-07T14:05",
+              "body": "S: Routine. No problems since April. Knee fine for him. Sugars about the same, fasting 160-200. No lows.\nMeds unchanged. NKDA.\nO: BP higher than usual today; he came straight from mowing and rushed in. RRR, lungs clear, no edema. L knee no effusion.\nA1c today, still in the 9s.\nA: T2DM uncontrolled, stable pattern. CKD 3a, HTN, OA stable. Hx septic arthritis L knee, resolved.\nP: Continue current regimen, recheck BP next visit. BMP and lipids at the fall physical. LDCT due October. RTC September/October."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-04a",
+          "kind": "telephone",
+          "start": "2026-08-04T08:20",
+          "reason": "Back pain with fever",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Phone Call",
+              "author": "PCP",
+              "date": "2026-08-04T08:35",
+              "body": "Stan texted the practice line this morning and I called him back. Lower back pain for about two weeks, steady, worse when he moves, and over-the-counter pain relievers haven't touched it. The last few nights chills and drenching sweats. He didn't call sooner because he figured he'd pulled something.\n\nWith his MSSA knee infection in February, fever and new back pain needs same-day imaging and blood cultures, which we can't do here. Told him to go to the ED now. He's going with his neighbor. Called ahead to the ED and spoke with the attending about the history."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-04b",
+          "kind": "hospital_admission",
+          "start": "2026-08-04T10:05",
+          "end": "2026-08-10T14:20",
+          "service": "Emergency Medicine; Hospital Medicine",
+          "reason": "Low back pain with fever",
+          "conditions": [
+            {"label": "Osteomyelitis of vertebra, lumbar region", "icd10": "M46.26", "action": "diagnosed", "onset": "2026-07-21"}
+          ],
+          "medications": [
+            {"drug_text": "cefazolin 2000 MG Injection", "action": "start", "sig": "Infuse 2 g IV every 8 hours via PICC through 09/15/2026", "dose": {"value": 2000, "unit": "mg"}, "frequency": "Q8H", "route": "Intravenous", "reason": "MSSA vertebral osteomyelitis L4-L5"}
+          ],
+          "vitals": {"temp_c": 38.5},
+          "measure": ["bp", "hr", "rr", "spo2"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-08-04T10:30", "results": [{"test": "White Blood Cells", "value": 12.0}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-08-04T10:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2026-08-04T10:30", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 85}]},
+            {"panel": null, "collected": "2026-08-04T10:30", "results": [{"test": "C Reactive Protein", "value": 25}]},
+            {"panel": null, "collected": "2026-08-04T10:35", "results": [{"test": "Blood Culture", "text": "Staphylococcus aureus, methicillin-susceptible (MSSA), in aerobic and anaerobic bottles (set 1 of 2); susceptible to oxacillin and cefazolin", "resulted": "2026-08-05T07:40"}]},
+            {"panel": null, "collected": "2026-08-04T10:40", "results": [{"test": "Blood Culture", "text": "Staphylococcus aureus, methicillin-susceptible (MSSA) (set 2 of 2); susceptibilities as set 1", "resulted": "2026-08-05T09:15"}]},
+            {"panel": null, "collected": "2026-08-06T06:00", "results": [{"test": "Blood Culture", "text": "No growth at 5 days (repeat set 1 of 2)", "resulted": "2026-08-11T08:00"}]},
+            {"panel": null, "collected": "2026-08-06T06:05", "results": [{"test": "Blood Culture", "text": "No growth at 5 days (repeat set 2 of 2)", "resulted": "2026-08-11T08:00"}]}
+          ],
+          "reports": [
+            {
+              "study": "MRI lumbar spine without contrast",
+              "performed": "2026-08-04T14:10",
+              "text": "INDICATION: Two weeks of low back pain, fever, prior S. aureus septic arthritis.\nTECHNIQUE: Multiplanar multisequence MRI of the lumbar spine.\nFINDINGS: Abnormal marrow signal within the L4 and L5 vertebral bodies, low on T1 and high on STIR, with adjacent paravertebral soft tissue swelling. No epidural collection. Vertebral body heights maintained. Alignment normal. Conus terminates normally at L1. Remaining lumbar levels without canal or foraminal compromise.",
+              "conclusion": "Abnormal signal in the L4 and L5 vertebral bodies with adjacent soft tissue swelling, consistent with vertebral osteomyelitis in this clinical setting. No epidural abscess."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-08-06T10:30",
+              "text": "INDICATION: S. aureus bacteremia.\nFINDINGS: Normal left ventricular size, wall thickness and systolic function, LVEF 60%. No regional wall motion abnormality. Right ventricle normal. Aortic, mitral, tricuspid and pulmonic valves structurally normal with no significant stenosis or regurgitation. No valvular vegetation seen. No pericardial effusion.",
+              "conclusion": "Normal study. LVEF 60%. No echocardiographic evidence of endocarditis."
+            }
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2026-08-04T10:05"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2026-08-04T17:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-08-10T12:30"}
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Provider Note",
+              "author": "emergency medicine",
+              "date": "2026-08-05T06:50",
+              "body": "Emergency department, community hospital. Seen 08/04/2026. PCP called ahead; copy to PCP.\n\nCC: low back pain, fevers.\n\nHPI: 65-year-old man, diabetic on insulin with poor control, CKD 3a, treated for MSSA septic arthritis of the left knee in February (washout plus 4 weeks of antibiotics). About two weeks of lower back pain that has steadily gotten worse; constant, aggravated by any movement, no relief from OTC analgesics. Chills and night sweats. No trauma. No leg weakness, numbness, saddle anesthesia, or bladder or bowel change.\n\nMeds: glargine 30 u at bedtime, lispro sliding scale before meals, lisinopril 10 mg, atorvastatin 40 mg, acetaminophen 500 mg q6h PRN. Allergies: NKDA.\nSH: former smoker, 30 pack-years, quit 2018; occasional alcohol; retired construction foreman.\n\nVitals: febrile, 38.5 C (101.3 F).\nExam: uncomfortable with movement. Point tenderness over the L4-L5 spinous processes. Neuro: strength, sensation and reflexes normal in both legs, normal gait when he can manage it, no saddle deficit. Left knee healed, no effusion. Heart regular. Lungs clear. No murmur appreciated.\n\nLabs: WBC 12,000. ESR 85 mm/hr. CRP 25 mg/L. Blood cultures x2 drawn, pending at the time of this note.\nMRI L-spine: abnormal signal in the L4 and L5 vertebral bodies with adjacent soft tissue swelling. No epidural abscess per radiology.\n\nMDM: Febrile with focal lumbar tenderness, elevated inflammatory markers and MRI changes at L4-L5, six months after S. aureus septic arthritis. Picture is vertebral osteomyelitis. Neuro intact. Vancomycin started after cultures. ID consult requested. Admit to medicine.\n\nDx: Vertebral osteomyelitis, L4-L5.\nDispo: admit."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospital medicine",
+              "date": "2026-08-10T16:30",
+              "body": "Hospital medicine discharge summary\nAdmission 08/04/2026 - Discharge 08/10/2026. Disposition: home with home infusion services.\nAllergies: NKDA.\n\nDiagnoses:\n1. Vertebral osteomyelitis, L4-L5, with MSSA bacteremia\n2. Type 2 diabetes mellitus on insulin, poorly controlled\n3. CKD stage 3a\n4. Hypertension\n5. Left knee osteoarthritis; history of MSSA septic arthritis of that knee 02/2026, treated\n\nCourse:\nAdmitted from the ED with two weeks of progressive low back pain, fever to 38.5, chills and night sweats. WBC 12.0, ESR 85, CRP 25. MRI showed abnormal signal in the L4 and L5 vertebral bodies with adjacent soft tissue swelling, no epidural abscess. Both admission blood culture sets grew MSSA by 8/5; vancomycin was changed to IV cefazolin that day. ID followed. Repeat blood cultures 8/6: no growth, final 8/11 per lab. TTE 8/6: normal, LVEF 60%, no vegetation. Because cultures identified the organism, a spine biopsy was not needed. He remained neurologically intact throughout and spine surgery was not required. Fevers resolved by 8/6 and back pain improved with acetaminophen. PICC placed in the right arm 8/7 with tip confirmed at the cavoatrial junction.\n\nRenal function stayed at his baseline; cefazolin dose appropriate for his eGFR. Glucose high early, home insulin continued.\n\nPlan per ID: cefazolin 2 g IV every 8 hours via PICC, 6 weeks of therapy from the start of cefazolin, end date 09/15/2026. Weekly CBC with diff, BMP, ESR and CRP drawn by home infusion nursing, results to ID clinic and PCP.\n\nDischarge medications:\n- NEW: cefazolin 2 g IV every 8 hours through 09/15/2026 (home infusion)\n- insulin glargine 30 units at bedtime\n- insulin lispro per sliding scale before meals\n- lisinopril 10 mg daily\n- atorvastatin 40 mg daily\n- acetaminophen 500 mg every 6 hours as needed\n\nFollow-up: PCP within one week; ID clinic 08/20/2026.\nReturn for fever, worsening back pain, new leg weakness or numbness, problems with bladder or bowels, or PICC redness, swelling or arm pain."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "outside_records",
+          "start": "2026-08-11T15:20",
+          "reason": "Home infusion weekly labs",
+          "state": {"labs": {"Erythrocyte Sedimentation Rate": 78, "C Reactive Protein": 18}},
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-08-11T08:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-08-11T08:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2026-08-11T08:40", "results": [{"test": "Erythrocyte Sedimentation Rate"}]},
+            {"panel": null, "collected": "2026-08-11T08:40", "results": [{"test": "C Reactive Protein"}]}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Home Infusion Lab Report, Week 1",
+              "author": "home infusion pharmacy",
+              "date": "2026-08-11T15:20",
+              "body": "Home infusion pharmacy, OPAT weekly monitoring. Patient: Stanley Allard. Therapy: cefazolin 2 g IV q8h via R arm PICC, day 7, planned stop 09/15/2026. Allergies: NKDA.\nLabs drawn by home infusion RN 08/11/2026 from PICC, results attached (CBC/diff, BMP, ESR, CRP).\nNursing: PICC site clean, dressing changed, no redness or swelling; line flushes well. Patient afebrile, reports back pain improving. Doses given on schedule by patient after teaching.\nCopy: infectious disease clinic, primary care."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-13a",
+          "kind": "office_visit",
+          "start": "2026-08-13T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, vertebral osteomyelitis",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2026-08-13T10:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "author": "PCP",
+              "date": "2026-08-13T11:10",
+              "body": "Post-hospital visit. RN reached him by phone 8/11. Discharge summary, ED note, MRI and echo reports reviewed.\n\nAdmitted 8/4-8/10: L4-L5 vertebral osteomyelitis with MSSA bacteremia, six months after his MSSA left knee. TTE negative, repeat cultures negative. PICC R arm, cefazolin 2 g IV q8h through 9/15, home infusion doing weekly labs.\n\nHe's doing the infusions himself and keeping a schedule on the fridge. Back pain clearly better than at admission, maybe 3/10, worse getting out of a chair. Using his acetaminophen most days. No fevers or sweats since the hospital. No leg weakness or numbness, bladder and bowels normal. No arm swelling. Sugars 170s-230s.\n\nWeek 1 infusion labs (8/11): WBC back to normal, ESR and CRP both coming down from admission, creatinine at his baseline.\n\nMeds reconciled with discharge list: cefazolin added; insulin glargine 30 qhs, lispro scale, lisinopril 10, atorvastatin 40, acetaminophen unchanged. NKDA.\n\nExam: afebrile. Moves carefully, gets up from chair using arms. Mild tenderness to percussion at L4-L5. Strength 5/5 both legs, sensation intact, reflexes symmetric. PICC R upper arm, dressing clean, no erythema or swelling of the arm. Heart regular, no murmur. Lungs clear. L knee no effusion.\n\nA/P\n1. Vertebral osteomyelitis L4-L5, MSSA bacteremia, improving. Cefazolin to 9/15 per ID. ID 8/20. Weekly labs to us as well. Return precautions reviewed in detail: fever, worse pain, leg weakness or numbness, bladder or bowel change, arm swelling.\n2. Hx MSSA septic arthritis L knee, resolved.\n3. T2DM: running high with the infection. Same insulin for now.\n4. CKD 3a: watching creatinine weekly on cefazolin.\n5. HTN: continue lisinopril.\nPCP visit after antibiotics finish, late September."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "outside_records",
+          "start": "2026-08-18T16:05",
+          "reason": "Home infusion weekly labs",
+          "state": {"labs": {"Erythrocyte Sedimentation Rate": 62, "C Reactive Protein": 11}},
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-08-18T09:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-08-18T09:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2026-08-18T09:10", "results": [{"test": "Erythrocyte Sedimentation Rate"}]},
+            {"panel": null, "collected": "2026-08-18T09:10", "results": [{"test": "C Reactive Protein"}]}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Home Infusion Lab Report, Week 2",
+              "author": "home infusion pharmacy",
+              "date": "2026-08-18T16:05",
+              "body": "OPAT weekly labs, week 2. Cefazolin 2 g IV q8h, day 14 of planned course through 09/15/2026. Allergies: NKDA.\nDrawn 08/18/2026 by home infusion RN. CBC/diff, BMP, ESR, CRP attached.\nPICC R arm intact, site without erythema, dressing and cap changed. Patient afebrile, no rash, no diarrhea. Back pain improving.\nCopy: ID clinic, PCP."
+            },
+            {
+              "type": "Result Note",
+              "title": "Week 2 Infusion Labs",
+              "author": "PCP",
+              "date": "2026-08-19T07:40",
+              "body": "Reviewed. Counts normal, creatinine stable, ESR and CRP still falling. ID sees him tomorrow."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-20a",
+          "kind": "specialist_visit",
+          "start": "2026-08-20T13:30",
+          "service": "Infectious Disease",
+          "reason": "Vertebral osteomyelitis follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Follow-up Letter",
+              "author": "infectious disease",
+              "date": "2026-08-21T10:00",
+              "body": "Re: Stanley Allard, DOB 12/01/1960. Seen 08/20/2026 in ID clinic.\n\nDear colleague, a follow-up on Mr. Allard, whom we now know well. He is on day 16 of IV cefazolin for MSSA vertebral osteomyelitis at L4-L5 with bacteremia, following MSSA left knee septic arthritis in February.\n\nHe reports steady improvement in his back pain, no fevers, chills or sweats. Tolerating cefazolin without rash or diarrhea. Running his own infusions without trouble.\n\nAllergies: NKDA.\nExam: afebrile. Mild L4-L5 tenderness, much less than in hospital. Lower extremity strength and sensation normal. PICC R arm clean. No murmur. Left knee quiet.\nWeekly labs 8/11 and 8/18 reviewed: WBC normal, creatinine stable, ESR and CRP trending down.\n\nAssessment: MSSA vertebral osteomyelitis L4-L5, responding to therapy.\nPlan: continue cefazolin 2 g IV q8h through 09/15/2026, then PICC removal. Weekly OPAT labs continue. Repeat imaging only if symptoms do not continue to improve. We will see him again near the end of therapy.\n\nWith thanks,\nInfectious disease"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-25a",
+          "kind": "outside_records",
+          "start": "2026-08-25T15:50",
+          "reason": "Home infusion weekly labs",
+          "state": {"labs": {"Erythrocyte Sedimentation Rate": 50, "C Reactive Protein": 7}},
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-08-25T08:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-08-25T08:50", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2026-08-25T08:50", "results": [{"test": "Erythrocyte Sedimentation Rate"}]},
+            {"panel": null, "collected": "2026-08-25T08:50", "results": [{"test": "C Reactive Protein"}]}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Home Infusion Lab Report, Week 3",
+              "author": "home infusion pharmacy",
+              "date": "2026-08-25T15:50",
+              "body": "OPAT weekly monitoring, week 3. Cefazolin 2 g IV q8h via PICC, day 21, stop date 09/15/2026. Allergies: NKDA.\nLabs drawn 08/25/2026 at home: CBC with differential, BMP, ESR, CRP; results attached.\nRN visit: PICC site clean and dry, no erythema, no arm swelling, external length unchanged. Afebrile. Patient reports back pain 'way better.'\nCopy to ID clinic and primary care."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-24a",
+          "kind": "office_visit",
+          "start": "2026-09-24T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after IV antibiotic course; diabetes",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,655 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002867",
+      "events": [
+        {
+          "id": "2026-01-09a",
+          "kind": "lab_only",
+          "start": "2026-01-09T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Sodium recheck, SIADH",
+          "state": {
+            "labs": {
+              "Sodium": 130,
+              "Chloride": 95
+            }
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-09T07:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 130
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-01-09T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "BMP Result Note",
+              "author": "PCP",
+              "date": "2026-01-12T08:30",
+              "body": "Na 130, about where she left the hospital. K, Cr, glucose normal. Continue 1.2 L restriction. Portal message sent. BMP again with Feb visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-12a",
+          "kind": "portal_message",
+          "start": "2026-01-12T08:35",
+          "reason": "Lab result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sodium result",
+              "author": "PCP",
+              "date": "2026-01-12T08:35",
+              "body": "Hi Irene - your sodium on Friday was 130. Not normal yet, but steady, and that's what we want with SIADH. Keep up the fluid limit (about 5 cups a day, soups and coffee included). We'll check it again when I see you in February. Any headache, unsteadiness or muddled thinking - call us the same day."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Sodium result",
+              "author": "patient",
+              "date": "2026-01-12T18:02",
+              "body": "OK. The coffee is the hard part. Infusion went fine last week."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "office_visit",
+          "start": "2026-02-10T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD and sodium follow-up",
+          "state": {
+            "labs": {
+              "Sodium": 128,
+              "Chloride": 93
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-10T13:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 128
+                },
+                {
+                  "test": "Chloride",
+                  "value": 94
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-02-10T13:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-02-10T13:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up - COPD, SIADH",
+              "author": "PCP",
+              "date": "2026-02-10T14:25",
+              "body": "S: Doing ok. Breathing at baseline since December, albuterol a few times a week. Atezolizumab q4wk continues, last 2/2. Had her scan in January - she says the oncologist told her it \"still looks good, no growth.\" No letter from oncology here; requested. Fluid restriction: honest that she slips, especially tea in the afternoon. No headache, no falls, thinking clear.\n\nO: Vitals per flowsheet. Alert, conversational, appropriate. Lungs diminished, no wheeze or crackles. RRR. No edema.\n\nLabs: Na 128 today (130 in Jan, 131 in Dec).\n\nA/P\n1. SIADH - drifting down a little. Tightened to 1 L/day; wrote it out for her and for her daughter. Will recheck in about a month. If it keeps sliding, will talk with oncology about salt tablets or other options.\n2. COPD GOLD 3 - stable. Continue tiotropium, fluticasone, PRN albuterol.\n3. ES-SCLC - on maintenance; Jan restaging reportedly stable; awaiting report.\nRTC 4-6 wks with BMP."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-07a",
+          "kind": "hospital_admission",
+          "start": "2026-03-07T10:30",
+          "end": "2026-03-12T12:45",
+          "service": "Critical Care Medicine",
+          "reason": "Confusion and lethargy; hyponatremia",
+          "medications": [
+            {
+              "drug_text": "sodium chloride 1000 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet (1 g) by mouth three times daily with meals",
+              "dose": {
+                "value": 1,
+                "unit": "g"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "SIADH"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-03-07T11:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 120
+                },
+                {
+                  "test": "Osmolality of Serum or Plasma",
+                  "loinc": "2692-2",
+                  "unit": "mOsm/kg",
+                  "value": 260
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-07T12:10",
+              "results": [
+                {
+                  "test": "Sodium in Urine",
+                  "loinc": "2955-3",
+                  "unit": "mmol/L",
+                  "value": 45
+                },
+                {
+                  "test": "Osmolality of Urine",
+                  "loinc": "2695-5",
+                  "unit": "mOsm/kg",
+                  "value": 500
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-08T06:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                },
+                {
+                  "test": "Cortisol, AM",
+                  "value": 14.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-08T11:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 125
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-10T06:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-12T06:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 130
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-03-07T11:40",
+              "text": "Noncontrast CT of the head. Indication: confusion, small cell lung cancer. No intracranial hemorrhage. No mass, mass effect or midline shift. No acute territorial infarct. Ventricles and sulci normal for age. Gray-white differentiation preserved. Visualized paranasal sinuses and mastoids clear.",
+              "conclusion": "No acute intracranial abnormality. No mass."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "ICU and Hospital Discharge Summary",
+              "author": "critical care medicine",
+              "date": "2026-04-02T15:30",
+              "body": "DISCHARGE SUMMARY\nAdmitted via the ED to the medical ICU 03/07/2026; transferred to the floor 03/09; discharged home 03/12/2026.\n\nPrincipal diagnosis: Severe symptomatic hyponatremia due to SIADH.\nOther: Extensive-stage small cell lung cancer on maintenance atezolizumab. Severe COPD. SIADH first diagnosed 12/2025 (admission for COPD exacerbation and pneumonia).\n\nPresentation: 73-year-old woman brought in by her daughter for two days of confusion and sleepiness. The daughter noticed her mother answering slowly and less engaged, and says she had been eating and drinking very little for about a week.\n\nExam: vital signs stable. Oriented to self only - not to place or date. Mucous membranes moist, no orthostatic findings, no sign of dehydration. Non-focal neurological exam.\n\nData: serum Na 120, serum osmolality 260, urine Na 45, urine osmolality 500. CT head: no acute abnormality, no mass. TSH 1.8, AM cortisol 14.2 (adrenal and thyroid causes excluded, relevant on immunotherapy).\n\nCourse: ICU admission for symptomatic hyponatremia. 3% saline with sodium checks every 2-4 hours; correction limited to no more than 8 mEq/L in 24 hours. Na 120 -> 125 at 24 h -> 128 (3/10) -> 130 (3/12). Mentation back to baseline by 3/9, transferred to the floor. Low solute intake over the preceding week likely contributed on top of SIADH. Oncology consulted; continue atezolizumab on schedule.\n\nDischarge medications:\n- NEW: sodium chloride 1 g tablet PO three times daily with meals\n- Tiotropium 18 mcg inhaled daily\n- Fluticasone propionate 250 mcg inhaled BID\n- Albuterol HFA PRN\n- Ondansetron 8 mg PO q8h PRN\n- Atezolizumab per oncology\n\nInstructions: fluid restriction 1 L per day. Eat regular meals with salt. BMP within one week with PCP. Return for confusion, drowsiness, falls or seizure.\nAllergies: NKDA.\nCondition at discharge: alert and oriented x3, ambulating independently."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "telephone",
+          "start": "2026-03-09T08:40",
+          "reason": "Daughter calling - patient hospitalized",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from Daughter",
+              "author": "RN",
+              "date": "2026-03-09T08:55",
+              "body": "Daughter (HCP) called. Mom was admitted Saturday 3/7 - she found her confused and sleepy, took her to the ED; sodium was 120 and she went to the ICU. They've been giving her a special IV salt solution. Today she knows where she is again and is moving to a regular floor. Hospital hasn't sent us anything.\nTold daughter we'd like to see her mom within a week of discharge and to bring the discharge papers. Message to PCP. Records request faxed to the hospital."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP Note",
+              "author": "PCP",
+              "date": "2026-03-09T12:15",
+              "body": "Spoke with the ICU team by phone - sodium 125 by yesterday afternoon, careful correction, mentation better. Likely home later this week. Front desk to hold a TCM slot."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "office_visit",
+          "start": "2026-03-16T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up (transitional care)",
+          "state": {
+            "labs": {
+              "Sodium": 131,
+              "Chloride": 96
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-16T10:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 131
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-03-16T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-03-16T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "author": "PCP",
+              "date": "2026-03-16T11:00",
+              "body": "TCM. With daughter. Hospitalized 3/7-3/12, ICU 3/7-3/9, for symptomatic hyponatremia (Na 120) from her SIADH. Discharge summary not yet received; reviewed the patient's discharge paperwork the daughter brought (med list, instructions, last Na 130 on 3/12). Contact with family 3/9 and 3/13.\n\nS: Feels like herself. Remembers little of the first day. Eating 3 meals, adding salt. Taking the salt tablets with meals. Drinking to 1 L, daughter checking. No headache. No falls.\n\nMed rec: NEW sodium chloride 1 g TID added to our list. Tiotropium, fluticasone, albuterol PRN, ondansetron PRN unchanged. Atezolizumab q4wk per oncology - next 3/30.\n\nO: Vitals per flowsheet. Alert, oriented x3, conversational, recalls 3/3 words. Gait steady. Lungs diminished, no wheeze. RRR. No edema.\n\nA/P\n1. SIADH with severe symptomatic hyponatremia, recovering. BMP today. Salt tablets 1 g TID, restriction 1 L/day. Recheck in 4 wks. Low threshold for the ED for any confusion.\n2. Extensive-stage SCLC - maintenance atezolizumab; oncology aware of admission.\n3. COPD - stable.\nAddendum 15:20: Na 131. Daughter informed by phone."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-13a",
+          "kind": "lab_only",
+          "start": "2026-04-13T08:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Sodium recheck",
+          "state": {
+            "labs": {
+              "Sodium": 133,
+              "Chloride": 98
+            }
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-13T08:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 133
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-13T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "BMP Result Note",
+              "author": "PCP",
+              "date": "2026-04-13T15:40",
+              "body": "Na 133 on salt tabs + 1 L restriction - best since November. Rest of BMP fine. ICU discharge summary finally arrived 4/2, consistent with what the family brought; scanned. Message to pt: no changes."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "specialist_visit",
+          "start": "2026-04-21T11:00",
+          "service": "Medical Oncology",
+          "reason": "Restaging, maintenance immunotherapy",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-04-17T09:30",
+              "text": "CT chest, abdomen and pelvis with IV contrast. Comparison 01/20/2026 and 10/28/2025. Treated right hilar mass and right hilar and subcarinal nodes stable compared with January. Right adrenal nodule stable. No new pulmonary nodule, effusion or new lesion in the chest, abdomen or pelvis. Centrilobular emphysema. Right chest port in place.",
+              "conclusion": "Stable disease; treatment response maintained."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology Follow-up Letter",
+              "author": "oncology",
+              "date": "2026-04-23T09:15",
+              "body": "Dear Doctor,\n\nFollow-up for Ms. Whitney, extensive-stage small cell lung cancer on maintenance atezolizumab 1680 mg every 4 weeks since 11/04/2025.\n\nInterval: admitted 03/07-03/12 with symptomatic hyponatremia from SIADH (Na 120), corrected slowly with hypertonic saline; now on sodium chloride tablets and a fluid restriction, with Na 133 on your 04/13 labs - thank you for following this closely. TSH and AM cortisol were normal during the admission.\n\nRestaging CT 04/17/2026 shows the response maintained, with nothing new; January's scan was also stable.\n\nShe looks well today. Plan: continue maintenance atezolizumab, next restaging in about 3 months. Please continue managing the sodium; we are happy to discuss if it falls again.\n\nMedications reviewed: tiotropium, fluticasone propionate, albuterol PRN, ondansetron PRN, sodium chloride 1 g TID. NKDA.\n\nMedical Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "annual_physical",
+          "start": "2026-05-19T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "state": {
+            "labs": {
+              "Sodium": 134,
+              "Chloride": 99
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-05-19T09:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 134
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-19T09:40",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-05-19T09:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2026-05-19T09:30"
+            },
+            {
+              "procedure": "Advance care planning, first 30 minutes",
+              "performed": "2026-05-19T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-05-19T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2026-05-19T10:45",
+              "body": "AWV, delayed from January by the winter's events.\n\nFunction: independent in ADLs; daughter now does the big grocery run, Irene manages the rest. Still drives short distances in daylight. No falls since discharge. PHQ-9 = 4. Cognition: Mini-Cog 5/5, back to her usual.\n\nMeds reviewed and current: tiotropium 18 mcg daily, fluticasone propionate 250 mcg BID, albuterol PRN, ondansetron PRN (rarely now), sodium chloride 1 g TID, atezolizumab q4wk at the cancer center.\n\nScreening: mammogram - stopping routine screening given her cancer and goals, she agrees. Colon - not pursuing. Lung screening - replaced by oncology's restaging CTs. Bone density 2023 normal.\nVaccines: fall flu and COVID 2025 done; PCV20, RSV, Shingrix, Tdap complete.\n\nAdvance care planning (~20 min, daughter present): Talked through the March admission. She still wants full treatment. Daughter remains HCP. She'd like to go over longer-term wishes with oncology too; we'll pick this up again in the fall.\n\nExam: lungs diminished, no wheeze, no crackles. RRR. No edema. Port site clean.\n\nPlan: CMP, CBC, lipids today. Continue salt tabs + 1 L restriction. COPD/sodium visit in July."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "pharmacy",
+          "start": "2026-06-23T10:15",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Refill Request",
+              "author": "MA",
+              "date": "2026-06-23T10:15",
+              "body": "Pharmacy e-refill request: sodium chloride 1 g tabs (#90) and fluticasone propionate 250 Diskus. Hospital Rx for the salt tablets had no refills. Sent to PCP queue."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Refill Approved",
+              "author": "PCP",
+              "date": "2026-06-23T13:30",
+              "body": "Approved: sodium chloride 1 g TID #270 with 1 refill; fluticasone propionate 250 mcg Diskus with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-07a",
+          "kind": "office_visit",
+          "start": "2026-07-07T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD and sodium follow-up",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Appointment Cancelled",
+              "author": "front desk",
+              "date": "2026-07-06T16:45",
+              "body": "Pt called to cancel 7/7 - infusion day was moved to the same afternoon. Rebooked for 8/18."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "office_visit",
+          "start": "2026-08-18T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD and sodium follow-up",
+          "state": {
+            "labs": {
+              "Sodium": 133,
+              "Chloride": 98
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-08-18T11:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 133
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-08-18T11:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-18T11:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up - COPD, SIADH, SCLC",
+              "author": "PCP",
+              "date": "2026-08-18T11:50",
+              "body": "S: Summer has been quiet. Breathing at her baseline - albuterol 2-3x/wk, more on the muggy days. No flares since December. Atezolizumab every 4 wks continues. Restaging CT in July - per Irene, oncology said \"no change\"; no letter yet. Taking salt tablets with meals and keeping to about a liter. Thinking clear, no headaches, no falls.\n\nO: Vitals per flowsheet. Alert, oriented, good humor. Lungs diminished throughout, no wheeze, no crackles. RRR. No edema. Port site clean.\n\nA/P\n1. SIADH - stable on sodium chloride 1 g TID + 1 L restriction. BMP today.\n2. COPD GOLD 3 - stable on tiotropium + fluticasone + PRN albuterol. Refills current.\n3. ES-SCLC - maintenance atezolizumab, July restaging reportedly stable; will request the report.\n4. Fall vaccines: flu and COVID when available, coordinate with infusion days.\nRTC 5 wks.\n\nAddendum 16:05: Na 133. Portal message sent - no changes."
+            }
+          ],
+          "orders": [
+            {
+              "id": "onc-records-2026-07",
+              "action": "placed",
+              "order": "Request oncology restaging report (July 2026)",
+              "category": "referral",
+              "to": "Medical Oncology",
+              "reason": "Records for chart"
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "office_visit",
+          "start": "2026-09-22T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD and sodium follow-up; fall vaccines",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

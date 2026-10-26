@@ -1,0 +1,394 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001688",
+      "given": "Tessa",
+      "family": "Turcotte",
+      "birth_date": "1991-05-27",
+      "address_line": "41 Larkhill Road",
+      "phone": "+1-774-555-0194",
+      "email": "tessa.turcotte@example.test",
+      "summary": "Thirty-one-year-old HR coordinator with chronic hypertension on labetalol and an anxiety disorder who joins in 2022 while planning pregnancy. Over three pregnancies she has a placental abruption delivered by emergency cesarean (2023), an amniotic fluid embolism with DIC after a vaginal delivery (2025), and a recurrent amniotic fluid embolism with DIC and shock after a precipitous delivery (2026), recovering each time.",
+      "events": [
+        {
+          "id": "2022-08-24a",
+          "kind": "telephone",
+          "start": "2022-08-24T10:12",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "author": "front desk",
+              "date": "2022-08-24T10:12",
+              "body": "Caller Tessa Turcotte, DOB 05/27/1991, would like to join the practice. Currently sees a PCP in another town and wants someone closer to home and work. Has high blood pressure, on one BP med. Insurance is a PPO through her employer, card info taken. Booked new patient physical 9/13 at 8:30. Records release sent to her email to sign for the old office."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-07a",
+          "kind": "outside_records",
+          "start": "2022-09-07T14:30",
+          "reason": "Records from prior primary care practice",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "author": "outside primary care",
+              "date": "2022-09-07T14:30",
+              "body": "Records received by fax from prior primary care office, 38 pages. Summary of contents:\n\nProblem list: chronic hypertension; anxiety disorder.\nMedications: labetalol 200 mg twice daily; prenatal multivitamin with DHA once daily; folic acid 1 mg once daily.\nAllergies: sulfa antibiotics (rash); latex (contact dermatitis).\nSurgical history: laparoscopic appendectomy, 2015.\nPreventive: cervical cytology with HPV cotesting 06/2021, negative for intraepithelial lesion or malignancy, high-risk HPV not detected. COVID-19 primary series 2021.\nMost recent office note 03/2022: BP controlled on labetalol, which had been chosen with a future pregnancy in mind; prenatal vitamin and folic acid started for the same reason. Anxiety described as long-standing and manageable without medication.\n\nScanned to chart. Forwarded to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "establish_care",
+          "start": "2022-09-13T08:30",
+          "end": "2022-09-13T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care, new patient physical",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "diagnosed", "note": "chronic hypertension, on labetalol before joining"},
+            {"label": "Anxiety disorder, unspecified", "icd10": "F41.9", "action": "diagnosed", "note": "long-standing, no medication"}
+          ],
+          "medications": [
+            {"drug_text": "labetalol hydrochloride 200 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 200, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "chronic hypertension"},
+            {"drug_text": "alpha tocopherol 30 UNT / ascorbic acid 28 MG / cholecalciferol 400 UNT / docosahexaenoic acid 300 MG / docusate sodium 55 MG / ferrous fumarate 27 MG / folic acid 1.25 MG / pyridoxine hydrochloride 25 MG / tricalcium phosphate 160 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth daily", "dose": {"value": 1, "unit": "capsule"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "prenatal vitamin with DHA, preconception"},
+            {"drug": "folic acid 1 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "preconception"}
+          ],
+          "allergies": [
+            {"substance": "Sulfonamide antibiotics", "reaction": "Rash", "severity": "mild", "criticality": "low", "type": "allergy"},
+            {"substance": "Latex", "reaction": "Contact dermatitis", "severity": "mild", "criticality": "low", "type": "allergy"}
+          ],
+          "state": {"bp": [132, 84], "weight_kg": 68.0, "height_cm": 165.0, "labs": {"Hemoglobin": 12.0, "Thyroid Stimulating Hormone": 1.9}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-09-13T09:20", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-13T09:20", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-13T09:20", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-09-13T09:20", "results": [{"test": "Thyroid Stimulating Hormone"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": "Urinalysis", "collected": "2022-09-13T09:20", "results": [{"test": "Urine Protein", "text": "Negative"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 3},
+            {"survey": "GAD-7 total score", "value": 6}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per month"},
+            {"item": "Occupation", "value": "Human resources coordinator"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2022-09-13T08:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-09-13T09:45",
+              "body": "31F new to the practice, coming from a PCP in the next town over. Prior records reviewed (received 9/7).\n\nHTN: told she had high BP in her late twenties. Prior PCP put her on labetalol because she is hoping to conceive in the next year and wanted something she could stay on in pregnancy. Takes 200 mg BID, no missed doses, no side effects she notices. Doesn't check at home.\n\nAnxiety: long-standing, says she has always been a worrier. Has never taken medication for it and doesn't want to. Works, sleeps OK, no panic attacks lately. GAD-7 6, PHQ-9 3 today.\n\nPreconception: on prenatal vitamin with DHA and folic acid 1 mg daily for several months already.\n\nPMH: chronic HTN, anxiety disorder.\nPSH: laparoscopic appendectomy 2015 (age 24).\nMeds: labetalol 200 mg PO BID; prenatal vitamin with DHA 1 cap daily; folic acid 1 mg daily.\nAllergies: sulfa antibiotics - rash. Latex - contact dermatitis (gloves).\nFH: mother - preeclampsia in her pregnancies, chronic HTN since. Father - essential HTN. Maternal aunt - placental abruption.\nSH: HR coordinator. Former smoker, quit 2019. Alcohol 1-2 drinks a month, plans to stop once pregnant. No drug use.\nPreventive: Pap with HPV 6/2021 normal at prior office. COVID primary series 2021.\n\nExam: vitals as charted, repeat BP similar. Well appearing, a little nervous but chatty. HEENT unremarkable, thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, healed laparoscopic port scars. No edema. Skin no rashes. Mood fine, affect anxious at baseline.\n\nA/P\n1. Chronic hypertension - acceptable on labetalol, keep 200 BID. Fine for pregnancy. Home cuff recommended, goal under 130/80 at home. CMP, UA.\n2. Anxiety disorder - stable, no meds per her preference.\n3. Preconception - continue PNV + folic acid. Told her to message as soon as she has a positive test so we can make sure she gets in with OB early given the BP.\n4. Health maintenance - CBC, CMP, lipids, TSH, one-time HIV and hep C. Pap not due until 2026. Flu and COVID boosters next month at a nurse visit.\n\nRTC 3 months for BP."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-15a",
+          "kind": "portal_message",
+          "start": "2022-09-15T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "author": "PCP",
+              "date": "2022-09-15T16:40",
+              "body": "Hi Tessa, everything from Tuesday came back fine: blood count, kidney function, potassium, liver tests, thyroid and cholesterol are all where they should be, the urine had no protein, and the HIV and hepatitis C screens were negative. Nothing to change. See you in December."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-04T12:20"},
+            {"vaccine": "COVID-19, mRNA, Moderna, bivalent", "date": "2022-10-04T12:22"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-04T12:20"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2022-10-04T12:30",
+              "body": "Here on lunch break for flu and COVID booster. Screening questions negative, not pregnant, no prior reactions. Latex allergy noted, non-latex gloves used. Fluzone quadrivalent 0.5 mL IM right deltoid. Moderna bivalent booster IM left deltoid. VIS given. Observed 15 minutes, no issues."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "office_visit",
+          "start": "2022-12-06T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-12-06T16:50", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "surveys": [
+            {"survey": "GAD-7 total score", "value": 5}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2022-12-06T16:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hypertension Follow-up",
+              "author": "PCP",
+              "date": "2022-12-06T17:05",
+              "body": "S: BP check. Bought a home cuff, readings mostly 120s-130s over low 80s. Taking labetalol twice a day, occasional missed evening dose. Busy season at work with open enrollment, some extra worry but coping. Still trying to conceive, on PNV and folate.\nO: BP and HR as charted. Heart regular, lungs clear, no edema.\nA/P: Chronic HTN, reasonably controlled on labetalol 200 BID - no change. Phone alarm for the evening dose. BMP today. Anxiety stable, GAD-7 5, no meds.\nRTC 6 months or sooner once pregnant."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-06a",
+          "kind": "portal_message",
+          "start": "2023-03-06T07:58",
+          "reason": "Positive pregnancy test",
+          "conditions": [
+            {"label": "Pregnant state, incidental", "icd10": "Z33.1", "action": "diagnosed", "onset": "2023-02-20"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test!",
+              "author": "patient",
+              "date": "2023-03-06T07:58",
+              "body": "Good morning! I got a positive home pregnancy test this weekend. Last period started around Feb 6. Should I keep taking the labetalol? And who should I call for OB? Thank you!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive test!",
+              "author": "PCP",
+              "date": "2023-03-06T12:31",
+              "body": "Congratulations! Yes - keep taking labetalol 200 mg twice a day, along with the prenatal vitamin and folic acid. Please don't stop it on your own. I've sent a referral note to the obstetric group we work with and asked that they see you early because of your blood pressure; their office will call you. Keep logging home readings and send them if they run over 140/90."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-20a",
+          "kind": "telephone",
+          "start": "2023-03-20T11:05",
+          "reason": "Medication refill",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "RN",
+              "date": "2023-03-20T11:05",
+              "body": "Pt called asking to switch labetalol to a 90-day supply through mail order, insurance prefers it. Confirmed taking 200 mg BID. Pended labetalol 200 mg #180 with 1 refill for PCP; PCP signed. Pt aware. Also asked about folic acid refills - has two months left, will request when low."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-12a",
+          "kind": "outside_records",
+          "start": "2023-05-12T10:00",
+          "reason": "Obstetric prenatal letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Obstetrics Prenatal Care Letter",
+              "author": "obstetrics",
+              "date": "2023-05-12T10:00",
+              "body": "Dear Colleague,\n\nWe are following your patient Tessa Turcotte (DOB 05/27/1991) for prenatal care. She is G1 at 13 weeks by an early dating ultrasound consistent with her LMP of 02/06/2023, EDD 11/13/2023.\n\nHer pregnancy is complicated by chronic hypertension. We are continuing labetalol 200 mg twice daily; office pressures have been in an acceptable range and she is sending home logs. Initial prenatal labs, including blood type and antibody screen, CBC, rubella, hepatitis B, HIV, syphilis and urine culture, were within normal limits. Baseline hemoglobin 12.\n\nShe continues her prenatal vitamin with DHA and folic acid 1 mg. Allergies to sulfa (rash) and latex (contact dermatitis) noted; our L&D unit has been flagged latex-free.\n\nWe will see her every four weeks for now and send an update after delivery.\n\nSincerely,\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "nurse_visit",
+          "start": "2023-09-26T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines in pregnancy",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-09-26T08:15"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2023-09-26T08:17"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-09-26T08:15"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2023-09-26T08:25",
+              "body": "Pt is 33 wks pregnant, OB asked her to get flu and the updated COVID shot here before work. Had Tdap at OB in August. No fever, no prior reactions. Latex-free supplies. Flu quadrivalent 0.5 mL IM L deltoid, Moderna 2023-24 formula IM R deltoid. VIS given. Tolerated well, left after 15 min."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-13a",
+          "kind": "ed_visit",
+          "start": "2023-10-13T14:52",
+          "end": "2023-10-13T16:05",
+          "service": "Emergency Medicine",
+          "reason": "Abdominal pain and vaginal bleeding in pregnancy",
+          "conditions": [
+            {"label": "Premature separation of placenta, unspecified, third trimester", "icd10": "O45.93", "action": "diagnosed", "onset": "2023-10-13"}
+          ],
+          "vitals": [
+            {"time": "2023-10-13T14:55", "bp": [90, 60], "hr": 120}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-10-13T15:05", "results": [{"test": "Hemoglobin", "value": 9.0}, {"test": "Platelets", "value": 150}]},
+            {"panel": null, "collected": "2023-10-13T15:05", "results": [
+              {"test": "Prothrombin Time", "value": 14},
+              {"test": "Activated partial thromboplastin time", "loinc": "14979-9", "unit": "s", "value": 35},
+              {"test": "Fibrinogen", "loinc": "3255-7", "unit": "mg/dL", "value": 200}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2023-10-13T14:52"}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2023-10-18T09:20",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD (received 10/18/2023; date of service 10/13/2023)\n\nCC: abdominal pain and vaginal bleeding, pregnant.\n\nHPI: 32 y/o G1 at approximately 35 weeks with chronic hypertension on labetalol arrives by private car with one hour of abrupt, severe abdominal pain and vaginal bleeding. Pain is steady and sharp across the abdomen, does not travel. Per patient, the pregnancy has been uncomplicated aside from mildly elevated pressures treated with labetalol.\n\nPMH: chronic hypertension; anxiety disorder. PSH: laparoscopic appendectomy at 24.\nMeds: labetalol 200 mg BID, prenatal vitamin with DHA daily, folic acid 1 mg daily.\nAllergies: sulfa drugs (rash), latex (contact dermatitis).\nFH: mother with preeclampsia and chronic HTN; father with HTN; maternal aunt had a placental abruption.\nSH: HR coordinator; quit smoking four years ago, before this pregnancy; social alcohol of 1-2 drinks a month outside pregnancy.\n\nExam: BP 90/60, HR 120. Pale and sweaty. Abdomen tender throughout; uterus firm and contracted. FHT 140 bpm. Speculum: moderate amount of dark red blood in the vault.\n\nLabs: Hgb 9.0 g/dL (baseline 12 per OB records). Plt 150K. PT 14 sec (control 12). aPTT 35 sec (control 30). Fibrinogen 200 mg/dL (ref 400-600 in pregnancy).\n\nMDM: Presentation consistent with placental abruption with hemodynamic compromise and early fall in fibrinogen. Two large-bore IVs, fluids started, type and crossmatch sent. OB at bedside within minutes; taken directly to L&D for delivery.\n\nDx: placental abruption, third trimester.\nDisposition: admitted to obstetrics."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-13b",
+          "kind": "hospital_admission",
+          "start": "2023-10-13T16:05",
+          "end": "2023-10-17T12:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Placental abruption, emergency cesarean delivery",
+          "conditions": [
+            {"label": "Pregnant state, incidental", "icd10": "Z33.1", "action": "resolved"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "author": "obstetrics",
+              "date": "2023-10-18T09:25",
+              "body": "OBSTETRIC DISCHARGE SUMMARY (received 10/18/2023)\nAdmitted 10/13/2023. Discharged 10/17/2023.\n\nAdmission diagnosis: placental abruption at 35 weeks 4 days.\nProcedure: emergency low transverse cesarean section, 10/13/2023. Latex-free precautions.\n\nCourse: Transferred from the ED to L&D with abdominal pain, bleeding, maternal tachycardia and hypotension. Fetal heart tones were reassuring on arrival. Given the abruption and maternal instability she was taken for emergency cesarean. Liveborn infant delivered. Maternal hemodynamics stabilized after delivery with fluids. Recovery was otherwise routine; ambulating, tolerating diet, incision clean, and pressures controlled on her home labetalol by discharge.\n\nDischarge medications: labetalol 200 mg PO BID; prenatal vitamin with DHA daily; folic acid 1 mg daily.\nAllergies: sulfonamides (rash); latex (contact dermatitis).\n\nFollow-up: obstetrics incision check in 1-2 weeks and postpartum visit at 6 weeks. PCP visit within 2 weeks for blood pressure and repeat blood count."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "telephone",
+          "start": "2023-10-19T13:40",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "author": "RN",
+              "date": "2023-10-19T13:40",
+              "body": "Called pt after discharge summary came in. Home since 10/17 after emergency c-section for abruption. Sore at the incision, managing. Bleeding tapering. Home BPs 120s-130s/80s on labetalol 200 BID. Taking PNV and folic acid. Reviewed when to call OB vs go to ED (heavy bleeding, chest pain, severe headache, BP over 160/110). Scheduled with PCP 10/26 with CBC."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-26a",
+          "kind": "office_visit",
+          "start": "2023-10-26T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up",
+          "conditions": [
+            {"label": "Premature separation of placenta, unspecified, third trimester", "icd10": "O45.93", "action": "resolved"}
+          ],
+          "state": {"bp": [136, 86], "weight_kg": 72.5, "labs": {"Hemoglobin": 10.6}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-10-26T11:10", "results": [{"test": "Hemoglobin", "value": 10.6}, {"test": "Platelets"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 4},
+            {"survey": "GAD-7 total score", "value": 8}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-10-26T10:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Follow-up",
+              "author": "PCP",
+              "date": "2023-10-26T11:35",
+              "body": "Hospital follow-up, 13 days after emergency cesarean for placental abruption at 35w4d (ED and OB discharge records reviewed). Baby born alive, home with her.\n\nShe is shaken by how fast it happened but sleeping when the baby sleeps. Incision pain improving, no fever, lochia decreasing. Saw OB for incision check 10/24, fine. Taking labetalol 200 BID, PNV, folic acid.\n\nExam: vitals as charted. Tired appearing but comfortable. Heart regular, lungs clear. Low transverse incision healing, no erythema or drainage. Calves soft, no edema.\nPHQ-9 4. GAD-7 8, a bit above her usual.\n\nA/P\n1. Placental abruption s/p emergency cesarean 10/13 - resolved. Hgb was 9 in the ED; CBC today. Obstetric follow-up as planned.\n2. Chronic HTN - acceptable postpartum on labetalol, no change. Keep checking at home.\n3. Anxiety disorder - understandably more on edge. We talked about it; she does not want medication. Will recheck at the physical.\n4. Past surgical history updated: cesarean section 10/2023.\nCall with fever, heavy bleeding, or BP above 150/100."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-27a",
+          "kind": "portal_message",
+          "start": "2023-10-27T09:15",
+          "reason": "CBC result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood Count Result",
+              "author": "PCP",
+              "date": "2023-10-27T09:15",
+              "body": "Hi Tessa, your hemoglobin is 10.6, up from 9 in the ED, and platelets are normal. That's the direction we want and it should keep climbing on its own over the next couple of months. We'll recheck at your physical."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-01a",
+          "kind": "outside_records",
+          "start": "2023-12-01T15:10",
+          "reason": "Obstetric postpartum letter",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2023-08-16T10:00"}
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Obstetrics Postpartum Visit",
+              "author": "obstetrics",
+              "date": "2023-12-01T15:10",
+              "body": "Dear Colleague,\n\nTessa Turcotte was seen for her six-week postpartum visit on 11/28/2023 following emergency cesarean delivery for placental abruption on 10/13/2023. Incision well healed. Bleeding has stopped. Blood pressure in the low 130s over 80s on labetalol 200 mg twice daily, which we will leave with you to manage. We discussed the history of abruption for any future pregnancy and recommend early obstetric care if she conceives again.\n\nFor your records, Tdap was given in our office on 08/16/2023.\n\nSincerely,\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "portal_message",
+          "start": "2023-12-12T20:44",
+          "reason": "Return-to-work form",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Work paperwork",
+              "author": "patient",
+              "date": "2023-12-12T20:44",
+              "body": "Hi, my employer's leave company needs a form filled out by a doctor for my return date (planning Jan 22). I'm uploading it here. OB said they did the medical leave part, this one asks about blood pressure restrictions. Sorry for the hassle!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Work paperwork",
+              "author": "MA",
+              "date": "2023-12-13T11:20",
+              "body": "Hi Tessa, PCP completed the form - return 1/22 with no restrictions. It's been faxed to the number on the form and a copy is in your documents tab."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

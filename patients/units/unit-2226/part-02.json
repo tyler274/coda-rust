@@ -1,0 +1,1251 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002226",
+      "events": [
+        {
+          "id": "2023-01-13a",
+          "kind": "lab_only",
+          "start": "2023-01-13T09:20",
+          "reason": "INR monitoring",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-01-13T09:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 3.3,
+              "Prothrombin Time": 37.8
+            }
+          }
+        },
+        {
+          "id": "2023-01-18a",
+          "kind": "telephone",
+          "start": "2023-01-18T15:40",
+          "reason": "Right hip pain worse",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Hip Pain",
+              "author": "RN",
+              "date": "2023-01-18T15:55",
+              "body": "Pt called. R hip has been aching for a few weeks, steady dull pain, worse to walk on, back to using the cane indoors. Thinks he's had some low fevers in the evenings and woke up sweaty a couple of nights. No fall or injury. Incision itself looks fine to him, no redness or drainage.\n\nDiscussed with PCP: needs to be seen by his orthopedic surgeon promptly - concern for a problem with the new joint. Pt called ortho while on hold with us, appt next Wed 1/25. Advised ED if fever over 101, shaking chills, or the hip becomes red or swollen. Pt agrees."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-25a",
+          "kind": "specialist_visit",
+          "start": "2023-01-25T13:30",
+          "service": "Orthopedic Surgery",
+          "reason": "Progressive right hip pain with low-grade fever after total hip arthroplasty",
+          "conditions": [
+            {
+              "label": "Chronic prosthetic joint infection of right hip",
+              "icd10": "T84.51XA",
+              "action": "diagnosed",
+              "onset": "2022-12-15"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-01-25T14:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-01-25T14:10",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 55
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 25
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-01-25T14:15",
+              "resulted": "2023-01-30T08:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Arthrocentesis or injection, major joint",
+              "performed": "2023-01-25T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic Surgery Clinic Note",
+              "author": "orthopedic surgery",
+              "date": "2023-01-27T10:00",
+              "body": "OUTSIDE ORTHOPEDIC SURGERY GROUP - CLINIC NOTE\nDate of service: 01/25/2023\n\nReason: right hip pain, low-grade fevers, s/p right THA 09/27/2022.\n\nHistory: Mr. Graves is about four months out from his right total hip. He did well at first but over the past several weeks has developed a constant, dull ache in the right hip that now limits how far he can walk. He has had low-grade temperatures and some night sweats. He denies any fall or injury. His PCP saw him in November for warfarin monitoring of his mechanical mitral valve, at which time the hip was improving.\n\nPMH: mechanical mitral valve on warfarin, HTN, DM2, hyperlipidemia, CKD 3, chronic constipation, history of colon polyps.\nMeds: warfarin, lisinopril, metformin, atorvastatin, amlodipine, aspirin 81.\nAllergies: NKDA.\n\nExam: Afebrile in clinic. Right hip incision well healed. The skin over the hip is not red or warm. Tender to palpation around the prosthesis. ROM limited by pain in all planes. Distal neurovascular exam intact.\n\nX-rays right hip: components in good position, no fracture, no dislocation.\n\nLabs today: WBC 9.0, ESR 55, CRP 25 mg/L. Blood cultures drawn - no growth so far.\n\nProcedure: Right hip aspiration under sterile technique. Synovial fluid: WBC 3,500/uL, 65% neutrophils. Gram stain - no organisms. Culture sent.\n\nAssessment: Right hip pain with elevated inflammatory markers and an abnormal synovial cell count four months after arthroplasty - chronic periprosthetic joint infection until proven otherwise. Await culture.\n\nPlan: We will call with the culture. Likely a staged revision. Infectious disease referral to follow. Will coordinate warfarin management with his PCP.\n\ncc: Primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2023-01-30a",
+          "kind": "outside_records",
+          "start": "2023-01-30T16:00",
+          "reason": "Orthopedic note: hip aspirate culture result and plan",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic Surgery - Culture Result and Plan",
+              "author": "orthopedic surgery",
+              "date": "2023-01-30T16:00",
+              "body": "OUTSIDE ORTHOPEDIC SURGERY GROUP - TELEPHONE NOTE\n\nRight hip aspirate culture from 01/25: Staphylococcus epidermidis, oxacillin-resistant, vancomycin-susceptible. Blood cultures no growth.\n\nDiscussed with patient by phone. This confirms a chronic infection of the right total hip. Recommended two-stage exchange: first stage removal of the implant and placement of an antibiotic cement spacer, then 6 weeks of IV antibiotics, then reimplantation once infection markers settle. Patient agrees. Referred to infectious disease. Stage 1 tentatively 02/14. PCP to manage warfarin bridging.\n\nAllergies: NKDA."
+            }
+          ],
+          "service": "Orthopedic Surgery"
+        },
+        {
+          "id": "2023-02-03a",
+          "kind": "specialist_visit",
+          "start": "2023-02-03T10:00",
+          "service": "Infectious Disease",
+          "reason": "Chronic prosthetic joint infection, right hip",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Consultation",
+              "author": "infectious disease",
+              "date": "2023-02-06T09:00",
+              "body": "INFECTIOUS DISEASE CONSULTATION\nDate of service: 02/03/2023\nReferred by: orthopedic surgery\n\n72M with mechanical mitral valve on warfarin, DM2, CKD 3a, right THA 9/2022, now with chronic PJI of the right hip. Aspirate 1/25 grew Staphylococcus epidermidis, oxacillin-resistant, vancomycin-susceptible. Blood cultures negative. No murmur of concern on my exam beyond his prosthetic valve sounds; given negative blood cultures and no embolic signs I don't think he needs an echo for endocarditis at this time.\n\nAllergies: NKDA.\n\nExam: T 37.2. Well-appearing. Mechanical click. Right hip tender, no sinus tract.\n\nImpression: Chronic periprosthetic infection of the right hip due to methicillin-resistant S. epidermidis.\n\nRecommendations:\n1. Agree with two-stage exchange.\n2. After stage 1, IV vancomycin dosed by pharmacy to trough 15-20, anticipate 1,250 mg q24h given his kidney function, for 6 weeks from the date of surgery via PICC with home infusion.\n3. Weekly CBC, BMP and vancomycin trough while on therapy; copies to PCP, who manages his INR.\n4. Off antibiotics at least 2 weeks before reimplantation, with ESR/CRP before stage 2.\n5. Follow up in ID clinic at end of therapy."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-07a",
+          "kind": "office_visit",
+          "start": "2023-02-07T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pre-operative visit, stage 1 right hip revision; warfarin bridge plan",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-02-07T08:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-02-07T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-02-07T08:50",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "enoxaparin sodium 100 MG/ML Prefilled Syringe",
+              "action": "start",
+              "sig": "Inject 80 mg (0.8 mL) under the skin every 12 hours as directed for warfarin bridge; last pre-op dose the morning of 2/13",
+              "dose": {
+                "value": 80,
+                "unit": "mg"
+              },
+              "frequency": "Q12H",
+              "route": "Subcutaneous",
+              "course": "short",
+              "reason": "Warfarin bridge, mechanical mitral valve"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-02-07T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Pre-operative Visit - Hip Revision Stage 1",
+              "author": "PCP",
+              "date": "2023-02-07T09:20",
+              "body": "Here before stage 1 of the R hip revision (implant out, spacer in) on 2/14. Ortho and ID notes reviewed - S. epidermidis, MRSE, plan 6 wks IV vanc after surgery.\n\nHe is frustrated but taking it in stride. Hip aches, walking with the cane. Some evening sweats still. No chest pain, SOB, syncope. No bleeding.\n\nExam: regular, mechanical click crisp. Lungs clear. R hip tender laterally, no redness.\n\nPlan for warfarin, same as September, which went smoothly:\n- Last warfarin Wed 2/8.\n- Enoxaparin 80 mg q12h starting Fri 2/10, last dose AM 2/13.\n- Post-op: warfarin restarts when surgeon allows, heparin in hospital, enoxaparin at home until INR >= 2.5.\n- During IV vancomycin the home infusion labs will include INR - we'll get copies and dose from those.\n- Watch kidney function on vanc; metformin is fine as long as creatinine holds. Hold metformin day of surgery.\n\nCleared from a medical standpoint for an elevated-risk procedure."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.8,
+              "Prothrombin Time": 32.1
+            }
+          }
+        },
+        {
+          "id": "2023-02-14a",
+          "kind": "hospital_admission",
+          "start": "2023-02-14T06:00",
+          "end": "2023-02-18T13:00",
+          "service": "Orthopedic Surgery",
+          "reason": "Stage 1 revision right hip for chronic periprosthetic infection",
+          "medications": [
+            {
+              "drug_text": "vancomycin 1250 MG Injection",
+              "action": "historical",
+              "sig": "1,250 mg IV every 24 hours via PICC (dosed by pharmacy to trough) through 3/28/2023",
+              "dose": {
+                "value": 1250,
+                "unit": "mg"
+              },
+              "frequency": "Q24H",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "Chronic prosthetic joint infection, right hip"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary - Right Hip Resection and Antibiotic Spacer",
+              "author": "orthopedic surgery",
+              "date": "2023-02-20T10:00",
+              "body": "REGIONAL HOSPITAL - ORTHOPEDIC SURGERY DISCHARGE SUMMARY\nAdmit 02/14/2023  Discharge 02/18/2023\n\nDiagnosis: Chronic periprosthetic joint infection, right total hip (Staphylococcus epidermidis, oxacillin-resistant).\nProcedure 02/14/2023: Removal of right total hip components, debridement, placement of an antibiotic-loaded cement spacer. PICC placed 02/16.\n\nOperative cultures: Staphylococcus epidermidis, same susceptibilities as the aspirate.\n\nCourse: Uncomplicated. Heparin infusion started POD1 and warfarin restarted the same evening; enoxaparin 80 mg q12h resumed at discharge per PCP plan, until INR >= 2.5. IV vancomycin started post-op and dosed by pharmacy. Creatinine stable. Toe-touch weight bearing with walker.\n\nAllergies: NKDA.\nDischarge meds: home medications unchanged (warfarin 5 mg, lisinopril 20, metformin 1000 BID, atorvastatin 40, amlodipine 5, aspirin 81). Vancomycin 1,250 mg IV q24h via PICC through 03/28/2023. Enoxaparin 80 mg SC q12h until INR >= 2.5.\n\nDisposition: home with home infusion nursing and home PT.\nFollow-up: ID clinic at end of therapy, orthopedics 2 weeks, PCP/INR per home infusion labs."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-21a",
+          "kind": "lab_only",
+          "start": "2023-02-21T08:00",
+          "service": "Home Infusion",
+          "reason": "Home infusion weekly labs (vancomycin, INR)",
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.6,
+              "Prothrombin Time": 29.9,
+              "Hemoglobin": 11.9
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-02-21T08:00",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-02-21T08:00",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-02-21T08:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-02-21T08:00",
+              "results": [
+                {
+                  "test": "Vancomycin trough",
+                  "loinc": "4092-3",
+                  "unit": "ug/mL",
+                  "value": 14.8
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Home Infusion Labs - INR",
+              "author": "RN",
+              "date": "2023-02-21T15:10",
+              "body": "Home infusion labs received. INR now in goal - per PCP stop enoxaparin, continue warfarin 5 mg nightly. Vanc trough and kidney function reviewed by ID pharmacy; creatinine at his baseline. Spoke with pt, he'll tell the home nurse no more injections. INR with next weekly draw."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-07a",
+          "kind": "lab_only",
+          "start": "2023-03-07T08:00",
+          "service": "Home Infusion",
+          "reason": "Home infusion weekly labs (vancomycin, INR)",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-03-07T08:00",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-07T08:00",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-03-07T08:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-03-07T08:00",
+              "results": [
+                {
+                  "test": "Vancomycin trough",
+                  "loinc": "4092-3",
+                  "unit": "ug/mL",
+                  "value": 16.2
+                }
+              ]
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 3.0,
+              "Prothrombin Time": 34.4,
+              "Hemoglobin": 12.6
+            }
+          }
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "lab_only",
+          "start": "2023-03-21T08:00",
+          "service": "Home Infusion",
+          "reason": "Home infusion weekly labs (vancomycin, INR)",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-03-21T08:00",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-21T08:00",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-03-21T08:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-03-21T08:00",
+              "results": [
+                {
+                  "test": "Vancomycin trough",
+                  "loinc": "4092-3",
+                  "unit": "ug/mL",
+                  "value": 15.4
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Home Infusion Labs Reviewed",
+              "author": "RN",
+              "date": "2023-03-21T14:30",
+              "body": "Weekly home infusion labs in. INR reviewed with PCP, no change - warfarin 5 mg nightly. Kidney function stable on vanc. One more week of IV antibiotics, PICC out after the last dose per ID. Left message for pt with the plan; he called back and confirmed."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 3.4,
+              "Prothrombin Time": 38.9,
+              "Hemoglobin": 13.1
+            }
+          }
+        },
+        {
+          "id": "2023-03-30a",
+          "kind": "specialist_visit",
+          "start": "2023-03-30T11:00",
+          "service": "Infectious Disease",
+          "reason": "End of IV therapy, right hip periprosthetic infection",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-03-30T11:30",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 31
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Follow-up",
+              "author": "infectious disease",
+              "date": "2023-03-31T09:00",
+              "body": "INFECTIOUS DISEASE CLINIC - FOLLOW-UP\nDate of service: 03/30/2023\n\nCompleted 6 weeks of IV vancomycin on 03/28 for MRSE periprosthetic infection of the right hip (spacer in place since 02/14). Tolerated well; troughs 14.8-16.2 and creatinine stable throughout. PICC removed 03/28, site clean.\n\nFeels better, no fevers or sweats since early in the course. Hip discomfort much less.\n\nAllergies: NKDA.\nExam: afebrile, spacer incision healed, no drainage or erythema.\nLabs today: ESR 31, CRP 8 mg/L - down from 55 and 25.\n\nPlan: no antibiotics now (antibiotic holiday). Repeat ESR/CRP in about 4 weeks; if trending down, orthopedics can proceed with reimplantation. Send operative cultures at stage 2. Return as needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-25a",
+          "kind": "lab_only",
+          "start": "2023-04-25T09:00",
+          "reason": "Inflammatory markers before reimplantation; INR",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-04-25T09:00",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 24
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 4
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-04-25T09:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "ESR/CRP Before Reimplantation",
+              "author": "PCP",
+              "date": "2023-04-25T16:20",
+              "body": "ESR 24, CRP 4 - continuing to come down off antibiotics. Forwarded to ortho and ID. INR fine, no change. Pt notified via portal; stage 2 date is 5/16."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.8,
+              "Prothrombin Time": 32.1
+            }
+          }
+        },
+        {
+          "id": "2023-05-02a",
+          "kind": "office_visit",
+          "start": "2023-05-02T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pre-operative visit, stage 2 right hip reimplantation; warfarin bridge plan",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-05-02T09:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-05-02T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-05-02T09:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-05-02T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "enoxaparin sodium 100 MG/ML Prefilled Syringe",
+              "action": "start",
+              "sig": "Inject 80 mg (0.8 mL) under the skin every 12 hours as directed for warfarin bridge; last pre-op dose the morning of 5/15",
+              "dose": {
+                "value": 80,
+                "unit": "mg"
+              },
+              "frequency": "Q12H",
+              "route": "Subcutaneous",
+              "course": "short",
+              "reason": "Warfarin bridge, mechanical mitral valve"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-05-02T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Pre-operative Visit - Hip Reimplantation",
+              "author": "PCP",
+              "date": "2023-05-02T09:50",
+              "body": "Pre-op for stage 2 (new R hip prosthesis) 5/16.\n\nOff antibiotics since 3/28. No fevers, no sweats. Getting around with walker/cane on the spacer, mostly sitting more than he'd like. Markers down (ESR 24, CRP 4 last week). No chest pain or SOB, no bleeding.\n\nExam: afebrile. Regular rhythm with mechanical click. Lungs clear. R hip incision healed.\n\nA/P:\n- Bridge as before: last warfarin Wed 5/10, enoxaparin 80 q12h from Fri 5/12, last dose AM 5/15. Restart post-op per surgeon, enoxaparin until INR >= 2.5, INR here a week after discharge.\n- DM2: A1c today. Hold metformin AM of surgery.\n- BP fine.\nCleared for surgery."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.9,
+              "Prothrombin Time": 33.3,
+              "Hemoglobin": 13.6
+            }
+          }
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "hospital_admission",
+          "start": "2023-05-16T06:00",
+          "end": "2023-05-19T12:30",
+          "service": "Orthopedic Surgery",
+          "reason": "Stage 2 reimplantation, right total hip",
+          "procedures": [
+            {
+              "procedure": "Total hip arthroplasty",
+              "performed": "2023-05-16T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary - Right Hip Reimplantation",
+              "author": "orthopedic surgery",
+              "date": "2023-05-22T09:15",
+              "body": "REGIONAL HOSPITAL - ORTHOPEDIC SURGERY DISCHARGE SUMMARY\nAdmit 05/16/2023  Discharge 05/19/2023\n\nDiagnosis: Treated periprosthetic joint infection, right hip, after first-stage resection and 6 weeks IV vancomycin.\nProcedure 05/16/2023: Removal of antibiotic spacer and reimplantation of right total hip arthroplasty.\n\nOperative findings: no purulence. Operative cultures: no growth at final read.\n\nCourse: Uncomplicated. Heparin bridge in hospital, warfarin restarted POD0; enoxaparin 80 mg q12h at discharge until INR >= 2.5 per PCP. Weight bearing as tolerated with walker. No antibiotics beyond routine perioperative prophylaxis.\n\nAllergies: NKDA.\nDischarge meds: home medications unchanged. Enoxaparin 80 mg SC q12h until INR >= 2.5.\nDisposition: home with home PT.\nFollow-up: orthopedics 2 and 8 weeks; PCP for INR in 1 week."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-25a",
+          "kind": "nurse_visit",
+          "start": "2023-05-25T10:00",
+          "reason": "INR check after hip reimplantation, on enoxaparin bridge",
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.6,
+              "Prothrombin Time": 29.9
+            }
+          },
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-05-25T10:05",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "INR Check",
+              "author": "RN",
+              "date": "2023-05-25T10:30",
+              "body": "1 wk after hip reimplantation. Walking with walker, doing home PT. Taking warfarin nightly and enoxaparin q12h. No bleeding.\nINR in goal today. Per PCP: stop enoxaparin, continue warfarin 5 mg. Recheck 2 wks, then routine."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-08a",
+          "kind": "office_visit",
+          "start": "2023-06-08T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and hypertension follow-up after hip surgery",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-06-08T14:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-06-08T14:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-06-08T14:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-06-08T14:40"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-06-08T14:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-06-08T14:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-06-08T14:50",
+              "body": "3 wks after R hip reimplantation. Relieved - says the hip feels 'like a hip again,' no ache, no fevers. Walking with a cane, PT twice a week. Appetite fine. No chest pain, no SOB at his current activity level. Bowels as usual (slow), stool softener a few times a week.\n\nMeds unchanged. Warfarin back to routine.\n\nExam: BP and HR as charted. Regular, mechanical click. Lungs clear. R hip incision clean and healing, no erythema. Feet without lesions.\n\nA/P:\n1. DM2 - A1c in May was at his usual. Continue metformin.\n2. HTN at goal.\n3. Mechanical MVR - INR today, continue 5 mg.\n4. CKD 3a - creatinine held steady through the vanc.\n5. S/p two-stage R hip revision - ortho f/u in July.\n6. Shingrix #2 today (a bit late, fine).\nAWV in August."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 3.1,
+              "Prothrombin Time": 35.5,
+              "Hemoglobin": 12.8
+            }
+          }
+        },
+        {
+          "id": "2023-07-11a",
+          "kind": "specialist_visit",
+          "start": "2023-07-11T10:30",
+          "service": "Orthopedic Surgery",
+          "reason": "Follow-up after right hip reimplantation",
+          "conditions": [
+            {
+              "label": "Chronic prosthetic joint infection of right hip",
+              "icd10": "T84.51XA",
+              "action": "resolved"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-07-11T11:00",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 18
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 2.8
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic Surgery Follow-up",
+              "author": "orthopedic surgery",
+              "date": "2023-07-13T09:00",
+              "body": "OUTSIDE ORTHOPEDIC SURGERY GROUP - CLINIC NOTE\nDate of service: 07/11/2023\n\n8 weeks s/p second-stage reimplantation, right total hip, for chronic MRSE periprosthetic infection.\n\nNo hip pain. No fevers or sweats. Uses a cane outdoors only; none in the house. Done with formal PT.\n\nAllergies: NKDA.\nExam: incision healed, no erythema, warmth or drainage. Painless ROM. Walks without a limp.\nX-rays: well-seated components, no lucency.\nLabs: ESR 18, CRP 2.8 mg/L.\n\nAssessment: Periprosthetic infection treated; doing very well.\nPlan: activity as tolerated, keep posterior hip precautions a few more weeks. Return 1 year with x-rays, sooner for pain, fever or wound change.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2023-07-25a",
+          "kind": "lab_only",
+          "start": "2023-07-25T09:10",
+          "reason": "INR monitoring",
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 3.9,
+              "Prothrombin Time": 44.6
+            }
+          },
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-07-25T09:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "INR High",
+              "author": "RN",
+              "date": "2023-07-25T13:45",
+              "body": "INR above goal today. Pt denies bleeding, bruising or dark stools. No new meds; admits he's been eating less (hot weather), no other change.\nPer PCP: skip tonight's warfarin dose, then resume 5 mg nightly. Recheck 1 week. Pt repeated plan back."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-01a",
+          "kind": "lab_only",
+          "start": "2023-08-01T09:05",
+          "reason": "INR recheck",
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.7,
+              "Prothrombin Time": 31.0
+            }
+          },
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-08-01T09:05",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2023-08-23a",
+          "kind": "annual_physical",
+          "start": "2023-08-23T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-23T09:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-23T09:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-23T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-23T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-08-23T09:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-08-23T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "aaa-us-2023",
+              "action": "placed",
+              "order": "Abdominal aortic ultrasound, AAA screening",
+              "category": "imaging",
+              "to": "Radiology",
+              "reason": "AAA screening, male ever-smoker aged 65-75"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2023-08-23T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-08-23T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2023-08-23T10:20",
+              "body": "AWV. Rough year with the hip, now behind him - walking without a cane in the house, short walks around the neighborhood. Mood good. PHQ-2 0. No falls this year. Independent with ADLs/IADLs, drives, manages his own meds with a weekly pill box and keeps his INR log. Hearing and vision fine (eye exam due - reminded).\n\nReviewed: problem list, meds, allergies (NKDA), family and social hx (former smoker, quit 2007, 20 pk-yr; 1-2 glasses wine/wk).\n\nExam: vitals as charted. Regular rhythm, mechanical click. Lungs clear. Abd benign. R hip healed. Feet: monofilament intact, pulses palpable, skin intact.\n\nPrevention:\n- PCV20 today.\n- Shingrix done x2.\n- Flu/COVID this fall, RSV discussed - will do with the fall shots.\n- Hep C screen today.\n- AAA ultrasound ordered (ever-smoker, 65-75).\n- Lung cancer screening: quit more than 15 yrs ago, not eligible.\n- Colon: surveillance colonoscopy due ~spring 2024 (polyps 2021).\n- Advance directive: he'll bring a copy.\n\nLabs: CMP, CBC, lipids, A1c, UACR, INR.\nRTC 3-4 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 3.0,
+              "Prothrombin Time": 34.4,
+              "Hemoglobin": 13.9
+            }
+          }
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "imaging",
+          "start": "2023-09-12T13:00",
+          "reason": "AAA screening",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2023-09-12T13:00",
+              "text": "Limited abdominal aortic ultrasound for aneurysm screening. The abdominal aorta is visualized from the diaphragm to the bifurcation. Maximum anteroposterior diameter 2.1 cm proximally, 1.8 cm distally. No focal dilatation. Common iliac arteries normal in caliber. No hydronephrosis incidentally noted.",
+              "conclusion": "No abdominal aortic aneurysm."
+            }
+          ],
+          "orders": [
+            {
+              "id": "aaa-us-2023",
+              "action": "done",
+              "date": "2023-09-12T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Aorta ultrasound result",
+              "author": "PCP",
+              "date": "2023-09-13T08:15",
+              "body": "Mr. Graves - your aorta ultrasound was normal, no aneurysm. This is a one-time screening test, so nothing further needed. Your hepatitis C screen from August was negative too."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-20a",
+          "kind": "outside_records",
+          "start": "2023-09-20T11:30",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Optometry - Diabetic Eye Examination",
+              "author": "optometry",
+              "date": "2023-09-20T11:30",
+              "body": "OUTSIDE OPTOMETRY - DIABETIC EYE EXAM REPORT\nDate of exam: 09/18/2023\n\nPatient: Robert Graves. Type 2 diabetes. Allergies: NKDA.\nVA with correction 20/25 OD, 20/25 OS. IOP normal. Anterior segments unremarkable. Dilated fundus exam: no diabetic retinopathy either eye; no macular edema.\nImpression: No diabetic retinopathy.\nRecommend: repeat dilated exam in 12 months."
+            }
+          ],
+          "service": "Optometry"
+        },
+        {
+          "id": "2023-10-05a",
+          "kind": "nurse_visit",
+          "start": "2023-10-05T10:00",
+          "reason": "Fall vaccines; INR",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-10-05T10:05",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2023-10-05T10:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-05T10:22"
+            },
+            {
+              "vaccine": "RSV, adjuvanted (Arexvy)",
+              "date": "2023-10-05T10:25"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-05T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunizations and INR",
+              "author": "RN",
+              "date": "2023-10-05T10:50",
+              "body": "Flu (high-dose) L deltoid, COVID 2023-24 R deltoid, RSV L deltoid lower site. Pressure held at each site given warfarin, no hematoma. Observed 15 min, fine. INR drawn - reviewed with PCP, continue current dose."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.8,
+              "Prothrombin Time": 32.1
+            }
+          }
+        },
+        {
+          "id": "2023-10-26a",
+          "kind": "office_visit",
+          "start": "2023-10-26T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shortness of breath on exertion, dizziness",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-26T11:50",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-10-26T11:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-26T11:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "cardiology-2023",
+              "action": "placed",
+              "order": "Cardiology consultation with transthoracic echocardiogram",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "Exertional dyspnea, dizziness, new systolic murmur; mechanical mitral valve"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-10-26T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Dyspnea on Exertion",
+              "author": "PCP",
+              "date": "2023-10-26T12:15",
+              "body": "S: Since around late spring he gets winded on hills and the stairs up from his basement - noticed it more once he was walking again after the hip. Every so often lightheaded when he stands up or after exertion, passes in seconds. No chest pain, no palpitations, never passed out. No orthopnea, no leg swelling. No bleeding.\n\nO: Vitals as charted. Regular rhythm, mechanical click present. There is a harsh systolic murmur at the right upper sternal border radiating up into both carotids - I don't have this documented before. Lungs clear. No edema. JVP not elevated.\n\nA/P: Exertional dyspnea and lightheadedness with a harsh outflow-type systolic murmur in a man with a mechanical mitral valve - needs echo and cardiology. Referral placed with TTE, asked for a prompt slot. CBC/BMP today. Told him to stop and rest if lightheaded, no strenuous exertion until seen, ED for chest pain or fainting."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 14.1
+            }
+          }
+        },
+        {
+          "id": "2023-11-17a",
+          "kind": "specialist_visit",
+          "start": "2023-11-17T09:30",
+          "service": "Cardiology",
+          "reason": "Exertional dyspnea and dizziness; systolic murmur",
+          "vitals": {
+            "bp": [
+              135,
+              85
+            ],
+            "hr": 78
+          },
+          "conditions": [
+            {
+              "label": "Aortic valve stenosis",
+              "action": "diagnosed",
+              "onset": "2023-05-01",
+              "note": "Severe: AVA 0.8 cm2, mean gradient 50 mmHg, LVEF 48%"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2023-11-17T08:30",
+              "text": "Indication: dyspnea on exertion, systolic murmur, mechanical mitral valve.\nLeft ventricle: normal size. Mildly reduced systolic function, LVEF 48% by biplane Simpson. No regional wall motion abnormality.\nAortic valve: trileaflet, heavily calcified with restricted leaflet motion. Aortic valve area 0.8 cm2 by continuity. Mean gradient 50 mmHg. No significant aortic regurgitation.\nMitral valve: mechanical prosthesis, well seated, normal leaflet motion and normal transmitral gradient for prosthesis type; no paravalvular leak.\nRight ventricle: normal size and function.\nAtria: normal size.\nPericardium: no effusion.\nIVC normal size with normal respiratory variation.",
+              "conclusion": "Severe calcific aortic stenosis (AVA 0.8 cm2, mean gradient 50 mmHg). LVEF 48%. Normally functioning mechanical mitral prosthesis."
+            }
+          ],
+          "orders": [
+            {
+              "id": "cardiology-2023",
+              "action": "done",
+              "date": "2023-11-17T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Consultation",
+              "author": "cardiology",
+              "date": "2023-11-20T10:00",
+              "body": "OUTSIDE CARDIOLOGY GROUP - CONSULTATION\nDate of service: 11/17/2023\nReferring: primary care\n\nReason: exertional dyspnea, occasional dizziness, systolic murmur.\n\nHPI: 73-year-old man with a mechanical mitral valve (2013) on warfarin, managed by his PCP. For about six months he has had increasing breathlessness with exertion and occasional dizziness. He denies chest pain, palpitations and syncope.\n\nPMH: mechanical MVR, HTN, DM2, hyperlipidemia, CKD 3, chronic constipation, colon polyps, right hip arthroplasty with two-stage revision for infection in 2023.\nMeds: warfarin 5 mg, lisinopril 20 mg, metformin 1000 mg BID, atorvastatin 40 mg, amlodipine 5 mg, aspirin 81 mg.\nAllergies: NKDA.\nSocial: former smoker (20 pack-years, quit 2007), wine 1-2/week, retired teacher.\nFamily: no premature coronary disease.\n\nExam: BP 135/85, HR 78 regular. Harsh, late-peaking systolic murmur loudest at the right second intercostal space, radiating to the carotids. Crisp mechanical closing click. Lungs clear. No edema.\n\nEcho today (report attached): severe calcific aortic stenosis - AVA 0.8 cm2, mean gradient 50 mmHg - with LVEF 48%. Mechanical mitral prosthesis functioning normally.\n\nAssessment:\n1. Severe aortic stenosis with exertional dyspnea and dizziness; LVEF 48%.\n2. Mechanical mitral valve, normal prosthetic function; anticoagulation per PCP.\n3. HTN, controlled.\n\nPlan:\n- He has a surveillance colonoscopy coming up for his history of polyps; that is scheduled.\n- Continue current medicines without change.\n- Warfarin and INR per PCP.\n- Avoid heavy exertion; report syncope or chest pain immediately.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2023-12-08a",
+          "kind": "lab_only",
+          "start": "2023-12-08T09:00",
+          "reason": "INR monitoring",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-12-08T09:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "INR today",
+              "author": "RN",
+              "date": "2023-12-08T13:10",
+              "body": "Hi Robert, your INR today is in range. Keep taking 5 mg every evening. Next check in about 5 weeks, before your colonoscopy - we'll go over the warfarin hold plan then."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 3.2,
+              "Prothrombin Time": 36.7
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

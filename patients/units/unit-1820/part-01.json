@@ -1,0 +1,660 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001820",
+   "given": "Caitlin",
+   "family": "Maguire",
+   "birth_date": "1991-03-27",
+   "address_line": "27 Chesterfield Road, Westhampton, MA 01027",
+   "phone": "+1-413-555-0151",
+   "email": "caitlin.maguire@example.test",
+   "marital_status": "single",
+   "summary": "35-year-old administrative coordinator with untreated chronic hepatitis C and remote IV drug use in remission, who has had four high-risk pregnancies with outside obstetrics (PPROM 2020, AFLP 2022, abruption with cesarean 2024, Category III tracing with repeat cesarean 2026). Hepatitis C treatment has been repeatedly deferred; she was re-referred to hepatology in August 2026.",
+   "events": [
+    {
+     "id": "2019-09-10a",
+     "kind": "establish_care",
+     "start": "2019-09-10T09:20",
+     "end": "2019-09-10T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient, establish care",
+     "conditions": [
+      {
+       "label": "Chronic hepatitis C",
+       "action": "diagnosed",
+       "onset": "2015-06-01",
+       "note": "Found on routine screening at prior practice 2015; never treated"
+      },
+      {
+       "label": "History of intravenous drug use disorder in sustained remission",
+       "icd10": "F19.21",
+       "action": "diagnosed",
+       "onset": "2014-01-01",
+       "note": "Stopped 2014; no medication for it"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "state": {
+      "weight_kg": 63.0,
+      "height_cm": 165.0,
+      "labs": {
+       "Alanine Aminotransferase": 52,
+       "Aspartate Aminotransferase": 44,
+       "Hemoglobin": 12.5
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2019-09-10T10:30",
+       "results": [
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2019-09-10T10:30",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-09-10T10:30",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 2
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "None"
+      },
+      {
+       "item": "Occupation",
+       "value": "Administrative coordinator"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2019-09-10T09:20"
+      }
+     ],
+     "orders": [
+      {
+       "id": "hep-referral-2019",
+       "action": "placed",
+       "order": "Hepatology referral",
+       "category": "referral",
+       "to": "Hepatology",
+       "reason": "chronic hepatitis C, untreated"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2019-09-10T11:05",
+       "body": "NEW PATIENT VISIT\n\n28F here to establish care. Previously seen at a primary care office out of the area; she moved to Westhampton and wanted someone local. Records release signed today.\n\nHPI / background\n- Hepatitis C: picked up on routine screening in 2015 at her old practice. Told it was \"chronic\" and she would need a liver doctor, but she never got to the referral and has never been treated. No jaundice, no itching, no abdominal swelling, no GI bleeding that she knows of. Has not had a liver scan that she remembers.\n- Substance use: used IV drugs in her early twenties, stopped in 2014 and has not used since. Never on buprenorphine or methadone. Says she does not feel at risk of returning to use; has a stable job and routine. No current alcohol.\n- Feels well otherwise. No chronic meds.\n\nPMH: chronic hepatitis C; IV drug use, in sustained remission since 2014\nPSH: none\nMeds: none\nAllergies: NKDA\nFHx: mother with type 2 diabetes; paternal grandmother had breast cancer\nSHx: administrative coordinator. Former smoker, quit 2014 along with everything else. No alcohol. Single. Medicaid.\nGYN: periods regular. Last Pap 2018 at prior office, she was told normal.\n\nROS: negative except as above.\n\nExam\nGen: well appearing, NAD\nHEENT: sclerae anicteric, oropharynx clear\nNeck: supple, no thyromegaly, no adenopathy\nCV: RRR, no murmur\nLungs: clear bilaterally\nAbd: soft, nontender, no hepatosplenomegaly, no ascites\nSkin: no jaundice, no spider angiomata, no palmar erythema\nExt: no edema\nPsych: normal mood and affect\n\nAssessment / Plan\n1. Chronic hepatitis C, never treated. CMP and CBC today for baseline. Referral placed to hepatology to discuss staging and treatment; she is interested now. Avoid alcohol.\n2. History of IV drug use in sustained remission. Supportive, nothing needed today.\n3. Health maintenance: HIV screen today. Will get Pap result from prior office; due again 2021 or with cotest later. Flu shot when available next month.\n4. PHQ-9 = 2.\n\nRTC 1 year or sooner as needed."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-11a",
+     "kind": "telephone",
+     "start": "2019-09-11T11:30",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Records request",
+       "author": "front desk",
+       "date": "2019-09-11T11:30",
+       "body": "Records request faxed to prior primary care office with signed release. Asked for last 5 years of notes, labs, immunizations and Pap results."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-12a",
+     "kind": "portal_message",
+     "start": "2019-09-12T16:40",
+     "documents": [
+      {
+       "type": "Patient Portal Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2019-09-12T16:40",
+       "body": "Hi Caitlin, your labs from Tuesday are in. Your liver tests (ALT and AST) are mildly above the normal range, which is what we expect with hepatitis C and is not alarming. Bilirubin, albumin, kidney function and platelets are normal, and your blood count is fine. Your HIV test was negative. Hepatology should be calling you to set up the visit; let us know if you haven't heard from them in two weeks."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-24a",
+     "kind": "outside_records",
+     "start": "2019-09-24T13:10",
+     "reports": [
+      {
+       "study": "Cervical cytology (Pap)",
+       "performed": "2018-05-21T10:00",
+       "text": "Specimen adequate for evaluation; transformation zone component present. Negative for intraepithelial lesion or malignancy.",
+       "conclusion": "NILM."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior primary care records",
+       "author": "front desk",
+       "date": "2019-09-24T13:10",
+       "body": "Records received by fax from prior primary care office (42 pages), scanned to media.\n\nAbstracted by front desk for the PCP:\n- 2015 screening labs: hepatitis C antibody reactive, HCV RNA detected (quantity not on the copy we received). Note from that visit says referral to GI offered.\n- 2018 Pap: negative for intraepithelial lesion or malignancy.\n- No surgeries listed. No active medications.\n- Immunization history in the packet incomplete; no hepatitis A or B doses recorded."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-30a",
+     "kind": "telephone",
+     "start": "2019-09-30T15:20",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Referral status",
+       "author": "MA",
+       "date": "2019-09-30T15:20",
+       "body": "Hepatology referral faxed 9/10. Called their scheduling line: received, first new patient opening is 11/19 at 2 pm. Pt notified by phone and accepted. Appointment info sent through the portal."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-08a",
+     "kind": "nurse_visit",
+     "start": "2019-10-08T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu shot",
+     "measure": [
+      "temp_c"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2019-10-08T08:45"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-10-08T08:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunization",
+       "author": "RN",
+       "date": "2019-10-08T08:50",
+       "body": "Here for flu vaccine. Screening questions negative, afebrile. Quadrivalent influenza 0.5 mL IM L deltoid, lot and expiration recorded. VIS given. Tolerated well, left after 15 min observation."
+      }
+     ]
+    },
+    {
+     "id": "2019-11-19a",
+     "kind": "specialist_visit",
+     "start": "2019-11-19T14:00",
+     "service": "Hepatology",
+     "reason": "Chronic hepatitis C",
+     "orders": [
+      {
+       "id": "hep-referral-2019",
+       "action": "done",
+       "date": "2019-11-19T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hepatology consultation",
+       "author": "hepatology",
+       "date": "2019-11-21T09:30",
+       "body": "HEPATOLOGY CONSULTATION\nDate of visit: 11/19/2019\nReferred by: primary care\n\nDear colleague,\n\nThank you for asking us to see Ms. Maguire, a 28-year-old woman with chronic hepatitis C infection identified on screening in 2015 and never treated. Her presumed exposure is prior injection drug use, which she stopped in 2014. She feels well. She denies jaundice, pruritus, confusion, abdominal distension, melena or hematemesis. No alcohol.\n\nAllergies: no known drug allergies.\nMedications: none.\n\nExam: alert, anicteric. No stigmata of chronic liver disease. Abdomen soft, no palpable liver edge or spleen tip, no ascites.\n\nLiver stiffness by transient elastography today: 5.8 kPa, consistent with no significant fibrosis (F0-F1).\n\nImpression: chronic hepatitis C without significant fibrosis. She is a good candidate for direct-acting antiviral therapy.\n\nPlan:\n- Sofosbuvir-velpatasvir daily for 12 weeks once Medicaid prior authorization is approved; our office will submit.\n- Urine pregnancy test the day she picks up the first fill, as she is of childbearing age.\n- Continue to avoid alcohol.\n- We will see her at week 4 of treatment.\n\nAllergies reviewed: NKDA.\n\nSincerely,\nHepatology"
+      }
+     ]
+    },
+    {
+     "id": "2019-12-10a",
+     "kind": "portal_message",
+     "start": "2019-12-10T20:14",
+     "documents": [
+      {
+       "type": "Patient Portal Message",
+       "title": "Hep C medicine",
+       "author": "patient",
+       "date": "2019-12-10T20:14",
+       "body": "Hi, the liver office said they sent the insurance paperwork for the hep C pills. Do you need to do anything on your end? I haven't heard anything in 2 weeks.\n\nReply (MA, 12/11): Hi Caitlin, the prior authorization is handled by the hepatology office since they wrote the prescription. I called them this morning and they said it is still with Medicaid and they expect an answer by the end of the month. They will call you directly."
+      }
+     ]
+    },
+    {
+     "id": "2020-01-08a",
+     "kind": "telephone",
+     "start": "2020-01-08T10:15",
+     "conditions": [
+      {
+       "label": "Pregnant state",
+       "icd10": "Z33.1",
+       "action": "diagnosed",
+       "onset": "2019-12-07",
+       "note": "LMP 2019-12-07"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "Prenatal Vitamins Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 1,
+        "unit": "tablet"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "pregnancy"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ob-referral-2020",
+       "action": "placed",
+       "order": "Obstetrics referral",
+       "category": "referral",
+       "to": "Obstetrics",
+       "reason": "new pregnancy, hepatitis C"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Positive home pregnancy test",
+       "author": "RN",
+       "date": "2020-01-08T10:30",
+       "body": "Pt called. Positive home pregnancy test this morning, first day of LMP was 12/7/19. No bleeding, no cramping. She has not started the hepatitis C medication yet; hepatology's prior auth was approved last week and she was due to pick it up Friday.\n\nAdvised: do NOT start the hep C medication. Start prenatal vitamin daily. Reviewed with PCP, who agrees; PNV sent to her pharmacy. Called hepatology nurse line and left message re: pregnancy and hold on treatment.\n\nShe would like to go to the OB group in town. Referral placed. Pt verbalized understanding.\n\nAddendum 1/9 RN: hepatology nurse called back. Treatment on hold until after delivery. They will reach out to her postpartum."
+      }
+     ]
+    },
+    {
+     "id": "2020-01-14a",
+     "kind": "outside_records",
+     "start": "2020-01-14T10:40",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Hepatology note: treatment on hold",
+       "author": "hepatology",
+       "date": "2020-01-14T10:40",
+       "body": "HEPATOLOGY — TELEPHONE NOTE (copy to PCP)\n\nPatient informed us of a new pregnancy before her first fill. Sofosbuvir-velpatasvir will not be started. The approved authorization will lapse; we will resubmit when she is ready after delivery and breastfeeding. Please have her contact us postpartum. Allergies: NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2020-02-18a",
+     "kind": "specialist_visit",
+     "start": "2020-02-18T10:00",
+     "service": "Obstetrics & Gynecology",
+     "reason": "Prenatal visit, 10 weeks",
+     "conditions": [
+      {
+       "label": "Susceptibility to hepatitis B virus infection",
+       "icd10": "Z28.39",
+       "action": "diagnosed",
+       "onset": "2020-02-18",
+       "note": "HBsAg, anti-HBc and anti-HBs all negative"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2020-02-04T09:00",
+       "resulted": "2020-02-07T14:00",
+       "results": [
+        {
+         "test": "Hepatitis C Viral Load, PCR",
+         "value": 1500000,
+         "unit": "[IU]/mL"
+        },
+        {
+         "test": "Hepatitis B Surface Antigen",
+         "text": "Negative"
+        },
+        {
+         "test": "Hepatitis B virus core Ab total",
+         "loinc": "16933-4",
+         "text": "Negative"
+        },
+        {
+         "test": "Hepatitis B Surface Antibody",
+         "text": "Negative"
+        },
+        {
+         "test": "Hepatitis A virus IgG Ab",
+         "loinc": "40724-7",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "ob-referral-2020",
+       "action": "done",
+       "date": "2020-02-18T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Obstetrics prenatal visit",
+       "author": "obstetrics",
+       "date": "2020-02-24T11:20",
+       "body": "OBSTETRICS & GYNECOLOGY — PRENATAL VISIT\nVisit date: 02/18/2020\nEGA: 10w3d by LMP 12/07/2019\n\nS: Here for routine prenatal follow-up. Taking her prenatal vitamin every day. No bleeding or cramping; nausea mild and manageable. This pregnancy has gone smoothly to date.\nHistory: chronic hepatitis C, known about five years, untreated (DAA was about to start when she conceived). No known prior hepatitis A or B; she is not sure which vaccines she has had. Past IV drug use, stopped six years ago. No jaundice, itching or abdominal pain.\n\nMeds: prenatal vitamin daily.\nAllergies: NKDA.\nFHx: mother T2DM; paternal grandmother breast cancer.\nSHx: former smoker, quit 6 years ago. No alcohol. Administrative coordinator.\n\nO: vitals within normal limits. Exam unremarkable.\n\nFirst trimester labs (drawn 02/04/2020):\nHCV RNA, quantitative: 1,500,000 IU/mL\nHBsAg: negative\nAnti-HBc total: negative\nAnti-HBs: negative\nHepatitis A IgG: negative\n\nA/P: IUP at 10 weeks. Chronic HCV with viremia. Non-immune to hepatitis B.\nRoutine prenatal care. Follow up 4 weeks.\n\ncc: primary care"
+      }
+     ]
+    },
+    {
+     "id": "2020-03-24a",
+     "kind": "portal_message",
+     "start": "2020-03-24T13:02",
+     "documents": [
+      {
+       "type": "Patient Portal Message",
+       "title": "Question about appointments",
+       "author": "patient",
+       "date": "2020-03-24T13:02",
+       "body": "Is the office still doing in person visits with everything going on? My OB switched some visits to phone. I don't have anything coming up with you, just wondering.\n\nReply (front desk, 3/24): We are seeing patients in person for urgent needs and doing video or phone visits for routine care for now. Nothing is due with us until after your baby comes. Take care!"
+      }
+     ]
+    },
+    {
+     "id": "2020-05-12a",
+     "kind": "pharmacy",
+     "start": "2020-05-12T09:05",
+     "documents": [
+      {
+       "type": "Refill Encounter",
+       "title": "Refill request",
+       "author": "MA",
+       "date": "2020-05-12T09:05",
+       "body": "Pharmacy refill request for prenatal vitamin, 90-day supply. Last seen by OB 2/2020 per records; PCP aware. Refill x3 sent per protocol."
+      }
+     ]
+    },
+    {
+     "id": "2020-07-18a",
+     "kind": "hospital_admission",
+     "start": "2020-07-18T06:50",
+     "end": "2020-08-03T13:00",
+     "service": "Obstetrics & Gynecology",
+     "reason": "Leakage of fluid at 32 weeks",
+     "conditions": [
+      {
+       "label": "Preterm premature rupture of membranes",
+       "icd10": "O42.113",
+       "action": "diagnosed",
+       "onset": "2020-07-18"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2020-07-18T07:05",
+       "bp": [
+        120,
+        75
+       ],
+       "hr": 80,
+       "rr": 16,
+       "temp_c": 37.0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-07-18T07:30",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 12.5,
+         "unit": "g/dL"
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 9.0,
+         "unit": "10*3/uL"
+        },
+        {
+         "test": "Platelets",
+         "value": 250,
+         "unit": "10*3/uL"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-07-18T07:30",
+       "results": [
+        {
+         "test": "C Reactive Protein",
+         "text": "Within normal limits"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2020-06-22T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Obstetric discharge summary",
+       "author": "obstetrics",
+       "date": "2020-08-05T15:40",
+       "body": "REGIONAL HOSPITAL — LABOR & DELIVERY\nDISCHARGE SUMMARY\nAdmitted: 07/18/2020   Discharged: 08/03/2020\nAttending service: Obstetrics\n\nAdmission diagnosis: preterm premature rupture of membranes at 32w0d.\nDischarge diagnosis: same; delivered at 34w0d.\n\nHistory: 29-year-old G1 with chronic hepatitis C and remote injection drug use, now in remission, presented with two hours of leaking clear fluid. No contractions, no bleeding, no intercourse recently. Prenatal care has been regular and the pregnancy otherwise uncomplicated.\n\nOn arrival: BP 120/75, pulse 80, respirations 16, temperature 37.0 C (98.6 F). Sterile speculum exam: clear fluid pooled in the posterior fornix; nitrazine positive; ferning on microscopy. Fetal monitoring reassuring — baseline 140, moderate variability, no decelerations; no contractions on toco.\nLabs: hemoglobin 12.5, WBC 9,000, platelets 250,000. CRP normal.\n\nHospital course: admitted for expectant management. Betamethasone 12 mg IM given, two doses 24 hours apart. Latency antibiotics for 7 days: IV ampicillin and erythromycin for 48 hours, then oral amoxicillin and erythromycin. She remained afebrile with reassuring fetal testing throughout. Induction at 34w0d on 08/01/2020, uncomplicated vaginal delivery. Liveborn infant admitted to the special care nursery for prematurity. Postpartum course routine.\n\nTdap given in clinic 06/22/2020.\n\nDischarge medications: prenatal vitamin daily.\nAllergies: NKDA.\nFollow-up: postpartum visit with OB in 6 weeks; primary care in 2 weeks; hepatology after delivery to revisit treatment."
+      }
+     ]
+    },
+    {
+     "id": "2020-07-20a",
+     "kind": "telephone",
+     "start": "2020-07-20T09:10",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Patient admitted",
+       "author": "RN",
+       "date": "2020-07-20T09:10",
+       "body": "Pt called from the hospital to let us know she was admitted Saturday at 32 weeks with her water breaking. Getting steroids and antibiotics, plan is to keep her pregnant to 34 weeks if possible. Asked that we get the records. Will watch for discharge summary; PCP informed."
+      }
+     ]
+    },
+    {
+     "id": "2020-08-07a",
+     "kind": "telephone",
+     "start": "2020-08-07T11:45",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Post-discharge call",
+       "author": "RN",
+       "date": "2020-08-07T11:45",
+       "body": "Transition call after hospital discharge 8/3. Discharge summary in chart. She is home, feels well, bleeding moderate and decreasing, no fever, pain controlled with nothing stronger than OTC. Baby still in special care nursery, she is pumping and visiting daily. Taking PNV. Scheduled with PCP 8/18 at 2 pm."
+      }
+     ]
+    },
+    {
+     "id": "2020-08-18a",
+     "kind": "office_visit",
+     "start": "2020-08-18T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Post-hospital follow-up after delivery",
+     "conditions": [
+      {
+       "label": "Pregnant state",
+       "icd10": "Z33.1",
+       "action": "resolved"
+      },
+      {
+       "label": "Preterm premature rupture of membranes",
+       "icd10": "O42.113",
+       "action": "resolved"
+      }
+     ],
+     "state": {
+      "weight_kg": 71.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 3
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-08-18T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-discharge follow-up",
+       "author": "PCP",
+       "date": "2020-08-18T14:50",
+       "body": "S: 29F, 2.5 weeks postpartum. Admitted 7/18 at 32 weeks with ruptured membranes; got steroids and antibiotics, induced at 34 weeks, vaginal delivery 8/1. Discharge summary reviewed. Baby was in the special care nursery for about a week and is home now and feeding well. She is breastfeeding.\nBleeding tapering, lochia light. No fever. Mild perineal soreness. Sleeping in pieces but mood is good. Still on prenatal vitamin.\nHep C: hepatology told her they'd revisit treatment after delivery. She wants to breastfeed for a while first and is asking whether she has to start right away.\n\nO: well appearing. Abd soft, fundus not palpable above the pubis. Calves soft, nontender. Mood and affect normal.\n\nA/P:\n1. Postpartum after PPROM and preterm delivery at 34 weeks — recovering as expected. OB postpartum visit already booked for mid-September.\n2. Chronic hepatitis C — explained treatment is usually deferred while breastfeeding; she'll call hepatology to arrange a follow-up visit this winter.\n3. PHQ-9 3. Reviewed warning signs of postpartum depression; she knows to call.\n4. Flu shot this fall."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-16a",
+     "kind": "outside_records",
+     "start": "2020-09-16T09:30",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Obstetrics postpartum visit",
+       "author": "obstetrics",
+       "date": "2020-09-16T09:30",
+       "body": "OB/GYN POSTPARTUM VISIT — 09/14/2020\n6 weeks after vaginal delivery at 34 weeks. Recovering well. Breastfeeding. Lochia resolved. Mood good. Exam: abdomen benign, uterus normal size. Plan: routine care; return for annual exam. cc PCP.\nAllergies: NKDA. Meds: prenatal vitamin."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-06a",
+     "kind": "nurse_visit",
+     "start": "2020-10-06T16:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu vaccine",
+     "measure": [
+      "temp_c"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2020-10-06T16:15"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-10-06T16:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunization",
+       "author": "MA",
+       "date": "2020-10-06T16:20",
+       "body": "Flu vaccine given, 0.5 mL IM R deltoid. Breastfeeding, no contraindication. Masked visit, screened at door. No reaction during wait."
+      }
+     ]
+    },
+    {
+     "id": "2020-11-17a",
+     "kind": "pharmacy",
+     "start": "2020-11-17T08:55",
+     "documents": [
+      {
+       "type": "Refill Encounter",
+       "title": "Refill",
+       "author": "MA",
+       "date": "2020-11-17T08:55",
+       "body": "eRx refill request: prenatal vitamin. Still breastfeeding per last visit. Approved, 90 days x 3."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,854 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002079",
+      "events": [
+        {
+          "id": "2025-01-21a",
+          "kind": "office_visit",
+          "start": "2025-01-21T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "author": "front desk",
+              "date": "2025-01-21T16:05",
+              "body": "No-show for 3:20 follow-up. Left voicemail on cell to reschedule. Called back at 5:10 - stuck in snow in Pennsylvania, forgot to call. Rebooked 2/11 8:40."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "office_visit",
+          "start": "2025-02-11T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic conditions follow-up",
+          "state": {
+            "weight_kg": 95.0,
+            "labs": {
+              "Hemoglobin": 13.8,
+              "Ferritin": 85,
+              "Transferrin Saturation": 28,
+              "Iron": 86,
+              "Total Iron-Binding Capacity": 300
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-11T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2025-02-11T09:15",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 86
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 300
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 29
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 85
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-02-11T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-02-11T09:20",
+              "body": "f/u knees, bowels, lungs\n\nKnees: winter is worse, acetaminophen 1 g twice a day most days, helps enough. Admits to an occasional Advil when he runs out on the road - we went over why not.\nBowels: fiber daily, PEG maybe twice a week. Fine.\nLungs: morning cough, albuterol 2-3x/week, unchanged from his baseline. No hemoptysis. Next surveillance CT 2/24.\nTobacco: daily. Brought up varenicline as promised; he wants to wait until the next CT is behind him. Noted.\n\nWt 95 kg. Lungs without wheeze. Heart regular. Knees without effusion. No edema.\n\nA/P\n- Knee OA: continue acetaminophen, max 3 g/day. Avoid NSAIDs (IDA, NSAID-related).\n- IDA: CBC + iron today.\n- Constipation, chronic bronchitis: stable on current regimen.\n- Lung ca: surveillance with oncology.\n- Tobacco: not ready; will ask again.\nRTC 6 months for physical."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2025-02-12T13:05",
+              "body": "Your blood count is normal now (hemoglobin 13.8) and iron stores are good. Keep using the Tylenol instead of Advil and we should keep it that way."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-26a",
+          "kind": "outside_records",
+          "start": "2025-02-26T10:40",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2025-02-24T09:30",
+              "text": "CT CHEST WITH IV CONTRAST\nComparison: 11/18/2024.\nFindings: Treated right lower lobe lesion 2.0 cm, unchanged, within stable post-radiation fibrotic change. No new nodule. No mediastinal or hilar adenopathy. No pleural effusion. No osseous lesion.",
+              "conclusion": "Stable post-treatment appearance. No evidence of recurrence."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology surveillance note",
+              "author": "hematology-oncology",
+              "date": "2025-02-26T10:40",
+              "body": "Surveillance 02/24/2025, one year from completion of chemoradiation. Well. CT stable, no recurrence. Moving to CT every 6 months. Next August.\nAllergies: NKDA. History of TRALI.\nHematology & Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2025-05-06a",
+          "kind": "ed_visit",
+          "start": "2025-05-06T07:45",
+          "end": "2025-05-06T14:30",
+          "service": "Emergency Medicine",
+          "reason": "Left lower quadrant abdominal pain and fever",
+          "conditions": [
+            {
+              "label": "Diverticulitis of colon",
+              "action": "diagnosed",
+              "onset": "2025-05-04",
+              "note": "Acute uncomplicated sigmoid diverticulitis on CT."
+            }
+          ],
+          "medications": [
+            {
+              "drug": "amoxicillin 875 MG / clavulanate 125 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily for 7 days",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Acute sigmoid diverticulitis"
+            }
+          ],
+          "state": {
+            "weight_kg": 98.0
+          },
+          "vitals": {
+            "temp_c": 38.3,
+            "hr": 102,
+            "bp": [
+              135,
+              85
+            ]
+          },
+          "measure": [
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-05-06T08:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 14.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-06T08:20",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 24
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2025-05-06T10:05",
+              "text": "CT ABDOMEN AND PELVIS WITH IV CONTRAST\nIndication: LLQ pain, fever.\nFindings: Sigmoid colon diverticula with wall thickening and surrounding fat stranding centered on the sigmoid. No abscess. No free air. No free fluid. Liver, gallbladder, pancreas, spleen, adrenal glands and kidneys unremarkable. Appendix normal. Bladder unremarkable. No lymphadenopathy. Imaged lung bases with post-radiation change at the right base. No osseous lesion.",
+              "conclusion": "Acute uncomplicated sigmoid diverticulitis. No abscess or perforation."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-05-06T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Provider Note",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2025-05-07T08:00",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nVisit 05/06/2025\n\nCC: left lower abdominal pain x2 days.\nHPI: 58M, stage IIIB lung cancer treated last year, history of TRALI. Two days of left lower quadrant pain, came on acutely, constant and sharp, worse when he moves or goes over bumps. Felt feverish. No vomiting. No blood per rectum.\nMeds: fiber supplement daily, MiraLAX as needed, albuterol inhaler as needed; occasional ibuprofen for knee pain.\nAllergies: NKDA.\nFamily: mother with diverticulosis. Father with lung cancer.\nSocial: smoker, 40 pack-years. Diet mostly red meat, few fruits or vegetables. Truck driver.\n\nExam: T 38.3 C, HR 102, BP 135/85. BMI 32. Uncomfortable. Abdomen: LLQ tenderness with guarding, no rebound. Rectal: no blood.\nLabs: WBC 14.0, Hgb 13.8, CRP 24 mg/L (ref <5).\nCT A/P: acute uncomplicated sigmoid diverticulitis, no abscess or perforation.\n\nMDM: uncomplicated sigmoid diverticulitis. Tolerating PO, pain controlled after IV fluids and acetaminophen. Will treat as outpatient with antibiotics given fever and leukocytosis.\nDisposition: home. Amoxicillin-clavulanate 875/125 mg PO BID x7 days. Clear liquids advancing to low-residue diet for a few days. Avoid NSAIDs. PCP follow-up this week. Return for worsening pain, persistent fever, vomiting, or bleeding."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-12a",
+          "kind": "office_visit",
+          "start": "2025-05-12T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, diverticulitis",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-12T11:30",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-05-12T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-05-12T11:40",
+              "body": "Seen in ED 5/6 with LLQ pain and fever - CT: uncomplicated sigmoid diverticulitis. WBC 14, CRP 24. On Augmentin day 7 of 7 tomorrow.\nNow: pain mostly gone, just sore if he presses. No fever since Thursday. Eating normally. BMs regular, no blood. He did take a couple of ibuprofen for the belly before the ED - talked again about keeping NSAIDs out of the house.\n\nAfebrile today. Abd soft, mild LLQ tenderness without guarding. No rebound.\n\nA/P\n- Sigmoid diverticulitis, uncomplicated, resolving. Finish Augmentin. CBC today to see the white count come down. Colonoscopy in 2021 was normal to the cecum, so no need for a repeat scope just for this. Fiber daily, more vegetables, less red meat; MiraLAX to avoid straining.\n- Call for recurrent pain or fever.\n- Knees: acetaminophen only."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "author": "PCP",
+              "date": "2025-05-13T09:30",
+              "body": "White count is back to normal. Good sign the infection is clearing."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "portal_message",
+          "start": "2025-05-20T19:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Done with antibiotics",
+              "author": "patient",
+              "date": "2025-05-20T19:48",
+              "body": "Finished the antibiotic last week. Belly is fine now. Do I need to come back in for this"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Done with antibiotics",
+              "author": "RN",
+              "date": "2025-05-21T08:20",
+              "body": "Glad you're feeling better. No extra visit needed - the doctor will check in on it at your physical in September. Call sooner if the pain or fever comes back."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "outside_records",
+          "start": "2025-08-20T15:30",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2025-08-18T08:45",
+              "text": "CT CHEST WITH IV CONTRAST\nComparison: 02/24/2025.\nFindings: Treated right lower lobe lesion 2.0 cm, unchanged, within stable post-radiation change. No new pulmonary nodule. No adenopathy. No effusion. Bones intact.",
+              "conclusion": "Stable. No evidence of recurrent or metastatic disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology surveillance note",
+              "author": "hematology-oncology",
+              "date": "2025-08-20T15:30",
+              "body": "Surveillance 08/18/2025. Doing well. Diverticulitis in May treated as an outpatient. CT stable, no recurrence. Next CT in 6 months.\nAllergies: NKDA. History of TRALI.\nHematology & Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "annual_physical",
+          "start": "2025-09-16T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Diverticulitis of colon",
+              "action": "resolved"
+            }
+          ],
+          "state": {
+            "weight_kg": 99.0,
+            "labs": {
+              "Hemoglobin A1c": 5.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-09-16T08:35",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-16T08:35",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-16T08:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-16T08:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Long-haul truck driver"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-09-16T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-09-16T08:50",
+              "body": "59M here for his yearly.\n\nSince last year: diverticulitis in May, outpatient Augmentin, no recurrence. Lung cancer surveillance CTs stable through August, now every 6 months.\nFeels fine. Knees the usual; acetaminophen. Bowels regular with fiber. Cough at baseline, albuterol a couple times a week. No blood in stool, no abdominal pain.\nTobacco: still a pack and a half most days. Asked if this is the year - he laughed, \"you ask every time.\" I do. He'll think on it.\nAlcohol: weekends, 1-2 beers.\n\nMeds: psyllium daily, acetaminophen PRN, albuterol HFA PRN, PEG 3350 PRN.\nAllergies: NKDA. History of TRALI.\n\nExam: Wt 99 kg. Well-appearing. Eyes, ears, throat normal. Neck no nodes or thyroid enlargement. Lungs: no wheeze or crackles. Heart RRR. Abd soft, nontender, no masses. Knees: no effusion. Ext: no edema. Skin: no concerning lesions.\n\nA/P\n- Diverticulitis - resolved. Fiber, vegetables.\n- Health maintenance: colonoscopy due 2031. Vaccines: flu + COVID at a nurse visit in October. Labs today.\n- Lung ca: oncology surveillance; next CT February.\n- IDA: CBC today.\n- Tobacco: counseled.\nRTC 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T07:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T07:46"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2025-10-07T08:00",
+              "body": "2025-26 trivalent influenza 0.5 mL IM right deltoid; Pfizer COVID 2025-26 formula 0.3 mL IM left deltoid. No fever, no reactions with last year's shots. Monitored 15 min. Left on time for his run."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "portal_message",
+          "start": "2025-12-09T06:58",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Inhaler",
+              "author": "patient",
+              "date": "2025-12-09T06:58",
+              "body": "Pharmacy says no refills left on the albuterol. Can you send one. thanks"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Inhaler",
+              "author": "RN",
+              "date": "2025-12-09T10:30",
+              "body": "Sent with 3 refills. Let us know if you're using it more than usual this winter."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-11a",
+          "kind": "outside_records",
+          "start": "2026-02-11T13:15",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-02-09T10:20",
+              "text": "CT CHEST WITH IV CONTRAST\nComparison: 08/18/2025.\nFindings: Treated right lower lobe lesion 2.0 cm with surrounding post-radiation change, unchanged. No new nodules. No thoracic adenopathy. No effusion. No osseous lesion.",
+              "conclusion": "Stable post-treatment changes. No evidence of recurrence."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology surveillance note",
+              "author": "hematology-oncology",
+              "date": "2026-02-11T13:15",
+              "body": "Surveillance 02/09/2026, about two years after chemoradiation. No evidence of recurrence. Next CT in 3 months (May), then every 6 months.\nAllergies: NKDA. History of TRALI.\nHematology & Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "office_visit",
+          "start": "2026-04-21T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Cough and congestion",
+          "conditions": [
+            {
+              "label": "Acute bronchitis",
+              "action": "diagnosed",
+              "onset": "2026-04-16"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "doxycycline hyclate 100 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily for 5 days",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Acute bronchitis"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-04-21T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - sick",
+              "author": "PCP",
+              "date": "2026-04-21T15:30",
+              "body": "5 days of a chest cold - more cough than his usual, thicker sputum, stuffy, achy. Picked it up on the road. Using albuterol more. No hemoptysis.\n\nVitals reviewed. Lungs: no wheeze, no focal crackles. Heart regular.\n\nA/P: acute bronchitis on top of chronic bronchitis in a smoker with treated lung cancer. Doxycycline 100 mg BID x5 days, albuterol as needed, fluids. Call if fever, worse breathing or blood in sputum; low threshold for a chest film. CT surveillance with oncology due next month."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-07a",
+          "kind": "hospital_admission",
+          "start": "2026-05-07T09:30",
+          "end": "2026-05-15T12:00",
+          "service": "Neurology",
+          "reason": "Ascending weakness and paresthesias",
+          "conditions": [
+            {
+              "label": "Guillain-Barre syndrome",
+              "icd10": "G61.0",
+              "action": "diagnosed",
+              "onset": "2026-05-04",
+              "note": "AIDP, treated with IVIG."
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-05-07T09:45",
+              "bp": [
+                122,
+                78
+              ],
+              "hr": 96,
+              "rr": 20,
+              "spo2": 94
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-07T14:10",
+              "results": [
+                {
+                  "test": "Protein, CSF",
+                  "loinc": "2880-3",
+                  "unit": "mg/dL",
+                  "value": 112
+                },
+                {
+                  "test": "White Blood Cells, CSF",
+                  "loinc": "26465-5",
+                  "unit": "/uL",
+                  "value": 2
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Nerve conduction study and EMG",
+              "performed": "2026-05-08T10:00",
+              "text": "Motor nerve conduction studies of the upper and lower limbs show prolonged distal latencies, slowed conduction velocities and prolonged or absent F waves. Sensory responses reduced in the upper limbs with relative sparing of the sural responses. Needle EMG of selected limb muscles shows reduced recruitment without active denervation.",
+              "conclusion": "Acute demyelinating sensorimotor polyneuropathy, consistent with acute inflammatory demyelinating polyneuropathy (Guillain-Barré syndrome)."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "neurology",
+              "date": "2026-05-18T11:00",
+              "body": "REGIONAL HOSPITAL - DISCHARGE SUMMARY\nAdmitted: 05/07/2026 (neuro ICU)  Discharged: 05/15/2026 to inpatient rehabilitation\nService: Neurology\n\nPrincipal diagnosis: Guillain-Barré syndrome, acute inflammatory demyelinating polyneuropathy.\n\nHistory: 59-year-old man with stage IIIB NSCLC treated with chemoradiation and chronic bronchitis, last seen in our system in 2025 for diverticulitis. Three days of tingling in both feet that climbed to weakness in both legs, then his hands felt weak, with mild shortness of breath. He had been treated for a respiratory infection about two weeks before.\nFamily: maternal uncle had post-infectious Guillain-Barré. Father, lung cancer. Mother, diverticulosis.\nSocial: smoker, 40+ pack-years; occasional alcohol.\nHome medications per admission reconciliation: psyllium daily, ibuprofen 400 mg every 6-8 h as needed (chronic), albuterol HFA as needed, polyethylene glycol 3350 as needed.\nAllergies: NKDA. History of TRALI.\n\nAdmission exam: BP 122/78, HR 96, RR 20, SpO2 94% on room air. Reflexes diminished throughout all four limbs. Strength reduced in the legs. No muscle tenderness, no fasciculations. Remainder of examination unremarkable.\n\nCourse:\n- Lumbar puncture 05/07: CSF protein 112 mg/dL with 2 white cells/uL (albuminocytologic dissociation).\n- NCS/EMG 05/08: acute demyelinating sensorimotor polyneuropathy.\n- Respiratory: admitted to the neuro ICU for serial vital capacity; lowest FVC 2.4 L. Never required intubation or noninvasive ventilation.\n- Treatment: IVIG 0.4 g/kg/day for 5 days (05/07-05/11). Tolerated well.\n- Transferred to the ward 05/11. Weakness plateaued then began to improve.\n\nDischarge: to inpatient rehabilitation 05/15. Follow-up neurology in about 8 weeks. PCP after rehab discharge."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "telephone",
+          "start": "2026-05-12T12:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call with inpatient team",
+              "author": "PCP",
+              "date": "2026-05-12T12:40",
+              "body": "Hospital neurology resident called as a courtesy - Phil admitted 5/7 with Guillain-Barré, finished IVIG yesterday, out of the ICU, breathing numbers stayed OK. Planning acute rehab. Gave them his med list from here (acetaminophen, not ibuprofen; ibuprofen stopped 2024) and the TRALI history. They will send the summary."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-01a",
+          "kind": "outside_records",
+          "start": "2026-06-01T09:20",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Inpatient rehabilitation discharge summary",
+              "author": "physical medicine and rehabilitation",
+              "date": "2026-06-01T09:20",
+              "body": "INPATIENT REHABILITATION DISCHARGE SUMMARY\nAdmitted 05/15/2026, discharged 05/29/2026.\nDiagnosis: Guillain-Barré syndrome (AIDP) after IVIG.\nProgram: daily PT and OT. Leg and grip strength improved through the stay. Transfers independent. Ambulating household and short community distances with a rolling walker; stairs with rail and supervision.\nDischarged home with a rolling walker. Outpatient physical therapy recommended. Neurology follow-up as scheduled.\nMedications at discharge: psyllium daily, acetaminophen 500 mg 1-2 tabs every 6 h as needed, albuterol HFA as needed, polyethylene glycol 3350 as needed.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "office_visit",
+          "start": "2026-06-09T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital visit",
+          "conditions": [
+            {
+              "label": "Acute bronchitis",
+              "action": "resolved"
+            }
+          ],
+          "state": {
+            "weight_kg": 95.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-06-09T10:55",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-09T10:55",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "pt-referral-2026",
+              "action": "placed",
+              "order": "Outpatient physical therapy referral",
+              "category": "referral",
+              "to": "Physical Therapy",
+              "reason": "Guillain-Barré syndrome, gait and strength rehabilitation"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-06-09T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "author": "PCP",
+              "date": "2026-06-09T11:10",
+              "body": "Guillain-Barré, AIDP. Neuro ICU 5/7-5/11 (IVIG x5 days, no intubation, lowest FVC 2.4 L), ward to 5/15, inpatient rehab 5/15-5/29. Both summaries reviewed.\n\nHow he is: home 11 days. Walks in the house with the walker, some steps without it holding the counter. Feet still tingle. Hands better - can button his shirt. Breathing fine; the April chest cold is long gone. Doing the rehab home exercises. Bowels OK with fiber/PEG.\nSmoking: says he barely smoked in the hospital, back to smoking at home. Talked about it; he's still not ready for a medication.\n\nMed rec: psyllium, acetaminophen PRN, albuterol PRN, PEG PRN. Hospital list had him on chronic ibuprofen - that's an old entry; he has not been prescribed it since 2024. Corrected with him.\n\nVitals reviewed. Wt 95 kg. Lungs: no wheeze. Heart regular. Neuro: reflexes reduced at knees and ankles. Leg strength reduced bilaterally. Gets up from the chair using his arms. Walks with a rolling walker, steady.\n\nA/P\n1. GBS, recovering - outpatient PT referral placed today. Neurology follow-up 7/14. Reviewed warning signs (worsening weakness, trouble breathing or swallowing) - go to the ED.\n2. Acute bronchitis - resolved.\n3. Lung ca - oncology surveillance CT moved from May because of the admission; they will reschedule.\n4. Labs today: CBC, CMP.\nRTC 6-8 weeks, sooner prn."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "telephone",
+          "start": "2026-06-23T14:15",
+          "orders": [
+            {
+              "id": "pt-referral-2026",
+              "action": "done",
+              "date": "2026-06-23T14:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "PT started",
+              "author": "MA",
+              "date": "2026-06-23T14:15",
+              "body": "Outpatient PT faxed initial evaluation (done 6/22). Plan 2x/week for 8 weeks, gait and strengthening. Pt confirms he's going. Referral closed. Eval scanned to media."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-16a",
+          "kind": "outside_records",
+          "start": "2026-07-16T10:00",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up",
+              "author": "neurology",
+              "date": "2026-07-16T10:00",
+              "body": "OUTSIDE NEUROLOGY CLINIC\nVisit 07/14/2026\n\nGuillain-Barré syndrome (AIDP), onset early May, treated with IVIG.\nInterval: steady gains with outpatient PT. Now walking with a single-point cane outside, nothing at home. Residual tingling in the toes. No breathing or swallowing issues.\nExam: strength improved in both legs, not yet full. Reflexes still reduced at the knees and ankles. Gait with cane steady.\nPlan: continue PT. Recovery may continue for months. Return in 3 months, sooner if any new weakness.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-22a",
+          "kind": "outside_records",
+          "start": "2026-07-22T14:30",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-07-20T09:00",
+              "text": "CT CHEST WITH IV CONTRAST\nComparison: 02/09/2026.\nFindings: Treated right lower lobe lesion 2.0 cm in stable post-radiation change. No new nodules. No adenopathy. No pleural effusion. No osseous lesion.",
+              "conclusion": "Stable. No evidence of recurrence."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology surveillance note",
+              "author": "hematology-oncology",
+              "date": "2026-07-22T14:30",
+              "body": "Surveillance 07/20/2026 (delayed from May for his Guillain-Barré admission). Recovering with PT, walking with a cane. CT stable, no recurrence. Next CT in 6 months.\nAllergies: NKDA. History of TRALI.\nHematology & Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-04a",
+          "kind": "portal_message",
+          "start": "2026-08-04T17:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Tylenol refill",
+              "author": "patient",
+              "date": "2026-08-04T17:22",
+              "body": "Can I get the tylenol 500 refilled. PT is going good, walked the whole grocery store with just the cane Saturday."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Tylenol refill",
+              "author": "PCP",
+              "date": "2026-08-05T08:05",
+              "body": "Sent. That's great progress - keep at the exercises. See you in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-15a",
+          "kind": "office_visit",
+          "start": "2026-09-15T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, Guillain-Barré recovery and chronic conditions",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

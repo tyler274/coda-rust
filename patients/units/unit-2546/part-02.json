@@ -1,0 +1,760 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002546",
+   "events": [
+    {
+     "id": "2020-03-24a",
+     "kind": "portal_message",
+     "start": "2020-03-24T18:31",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "refills during closure",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Are you guys open",
+       "author": "patient",
+       "date": "2020-03-24T18:31",
+       "body": "Hi, with everything shutting down is the office still open? Allergy season is about to hit and I want to make sure my spray and pills don't run out. Job sites are still going for now."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Are you guys open",
+       "author": "MA",
+       "date": "2020-03-25T08:47",
+       "body": "Hi Tyler, we are open but doing most visits by video for now. You still have refills on both the fluticasone and cetirizine at your pharmacy, so just call them. If you need to be seen, text or message us and we will set up a video visit."
+      }
+     ]
+    },
+    {
+     "id": "2020-04-14a",
+     "kind": "pharmacy",
+     "start": "2020-04-14T10:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicaid days supply",
+     "documents": [
+      {
+       "type": "Pharmacy Communication",
+       "title": "Pharmacy Call: Fluticasone Quantity",
+       "author": "MA",
+       "date": "2020-04-14T10:05",
+       "body": "Pharmacist called. Pt asked for 2 bottles of fluticasone at once ahead of the season, Medicaid rejected as early fill, plan only allows 1 bottle per 30 days at this sig. Pharmacy filled 1 bottle. Pt aware per pharmacist. No action needed from PCP."
+      }
+     ]
+    },
+    {
+     "id": "2020-05-12a",
+     "kind": "telehealth_visit",
+     "start": "2020-05-12T13:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "allergy symptoms",
+     "orders": [
+      {
+       "id": "ent-allergy-referral",
+       "action": "placed",
+       "order": "Otolaryngology and allergy referral",
+       "category": "referral",
+       "to": "Otolaryngology",
+       "reason": "seasonal allergic rhinitis not controlled on antihistamine and nasal steroid; evaluate for testing and immunotherapy"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2020-05-12T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Visit",
+       "author": "PCP",
+       "date": "2020-05-12T13:30",
+       "body": "VIDEO VISIT (patient at home, verbal consent for telehealth obtained, audio and video)\n\nCC: allergies\n\nHPI: This spring has been the worst he can remember. Sneezing runs, nose blocked most mornings, eyes itching and watering, drip in the back of the throat. Taking cetirizine every day now and the fluticasone 2 sprays each side daily, technique sounds right. Both help some but not enough. It is getting in the way at work, hard to get through a shift outdoors on bad days. On the heaviest pollen days he sometimes gets a bit wheezy and short of breath, settles when he is indoors. No fever, no facial pain, no discolored drainage, no cough otherwise.\n\nMeds: cetirizine 10 mg daily (using daily), fluticasone nasal 2 sprays each nostril daily.\nAllergies: tree and grass pollen.\n\nExam (video): comfortable, speaking full sentences, no audible wheeze, no increased work of breathing. Eyes mildly red. Frequent sniffing.\n\nA/P: Seasonal allergic rhinitis, not well controlled on a second-generation antihistamine plus intranasal steroid, now affecting work.\n- Referral to ENT/allergy for skin testing and to discuss immunotherapy. He is interested.\n- Continue cetirizine and fluticasone.\n- Message us if symptoms change or he is not hearing about the referral in 2 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2020-05-15a",
+     "kind": "telephone",
+     "start": "2020-05-15T14:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "referral",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Referral Sent",
+       "author": "front desk",
+       "date": "2020-05-15T14:10",
+       "body": "ENT/allergy referral faxed with last office note and med list to Mill River Ear, Nose & Throat and Allergy. Medicaid referral entered in plan portal, approved, valid 6 months. Their scheduler will call pt directly, they are booking in-person new patients again starting June. Called pt, LVM with their number 413-555-0174."
+      }
+     ]
+    },
+    {
+     "id": "2020-06-16a",
+     "kind": "specialist_visit",
+     "start": "2020-06-16T10:30",
+     "service": "Otolaryngology",
+     "reason": "allergy consultation",
+     "medications": [
+      {
+       "drug_text": "allergenic extract, grass, tree and weed pollen mix, injectable solution",
+       "action": "historical",
+       "sig": "Subcutaneous injection at allergy office; weekly build-up then monthly maintenance per allergy schedule",
+       "frequency": "per allergy schedule",
+       "route": "Subcutaneous",
+       "course": "chronic",
+       "reason": "Allergic rhinitis due to pollen"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ent-allergy-referral",
+       "action": "done",
+       "date": "2020-06-16T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Otolaryngology/Allergy Consultation Letter",
+       "author": "otolaryngology",
+       "date": "2020-06-18T09:15",
+       "body": "MILL RIVER EAR, NOSE & THROAT AND ALLERGY\nConsultation, seen 06/16/2020\n\nRe: Tyler Boucher, DOB 07/29/1991\n\nDear Doctor,\n\nThank you for sending Tyler to us for his nasal allergies.\n\nHe describes lifelong seasonal symptoms going back to boyhood: bouts of sneezing, a blocked nose, itchy eyes and mucus draining down the throat, worst in spring and then again in early fall. On heavy pollen days he will sometimes wheeze and feel short of breath. Cetirizine and fluticasone nasal spray give him only partial relief, and the symptoms are taking a toll on his work and his day-to-day life.\n\nPast history: allergic rhinitis. Tonsillectomy age 12.\nMedications: cetirizine 10 mg daily as needed; fluticasone propionate nasal spray 2 sprays per nostril daily.\nAllergies: tree and grass pollen. No drug allergies.\nSocial: never smoker, occasional alcohol.\n\nExamination: Pale, edematous inferior turbinates bilaterally with clear secretions. Septum midline. No polyps on anterior rhinoscopy. Oral cavity and oropharynx unremarkable, tonsils absent. Ears normal. Neck without adenopathy.\n\nSkin prick testing (antihistamine held 5 days, positive and negative controls appropriate): positive to grass pollens, tree pollens and weed pollens.\n\nImpression: Seasonal allergic rhinitis with sensitization to grass, tree and weed pollen.\n\nPlan: We went over the options, including continuing medications alone versus allergen immunotherapy. He has chosen to start subcutaneous immunotherapy with a long-term course of gradually escalating injections of his relevant pollens. Build-up will be weekly in our office starting in July, and our injection nurse will send a schedule. He should continue cetirizine and fluticasone as he is using them.\n\nWith thanks,\nOtolaryngology, Mill River ENT & Allergy\ncc: PCP"
+      }
+     ]
+    },
+    {
+     "id": "2020-06-23a",
+     "kind": "telephone",
+     "start": "2020-06-23T11:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "chart update from ENT letter",
+     "allergies": [
+      {
+       "substance": "Weed pollen",
+       "reaction": "Rhinoconjunctivitis",
+       "severity": "mild",
+       "criticality": "low",
+       "type": "allergy"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Chart Update",
+       "author": "RN",
+       "date": "2020-06-23T11:40",
+       "body": "ENT/allergy consult letter reviewed with PCP. Skin testing also positive to weed pollen, added to allergy list. Immunotherapy (SC pollen extract, given at allergy office) added to med list as outside med. Called pt to let him know we got the letter, he confirms first build-up shot is booked for July. No questions."
+      }
+     ]
+    },
+    {
+     "id": "2020-07-02a",
+     "kind": "outside_records",
+     "start": "2020-07-02T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "immunotherapy schedule",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Immunotherapy Build-Up Schedule",
+       "author": "otolaryngology",
+       "date": "2020-07-02T15:20",
+       "body": "MILL RIVER ENT & ALLERGY, Injection Clinic\n\nPatient: Tyler Boucher\nExtract: grass / tree / weed pollen mix, subcutaneous\n\nBuild-up phase: weekly injections starting 07/07/2020, dose escalated each visit per protocol. Expected to reach maintenance in roughly 6 to 7 months if no held doses.\nPatient waits 30 minutes in office after each injection.\nPlease let us know of any new beta-blocker prescription or any change in his health that affects shot visits.\n\nInjection Nurse, Mill River ENT & Allergy"
+      }
+     ]
+    },
+    {
+     "id": "2020-09-22a",
+     "kind": "annual_physical",
+     "start": "2020-09-22T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "yearly physical",
+     "state": {
+      "weight_kg": 65.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2020-09-22T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-09-22T09:40",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2020-09-22T09:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2020-09-22T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-09-22T09:35"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2020-09-22T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2020-09-22T10:05",
+       "body": "Annual exam, 29M. Masked visit, screened negative at door.\n\nInterval: saw ENT/allergy in June, skin tests positive to grass, tree and weed pollen. Started weekly allergy shots in July, on schedule, no problems with the injections. Still on cetirizine and fluticasone. Fall pollen has been tolerable so far.\nWork: construction, still working through the pandemic. Same baseline stamina.\nNo new complaints.\n\nMeds: cetirizine 10 mg daily PRN, fluticasone nasal daily, SC pollen immunotherapy weekly at allergy office.\nAllergies: tree, grass, weed pollen. NKDA.\nPHQ-2 0. Never smoker. Alcohol 1-2/wk.\n\nVS: BP 111/77, HR 66, RR 17, T 37.0, SpO2 97% RA, wt 65.7 kg, BMI 20.5.\nGen: thin, well.\nENT: turbinates mildly swollen.\nCV: RRR, no m/r/g.\nLungs: CTA bilat.\nAbd: benign.\nExt: no edema.\nNeuro: grossly normal.\n\nAssessment/plan:\n1. Preventive: flu shot today. CBC/BMP. Lipids done last year, normal.\n2. Allergic rhinitis (pollen), on immunotherapy build-up via allergy. Continue meds.\n3. Exercise intolerance, unchanged.\nRTC 1 yr."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-24a",
+     "kind": "portal_message",
+     "start": "2020-09-24T13:02",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "lab results",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Results",
+       "author": "PCP",
+       "date": "2020-09-24T13:02",
+       "body": "Normal blood count and chemistry panel from Tuesday. Hgb 15.3, creatinine 0.94, glucose 84. See you next fall."
+      }
+     ]
+    },
+    {
+     "id": "2021-02-11a",
+     "kind": "outside_records",
+     "start": "2021-02-11T10:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "immunotherapy update",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Immunotherapy: Maintenance Reached",
+       "author": "otolaryngology",
+       "date": "2021-02-11T10:50",
+       "body": "Mill River ENT & Allergy, Injection Clinic\n\nTyler Boucher has completed build-up for subcutaneous pollen immunotherapy (grass/tree/weed) and is moving to monthly maintenance injections as of this month. No local or systemic reactions during build-up. He continues cetirizine and fluticasone as needed. Next physician review in our office in 12 months.\n\nInjection Nurse"
+      }
+     ]
+    },
+    {
+     "id": "2021-03-09a",
+     "kind": "pharmacy",
+     "start": "2021-03-09T08:55",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "refills",
+     "documents": [
+      {
+       "type": "Pharmacy Communication",
+       "title": "Refill Requests",
+       "author": "MA",
+       "date": "2021-03-09T08:55",
+       "body": "eRx renewal requests x2 from pharmacy, prior Rxs out of refills:\n- cetirizine 10 mg tab, 1 PO daily PRN, #90\n- fluticasone propionate 50 mcg nasal spray, 2 sprays each nostril daily, 16 g\nPended for PCP.\nPCP 3/9: both approved, 1 year of refills."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-06a",
+     "kind": "portal_message",
+     "start": "2021-04-06T21:14",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "COVID vaccine record",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-04-03T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Covid shot",
+       "author": "patient",
+       "date": "2021-04-06T21:14",
+       "body": "Got my first covid shot Saturday at the mass vaccination site, Pfizer. Picture of the card attached. Second one is booked for the 24th. Arm was sore for a day, that's it."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Covid shot",
+       "author": "MA",
+       "date": "2021-04-07T09:20",
+       "body": "Thanks Tyler, dose 1 (Pfizer, 4/3/21) entered in your record. Send the card again after dose 2."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-20a",
+     "kind": "office_visit",
+     "start": "2021-04-20T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "weakness and double vision",
+     "state": {
+      "weight_kg": 64.6
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "orders": [
+      {
+       "id": "neurology-referral",
+       "action": "placed",
+       "order": "Neurology referral",
+       "category": "referral",
+       "to": "Neurology",
+       "reason": "progressive exertional limb weakness, intermittent diplopia, bilateral ptosis; mother with mitochondrial myopathy"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-04-20T10:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2021-04-20T11:25",
+       "body": "CC: getting weaker at work, seeing double sometimes\n\nHPI: 29M, construction laborer. Says for several years now he has been slipping further behind the other guys on the crew with anything physical, and it is getting harder to hide. In the last year or so his arms and legs give out more often, mostly after a few flights of stairs carrying material, has to stop and wait for them to come back. Every so often he sees double, comes and goes, more when he is tired. No headaches, no numbness or tingling, no trouble swallowing or talking, no bowel or bladder change. No falls, no head injury, no passing out. No dark urine. Breathing at baseline. Still has his lifelong low stamina on top of this.\nPt brings up that his mother's muscle disease started in her 30s and he is worried.\n\nMeds: cetirizine PRN, fluticasone nasal, monthly allergy shots (maintenance since Feb). COVID dose 1 on 4/3, dose 2 this Saturday.\nAllergies: tree/grass/weed pollen. NKDA.\n\nVS: BP 110/74, HR 58, RR 15, T 36.8, SpO2 98%, wt 64.5 kg, BMI 20.1.\nGen: thin, NAD.\nEyes: mild bilateral ptosis. Pupils equal and reactive.\nCV: RRR. Lungs: clear.\nNeuro: alert, speech normal, facial strength symmetric. Mild weakness of proximal arm and leg muscles bilaterally, distal strength normal. Reflexes 2+ and symmetric. Sensation intact. Gait normal, can rise from chair without using arms but slowly.\n\nA/P:\n1. Progressive exertional limb weakness with intermittent diplopia and mild bilateral ptosis, on a background of lifelong exercise intolerance, mother with mitochondrial myopathy. Needs a neuromuscular evaluation. Neurology referral placed, marked as soon as available. Told him to go to the ED for trouble swallowing or breathing, or weakness that does not recover with rest.\n2. Allergic rhinitis on SCIT, fine.\n\nF/u after neurology."
+      },
+      {
+       "type": "Patient Instructions",
+       "title": "After Visit Summary",
+       "author": "PCP",
+       "date": "2021-04-20T11:30",
+       "body": "Today we talked about the weakness in your arms and legs and the double vision.\n\nPlan: referral to neurology (nerve and muscle specialists). Our front desk will fax it and call you with the appointment.\n\nGo to the emergency department if you have trouble swallowing, trouble breathing, slurred speech, or weakness that does not get better with rest.\n\nFinish your second COVID shot on 4/24 as planned."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-22a",
+     "kind": "telephone",
+     "start": "2021-04-22T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "referral",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Neurology Referral Scheduled",
+       "author": "front desk",
+       "date": "2021-04-22T09:30",
+       "body": "Neurology referral faxed to Kestrel Hill Neurology with 4/20 note. Medicaid referral entered, approved. Their scheduler called back: first available neuromuscular new patient slot Tue 6/8 1:00. Pt notified by text, confirmed."
+      }
+     ]
+    },
+    {
+     "id": "2021-05-11a",
+     "kind": "portal_message",
+     "start": "2021-05-11T19:02",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "COVID vaccine record",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-04-24T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Second shot",
+       "author": "patient",
+       "date": "2021-05-11T19:02",
+       "body": "Sorry forgot to send this, here is the card with the second one from April 24."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Second shot",
+       "author": "MA",
+       "date": "2021-05-12T08:31",
+       "body": "Got it, dose 2 entered. You are fully vaccinated. Neurology appointment is still 6/8 at 1:00."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-01a",
+     "kind": "telephone",
+     "start": "2021-06-01T15:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "records request",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Records Request From Neurology",
+       "author": "front desk",
+       "date": "2021-06-01T15:05",
+       "body": "Kestrel Hill Neurology called ahead of 6/8 new patient visit asking for problem list, med list, immunizations and recent labs. Faxed 4/20 note, 2020 physical with labs, med/allergy list. Confirmed received."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-08a",
+     "kind": "specialist_visit",
+     "start": "2021-06-08T13:00",
+     "service": "Neurology",
+     "reason": "neuromuscular consultation",
+     "orders": [
+      {
+       "id": "neurology-referral",
+       "action": "done",
+       "date": "2021-06-08T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology Consultation",
+       "author": "neurology",
+       "date": "2021-06-11T08:40",
+       "body": "KESTREL HILL NEUROLOGY, Neuromuscular Clinic\nNew patient consultation, 06/08/2021\n\nPatient: Tyler Boucher, 29-year-old man\nReferred by: PCP\n\nReason for referral: Several years of increasing difficulty keeping pace with coworkers at physical labor, with limb weakness and episodes of double vision.\n\nHistory: Mr. Boucher says that as a boy he could take part in most sports but always ran out of energy ahead of the other kids. Over the last year the weakness in his arms and legs has come on more often, chiefly after he climbs several flights of stairs. He also has spells of diplopia and trouble keeping his eyes focused for long stretches. He has never had a head injury, a seizure or a faint. He works in construction and reports no toxic or solvent exposures.\n\nPast medical history: seasonal allergic rhinitis on subcutaneous immunotherapy; lifelong exercise intolerance. Tonsillectomy age 12.\nMedications: cetirizine 10 mg daily as needed, fluticasone nasal spray daily, allergen immunotherapy injections monthly.\nAllergies: tree, grass and weed pollen. No drug allergies.\nFamily history: mother developed a similar picture in her 30s. Several maternal relatives with hearing loss beginning early in life.\nSocial: construction work. Never smoker. Alcohol 1-2 drinks weekly.\n\nExamination:\nGeneral: thin young man, in no distress.\nCardiac: regular rate and rhythm, no murmur. Lungs: clear.\nCranial nerves: bilateral ptosis. Extraocular movements limited in more than one direction of gaze. Pupils equal and reactive. Facial strength and bulbar function normal. Hearing grossly intact to conversation.\nMotor: normal bulk and tone. Mild weakness of the proximal limb muscles, upper and lower, symmetric. Distal strength full.\nReflexes: 2+ throughout, toes downgoing.\nSensory: intact to all modalities.\nCoordination and gait: normal.\n\nImpression: Slowly progressive proximal myopathy with ptosis and ophthalmoparesis and a lifelong history of early fatigue, with a similar history in his mother and early hearing loss on the maternal side. The picture raises concern for a mitochondrial myopathy.\n\nPlan:\n1. Creatine kinase, TSH, resting lactate on two occasions, and lactate after a brief standardized exertion.\n2. EMG/nerve conduction studies.\n3. Muscle biopsy with histochemistry.\nWe will write again once results are available.\n\nNeurology, Kestrel Hill Neurology\ncc: PCP"
+      }
+     ]
+    },
+    {
+     "id": "2021-06-30a",
+     "kind": "portal_message",
+     "start": "2021-06-30T07:52",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "question before biopsy",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Biopsy next week",
+       "author": "patient",
+       "date": "2021-06-30T07:52",
+       "body": "Neurology is doing a muscle biopsy on my thigh next Tuesday. They said ask you if any of my meds need to stop. It's just the allergy pill, the spray and the shots."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Biopsy next week",
+       "author": "PCP",
+       "date": "2021-06-30T12:10",
+       "body": "None of those need to be stopped for the biopsy. Follow whatever instructions the neurology office gave you about eating beforehand and wound care. Hope it goes smoothly."
+      }
+     ]
+    },
+    {
+     "id": "2021-07-20a",
+     "kind": "specialist_visit",
+     "start": "2021-07-20T14:00",
+     "service": "Neurology",
+     "reason": "results review",
+     "conditions": [
+      {
+       "label": "Mitochondrial myopathy",
+       "icd10": "G71.3",
+       "action": "diagnosed",
+       "onset": "2021-07-20"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-06-08T15:30",
+       "resulted": "2021-07-20T14:00",
+       "results": [
+        {
+         "test": "Creatine Kinase",
+         "value": 612
+        },
+        {
+         "test": "Thyroid Stimulating Hormone",
+         "value": 1.8
+        },
+        {
+         "test": "Lactate",
+         "value": 3.4
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-06-22T08:30",
+       "resulted": "2021-07-20T14:00",
+       "results": [
+        {
+         "test": "Lactate",
+         "value": 3.1
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-06-22T08:55",
+       "resulted": "2021-07-20T14:00",
+       "results": [
+        {
+         "test": "Lactate",
+         "value": 5.8
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Nerve conduction study and EMG",
+       "performed": "2021-06-29T09:00",
+       "issued": "2021-07-20T14:00",
+       "text": "Kestrel Hill Neurology EMG Laboratory. Indication: proximal weakness, ptosis.\nNerve conduction studies: median, ulnar and peroneal motor and median, ulnar and sural sensory responses have normal latencies, amplitudes and conduction velocities bilaterally where tested. F-waves normal.\nRepetitive nerve stimulation not performed.\nNeedle EMG: deltoid, biceps, iliopsoas and vastus lateralis bilaterally show short-duration, low-amplitude, polyphasic motor unit potentials with early recruitment. No fibrillations or positive sharp waves. Distal muscles (first dorsal interosseous, tibialis anterior) normal.",
+       "conclusion": "Myopathic pattern in proximal muscles. No evidence of neuropathy."
+      },
+      {
+       "study": "Surgical pathology report",
+       "performed": "2021-07-06T10:30",
+       "issued": "2021-07-20T14:00",
+       "text": "Specimen: skeletal muscle, left vastus lateralis, open biopsy.\nFrozen sections with routine and enzyme histochemistry.\nMicroscopic: fibers of irregular, uneven shape with mild variation in fiber size. Modified Gomori trichrome stain shows collections of abnormal mitochondria accumulated beneath the sarcolemma in scattered fibers. No inflammatory infiltrate. No necrosis. No vacuoles.",
+       "conclusion": "Skeletal muscle with subsarcolemmal accumulation of abnormal mitochondria on modified Gomori trichrome, consistent with a mitochondrial myopathy."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology Results Letter",
+       "author": "neurology",
+       "date": "2021-07-20T14:00",
+       "body": "KESTREL HILL NEUROLOGY, Neuromuscular Clinic\nResults letter, 07/20/2021\n\nRe: Tyler Boucher, DOB 07/29/1991\n\nDear Doctor,\n\nI have now reviewed the full workup on Mr. Boucher, whom I saw on 06/08 for proximal weakness, ptosis and diplopia, and went over it with him by phone today.\n\nLaboratory:\n- Creatine kinase 612 U/L (elevated).\n- Lactate at rest 3.4 mmol/L (06/08) and 3.1 mmol/L (06/22), both high; 5.8 mmol/L after minimal exertion on 06/22, higher still.\n- TSH 1.8 mIU/L, normal.\n\nEMG/NCS (06/29): myopathic motor units in proximal muscles; nerve conduction normal.\n\nMuscle biopsy, left vastus lateralis (07/06): irregularly shaped fibers, with abnormal mitochondria collected under the fiber membrane on modified Gomori trichrome stain.\n\nDiagnosis: Mitochondrial myopathy. The persistently raised resting lactate that climbs further with exertion, the myopathic EMG and the biopsy findings fit together, and his mother's history supports a familial disorder. His lifelong exercise intolerance is part of the same condition.\n\nPlan: There is no disease-specific medication for this condition, and I am not starting a supplement. Because mitochondrial disease can involve the heart and hearing, and given the early hearing loss on his mother's side, I have arranged a baseline ECG and hearing test, and I will see him on 08/17 to go over them and set up a graded exercise program. After that I will review him yearly.\n\nI discussed the diagnosis with him and answered his questions. Reports enclosed.\n\nSincerely,\nNeurology, Kestrel Hill Neurology\ncc: PCP"
+      }
+     ]
+    },
+    {
+     "id": "2021-07-23a",
+     "kind": "portal_message",
+     "start": "2021-07-23T12:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "neurology results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Neurology letter",
+       "author": "PCP",
+       "date": "2021-07-23T12:15",
+       "body": "Hi Tyler, I got the letter from neurology. They confirmed what they told you on the phone: the muscle biopsy, EMG and lactate tests all point to a mitochondrial myopathy, the same family of condition your mom has. It also explains why you have always tired out early. I know that is a lot to take in. Happy to go over it at your physical in September or sooner if you want, just text."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Neurology letter",
+       "author": "patient",
+       "date": "2021-07-23T18:40",
+       "body": "Thanks. Kind of expected it after my mom. I'll talk to you about it in September."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-17a",
+     "kind": "specialist_visit",
+     "start": "2021-08-17T10:00",
+     "service": "Neurology",
+     "reason": "mitochondrial myopathy, baseline screening",
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2021-08-17T09:30",
+       "text": "Kestrel Hill Neurology. Resting 12-lead ECG.\nVentricular rate 62/min. PR 156 ms. QRS 90 ms. QTc 412 ms. Normal axis.\nSinus rhythm. No conduction abnormality. No ST or T wave changes.",
+       "conclusion": "Normal ECG."
+      },
+      {
+       "study": "Audiogram",
+       "performed": "2021-08-17T09:00",
+       "text": "Kestrel Hill Neurology, audiology. Pure-tone audiometry, both ears.\nAir-conduction thresholds 20 dB HL or better at 250, 500, 1000, 2000, 4000 and 8000 Hz in the right and left ears.",
+       "conclusion": "Normal hearing in both ears."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology Follow-up Letter",
+       "author": "neurology",
+       "date": "2021-08-17T16:30",
+       "body": "KESTREL HILL NEUROLOGY, Neuromuscular Clinic\nFollow-up, 08/17/2021\n\nRe: Tyler Boucher, DOB 07/29/1991\n\nDear Doctor,\n\nI saw Mr. Boucher today to start his care for mitochondrial myopathy. He is much as he was in June: he tires early, his legs give out after several flights of stairs, and he has the occasional spell of double vision. He is still working construction and pacing himself.\n\nExamination unchanged: bilateral ptosis, eye movements limited in more than one direction of gaze, mild symmetric proximal limb weakness. Hearing normal to conversation.\n\nBaseline screening today:\n- 12-lead ECG: sinus rhythm 62/min, PR 156 ms, QRS 90 ms, QTc 412 ms. Normal.\n- Audiogram: thresholds 20 dB HL or better from 250 to 8000 Hz in both ears. Normal.\n\nPlan:\n1. No disease-specific medication; no supplement started.\n2. Referred to outpatient physical therapy for 8 weeks of supervised graded aerobic and light resistance exercise, twice a week from 08/24. After that, a home program of walking or stationary cycling for about 30 minutes most days, stopping short of exhaustion.\n3. Yearly neuromuscular review with an ECG; sooner for trouble swallowing or breathing, palpitations or fainting, or a change in hearing.\n\nSincerely,\nNeurology, Kestrel Hill Neurology\ncc: PCP"
+      }
+     ]
+    },
+    {
+     "id": "2021-09-28a",
+     "kind": "annual_physical",
+     "start": "2021-09-28T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "yearly physical",
+     "conditions": [
+      {
+       "label": "Exercise intolerance",
+       "icd10": "R53.83",
+       "action": "history",
+       "note": "Attributed to mitochondrial myopathy (neurology 07/2021)"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2021-09-28T08:55",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-09-28T08:55",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-09-28T08:50"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2021-09-28T08:20"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-09-28T08:50"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2021-09-28T08:55"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2021-09-28T09:20",
+       "body": "Yearly physical. 30M.\n\nInterval history: Neurology (Kestrel Hill) diagnosed mitochondrial myopathy in July: CK 612, resting lactate 3.4 and 3.1 with a rise to 5.8 after exertion, TSH normal, myopathic EMG, biopsy with subsarcolemmal abnormal mitochondria on Gomori trichrome. We talked through the letter today. He has read about it and says it is a relief to have a name for it. Weakness and the occasional double vision about the same as in April, no swallowing or breathing trouble. Neurology saw him again 8/17: baseline ECG and hearing test both normal, no medication for this. He started physical therapy twice a week on 8/24, an 8-week graded exercise program, and likes it so far. Still working construction, paces himself.\nAllergies: on monthly maintenance shots without reactions, still uses cetirizine and spray.\n\nPMH: allergic rhinitis (pollen), mitochondrial myopathy (dx 07/2021), exercise intolerance (part of the myopathy).\nMeds: cetirizine PRN, fluticasone nasal, SC pollen immunotherapy monthly at allergy.\nAllergies: tree/grass/weed pollen.\nPHQ-2 0. Never smoker. 1-2 drinks/wk.\n\nVS: BP 109/64, HR 59, RR 15, T 37.0, SpO2 98%, wt 64.6 kg, BMI 20.1.\nGen: thin, NAD.\nEyes: mild bilateral ptosis, unchanged.\nCV: RRR, no murmur. Lungs: clear.\nAbd: soft, NT.\nNeuro: mild proximal limb weakness, same as April; distal strength, reflexes, sensation normal.\nSkin: biopsy site L thigh healed.\n\nA/P:\n1. Mitochondrial myopathy, newly diagnosed by neurology, exam stable. Exercise intolerance now attributed to it. PT through mid-October, then a home walking/cycling program; neurology yearly with ECG.\n2. Allergic rhinitis, on SCIT maintenance.\n3. Preventive: flu shot given. CBC/BMP today. COVID booster when he becomes eligible.\nRTC 1 yr."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-30a",
+     "kind": "portal_message",
+     "start": "2021-09-30T11:48",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "lab results",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lab Results",
+       "author": "PCP",
+       "date": "2021-09-30T11:48",
+       "body": "CBC and basic panel normal (Hgb 15.3, WBC 5.3, creatinine 0.95, potassium 4.0). No changes."
+      }
+     ]
+    },
+    {
+     "id": "2021-12-07a",
+     "kind": "outside_records",
+     "start": "2021-12-07T09:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "immunization registry",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-12-04T13:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "State Registry Update",
+       "author": "MA",
+       "date": "2021-12-07T09:05",
+       "body": "State immunization registry query: COVID-19 Pfizer-BioNTech booster given 12/04/2021 at a retail pharmacy. Reconciled into immunization history."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

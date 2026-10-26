@@ -1,0 +1,980 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002226",
+      "events": [
+        {
+          "id": "2024-01-12a",
+          "kind": "telephone",
+          "start": "2024-01-12T11:00",
+          "reason": "Warfarin bridge plan for surveillance colonoscopy",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-01-12T09:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "enoxaparin sodium 100 MG/ML Prefilled Syringe",
+              "action": "start",
+              "sig": "Inject 80 mg (0.8 mL) under the skin every 12 hours as directed for warfarin bridge; last dose the morning of 1/22",
+              "dose": {
+                "value": 80,
+                "unit": "mg"
+              },
+              "frequency": "Q12H",
+              "route": "Subcutaneous",
+              "course": "short",
+              "reason": "Warfarin bridge, mechanical mitral valve"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Colonoscopy - Warfarin Plan",
+              "author": "PCP",
+              "date": "2024-01-12T11:20",
+              "body": "Called pt re: surveillance colonoscopy 1/23 (polyps 2021). GI wants warfarin held in case polyps need removal. INR this morning in range.\nPlan (also sent by portal and faxed to GI):\n- Last warfarin Wed 1/17.\n- Enoxaparin 80 mg q12h Fri 1/19 through the AM dose 1/22. None on 1/23.\n- Restart warfarin 5 mg the evening of 1/23; enoxaparin restarts 1/24 if GI is OK with it (sooner if no polypectomy), continue until INR >= 2.5.\n- Clear liquids/prep per GI. Hold metformin the day of the procedure.\nRx sent. Pt wrote it all down and read it back."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.9,
+              "Prothrombin Time": 33.3
+            }
+          }
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "procedure_visit",
+          "start": "2024-01-23T08:00",
+          "service": "Gastroenterology",
+          "reason": "Surveillance colonoscopy, history of colon polyps",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, high risk",
+              "performed": "2024-01-23T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Colonoscopy Report",
+              "author": "gastroenterology",
+              "date": "2024-01-24T09:00",
+              "body": "OUTSIDE ENDOSCOPY CENTER - COLONOSCOPY REPORT\nDate: 01/23/2024\nIndication: surveillance, history of colon polyps removed 2021.\nAnticoagulation: warfarin held 5 days with enoxaparin bridge per PCP (mechanical mitral valve).\nSedation: monitored anesthesia care.\nAllergies: NKDA.\n\nPrep: good (BBPS 8). Cecum reached, identified by appendiceal orifice and ileocecal valve. Withdrawal time 9 minutes.\nFindings: normal mucosa throughout the colon. No polyps. No masses. Retroflexion in the rectum normal.\nEstimated blood loss: none.\n\nImpression: Normal colonoscopy.\nRecommendations: resume warfarin this evening and enoxaparin tomorrow per PCP plan. Given age, further surveillance per discussion with PCP; no routine repeat needed for polyp history alone."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-30a",
+          "kind": "lab_only",
+          "start": "2024-01-30T09:10",
+          "reason": "INR check after colonoscopy, on bridge",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-01-30T09:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "INR - Stop Bridge",
+              "author": "RN",
+              "date": "2024-01-30T14:00",
+              "body": "INR back in goal a week after colonoscopy. Per PCP stop enoxaparin. Continue warfarin 5 mg nightly. Pt also asked about the colonoscopy - told him it was normal, report is in his chart."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.6,
+              "Prothrombin Time": 29.9
+            }
+          }
+        },
+        {
+          "id": "2024-02-21a",
+          "kind": "office_visit",
+          "start": "2024-02-21T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes, hypertension and CKD follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-21T14:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-02-21T14:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-02-21T14:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-02-21T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2024-02-21T14:30",
+              "body": "Routine f/u. Cardiology letter from November reviewed with him - severe aortic stenosis, LVEF 48%. Breathing about the same as the fall, still winded on stairs and hills, takes it slow. Lightheaded now and then. No syncope, no chest pain. Colonoscopy in January normal.\n\nDM2 on metformin, no lows. Home BPs ok. Bowels unchanged.\n\nExam: vitals as charted. Harsh systolic murmur RUSB to carotids, mechanical click. Lungs clear. No edema. Feet intact.\n\nA/P:\n1. Severe AS - per cardiology, meds unchanged.\n2. Mechanical MVR - INR today, continue warfarin 5 mg.\n3. DM2 - A1c today, continue metformin.\n4. HTN - fine.\n5. CKD 3a - BMP.\nRTC 3-4 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 3.0,
+              "Prothrombin Time": 34.4
+            }
+          }
+        },
+        {
+          "id": "2024-03-20a",
+          "kind": "lab_only",
+          "start": "2024-03-20T09:00",
+          "reason": "INR monitoring",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-03-20T09:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 3.3,
+              "Prothrombin Time": 37.8
+            }
+          }
+        },
+        {
+          "id": "2024-04-15a",
+          "kind": "office_visit",
+          "start": "2024-04-15T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Gait change, falls, forgetfulness, urinary urgency (with daughter)",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-04-15T11:10",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-04-15T11:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-04-15T11:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-04-15T11:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Vitamin B12"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-04-15T11:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "ct-head-2024",
+              "action": "placed",
+              "order": "CT head without contrast",
+              "category": "imaging",
+              "to": "Radiology",
+              "reason": "Falls on warfarin, gait change, forgetfulness"
+            },
+            {
+              "id": "neurology-2024",
+              "action": "placed",
+              "order": "Neurology consultation",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "Gait disorder, falls, cognitive change, urinary urgency"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2024-04-15T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Gait and Memory Change",
+              "author": "PCP",
+              "date": "2024-04-15T11:45",
+              "body": "Here with his daughter, who asked for the visit. Over the past few months he has started shuffling his feet, and he's fallen several times at home - no head strike he remembers, no injuries. She thinks he's more forgetful: repeating questions, lost track of a bill. He also sometimes doesn't make it to the bathroom in time, which embarrasses him. He minimizes all of it but agrees the walking is worse. No headache, no new weakness or numbness, no dysuria or fever. Hip itself painless.\n\nExam: Alert, conversational, a bit slow with dates. Gait: wide-based, short shuffling steps, slow to get started, turns in several steps. Strength full in all four limbs, sensation intact. No tremor. Regular rhythm, mechanical click, AS murmur unchanged. R hip ROM painless.\n\nA/P: Several months of gait disturbance with falls, cognitive slowing and urinary urgency in a 73 y/o on warfarin.\n- Head CT without contrast now - falls on anticoagulation, and to look at ventricles/structure.\n- UA to exclude infection as a driver of the urgency. TSH, B12, BMP, CBC.\n- Neurology referral.\n- Home safety: remove loose rugs, night lights, grab bar in the bathroom; daughter will help set up. Cane at all times for now.\n- Warfarin continued - benefit for the mechanical mitral valve outweighs fall risk; reviewed with both of them.\nWill call with CT."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 2.1,
+              "Vitamin B12": 480,
+              "Prothrombin Time-International Normalized Ratio": 2.8,
+              "Prothrombin Time": 32.1
+            }
+          }
+        },
+        {
+          "id": "2024-04-18a",
+          "kind": "imaging",
+          "start": "2024-04-18T15:30",
+          "reason": "Head CT for gait change and falls on warfarin",
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2024-04-18T15:30",
+              "text": "Technique: axial non-contrast images of the head.\nComparison: none.\nFindings: The lateral and third ventricles are enlarged. The cortical sulci are normal in size. No intracranial hemorrhage. No extra-axial collection. No mass effect or midline shift. Gray-white differentiation preserved; no acute infarct. Basal cisterns patent. Calvarium intact. Visualized paranasal sinuses and mastoids clear.",
+              "conclusion": "Enlarged ventricles with normal cortical sulci. No hemorrhage or acute intracranial abnormality."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ct-head-2024",
+              "action": "done",
+              "date": "2024-04-18T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Head CT Result",
+              "author": "PCP",
+              "date": "2024-04-19T09:10",
+              "body": "Called pt and daughter (on speaker). No bleeding on the CT. The fluid spaces in the brain (ventricles) are enlarged while the surrounding brain looks normal - together with his walking, memory and bladder symptoms this raises the question of normal pressure hydrocephalus. Neurology appointment is 5/14; I sent them the CT. If neurology wants a spinal tap we'll need to hold warfarin - will plan once they tell us."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "telephone",
+          "start": "2024-05-07T10:30",
+          "reason": "Warfarin bridge plan for lumbar puncture",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-05-07T08:45",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "enoxaparin sodium 100 MG/ML Prefilled Syringe",
+              "action": "start",
+              "sig": "Inject 80 mg (0.8 mL) under the skin every 12 hours as directed for warfarin bridge; last dose the morning of 5/13",
+              "dose": {
+                "value": 80,
+                "unit": "mg"
+              },
+              "frequency": "Q12H",
+              "route": "Subcutaneous",
+              "course": "short",
+              "reason": "Warfarin bridge, mechanical mitral valve"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Lumbar Puncture - Warfarin Plan",
+              "author": "PCP",
+              "date": "2024-05-07T10:50",
+              "body": "Neurology plans a large-volume tap at his 5/14 visit. Spoke with daughter and pt.\n- Last warfarin Wed 5/8.\n- Enoxaparin 80 mg q12h from Fri 5/10, last dose AM 5/13 (needs 24 h off before the tap).\n- INR the morning of 5/14 at neurology, must be under 1.5.\n- Warfarin back 5/14 evening, enoxaparin restarts 5/15 AM, continue until INR >= 2.5.\nRx sent. Daughter will help with injections."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 3.1,
+              "Prothrombin Time": 35.5
+            }
+          }
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "specialist_visit",
+          "start": "2024-05-14T09:00",
+          "end": "2024-05-14T12:30",
+          "service": "Neurology",
+          "reason": "Gait difficulty with falls, forgetfulness, urinary incontinence",
+          "conditions": [
+            {
+              "label": "Normal pressure hydrocephalus",
+              "action": "diagnosed",
+              "onset": "2023-12-01"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neurology-2024",
+              "action": "done",
+              "date": "2024-05-14T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Consultation",
+              "author": "neurology",
+              "date": "2024-05-16T10:00",
+              "body": "OUTSIDE NEUROLOGY GROUP - CONSULTATION\nDate of service: 05/14/2024\nReferring: primary care\n\n73-year-old man with severe aortic stenosis and a mechanical mitral valve on warfarin, accompanied by his daughter. She describes several months of shuffling, multiple falls at home and increasing forgetfulness, with some episodes of not reaching the toilet in time.\n\nPMH: as per referral - HTN, DM2, hyperlipidemia, CKD 3, mechanical MVR, severe AS, right hip arthroplasty with revision 2023.\nMeds: warfarin (held for today's procedure, enoxaparin bridge), lisinopril, metformin, atorvastatin, amlodipine, aspirin 81.\nAllergies: NKDA.\n\nExam: Alert, oriented to person and place, approximate on date. MMSE 24/30 (lost points on recall and orientation). Cranial nerves intact. Strength 5/5 throughout, no sensory deficit, reflexes symmetric. Gait broad-based with a 'magnetic' quality - feet seem stuck to the floor, marked difficulty initiating steps, slow multistep turns.\n\nImaging: head CT 04/18/2024 reviewed - enlarged ventricles with normal cortical sulci.\n\nProcedure: High-volume lumbar puncture, L3-4, after confirming INR below threshold. Clear CSF removed without complication. Timed walk and gait observation before and 2 hours after: noticeably quicker start, longer steps, fewer steps to turn. Improvement was temporary by the end of his visit window, as expected.\n\nAssessment: Normal pressure hydrocephalus, with a positive response to CSF removal.\n\nPlan:\n1. Neurosurgery referral to consider a ventriculoperitoneal shunt.\n2. Resume anticoagulation per PCP plan tonight.\n3. PT for gait and fall prevention.\n4. Return after neurosurgical evaluation.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "lab_only",
+          "start": "2024-05-21T09:00",
+          "reason": "INR on bridge after lumbar puncture",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-05-21T09:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "INR - Stop Bridge",
+              "author": "RN",
+              "date": "2024-05-21T13:30",
+              "body": "INR in goal. Per PCP stop enoxaparin, warfarin 5 mg nightly. Daughter asked about the walking after the tap - it was better for about a day, now back to how it was. Neurosurgery appt is 6/11."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.6,
+              "Prothrombin Time": 29.9
+            }
+          }
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "specialist_visit",
+          "start": "2024-06-11T14:00",
+          "service": "Neurosurgery",
+          "reason": "Normal pressure hydrocephalus, shunt evaluation",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurosurgery Consultation",
+              "author": "neurosurgery",
+              "date": "2024-06-13T09:00",
+              "body": "OUTSIDE NEUROSURGERY - CONSULTATION\nDate of service: 06/11/2024\n\n73M referred by neurology with gait apraxia, cognitive slowing and urinary urgency; head CT with ventriculomegaly and normal sulci; clear gait improvement after a large-volume tap on 05/14. Mechanical mitral valve on warfarin; severe aortic stenosis, followed by cardiology; DM2; CKD 3.\n\nAllergies: NKDA.\nExam: magnetic, broad-based gait; slow turns. Strength and sensation intact.\n\nImpression: Idiopathic normal pressure hydrocephalus, tap-responsive. Good candidate for shunting.\n\nPlan: Right ventriculoperitoneal shunt with a programmable valve, scheduled 07/23/2024. Anticoagulation to be held with bridging - PCP to coordinate (warfarin off 5 days, enoxaparin last dose 24 h before; heparin post-op once cleared). Risks including bleeding, infection, over-drainage and shunt malfunction discussed with patient and daughter; they wish to proceed. Avoid strong magnets near the valve; any MRI needs valve check afterward."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-20a",
+          "kind": "office_visit",
+          "start": "2024-06-20T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-07-12a",
+          "kind": "telephone",
+          "start": "2024-07-12T09:30",
+          "reason": "Warfarin bridge plan for ventriculoperitoneal shunt",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-07-12T08:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-07-12T08:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-07-12T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-07-12T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "enoxaparin sodium 100 MG/ML Prefilled Syringe",
+              "action": "start",
+              "sig": "Inject 80 mg (0.8 mL) under the skin every 12 hours as directed for warfarin bridge; last dose the morning of 7/22",
+              "dose": {
+                "value": 80,
+                "unit": "mg"
+              },
+              "frequency": "Q12H",
+              "route": "Subcutaneous",
+              "course": "short",
+              "reason": "Warfarin bridge, mechanical mitral valve"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Shunt Surgery - Warfarin Plan",
+              "author": "PCP",
+              "date": "2024-07-12T10:00",
+              "body": "Pre-op labs today (also covers the diabetes labs from the visit he cancelled in June) - CBC, BMP, A1c, INR reviewed, ok for surgery. Neurosurgery's pre-op note received.\nAnticoag plan for 7/23 VP shunt, reviewed with daughter:\n- Last warfarin Wed 7/17.\n- Enoxaparin 80 q12h Fri 7/19 through AM 7/22.\n- Post-op: neurosurgery will restart heparin/warfarin when safe from their standpoint (brain surgery - they may wait a bit longer than the hip surgeries). Enoxaparin at home until INR >= 2.5.\nRx sent."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.9,
+              "Prothrombin Time": 33.3
+            }
+          }
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "hospital_admission",
+          "start": "2024-07-23T06:00",
+          "end": "2024-07-25T14:00",
+          "service": "Neurosurgery",
+          "reason": "Ventriculoperitoneal shunt for normal pressure hydrocephalus",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary - Ventriculoperitoneal Shunt",
+              "author": "neurosurgery",
+              "date": "2024-07-29T09:00",
+              "body": "REGIONAL HOSPITAL - NEUROSURGERY DISCHARGE SUMMARY\nAdmit 07/23/2024  Discharge 07/25/2024\n\nDiagnosis: Normal pressure hydrocephalus.\nProcedure 07/23/2024: Right frontal ventriculoperitoneal shunt with programmable valve. Uncomplicated.\n\nPost-op CT head: catheter tip in good position in the right lateral ventricle; no hemorrhage.\n\nCourse: Unremarkable. Up walking POD1 with PT - steps longer and steadier than pre-op. Heparin infusion started POD1 evening once cleared, warfarin restarted POD1. Incisions clean. Valve setting documented in the operative note; wallet card given.\n\nAllergies: NKDA.\nDischarge meds: home medications unchanged; enoxaparin 80 mg SC q12h until INR >= 2.5 per PCP.\nDisposition: home with daughter, outpatient PT.\nFollow-up: neurosurgery 6 weeks; PCP INR within 1 week. Call for headache, vomiting, fever, wound drainage or worsening gait."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-31a",
+          "kind": "nurse_visit",
+          "start": "2024-07-31T10:00",
+          "reason": "INR after shunt surgery, on bridge",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-07-31T10:05",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "INR Check - Post Shunt",
+              "author": "RN",
+              "date": "2024-07-31T10:30",
+              "body": "1 wk after VP shunt. Daughter drove. Incisions (scalp and abdomen) clean and dry, staples to come out at neurosurgery. No headache or vomiting. Walking 'better than in a year,' per daughter.\nINR in goal - per PCP stop enoxaparin, continue warfarin 5 mg nightly. Recheck 3 wks with AWV."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.7,
+              "Prothrombin Time": 31.0
+            }
+          }
+        },
+        {
+          "id": "2024-08-29a",
+          "kind": "annual_physical",
+          "start": "2024-08-29T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-29T09:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-08-29T09:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-29T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-29T09:40",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-08-29T09:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2024-08-29T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2024-08-29T10:15",
+              "body": "AWV, daughter present for part. Five weeks out from the VP shunt and both of them say the walking is clearly better - longer steps, no falls since surgery. Bladder urgency less. Memory 'about the same, maybe a little sharper.' PHQ-9 3, mostly fatigue and sleep. Using a cane outside.\n\nFunctional: independent ADLs; daughter now helps with bills and checks the pill box weekly. Not driving long distances.\n\nReviewed problem list, meds (unchanged), NKDA, family/social history.\n\nExam: vitals as charted. Shunt incisions healed. Harsh systolic murmur RUSB, mechanical click. Lungs clear. No edema. Gait: wide-ish but much quicker to start than in April, turns in 3 steps. Feet intact.\n\nPrevention: flu/COVID in October. Pneumococcal, Shingrix, RSV done. Eye exam - optometry visit next month. Colonoscopy normal Jan 2024.\nAdvance directive on file; health care proxy is his daughter.\n\nLabs: CMP, CBC, lipids, UACR, INR (A1c was done in July).\nRTC 3 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 3.2,
+              "Prothrombin Time": 36.7
+            }
+          }
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "specialist_visit",
+          "start": "2024-09-10T11:00",
+          "service": "Neurosurgery",
+          "reason": "Follow-up after ventriculoperitoneal shunt",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurosurgery Follow-up",
+              "author": "neurosurgery",
+              "date": "2024-09-12T09:00",
+              "body": "OUTSIDE NEUROSURGERY - FOLLOW-UP\nDate of service: 09/10/2024\n\n7 weeks s/p right VP shunt (programmable valve) for NPH. Patient and daughter report a steadier gait with no falls since surgery and fewer episodes of urinary urgency. No headaches, nausea or vomiting.\n\nAllergies: NKDA.\nExam: incisions healed. Gait steadier, step length improved, turns more fluid. No focal deficits.\nValve interrogated: setting unchanged.\n\nAssessment: Good clinical response to shunting.\nPlan: no valve adjustment. Follow up in 6 months, sooner for gait decline, headache or vomiting. Anticoagulation per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "outside_records",
+          "start": "2024-09-26T10:00",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Optometry - Diabetic Eye Examination",
+              "author": "optometry",
+              "date": "2024-09-26T10:00",
+              "body": "OUTSIDE OPTOMETRY - DIABETIC EYE EXAM\nExam date: 09/24/2024\nPatient: Robert Graves. Allergies: NKDA.\nBest corrected VA 20/25 each eye. Pressures normal. Dilated exam: no diabetic retinopathy OU, maculae flat.\nImpression: Type 2 diabetes without retinopathy. Return 1 year."
+            }
+          ],
+          "service": "Optometry"
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T10:30",
+          "reason": "Fall vaccines; INR",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-10-08T10:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-10-08T10:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T10:47"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T10:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunizations and INR",
+              "author": "RN",
+              "date": "2024-10-08T11:05",
+              "body": "High-dose flu L deltoid, 2024-25 COVID R deltoid. Pressure held, no hematoma. Tolerated well. INR reviewed with PCP - no change, 5 mg nightly, next in 5 weeks."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.9,
+              "Prothrombin Time": 33.3
+            }
+          }
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "telephone",
+          "start": "2024-11-19T16:10",
+          "reason": "Bright red blood per rectum",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-11-19T08:50",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-2024",
+              "action": "placed",
+              "order": "Gastroenterology consultation",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "Recurrent painless bright red blood per rectum on warfarin"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Rectal Bleeding",
+              "author": "PCP",
+              "date": "2024-11-19T16:30",
+              "body": "Pt called back after INR draw this AM (INR in range). For about a month he's had spells of bright red blood with his bowel movements, lasting a day or two then stopping on their own. No pain. No black stools. No lightheadedness beyond his usual, no fainting. Bowels otherwise his usual.\n\nOn warfarin + ASA for mechanical MVR. Colonoscopy normal in January.\n\nPlan: GI referral placed, urgent - they have 11/27. Continue warfarin and aspirin for now given the valve. Go to ED for heavy bleeding, clots, dizziness or fainting, or black stools. CBC at GI."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 3.0,
+              "Prothrombin Time": 34.4
+            }
+          }
+        },
+        {
+          "id": "2024-11-27a",
+          "kind": "specialist_visit",
+          "start": "2024-11-27T10:00",
+          "service": "Gastroenterology",
+          "reason": "Recurrent painless bright red blood per rectum",
+          "vitals": {
+            "temp_c": 36.8,
+            "bp": [
+              128,
+              70
+            ],
+            "hr": 80,
+            "rr": 14
+          },
+          "state": {
+            "labs": {
+              "Hemoglobin": 9.8
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-11-27T10:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 82
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-2024",
+              "action": "done",
+              "date": "2024-11-27T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "author": "gastroenterology",
+              "date": "2024-12-02T09:00",
+              "body": "OUTSIDE GASTROENTEROLOGY - CONSULTATION\nDate of service: 11/27/2024\nReferring: primary care\n\nHPI: 74-year-old man with a mechanical mitral valve on warfarin and aspirin and a history of colon polyps (normal surveillance colonoscopy 01/2024). Over the past month he has had recurrent painless bright red blood per rectum, each episode lasting one to two days and settling without treatment. No abdominal pain, no diarrhea, no weight loss, and his bowel pattern is no different from usual.\n\nPMH: severe aortic stenosis, HTN, DM2, hyperlipidemia, CKD 3, NPH s/p VP shunt 07/2024, chronic constipation, right hip arthroplasty.\nMeds: warfarin 5 mg, aspirin 81 mg, lisinopril 20 mg, metformin 1000 mg BID, atorvastatin 40 mg, amlodipine 5 mg.\nAllergies: NKDA.\nFamily history: no colorectal cancer; no hereditary hemorrhagic telangiectasia.\n\nExam: T 36.8 C, BP 128/70, P 80, RR 14. Abdomen soft, nontender, no masses. Rectal: gross blood on the glove, no palpable mass.\n\nLabs: hemoglobin 9.8 g/dL, MCV 82 fL.\n\nAssessment: Intermittent painless hematochezia with anemia on anticoagulation. Ddx includes angioectasia, diverticular bleeding, hemorrhoidal or rectal source.\n\nPlan: Diagnostic colonoscopy 12/10 during a quiet period; PCP to arrange warfarin bridging. If bleeding recurs actively, ED for tagged red cell scan. Continue warfarin and aspirin pending evaluation.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-02a",
+          "kind": "telephone",
+          "start": "2024-12-02T14:00",
+          "reason": "Warfarin bridge plan for diagnostic colonoscopy",
+          "medications": [
+            {
+              "drug_text": "enoxaparin sodium 100 MG/ML Prefilled Syringe",
+              "action": "start",
+              "sig": "Inject 80 mg (0.8 mL) under the skin every 12 hours as directed for warfarin bridge; last dose the morning of 12/9",
+              "dose": {
+                "value": 80,
+                "unit": "mg"
+              },
+              "frequency": "Q12H",
+              "route": "Subcutaneous",
+              "course": "short",
+              "reason": "Warfarin bridge, mechanical mitral valve"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Colonoscopy - Warfarin Plan",
+              "author": "PCP",
+              "date": "2024-12-02T14:20",
+              "body": "GI letter reviewed (Hgb 9.8, MCV 82). Spoke with pt and daughter re: colonoscopy 12/10.\n- Last warfarin Wed 12/4.\n- Enoxaparin 80 q12h Fri 12/6 to AM 12/9.\n- Restart warfarin evening of 12/10, enoxaparin 12/11 if GI agrees, until INR >= 2.5.\nWith the bleeding, call immediately if heavy bleeding while on the injections. Rx sent."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "procedure_visit",
+          "start": "2024-12-10T08:00",
+          "service": "Gastroenterology",
+          "reason": "Diagnostic colonoscopy for hematochezia",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, diagnostic",
+              "performed": "2024-12-10T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Colonoscopy Report",
+              "author": "gastroenterology",
+              "date": "2024-12-11T09:00",
+              "body": "OUTSIDE ENDOSCOPY CENTER - COLONOSCOPY REPORT\nDate: 12/10/2024\nIndication: intermittent painless hematochezia, anemia; on warfarin (held with bridge) for mechanical mitral valve.\nAllergies: NKDA.\nSedation: MAC.\n\nPrep adequate. Cecum reached and photographed. Ileocecal valve normal.\nFindings: no masses, no ulcers, no active bleeding and no blood in the colon. No polyps. Retroflexion normal, no hemorrhoids of note.\n\nImpression: No bleeding source identified; patient not actively bleeding today.\nPlan: resume anticoagulation per PCP. If bleeding recurs, present promptly for a tagged red cell scan and repeat endoscopic evaluation during active bleeding."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-17a",
+          "kind": "lab_only",
+          "start": "2024-12-17T09:00",
+          "reason": "INR on bridge after colonoscopy",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-12-17T09:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "INR - Stop Bridge",
+              "author": "RN",
+              "date": "2024-12-17T13:40",
+              "body": "INR in goal. Per PCP stop enoxaparin, warfarin 5 mg nightly. Pt reports no bleeding since before the colonoscopy. Reminded him to call or go to ED if it recurs, as GI asked."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.6,
+              "Prothrombin Time": 29.9
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

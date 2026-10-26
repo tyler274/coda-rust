@@ -1,0 +1,257 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002688",
+      "events": [
+        {
+          "id": "2026-03-12a",
+          "kind": "ed_visit",
+          "start": "2026-03-12T14:25",
+          "end": "2026-03-12T20:40",
+          "service": "Emergency Medicine (outside)",
+          "reason": "Severe upper abdominal pain with vomiting",
+          "conditions": [
+            {"label": "Acute pancreatitis due to hypertriglyceridemia", "icd10": "K85.80", "action": "diagnosed", "onset": "2026-03-12"}
+          ],
+          "state": {"labs": {"Triglycerides": 2000}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-03-12T14:50", "results": [{"test": "White Blood Cells"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-03-12T14:50", "results": [{"test": "Creatinine"}]},
+            {"panel": null, "collected": "2026-03-12T14:50", "resulted": "2026-03-12T15:55", "results": [
+              {"test": "Lipase", "value": 1800},
+              {"test": "Amylase", "loinc": "1798-8", "unit": "U/L", "value": 2000},
+              {"test": "Triglycerides", "value": 2000}
+            ]}
+          ],
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2026-03-12T16:10",
+              "issued": "2026-03-12T16:45",
+              "text": "INDICATION: Epigastric pain radiating to the back, elevated lipase.\nTECHNIQUE: Real-time grayscale and color Doppler sonography of the right upper quadrant.\nFINDINGS: Liver normal in size and echotexture without focal lesion. Gallbladder well distended, no stones or sludge, wall not thickened, no pericholecystic fluid; sonographic Murphy sign negative. Common bile duct 3 mm, not dilated. No intrahepatic biliary dilatation. Visualized pancreatic head unremarkable; body and tail partly obscured by overlying bowel gas. Right kidney normal in size without hydronephrosis. No free fluid in the right upper quadrant.",
+              "conclusion": "No cholelithiasis. No biliary obstruction."
+            }
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2026-03-12T14:25"}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Physician Record (received)",
+              "author": "emergency medicine",
+              "date": "2026-03-13T09:10",
+              "body": "Regional hospital emergency department. Date of service 03/12/2026. Copy to primary care.\n\nCHIEF COMPLAINT: abdominal pain, vomiting\n\nHPI: 24 yo M, construction worker, presents with severe sharp pain in the upper abdomen going through to the back since early this morning, with nausea and several episodes of emesis. States he has had attacks like this on and off for about three months, not as bad, each lasting a day or so and settling at home; did not seek care for them. This one did not let up. Last alcohol 4 days ago (2-3 drinks/wk at baseline). No fever, no diarrhea, no hematemesis.\n\nPMH (per patient and outside list): hyperzincemia, elevated triglycerides\nMEDS: zinc gluconate 50 mg daily, multivitamin daily\nALLERGIES: NKDA\nFHx: father HTN; mother migraine; no known inherited metabolic disease\nSHx: never smoker; social EtOH; no drug use\n\nEXAM: uncomfortable, lying still. Vitals per flowsheet.\nAbd: tender in the epigastrium, no rebound, no guarding, bowel sounds present. No jaundice.\nHeart RRR. Lungs clear.\n\nRESULTS: lipase 1800 U/L, amylase 2000 U/L, triglycerides 2000 mg/dL. CBC and CMP otherwise unremarkable.\nRUQ US: no gallstones, no biliary obstruction.\n\nED COURSE: IV fluids started, IV ondansetron and IV hydromorphone with improvement. \n\nIMPRESSION: Acute pancreatitis, hypertriglyceridemia-induced; gallstones not seen.\n\nDISPOSITION: admitted to the hospitalist service."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-12b",
+          "kind": "hospital_admission",
+          "start": "2026-03-12T20:40",
+          "end": "2026-03-15T12:30",
+          "service": "Hospital Medicine (outside)",
+          "reason": "Acute pancreatitis due to hypertriglyceridemia",
+          "labs": [
+            {"panel": null, "collected": "2026-03-15T05:30", "results": [
+              {"test": "Triglycerides", "value": 640}
+            ]}
+          ],
+          "medications": [
+            {"drug_text": "fenofibrate 145 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 145, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertriglyceridemia"}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2026-03-12T22:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-03-15T11:30"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary (received)",
+              "author": "hospital medicine",
+              "date": "2026-03-16T10:05",
+              "body": "HOSPITALIST DISCHARGE SUMMARY\nAdmitted 03/12/2026 via ED. Discharged 03/15/2026 to home.\n\nPrincipal diagnosis: acute pancreatitis secondary to hypertriglyceridemia, without necrosis or infection.\n\nBrief history: 24 y/o male with known elevated triglycerides presented with severe epigastric pain radiating to the back with vomiting. Lipase 1800, amylase 2000, TG 2000 on arrival. RUQ ultrasound without gallstones or ductal dilatation.\n\nHospital course: Made NPO with IV lactated Ringer's. IV ondansetron and IV hydromorphone as needed, weaned by day 2. Pain resolved and he was advanced to clear liquids on day 2 and a low-fat diet on day 3, which he tolerated. Triglycerides 640 on the morning of discharge. Started on fenofibrate. Counseled at length to stop alcohol completely and keep to a low-fat diet; he was agreeable.\n\nDischarge medications:\n- NEW fenofibrate 145 mg PO daily\n- multivitamin 1 tab daily\n- zinc gluconate 50 mg daily: patient states he is not taking\n\nAllergies: NKDA\n\nFollow-up: PCP within 1 week with fasting lipid panel. Return for recurrent abdominal pain, vomiting or fever.\nWork: off until seen by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "telephone",
+          "start": "2026-03-16T11:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2026-03-16T11:35",
+              "body": "Transition of care call after discharge 3/15 for pancreatitis. Spoke with patient. Reports he is feeling a lot better, no pain since Saturday, eating small low-fat meals and keeping them down. No vomiting, no fever. Picked up fenofibrate yesterday and took first home dose. Reviewed discharge med list with him: fenofibrate daily, multivitamin; not on zinc. Has not had any alcohol. Booked with PCP Thursday 3/19 at 7:30, fasting for labs. Knows to call or come in sooner for return of pain or vomiting."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-19a",
+          "kind": "office_visit",
+          "start": "2026-03-19T07:30",
+          "end": "2026-03-19T08:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, pancreatitis",
+          "conditions": [
+            {"label": "Acute pancreatitis due to hypertriglyceridemia", "icd10": "K85.80", "action": "resolved"}
+          ],
+          "state": {"labs": {"Triglycerides": 380}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "social": [
+            {"item": "History of alcohol use", "value": "None since March 2026"}
+          ],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2026-03-19T08:10", "results": [
+              {"test": "Total Cholesterol", "value": 192},
+              {"test": "High Density Lipoprotein", "value": 40},
+              {"test": "Triglycerides", "value": 380},
+              {"test": "Low Density Lipoprotein", "value": 86}
+            ]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-03-19T08:10", "results": [{"test": "Alanine Aminotransferase"}]}
+          ],
+          "orders": [
+            {"id": "fibrate-labs-may", "action": "placed", "order": "Lipid panel, hepatic panel, creatinine", "category": "lab", "reason": "Fenofibrate monitoring"}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, moderate complexity", "performed": "2026-03-19T07:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "author": "PCP",
+              "date": "2026-03-19T08:05",
+              "body": "Hospital follow-up (TCM). ED record and discharge summary reviewed.\n\nAugust was admitted 3/12-3/15 with acute pancreatitis from hypertriglyceridemia: lipase 1800, amylase 2000, TG 2000 on arrival, no gallstones on ultrasound. Treated with bowel rest and IV fluids; TG 640 at discharge, started on fenofibrate 145 mg.\n\nToday: no abdominal pain since the weekend. Eating normally, has cut out fried food and fast food lunches at work. Taking fenofibrate every morning, no muscle aches. Has had no alcohol since discharge and plans to keep it that way. Off the zinc since September as before. He tells me the attacks over the winter were milder and he just rode them out at home.\n\nExam: vitals as charted, afebrile. Comfortable.\nAbdomen soft, nontender including epigastrium, no organomegaly.\nNo jaundice.\n\nA/P:\n1. Acute pancreatitis, resolved clinically.\n2. Hypertriglyceridemia, now with pancreatitis. Continue fenofibrate 145 mg daily, low-fat diet, no alcohol. Fasting lipid panel and CMP today. Repeat lipids, liver tests and creatinine in 2 months, then video visit.\n3. Work: cleared to return to full duty Monday 3/23. Letter given.\n\nReturn sooner for any recurrent pain or vomiting."
+            },
+            {
+              "type": "Letter",
+              "title": "Return to Work",
+              "author": "PCP",
+              "date": "2026-03-19T08:10",
+              "body": "To whom it may concern:\n\nAugust Curran was under medical care from March 12 through March 19, 2026. He may return to work without restrictions on Monday, March 23, 2026.\n\nPlease contact our office with any questions.\n\nPrimary Care Physician"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-20a",
+          "kind": "portal_message",
+          "start": "2026-03-20T14:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Labs from yesterday",
+              "author": "PCP",
+              "date": "2026-03-20T14:30",
+              "body": "August, triglycerides are down to 380, from 2000 in the ER and 640 when you left the hospital. Heading the right way. Kidney and liver tests are normal. Keep up the fenofibrate, the diet changes and no alcohol. Next labs in May."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "pharmacy",
+          "start": "2026-04-14T09:45",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Pharmacy refill request - fenofibrate",
+              "author": "MA",
+              "date": "2026-04-14T09:45",
+              "body": "Pharmacy request to convert fenofibrate 145 mg (30-day supply from hospital discharge) to a 90-day supply under his plan. Pended for PCP.\n\nPCP: approved, 90 days with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-18a",
+          "kind": "lab_only",
+          "start": "2026-05-18T07:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fenofibrate monitoring labs",
+          "state": {"labs": {"Triglycerides": 260}},
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2026-05-18T07:05", "results": [
+              {"test": "Total Cholesterol", "value": 180},
+              {"test": "High Density Lipoprotein", "value": 44},
+              {"test": "Triglycerides", "value": 260},
+              {"test": "Low Density Lipoprotein", "value": 84}
+            ]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2026-05-18T07:05", "results": [{"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2026-05-18T07:05", "results": [{"test": "Creatinine"}]}
+          ],
+          "orders": [
+            {"id": "fibrate-labs-may", "action": "done", "date": "2026-05-18T07:05"}
+          ],
+          "procedures": [
+            {"procedure": "Venipuncture", "performed": "2026-05-18T07:05"}
+          ]
+        },
+        {
+          "id": "2026-05-21a",
+          "kind": "telehealth_visit",
+          "start": "2026-05-21T18:00",
+          "end": "2026-05-21T18:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up triglycerides on fenofibrate",
+          "procedures": [
+            {"procedure": "Telehealth visit, established patient, low MDM", "performed": "2026-05-21T18:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2026-05-21T18:15",
+              "body": "Video visit, pt at home after work, identity confirmed.\n\nDoing well. No abdominal pain since March. Taking fenofibrate daily without side effects. Still not drinking. Packing his own lunches.\n\nLabs 5/18: TG 260 (2000 in March, 380 a week after discharge). Liver tests and creatinine normal.\n\nA/P: hypertriglyceridemia on fenofibrate, improving. Continue fenofibrate 145 mg daily, diet, no alcohol. Fasting lipids with his physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "pharmacy",
+          "start": "2026-07-28T10:15",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Fill history reviewed",
+              "author": "MA",
+              "date": "2026-07-28T10:15",
+              "body": "Pharmacy fill notice: fenofibrate 145 mg #90 refilled 7/27, on schedule. No action needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T20:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "physical",
+              "author": "patient",
+              "date": "2026-08-11T20:02",
+              "body": "Need to book my physical for sometime in september. mornings before 8 are best. do I need to fast again"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: physical",
+              "author": "front desk",
+              "date": "2026-08-12T09:15",
+              "body": "Hi August, you're booked Monday 9/14 at 7:30 AM. Yes, please come fasting so we can draw your lipids that morning."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-14a",
+          "kind": "annual_physical",
+          "start": "2026-09-14T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical with fasting labs",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

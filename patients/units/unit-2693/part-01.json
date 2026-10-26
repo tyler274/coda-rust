@@ -1,0 +1,1032 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002693",
+   "given": "Tammy",
+   "family": "Washington",
+   "birth_date": "1969-04-09",
+   "address_line": "41 Loudville Road",
+   "phone": "+1-802-555-0153",
+   "email": "tammy.washington@example.test",
+   "marital_status": "single",
+   "summary": "Data entry specialist with type 2 diabetes, hypertension, mixed hyperlipidemia and obesity who joined in 2021; acanthosis nigricans, pes anserinus pain, tarsal tunnel syndrome, NASH, endometrial hyperplasia and a hepatic adenoma follow. A 2026 laparoscopic hysterectomy is complicated by a small-bowel perforation repaired at an outside hospital.",
+   "events": [
+    {
+     "id": "2021-09-02a",
+     "kind": "telephone",
+     "start": "2021-09-02T10:20",
+     "reason": "new patient inquiry",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient call",
+       "author": "front desk",
+       "date": "2021-09-02T10:20",
+       "body": "Caller wants to establish care. Has diabetes and high blood pressure, on three meds. Her old office dropped her plan from its panel. Membership info emailed. New pt appt booked 9/14 8:40 AM. Asked to bring pill bottles and come fasting. Records release form emailed, she will sign and return."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-14a",
+     "kind": "establish_care",
+     "start": "2021-09-14T08:40",
+     "end": "2021-09-14T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "establish care, diabetes and blood pressure",
+     "conditions": [
+      {
+       "label": "Type 2 diabetes mellitus with hyperglycemia",
+       "action": "history",
+       "onset": "2016-06-01"
+      },
+      {
+       "label": "Essential hypertension",
+       "action": "history",
+       "onset": "2015-03-01"
+      },
+      {
+       "label": "Mixed hyperlipidemia",
+       "action": "history",
+       "onset": "2016-06-01"
+      },
+      {
+       "label": "Obesity, unspecified",
+       "action": "history",
+       "onset": "2010-01-01"
+      },
+      {
+       "label": "Acquired absence of gallbladder",
+       "action": "history",
+       "onset": "2014-06-01",
+       "note": "laparoscopic cholecystectomy 2014"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "sig": "Take 1 tablet by mouth twice daily with meals",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "type 2 diabetes",
+       "action": "historical"
+      },
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension",
+       "action": "historical"
+      },
+      {
+       "drug": "atorvastatin 40 MG Oral Tablet",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hyperlipidemia",
+       "action": "historical"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "state": {
+      "bp": [
+       140,
+       88
+      ],
+      "weight_kg": 95.3,
+      "height_cm": 165.0,
+      "labs": {
+       "Hemoglobin A1c": 8.3,
+       "Low Density Lipoprotein": 142,
+       "High Density Lipoprotein": 36,
+       "Triglycerides": 245,
+       "Total Cholesterol": 218,
+       "Glucose": 172,
+       "Fasting Glucose": 172,
+       "Microalbumin/Creatinine Ratio": 12
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "rr",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-09-14T09:35",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Sodium"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-09-14T09:35",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-09-14T09:35",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-09-14T09:35",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        },
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "No alcohol use"
+      },
+      {
+       "item": "Occupation",
+       "value": "Data entry specialist"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2021-09-14T08:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2021-09-14T10:05",
+       "body": "NEW PATIENT VISIT\n\n52 yo woman here to establish care. Previous primary office no longer takes her plan. Records requested.\n\nHPI: Type 2 diabetes for several years, on metformin 1000 mg BID, no other agent ever. Also HTN on lisinopril 20 and high cholesterol/triglycerides on atorvastatin 40. Says she used to see an endocrinologist alongside her old PCP, last went in the spring, not planning to go back if we can manage it here. No home glucose meter in use (\"the strips ran out\"). Takes meds most days. No polyuria, polydipsia, vision change, chest pain, dyspnea, foot sores. Weight has been about the same for years.\n\nPMH: T2DM, HTN, mixed hyperlipidemia, obesity.\nPSH: laparoscopic cholecystectomy 2014.\nMeds: metformin 1000 mg BID, lisinopril 20 mg daily, atorvastatin 40 mg daily.\nAllergies: NKDA.\nFH: mother T2DM. Father HTN and high cholesterol. Maternal grandmother endometrial cancer.\nSH: data entry specialist, sits most of the day. Never smoker. No alcohol. No drugs. Lives in Easthampton.\nGYN: still having periods, regular. Pap and mammogram done at old office, will confirm from records.\n\nROS otherwise negative.\n\nExam: Vitals as recorded. BMI 35.\nGen: well appearing, pleasant.\nHEENT: normal. Neck supple, no thyromegaly.\nCV: RRR, no murmur. Lungs clear.\nAbd: obese, soft, nontender, healed laparoscopic port scars.\nExt: no edema. Feet: skin intact, pulses 2+, monofilament intact bilaterally.\nPsych: normal mood and affect.\n\nA/P:\n1. T2DM - not at goal by her report. A1c today. Diet basics reviewed. Continue metformin. New meter and strips sent.\n2. HTN - above goal today. Continue lisinopril 20, recheck next visit.\n3. Mixed hyperlipidemia - continue atorvastatin 40, lipids today.\n4. Obesity - talked about walking at lunch.\n5. HM - HIV screen today (never done). Records for Pap, colonoscopy, mammogram, vaccines. Flu shot when it arrives.\n\nRTC 4 months, sooner with results."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-16a",
+     "kind": "portal_message",
+     "start": "2021-09-16T16:40",
+     "reason": "lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2021-09-16T16:40",
+       "body": "Hi Ms. Washington,\n\nYour labs from Tuesday are back. Your A1c (3-month sugar average) is above where we want it, and your triglycerides are high. Kidney function, blood counts and the urine protein test look fine, and the HIV screen is negative.\n\nFor now: keep taking the metformin twice a day with meals, start using the new meter a few mornings a week, and try to cut back on sweet drinks. We will recheck at your next visit in January.\n\nYour primary care physician"
+      }
+     ]
+    },
+    {
+     "id": "2021-10-05a",
+     "kind": "outside_records",
+     "start": "2021-10-05T11:15",
+     "reason": "records from prior practice",
+     "reports": [
+      {
+       "study": "Cervical cytology (Pap) with HPV",
+       "performed": "2020-06-18T10:00",
+       "text": "Specimen: ThinPrep, cervical. Adequacy: satisfactory for evaluation, transformation zone present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+       "conclusion": "NILM, HPV negative."
+      },
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2021-02-09T09:30",
+       "text": "Bilateral CC and MLO views. Scattered areas of fibroglandular density. No suspicious mass, calcifications or architectural distortion.",
+       "conclusion": "BI-RADS 1, negative. Routine screening."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Colonoscopy, screening, average risk",
+       "performed": "2019-05-14T08:00"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2018-03-20T10:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-03-26T13:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-04-16T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior practice records abstract",
+       "author": "MA",
+       "date": "2021-10-05T11:15",
+       "body": "Records received by fax from prior primary care office, 64 pages. Abstracted:\n- Pap with HPV co-test 06/2020: negative / HPV not detected.\n- Screening colonoscopy 05/2019: normal to cecum, no polyps, repeat in 10 years.\n- Screening mammogram 02/2021: BI-RADS 1.\n- Tdap 03/2018. COVID Pfizer x2 03/2021 and 04/2021.\n- Problem list there: type 2 DM, HTN, hyperlipidemia, obesity. Notes mention co-management with an outside endocrinology office, last endo visit spring 2021.\n- Meds match what she brought in.\nScanned to media. Routed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-21a",
+     "kind": "nurse_visit",
+     "start": "2021-10-21T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "flu shot",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-21T15:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-21T15:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunization",
+       "author": "RN",
+       "date": "2021-10-21T15:40",
+       "body": "Here for flu vaccine. No fever today, no prior reaction to vaccines. 0.5 mL IM left deltoid. VIS reviewed. Waited 15 minutes, no reaction."
+      }
+     ]
+    },
+    {
+     "id": "2021-12-06a",
+     "kind": "pharmacy",
+     "start": "2021-12-06T09:10",
+     "reason": "refills",
+     "documents": [
+      {
+       "type": "Refill Encounter",
+       "title": "90-day refill request",
+       "author": "MA",
+       "date": "2021-12-06T09:10",
+       "body": "Pharmacy fax requesting 90-day supplies of metformin 1000 mg, lisinopril 20 mg, atorvastatin 40 mg (plan prefers 90-day fills). Last visit 9/14, f/u booked 1/25. Sent per protocol, 90 days with 1 refill each."
+      }
+     ]
+    },
+    {
+     "id": "2022-01-25a",
+     "kind": "office_visit",
+     "start": "2022-01-25T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes and blood pressure follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 8.5,
+       "Fasting Glucose": 180,
+       "Glucose": 180,
+       "Total Cholesterol": 220,
+       "High Density Lipoprotein": 35,
+       "Low Density Lipoprotein": 145,
+       "Triglycerides": 250
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-01-25T09:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 8.5
+        },
+        {
+         "test": "Fasting Glucose",
+         "value": 180
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-01-25T09:50",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 220
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 35
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 145
+        },
+        {
+         "test": "Triglycerides",
+         "value": 250
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-01-25T09:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Glucose",
+         "value": 180
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "derm-referral",
+       "action": "placed",
+       "order": "Dermatology referral",
+       "category": "referral",
+       "to": "Dermatology",
+       "reason": "darkening and thickening of skin of neck and axillae"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-01-25T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2022-01-25T10:10",
+       "body": "S: F/u DM, HTN. Using the meter some mornings, fasting numbers 160s to 190s. Admits holidays were rough for diet. Taking all meds.\nNew: noticed the skin on the back of her neck and in both armpits getting darker and thicker since around late summer. Not itchy, not painful. Wants it looked at, worried it is a rash from deodorant.\n\nO: Vitals as recorded. BMI ~35.\nSkin: darkened, thickened skin at posterior neck and both axillae. No open areas.\nCV RRR. Lungs clear. No edema.\n\nA/P:\n1. T2DM - fasting labs today. Reinforced diet, walking. Continue metformin 1000 BID.\n2. Skin change neck/axillae - send to dermatology for evaluation.\n3. HTN - continue lisinopril.\n4. Mixed hyperlipidemia - lipids today, continue atorvastatin.\n5. Screening mammogram ordered (last 2/2021).\n\nRTC 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-01-27a",
+     "kind": "portal_message",
+     "start": "2022-01-27T12:30",
+     "reason": "lab results",
+     "orders": [
+      {
+       "id": "mammo-2022",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "routine screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Results from Tuesday",
+       "author": "PCP",
+       "date": "2022-01-27T12:30",
+       "body": "Hi Tammy - your A1c came back at 8.5 and your fasting sugar was 180, so the diabetes is running higher than we'd like. Cholesterol: LDL 145, triglycerides 250, HDL (the good one) 35. Kidney tests are fine.\n\nKeep the metformin going and keep working on the food changes we talked about. The dermatology referral went out today; their office will call you. I also put in your mammogram order."
+      }
+     ]
+    },
+    {
+     "id": "2022-02-24a",
+     "kind": "specialist_visit",
+     "start": "2022-02-24T13:00",
+     "service": "Dermatology",
+     "reason": "darkening of skin of neck and axillae",
+     "conditions": [
+      {
+       "label": "Acanthosis nigricans",
+       "icd10": "L83",
+       "action": "diagnosed",
+       "onset": "2021-08-15"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-02-24T13:40",
+       "results": [
+        {
+         "test": "Insulin, fasting",
+         "value": 32,
+         "loinc": "20448-7",
+         "unit": "u[IU]/mL"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "derm-referral",
+       "action": "done",
+       "date": "2022-02-24T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Dermatology Consultation",
+       "author": "dermatology",
+       "date": "2022-03-08T08:30",
+       "body": "OUTSIDE DERMATOLOGY GROUP - CONSULTATION\nDate of visit: 02/24/2022\nRe: Tammy Washington, DOB 04/09/1969\n\nThank you for referring Ms. Washington. She describes about half a year of gradual darkening and thickening of the skin in both underarms and around the neck. No itching or pain. No new medications.\n\nHer diabetes remains poorly controlled on metformin; we reviewed your January labs (A1c 8.5%, fasting glucose 180, total cholesterol 220, LDL 145, HDL 35, triglycerides 250). She also has hypertension. No family history of skin cancer. Never smoker, no alcohol.\n\nMeds: metformin 1000 mg BID, lisinopril 20 mg daily, atorvastatin 40 mg daily. Allergies: NKDA.\n\nExam: BMI 35. Symmetric, hyperpigmented, velvety plaques of both axillae and the neck. No skin tags of concern, no other lesions examined of note.\n\nFasting insulin drawn today: 32 uIU/mL (high).\n\nImpression: Acanthosis nigricans, consistent with insulin resistance.\n\nPlan: The skin change reflects her insulin resistance and should soften with weight loss and better glucose control. No topical treatment needed at this point. Return as needed.\n\nDermatology"
+      }
+     ]
+    },
+    {
+     "id": "2022-03-08a",
+     "kind": "telephone",
+     "start": "2022-03-08T12:15",
+     "reason": "outside letter review",
+     "conditions": [
+      {
+       "label": "Metabolic syndrome",
+       "icd10": "E88.810",
+       "action": "diagnosed",
+       "onset": "2022-03-08"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Derm letter reviewed, call to patient",
+       "author": "PCP",
+       "date": "2022-03-08T12:15",
+       "body": "Reviewed derm consult: acanthosis nigricans, fasting insulin 32. Added acanthosis and metabolic syndrome (obesity, TG 250, HDL 35, HTN, DM) to problem list.\nCalled pt, explained the skin change is from insulin resistance, not her deodorant. Same plan: food changes, more walking, metformin. She is going to try a lunchtime walk with a coworker. Mammogram scheduled for 3/23."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-23a",
+     "kind": "imaging",
+     "start": "2022-03-23T08:15",
+     "reason": "screening mammogram",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2022-03-23T08:15",
+       "text": "Bilateral CC and MLO views. Comparison 02/2021. Scattered fibroglandular densities. No suspicious masses, calcifications or architectural distortion. No change.",
+       "conclusion": "BI-RADS 1, negative. Annual screening recommended."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2022",
+       "action": "done",
+       "date": "2022-03-23T08:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Mammogram result",
+       "author": "PCP",
+       "date": "2022-03-24T07:50",
+       "body": "Normal screening mammogram, BI-RADS 1. Letter to pt."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-11a",
+     "kind": "portal_message",
+     "start": "2022-04-11T19:42",
+     "reason": "right knee pain",
+     "orders": [
+      {
+       "id": "ortho-referral",
+       "action": "placed",
+       "order": "Orthopedics referral",
+       "category": "referral",
+       "to": "Orthopedics & Sports Medicine",
+       "reason": "right knee pain"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "knee",
+       "author": "patient",
+       "date": "2022-04-11T19:42",
+       "body": "Hi, my right knee has been bothering me since around January. It's worse when I walk more (been trying the walks like you said lol) and better when I rest it. I didn't fall or twist it. Can I see a bone doctor? My insurance wants a referral. Thanks, Tammy"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: knee",
+       "author": "PCP",
+       "date": "2022-04-12T08:05",
+       "body": "Sorry to hear the knee is acting up just as you got going. Referral to orthopedics/sports medicine is in. Ice after walks and keep moving at a pace that doesn't hurt. If it swells, gets red or hot, or you can't bear weight, call us that day."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-25a",
+     "kind": "specialist_visit",
+     "start": "2022-04-25T10:30",
+     "service": "Orthopedics & Sports Medicine",
+     "reason": "right knee pain",
+     "conditions": [
+      {
+       "label": "Pes anserinus bursitis of right knee",
+       "icd10": "M70.51",
+       "action": "diagnosed",
+       "onset": "2022-01-20",
+       "note": "pes anserinus pain syndrome"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "diclofenac sodium 0.01 MG/MG Topical Gel",
+       "action": "historical",
+       "sig": "Apply 4 g to right knee up to 4 times daily as needed",
+       "route": "Topical",
+       "frequency": "QID PRN",
+       "course": "chronic",
+       "reason": "right knee pain"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Knee X-ray",
+       "performed": "2022-04-25T10:15",
+       "text": "Right knee, 3 views. Mild joint space narrowing. No fracture or dislocation. No joint effusion. Soft tissues unremarkable.",
+       "conclusion": "Mild joint space narrowing. No fracture."
+      }
+     ],
+     "orders": [
+      {
+       "id": "ortho-referral",
+       "action": "done",
+       "date": "2022-04-25T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Sports Medicine Note",
+       "author": "orthopedics",
+       "date": "2022-05-10T09:00",
+       "body": "Orthopedics & Sports Medicine - visit 04/25/2022\n\nWashington, Tammy. 53 yo F (DOB 4/9/1969) Ref: PCP.\nCC: R knee pain x3 mo.\nHx: gradual onset, worse with activity incl new walking program, eases with rest. No injury. DM, acanthosis nigricans recently dx by derm.\nMeds: metformin, lisinopril, atorvastatin. NKDA.\nExam: BMI 34. R knee: no erythema, no warmth. Point tenderness at the medial tibial condyle just below the joint line. ROM full. Resisted knee flexion reproduces pain. Ligaments stable.\nXR R knee: mild joint space narrowing, no fracture.\nImp: Pes anserinus pain syndrome, R.\nPlan: home program for hamstring/adductor stretching and quad strengthening (handout), ice 15 min after activity, diclofenac 1% gel up to QID prn. Keep walking, flatter routes for now. F/u prn."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-10a",
+     "kind": "outside_records",
+     "start": "2022-05-10T12:40",
+     "reason": "orthopedics letter review",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Sports medicine letter reviewed",
+       "author": "PCP",
+       "date": "2022-05-10T12:40",
+       "body": "Sports med note 4/25 reviewed: pes anserinus pain R knee, x-ray mild joint space narrowing, no fracture. Home exercises, ice, diclofenac gel prn. Added to problem and med lists. No action needed from us."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-08a",
+     "kind": "outside_records",
+     "start": "2022-06-08T14:00",
+     "reason": "diabetic eye exam",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination report",
+       "author": "optometry",
+       "date": "2022-06-08T14:00",
+       "body": "DIABETIC EYE EXAMINATION REPORT\nExam date: 06/02/2022\nPatient: Tammy Washington\n\nVA cc: 20/20 OD, 20/25 OS. IOP normal OU. Dilated fundus exam: no diabetic retinopathy OU, no macular edema. Mild hyperopia/presbyopia, new reading Rx given.\nImpression: diabetes without retinopathy. Recommend repeat dilated exam in 12 months.\nOptometry"
+      }
+     ]
+    },
+    {
+     "id": "2022-07-19a",
+     "kind": "office_visit",
+     "start": "2022-07-19T14:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.8,
+       "Fasting Glucose": 162,
+       "Glucose": 162,
+       "Total Cholesterol": 210,
+       "Low Density Lipoprotein": 130,
+       "High Density Lipoprotein": 40,
+       "Triglycerides": 250
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-07-19T08:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.8
+        },
+        {
+         "test": "Fasting Glucose",
+         "value": 162
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-07-19T08:05",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 210
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 130
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 40
+        },
+        {
+         "test": "Triglycerides",
+         "value": 250
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-07-19T08:05",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Glucose",
+         "value": 162
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-07-19T14:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2022-07-19T14:50",
+       "body": "Subjective\nFasting labs drawn this morning. Knee much better since sports med visit, doing the stretches most nights, uses the gel now and then. Walking 3-4 days a week.\nNew complaint: burning and tingling in the LEFT foot for about 2 months, worse at night and when she's been on her feet a long time (weekend errands). Right foot fine. No injury. She already has a follow-up booked with the same sports medicine office next month and wants them to look at it then.\nTaking meds. No lows.\n\nObjective\nVitals reviewed.\nFeet: skin intact, no calluses or ulcers, DP/PT 2+ bilaterally, monofilament intact at all sites both feet, vibration intact.\nKnee: no effusion.\n\nLabs today: A1c 7.8 (from 8.5), fasting glucose 162. LDL 130, TG 250, HDL 40, TC 210. Cr normal. Urine albumin normal.\n\nAssessment / Plan\nT2DM - A1c improving with diet and walking. Continue metformin 1000 BID.\nL foot burning/tingling - one-sided, normal sensory exam, does not look like diabetic neuropathy. Fine to have sports med look at it as planned; let me know what they say.\nPes anserinus pain R - improving.\nHTN, mixed HLD - continue lisinopril, atorvastatin.\nReturn 4-5 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-21a",
+     "kind": "portal_message",
+     "start": "2022-07-21T08:30",
+     "reason": "lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab update",
+       "author": "PCP",
+       "date": "2022-07-21T08:30",
+       "body": "Your A1c came down from 8.5 to 7.8. That is real progress from the walking and food changes. LDL 130 and triglycerides 250. Kidney and urine tests normal. Same plan, see you in December."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-17a",
+     "kind": "portal_message",
+     "start": "2022-08-17T20:05",
+     "reason": "update after orthopedics visit",
+     "conditions": [
+      {
+       "label": "Tarsal tunnel syndrome, left lower limb",
+       "icd10": "G57.52",
+       "action": "diagnosed",
+       "onset": "2022-05-15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "foot doctor visit",
+       "author": "patient",
+       "date": "2022-08-17T20:05",
+       "body": "Saw the sports medicine doctor yesterday about my left foot. She said it's tarsal tunnel syndrome, a nerve getting squeezed by the inside of the ankle. She tapped there and it zinged down my foot. Bending my foot up made it worse. She wants me in supportive shoes with arch inserts and to take breaks from standing. No new meds. Just letting you know!"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: foot doctor visit",
+       "author": "PCP",
+       "date": "2022-08-18T07:40",
+       "body": "Thanks for the update, Tammy. I added tarsal tunnel syndrome on the left to your chart. The inserts and breaks are the right first step. If the numbness spreads, you get weakness, or it isn't easing in a few months, let me know."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-13a",
+     "kind": "nurse_visit",
+     "start": "2022-10-13T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2022-10-13T16:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-13T16:07"
+      },
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2022-10-13T16:09"
+      },
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2022-10-13T16:11"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-13T16:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunizations",
+       "author": "RN",
+       "date": "2022-10-13T16:30",
+       "body": "Vaccines per PCP standing orders: flu (L deltoid), bivalent COVID booster (R deltoid), PCV20 (L deltoid, separate site) given her diabetes, Shingrix #1 (R deltoid, separate site). Screening questions negative. VIS sheets given. Observed 15 min, tolerated well. Told to expect a sore arm and maybe feeling tired tomorrow from the Shingrix. Shingrix #2 due in 2-6 months - booked for January."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-06a",
+     "kind": "office_visit",
+     "start": "2022-12-06T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "right-sided abdominal discomfort; diabetes follow-up",
+     "conditions": [
+      {
+       "label": "Pes anserinus bursitis of right knee",
+       "icd10": "M70.51",
+       "action": "resolved",
+       "onset": "2022-01-20"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "diclofenac sodium 0.01 MG/MG Topical Gel",
+       "action": "stop",
+       "reason": "knee pain resolved"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.9,
+       "Low Density Lipoprotein": 158,
+       "Triglycerides": 260,
+       "Total Cholesterol": 250,
+       "High Density Lipoprotein": 40,
+       "Aspartate Aminotransferase": 52,
+       "Alanine Aminotransferase": 63,
+       "Alkaline Phosphatase": 90,
+       "Bilirubin, Total": 0.7
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-12-06T11:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.9
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-12-06T11:20",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 158
+        },
+        {
+         "test": "Triglycerides",
+         "value": 260
+        },
+        {
+         "test": "Total Cholesterol",
+         "value": 250
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 40
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-12-06T11:20",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase",
+         "value": 52
+        },
+        {
+         "test": "Alanine Aminotransferase",
+         "value": 63
+        },
+        {
+         "test": "Alkaline Phosphatase",
+         "value": 90
+        },
+        {
+         "test": "Bilirubin, Total",
+         "value": 0.7
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-12-06T10:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2022-12-06T11:30",
+       "body": "CC: R side belly discomfort, DM f/u\n\nHPI: Several weeks of a mild ache on the right side under the ribs, comes and goes, not tied to meals that she can tell. No nausea, vomiting, fever, weight loss, change in stools, dark urine. No alcohol. Gallbladder out 2014. Knee pain gone. Foot better with the inserts. Admits walking fell off once it got cold and dark and eating has been irregular at work.\n\nExam: vitals as recorded. Abd obese, soft, minimally tender RUQ, liver edge hard to assess with habitus, no rebound, no guarding. No jaundice.\n\nA/P:\n1. RUQ discomfort - CMP today. Possibly fatty liver given her metabolic picture. Will refer to GI depending on liver tests.\n2. T2DM - A1c today.\n3. Mixed HLD - lipids today.\n4. Pes anserinus pain R knee - resolved. Off the diclofenac gel.\n5. Tarsal tunnel L - improving with inserts.\n6. HTN - BP above goal again; continue lisinopril.\n\nShingrix #2 in January. RTC 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-08a",
+     "kind": "portal_message",
+     "start": "2022-12-08T13:15",
+     "reason": "lab results, GI referral",
+     "orders": [
+      {
+       "id": "gi-referral-1",
+       "action": "placed",
+       "order": "Gastroenterology referral",
+       "category": "referral",
+       "to": "Gastroenterology",
+       "reason": "RUQ discomfort, elevated transaminases"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Liver tests",
+       "author": "PCP",
+       "date": "2022-12-08T13:15",
+       "body": "Hi Tammy, your liver enzymes are mildly elevated (AST 52, ALT 63; other liver tests normal). In someone with diabetes and high triglycerides the most common cause is fat building up in the liver, but I'd like a GI specialist to see you to sort it out properly, with the discomfort you've had. The referral is in, and they had an opening on the 28th.\n\nA1c 7.9, about the same. LDL is up to 158 and triglycerides 260. Please make sure you're taking the atorvastatin every day."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

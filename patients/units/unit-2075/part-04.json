@@ -1,0 +1,698 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002075",
+   "events": [
+    {
+     "id": "2024-01-02a",
+     "kind": "procedure_visit",
+     "start": "2024-01-02T08:00",
+     "service": "Oncology",
+     "reason": "Concurrent chemoradiation, week 1",
+     "medications": [
+      {
+       "drug_text": "carboplatin 10 MG/ML Injectable Solution",
+       "action": "historical",
+       "sig": "AUC 2 IV weekly with radiation",
+       "frequency": "WEEKLY",
+       "route": "Intravenous",
+       "course": "short",
+       "reason": "NSCLC stage IIIB, concurrent chemoradiation"
+      },
+      {
+       "drug_text": "paclitaxel 6 MG/ML Injectable Solution",
+       "action": "historical",
+       "sig": "45 mg/m2 IV weekly with radiation",
+       "frequency": "WEEKLY",
+       "route": "Intravenous",
+       "course": "short",
+       "reason": "NSCLC stage IIIB, concurrent chemoradiation"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Infusion note - cycle 1 day 1",
+       "author": "oncology",
+       "date": "2024-01-03T10:15",
+       "body": "ONCOLOGY INFUSION - Week 1 of concurrent chemoradiation\nDate: 01/02/2024\nRegimen: carboplatin AUC 2 + paclitaxel 45 mg/m2 IV weekly, concurrent with thoracic radiation 60 Gy in 30 fractions (first fraction today).\nPremedications per protocol. Pre-treatment labs reviewed and acceptable for treatment. Treatment given without infusion reaction.\nPatient educated on neutropenic precautions and who to call after hours. Next infusion 01/09.\nCopy: primary care."
+      }
+     ]
+    },
+    {
+     "id": "2024-01-22a",
+     "kind": "telephone",
+     "start": "2024-01-22T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Check-in during chemoradiation",
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current every day smoker"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "RN check-in",
+       "author": "RN",
+       "date": "2024-01-22T10:30",
+       "body": "Called pt per PCP request, week 4 of chemoradiation. He is getting to every appointment, driving himself. No fevers, no ED visits. Eating OK. Says the shoulder already feels a little better. Inhalers: has refills on both. Still smoking. Reminded him the doctor's cell is open for anything between oncology visits. Will update PCP."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-19a",
+     "kind": "outside_records",
+     "start": "2024-02-19T11:00",
+     "reason": "Chemoradiation completion summary",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Treatment summary - concurrent chemoradiation",
+       "author": "radiation oncology",
+       "date": "2024-02-19T11:00",
+       "body": "RADIATION ONCOLOGY TREATMENT SUMMARY\nDiagnosis: NSCLC, right upper lobe superior sulcus, stage IIIB.\nTreatment: thoracic radiation to the right upper lobe primary and involved right paratracheal nodal region, 60 Gy in 30 fractions, 01/02/2024 - 02/12/2024. Concurrent weekly carboplatin AUC 2 / paclitaxel 45 mg/m2 with medical oncology.\nCourse: completed as planned with no treatment breaks and no hospital admissions.\nResponse of symptoms: the right shoulder pain and right hand tingling have eased considerably over the course. Right ptosis and miosis persist; right grip remains mildly weaker than left.\nFollow-up: medical oncology to begin consolidation durvalumab 02/28/2024. Radiation oncology follow-up in 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-28a",
+     "kind": "procedure_visit",
+     "start": "2024-02-28T09:00",
+     "service": "Oncology",
+     "reason": "Durvalumab infusion, dose 1",
+     "medications": [
+      {
+       "drug_text": "durvalumab 50 MG/ML Injectable Solution",
+       "action": "historical",
+       "sig": "1500 mg IV every 4 weeks",
+       "dose": {
+        "value": 1500,
+        "unit": "mg"
+       },
+       "frequency": "EVERY 4 WEEKS",
+       "route": "Intravenous",
+       "course": "chronic",
+       "reason": "Consolidation after chemoradiation, NSCLC stage IIIB"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Infusion note - durvalumab #1",
+       "author": "oncology",
+       "date": "2024-02-29T08:20",
+       "body": "ONCOLOGY INFUSION\nDate: 02/28/2024\nConsolidation durvalumab 1500 mg IV over 60 minutes, dose 1, following completion of concurrent chemoradiation 02/12. Baseline thyroid and liver tests drawn. No infusion reaction. Reviewed immune-related side effects (cough or breathlessness, diarrhea, rash, fatigue) and when to call. Next dose in 4 weeks.\nCopy: primary care."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-25a",
+     "kind": "specialist_visit",
+     "start": "2024-03-25T14:00",
+     "service": "Oncology",
+     "reason": "Oncology follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "conditions": [
+      {
+       "label": "Clubbing of fingers",
+       "icd10": "R68.3",
+       "action": "diagnosed"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Thyroid Stimulating Hormone": 1.9
+      }
+     },
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-03-25T13:30",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 14.5
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-03-25T13:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-03-25T13:30",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current every day smoker"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Oncology follow-up",
+       "author": "oncology",
+       "date": "2024-03-27T09:00",
+       "body": "MEDICAL ONCOLOGY FOLLOW-UP\nDate: 03/25/2024\n\nDiagnosis: NSCLC, RUL superior sulcus, stage IIIB; completed concurrent chemoradiation 02/12/2024; on consolidation durvalumab since 02/28/2024.\n\nInterval: Seen for routine follow-up of his recently diagnosed lung cancer. His cough and mild breathlessness go back years. He has not lost weight and denies fever, chest pain or coughing up blood. Chronic bronchitis was diagnosed by pulmonology in 2020.\nMedications: inhaled corticosteroid/long-acting bronchodilator combination (fluticasone/salmeterol 250/50 BID), albuterol PRN, hydrochlorothiazide 25 mg daily, and durvalumab every 4 weeks.\nSocial: still smoking a pack of cigarettes a day.\n\nVital signs within normal limits (BP 129/80, HR 74, T 36.8, SpO2 94%, weight 80.5 kg).\nExam: Comfortable at rest. Scattered wheezes on expiration, which is prolonged. The distal fingers are bulbous, with loss of the normal angle at the nail base and a spongy feel to the nail beds. No cyanosis, no peripheral edema, no tenderness of the digits. Right ptosis and miosis persist.\n\nLabs today: CBC, CMP and TSH within normal limits.\n\nAssessment:\n1. Stage IIIB NSCLC on consolidation durvalumab, tolerating well. Continue every 4 weeks.\n2. Digital clubbing, new on today's exam.\n3. Ongoing tobacco use - strongly advised to stop.\n\nMedical Oncology"
+      }
+     ]
+    },
+    {
+     "id": "2024-04-08a",
+     "kind": "office_visit",
+     "start": "2024-04-08T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up; quit smoking",
+     "vitals": [
+      {
+       "time": "2024-04-08T16:05",
+       "bp": [
+        130,
+        83
+       ],
+       "hr": 72,
+       "spo2": 95,
+       "weight_kg": 79.8
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Nicotine dependence, cigarettes",
+       "action": "resolved"
+      },
+      {
+       "label": "Nicotine dependence, cigarettes, in remission",
+       "icd10": "F17.211",
+       "action": "diagnosed",
+       "onset": "2024-04-01"
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-04-08T16:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up visit",
+       "author": "PCP",
+       "date": "2024-04-08T16:00",
+       "body": "Follow-up.\n\nBig news: he quit smoking on 4/1. Cold turkey, no patch, no meds. Says after the oncologist told him again two weeks ago he \"just threw the pack out.\" One week out; cravings worst after meals and in the truck. Total about 44 pack-years.\nCancer: chemoradiation done 2/12, durvalumab every 4 weeks since 2/28, going fine. Onc letter 3/25 noted new clubbing. Shoulder pain and hand tingling much better since radiation.\nBreathing at his usual baseline; cough every morning. No hemoptysis.\n\nBP 130/83, HR 72, SpO2 95% RA, Wt 79.8 kg.\nRight ptosis and miosis. Clubbing of the fingers, both hands. Lungs: prolonged expiration, scattered expiratory wheeze. Heart regular. Right grip mildly weaker than left. No edema.\n\nAssessment/plan:\n1. Tobacco use disorder, in early remission (quit 4/1/2024) - congratulated. Discussed relapse triggers; offered nicotine lozenge or patch for cravings, he wants to stay medication-free. Text me if he slips.\n2. NSCLC stage IIIB, on durvalumab - per oncology.\n3. Digital clubbing - noted, followed with oncology.\n4. COPD - continue fluticasone-salmeterol and albuterol.\n5. HTN - controlled, continue HCTZ."
+      }
+     ]
+    },
+    {
+     "id": "2024-05-13a",
+     "kind": "portal_message",
+     "start": "2024-05-13T20:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Smoke-free update",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "6 weeks",
+       "author": "patient",
+       "date": "2024-05-13T20:05",
+       "body": "6 weeks no cigarettes. Hardest part is the morning coffee. Infusions going fine. Do I need a new prescription for the rescue inhaler, pharmacy says no refills left."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: 6 weeks",
+       "author": "PCP",
+       "date": "2024-05-14T07:15",
+       "body": "That is a real accomplishment, Todd. Six weeks is past the hardest stretch for most people. Albuterol sent with refills for the year. See you in June for your physical."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-17a",
+     "kind": "annual_physical",
+     "start": "2024-06-17T08:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "vitals": [
+      {
+       "time": "2024-06-17T08:20",
+       "bp": [
+        132,
+        78
+       ],
+       "hr": 78,
+       "spo2": 96,
+       "weight_kg": 80.1,
+       "height_cm": 177.7
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-06-17T08:45",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-06-17T08:45",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 3
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2024-06-17T08:15"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-06-17T08:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2024-06-17T08:15",
+       "body": "ANNUAL PHYSICAL - 57M\n\nInterval history:\n- NSCLC RUL superior sulcus stage IIIB (dx 12/2023): chemoradiation completed 2/12/24; durvalumab q4 weeks since 2/28, most recent infusion last month, no side effects he has noticed.\n- Quit smoking 4/1/2024, still smoke-free at 11 weeks. Former smoker, ~44 pack-years.\n- COPD on fluticasone-salmeterol + albuterol PRN: baseline.\n- HTN on HCTZ.\nNo weight loss, no hemoptysis, no new pain. Right shoulder much improved; hand tingling mostly gone.\nPHQ-9: 3. Says his mood is fine.\n\nMeds: fluticasone-salmeterol 250/50 BID, albuterol PRN, HCTZ 25 daily, durvalumab (oncology). NKDA.\n\nVitals: BP 132/78, HR 78, SpO2 96% RA, Wt 80.1 kg, BMI 25.4.\nExam: well appearing. Right ptosis and miosis. Neck: no nodes. Lungs: prolonged expiration, scattered expiratory wheeze, no crackles. CV RRR. Abd soft, NT. Ext: digital clubbing, no edema. Neuro: right grip mildly weak, otherwise intact.\n\nPlan:\n1. Health maintenance: BMP and lipids; oncology is checking CBC/CMP/TSH with infusions. Flu and COVID in the fall. Colonoscopy due 2027. Lung screening no longer applies (now under oncology imaging).\n2. COPD, HTN - continue.\n3. Tobacco use disorder in early remission - reinforced.\n4. Cancer care per oncology."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-24a",
+     "kind": "specialist_visit",
+     "start": "2024-06-24T10:20",
+     "service": "Oncology",
+     "reason": "Oncology follow-up on durvalumab",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-06-24T09:50",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-06-24T09:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-06-24T09:50",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Oncology follow-up",
+       "author": "oncology",
+       "date": "2024-06-25T16:30",
+       "body": "MEDICAL ONCOLOGY FOLLOW-UP\nDate: 06/24/2024\n\nStage IIIB NSCLC (RUL superior sulcus), s/p concurrent chemoradiation (completed 02/12/2024), on consolidation durvalumab 1500 mg q4 weeks; five doses so far, most recent 06/19.\n\nHe is doing well. He stopped smoking on 04/01/2024. No new cough beyond his baseline, no fevers, no diarrhea, no rash. Shoulder pain resolved for practical purposes.\nBP 136/82, HR 80, SpO2 95%, weight 80.6 kg. Lungs: prolonged expiration, no crackles. Clubbing. Right ptosis. No edema.\nLabs: CBC, CMP and TSH normal.\n\nPlan: continue durvalumab q4 weeks. Return in 3 months.\n\nMedical Oncology"
+      }
+     ]
+    },
+    {
+     "id": "2024-09-11a",
+     "kind": "procedure_visit",
+     "start": "2024-09-11T09:00",
+     "service": "Oncology",
+     "reason": "Durvalumab infusion, dose 8",
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Infusion note - durvalumab #8",
+       "author": "oncology",
+       "date": "2024-09-12T08:00",
+       "body": "ONCOLOGY INFUSION\nDate: 09/11/2024\nDurvalumab 1500 mg IV, dose 8. Tolerated without reaction. Patient reports some weight loss and more cough recently; oncology follow-up visit scheduled 09/25 for assessment before the next dose.\nCopy: primary care."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-25a",
+     "kind": "specialist_visit",
+     "start": "2024-09-25T09:40",
+     "service": "Oncology",
+     "reason": "Oncology: weight loss, cough, hemoptysis",
+     "vitals": [
+      {
+       "time": "2024-09-25T09:45",
+       "temp_c": 37.2,
+       "bp": [
+        135,
+        85
+       ],
+       "hr": 88,
+       "rr": 20,
+       "spo2": 94,
+       "weight_kg": 75.5
+      }
+     ],
+     "state": {
+      "weight_kg": 75.5
+     },
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-09-25T09:30",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-09-25T09:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-09-25T09:30",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2024-09-25T10:30",
+       "text": "PA and lateral chest. Indication: lung cancer, cough, weight loss. Comparison: 11/13/2023. Post-treatment changes at the right apex. There is a mass in the right lower lobe. No pneumothorax. Heart size normal.",
+       "conclusion": "Right lower lobe mass. Post-treatment change at the right apex."
+      },
+      {
+       "study": "Surgical pathology report",
+       "performed": "2024-09-25T14:30",
+       "issued": "2024-09-27T11:00",
+       "text": "SPECIMEN: Lung, right lower lobe mass, CT-guided percutaneous core needle biopsy (two cores). Microscopic: cores of lung parenchyma infiltrated by malignant epithelial cells in sheets and nests with pleomorphic nuclei; morphology similar to the patient's prior specimen (12/2023).",
+       "conclusion": "Lung, right lower lobe, CT-guided core biopsy: non-small cell lung carcinoma."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "CT-guided lung biopsy",
+       "author": "radiology",
+       "date": "2024-09-25T15:00",
+       "body": "INTERVENTIONAL RADIOLOGY - CT-GUIDED PERCUTANEOUS LUNG BIOPSY\nDate: 09/25/2024\nIndication: right lower lobe mass in a patient with stage IIIB NSCLC on durvalumab.\nProcedure: Informed consent obtained. Prone positioning. Under CT guidance, a coaxial needle was advanced through a posterior right approach into the right lower lobe mass; two 18-gauge core samples obtained and sent to pathology.\nPost-procedure CT: no pneumothorax. Upright chest film at 2 hours: no pneumothorax.\nComplications: none. Discharged home."
+      },
+      {
+       "type": "Consult Note",
+       "title": "Oncology visit",
+       "author": "oncology",
+       "date": "2024-09-27T12:10",
+       "body": "MEDICAL ONCOLOGY\nDate: 09/25/2024\n\nStage IIIB NSCLC of the right upper lobe, after chemoradiation and seven months of consolidation durvalumab (eighth dose 09/11/2024).\n\nHe comes back for follow-up of his lung cancer with a cough that will not let up, more shortness of breath, and a weight loss of 10 pounds over the past two months. He has coughed up blood a few times.\nSocial: former smoker, quit 04/2024. Alcohol 1-2 drinks a month. Works as a demolition laborer.\n\nVitals: temperature 37.2 C, BP 135/85, pulse 88, respiratory rate 20, weight 75.5 kg.\nExam: Over the right lower chest, breath sounds are diminished and the percussion note is dull. Clubbing. Right ptosis and miosis.\n\nChest x-ray today: mass in the right lower lobe.\nPathology: CT-guided biopsy of the mass was done today; final read non-small cell lung carcinoma.\nLabs: CBC, CMP, TSH within normal limits.\n\nAssessment: New right lower lobe site of non-small cell lung carcinoma during consolidation durvalumab, in keeping with progression of his known stage IIIB cancer.\nPlan:\n1. Hold durvalumab.\n2. PET-CT 10/03 to restage before deciding on next treatment.\n3. Return after PET.\n4. Research: he agreed to take part in a case-control study looking at asbestos exposure and lung cancer; consent signed today.\n\nMedical Oncology"
+      }
+     ]
+    },
+    {
+     "id": "2024-10-03a",
+     "kind": "imaging",
+     "start": "2024-10-03T08:00",
+     "service": "Radiology",
+     "reason": "PET-CT restaging",
+     "documents": [
+      {
+       "type": "Imaging Report",
+       "title": "PET-CT restaging",
+       "author": "radiology",
+       "date": "2024-10-03T16:20",
+       "body": "FDG PET-CT, SKULL BASE TO MID-THIGH (restaging)\nDate: 10/03/2024\nIndication: NSCLC stage IIIB after chemoradiation and durvalumab; new biopsy-proven right lower lobe lesion.\nComparison: PET-CT 11/28/2023.\n\nFindings: There is a 3.1 cm FDG-avid mass in the right lower lobe. At the treated right apex there is post-treatment change without focal hypermetabolism to suggest active tumor. No other FDG-avid site in the chest, including the treated right paratracheal region. No hypermetabolic lymph nodes. No FDG-avid lesion in the liver, adrenals or bones. Emphysema.\n\nImpression: 3.1 cm FDG-avid right lower lobe mass, the only site of active disease. Post-treatment change at the right apex. No distant metastatic disease."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-07a",
+     "kind": "office_visit",
+     "start": "2024-10-07T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after cancer progression",
+     "vitals": [
+      {
+       "time": "2024-10-07T15:25",
+       "bp": [
+        129,
+        80
+       ],
+       "hr": 68,
+       "spo2": 95,
+       "weight_kg": 76.1
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2024-10-07T16:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-10-07T16:02"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2024-10-07T15:20"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-10-07T16:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2024-10-07T15:20",
+       "body": "F/u - came in to talk after the news from oncology.\n\n9/25 oncology: 10 lb weight loss over 2 months, cough, more dyspnea, occasional hemoptysis; CXR RLL mass; CT-guided biopsy same day = NSCLC. Durvalumab on hold (last dose 9/11). PET-CT 10/3: 3.1 cm avid RLL mass, only active site, apex shows post-treatment change, nothing distant. He sees oncology Wednesday for the plan.\n\nHe is anxious but holding together. Cough most of the day, occasional small streaks of blood, no large amounts. Still not smoking - six months.\nBreathing: a bit worse than his baseline on hills.\n\nBP 129/80, HR 68, SpO2 95% RA, Wt 76.1 kg.\nThin compared with spring. Right ptosis/miosis. Clubbing. Lungs: diminished at the right base with dullness. Heart RRR. Legs without edema.\n\nA/P\n1. NSCLC stage IIIB with biopsy-proven RLL site - oncology deciding next step this week. I will see him again after.\n2. Weight loss - follows the cancer; weight today noted. Encouraged calorie-dense foods.\n3. COPD - continue inhalers.\n4. HTN - controlled, continue HCTZ.\n5. Tobacco - remains in remission.\n6. Flu (trivalent) and updated COVID vaccine today."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-09a",
+     "kind": "specialist_visit",
+     "start": "2024-10-09T13:30",
+     "service": "Oncology",
+     "reason": "Oncology: restaging results",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "medications": [
+      {
+       "drug_text": "durvalumab 50 MG/ML Injectable Solution",
+       "action": "stop",
+       "reason": "Isolated progression, right lower lobe"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Oncology follow-up - restaging",
+       "author": "oncology",
+       "date": "2024-10-10T10:45",
+       "body": "MEDICAL ONCOLOGY\nDate: 10/09/2024\n\nPET-CT 10/03 shows a 3.1 cm FDG-avid right lower lobe mass as the only active site; the treated right apex shows post-treatment change; no distant disease. Biopsy 09/25 confirmed NSCLC.\n\nAssessment: isolated (oligo-) progression of stage IIIB NSCLC at a right lower lobe site after eight doses of consolidation durvalumab.\n\nPlan, discussed with Mr. Rossi and with radiation oncology:\n1. Durvalumab discontinued; the last dose was 09/11/2024.\n2. Stereotactic body radiation therapy to the right lower lobe mass, 50 Gy in 5 fractions, planned for 10/21 through 10/31.\n3. Surveillance CT chest every 3 months after SBRT, starting January.\n\nBP 134/80, HR 82, SpO2 96%, weight 75.1 kg.\n\nMedical Oncology"
+      }
+     ]
+    },
+    {
+     "id": "2024-11-05a",
+     "kind": "outside_records",
+     "start": "2024-11-05T09:30",
+     "reason": "SBRT completion summary",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "SBRT treatment summary",
+       "author": "radiation oncology",
+       "date": "2024-11-05T09:30",
+       "body": "RADIATION ONCOLOGY - SBRT COMPLETION SUMMARY\nTarget: right lower lobe mass, 3.1 cm (biopsy-proven NSCLC; isolated progression).\nDose: 50 Gy in 5 fractions, 10/21/2024 - 10/31/2024, image-guided.\nTolerance: completed as planned without interruption.\nPrior treatment: 60 Gy/30 fractions to the right upper lobe and right paratracheal region with concurrent chemotherapy (01-02/2024), then durvalumab (02-09/2024).\nFollow-up: surveillance CT chest every 3 months with medical oncology, first in January 2025."
+      }
+     ]
+    },
+    {
+     "id": "2024-12-09a",
+     "kind": "office_visit",
+     "start": "2024-12-09T14:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after SBRT",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "state": {
+      "weight_kg": 76.0
+     },
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-12-09T14:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2024-12-09T14:40",
+       "body": "Follow-up after SBRT.\n\nSBRT 50 Gy/5 to the RLL mass completed 10/31. Off durvalumab since 9/11. First surveillance CT in January.\nFeels better than in October. Cough down to mornings mostly; no blood in the sputum for several weeks. Eating better; weight holding steady. Breathing back near his baseline.\nSmoke-free 8 months.\n\nBP 128/82, HR 71, SpO2 95%, Wt 76.0 kg.\nRight ptosis/miosis unchanged. Clubbing. Lungs: diminished, long expiratory phase, no focal dullness today. CV RRR. No edema. R grip mildly weak.\n\nPlan:\n1. NSCLC - surveillance per oncology, CT January.\n2. COPD - continue inhalers.\n3. HTN - fine on HCTZ.\n4. Nicotine dependence in remission - continue.\nReturn in spring."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,769 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002206",
+      "events": [
+        {
+          "id": "2019-02-19a",
+          "kind": "office_visit",
+          "start": "2019-02-19T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, less stamina",
+          "vitals": {
+            "bp": [
+              158,
+              94
+            ]
+          },
+          "state": {
+            "bp": [
+              156,
+              94
+            ],
+            "labs": {
+              "Hemoglobin A1c": 7.6,
+              "Thyroid Stimulating Hormone": 1.8
+            }
+          },
+          "measure": [
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2019-02-19T14:00",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-02-19T14:00",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-02-19T14:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-02-19T14:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.6
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral-2019",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "Fatigue and reduced exercise tolerance with uncontrolled hypertension"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2019-02-19T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2019-02-19T14:25",
+              "body": "CC: tired, can't keep up on his walks.\n\nHPI: Over the past few months he has felt worn out, and the morning walk he used to do without thinking now takes more out of him; he has cut it short several times. Sleeping OK. No chest pain or pressure, no breathlessness at rest, no orthopnea, no ankle swelling, no palpitations, no lightheadedness. Appetite fine, weight steady. Mood good, no loss of interest. Has not been checking home BP since the fall.\n\nMeds: metformin 1000 BID, lisinopril 20, amlodipine 5, ASA 81.\n\nExam: BP 158/94 (repeat similar). Pulse regular. Looks well. No JVD. Heart regular, I may hear an extra sound at the apex but not sure. Lungs clear. No edema. Thyroid normal size.\n\nA/P:\n1. Fatigue / reduced exercise tolerance in a 66 yo diabetic with long-standing uncontrolled BP. Checking BMP, CBC, TSH, A1c today. Referring to cardiology for evaluation.\n2. HTN - clearly above goal today and not monitoring. Restart home log.\n3. T2DM - A1c today.\n\nReviewed when to go to the ED (chest pain, fainting, shortness of breath at rest). RTC after cardiology."
+            }
+          ]
+        },
+        {
+          "id": "2019-02-21a",
+          "kind": "portal_message",
+          "start": "2019-02-21T12:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2019-02-21T12:15",
+              "body": "Mr. Clark - your blood count, thyroid, kidney function and electrolytes are all normal, so none of those explain the tiredness. A1c is 7.6, about where it has been. Cardiology should call you this week to set up the appointment; let us know if you don't hear from them."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results",
+              "author": "patient",
+              "date": "2019-02-21T19:02",
+              "body": "Thanks Doc. They called already, I go March 18."
+            }
+          ]
+        },
+        {
+          "id": "2019-02-26a",
+          "kind": "nurse_visit",
+          "start": "2019-02-26T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2019-02-26T10:33"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-02-26T10:33"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2019-02-26T10:45",
+              "body": "Shingrix #2 IM L deltoid. Series complete. No reaction during observation."
+            }
+          ]
+        },
+        {
+          "id": "2019-03-18a",
+          "kind": "specialist_visit",
+          "start": "2019-03-18T09:00",
+          "service": "Cardiology",
+          "reason": "Fatigue and reduced exercise tolerance",
+          "vitals": {
+            "bp": [
+              160,
+              96
+            ],
+            "hr": 72
+          },
+          "conditions": [
+            {
+              "label": "Left ventricular hypertrophy",
+              "icd10": "I51.7",
+              "action": "diagnosed",
+              "onset": "2019-03-18"
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2019-03-18T09:10",
+              "text": "Sinus rhythm at 72 bpm. Normal axis. PR and QRS intervals normal. Voltage criteria for left ventricular hypertrophy. No acute ST elevation. No Q waves.",
+              "conclusion": "Sinus rhythm. Left ventricular hypertrophy by voltage criteria."
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral-2019",
+              "action": "done",
+              "date": "2019-03-18T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Consultation",
+              "author": "cardiology",
+              "date": "2019-03-25T08:30",
+              "body": "OUTSIDE CARDIOLOGY GROUP - CONSULTATION\nDate of visit: 03/18/2019\nRe: Carl Clark, DOB 09/28/1952\nReferred by: primary care\n\nDear colleague,\n\nThank you for asking us to see Mr. Clark, a 66-year-old retired letter carrier, for several months of tiredness and a falling-off in how far and how fast he can walk.\n\nHe has diabetes and hypertension, the latter never well controlled by his account, along with hyperlipidemia. He takes lisinopril, metformin and amlodipine, plus aspirin 81 mg. No known drug allergies. Never smoker, no alcohol. His father had colon cancer at 70 and is deceased; his mother had diabetes and high blood pressure. Surgical history is a tonsillectomy in childhood and a knee arthroscopy at 55.\n\nExam: BP 160/96. Pulse 72 and regular. The apical impulse is displaced laterally and there is an S4. I hear no murmur. JVP is not raised, the lungs are clear and there is no peripheral edema; no evidence of heart failure.\n\nRecent labs from your office show normal renal function and electrolytes.\n\nECG today: sinus rhythm, 72, with voltage criteria for left ventricular hypertrophy.\n\nImpression: Left ventricular hypertrophy, almost certainly the product of years of inadequately treated hypertension. I suspect the pressure load explains much of his reduced exercise tolerance.\n\nRecommendations:\n1. Transthoracic echocardiogram to characterize the hypertrophy and LV function; scheduled for 03/28.\n2. Tighter BP control is the priority. I would increase amlodipine to 10 mg daily and aim for under 130/80. I will leave the adjustment with you.\n3. Continue aspirin.\n\nWe would be glad to see him again as needed.\n\nCardiology\nAllergies: NKDA"
+            }
+          ]
+        },
+        {
+          "id": "2019-03-28a",
+          "kind": "imaging",
+          "start": "2019-03-28T13:00",
+          "service": "Cardiology",
+          "reason": "Echocardiogram for LVH",
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2019-03-28T13:00",
+              "issued": "2019-03-28T17:20",
+              "text": "Complete 2D, M-mode and Doppler study. Technically adequate.\nLeft ventricle: normal cavity size. Concentric left ventricular hypertrophy; interventricular septum 1.3 cm and posterior wall 1.3 cm in diastole. Normal wall motion. LVEF 60% (biplane).\nRight ventricle: normal size and function.\nAtria: normal size.\nValves: aortic, mitral, tricuspid and pulmonic valves structurally normal without significant stenosis or regurgitation.\nAorta: normal root dimension.\nPericardium: no effusion.\nIVC normal with normal respiratory variation.",
+              "conclusion": "Concentric left ventricular hypertrophy with normal LV size and systolic function, LVEF 60%. Normal valves. No pericardial effusion."
+            }
+          ]
+        },
+        {
+          "id": "2019-04-02a",
+          "kind": "telephone",
+          "start": "2019-04-02T11:45",
+          "reason": "Cardiology recommendations, BP medication change",
+          "medications": [
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Dose increased"
+            },
+            {
+              "drug": "amlodipine 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension with left ventricular hypertrophy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call to patient re cardiology and echo",
+              "author": "PCP",
+              "date": "2019-04-02T11:55",
+              "body": "Cardiology letter and echo report received and reviewed. Echo shows thickened heart muscle from his blood pressure with normal pumping function and normal valves.\n\nCalled pt. Explained the findings. Agreed to increase amlodipine 5 -> 10 mg daily per cardiology. New Rx sent to mail order, told him he can take two of the 5s until it arrives. Check home BP a few times a week; nurse BP check / visit in about 6 weeks. Ankle swelling can happen at the higher dose, call if it bothers him. He verbalized understanding."
+            }
+          ]
+        },
+        {
+          "id": "2019-05-14a",
+          "kind": "office_visit",
+          "start": "2019-05-14T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "BP recheck after amlodipine increase",
+          "state": {
+            "bp": [
+              134,
+              82
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2019-05-14T10:05",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2019-05-14T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2019-05-14T10:20",
+              "body": "BP f/u on amlodipine 10.\n\nHome log 126-138 / 76-84 over the past 4 weeks. Feels like his energy is coming back; walked the full loop twice last week. No ankle swelling. No dizziness.\n\nBP much better today. Heart RRR, S4 still audible at apex. Lungs clear. No edema.\n\nA/P: HTN with LVH - better controlled on lisinopril 20 + amlodipine 10. Continue. BMP today. Fatigue improving as pressure has come down. Recheck at the fall physical."
+            }
+          ]
+        },
+        {
+          "id": "2019-06-25a",
+          "kind": "outside_records",
+          "start": "2019-06-25T10:15",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Examination Report",
+              "author": "optometry",
+              "date": "2019-06-25T10:15",
+              "body": "Optometry - Annual Diabetic Eye Exam\nExam date 06/18/2019. Carl Clark, DOB 09/28/1952.\nBest corrected acuity 20/25 OU. Pupils normal. Dilated exam: retina flat, no hemorrhages, exudates or neovascularization OU. Discs healthy.\nAssessment: no diabetic retinopathy.\nPlan: return in one year."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-24a",
+          "kind": "annual_physical",
+          "start": "2019-09-24T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "state": {
+            "bp": [
+              132,
+              80
+            ],
+            "labs": {
+              "Hemoglobin A1c": 7.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-09-24T08:55",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-09-24T08:55",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-24T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-24T08:55",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2019-09-24T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2019-09-24T09:40",
+              "body": "Medicare AWV.\n\nInterval: echo in March showed LVH, normal EF. Amlodipine to 10 in April; home BP mostly low 130s since. Energy back to baseline. Walking daily again.\n\nFunctional: independent, no falls, drives. Memory screen normal (3-word recall 3/3). Hearing and vision adequate. Lives with wife.\nPHQ-2 0.\n\nMeds: metformin 1000 BID, lisinopril 20, amlodipine 10, ASA 81.\n\nExam: Vitals reviewed. Heart regular with S4, no murmur. Lungs clear. Abdomen soft. Feet: intact sensation, pulses palpable, skin fine.\n\nPrevention:\n- Colonoscopy: recommended once again; we talked about his dad. He says maybe next year. FIT offered as an alternative; declined for now.\n- Flu shot at nurse visit in 2 weeks.\n- Vaccines otherwise up to date (PCV13, PPSV23, Shingrix x2).\n\nLabs: A1c, CMP, lipid, urine microalbumin.\n\nRTC 6 months for diabetes."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-26a",
+          "kind": "portal_message",
+          "start": "2019-09-26T12:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2019-09-26T12:40",
+              "body": "Your labs look stable: A1c 7.5, kidney and liver tests normal, urine protein normal, cholesterol similar to prior years. No changes needed now. Flu shot visit is on the 8th."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2019-10-08T09:13"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-08T09:13"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "author": "MA",
+              "date": "2019-10-08T09:25",
+              "body": "High-dose flu vaccine given IM R deltoid. No complaints today. Tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2020-01-14a",
+          "kind": "pharmacy",
+          "start": "2020-01-14T08:50",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Mail-order refill request",
+              "author": "MA",
+              "date": "2020-01-14T08:50",
+              "body": "Mail-order pharmacy requesting renewal of amlodipine 10 mg #90 and metformin 1000 mg #180. Last visit 9/2019, labs current. Sent per refill protocol, PCP cosigned."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-24a",
+          "kind": "office_visit",
+          "start": "2020-03-24T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2020-04-07a",
+          "kind": "telehealth_visit",
+          "start": "2020-04-07T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and hypertension follow-up (video)",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-04-07T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "author": "PCP",
+              "date": "2020-04-07T11:30",
+              "body": "Video visit, in-person appointment cancelled during the shutdown. Patient at home with his wife helping with the tablet. Identity verified.\n\nDoing fine, staying home, walking around the block. Home BPs this month 128-136 / 76-82. Fasting fingersticks 130s-150s. Taking all meds; mail order delivering fine. No chest pain, dyspnea, swelling.\n\nA/P: HTN controlled at home on current regimen. T2DM - no A1c today; will draw when the lab reopens to routine visits, likely summer. Continue metformin. Call with any problems.\n\nTime 20 min."
+            }
+          ]
+        },
+        {
+          "id": "2020-06-30a",
+          "kind": "outside_records",
+          "start": "2020-06-30T14:00",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Examination Report",
+              "author": "optometry",
+              "date": "2020-06-30T14:00",
+              "body": "Optometry report. Exam 06/23/2020 (masked visit). Carl Clark.\nAcuity 20/25 both eyes with glasses. Dilated fundus: no diabetic retinopathy, maculae clear OU.\nImpression: diabetes mellitus type 2 without retinopathy. Recall 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2020-07-21a",
+          "kind": "office_visit",
+          "start": "2020-07-21T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and hypertension follow-up",
+          "state": {
+            "bp": [
+              134,
+              80
+            ],
+            "labs": {
+              "Hemoglobin A1c": 7.7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2020-07-21T15:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-07-21T15:05",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-07-21T14:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2020-07-21T15:25",
+              "body": "First in-person visit since the winter. Masked.\n\nSnacking more being home all spring, but back to walking. No symptoms. Meds unchanged.\n\nBP fine today. RRR, S4. Lungs clear. Feet: normal monofilament, no calluses or wounds, pulses palpable.\n\nA1c 7.7, up a little. Talked about evening snacks and portion size; he'd like to try on his own before any added medication. Continue metformin 1000 BID.\nBMP drawn.\n\nRTC for AWV in September."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "annual_physical",
+          "start": "2020-09-22T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "state": {
+            "bp": [
+              132,
+              82
+            ],
+            "labs": {
+              "Hemoglobin A1c": 7.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-09-22T09:35",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-09-22T09:35",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-22T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-22T09:35",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2020-09-22T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2020-09-22T10:10",
+              "body": "AWV, subsequent.\n\nHanging in through the pandemic. Wife well. Walking. No falls, independent in ADLs/IADLs. Sleep fine. Mood good; PHQ-2 negative.\n\nMeds reconciled, unchanged: metformin 1000 BID, lisinopril 20, amlodipine 10, aspirin 81.\n\nExam: normal vitals for him. Heart regular, S4 at apex, no murmur. Lungs clear. Abdomen soft, nontender. Feet normal.\n\nPreventive:\n- Colon cancer screening again recommended; declines colonoscopy this year with COVID around; would \"maybe do the mail kit.\" Will send FIT in the spring when he's ready - he asked to wait.\n- Tdap - no tetanus booster on record in the last 10 years; give with flu shot next visit.\n- Flu shot nurse visit 10/6.\n\nLabs today. RTC 6 mo."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-24a",
+          "kind": "portal_message",
+          "start": "2020-09-24T16:00",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2020-09-24T16:00",
+              "body": "Mr. Clark, results from Tuesday: A1c 7.5, kidney function normal, urine microalbumin normal, cholesterol unchanged. Nothing new to do. Remember to bring your BP log next time."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and Tdap",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2020-10-06T10:23"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2020-10-06T10:25"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-06T10:23"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2020-10-06T10:40",
+              "body": "COVID screening questions negative at door. Fluzone HD L deltoid, Boostrix R deltoid. Tolerated without issue."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-15a",
+          "kind": "portal_message",
+          "start": "2020-12-15T08:05",
+          "reason": "COVID vaccine question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "covid shot",
+              "author": "patient",
+              "date": "2020-12-15T08:05",
+              "body": "My wife and I want the covid shot when we can get it. Do we sign up with you or somewhere else? With my sugar am I in an early group?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: covid shot",
+              "author": "RN",
+              "date": "2020-12-15T13:40",
+              "body": "Hi Mr. Clark, the state is running the first rounds through mass vaccination sites and pharmacies. People 65 and over are expected in the next phase, probably early in the new year. We will post sign-up instructions on the portal as soon as we have them. Yes, your age and diabetes both count."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

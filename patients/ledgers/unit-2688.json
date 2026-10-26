@@ -1,0 +1,1436 @@
+{
+  "unit": "unit-2688",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"multivitamin Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002688",
+      "given": "August",
+      "family": "Curran",
+      "birth_date": "2002-03-08",
+      "address_line": "118 Station Road",
+      "phone": "+1-774-555-0108",
+      "email": "august.curran@example.test",
+      "marital_status": "single",
+      "summary": "Healthy young construction worker who joined in 2024 taking an over-the-counter zinc supplement. A 2025 physical found a high serum zinc and elevated triglycerides; zinc was stopped and normalized. In March 2026 he was admitted with hypertriglyceridemia-induced acute pancreatitis and has since done well on fenofibrate.",
+      "events": [
+        {
+          "id": "2024-09-05a",
+          "kind": "outside_records",
+          "start": "2024-09-05T10:20",
+          "service": "Health Information Management",
+          "reason": "Records from prior practice",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records received from prior pediatric and adolescent practice",
+              "date": "2024-09-05T10:20",
+              "author": "front desk",
+              "body": "Records received by fax from patient's prior pediatric/adolescent practice ahead of his new patient appointment on 9/17. 22 pages. Covers well visits through age 18 (last well visit 2020).\n\nSummary for the chart:\n- No chronic problems listed. No surgeries. No hospitalizations.\n- No known drug allergies.\n- Childhood immunization series documented as complete, including adolescent boosters.\n- Growth and development normal throughout. Sports physicals for high school football, all cleared.\n\nScanned to media. Routed to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "establish_care",
+          "start": "2024-09-17T07:40",
+          "end": "2024-09-17T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "medications": [
+            {
+              "drug_text": "zinc gluconate 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily (self-started, over the counter)",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug_text": "multivitamin Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              109,
+              83
+            ],
+            "hr": 68,
+            "temp_c": 36.7,
+            "spo2": 96,
+            "weight_kg": 82.7,
+            "height_cm": 178.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-17T08:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.19
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 276
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-17T08:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 33
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 91
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-17T08:35",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 2-3 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction worker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, low MDM",
+              "performed": "2024-09-17T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2024-09-17T08:30",
+              "author": "PCP",
+              "body": "NEW PATIENT VISIT\n\n22 y/o man here to establish care. Aged out of his pediatric practice a few years ago and hasn't had a doctor since. Works construction (commercial framing crew), employer plan. No complaints today, just wants a doctor on file. Early appt so he can get to the site by 9.\n\nPMH: none. Prior records reviewed, unremarkable.\nPSH: none.\nMeds: none prescribed. Takes zinc gluconate 50 mg once a day, started on his own a while back because a coworker said it keeps you from getting sick. Also a daily multivitamin.\nAllergies: NKDA.\nFHx: father with high blood pressure. Mother gets migraines. No known inherited metabolic problems in the family that he is aware of.\nSHx: lives in Amherst, single. Never smoker, no vaping. Alcohol socially, 2-3 drinks a week. No drugs.\n\nROS: negative in detail.\n\nExam: well appearing, muscular. Vitals as charted.\nHEENT: TMs clear, oropharynx normal. Neck supple, no thyroid enlargement, no nodes.\nHeart RRR, no murmur. Lungs clear.\nAbd soft, NT, no organomegaly.\nExt: no edema. Skin: no rashes, a few healed abrasions on forearms.\nNeuro nonfocal. Mood good, PHQ-2 0.\n\nA/P: healthy young adult establishing care.\n- Baseline CBC, CMP. One-time HIV and hep C screen, he agrees.\n- Zinc: told him I'm not convinced it does much; fine to bring it up again at his physical.\n- Flu shot: none today, nurse visit next month when supply is in.\n- Encouraged sunscreen and hearing protection on site.\n- Physical next summer. He prefers early morning slots."
+            }
+          ],
+          "state": {
+            "weight_kg": 82.0,
+            "height_cm": 180.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-09-20a",
+          "kind": "portal_message",
+          "start": "2024-09-20T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2024-09-20T16:05",
+              "author": "PCP",
+              "body": "Hi August, your blood count, kidney and liver tests, and electrolytes all came back normal. HIV and hepatitis C screens were negative. Nothing to change. Good to meet you this week. We'll see you for the flu shot next month."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T07:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T07:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-22T07:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "date": "2024-10-22T07:35",
+              "author": "RN",
+              "body": "In before work for flu vaccine. Denies fever or illness today. No prior vaccine reactions, NKDA. Influenza quadrivalent 0.5 mL IM left deltoid, lot and expiration in MAR. VIS given. Declined COVID vaccine today, says he may get it later. Tolerated well, left after 15 min without issue."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-30a",
+          "kind": "portal_message",
+          "start": "2025-07-30T19:42",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "date": "2025-07-30T19:42",
+              "author": "patient",
+              "body": "hey I have a physical on aug 12 but we're pouring a foundation that whole week and I can't get off. can I do the end of the month instead, early if possible. thanks"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "date": "2025-07-31T08:50",
+              "author": "front desk",
+              "body": "Hi August, no problem. I moved you to Thursday 8/28 at 7:30 AM. Please come fasting (water and black coffee are fine) since the doctor will draw labs that morning."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "annual_physical",
+          "start": "2025-08-12T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-08-28a",
+          "kind": "annual_physical",
+          "start": "2025-08-28T07:30",
+          "end": "2025-08-28T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              128,
+              72
+            ],
+            "hr": 81,
+            "temp_c": 37.0,
+            "spo2": 97,
+            "weight_kg": 82.3
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-08-28T08:15",
+              "resulted": "2025-09-02T11:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 198
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 42
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 486
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 88
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 156
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-28T08:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 112
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 66
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-28T08:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.14
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 238
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-28T08:15",
+              "resulted": "2025-09-02T11:40",
+              "results": [
+                {
+                  "test": "Zinc",
+                  "loinc": "5763-8",
+                  "unit": "ug/dL",
+                  "value": 162
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-08-28T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-08-28T08:10",
+              "author": "PCP",
+              "body": "PREVENTIVE VISIT\n\nAugust is 23, here fasting for his physical. Rescheduled from earlier this month around a work pour. Feels fine. Busy season at work, long days, no injuries this year. Sleeping ok.\n\nMeds: zinc gluconate 50 mg daily (still taking, every day), multivitamin daily. NKDA.\nSocial: never smoker. Drinks socially on weekends, 2-3 drinks a week. No drugs.\nFamily: dad with hypertension, mom migraines.\n\nROS: no chest pain, no shortness of breath, no abdominal pain, no change in bowels, no urinary symptoms. No headaches. PHQ-2 0.\n\nExam: vitals as charted. Well appearing.\nHEENT normal. Neck no nodes, thyroid normal.\nHeart regular, no murmur. Lungs clear bilaterally.\nAbdomen soft, nontender, no hepatosplenomegaly.\nSkin: no rash. Ext: no edema.\nNeuro: nonfocal.\n\nA/P\n1. Health maintenance: fasting lipids, CMP, CBC today. Flu vaccine this fall.\n2. Zinc supplement: 50 mg is more than the daily upper limit for adults. Adding a serum zinc to today's draw to see where he is before we talk about it.\n3. Hearing protection and sunscreen reviewed again.\n\nWill message with results."
+            }
+          ],
+          "state": {
+            "labs": {
+              "High Density Lipoprotein": 42,
+              "Low Density Lipoprotein": 88,
+              "Total Cholesterol": 198,
+              "Triglycerides": 486
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-02a",
+          "kind": "portal_message",
+          "start": "2025-09-02T15:20",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results from your physical",
+              "date": "2025-09-02T15:20",
+              "author": "PCP",
+              "body": "Hi August, your results are back. Your blood count and kidney and liver tests are normal. Two things I'd like to go over with you in person: your zinc level is above the normal range, and your triglycerides (a type of blood fat) are elevated even though your cholesterol numbers are fine. The lab also noted no chylomicron layer when your sample was refrigerated, which is reassuring. Nothing urgent, but please book a short visit in the next week or two. The front desk has early slots."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-08a",
+          "kind": "office_visit",
+          "start": "2025-09-08T07:30",
+          "end": "2025-09-08T07:55",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Review laboratory results",
+          "conditions": [
+            {
+              "label": "Hyperzincemia",
+              "action": "diagnosed",
+              "onset": "2025-08-28",
+              "icd10": "E83.2"
+            },
+            {
+              "label": "Hypertriglyceridemia",
+              "action": "diagnosed",
+              "onset": "2025-08-28"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "zinc gluconate 50 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Hyperzincemia"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              84
+            ],
+            "hr": 72,
+            "weight_kg": 82.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-09-08T07:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "zinc-recheck",
+              "action": "placed",
+              "order": "Zinc, serum",
+              "category": "lab",
+              "reason": "Recheck after stopping supplement"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Lab Review",
+              "date": "2025-09-08T07:55",
+              "author": "PCP",
+              "body": "S: Here to go over labs from his 8/28 physical. No symptoms. Still taking zinc gluconate 50 mg every day plus a multivitamin. No other supplements, no protein powders. Asked again about family history: he says his dad was in the hospital with pancreatitis about five years ago. He doesn't know details, thinks dad was in for several days. Dad otherwise has blood pressure trouble. No one in the family he knows of with cholesterol or metabolic disorders.\n\nO: Vitals as charted. Looks well.\nSkin: no xanthomas on hands, elbows, knees or eyelids.\nAbd: soft, nontender, liver and spleen not enlarged.\n\nLabs 8/28 (fasting):\n- Lipids: total cholesterol 198, LDL 88, HDL 42, all in range. Triglycerides 486, elevated.\n- Lab comment: refrigerated plasma without a chylomicron layer.\n- Serum zinc 162 mcg/dL (ref 60-120).\n- CMP and CBC normal.\n\nA/P:\n1. Hyperzincemia. Explained to him; most likely from taking 50 mg a day for a long stretch. Stop the zinc. Multivitamin is fine to continue. Repeat zinc in about 3 months.\n2. Hypertriglyceridemia, fasting TG 486 with normal LDL and HDL. No chylomicrons. Will repeat fasting lipids with his physical next year.\n\nHe was fine with the plan. RTC for lab draw in December."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "portal_message",
+          "start": "2025-09-09T21:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "multivitamin",
+              "date": "2025-09-09T21:14",
+              "author": "patient",
+              "body": "I looked at my multivitamin and it has zinc in it too. Is that ok or should I stop that one too?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: multivitamin",
+              "date": "2025-09-10T07:05",
+              "author": "PCP",
+              "body": "Good catch. The amount in a standard multivitamin is about the normal daily intake, so the multivitamin is fine to keep. It was the extra 50 mg tablet on top of it that pushed your level up. See you in December for the recheck."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-16a",
+          "kind": "nurse_visit",
+          "start": "2025-10-16T07:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-16T07:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-16T07:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Flu Shot",
+              "date": "2025-10-16T07:30",
+              "author": "RN",
+              "body": "Flu vaccine 2025-26 trivalent, 0.5 mL IM R deltoid. Screening questions negative, feels well. VIS provided. Again declines COVID vaccine. No reaction during observation."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-02a",
+          "kind": "lab_only",
+          "start": "2025-12-02T07:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Repeat serum zinc",
+          "conditions": [
+            {
+              "label": "Hyperzincemia",
+              "action": "resolved",
+              "icd10": "E83.2"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-12-02T07:10",
+              "resulted": "2025-12-03T13:25",
+              "results": [
+                {
+                  "test": "Zinc",
+                  "loinc": "5763-8",
+                  "unit": "ug/dL",
+                  "value": 94
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-02T07:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "zinc-recheck",
+              "action": "done",
+              "date": "2025-12-02T07:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Lab Draw",
+              "date": "2025-12-02T07:15",
+              "author": "MA",
+              "body": "Venipuncture L antecubital, one attempt, serum zinc per standing order. Pt states he stopped the zinc tablets in September. Tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-03a",
+          "kind": "portal_message",
+          "start": "2025-12-03T17:40",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Zinc recheck",
+              "date": "2025-12-03T17:40",
+              "author": "PCP",
+              "body": "August, your zinc is back to normal at 94 since stopping the supplement. No need to recheck it. Stay off the separate zinc tablets; the multivitamin is fine. We'll look at your triglycerides again at your physical next summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-12a",
+          "kind": "ed_visit",
+          "start": "2026-03-12T14:25",
+          "end": "2026-03-12T20:40",
+          "service": "Emergency Medicine (outside)",
+          "reason": "Severe upper abdominal pain with vomiting",
+          "conditions": [
+            {
+              "label": "Acute pancreatitis due to hypertriglyceridemia",
+              "action": "diagnosed",
+              "onset": "2026-03-12",
+              "icd10": "K85.80"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              72
+            ],
+            "hr": 67,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 97
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-03-12T14:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.13
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 274
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-03-12T14:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 107
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-12T14:50",
+              "resulted": "2026-03-12T15:55",
+              "results": [
+                {
+                  "test": "Lipase",
+                  "value": 1800
+                },
+                {
+                  "test": "Amylase",
+                  "loinc": "1798-8",
+                  "unit": "U/L",
+                  "value": 2000
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 2000
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2026-03-12T16:10",
+              "text": "INDICATION: Epigastric pain radiating to the back, elevated lipase.\nTECHNIQUE: Real-time grayscale and color Doppler sonography of the right upper quadrant.\nFINDINGS: Liver normal in size and echotexture without focal lesion. Gallbladder well distended, no stones or sludge, wall not thickened, no pericholecystic fluid; sonographic Murphy sign negative. Common bile duct 3 mm, not dilated. No intrahepatic biliary dilatation. Visualized pancreatic head unremarkable; body and tail partly obscured by overlying bowel gas. Right kidney normal in size without hydronephrosis. No free fluid in the right upper quadrant.",
+              "conclusion": "No cholelithiasis. No biliary obstruction.",
+              "issued": "2026-03-12T16:45"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-03-12T14:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Physician Record (received)",
+              "date": "2026-03-13T09:10",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Date of service 03/12/2026. Copy to primary care.\n\nCHIEF COMPLAINT: abdominal pain, vomiting\n\nHPI: 24 yo M, construction worker, presents with severe sharp pain in the upper abdomen going through to the back since early this morning, with nausea and several episodes of emesis. States he has had attacks like this on and off for about three months, not as bad, each lasting a day or so and settling at home; did not seek care for them. This one did not let up. Last alcohol 4 days ago (2-3 drinks/wk at baseline). No fever, no diarrhea, no hematemesis.\n\nPMH (per patient and outside list): hyperzincemia, elevated triglycerides\nMEDS: zinc gluconate 50 mg daily, multivitamin daily\nALLERGIES: NKDA\nFHx: father HTN; mother migraine; no known inherited metabolic disease\nSHx: never smoker; social EtOH; no drug use\n\nEXAM: uncomfortable, lying still. Vitals per flowsheet.\nAbd: tender in the epigastrium, no rebound, no guarding, bowel sounds present. No jaundice.\nHeart RRR. Lungs clear.\n\nRESULTS: lipase 1800 U/L, amylase 2000 U/L, triglycerides 2000 mg/dL. CBC and CMP otherwise unremarkable.\nRUQ US: no gallstones, no biliary obstruction.\n\nED COURSE: IV fluids started, IV ondansetron and IV hydromorphone with improvement. \n\nIMPRESSION: Acute pancreatitis, hypertriglyceridemia-induced; gallstones not seen.\n\nDISPOSITION: admitted to the hospitalist service."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Triglycerides": 2000
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-03-12b",
+          "kind": "hospital_admission",
+          "start": "2026-03-12T20:40",
+          "end": "2026-03-15T12:30",
+          "service": "Hospital Medicine (outside)",
+          "reason": "Acute pancreatitis due to hypertriglyceridemia",
+          "medications": [
+            {
+              "drug_text": "fenofibrate 145 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 145,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertriglyceridemia"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-03-15T05:30",
+              "results": [
+                {
+                  "test": "Triglycerides",
+                  "value": 640
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-03-12T22:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-03-15T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary (received)",
+              "date": "2026-03-16T10:05",
+              "author": "hospital medicine",
+              "body": "HOSPITALIST DISCHARGE SUMMARY\nAdmitted 03/12/2026 via ED. Discharged 03/15/2026 to home.\n\nPrincipal diagnosis: acute pancreatitis secondary to hypertriglyceridemia, without necrosis or infection.\n\nBrief history: 24 y/o male with known elevated triglycerides presented with severe epigastric pain radiating to the back with vomiting. Lipase 1800, amylase 2000, TG 2000 on arrival. RUQ ultrasound without gallstones or ductal dilatation.\n\nHospital course: Made NPO with IV lactated Ringer's. IV ondansetron and IV hydromorphone as needed, weaned by day 2. Pain resolved and he was advanced to clear liquids on day 2 and a low-fat diet on day 3, which he tolerated. Triglycerides 640 on the morning of discharge. Started on fenofibrate. Counseled at length to stop alcohol completely and keep to a low-fat diet; he was agreeable.\n\nDischarge medications:\n- NEW fenofibrate 145 mg PO daily\n- multivitamin 1 tab daily\n- zinc gluconate 50 mg daily: patient states he is not taking\n\nAllergies: NKDA\n\nFollow-up: PCP within 1 week with fasting lipid panel. Return for recurrent abdominal pain, vomiting or fever.\nWork: off until seen by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "telephone",
+          "start": "2026-03-16T11:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2026-03-16T11:35",
+              "author": "RN",
+              "body": "Transition of care call after discharge 3/15 for pancreatitis. Spoke with patient. Reports he is feeling a lot better, no pain since Saturday, eating small low-fat meals and keeping them down. No vomiting, no fever. Picked up fenofibrate yesterday and took first home dose. Reviewed discharge med list with him: fenofibrate daily, multivitamin; not on zinc. Has not had any alcohol. Booked with PCP Thursday 3/19 at 7:30, fasting for labs. Knows to call or come in sooner for return of pain or vomiting."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-19a",
+          "kind": "office_visit",
+          "start": "2026-03-19T07:30",
+          "end": "2026-03-19T08:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, pancreatitis",
+          "conditions": [
+            {
+              "label": "Acute pancreatitis due to hypertriglyceridemia",
+              "action": "resolved",
+              "icd10": "K85.80"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              81
+            ],
+            "hr": 75,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 82.3
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-03-19T08:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 192
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 40
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 380
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 86
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 152
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-03-19T08:10",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 112
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "History of alcohol use",
+              "value": "None since March 2026"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-03-19T07:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fibrate-labs-may",
+              "action": "placed",
+              "order": "Lipid panel, hepatic panel, creatinine",
+              "category": "lab",
+              "reason": "Fenofibrate monitoring"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2026-03-19T08:05",
+              "author": "PCP",
+              "body": "Hospital follow-up (TCM). ED record and discharge summary reviewed.\n\nAugust was admitted 3/12-3/15 with acute pancreatitis from hypertriglyceridemia: lipase 1800, amylase 2000, TG 2000 on arrival, no gallstones on ultrasound. Treated with bowel rest and IV fluids; TG 640 at discharge, started on fenofibrate 145 mg.\n\nToday: no abdominal pain since the weekend. Eating normally, has cut out fried food and fast food lunches at work. Taking fenofibrate every morning, no muscle aches. Has had no alcohol since discharge and plans to keep it that way. Off the zinc since September as before. He tells me the attacks over the winter were milder and he just rode them out at home.\n\nExam: vitals as charted, afebrile. Comfortable.\nAbdomen soft, nontender including epigastrium, no organomegaly.\nNo jaundice.\n\nA/P:\n1. Acute pancreatitis, resolved clinically.\n2. Hypertriglyceridemia, now with pancreatitis. Continue fenofibrate 145 mg daily, low-fat diet, no alcohol. Fasting lipid panel and CMP today. Repeat lipids, liver tests and creatinine in 2 months, then video visit.\n3. Work: cleared to return to full duty Monday 3/23. Letter given.\n\nReturn sooner for any recurrent pain or vomiting."
+            },
+            {
+              "type": "Letter",
+              "title": "Return to Work",
+              "date": "2026-03-19T08:10",
+              "author": "PCP",
+              "body": "To whom it may concern:\n\nAugust Curran was under medical care from March 12 through March 19, 2026. He may return to work without restrictions on Monday, March 23, 2026.\n\nPlease contact our office with any questions.\n\nPrimary Care Physician"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Triglycerides": 380
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-20a",
+          "kind": "portal_message",
+          "start": "2026-03-20T14:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Labs from yesterday",
+              "date": "2026-03-20T14:30",
+              "author": "PCP",
+              "body": "August, triglycerides are down to 380, from 2000 in the ER and 640 when you left the hospital. Heading the right way. Kidney and liver tests are normal. Keep up the fenofibrate, the diet changes and no alcohol. Next labs in May."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "pharmacy",
+          "start": "2026-04-14T09:45",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Pharmacy refill request - fenofibrate",
+              "date": "2026-04-14T09:45",
+              "author": "MA",
+              "body": "Pharmacy request to convert fenofibrate 145 mg (30-day supply from hospital discharge) to a 90-day supply under his plan. Pended for PCP.\n\nPCP: approved, 90 days with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-18a",
+          "kind": "lab_only",
+          "start": "2026-05-18T07:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fenofibrate monitoring labs",
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-05-18T07:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 180
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 44
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 260
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 84
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 136
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-05-18T07:05",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-18T07:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-05-18T07:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fibrate-labs-may",
+              "action": "done",
+              "date": "2026-05-18T07:05"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Triglycerides": 260
+            }
+          }
+        },
+        {
+          "id": "2026-05-21a",
+          "kind": "telehealth_visit",
+          "start": "2026-05-21T18:00",
+          "end": "2026-05-21T18:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up triglycerides on fenofibrate",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2026-05-21T18:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2026-05-21T18:15",
+              "author": "PCP",
+              "body": "Video visit, pt at home after work, identity confirmed.\n\nDoing well. No abdominal pain since March. Taking fenofibrate daily without side effects. Still not drinking. Packing his own lunches.\n\nLabs 5/18: TG 260 (2000 in March, 380 a week after discharge). Liver tests and creatinine normal.\n\nA/P: hypertriglyceridemia on fenofibrate, improving. Continue fenofibrate 145 mg daily, diet, no alcohol. Fasting lipids with his physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "pharmacy",
+          "start": "2026-07-28T10:15",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Fill history reviewed",
+              "date": "2026-07-28T10:15",
+              "author": "MA",
+              "body": "Pharmacy fill notice: fenofibrate 145 mg #90 refilled 7/27, on schedule. No action needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T20:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "physical",
+              "date": "2026-08-11T20:02",
+              "author": "patient",
+              "body": "Need to book my physical for sometime in september. mornings before 8 are best. do I need to fast again"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: physical",
+              "date": "2026-08-12T09:15",
+              "author": "front desk",
+              "body": "Hi August, you're booked Monday 9/14 at 7:30 AM. Yes, please come fasting so we can draw your lipids that morning."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-14a",
+          "kind": "annual_physical",
+          "start": "2026-09-14T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical with fasting labs",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute pancreatitis due to hypertriglyceridemia|K85.80": {
+        "code": "K85.80",
+        "display": "Other acute pancreatitis without necrosis or infection",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hyperzincemia|E83.2": {
+        "code": "E83.2",
+        "display": "Disorders of zinc metabolism",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "fenofibrate 145 MG Oral Tablet": {
+        "code": "477560",
+        "display": "fenofibrate 145 MG Oral Tablet",
+        "ingredient": "fenofibrate",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "zinc gluconate 50 MG Oral Tablet": {
+        "code": "198907",
+        "display": "zinc gluconate 50 MG Oral Tablet",
+        "ingredient": "zinc",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Amylase": {
+        "code": "1798-8",
+        "display": "Amylase [Enzymatic activity/volume] in Serum or Plasma",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Zinc": {
+        "code": "5763-8",
+        "display": "Zinc [Mass/volume] in Serum or Plasma",
+        "unit": "ug/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"multivitamin Oral Tablet\""
+    ]
+  }
+}

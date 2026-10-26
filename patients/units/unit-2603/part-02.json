@@ -1,0 +1,400 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002603",
+   "events": [
+    {
+     "id": "2026-01-06a",
+     "kind": "portal_message",
+     "start": "2026-01-06T20:04",
+     "service": "Internal Medicine — Primary Care",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Back to work",
+       "author": "patient",
+       "date": "2026-01-06T20:04",
+       "body": "Back on my route as of yesterday, vascular surgery cleared me. Voice is totally normal now. Do you need to see me before my physical next fall or am I good?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Back to work",
+       "author": "PCP",
+       "date": "2026-01-07T07:50",
+       "body": "Great to hear, Logan. I'd like a quick check-in in about a month, once you've been back at work for a few weeks, mostly to make sure you're recovering well after two big hospital stays last year. The front desk will reach out to schedule. Vascular surgery will set up your one-year scan in November."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Appointment scheduled",
+       "author": "front desk",
+       "date": "2026-01-07T10:12",
+       "body": "You're scheduled for a follow-up visit on Tuesday 2/10/2026 at 4:20 PM."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-10a",
+     "kind": "office_visit",
+     "start": "2026-02-10T16:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after hospitalization",
+     "appointment": "no-show"
+    },
+    {
+     "id": "2026-02-10b",
+     "kind": "telephone",
+     "start": "2026-02-10T16:50",
+     "service": "Internal Medicine — Primary Care",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed Appointment",
+       "author": "front desk",
+       "date": "2026-02-11T09:05",
+       "body": "Pt no-show for 4:20 visit 2/10. Called cell 2/10 at 4:50, left VM to reschedule. Pt called back 2/11 AM — got held late on his route, apologized. Says he feels fine and would rather wait for his physical. PCP aware; OK per PCP to defer to the fall physical."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-10a",
+     "kind": "ed_visit",
+     "start": "2026-05-10T14:05",
+     "end": "2026-05-10T19:20",
+     "service": "Emergency Medicine",
+     "reason": "Shortness of breath and chest pain after high-speed motor vehicle collision",
+     "vitals": [
+      {
+       "time": "2026-05-10T14:08",
+       "hr": 110,
+       "rr": 26,
+       "spo2": 89
+      },
+      {
+       "time": "2026-05-10T14:50",
+       "spo2": 92
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Tracheobronchial rupture",
+       "icd10": "S27.431A",
+       "action": "diagnosed",
+       "onset": "2026-05-10"
+      },
+      {
+       "label": "Blunt chest trauma",
+       "icd10": "S29.9XXA",
+       "action": "diagnosed",
+       "onset": "2026-05-10"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 1 view",
+       "performed": "2026-05-10T14:18",
+       "issued": "2026-05-10T14:30",
+       "text": "Portable AP chest. Trauma. Left pneumothorax. Subcutaneous emphysema over the left chest wall. Thoracic aortic stent graft in expected position. Postsurgical changes of prior left thoracotomy. Right lung clear. No displaced rib fracture seen.",
+       "conclusion": "Left pneumothorax."
+      },
+      {
+       "study": "Chest X-ray, 1 view",
+       "performed": "2026-05-10T17:35",
+       "issued": "2026-05-10T17:48",
+       "text": "Portable AP chest after left tube thoracostomy. Left chest tube with its tip directed toward the apex, side hole within the pleural space. Left pneumothorax persists. Left chest wall subcutaneous emphysema again seen. Right lung clear.",
+       "conclusion": "Chest tube in satisfactory position; persistent left pneumothorax."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2026-05-10T14:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Notes",
+       "title": "Emergency Department Physician Record",
+       "author": "emergency medicine",
+       "date": "2026-05-12T08:45",
+       "body": "REGIONAL HOSPITAL — EMERGENCY DEPARTMENT\nDate of service: 05/10/2026  Arrival 14:05, EMS trauma activation\nPatient: Logan Fontaine, 29M\n\nCC: SOB, chest pain after high-speed MVC\n\nHPI: 29M, belted driver, high-speed collision this afternoon. Short of breath with chest pain. States he had not been drinking. Known to this hospital: April 2025 crash with esophageal rupture repaired by left thoracotomy; November 2025 crash with a blunt thoracic aortic injury treated with an endovascular stent graft.\n\nPMH: esophageal rupture with pleural effusion (repaired 04/2025); blunt thoracic aortic injury (TEVAR 11/2025).\nPSH: left thoracotomy 2025, TEVAR 2025, T&A as a child.\nMeds: none. Allergies: NKDA.\nFH: father HTN, mother hypothyroidism; no aortic, connective tissue or bleeding disorders.\nSH: never smoker; social alcohol 1-2/wk; delivery driver.\n\nArrival VS: HR 110, RR 26, SpO2 89% RA.\n\nExam: tachypneic and tachycardic. Breath sounds decreased on the left with crepitus of subcutaneous emphysema over the left chest wall. Trachea midline. Heart regular, tachycardic. Abdomen soft.\n\nED course: CXR with a left pneumothorax. Left chest tube placed; saturation came up to 92%. Over the next few hours his work of breathing worsened and the drainage system showed a large air leak that did not let up. Repeat film: tube well placed, pneumothorax unchanged. A persistent large leak with a lung that won't re-expand raises concern for an airway injury. Thoracic surgery consulted, plan for bronchoscopy in the OR.\n\nImpression:\n1. Tracheobronchial rupture, suspected — persistent air leak and pneumothorax despite chest tube.\n2. Blunt chest trauma, high-speed MVC.\n3. Hx esophageal rupture (repaired) and blunt aortic injury s/p TEVAR.\n\nDispo: to OR with thoracic surgery 19:20."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-10b",
+     "kind": "hospital_admission",
+     "start": "2026-05-10T19:20",
+     "end": "2026-05-21T12:40",
+     "service": "Thoracic Surgery",
+     "reason": "Left main bronchus tear after blunt chest trauma",
+     "reports": [
+      {
+       "study": "CT chest",
+       "performed": "2026-05-10T18:30",
+       "issued": "2026-05-10T18:58",
+       "text": "CT chest with IV contrast. Left chest tube in place. Persistent left pneumothorax. Subcutaneous emphysema along the left chest wall. Thoracic aortic stent graft in expected position just beyond the left subclavian origin. Postsurgical changes of prior left thoracotomy and distal esophageal repair. Right lung clear. No pleural effusion. Heart size normal. No fracture.",
+       "conclusion": "Persistent left pneumothorax despite chest tube; stent graft in expected position."
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "oxycodone hydrochloride 5 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth every 6 hours as needed for severe pain",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "Q6H PRN",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Post-thoracotomy pain"
+      },
+      {
+       "drug": "acetaminophen 500 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 2 tablets by mouth every 8 hours as needed for pain",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "Q8H PRN",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Post-thoracotomy pain"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Operative Note",
+       "title": "Operative Report — Bronchoscopy and Left Thoracotomy, Bronchial Repair",
+       "author": "thoracic surgery",
+       "date": "2026-05-22T09:30",
+       "body": "REGIONAL HOSPITAL — DEPARTMENT OF SURGERY, THORACIC\nDate of operation: 05/10/2026\n\nPreoperative diagnosis: Suspected left-sided tracheobronchial rupture after blunt chest trauma; persistent air leak and left pneumothorax despite tube thoracostomy.\nPostoperative diagnosis: Tear of the left main bronchus.\nProcedures: 1. Flexible bronchoscopy. 2. Redo left posterolateral thoracotomy with primary repair of the left main bronchus.\nAnesthesia: General; bronchoscopy-guided placement of a right-sided double-lumen tube.\nAllergies: NKDA.\n\nFindings: Trachea and carina intact. Tear in the proximal left main bronchus. Right airways normal. At thoracotomy, adhesions from the prior operation; the bronchial tear confirmed and its edges healthy.\n\nDescription: Flexible bronchoscopy through the single-lumen tube defined the injury, then airway secured with the double-lumen tube under bronchoscopic guidance. Redo left thoracotomy through the prior incision. Adhesiolysis. Left main bronchus exposed; tear repaired primarily with interrupted absorbable sutures. Leak test under saline: no leak. Two left chest tubes. Closure in layers.\n\nEBL modest. No complications. To SICU intubated, extubated the next morning."
+      },
+      {
+       "type": "Discharge Summary",
+       "title": "Discharge Summary",
+       "author": "thoracic surgery",
+       "date": "2026-05-22T09:35",
+       "body": "REGIONAL HOSPITAL — DISCHARGE SUMMARY\nAdmitted 05/10/2026  Discharged 05/21/2026\nService: Thoracic Surgery\n\nPrincipal diagnosis: Tracheobronchial rupture (left main bronchus tear) after blunt chest trauma, high-speed MVC.\nOther: history of esophageal rupture repaired 04/2025; blunt thoracic aortic injury s/p TEVAR 11/2025.\nAllergies: NKDA.\n\nCourse: 29M with a persistent large air leak and unresolved left pneumothorax after ED chest tube placement. CT chest showed the pneumothorax persisting with the tube in place and the aortic stent graft in expected position. Bronchoscopy in the OR on 5/10 showed a tear of the left main bronchus, repaired primarily through a redo left thoracotomy (see operative report). Extubated POD 1. Air leak stopped and the lung stayed up; chest tubes removed in stages. Subcutaneous emphysema resolved. Ambulating, eating a regular diet, pain controlled on oral medication.\n\nDischarge medications:\n- oxycodone 5 mg, 1 tab every 6 h as needed for severe pain, #20, no refills\n- acetaminophen 500 mg, 2 tabs every 8 h as needed for pain\n\nActivity: no lifting over 10 lb, no driving while taking oxycodone. Off work until cleared.\nFollow-up: thoracic surgery clinic in about 3 weeks with chest x-ray; surveillance bronchoscopy at about 8 weeks. PCP within 1 week."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-22a",
+     "kind": "telephone",
+     "start": "2026-05-22T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Post-Discharge Outreach Call",
+       "author": "RN",
+       "date": "2026-05-22T10:45",
+       "body": "TCM outreach, 1 business day after discharge (d/c 5/21, regional hospital, thoracic surgery).\nSpoke with pt. Home with his mother staying for a few days. Has discharge paperwork and both prescriptions filled. Taking acetaminophen regularly and oxycodone at night. Breathing comfortably, no fever, incision dry. Reviewed reasons to call 911 or go to the ED: sudden shortness of breath, chest pain, fever, redness or drainage from the incision.\nPCP visit booked Tue 5/26 at 1:40. Hospital records requested."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-26a",
+     "kind": "office_visit",
+     "start": "2026-05-26T13:40",
+     "end": "2026-05-26T14:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hospital follow-up after bronchial repair",
+     "state": {
+      "weight_kg": 77.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-05-26T14:15",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2026-05-26T13:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-05-26T14:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-Hospital Visit",
+       "author": "PCP",
+       "date": "2026-05-26T15:05",
+       "body": "Hospital follow-up. Records from the regional hospital in hand: ED record, op report, discharge summary.\n\n29M, belted driver in a high-speed crash 5/10. In the ED: HR 110, RR 26, sat 89% on room air, left pneumothorax with subcutaneous emphysema; chest tube brought him to 92% at first, but a large air leak persisted and the lung stayed down. Bronchoscopy in the OR found a tear of the left main bronchus, repaired through a redo left thoracotomy the same night. Extubated POD 1. Home 5/21 on oxycodone and acetaminophen.\n\nToday: mild soreness along the incision, worse when he turns in bed. Stopped the oxycodone two days ago. No shortness of breath walking around the neighborhood, no fever, no cough to speak of. Eating normally, no swallowing trouble. Mother has been helping out.\n\nWeight 77 kg.\n\nExam: comfortable, conversational without effort. Lungs clear and equal. No crepitus. Heart regular, no murmur. Left thoracotomy incision healing, clean, no erythema; chest tube sites closed. Right groin from last fall unremarkable. No calf tenderness or edema.\n\nA/P\n1. Tracheobronchial rupture s/p primary repair of left main bronchus 5/10/26 — recovering well. Thoracic surgery visit with CXR 6/9; bronchoscopy planned around 8 weeks out. ED precautions reviewed.\n2. Blunt chest trauma, post-op pain — acetaminophen as needed. Return unused oxycodone at the pharmacy take-back.\n3. Blunt thoracic aortic injury s/p TEVAR — stent graft in expected position on the inpatient CT. One-year CTA with vascular surgery in November.\n4. CBC today.\n5. Off work until cleared by thoracic surgery; work note given.\n\nTCM, high complexity. Contact made 5/22."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-27a",
+     "kind": "portal_message",
+     "start": "2026-05-27T11:20",
+     "service": "Internal Medicine — Primary Care",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Blood count",
+       "author": "PCP",
+       "date": "2026-05-27T11:20",
+       "body": "Logan, yesterday's blood count is normal — no sign of anemia or infection. Keep walking every day and take it easy on lifting. See you in the fall, sooner if anything comes up."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-09a",
+     "kind": "specialist_visit",
+     "start": "2026-06-09T09:40",
+     "service": "Thoracic Surgery",
+     "reason": "Post-operative follow-up, bronchial repair",
+     "reports": [
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2026-06-09T09:10",
+       "issued": "2026-06-09T09:30",
+       "text": "PA and lateral chest. Postsurgical changes of left thoracotomy. Thoracic aortic stent graft in stable position. Left lung fully expanded. No pneumothorax. No pleural effusion. Right lung clear. Heart size normal.",
+       "conclusion": "Left lung fully expanded; no pneumothorax or effusion."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Thoracic Surgery Clinic Letter",
+       "author": "thoracic surgery",
+       "date": "2026-06-11T13:15",
+       "body": "REGIONAL HOSPITAL — THORACIC SURGERY CLINIC\nVisit 06/09/2026\n\nDear Doctor,\n\nMr. Fontaine returns a month after flexible bronchoscopy and redo left thoracotomy with primary repair of a left main bronchus tear (5/10/26). We also cared for him after his esophageal repair last year.\n\nHe is off opioids, walking daily, and denies dyspnea, cough, hemoptysis or fevers. Incision healed. Breath sounds equal bilaterally.\nChest radiograph today: left lung fully expanded, no pneumothorax or effusion.\nAllergies: NKDA. Medications: acetaminophen as needed.\n\nPlan: surveillance bronchoscopy on 7/7/26 to look at the repair. Remains off work until then. Lifting limit of 10 lb continues.\n\nThoracic Surgery"
+      }
+     ]
+    },
+    {
+     "id": "2026-06-11a",
+     "kind": "telephone",
+     "start": "2026-06-11T15:00",
+     "service": "Internal Medicine — Primary Care",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Disability Paperwork",
+       "author": "MA",
+       "date": "2026-06-11T15:20",
+       "body": "Short-term disability carrier faxed an attending physician statement for this claim (date off work 5/10/26). Filled in diagnosis, surgery date and restrictions from the hospital and thoracic surgery records in the chart; estimated return date left as pending thoracic surgery's 7/7 visit. PCP signed. Faxed back, copy to media. Pt informed via portal."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-07a",
+     "kind": "specialist_visit",
+     "start": "2026-07-07T08:00",
+     "service": "Thoracic Surgery",
+     "reason": "Surveillance bronchoscopy after bronchial repair",
+     "conditions": [
+      {
+       "label": "Tracheobronchial rupture",
+       "icd10": "S27.431A",
+       "action": "resolved",
+       "note": "Healed after primary repair of left main bronchus 05/10/2026"
+      },
+      {
+       "label": "Blunt chest trauma",
+       "icd10": "S29.9XXA",
+       "action": "resolved"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "Bronchoscopy Report and Clinic Letter",
+       "author": "thoracic surgery",
+       "date": "2026-07-09T11:40",
+       "body": "REGIONAL HOSPITAL — THORACIC SURGERY / ENDOSCOPY\nDate of procedure: 07/07/2026\n\nProcedure: Flexible bronchoscopy under moderate sedation.\nIndication: Surveillance after primary repair of a left main bronchus tear (5/10/2026).\nAllergies: NKDA.\n\nFindings: Normal vocal cords, trachea and carina. The left main bronchus repair is fully healed with a smooth, intact lining and a normal caliber; no narrowing, granulation tissue or suture exposure. Left upper and lower lobe airways normal. Right airways normal. Secretions minimal.\n\nImpression: Healed left main bronchus repair without stenosis.\n\nPlan: Cleared to return to work at full duty on 7/13/2026 with no restrictions. No routine thoracic surgery follow-up needed; we are glad to see him again for any new breathing symptoms.\n\nThoracic Surgery"
+      }
+     ]
+    },
+    {
+     "id": "2026-07-08a",
+     "kind": "portal_message",
+     "start": "2026-07-08T18:36",
+     "service": "Internal Medicine — Primary Care",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Work note",
+       "author": "patient",
+       "date": "2026-07-08T18:36",
+       "body": "Surgeon cleared me yesterday, back on the 13th. My manager wants something from you too, not just the hospital. Can you send it to me here?"
+      },
+      {
+       "type": "Letter",
+       "title": "Work Status Letter",
+       "author": "PCP",
+       "date": "2026-07-09T12:10",
+       "body": "To whom it may concern:\n\nLogan Fontaine has been under my care during his recovery from surgery. He has been cleared by his surgical team and may return to work at full duty without restrictions on July 13, 2026.\n\nPrimary care physician"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Work note",
+       "author": "PCP",
+       "date": "2026-07-09T12:12",
+       "body": "Attached. Glad you're through it, Logan."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-18a",
+     "kind": "portal_message",
+     "start": "2026-08-18T21:02",
+     "service": "Internal Medicine — Primary Care",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Physical",
+       "author": "patient",
+       "date": "2026-08-18T21:02",
+       "body": "Hi, can I get my yearly physical on the books for September? Tuesdays are easiest."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Physical",
+       "author": "front desk",
+       "date": "2026-08-19T08:44",
+       "body": "Hi Logan, you're set for your annual physical Tuesday 9/22/2026 at 8:40 AM. We can give your flu shot that day. Also a reminder from the vascular surgery letter in your chart: they plan your one-year CT scan for November and will call you to schedule."
+      }
+     ]
+    },
+    {
+     "id": "2026-09-22a",
+     "kind": "annual_physical",
+     "start": "2026-09-22T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "appointment": "booked"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,263 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002570",
+      "given": "Josue",
+      "family": "Hernandez",
+      "birth_date": "2002-08-31",
+      "address_line": "41 Granby Road, Apt 2",
+      "phone": "+1-802-555-0130",
+      "email": "josue.hernandez@example.test",
+      "marital_status": "single",
+      "summary": "Young apprentice electrician with childhood ADHD on methylphenidate and post-concussive syndrome after a mild TBI at 19, a daily smoker and heavy episodic drinker. Three high-speed car crashes in 16 months: a right posterior hip dislocation (2025), diffuse axonal injury with recovery (Dec 2025), and a severe diffuse axonal injury with coma (Aug 2026); he is in the ICU at today and the practice knows it mostly from his mother.",
+      "events": [
+        {
+          "id": "2022-11-09a",
+          "kind": "establish_care",
+          "start": "2022-11-09T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, transfer of care; ADHD medication",
+          "conditions": [
+            {"label": "Attention-deficit hyperactivity disorder, combined type", "action": "diagnosed", "onset": "2011-09-01", "note": "Diagnosed in childhood; on stimulant since"},
+            {"label": "Postconcussional syndrome", "action": "diagnosed", "onset": "2022-03-01", "note": "After a mild traumatic brain injury at age 19"}
+          ],
+          "medications": [
+            {"drug": "24 HR methylphenidate hydrochloride 36 MG Extended Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every morning", "dose": {"value": 36, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "ADHD, combined type"},
+            {"drug": "sertraline 50 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Low mood and irritability with post-concussive syndrome"},
+            {"drug": "ibuprofen 600 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 6 hours as needed for headache", "dose": {"value": 600, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "chronic", "reason": "Post-concussive headaches"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 77.0, "height_cm": 175.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-11-09T10:05", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-11-09T10:05", "results": [{"test": "Creatinine"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-11-09T10:05", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-11-09T10:05", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 4},
+            {"survey": "GAD-7 total score", "value": 3},
+            {"survey": "AUDIT-C total score", "value": 8}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Every day smoker"},
+            {"item": "Occupation", "value": "Apprentice electrician"},
+            {"item": "History of alcohol use", "value": "5-6 drinks per occasion, 2-3 times weekly"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2022-11-09T09:20"},
+            {"procedure": "Venipuncture", "performed": "2022-11-09T10:05"},
+            {"procedure": "Immunization administration", "performed": "2022-11-09T10:00"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-11-09T10:00"}
+          ],
+          "orders": [
+            {"id": "prior-records-2022", "action": "placed", "order": "Records request, prior primary care office", "category": "procedure", "reason": "transfer of care"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-11-09T09:20",
+              "body": "20M here to set up primary care. His old office was a pediatric-and-family practice he aged out of; he wants someone to keep his ADHD prescription going.\n\nHPI: ADHD, combined type, diagnosed as a kid. On methylphenidate ER 36 mg every morning for years, says it lets him get through a workday on site and keep his apprenticeship classes straight. No chest pain, palpitations or fainting on it. Appetite down at lunch, eats a big dinner. Sleeps 6-7 h.\nAt 19 he had a concussion (mild TBI). Afterward had headaches and was short-tempered and low for a while; the old office started sertraline 50 mg and he has stayed on it. Feels it keeps him level. Headaches now come and go, he takes ibuprofen 600 a few times a month. No vision change, no weakness.\n\nPMH: ADHD, combined. Mild TBI at 19 with lingering post-concussive symptoms.\nPSH: T&A age 8. Left distal radius fracture at 19, ORIF; plate still in, no wrist complaints.\nMeds: methylphenidate ER 36 mg qAM; sertraline 50 mg daily; ibuprofen 600 mg q6h prn headache.\nAllergies: NKDA.\nFH: father with alcohol use disorder and high blood pressure. Mother with depression and hypothyroidism. Older brother has ADHD and a learning disability.\nSH: apprentice electrician, union program. Cigarettes daily, about a pack a day, started around 18. Alcohol on weekends and sometimes midweek, usually 5-6 drinks when he goes out, 2-3 nights a week. No drug use reported.\n\nExam: vitals per flowsheet. Well appearing, fidgety but engaged. HEENT clear, tonsils surgically absent. Neck supple. Heart RRR no murmur. Lungs clear bilaterally. Abdomen soft, nontender. Left wrist healed volar scar, full motion. Neuro: alert, oriented, CN II-XII intact, strength and reflexes symmetric, gait normal.\nPHQ-9 4, GAD-7 3, AUDIT-C 8.\n\nA/P:\n1. ADHD, combined type - continue methylphenidate ER 36 mg qAM. Controlled-substance agreement reviewed and signed today; state PMP checked, single prescriber, fills monthly as expected. 30-day e-scripts, follow-up every 3-6 months.\n2. Post-concussive syndrome - stable, continue sertraline 50 mg and ibuprofen prn. Counseled to keep ibuprofen to the lowest use that works.\n3. Tobacco - smoking about a pack a day. Talked about quitting, offered patch or a quitline referral; not ready. Will revisit.\n4. Alcohol - AUDIT-C 8, binge pattern. Discussed risks, especially with the family history and with his stimulant. He listened, does not want to cut back right now.\n5. Health maintenance - CBC, CMP, lipids, one-time HIV and hep C screens today. Flu shot given. Requesting old records for the vaccine history.\nRTC 3 months."
+            },
+            {
+              "type": "Consent",
+              "title": "Controlled Substance Agreement",
+              "author": "MA",
+              "date": "2022-11-09T09:50",
+              "body": "Controlled substance agreement for methylphenidate ER reviewed with patient by MA and PCP. Patient agrees: one prescriber (this office), one pharmacy, no early refills, no sharing or selling medication, lost or stolen prescriptions not replaced early, periodic PMP review. Patient signed; copy given. Scanned to chart."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-10a",
+          "kind": "portal_message",
+          "start": "2022-11-10T16:40",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2022-11-10T16:40",
+              "body": "Hi Josue, your blood work from yesterday looks good - blood counts, kidney and liver tests normal. LDL cholesterol is a little above ideal, nothing to treat at 20; cutting the cigarettes would do more for your heart than anything else. The HIV and hepatitis C screens were negative. See you in February."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-21a",
+          "kind": "outside_records",
+          "start": "2022-11-21T11:15",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2013-10-08T10:00"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2013-10-08T10:00"},
+            {"vaccine": "HPV, 9-valent", "date": "2013-10-08T10:00"},
+            {"vaccine": "HPV, 9-valent", "date": "2014-05-13T10:00"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2019-01-22T10:00"}
+          ],
+          "orders": [
+            {"id": "prior-records-2022", "action": "done", "date": "2022-11-21T11:15"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "front desk",
+              "date": "2022-11-21T11:15",
+              "body": "Received 14 pages by fax from patient's prior pediatric and family medicine office. Scanned to media. Summary for chart:\n- ADHD, combined presentation, diagnosed in elementary school after teacher and parent rating scales. Methylphenidate ER titrated in adolescence, 36 mg qAM since high school. Yearly BP/HR checks normal.\n- Office visit after a concussion at age 19: headaches and poor sleep, later irritability and low mood; sertraline 50 mg daily started at a follow-up, reported helpful.\n- Left distal radius ORIF at age 19 noted in history; operative report not included in packet.\n- T&A age 8.\n- Immunizations: childhood series complete. Tdap and MenACWY 10/2013, HPV 9-valent 10/2013 and 5/2014 (2-dose series complete), MenACWY booster 1/2019.\n- No known drug allergies.\nForwarded to PCP for review."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside records review",
+              "author": "PCP",
+              "date": "2022-11-22T07:45",
+              "body": "Reviewed old office records. Consistent with his history. Vaccines entered: Tdap 2013, so Tdap due around 2023-24; HPV complete; MenACWY x2. No wrist op note - not needed for now."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-07a",
+          "kind": "portal_message",
+          "start": "2022-12-07T08:12",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Refill request",
+              "author": "patient",
+              "date": "2022-12-07T08:12",
+              "body": "hey doc I'm almost out of the methylphenidate, have 3 left. same pharmacy on Center St. thanks"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Refill request",
+              "author": "PCP",
+              "date": "2022-12-07T12:30",
+              "body": "PMP reviewed, on schedule. 30-day supply of methylphenidate ER 36 mg sent to your pharmacy. Next one due early January."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-14a",
+          "kind": "office_visit",
+          "start": "2023-02-14T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ADHD follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 1}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Every day smoker"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2023-02-14T15:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - ADHD follow-up",
+              "author": "PCP",
+              "date": "2023-02-14T15:40",
+              "body": "S: Medication check. Methylphenidate still working, no side effects beyond the usual lunchtime appetite dip. Headaches maybe twice a month, ibuprofen helps. Mood steady on sertraline. Still a pack a day. Drinking about the same.\nO: Vitals per flowsheet, BP and pulse fine. Comfortable. Heart regular, lungs clear. Affect bright.\nA/P: ADHD stable on methylphenidate ER 36 mg - continue, PMP ok. Post-concussive headaches infrequent - continue as is. Asked again about smoking; he says maybe this summer. RTC 3 mo, video ok."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-09a",
+          "kind": "telehealth_visit",
+          "start": "2023-05-09T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ADHD medication check",
+          "procedures": [
+            {"procedure": "Telehealth visit, established patient, low MDM", "performed": "2023-05-09T17:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit - medication check",
+              "author": "PCP",
+              "date": "2023-05-09T17:10",
+              "body": "Video visit from his truck after work, identity verified, consented to video.\nDoing well. Methylphenidate ER 36 mg covers the workday. No palpitations, sleeping ok. Sertraline unchanged, mood good. Few headaches.\nNo vitals today - will check BP at the fall physical.\nA/P: ADHD - continue, refills monthly after PMP check. Physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "portal_message",
+          "start": "2023-07-18T19:02",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Sertraline refill",
+              "author": "patient",
+              "date": "2023-07-18T19:02",
+              "body": "the pharmacy says my sertraline is out of refills can you send more"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Sertraline refill",
+              "author": "RN",
+              "date": "2023-07-19T09:20",
+              "body": "Sertraline 50 mg daily sent per PCP, 90 days with 1 refill. You're due for your physical in September; the front desk will reach out to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-20a",
+          "kind": "annual_physical",
+          "start": "2023-09-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 2},
+            {"survey": "GAD-7 total score", "value": 2},
+            {"survey": "AUDIT-C total score", "value": 8}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Every day smoker"},
+            {"item": "History of alcohol use", "value": "5-6 drinks per occasion, 2-3 times weekly"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-09-20T08:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-09-20T08:00",
+              "body": "21M for yearly physical.\n\nInterval: no ED visits or new problems. ADHD controlled on methylphenidate ER 36 mg. Headaches the same, a couple a month. Mood ok on sertraline.\nHe brings up that he got an OUI in the spring after a night out; he did not want to go into details. Drinking pattern unchanged, still 5-6 drinks on 2-3 nights a week. Still smoking about a pack daily.\n\nROS otherwise negative.\nExam: vitals reviewed. Well. Skin no lesions. HEENT normal. Neck no nodes. Heart regular, no murmur. Lungs clear. Abdomen soft, no liver edge. Ext no edema. Neuro nonfocal.\nPHQ-9 2, GAD-7 2, AUDIT-C 8.\n\nA/P:\n- Health maintenance: labs from last November normal, not repeating. Declines flu shot this year (\"I never get sick\"). Tdap from 2013 - will give next year with his physical.\n- Alcohol: talked plainly about the OUI and about drinking on a stimulant. Offered counseling referral and to talk about medication options; he says he will \"cool it\" on his own. Not interested in a referral.\n- Tobacco: advised to quit; declines patch.\n- ADHD: continue current dose.\nRTC 4 mo."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-06a",
+          "kind": "pharmacy",
+          "start": "2023-12-06T10:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy - methylphenidate out of stock",
+              "author": "MA",
+              "date": "2023-12-06T10:25",
+              "body": "Pharmacy called: methylphenidate ER 36 mg on backorder, no date. Called patient; he wants it sent to a different pharmacy on Chicopee Street that has it in stock. Pharmacist there confirmed supply. Cancelled the original e-script with the first pharmacy. Sent to PCP to re-send."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "RE: Pharmacy - methylphenidate out of stock",
+              "author": "PCP",
+              "date": "2023-12-06T12:05",
+              "body": "Re-sent methylphenidate ER 36 mg #30 to the new pharmacy. PMP shows first script never filled. Ok."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

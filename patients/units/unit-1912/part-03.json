@@ -1,0 +1,121 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001912",
+      "events": [
+        {
+          "id": "2026-02-02a",
+          "kind": "ed_visit",
+          "start": "2026-02-02T20:10",
+          "end": "2026-02-03T08:30",
+          "service": "Emergency Medicine",
+          "reason": "Facial swelling, shortness of breath and hives after eating at a seafood restaurant",
+          "vitals": [
+            {"time": "2026-02-02T20:12", "bp": [92, 60], "hr": 118, "rr": 24, "spo2": 93, "temp_c": 37.0},
+            {"time": "2026-02-02T22:15", "bp": [106, 66], "hr": 100, "rr": 20, "spo2": 97},
+            {"time": "2026-02-03T08:10", "bp": [112, 70], "hr": 78, "rr": 16, "spo2": 99, "temp_c": 36.7}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2026-02-02T20:10"},
+            {"procedure": "Nebulizer treatment", "performed": "2026-02-02T20:20"}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2026-02-03T11:00", "body": "EMERGENCY DEPARTMENT RECORD\nDate of service: 02/02/2026, arrived 20:10 by EMS. Observation overnight, discharged 02/03/2026 08:30.\n\nCC: facial swelling, SOB, hives\n\nHPI: 26-year-old woman with mild atopic dermatitis and known shellfish anaphylaxis (ED visit August 2025). Tonight at a seafood restaurant with friends she ordered a dish she was told had no shellfish; about 15 minutes after eating, her face swelled, she became short of breath and broke out in an itchy rash all over. Shrimp was later found in the dish. She gave herself her own epinephrine auto-injector at the table and friends called 911. Same picture as August, by her report. Denies stings, new medications or new soaps/lotions.\n\nPMH: atopic dermatitis; shellfish anaphylaxis 2025.\nMeds: epinephrine auto-injector prn (one used tonight); triamcinolone 0.1% cream prn; petroleum jelly.\nAllergies: shellfish - anaphylaxis; dust mites; pollen.\nSH: never smoker, social alcohol. Swim instructor.\n\nArrival vitals: T 37.0 C, BP 92/60, HR 118, RR 24, SpO2 93% RA.\n\nExam: Alert, anxious, dyspneic. Periorbital edema. Inspiratory stridor; bilateral wheezing. Urticaria across chest and arms. Heart tachycardic, regular. Abdomen soft.\n\nED course: IV placed, oxygen by face mask. Epinephrine 0.5 mg IM R thigh (second dose overall). Racemic epinephrine nebulized for stridor, then albuterol nebulizer. NS 2 L. Methylprednisolone 125 mg IV, diphenhydramine 50 mg IV, famotidine 20 mg IV.\nStridor resolved within the hour. 22:15: BP 106/66, HR 100, RR 20, SpO2 97% RA, off oxygen. Wheeze cleared.\nGiven two doses of epinephrine and airway involvement, kept overnight in ED observation. No recurrence.\n08:10: T 36.7, BP 112/70, HR 78, RR 16, SpO2 99% RA. Swelling resolved, skin clear.\n\nImpression: Anaphylaxis due to shellfish (shrimp), recurrent, with upper airway involvement.\n\nDisposition: home. New prescription for epinephrine 0.3 mg auto-injector 2-pack to replace the one used. Follow up with PCP in 2 to 3 days and with allergy/immunology, sooner appointment advised."}
+          ]
+        },
+        {
+          "id": "2026-02-03a",
+          "kind": "pharmacy",
+          "start": "2026-02-03T10:45",
+          "reason": "Auto-injector fill",
+          "documents": [
+            {"type": "Pharmacy", "title": "Fill Notice", "author": "pharmacy", "date": "2026-02-03T10:45", "body": "Filled: epinephrine 0.3 mg/0.3 mL auto-injector, 2-pack (prescriber: emergency department). Patient picked up."}
+          ]
+        },
+        {
+          "id": "2026-02-05a",
+          "kind": "office_visit",
+          "start": "2026-02-05T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, second shellfish anaphylaxis",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-02-05T10:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "ED Follow-up", "author": "PCP", "date": "2026-02-05T11:05", "body": "ED record from 2/2-2/3 reviewed.\n\nS: Second reaction. Ordered something off the non-shellfish side of the menu and asked the server; shrimp was in it anyway. Used her pen at the table within a couple of minutes, needed a second dose in the ED for stridor and stayed overnight. Home Tuesday morning. Fine now, a little tired. Frustrated and nervous about eating out. She has a fresh 2-pack from the ED script.\n\nO: Vitals per flowsheet, normal. Well. No facial swelling. Oropharynx clear. No stridor, lungs clear. Skin without hives.\n\nA/P\nShellfish anaphylaxis, recurrent, from hidden shrimp.\n- Using the pen right away was exactly right.\n- Restaurants: tell staff it is a severe allergy, not a preference; ask about sauces, stocks and shared fryers; seafood restaurants are higher risk for cross-contact. A chef card can help.\n- Always two pens; check expiry dates.\n- Her allergy appointment isn't until April. Our RN will call the allergy office today to ask for an earlier slot given two reactions.\n- Return as needed."},
+            {"type": "Telephone Encounter", "title": "Call to Allergy Office", "author": "RN", "date": "2026-02-05T14:30", "body": "Called allergy office re: second anaphylaxis 2/2, requested earlier new patient appointment. Moved from 4/14 to 3/10/2026 at 9:00. ED record faxed to them. Pt notified by portal and confirmed."}
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "specialist_visit",
+          "start": "2026-03-10T09:00",
+          "service": "Allergy and Immunology",
+          "reason": "Shellfish anaphylaxis",
+          "measure": ["bp", "hr", "spo2"],
+          "orders": [
+            {"id": "allergy-referral", "action": "done", "date": "2026-03-10T09:00"}
+          ],
+          "procedures": [{"procedure": "Office consultation, comprehensive", "performed": "2026-03-10T09:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Allergy and Immunology Consultation", "author": "allergy and immunology", "date": "2026-03-12T08:30", "body": "ALLERGY AND IMMUNOLOGY - NEW PATIENT CONSULTATION\nDate of visit: 03/10/2026\nReferring: primary care\n\nThank you for asking us to see Ms. Coolidge, a 26-year-old swim instructor, regarding reactions to shrimp.\n\nHistory: Two episodes. August 2025: about 30 minutes after shrimp at a friend's home, urticaria, facial swelling, wheeze and hypotension; one dose of IM epinephrine in the ED; tryptase 21.8 ng/mL. February 2026: about 15 minutes after a restaurant dish that turned out to contain shrimp, periorbital swelling, stridor, wheeze and urticaria; self-injected epinephrine at the table and a second dose in the ED, observed overnight. She had previously eaten shrimp without symptoms. No reactions to fish or other foods reported. Mild atopic dermatitis, controlled with intermittent topical triamcinolone. Dust mite and seasonal pollen sensitivity by history. Family: maternal uncle with shellfish allergy; mother asthma, allergic rhinitis; father atopic dermatitis.\n\nMedications: epinephrine 0.3 mg auto-injector; triamcinolone 0.1% cream prn; petroleum jelly.\nNo antihistamine in the past 7 days.\n\nExam: Vitals normal. No respiratory distress. Nasal mucosa unremarkable. Lungs clear. Skin: mild xerosis of the hands; no urticaria.\n\nSkin prick testing: shrimp positive, 9 mm wheal. Histamine control 6 mm. Saline control 0 mm.\n\nAssessment: IgE-mediated shrimp allergy with two episodes of anaphylaxis, the second with upper airway involvement.\n\nRecommendations:\n1. Strict avoidance of all crustacean shellfish (shrimp, crab, lobster, crawfish).\n2. Carry two epinephrine auto-injectors at all times. Written anaphylaxis action plan given and reviewed; copy enclosed.\n3. Read labels; communicate the allergy clearly when eating out.\n4. Follow up here in one year, sooner if any reaction.\n\nAllergy and Immunology"}
+          ]
+        },
+        {
+          "id": "2026-03-12a",
+          "kind": "portal_message",
+          "start": "2026-03-12T16:05",
+          "reason": "Allergy consult received",
+          "documents": [
+            {"type": "Patient Message", "title": "Allergy visit", "author": "PCP", "date": "2026-03-12T16:05", "body": "Got the allergist's letter. Matches what you told me: clear shrimp allergy on testing, avoid all crustacean shellfish, two pens always, back to them in a year. Their action plan is in your chart now too, if work wants the updated version."}
+          ]
+        },
+        {
+          "id": "2026-05-27a",
+          "kind": "pharmacy",
+          "start": "2026-05-27T09:10",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Pharmacy", "title": "Refill Request", "author": "pharmacy", "date": "2026-05-27T09:10", "body": "Refill request: triamcinolone acetonide 0.1% cream 80 g. Last filled 02/2024. Apply to affected areas twice daily as needed."},
+            {"type": "Pharmacy", "title": "Refill Approved", "author": "PCP", "date": "2026-05-27T12:30", "body": "Approved, 80 g, 1 refill."}
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "portal_message",
+          "start": "2026-06-09T06:48",
+          "reason": "Question about ears for summer",
+          "documents": [
+            {"type": "Patient Message", "title": "Ears this summer", "author": "patient", "date": "2026-06-09T06:48", "body": "Morning! Summer camp swim lessons start next week and I'll be in the water 6 hours a day. Last June was miserable with my ear. Anything I should be doing so it doesn't happen again?"},
+            {"type": "Patient Message", "title": "RE: Ears this summer", "author": "PCP", "date": "2026-06-09T12:15", "body": "Same tricks as last year: swim plugs that actually seal, tilt and shake out water after each session, towel dry the outer ear, and a hair dryer on low held well away if it feels wet inside. Don't use cotton swabs in the canal. If you get ear pain or that plugged feeling, message me the same day, it's much easier to treat early."}
+          ]
+        },
+        {
+          "id": "2026-08-24a",
+          "kind": "portal_message",
+          "start": "2026-08-24T19:30",
+          "reason": "Auto-injector expiring",
+          "documents": [
+            {"type": "Patient Message", "title": "EpiPen expiration", "author": "patient", "date": "2026-08-24T19:30", "body": "Hi, the one EpiPen left from my first pack (the one I keep at the pool office) expires end of September. Can I get a new prescription so I have a full pair at work? The ones from February are fine till next year."},
+            {"type": "Patient Message", "title": "RE: EpiPen expiration", "author": "PCP", "date": "2026-08-25T08:20", "body": "Sent a new 2-pack to your pharmacy this morning. Keep the old pair until the new ones are in hand. See you in October for your physical."}
+          ]
+        },
+        {
+          "id": "2026-08-25a",
+          "kind": "pharmacy",
+          "start": "2026-08-25T08:22",
+          "reason": "New prescription",
+          "documents": [
+            {"type": "Pharmacy", "title": "Prescription Sent", "author": "PCP", "date": "2026-08-25T08:22", "body": "epinephrine 0.3 mg/0.3 mL auto-injector, 2-pack, 1 refill. Inject into outer thigh for anaphylaxis; call 911. E-prescribed."}
+          ]
+        },
+        {
+          "id": "2026-10-20a",
+          "kind": "annual_physical",
+          "start": "2026-10-20T08:00",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

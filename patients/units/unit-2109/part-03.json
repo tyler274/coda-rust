@@ -1,0 +1,328 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002109",
+      "events": [
+        {
+          "id": "2023-02-23a",
+          "kind": "portal_message",
+          "start": "2023-02-23T20:15",
+          "reason": "Update: catheter removed",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Neck line is out",
+              "author": "patient",
+              "date": "2023-02-23T20:15",
+              "body": "Adam's wife again. Just letting you know the dialysis catheter came out yesterday. They've been using the arm fistula for a few weeks now and the nurses say it works great. He's very happy to shower like a normal person. Also his right hand has been bothering him at night, numb and tingly, should he make an appointment for that?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Neck line is out",
+              "author": "RN",
+              "date": "2023-02-24T09:05",
+              "body": "That's great news, thanks for the update. Yes, please have him come in about the hand. I've put him on the schedule for Tuesday 3/21 at 9:00, a non-dialysis day. Call sooner if the hand gets weak or he starts dropping things."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "office_visit",
+          "start": "2023-03-21T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Right hand numbness and tingling",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "orders": [{"id": "neuro-referral", "action": "placed", "order": "Neurology referral", "category": "referral", "to": "Neurology", "reason": "Right hand numbness and tingling, median distribution"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-03-21T09:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2023-03-21T09:30",
+              "body": "S: Right hand numbness, tingling and some burning since roughly October, around the time of the fistula surgery on the other arm. Thumb, index and middle finger mostly. Wakes him at night; he shakes the hand out. Also worse sitting through dialysis. No neck pain. Right-handed; work is hard on his hands (fencing pliers, feed bags). Tunneled catheter out 2/22, fistula in use. Fatigue from the fall is about the same.\n\nO: Vitals per flowsheet. Well. Left forearm fistula with thrill and bruit, catheter exit site healed. Right hand: no visible thenar wasting, skin normal, radial pulse normal. Neck full range without pain. Heart regular. Lungs clear. No edema.\n\nA/P:\n- Right hand paresthesias in a median pattern, nocturnal, worse on dialysis. Suspect carpal tunnel. Referral to neurology for evaluation and nerve testing. Wrist neutral at night in the meantime; acetaminophen as needed; still no NSAIDs.\n- ESRD on HD, now via left forearm AVF.\n- Fatigue: CBC sent to nephrology in November; they're managing his epoetin.\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-27a",
+          "kind": "specialist_visit",
+          "start": "2023-04-27T14:00",
+          "service": "Neurology",
+          "reason": "Right hand numbness and tingling",
+          "conditions": [
+            {"label": "Carpal tunnel syndrome", "action": "diagnosed", "onset": "2022-10-20", "note": "Right hand"}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-04-24T06:40", "results": [{"test": "Creatinine", "value": 6.5}, {"test": "Blood Urea Nitrogen", "value": 55}, {"test": "Calcium", "value": 9.2}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-04-24T06:40", "results": [{"test": "Hemoglobin", "value": 10.2}]},
+            {"panel": null, "collected": "2023-04-24T06:40", "results": [{"test": "Phosphorus", "value": 5.4}, {"test": "Parathyroid Hormone, Intact", "value": 300}]}
+          ],
+          "orders": [{"id": "neuro-referral", "action": "done", "date": "2023-04-27T14:00"}],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Consultation",
+              "author": "neurology",
+              "date": "2023-05-02T11:30",
+              "body": "Outpatient neurology, date of service 2023-04-27. Reason for referral: right hand numbness.\n\nHistory: 56-year-old right-handed rancher with ESRD on in-center hemodialysis for about three years, doxorubicin-related cardiomyopathy and a treated right thigh sarcoma. A left forearm AV fistula was created last October. For about six months he has had intermittent numbness, tingling and a burning ache in the right hand, mainly the thumb, index and middle fingers. It is worst at night and while he sits for dialysis.\n\nExam: Tinel sign positive at the right wrist over the carpal tunnel. Phalen maneuver reproduces his symptoms at 30 seconds. Reduced light touch and pinprick in the right median distribution. Weakness of right thumb opposition. No edema or erythema of the hand. Remainder of the neurologic exam unremarkable.\n\nRecent dialysis-unit labs (provided by patient): creatinine 6.5 mg/dL, BUN 55 mg/dL, hemoglobin 10.2 g/dL, calcium 9.2 mg/dL, phosphorus 5.4 mg/dL, PTH 300 pg/mL (elevated).\n\nImpression: right carpal tunnel syndrome, a common problem in dialysis patients. The fistula is on the opposite arm.\n\nPlan:\n1. Nerve conduction study and EMG of the right arm.\n2. Neutral-position wrist splint at night.\n3. Will write again with test results.\n\nAllergies: NKDA. Medications reviewed per his list."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-23a",
+          "kind": "procedure_visit",
+          "start": "2023-05-23T10:00",
+          "service": "Neurology",
+          "reason": "Nerve conduction study and EMG, right arm",
+          "reports": [
+            {
+              "study": "Nerve conduction study and EMG",
+              "performed": "2023-05-23T10:00",
+              "text": "Right upper extremity. Right median sensory and motor studies across the wrist show slowed conduction with prolonged distal latencies. Right ulnar and radial sensory and motor studies are normal. Needle EMG of selected right arm and hand muscles shows no other abnormality; no evidence of cervical radiculopathy.",
+              "conclusion": "Right median mononeuropathy at the wrist, consistent with carpal tunnel syndrome. Ulnar and radial nerves normal."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Addendum: Nerve Testing",
+              "author": "neurology",
+              "date": "2023-06-13T15:10",
+              "body": "Addendum to our consultation of 4/27/23.\n\nNerve conduction study and EMG on 5/23/23 showed a right median mononeuropathy at the wrist; ulnar and radial nerves normal, no other abnormality on needle exam.\n\nThis confirms right carpal tunnel syndrome. He reports the night splint is helping him sleep. Continue the splint at night. If symptoms are not adequately controlled with splinting, we would suggest referral to hand surgery to discuss release. No neurology follow-up needed unless things change."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "office_visit",
+          "start": "2023-06-20T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-06-20T09:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2023-06-20T09:20",
+              "body": "S: Neurology letter and nerve study reviewed: right carpal tunnel confirmed. Wears the splint most nights and sleeps through more often. Still some tingling during dialysis. Doesn't want to think about surgery during haying. Fistula working, no problems. Energy \"so-so.\"\n\nO: Vitals per flowsheet. Fistula thrill and bruit present. Heart regular. Lungs clear. No edema.\n\nA/P:\n- Right carpal tunnel syndrome: continue night splint. He knows hand surgery is the next step if it isn't enough; will revisit in the fall.\n- ESRD on HD via L forearm AVF; anemia, phos per nephrology.\n- Cardiomyopathy asymptomatic.\nFlu shot in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-10-10T10:05"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2023-10-02T07:00"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-10T10:05"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Influenza",
+              "author": "RN",
+              "date": "2023-10-10T10:12",
+              "body": "High-dose flu 0.7 mL IM right deltoid (no injections in the fistula arm). Screening negative. Updated COVID vaccine given at dialysis 10/2 per patient, entered. Tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-06a",
+          "kind": "specialist_visit",
+          "start": "2023-11-06T11:00",
+          "service": "Nephrology",
+          "reason": "ESRD follow-up",
+          "state": {"labs": {"Hemoglobin": 8.2, "Mean Corpuscular Volume": 86, "Ferritin": 100, "Transferrin Saturation": 15, "Iron": 48, "Total Iron-Binding Capacity": 322}},
+          "vitals": {"bp": [138, 82], "hr": 88},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-11-06T06:45", "results": [{"test": "Hemoglobin", "value": 8.2}, {"test": "Mean Corpuscular Volume", "value": 86}]},
+            {"panel": "Iron Studies", "collected": "2023-11-06T06:45", "results": [{"test": "Iron"}, {"test": "Total Iron-Binding Capacity"}, {"test": "Ferritin", "value": 100}, {"test": "Transferrin Saturation", "value": 15}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-11-06T06:45", "results": [{"test": "Creatinine", "value": 6.5}, {"test": "Blood Urea Nitrogen", "value": 55}]}
+          ],
+          "medications": [
+            {"drug_text": "iron sucrose 20 MG/ML Injectable Solution", "action": "historical", "sig": "100 mg IV at each dialysis session for 10 sessions (dialysis unit)", "dose": {"value": 100, "unit": "mg"}, "route": "Intravenous", "course": "short", "reason": "Anemia of CKD with low transferrin saturation"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Progress Note",
+              "author": "nephrology",
+              "date": "2024-01-09T14:20",
+              "body": "Outpatient nephrology (dialysis unit) progress note, date of service 2023-11-06. Sent at request of PCP office.\n\nESRD on in-center hemodialysis MWF via left forearm AVF. Also followed for anthracycline cardiomyopathy by cardiology and seen by neurology this year.\n\nSubjective: several weeks of increasing fatigue; breathless with exertion to the point he has cut his daily walks short. No chest pain, palpitations or lightheadedness.\n\nVitals: BP 138/82, HR 88.\nExam: pale conjunctivae and skin. Otherwise unremarkable.\n\nLabs today: hemoglobin 8.2 g/dL, MCV 86 fL, ferritin 100 ng/mL, transferrin saturation 15%, creatinine 6.5 mg/dL, BUN 55 mg/dL.\n\nAssessment: anemia of CKD, worse, with low iron saturation.\nPlan: iron sucrose 100 mg IV with each of the next 10 treatments. Continue epoetin alfa 10,000 units monthly. Continue calcium acetate and sevelamer with meals. Recheck CBC and iron indices after the course.\n\nMedications: calcium acetate 667 mg TID with meals, sevelamer 800 mg TID with meals, epoetin alfa 10,000 units SC monthly, lisinopril 10 mg daily, furosemide 40 mg daily, aspirin 81 mg daily, multivitamin, acetaminophen as needed. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "office_visit",
+          "start": "2023-12-05T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up; fatigue",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-12-05T09:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2023-12-05T09:30",
+              "body": "S: Says nephrology told him at the start of November his \"blood count was down to 8\" and the unit has been giving him iron through the machine every session since, about ten doses in all. Tired, cut back his walks to the far pasture. No chest pain, no black stools, no bleeding he's noticed. Splint still helping the right hand at night.\n\nO: Vitals per flowsheet. Looks pale. Fistula thrill and bruit. Heart regular. Lungs clear. No edema.\n\nA/P:\n- Anemia of CKD, worse per his report, getting IV iron at dialysis. We don't have the nephrology note; front desk to request it. No separate labs here so we don't double-stick him.\n- Carpal tunnel R, controlled with splint.\n- Cardiomyopathy: no fluid signs.\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "telephone",
+          "start": "2023-12-12T10:40",
+          "reason": "Records request",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Records request to dialysis unit",
+              "author": "front desk",
+              "date": "2023-12-12T10:40",
+              "body": "Faxed records request to patient's dialysis unit / nephrology for most recent progress note and labs (Nov 2023), signed release on file. Will re-fax in 2 weeks if nothing arrives.\n\n12/28: no response, re-faxed."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "office_visit",
+          "start": "2024-03-19T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "state": {"labs": {"Hemoglobin": 9.8}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-03-19T09:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-03-19T09:30", "results": [{"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}, {"test": "Potassium"}, {"test": "Calcium"}, {"test": "Albumin"}]},
+            {"panel": "Lipid Panel", "collected": "2024-03-19T09:30", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-03-19T09:30", "results": [{"test": "Phosphorus"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-03-19T09:00"}, {"procedure": "Venipuncture", "performed": "2024-03-19T09:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2024-03-19T09:35",
+              "body": "S: Nephrology note from November finally arrived in January (hgb 8.2, TSAT 15%, ferritin 100; IV iron x10). Energy somewhat better since the iron, back to walking most of the fence line. No chest pain, no breathlessness at rest, sleeps flat. Hand okay with splint. Calving soon.\n\nO: Vitals per flowsheet. Less pale. Fistula thrill and bruit. JVP not elevated. Heart regular, no murmur. Lungs clear. No edema.\n\nA/P:\n- Anemia of CKD after IV iron: CBC today.\n- ESRD on HD: CMP, phos for our records; copy to nephrology.\n- Lipids today, last checked 2019.\n- Cardiomyopathy: due for cardiology this year; he has an appointment in October.\n- Carpal tunnel R: stable.\nAWV skipped this spring at his request (calving), will catch up next year."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-21a",
+          "kind": "portal_message",
+          "start": "2024-03-21T12:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2024-03-21T12:30",
+              "body": "Hi Adam, your blood count is back up to about 10 from 8.2 in November, so the iron did its job. Kidney labs and phosphorus are where they usually run for you on dialysis. Cholesterol is fine. I've sent a copy to your nephrologist. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-28a",
+          "kind": "outside_records",
+          "start": "2024-05-28T13:00",
+          "reason": "Oncology surveillance letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Sarcoma Survivorship: Completion of Surveillance (outside oncology)",
+              "author": "oncology",
+              "date": "2024-05-28T13:00",
+              "body": "Sarcoma survivorship clinic, visit of 2024-05-21.\n\nMr. Upton is now ten years from wide local excision and doxorubicin-based chemotherapy for a soft-tissue sarcoma of the right thigh. He reports no new masses, pain at the site, or cough.\n\nExam: right thigh scar well healed without mass. No inguinal adenopathy. Lungs clear.\n\nCT chest: no evidence of metastatic disease.\n\nImpression: no evidence of recurrence at 10 years. He is discharged from routine sarcoma surveillance. We ask his primary care physician to examine the thigh at routine visits and to refer back promptly for any new mass. He remains under cardiology care for anthracycline-related LV dysfunction.\n\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "office_visit",
+          "start": "2024-09-24T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Worsening shortness of breath, ankle swelling",
+          "state": {"weight_kg": 89.4},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "orders": [{"id": "cards-referral", "action": "placed", "order": "Cardiology referral", "category": "referral", "to": "Cardiology", "reason": "Progressive dyspnea, orthopnea, edema; known anthracycline cardiomyopathy"}],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2024-09-24T08:40"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2024-09-24T09:20",
+              "body": "S: Wife made the appointment. Over the summer and getting worse, he runs out of breath faster doing chores and has to stop partway along the fence line. Now sleeping on two or three pillows; lying flat feels heavy. Some nights wakes up coughing and has to sit up for a while before it settles. Ankles swollen by evening, boots tight. No fever or cold symptoms. No missed dialysis. Says the unit hasn't changed his target weight in a long time. Cardiology visit was already booked for late October.\n\nO: Vitals per flowsheet; weight up about 3 kg from spring. Comfortable sitting, talks in full sentences. Fistula thrill and bruit. Heart regular. Lungs: fine crackles at both bases. Ext: pitting edema both ankles.\n\nA/P:\n- Progressive exertional dyspnea, orthopnea, nocturnal cough and ankle edema in a man with known doxorubicin cardiomyopathy on HD. Concern his cardiomyopathy is progressing and/or he is above his true dry weight. Called cardiology to ask for the first opening; they confirmed 10/21 is the soonest and put him on the cancellation list. Called the dialysis unit charge nurse to ask nephrology to reassess his target weight this week.\n- Return/ED precautions given for breathlessness at rest, chest pain or fainting.\n- Continue lisinopril, furosemide.\nRTC after cardiology."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-21a",
+          "kind": "specialist_visit",
+          "start": "2024-10-21T13:00",
+          "service": "Cardiology",
+          "reason": "Progressive dyspnea; anthracycline cardiomyopathy",
+          "orders": [{"id": "cards-referral", "action": "done", "date": "2024-10-21T13:00"}],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Office Note",
+              "author": "cardiology",
+              "date": "2024-10-29T16:00",
+              "body": "Outpatient cardiology, date of service 2024-10-21. Faxed to PCP.\n\n57-year-old man with doxorubicin-related cardiomyopathy (asymptomatic LV dysfunction since 2015) and ESRD on hemodialysis, back with several months of gradually worsening breathlessness.\n\nHPI: Breathless walking his fence line after breakfast and must stop twice to rest. Sleeps propped on extra pillows; lying flat feels heavy. Wakes at night with coughing spells that ease once he sits up by an open window. Ankles swell by evening and his boots fit tighter. Tires with chores that used to be easy. A dull, pressure-like feeling in the chest with exertion, not sharp, not changed by breathing or leaning forward. Neighbors say his face looks puffy. Weight roughly steady by his account though his belt is tighter. Denies palpitations, fainting, orthostatic lightheadedness, fever, recent viral illness or GI illness, tick bites, rash, calf pain, leg pain walking on level ground, or long travel. No chest radiation, chest trauma or heart surgery. Never smoker; alcohol holidays only, less than in the past; no cocaine, stimulants, anabolic steroids or supplements. Family: no known HCM or sudden death.\n\nExam: comfortable at rest but becomes winded changing position. JVP mildly elevated when reclined, less so upright. Fine basilar crackles that clear only partly with deep breaths. Apical impulse displaced laterally. Soft, low-pitched early diastolic sound (S3). Holosystolic murmur at the apex radiating to the axilla. Abdomen soft, mild right upper quadrant fullness, nontender. Pitting edema to the mid-shins. Peripheral pulses intact and symmetric.\n\nStudies: chest x-ray and ECG obtained in clinic today.\n\nImpression: symptomatic progression of his anthracycline cardiomyopathy, with volume overload.\nPlan: transthoracic echocardiogram. Will coordinate target weight with his nephrologist. Continue lisinopril 10 mg, furosemide 40 mg, aspirin 81 mg. Follow-up after the echo.\n\nAllergies: NKDA. Medications: calcium acetate, sevelamer, epoetin alfa, lisinopril, furosemide, aspirin, acetaminophen as needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-05a",
+          "kind": "nurse_visit",
+          "start": "2024-11-05T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-11-05T10:05"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-14T07:00"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-11-05T10:05"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Influenza",
+              "author": "RN",
+              "date": "2024-11-05T10:15",
+              "body": "High-dose flu IM right deltoid. Screening negative. COVID updated dose at dialysis 10/14, entered from card. Says he's breathing \"a little easier\" since the dialysis unit started taking more fluid off; echo scheduled next week. Cardiology note from 10/21 received and given to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "outside_records",
+          "start": "2024-12-10T11:45",
+          "reason": "Cardiology follow-up letter",
+          "conditions": [
+            {"label": "Heart failure with reduced ejection fraction", "action": "diagnosed", "onset": "2024-10-21", "note": "Anthracycline cardiomyopathy, LVEF 35% on 2024-11-12 echo"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up Letter",
+              "author": "cardiology",
+              "date": "2024-12-10T11:45",
+              "body": "Dear colleague,\n\nI have reviewed Mr. Upton's transthoracic echocardiogram of 11/12/24 with him by phone. It shows a dilated left ventricle with an ejection fraction of 35%, down from 45% in 2015, moderate functional mitral regurgitation, and no pericardial effusion.\n\nThis is heart failure with reduced ejection fraction from his anthracycline cardiomyopathy, now symptomatic. His nephrologist has lowered his target weight by 2 kg and he already notes less orthopnea and ankle swelling.\n\nPlan: continue lisinopril 10 mg daily, furosemide 40 mg daily and aspirin 81 mg daily. Keep to the new target weight at dialysis. Follow-up in one year, sooner for weight gain, worsening breathlessness or swelling.\n\nAllergies: NKDA.\n\nThank you for allowing me to participate in his care."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

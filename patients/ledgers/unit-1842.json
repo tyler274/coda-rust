@@ -1,0 +1,2998 @@
+{
+  "unit": "unit-1842",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00001842/2025-06-11a: procedure \"Cesarean delivery, low transverse\" not in catalog (text only, no CPT)",
+    "MRN00001842/2026-06-08b: procedure \"Hyperbaric oxygen therapy\" not in catalog (text only, no CPT)",
+    "MRN00001842/2026-06-08b: procedure \"Hyperbaric oxygen therapy\" not in catalog (text only, no CPT)",
+    "MRN00001842/2026-06-08b: procedure \"Hyperbaric oxygen therapy\" not in catalog (text only, no CPT)",
+    "left text-only (not verified): drug \"Prenatal Vitamins Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001842",
+      "given": "Delaney",
+      "family": "Kelleher",
+      "birth_date": "1995-10-16",
+      "address_line": "112 Pleasant Street, Apt 2",
+      "phone": "+1-603-555-0121",
+      "email": "delaney.kelleher@example.test",
+      "marital_status": "single",
+      "summary": "Public health graduate student with genital HSV-2 on daily valacyclovir who joined in 2021. Giardiasis after travel in 2023, acute hepatitis E with coagulopathy needing admission in 2024, a term pregnancy ending in emergent cesarean for active lesions in 2025, and carbon monoxide poisoning treated with hyperbaric oxygen in 2026.",
+      "events": [
+        {
+          "id": "2021-08-24a",
+          "kind": "establish_care",
+          "start": "2021-08-24T09:20",
+          "end": "2021-08-24T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Recurrent genital herpes",
+              "action": "diagnosed",
+              "onset": "2018-06-01",
+              "note": "HSV-2, on daily suppression since diagnosis"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "valacyclovir 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "genital HSV-2 suppression"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              78
+            ],
+            "hr": 72,
+            "rr": 14,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 61.1,
+            "height_cm": 164.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-08-24T10:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 270
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-08-24T10:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-24T10:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-24T10:20",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-24T10:20",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-24T10:15",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-24T10:15",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Graduate student in public health"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2021-08-24T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-08-24T10:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2021",
+              "action": "placed",
+              "order": "Request for prior primary care records",
+              "category": "procedure",
+              "reason": "new patient"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-08-24T10:10",
+              "author": "PCP",
+              "body": "NEW PATIENT VISIT\n\n25 y/o woman starting a doctoral program in public health this fall; moved to Easthampton over the summer and wants a primary care home here. No complaints today.\n\nPMH: genital HSV-2, diagnosed about three years ago by her previous PCP. Takes valacyclovir 500 mg every day for suppression and says it works; can't remember the last outbreak. Nothing else.\nPSH: none.\nMeds: valacyclovir 500 mg daily.\nAllergies: NKDA.\nFHx: mother with hypothyroidism. Father with high blood pressure.\nSocial: never smoked, no alcohol, no drugs. Lives in an apartment in town. Single. Grad school full time with a research assistantship. Insurance through the university student plan.\nGyn: periods regular. Last Pap 2019 at her old office, she thinks normal. Thinks she had the HPV shots as a kid.\n\nROS: negative across the board.\n\nExam: vitals per flowsheet. Well-appearing. HEENT normal, neck without nodes or thyromegaly. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Skin clear. No genital exam today, no active lesions per patient.\n\nA/P\n1. Genital HSV-2, on suppression. Continue valacyclovir 500 mg daily. We'll take over refills once her current supply runs out.\n2. Health maintenance. CBC, CMP, TSH (given mom's thyroid history), one-time HIV and hep C, urine chlamydia/GC. PHQ-2 is 0. Requesting old records for Pap and immunization history. Flu shot when it arrives in October.\n\nReturn for a physical next year, sooner as needed."
+            },
+            {
+              "type": "Administrative",
+              "title": "Records Request",
+              "date": "2021-08-24T10:30",
+              "author": "front desk",
+              "body": "Records release signed by patient. Request faxed to her previous primary care office for office notes, labs, Pap results and immunization record, 2016 to present."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.2,
+            "height_cm": 165.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-08-26a",
+          "kind": "portal_message",
+          "start": "2021-08-26T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab Results",
+              "date": "2021-08-26T16:40",
+              "author": "PCP",
+              "body": "Hi Delaney, your bloodwork from Tuesday is all normal: blood counts, kidney and liver tests, thyroid. HIV and hepatitis C screens were negative, and so were the urine chlamydia and gonorrhea tests. Nothing to do. Nice to have you with us."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-08a",
+          "kind": "outside_records",
+          "start": "2021-09-08T11:15",
+          "reason": "Prior primary care records received",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2019-07-23T10:00",
+              "text": "Specimen: ThinPrep cervical cytology. Specimen adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2007-11-06T10:00"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2008-03-11T10:00"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2008-05-13T10:00"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2008-09-16T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-06T13:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-27T13:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2021",
+              "action": "done",
+              "date": "2021-09-08T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "date": "2021-09-08T11:15",
+              "author": "MA",
+              "body": "Records received by fax from prior primary care office, 41 pages, scanned to chart. Abstracted:\n- 2018: clinic visit for painful genital sores; lesion swab PCR positive for HSV-2. Started valacyclovir, then switched to daily valacyclovir 500 mg for suppression; continued since.\n- Pap July 2019: NILM.\n- Immunizations: childhood series complete per state registry printout; Tdap 2007; HPV (quadrivalent) x3, 2008; COVID Pfizer 4/6/21 and 4/27/21 (card copy on file).\n- No other diagnoses, no surgeries, NKDA.\nForwarded to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-12T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-12T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2021-10-12T15:45",
+              "author": "RN",
+              "body": "Here for flu vaccine. No fever today, no prior reactions to vaccines, not pregnant. Quadrivalent influenza 0.5 mL IM left deltoid, VIS given. Waited 15 minutes, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-06a",
+          "kind": "pharmacy",
+          "start": "2021-12-06T09:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill: valacyclovir",
+              "date": "2021-12-06T09:05",
+              "author": "RN",
+              "body": "Pharmacy refill request for valacyclovir 500 mg, 1 tab daily. First fill from this office; prior prescriber was her old PCP. On med list, seen 8/24. Sent 90 days with 3 refills per PCP protocol."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "portal_message",
+          "start": "2022-01-11T20:12",
+          "reason": "Vaccine record update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2022-01-08T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "COVID Booster",
+              "date": "2022-01-11T20:12",
+              "author": "patient",
+              "body": "Hi, I got my COVID booster (Pfizer) at the pharmacy on Saturday the 8th. Can you add it to my record? The university is asking for proof. Thanks!"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "Re: COVID Booster",
+              "date": "2022-01-12T09:30",
+              "author": "MA",
+              "body": "Added to your immunization record. You can print the updated list from the portal under Health Summary."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "portal_message",
+          "start": "2022-05-17T13:48",
+          "reason": "Form request",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Immunization Form",
+              "date": "2022-05-17T13:48",
+              "author": "patient",
+              "body": "My program needs an immunization form signed for a summer research position at a community health center. I uploaded the form. Is that something the office can fill out?"
+            },
+            {
+              "type": "Administrative",
+              "title": "Form Completed",
+              "date": "2022-05-19T11:20",
+              "author": "front desk",
+              "body": "Immunization form completed from chart and signed by PCP. Uploaded to portal and copy mailed to patient."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "annual_physical",
+          "start": "2022-09-13T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              112,
+              65
+            ],
+            "hr": 87,
+            "rr": 15,
+            "temp_c": 37.1,
+            "spo2": 99,
+            "weight_kg": 60.9
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-13T09:25",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 57
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 90
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 118
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T09:20",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T09:20",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2022-09-13T09:15",
+              "text": "Specimen: liquid-based cervical cytology. Specimen adequacy: satisfactory for evaluation, endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-09-13T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-13T09:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-09-13T09:30",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n\nDoing well. Second year of the program, teaching a section this fall. Valacyclovir daily, no breakthrough outbreaks this year. Sexually active with one male partner; condoms some of the time. Periods regular. Sleep okay.\n\nMeds: valacyclovir 500 mg daily. NKDA.\nSocial: no tobacco, no alcohol.\n\nExam: vitals per flowsheet. Well. HEENT normal. Neck no nodes or thyroid enlargement. Heart regular. Lungs clear. Breasts deferred (age). Abdomen benign. Pelvic: normal external genitalia, no lesions; speculum exam normal cervix, Pap obtained. Skin clear. Mood bright, PHQ-2 1.\n\nA/P\n- Genital HSV-2: well controlled on suppression. Continue.\n- Cervical screening: Pap today (last 2019).\n- STI screen: urine CT/GC.\n- Fasting lipid panel, first one.\n- Flu and COVID bivalent next month when available.\nRTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-09-16a",
+          "kind": "portal_message",
+          "start": "2022-09-16T12:05",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Pap and Lab Results",
+              "date": "2022-09-16T12:05",
+              "author": "PCP",
+              "body": "Your Pap came back normal, so the next one is due in three years. Cholesterol numbers look good, and the chlamydia and gonorrhea tests were negative. See you next fall, or sooner if anything comes up."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T16:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2022-10-18T16:30",
+              "author": "RN",
+              "body": "Flu (quadrivalent) 0.5 mL IM right deltoid and Pfizer bivalent COVID booster 0.3 mL IM left deltoid. Screening negative, not pregnant. Tolerated both; observed 15 minutes. Expect a sore arm."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-05a",
+          "kind": "pharmacy",
+          "start": "2022-12-05T08:50",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill: valacyclovir",
+              "date": "2022-12-05T08:50",
+              "author": "RN",
+              "body": "Valacyclovir 500 mg daily, out of refills. Physical 9/13, stable. Renewed 90-day supply x3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-11a",
+          "kind": "portal_message",
+          "start": "2023-09-11T07:52",
+          "reason": "Diarrhea after travel",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Stomach Issues After Trip",
+              "date": "2023-09-11T07:52",
+              "author": "patient",
+              "body": "Hi, I got back from two weeks backpacking in northern India last week and my stomach has been off since Saturday. Loose stools a few times a day, lots of gas and cramping. No fever, no blood that I can see, keeping fluids down fine. Should I come in?"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "Re: Stomach Issues After Trip",
+              "date": "2023-09-11T09:15",
+              "author": "RN",
+              "body": "Thanks for reaching out. Keep up fluids and electrolytes. Since you were traveling, the doctor would like to see you; I booked you Thursday 9/14 at 10:30. If you develop fever, blood in the stool, or can't keep fluids down before then, call us right away."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "office_visit",
+          "start": "2023-09-14T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diarrhea after travel",
+          "vitals": {
+            "bp": [
+              111,
+              79
+            ],
+            "hr": 69,
+            "temp_c": 37.0,
+            "weight_kg": 61.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-09-14T10:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2023",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "persistent diarrhea after travel to northern India"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-09-14T11:05",
+              "author": "PCP",
+              "body": "S: Back 9/7 from two weeks backpacking through rural northern India. Drank untreated well water at a couple of village stops. About 5 days of loose stools 3-4 times a day that look greasy, more gas than usual, crampy lower belly pain. No fever, no vomiting, no blood. Eating less but drinking fine. Still on valacyclovir.\n\nO: Vitals per flowsheet, afebrile. Looks well, mucous membranes moist. Abdomen soft, mildly tender diffusely, no guarding.\n\nA/P: Post-travel diarrhea, greasy stools after untreated water, suspect a parasite such as giardia. Not dehydrated. The outside GI group runs a travel GI clinic with same-week stool microscopy, so referring there rather than sending her home with a kit; they can see her Tuesday. Hydration, bland diet. Call if fever or bleeding."
+            },
+            {
+              "type": "Referral",
+              "title": "Gastroenterology Referral",
+              "date": "2023-09-14T11:10",
+              "author": "PCP",
+              "body": "Referral to gastroenterology, travel GI clinic. 27 y/o woman with about 5 days of greasy diarrhea, flatulence and cramps after drinking untreated well water during travel in rural northern India. Afebrile, no blood. History of genital HSV-2 on valacyclovir 500 mg daily. NKDA. Please evaluate for parasitic infection. Appointment 9/19."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "specialist_visit",
+          "start": "2023-09-19T14:00",
+          "service": "Gastroenterology",
+          "reason": "Diarrhea after travel",
+          "conditions": [
+            {
+              "label": "Giardiasis [lambliasis]",
+              "action": "diagnosed",
+              "onset": "2023-09-09",
+              "icd10": "A07.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "tinidazole 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 4 tablets (2 g) by mouth once with food",
+              "dose": {
+                "value": 2000,
+                "unit": "mg"
+              },
+              "frequency": "ONCE",
+              "route": "Oral",
+              "course": "short",
+              "reason": "giardiasis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              70
+            ],
+            "hr": 78,
+            "rr": 16,
+            "temp_c": 36.9
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-09-19T14:30",
+              "results": [
+                {
+                  "test": "Ova and parasites, stool microscopy",
+                  "loinc": "10704-5",
+                  "text": "Occasional Giardia cysts seen. Fat droplets present."
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-19T14:10",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2023",
+              "action": "done",
+              "date": "2023-09-19T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "date": "2023-09-21T10:40",
+              "author": "gastroenterology",
+              "body": "GASTROENTEROLOGY CONSULTATION, travel GI clinic\nDate of visit: 09/19/2023\nReferred by: primary care\n\nReason: diarrhea after travel.\n\nHistory: 27-year-old graduate student, back about two weeks from a two-week backpacking trip in rural northern India during which she drank untreated well water. For 10 days she has had loose, greasy stools, increased flatulence and crampy abdominal pain. She denies fever, nausea and vomiting. LMP about two weeks ago. Sexually active with a male partner and does not always use condoms.\n\nPMH: genital HSV-2 on suppression. PSH: none.\nMedications: valacyclovir 500 mg daily.\nAllergies: NKDA.\nFamily history: hypothyroidism in her mother, hypertension in her father.\nSocial: never smoker, no alcohol, graduate student in public health.\n\nExam: T 36.9 C, BP 112/70, P 78, RR 16. Well-appearing. Abdomen mildly distended with hyperactive bowel sounds; diffusely tender to deep palpation, without rebound or guarding. No hepatosplenomegaly.\n\nStudies today: stool microscopy shows fat droplets and occasional cysts consistent with Giardia. Urine pregnancy test negative.\n\nImpression: giardiasis acquired from untreated water during travel.\n\nPlan: tinidazole 2 g by mouth as a single dose with food, given in clinic today. Avoid alcohol for 72 hours (she does not drink). Hydration. Hand hygiene and household precautions reviewed. Lactose may be poorly tolerated for a few weeks. No routine test of cure if symptoms resolve; call us if not better in 1 to 2 weeks.\n\nThank you for this referral.\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-27a",
+          "kind": "portal_message",
+          "start": "2023-09-27T18:30",
+          "reason": "Follow-up after GI visit",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Feeling Better",
+              "date": "2023-09-27T18:30",
+              "author": "patient",
+              "body": "Just an update: GI said it was giardia and gave me the tinidazole in clinic. By the weekend things were back to normal. Thank you for getting me in so fast."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "Re: Feeling Better",
+              "date": "2023-09-28T08:10",
+              "author": "PCP",
+              "body": "Great news, and I have their letter. No retest needed since you are better. Let us know if the symptoms come back."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "nurse_visit",
+          "start": "2023-10-24T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-24T15:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-24T15:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-24T15:57"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2023-10-24T16:10",
+              "author": "MA",
+              "body": "Seasonal flu 0.5 mL IM L deltoid; 2023-24 Pfizer COVID 0.3 mL IM R deltoid. Denies pregnancy. No reaction during wait. VIS provided."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "annual_physical",
+          "start": "2023-11-14T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Giardiasis [lambliasis]",
+              "action": "resolved",
+              "icd10": "A07.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              113,
+              78
+            ],
+            "hr": 73,
+            "rr": 14,
+            "temp_c": 37.2,
+            "spo2": 97,
+            "weight_kg": 61.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-11-14T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.49
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 251
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-11-14T09:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-11-14T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-11-14T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-11-14T09:45",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n\nFeels well. Stomach completely back to normal since the single dose of tinidazole in September; no further diarrhea, eating normally. Qualifying exams this spring, stressed but sleeping. Valacyclovir daily, no outbreaks.\n\nMeds: valacyclovir 500 mg daily. NKDA.\n\nExam: vitals per flowsheet. Well. HEENT normal. Neck supple, no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, normal bowel sounds. Skin clear.\nPHQ-9: 2.\n\nA/P\n- Giardiasis, treated, resolved. Taking it off the active list.\n- Genital HSV-2, controlled on suppression.\n- Health maintenance: Pap up to date (2022, next 2025). Flu and COVID done last month. CBC and BMP for routine monitoring on long-term valacyclovir.\nRTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-12-04a",
+          "kind": "pharmacy",
+          "start": "2023-12-04T10:20",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill: valacyclovir",
+              "date": "2023-12-04T10:20",
+              "author": "RN",
+              "body": "Renewal request valacyclovir 500 mg daily. Seen 11/14, BMP normal. 90 days x3 sent."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "annual_physical",
+          "start": "2024-02-20T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Physical for program clearance",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-03-08a",
+          "kind": "portal_message",
+          "start": "2024-03-08T21:04",
+          "reason": "Refill before travel",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Refill Before Field Placement",
+              "date": "2024-03-08T21:04",
+              "author": "patient",
+              "body": "Hi! I cancelled the February appointment because my program got the forms signed another way, sorry. I leave March 18 for a field placement abroad, about 10 weeks in a pretty rural area, and I'm worried about running out of valacyclovir. Could I get a 90-day supply filled before I go?"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "Re: Refill Before Field Placement",
+              "date": "2024-03-11T08:45",
+              "author": "RN",
+              "body": "Sent a 90-day fill of valacyclovir to your pharmacy with a vacation override note. Safe travels. Drink only bottled or treated water, and message us if you get sick while you're away."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-10a",
+          "kind": "ed_visit",
+          "start": "2024-06-10T13:40",
+          "end": "2024-06-10T20:30",
+          "service": "Emergency Medicine",
+          "reason": "Jaundice, fatigue, nausea",
+          "conditions": [
+            {
+              "label": "Acute hepatitis E",
+              "action": "diagnosed",
+              "onset": "2024-06-05",
+              "icd10": "B17.2"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-06-10T13:48",
+              "bp": [
+                94,
+                58
+              ],
+              "hr": 114,
+              "rr": 18,
+              "temp_c": 37.4,
+              "spo2": 97
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-06-10T14:05",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 2860
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 2210
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 196
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 8.4
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 6.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-06-10T14:05",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 22.1
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.0
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-06-10T14:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.34
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 240
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-06-10T14:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-10T14:05",
+              "resulted": "2024-06-10T19:20",
+              "results": [
+                {
+                  "test": "Hepatitis E virus IgM antibody",
+                  "loinc": "14212-5",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-06-10T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2024-06-17T09:30",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nArrival 06/10/2024 13:40\n\nCC: yellow eyes, exhausted, nauseated.\n\nHPI: 28-year-old woman with genital HSV-2 on daily valacyclovir and giardiasis treated in September 2023. Several days of steadily worsening fatigue, then yellowing of her skin and eyes, upper abdominal discomfort, nausea and urine the color of tea. She returned on 5/24 from a roughly ten-week public health field placement in a rural area with limited clean water, where the community had an outbreak of diarrheal illness while she was there. Never transfused. Has not taken acetaminophen. Does not drink. No tattoos, no injection drug use.\n\nMeds: valacyclovir 500 mg daily. Allergies: NKDA.\nFHx: mother hypothyroid, father hypertensive.\n\nExam: BP 94/58, HR 114, RR 18, T 37.4, SpO2 97% RA. Lethargic but rouses to voice and answers appropriately. Deeply jaundiced with scleral icterus. Liver edge palpable well below the costal margin, tender. Mild shifting dullness. Lungs clear. Heart tachycardic, regular. No rash.\n\nED course: IV fluid bolus, then maintenance fluids, with heart rate improving. Labs: ALT 2,860, AST 2,210, alk phos 196, T bili 8.4 (direct 6.1), albumin 3.2, PT 22.1, INR 2.0. CBC and BMP unremarkable. Acute hepatitis serologies sent; hepatitis E IgM returned positive this evening.\n\nImpression: acute hepatitis E with coagulopathy and lethargy, likely acquired during field placement.\nDisposition: admitted to medicine, hepatology consulting."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-10b",
+          "kind": "hospital_admission",
+          "start": "2024-06-10T20:30",
+          "end": "2024-06-15T13:00",
+          "service": "Hospital Medicine",
+          "reason": "Acute hepatitis E with coagulopathy",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-06-10T21:30",
+              "results": [
+                {
+                  "test": "Hepatitis A virus IgM antibody",
+                  "loinc": "13950-1",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-10T21:30",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-10T21:30",
+              "results": [
+                {
+                  "test": "Hepatitis B core IgM antibody",
+                  "loinc": "31204-1",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-10T21:30",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-10T21:10",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-06-11T05:30",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 2410
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 1650
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 188
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 9.1
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 6.6
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.0
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-06-11T05:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 25.0
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.3
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-06-13T05:40",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 1520
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 980
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 181
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 7.2
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 5.3
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-06-13T05:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 19.2
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.7
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-06-15T05:35",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 910
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 520
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 172
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 5.2
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 3.8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-06-15T05:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 16.3
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.4
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-06-11T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.64
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 282
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-06-11T05:30",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-06-13T05:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.53
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 259
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-06-13T05:40",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-06-15T05:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.55
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 261
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-06-15T05:35",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2024-06-10T22:15",
+              "text": "RIGHT UPPER QUADRANT ULTRASOUND WITH DOPPLER. Indication: acute hepatitis, coagulopathy. Liver enlarged, 18.5 cm in craniocaudal length, with homogeneous echotexture and no focal lesion. Gallbladder normal, no stones. Common bile duct normal in caliber; no intrahepatic or extrahepatic biliary dilation. Small amount of perihepatic free fluid. Main portal vein patent with normal hepatopetal flow; hepatic veins patent. Spleen normal in size. Right kidney normal.",
+              "conclusion": "Hepatomegaly with small-volume perihepatic ascites. No biliary dilation or focal liver lesion. Patent portal and hepatic veins."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-06-10T21:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2024-06-15T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hepatology Consultation",
+              "date": "2024-06-17T09:31",
+              "author": "hepatology",
+              "body": "HEPATOLOGY INPATIENT CONSULTATION, 06/11/2024\n\nAsked to see a 28-year-old with acute hepatitis and INR 2.0 on arrival. Previously healthy liver; normal liver tests at her primary care office in 2021 and 2023. Returned late May from ten weeks of fieldwork in a rural area with poor water access and a diarrheal outbreak. Anti-HEV IgM positive; hepatitis A IgM, HBsAg, HBc IgM and HCV antibody negative; not pregnant. Ultrasound: enlarged liver, small perihepatic ascites, patent vessels, no biliary dilation.\n\nThis morning INR 2.3, T bili 9.1, ALT 2,410. Drowsy but oriented, follows commands.\n\nAssessment: acute hepatitis E with acute liver injury and coagulopathy. Valacyclovir is not a concern at this dose and can continue.\n\nRecommendations: supportive care, avoid sedatives and hepatotoxic drugs, daily hepatic panel and INR, glucose checks, close mental status watch. No antiviral therapy indicated. We will follow."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2024-06-17T09:32",
+              "author": "hospital medicine",
+              "body": "DISCHARGE SUMMARY\nAdmitted 06/10/2024, discharged 06/15/2024\nPrincipal diagnosis: acute hepatitis E with coagulopathy.\n\nCourse: Admitted from the ED with jaundice, lethargy, mild ascites and INR 2.0. IV fluids; blood pressure and heart rate normalized within the first day. Hepatology followed. INR peaked at 2.3 on 6/11 and mentation was back to baseline by 6/12. Labs improved daily: 6/13 ALT 1,520, AST 980, T bili 7.2, INR 1.7. On 6/15 ALT 910, AST 520, alk phos 172, T bili 5.2 (direct 3.8), albumin 3.2, PT 16.3, INR 1.4. Tolerating a regular diet, walking the halls. No transfusion, no procedures.\n\nOther workup: hepatitis A, B and C negative; urine hCG negative. RUQ ultrasound with Doppler: hepatomegaly, small perihepatic ascites, patent vessels.\n\nDischarge medications: valacyclovir 500 mg daily (unchanged). No acetaminophen for now; no alcohol.\nAllergies: NKDA.\n\nFollow-up: PCP within one week with hepatic panel and INR; hepatology clinic as needed if labs stall. Return for confusion, bleeding, worsening jaundice or abdominal swelling."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "telephone",
+          "start": "2024-06-11T11:20",
+          "reason": "Hospital admission notification",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Admission Notification",
+              "date": "2024-06-11T11:20",
+              "author": "RN",
+              "body": "Admission notice received: patient admitted last night through the regional hospital ED with acute hepatitis. Spoke with her mother, who is listed as emergency contact and called the office; patient awake and talking this morning. Flagged for PCP. Will book a post-discharge visit once we have a discharge date."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-19a",
+          "kind": "office_visit",
+          "start": "2024-06-19T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, hepatitis E",
+          "vitals": {
+            "bp": [
+              124,
+              71
+            ],
+            "hr": 72,
+            "rr": 14,
+            "temp_c": 37.0,
+            "spo2": 97,
+            "weight_kg": 61.0
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-06-19T13:55",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 480
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 230
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 160
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 3.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 2.4
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-06-19T13:55",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 14.1
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-06-19T13:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-06-19T13:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2024-06-19T14:05",
+              "author": "PCP",
+              "body": "HOSPITAL FOLLOW-UP\n\nAdmitted 6/10 to 6/15 at the regional hospital with acute hepatitis E, acquired on her spring field placement; INR went as high as 2.3 and she was drowsy the first day. ED record, hepatology consult and discharge summary reviewed.\n\nSince home: energy maybe half of normal, napping in the afternoons. Appetite returning, no vomiting. Urine lighter. No confusion, no bleeding or bruising, belly not swollen. No acetaminophen, no alcohol. Taking valacyclovir.\n\nExam: vitals per flowsheet, normal. Tired-appearing but alert and quick. Sclerae still icteric, skin faintly yellow. Abdomen soft, liver edge just palpable and nontender, no shifting dullness. No asterixis. No bruising.\n\nA/P\nAcute hepatitis E, recovering. Repeat today; will message results. If the trend continues, liver tests again in 3 weeks. Rest, hydrate, advance activity as tolerated. Hand hygiene at home. Avoid acetaminophen and alcohol until labs normalize. She asked about returning to her research job: remote work fine now. Return or call for confusion, bleeding, or worsening jaundice."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-21a",
+          "kind": "portal_message",
+          "start": "2024-06-21T10:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Liver Test Results",
+              "date": "2024-06-21T10:15",
+              "author": "PCP",
+              "body": "Your liver numbers from Wednesday are much better than at discharge: ALT down to 480 from 910, bilirubin 3.6 from 5.2, and your clotting test (INR) is 1.2, nearly normal. Exactly the direction we want. Let's recheck around July 10; the front desk will reach out to schedule a lab visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-10a",
+          "kind": "lab_only",
+          "start": "2024-07-10T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Liver test follow-up",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-07-10T08:15",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 96
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 58
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 118
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.4
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.0
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-07-10T08:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 13.0
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-07-10T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Liver Test Results",
+              "date": "2024-07-11T12:40",
+              "author": "PCP",
+              "body": "Big improvement: ALT 96, bilirubin 1.4, INR 1.1. Almost back to normal. One more check in about six weeks, late August. How is your energy?"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "Re: Liver Test Results",
+              "date": "2024-07-11T19:02",
+              "author": "patient",
+              "body": "So much better! Back to working most of the day, and my eyes aren't yellow anymore. I'll book the August lab."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-28a",
+          "kind": "lab_only",
+          "start": "2024-08-28T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Liver test follow-up",
+          "conditions": [
+            {
+              "label": "Acute hepatitis E",
+              "action": "resolved",
+              "icd10": "B17.2"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-08-28T08:30",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 97
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-08-28T08:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 11.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-28T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Result Note",
+              "date": "2024-08-29T09:05",
+              "author": "PCP",
+              "body": "Hepatic panel and INR normal. Acute hepatitis E has resolved; no further liver testing needed. Problem resolved. Portal note sent."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "Liver Tests Normal",
+              "date": "2024-08-29T09:07",
+              "author": "PCP",
+              "body": "All of your liver tests are normal now. The hepatitis E is behind you, and nothing more to check. Fine to use acetaminophen again at normal doses. Good luck with the semester."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-14a",
+          "kind": "office_visit",
+          "start": "2024-10-14T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Positive home pregnancy test",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "diagnosed",
+              "onset": "2024-09-07"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "Prenatal Vitamins Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "pregnancy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              69
+            ],
+            "hr": 76,
+            "temp_c": 37.2,
+            "weight_kg": 61.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-10-14T11:05",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-10-14T11:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-14T11:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-14T11:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-14T11:42"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2024",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "new pregnancy, genital HSV-2 on suppression"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-10-14T11:35",
+              "author": "PCP",
+              "body": "S: Positive home test on Saturday. LMP 9/7, cycles regular, so about 5 weeks. Some breast tenderness, mild queasiness in the mornings, no bleeding or cramping. Planning to continue the pregnancy. Taking valacyclovir daily; worried about what HSV means for delivery. Recovered fully from hepatitis E this summer, liver tests normal in August.\n\nO: Vitals per flowsheet. Well. Urine hCG positive in office. Abdomen soft, nontender.\n\nA/P\n1. Intrauterine pregnancy presumed, about 5 weeks 2 days by LMP; EDD 6/14/2025. Start a daily prenatal vitamin. Referral to the OB group for prenatal care and dating ultrasound. Reviewed food safety and avoiding alcohol and smoking (she does neither).\n2. Genital HSV-2: valacyclovir is fine to continue in pregnancy; OB will plan for late pregnancy and delivery. She should tell OB right away about any lesion.\n3. Flu and updated COVID vaccines today, both recommended in pregnancy.\nCongratulations given."
+            },
+            {
+              "type": "Referral",
+              "title": "Obstetrics Referral",
+              "date": "2024-10-14T11:45",
+              "author": "PCP",
+              "body": "Referral to obstetrics for prenatal care. 28 y/o G1, LMP 9/7/24, EDD 6/14/25 by dates, urine hCG positive today. History: genital HSV-2 on valacyclovir 500 mg daily suppression; acute hepatitis E 6/2024 with hospitalization, fully resolved with normal liver tests 8/28/24. NKDA. On prenatal vitamin. Flu and COVID vaccines given today."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "specialist_visit",
+          "start": "2024-11-12T09:30",
+          "service": "Obstetrics",
+          "reason": "First prenatal visit",
+          "orders": [
+            {
+              "id": "ob-referral-2024",
+              "action": "done",
+              "date": "2024-11-12T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Prenatal Intake Letter",
+              "date": "2024-11-15T14:20",
+              "author": "obstetrics",
+              "body": "Dear colleague,\n\nWe saw your patient for her first prenatal visit on 11/12/2024. She is a 29-year-old G1P0 at 9 weeks 3 days by LMP. Transvaginal dating ultrasound shows a single intrauterine pregnancy with cardiac activity; crown-rump length agrees with her dates, and we are keeping the EDD of 6/14/2025.\n\nHistory reviewed: genital HSV-2 on valacyclovir 500 mg daily, which she will continue; hepatitis E in June 2024, resolved; giardiasis in 2023, treated. No surgeries. NKDA.\n\nPrenatal labs drawn at this visit were unremarkable, and she is rubella immune. Pap is current from 2022.\n\nPlan: routine prenatal visits, anatomy scan at 20 weeks, glucose screening at 24 to 28 weeks. We discussed HSV in pregnancy and that any prodrome or lesion near term needs an urgent call, since active lesions in labor mean cesarean delivery. Prenatal vitamin daily.\n\nThank you for the referral.\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-02a",
+          "kind": "pharmacy",
+          "start": "2024-12-02T09:40",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill: valacyclovir",
+              "date": "2024-12-02T09:40",
+              "author": "RN",
+              "body": "Valacyclovir 500 mg daily renewal. Pregnant, ~12 wks, OB aware and continuing same dose. 90 days x3 sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-24a",
+          "kind": "specialist_visit",
+          "start": "2025-03-24T10:15",
+          "service": "Obstetrics",
+          "reason": "Prenatal visit, 28 weeks",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-03-24T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Prenatal Update",
+              "date": "2025-03-27T15:05",
+              "author": "obstetrics",
+              "body": "Prenatal update for primary care, visit of 03/24/2025.\n\n29-year-old G1 at 28 weeks 2 days. Feeling well, good fetal movement. Growth appropriate for dates; anatomy survey in January was normal. Glucose challenge normal. Tdap given today. No HSV prodrome or lesions this pregnancy; continuing valacyclovir 500 mg daily and prenatal vitamin. NKDA.\n\nNext visits every two weeks from 32 weeks. She knows to call at once for any genital lesion, tingling or labor.\n\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-11a",
+          "kind": "hospital_admission",
+          "start": "2025-06-11T04:50",
+          "end": "2025-06-14T11:30",
+          "service": "Obstetrics",
+          "reason": "Term labor",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "post-cesarean pain"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "post-cesarean pain"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Cesarean delivery, low transverse",
+              "performed": "2025-06-11T06:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative Note: Cesarean Delivery",
+              "date": "2025-06-16T10:00",
+              "author": "obstetrics",
+              "body": "OPERATIVE NOTE\nDate: 06/11/2025\n\nPreoperative diagnosis: intrauterine pregnancy at 39 weeks 4 days in active labor; active genital herpes lesions.\nPostoperative diagnosis: same; delivered.\nProcedure: emergent primary low transverse cesarean delivery.\nAnesthesia: spinal.\n\nIndication: 29-year-old G1 with genital HSV-2 on daily valacyclovir suppression, admitted in active labor with regular contractions and cervical change. She had no fever, urinary burning or abnormal discharge. On exam there were several clustered vesicles on a red base over the labia and perineum. With active lesions in labor, vaginal birth would expose the baby to HSV, so we proceeded with cesarean.\n\nFindings: viable male infant from vertex position, Apgars 8 at one minute and 9 at five minutes. Normal uterus, tubes and ovaries. Clear fluid.\n\nUncomplicated procedure. Pfannenstiel skin incision closed subcuticularly. Mother and infant to recovery in stable condition."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2025-06-16T10:01",
+              "author": "obstetrics",
+              "body": "OBSTETRIC DISCHARGE SUMMARY\nAdmitted 06/11/2025, discharged 06/14/2025\n\nDiagnoses: term pregnancy, delivered by emergent primary low transverse cesarean for active genital HSV lesions in labor. Genital HSV-2 on suppression. Past history of acute hepatitis E (2024, resolved) and giardiasis (2023, treated).\n\nCourse: delivered a healthy boy on 6/11 (Apgars 8 and 9). No rash, breathing trouble or enlarged liver or spleen on newborn exam; pediatrics is following him for the HSV exposure per protocol. Her recovery was routine: afebrile, incision clean, pain controlled with oral medicines, ambulating, voiding, tolerating a diet. Valacyclovir continued throughout.\n\nDischarge medications:\n- valacyclovir 500 mg by mouth daily\n- prenatal vitamin daily\n- ibuprofen 600 mg every 6 hours as needed, about 2 weeks\n- acetaminophen 1,000 mg every 6 hours as needed, about 2 weeks\nAllergies: NKDA.\n\nFollow-up: incision check at 2 weeks, postpartum visit at 6 weeks. Call for fever, heavy bleeding, incision redness or drainage, or low mood."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "telephone",
+          "start": "2025-06-17T14:10",
+          "reason": "Postpartum check-in",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Postpartum Check-in Call",
+              "date": "2025-06-17T14:10",
+              "author": "RN",
+              "body": "Called after receiving delivery records. Home since Saturday with her son. Incision sore but improving, using ibuprofen a few times a day. No fever, bleeding tapering. Baby feeding and seen by pediatrics yesterday, she says he is doing fine. Sleep is in pieces but mood okay, has help at home. OB incision check next week. Reminded to keep taking valacyclovir and to call with any concerns."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-23a",
+          "kind": "specialist_visit",
+          "start": "2025-07-23T13:30",
+          "service": "Obstetrics",
+          "reason": "Postpartum visit",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Postpartum Visit Letter",
+              "date": "2025-07-25T11:15",
+              "author": "obstetrics",
+              "body": "Postpartum visit, 07/23/2025, six weeks after cesarean.\n\nRecovering well. Incision healed. Bleeding has stopped. Postpartum depression screen negative. Pelvic exam normal, no lesions. Cleared for exercise and usual activity. Continuing valacyclovir 500 mg daily. Cervical screening due this fall with primary care.\n\nWe will see her as needed. Thank you.\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "annual_physical",
+          "start": "2025-10-21T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "medications": [
+            {
+              "drug_text": "Prenatal Vitamins Oral Tablet",
+              "action": "stop",
+              "reason": "patient stopped in September"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              115,
+              69
+            ],
+            "hr": 64,
+            "rr": 15,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 64.8
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-10-21T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 259
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 5.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-21T10:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2025-10-21T09:50",
+              "text": "Specimen: liquid-based cervical cytology with reflex-capable high-risk HPV testing. Specimen adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM; high-risk HPV negative.",
+              "issued": "2025-10-24T08:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-10-21T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-21T10:05"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-21T10:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-21T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-21T10:02"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-10-21T10:15",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n\nJust turned 30. Son is 4 months old and thriving. Back to her dissertation part time. Recovered well from the cesarean in June; OB postpartum visit in July was normal. Stopped the prenatal vitamin in September on her own. No HSV outbreaks since the one in labor. Sleep broken but manageable; mood good, partner and family helping.\n\nMeds: valacyclovir 500 mg daily. NKDA.\nPSH: low transverse cesarean 6/2025.\nSocial: no tobacco, alcohol or drugs.\n\nExam: vitals per flowsheet. Well. HEENT normal. Thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen soft, Pfannenstiel scar well healed. Pelvic: external genitalia normal without lesions; cervix normal, Pap with HPV collected. Skin clear. PHQ-9: 3.\n\nA/P\n- Genital HSV-2: continue suppression.\n- Status post cesarean, recovered.\n- Health maintenance: Pap with HPV co-test today (age 30). CBC after pregnancy and TSH given her mother's thyroid history. Flu and COVID today. Prenatal vitamin off the list.\nRTC 1 year."
+            }
+          ],
+          "state": {
+            "weight_kg": 65.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-24a",
+          "kind": "portal_message",
+          "start": "2025-10-24T13:20",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Pap and Lab Results",
+              "date": "2025-10-24T13:20",
+              "author": "PCP",
+              "body": "Good news on all fronts: Pap normal and HPV negative, so the next cervical screen is in five years. Blood count and thyroid test are normal too."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "Re: Pap and Lab Results",
+              "date": "2025-10-24T20:41",
+              "author": "patient",
+              "body": "Thank you! Relieved."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-01a",
+          "kind": "pharmacy",
+          "start": "2025-12-01T08:35",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill: valacyclovir",
+              "date": "2025-12-01T08:35",
+              "author": "RN",
+              "body": "Valacyclovir 500 mg daily renewal request from pharmacy. Physical 10/21. Renewed 90 days with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-09a",
+          "kind": "portal_message",
+          "start": "2026-02-09T12:30",
+          "reason": "Form request",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Health Form for Program",
+              "date": "2026-02-09T12:30",
+              "author": "patient",
+              "body": "My department needs an updated health and immunization form for my final year. Uploaded it here. No rush, due March 1."
+            },
+            {
+              "type": "Administrative",
+              "title": "Form Completed",
+              "date": "2026-02-12T15:00",
+              "author": "front desk",
+              "body": "Health and immunization form completed from chart, signed by PCP, uploaded to portal."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-08a",
+          "kind": "ed_visit",
+          "start": "2026-06-08T18:25",
+          "end": "2026-06-08T21:00",
+          "service": "Emergency Medicine",
+          "reason": "Confusion, headache, found beside gas heater",
+          "conditions": [
+            {
+              "label": "Toxic effect of carbon monoxide from utility gas, accidental (unintentional), initial encounter",
+              "action": "diagnosed",
+              "onset": "2026-06-08",
+              "icd10": "T58.11XA"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-06-08T18:32",
+              "bp": [
+                122,
+                70
+              ],
+              "hr": 110,
+              "rr": 20,
+              "temp_c": 37.1,
+              "spo2": 96
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-06-08T18:40",
+              "results": [
+                {
+                  "test": "Carboxyhemoglobin",
+                  "loinc": "20563-3",
+                  "unit": "%",
+                  "value": 26
+                },
+                {
+                  "test": "pH, arterial",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.36
+                },
+                {
+                  "test": "pCO2, arterial",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 35
+                },
+                {
+                  "test": "pO2, arterial",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 412
+                },
+                {
+                  "test": "Bicarbonate, arterial",
+                  "loinc": "1960-4",
+                  "unit": "mmol/L",
+                  "value": 20
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-08T18:40",
+              "results": [
+                {
+                  "test": "Lactate",
+                  "value": 2.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-08T18:40",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "value": 4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-08T18:45",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-08T18:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.41
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 257
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-06-08T18:40",
+              "results": [
+                {
+                  "test": "Bicarbonate",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 18
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-06-08T18:35",
+              "text": "Sinus tachycardia, rate 110. Normal axis and intervals. No ST elevation or depression, no T-wave inversion.",
+              "conclusion": "Sinus tachycardia without ischemic changes."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-06-08T18:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-06-10T08:45",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nArrival 06/08/2026 18:25 by EMS\n\nCC: confusion.\n\nHPI: 30-year-old woman with genital HSV-2 on valacyclovir, whose last outbreak was at delivery in 2025 and led to a cesarean. Per her roommate, she had a headache, felt dizzy and nauseated from the morning on and said she would sleep it off. Later the roommate found her drowsy and muddled on the couch beside an unvented gas space heater that had been running in the apartment. Roommate reports no drugs or alcohol and no fall or injury.\n\nPMH: genital HSV-2; giardiasis 2023, treated; acute hepatitis E 2024, resolved. PSH: cesarean 2025.\nMeds: valacyclovir 500 mg daily. NKDA.\n\nExam: P 110, RR 20, BP 122/70, T 37.1. Confused, speech mildly slurred. Skin flushed bright red. Lungs clear. Heart tachycardic, regular, no murmur. Clumsy rapid alternating movements bilaterally; strength full and symmetric, no focal deficit.\n\nCourse: 100% oxygen by nonrebreather started on arrival. Pulse oximeter then read 96%, which is not reassuring here: a standard probe reads carboxyhemoglobin as oxyhemoglobin. Arterial blood gas with co-oximetry: carboxyhemoglobin 26%, pH 7.36, PaCO2 35, PaO2 412 on nonrebreather, bicarbonate 20. Lactate 2.6. hs-troponin I 4. Urine hCG negative. CBC normal; BMP normal except bicarbonate 21. Monitor and 12-lead ECG: sinus tachycardia, no ischemic changes.\n\nImpression: carbon monoxide poisoning from an unvented gas heater, with confusion and cerebellar signs; airway intact.\nDisposition: discussed with hyperbaric medicine; transferred on 100% oxygen to the regional hyperbaric unit. Fire department notified to check the apartment."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-08b",
+          "kind": "hospital_admission",
+          "start": "2026-06-08T21:00",
+          "end": "2026-06-09T15:40",
+          "service": "Hyperbaric Medicine",
+          "reason": "Carbon monoxide poisoning",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-06-08T23:50",
+              "results": [
+                {
+                  "test": "Carboxyhemoglobin",
+                  "loinc": "20563-3",
+                  "unit": "%",
+                  "value": 2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Hyperbaric oxygen therapy",
+              "performed": "2026-06-08T21:40"
+            },
+            {
+              "procedure": "Hyperbaric oxygen therapy",
+              "performed": "2026-06-09T02:30"
+            },
+            {
+              "procedure": "Hyperbaric oxygen therapy",
+              "performed": "2026-06-09T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hyperbaric Medicine Discharge Summary",
+              "date": "2026-06-10T08:46",
+              "author": "hyperbaric medicine",
+              "body": "HYPERBARIC MEDICINE DISCHARGE SUMMARY\nAdmitted 06/08/2026, discharged 06/09/2026\n\nDiagnosis: acute carbon monoxide poisoning (carboxyhemoglobin 26% at the sending ED) with confusion, slurred speech and impaired rapid alternating movements.\n\nCourse: arrived on 100% oxygen. Three hyperbaric oxygen sessions within 24 hours, the first started on arrival. Carboxyhemoglobin 2% after the first session. Tolerated all sessions; ears equalized without difficulty. By the next morning she was fully oriented, speech normal, rapid alternating movements normal, gait steady. No chest pain.\n\nDischarge: home 06/09. Valacyclovir 500 mg daily, unchanged. NKDA.\nInstructions: no gas heater use until the appliance is inspected or removed; working CO detectors on every level. Delayed neurologic symptoms can appear in the weeks after CO poisoning; call for trouble with memory, concentration, mood, movement or new headaches. PCP follow-up within one week."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-10a",
+          "kind": "telephone",
+          "start": "2026-06-10T10:05",
+          "reason": "Post-ED call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge Call",
+              "date": "2026-06-10T10:05",
+              "author": "RN",
+              "body": "Outside records received (ED and hyperbaric unit). Called patient: home, tired but clear-headed, no headache or dizziness today. Landlord took the heater out yesterday and the fire department cleared the apartment. Booked with PCP 6/16. Advised to call for any confusion, memory trouble or new symptoms before then."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "office_visit",
+          "start": "2026-06-16T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after carbon monoxide poisoning",
+          "vitals": {
+            "bp": [
+              121,
+              75
+            ],
+            "hr": 90,
+            "rr": 14,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 61.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-06-16T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-06-16T14:35",
+              "author": "PCP",
+              "body": "FOLLOW-UP AFTER CO POISONING\n\nSeen at an outside ED 6/8 after her roommate found her confused beside an unvented gas space heater; carboxyhemoglobin 26%; transferred for three hyperbaric oxygen sessions and discharged the next day. Outside records reviewed.\n\nToday: feels like herself. No headache, dizziness or nausea since discharge. Reading and writing for her dissertation without trouble focusing; no memory gaps she has noticed beyond the evening itself. Mood steady. Heater removed by the landlord, CO detectors now in the apartment.\n\nExam: vitals per flowsheet, normal. Alert, oriented, conversant, speech fluent and clear. Recalls 3 of 3 words at 5 minutes. Cranial nerves intact. Strength and sensation normal. Finger-nose and rapid alternating movements normal bilaterally. Gait and tandem normal. Heart regular, lungs clear.\n\nA/P\nCarbon monoxide poisoning, treated with hyperbaric oxygen; neurologically normal today. Reviewed the delayed neurologic syndrome that can show up over the next several weeks: call for memory, concentration, mood or movement changes, and we would see her and arrange neurology if so. Portal check-in in a month. Continue valacyclovir."
+            }
+          ],
+          "state": {
+            "weight_kg": 62.3
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "portal_message",
+          "start": "2026-07-14T09:10",
+          "reason": "Check-in after CO poisoning",
+          "conditions": [
+            {
+              "label": "Toxic effect of carbon monoxide from utility gas, accidental (unintentional), initial encounter",
+              "action": "resolved",
+              "icd10": "T58.11XA"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Checking In",
+              "date": "2026-07-14T09:10",
+              "author": "PCP",
+              "body": "Hi Delaney, checking in a month after the carbon monoxide exposure. Any trouble with memory, concentration, mood, balance or headaches?"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "Re: Checking In",
+              "date": "2026-07-14T17:48",
+              "author": "patient",
+              "body": "Nope, all normal. Writing every day and my brain feels like my brain. Thanks for checking."
+            },
+            {
+              "type": "Result Note",
+              "title": "Problem Update",
+              "date": "2026-07-15T08:20",
+              "author": "PCP",
+              "body": "Five weeks out from CO poisoning with no delayed neurologic symptoms. Marking resolved."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T15:22",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Fall Physical",
+              "date": "2026-08-11T15:22",
+              "author": "patient",
+              "body": "Can I book my yearly physical for October? Tuesdays are easiest because of daycare."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "Re: Fall Physical",
+              "date": "2026-08-12T09:00",
+              "author": "front desk",
+              "body": "You're booked Tuesday 10/20 at 9:00. Flu and COVID vaccines can be done that day."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-20a",
+          "kind": "annual_physical",
+          "start": "2026-10-20T09:00",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute hepatitis E|B17.2": {
+        "code": "B17.2",
+        "display": "Acute hepatitis E",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Giardiasis [lambliasis]|A07.1": {
+        "code": "A07.1",
+        "display": "Giardiasis [lambliasis]",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Toxic effect of carbon monoxide from utility gas, accidental (unintentional), initial encounter|T58.11XA": {
+        "code": "T58.11XA",
+        "display": "Toxic effect of carbon monoxide from utility gas, accidental (unintentional), initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "tinidazole 500 MG Oral Tablet": {
+        "code": "199519",
+        "display": "tinidazole 500 MG Oral Tablet",
+        "ingredient": "tinidazole",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "valacyclovir 500 MG Oral Tablet": {
+        "code": "313565",
+        "display": "valacyclovir 500 MG Oral Tablet",
+        "ingredient": "valacyclovir",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Bicarbonate, arterial": {
+        "code": "1960-4",
+        "display": "Bicarbonate [Moles/volume] in Arterial blood",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Carboxyhemoglobin": {
+        "code": "20563-3",
+        "display": "Carboxyhemoglobin/Hemoglobin.total in Blood",
+        "unit": "%",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hepatitis A virus IgM antibody": {
+        "code": "13950-1",
+        "display": "Hepatitis A virus IgM Ab [Presence] in Serum or Plasma by Immunoassay",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hepatitis B core IgM antibody": {
+        "code": "31204-1",
+        "display": "Hepatitis B virus core IgM Ab [Presence] in Serum",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hepatitis E virus IgM antibody": {
+        "code": "14212-5",
+        "display": "Hepatitis E virus IgM Ab [Presence] in Serum",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Ova and parasites, stool microscopy": {
+        "code": "10704-5",
+        "display": "Ova and parasites identified in Stool by Light microscopy",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pCO2, arterial": {
+        "code": "2019-8",
+        "display": "Carbon dioxide [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH, arterial": {
+        "code": "2744-1",
+        "display": "pH of Arterial blood",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pO2, arterial": {
+        "code": "2703-7",
+        "display": "Oxygen [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"Prenatal Vitamins Oral Tablet\""
+    ]
+  }
+}

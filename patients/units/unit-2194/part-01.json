@@ -1,0 +1,422 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002194",
+      "given": "Vernon",
+      "family": "Larkin",
+      "birth_date": "1952-12-19",
+      "address_line": "27 Linden Street",
+      "phone": "+1-617-555-0168",
+      "email": "vernon.larkin@example.test",
+      "marital_status": "single",
+      "summary": "Retired postal worker with COPD, hypertension, stable CAD and CKD 3a who joined the practice in August 2024. Influenza A in April 2025; a travel-provoked left popliteal DVT in October 2025 with a hospital pneumonia and rehab stay, followed by severe C. difficile infection in November 2025. Apixaban completed in January 2026; routine chronic care since.",
+      "events": [
+        {
+          "id": "2024-08-07a",
+          "kind": "telephone",
+          "start": "2024-08-07T10:42",
+          "reason": "New patient scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "author": "front desk",
+              "date": "2024-08-07T10:42",
+              "body": "Pt called asking to join the practice. Has been with another primary care office for a long time, says he wants to be able to reach his doctor without the phone tree. Medicare, has Part D. Membership info reviewed with him. New pt visit booked 8/21 at 9:00. Records release form mailed to his old office at his request, he'll sign his copy at the visit too. Asked him to bring all his pill bottles and inhalers."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "establish_care",
+          "start": "2024-08-21T09:00",
+          "end": "2024-08-21T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {"label": "Chronic obstructive pulmonary disease", "action": "history"},
+            {"label": "Essential hypertension", "action": "history"},
+            {"label": "Coronary artery disease", "action": "history", "note": "stable"},
+            {"label": "Chronic kidney disease, stage 3a", "action": "history", "note": "baseline eGFR 48"}
+          ],
+          "medications": [
+            {"drug": "lisinopril 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Essential hypertension"},
+            {"drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Coronary artery disease"},
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Coronary artery disease"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth at bedtime", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Coronary artery disease"},
+            {"drug_text": "tiotropium 0.018 MG Inhalation Powder", "action": "historical", "sig": "Inhale contents of 1 capsule once daily via HandiHaler", "dose": {"value": 18, "unit": "mcg"}, "frequency": "DAILY", "route": "Inhalation", "course": "chronic", "reason": "Chronic obstructive pulmonary disease"},
+            {"drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler", "action": "historical", "sig": "Inhale 1-2 puffs every 4-6 hours as needed for wheezing", "dose": {"value": 90, "unit": "mcg"}, "frequency": "Q4-6H PRN", "route": "Inhalation", "course": "chronic", "reason": "Chronic obstructive pulmonary disease"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 82.0, "height_cm": 175.0, "labs": {"Creatinine": 1.53, "Low Density Lipoprotein": 74, "Microalbumin/Creatinine Ratio": 12, "Hemoglobin A1c": 5.6}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per week"},
+            {"item": "Occupation", "value": "Retired postal worker"}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2024-08-21T09:00"}],
+          "orders": [
+            {"id": "labs-2024-08", "action": "placed", "order": "CMP, CBC, lipid panel, urine albumin/creatinine ratio, A1c, hepatitis C antibody", "category": "lab", "reason": "Baseline labs, CKD 3a monitoring"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2024-08-21T10:05",
+              "body": "71M here to set up care, transferring from a primary care office he'd been at for years. No acute complaints today.\n\nPMH (per pt and his bottles; records requested):\n- COPD. On tiotropium HandiHaler daily, albuterol rescue maybe once or twice a week, more in humid weather. No hospitalizations for breathing that he recalls.\n- HTN, long-standing.\n- CAD, stable. Says he was told years ago he had \"some blockage\" and was put on aspirin, statin and metoprolol. No chest pain. Doesn't see cardiology currently.\n- CKD 3a. Prior office told him his kidney number runs around 48.\nPSH: none.\n\nMeds:\nlisinopril 20 daily\nmetoprolol succinate 50 daily\nASA 81 daily\natorvastatin 40 qhs\ntiotropium 18 mcg inh daily\nalbuterol HFA 1-2 puffs q4-6h prn wheeze\nNo OTC NSAIDs - he was told to avoid them for his kidneys.\n\nAllergies: NKDA\n\nFH: father had an MI at 65. Mother had high blood pressure and kidney disease. Brother has type 2 diabetes.\nSH: retired from the post office (carrier, then sorting). Lives alone in Holyoke, drives. Smoked about 25 pack-years, stopped around 2017. Drinks socially, a drink or two a week. Walks most days.\n\nROS: no CP, no orthopnea, no leg swelling. Baseline exertional breathlessness on stairs, unchanged. No cough today. No GI or GU complaints.\n\nExam: vitals as charted. Pleasant, comfortable. Neck supple, no JVD. Heart regular rate and rhythm, no murmur. Lungs: slightly diminished at the bases, no wheeze or crackles. Abd soft, NT. Ext no edema, pedal pulses 2+.\n\nA/P\n1. HTN - controlled on lisinopril + metoprolol. Continue.\n2. CAD, stable - continue ASA, atorvastatin 40, metoprolol. Lipids with labs.\n3. COPD - stable on tiotropium + prn albuterol. Inhaler technique reviewed, fine.\n4. CKD 3a - CMP, urine albumin/creatinine. Avoid NSAIDs, which he already does.\n5. Health maintenance - A1c given brother's diabetes, hep C screen once. Vaccine and screening history pending old records. Former smoker within 15 yrs of quitting, 25 pk-yr: will discuss lung screening at his wellness visit. Also due for one-time AAA ultrasound (male, ever-smoker, 65-75).\n\nRTC for Medicare wellness visit in ~6-8 wks."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-23a",
+          "kind": "lab_only",
+          "start": "2024-08-23T08:10",
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-08-23T08:10", "results": [{"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-08-23T08:10", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2024-08-23T08:10", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-08-23T08:10", "results": [{"test": "Microalbumin/Creatinine Ratio"}, {"test": "Hemoglobin A1c"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2024-08-23T08:10"}],
+          "orders": [{"id": "labs-2024-08", "action": "done", "date": "2024-08-23T08:10"}]
+        },
+        {
+          "id": "2024-08-26a",
+          "kind": "portal_message",
+          "start": "2024-08-26T16:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2024-08-26T16:20",
+              "body": "Mr. Larkin - your bloodwork from Friday is back. Kidney function is right around the 48 your old office told you about, so no change there. Potassium is fine on the lisinopril. No protein leaking in the urine, which is good news for the kidneys. Cholesterol is well controlled on the atorvastatin, LDL in the 70s. Sugar (A1c) is normal and the hepatitis C screen is negative. Blood counts normal. Nothing to change. See you in October for the wellness visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-04a",
+          "kind": "outside_records",
+          "start": "2024-09-04T11:30",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2018-05-22T10:00"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2020-11-03T14:00"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2021-03-09T14:00"}
+          ],
+          "procedures": [{"procedure": "Colonoscopy, screening, average risk", "performed": "2018-09-12T08:30"}],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Office",
+              "author": "MA",
+              "date": "2024-09-04T11:30",
+              "body": "Records from prior PCP office arrived by fax, 38 pages, scanned to media.\n\nAbstracted for the chart:\n- Problem list matches what pt reported: COPD, HTN, CAD (stable), CKD stage 3a.\n- Med list matches current: lisinopril 20, metoprolol succinate 50, ASA 81, atorvastatin 40, tiotropium, albuterol prn.\n- Allergies: NKDA.\n- Colonoscopy 9/2018, screening, normal exam, no polyps. Repeat interval listed as 10 years.\n- Tdap 5/2018.\n- Shingrix x2 at a retail pharmacy, 11/2020 and 3/2021.\n- No pneumococcal vaccine on file there.\n\nRouted to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-18a",
+          "kind": "pharmacy",
+          "start": "2024-09-18T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "RN",
+              "date": "2024-09-18T09:05",
+              "body": "Pharmacy fax: tiotropium 18 mcg HandiHaler caps, request for 90-day supply. Old prescriber's Rx ran out of refills. Last seen here 8/21, med on our list. Sent 90-day x 3 refills per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "annual_physical",
+          "start": "2024-10-09T13:30",
+          "end": "2024-10-09T14:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2024-10-09T14:10"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-09T14:12"}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, initial", "performed": "2024-10-09T13:30"},
+            {"procedure": "Immunization administration", "performed": "2024-10-09T14:10"}
+          ],
+          "orders": [
+            {"id": "ldct-2024", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Former smoker, 25 pack-years, quit within 15 years"},
+            {"id": "aaa-us-2024", "action": "placed", "order": "Ultrasound abdominal aorta, AAA screening", "category": "imaging", "reason": "Male 65-75 who has smoked"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2024-10-09T14:25",
+              "body": "Initial AWV.\n\nHealth risk assessment reviewed with pt. Independent in ADLs and IADLs, lives alone, drives, does his own shopping and cooking. No falls in the past year. Hearing ok, vision ok with readers, last eye exam ~2 yrs ago. No memory concerns from him or on conversation. PHQ-2 0. Advance directive: has not done one, gave him the health care proxy form to think about.\n\nInterval: doing fine. Breathing at baseline. No CP.\n\nExam: vitals as charted. Lungs with slightly decreased breath sounds at bases, no wheeze. Heart RRR. No edema.\n\nPrevention:\n- Old records reviewed: colonoscopy 2018 normal, Tdap 2018, Shingrix series complete.\n- Pneumococcal: none on file. PCV20 today.\n- COVID: 2024-25 dose today.\n- Flu: offered high-dose. He declines - says he has never gotten flu shots and doesn't see the point. Talked about COPD and his heart as reasons it matters more for him. Still no. Will ask again next time.\n- Lung cancer screening: 25 pk-yr, quit ~7 yrs ago. Discussed benefits/harms (false positives, follow-up scans, radiation). He wants to do it. LDCT ordered.\n- AAA one-time US ordered.\n\nRTC 3 months for chronic f/u."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-06a",
+          "kind": "imaging",
+          "start": "2024-11-06T10:15",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2024-11-06T10:15",
+              "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING (baseline)\nIndication: Former smoker, 25 pack-years, quit 2017.\nTechnique: Low-dose helical CT of the chest without IV contrast.\nComparison: None.\nFindings: Lungs: No pulmonary nodules. No consolidation or mass. Airways patent. Pleura: No effusion or pneumothorax. Mediastinum and hila: No lymphadenopathy. Heart size normal. Upper abdomen: Unremarkable on limited views. Bones: No suspicious lesion.",
+              "conclusion": "No pulmonary nodules. Lung-RADS 1, negative. Continue annual screening in 12 months."
+            },
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2024-11-06T11:00",
+              "text": "ULTRASOUND, ABDOMINAL AORTA (AAA SCREENING)\nIndication: Screening, male former smoker age 71.\nTechnique: Grayscale and color Doppler imaging of the abdominal aorta from the diaphragm to the bifurcation.\nFindings: The abdominal aorta is normal in caliber throughout. Maximum diameter 2.0 cm (infrarenal). No aneurysmal dilatation. Common iliac arteries visualized proximally, normal caliber.",
+              "conclusion": "No abdominal aortic aneurysm. Maximum aortic diameter 2.0 cm."
+            }
+          ],
+          "orders": [
+            {"id": "ldct-2024", "action": "done", "date": "2024-11-06T10:15"},
+            {"id": "aaa-us-2024", "action": "done", "date": "2024-11-06T11:00"}
+          ]
+        },
+        {
+          "id": "2024-11-08a",
+          "kind": "portal_message",
+          "start": "2024-11-08T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Imaging Results",
+              "author": "PCP",
+              "date": "2024-11-08T12:40",
+              "body": "Hi Mr. Larkin, both scans from Wednesday look good. The lung screening CT shows no nodules at all - that's the best category. We'll repeat it next fall. The aorta ultrasound is normal size, no aneurysm, and that one doesn't need repeating. Have a good weekend."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Imaging Results",
+              "author": "patient",
+              "date": "2024-11-08T18:02",
+              "body": "Thank you doc. Glad to hear it. Vern"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "portal_message",
+          "start": "2024-12-10T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Albuterol",
+              "author": "patient",
+              "date": "2024-12-10T07:55",
+              "body": "Good morning. My rescue inhaler is getting light. Can you send a new one to the pharmacy. Breathing is fine just want one in the car and one at home. Thanks."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Albuterol",
+              "author": "RN",
+              "date": "2024-12-10T11:18",
+              "body": "Sent albuterol inhaler x2 with 2 refills to your pharmacy. If you find you're using it more than a couple of times a week, let us know."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-23a",
+          "kind": "office_visit",
+          "start": "2025-01-23T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "labs": [{"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-01-23T11:20", "results": [{"test": "Creatinine"}]}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-23T10:40"},
+            {"procedure": "Venipuncture", "performed": "2025-01-23T11:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-01-23T11:30",
+              "body": "S: 3 mo f/u HTN/CAD/COPD/CKD. Doing ok through the cold weather, uses albuterol a little more when it's below zero, maybe 2-3x/wk, otherwise no change. No CP, no palpitations. No edema. Taking everything as prescribed. Still no flu shot - asked again, still declines.\n\nO: vitals as charted. Lungs clear, no wheeze. Heart RRR. No edema.\n\nA/P:\nHTN - at goal, continue.\nCAD - stable, no angina. Continue ASA, statin, BB.\nCOPD - mild seasonal increase in rescue use. Continue tiotropium. Reviewed cold-air tips (scarf over mouth).\nCKD 3a - BMP today.\nRTC 3-4 mo."
+            },
+            {
+              "type": "Result Note",
+              "title": "BMP Result",
+              "author": "PCP",
+              "date": "2025-01-24T09:15",
+              "body": "Creatinine and potassium stable, consistent with his CKD 3a baseline. No action."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "pharmacy",
+          "start": "2025-03-04T14:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior Authorization",
+              "author": "MA",
+              "date": "2025-03-04T14:30",
+              "body": "Part D plan rejected tiotropium HandiHaler refill - new year formulary needs PA. PA form completed with dx COPD, on it for years, stable. Submitted via portal. Pt aware, has about a week of caps left.\n\n3/6 addendum: PA approved through 12/31/2025. Pharmacy notified, filled."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-16a",
+          "kind": "office_visit",
+          "start": "2025-04-16T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fever, cough, body aches x3 days",
+          "vitals": {"temp_c": 38.9, "bp": [145, 90], "hr": 98, "rr": 22, "spo2": 94},
+          "measure": ["weight_kg"],
+          "conditions": [{"label": "Influenza", "action": "diagnosed", "onset": "2025-04-13", "note": "influenza A, rapid test positive"}],
+          "medications": [
+            {"drug_text": "oseltamivir 30 MG Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth twice daily for 5 days", "dose": {"value": 30, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "Influenza"}
+          ],
+          "labs": [{"panel": null, "collected": "2025-04-16T11:35", "results": [{"test": "Rapid Influenza A+B Antigen", "text": "Influenza A antigen detected. Influenza B antigen not detected."}]}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-04-16T11:20"}],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Same-Day Request",
+              "author": "RN",
+              "date": "2025-04-16T08:12",
+              "body": "Pt texted the line this am: fever since Sunday, achy all over, dry cough, bad headache, feels wiped out. No CP. Breathing \"a little tight\", using albuterol more. Offered same-day, he'll come at 11:20. Asked him to wear a mask in the waiting room."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Acute Visit",
+              "author": "PCP",
+              "date": "2025-04-16T12:05",
+              "body": "72M with COPD, HTN, CAD, CKD 3a.\n\nHPI: Three days of fevers, malaise and muscle aches with a dry cough. Also a pounding headache and feels weak all over, spent most of yesterday on the couch. No sputum, no CP, no hemoptysis. Mild chest tightness, albuterol helps some. Eating less but drinking. Never got a flu shot this season (declined in the fall).\n\nMeds unchanged: lisinopril 20, metoprolol succ 50, ASA 81, atorva 40, tiotropium, albuterol prn. NKDA.\n\nExam: T 38.9 (102F), BP 145/90, HR 98, RR 22, SpO2 94% RA. Looks unwell but not toxic, speaking full sentences. Neck supple, no meningismus. Lungs: scattered mild expiratory wheezes, good air movement, no crackles, no bronchial breath sounds, no dullness. Heart tachy-normal, regular. No edema.\n\nRapid flu: A positive.\n\nA/P: Influenza A in a high-risk pt (age, COPD, CAD). No sign of pneumonia on exam. Sat 94% on RA, mild wheeze from the flu.\n- Oseltamivir. Outside the 48h window but recommended for high risk. Renally dosed for eGFR ~48: 30 mg BID x5d.\n- Albuterol q4-6h prn, continue tiotropium.\n- Acetaminophen for fever/headache, no NSAIDs (kidneys).\n- Fluids. BP up with fever, recheck at f/u.\n- ED precautions reviewed: worsening SOB, sat drop, CP, confusion. RN to call Friday.\nf/u 2-3 wks."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-18a",
+          "kind": "telephone",
+          "start": "2025-04-18T10:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Nurse Follow-up Call",
+              "author": "RN",
+              "date": "2025-04-18T10:30",
+              "body": "Called pt per PCP. Fever broke yesterday afternoon, highest this am 99.1. Cough still there but less. Headache better. Still very tired. Taking Tamiflu, no nausea. Using albuterol 2-3x/day, less than Wednesday. Denies SOB at rest, CP. Eating soup and toast. Reinforced fluids, rest, call back if worse. Keeping f/u."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-06a",
+          "kind": "office_visit",
+          "start": "2025-05-06T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after influenza",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "conditions": [{"label": "Influenza", "action": "resolved"}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2025-05-06T09:20"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-05-06T09:45",
+              "body": "Flu f/u. Feels back to himself as of last week, energy came back slowly. Cough gone. Rescue inhaler back to his usual once or twice a week. Finished the oseltamivir.\n\nExam: vitals as charted, afebrile, BP back to his usual. Lungs clear, no wheeze. Heart RRR.\n\nA/P: Influenza A, resolved. BP normal off fever. Gently brought up the flu shot for this fall again - \"we'll see.\" Keep July chronic visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-09a",
+          "kind": "office_visit",
+          "start": "2025-07-09T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-07-17a",
+          "kind": "office_visit",
+          "start": "2025-07-17T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-07-17T14:35", "results": [{"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2025-07-17T14:35", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2025-07-17T14:35", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-07-17T14:00"},
+            {"procedure": "Venipuncture", "performed": "2025-07-17T14:35"}
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Rescheduled",
+              "author": "front desk",
+              "date": "2025-07-08T15:10",
+              "body": "Pt called to cancel 7/9, has a dentist appt that got moved. Rescheduled to 7/17 at 2pm."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-07-17T14:40",
+              "body": "Routine f/u. Summer has been good, breathing better in the dry stretch, rescue inhaler maybe once a week. Walking in the mornings before the heat. No CP, no exertional symptoms beyond his usual stairs.\n\nMeds reviewed, no changes, adherent.\n\nExam: vitals as charted. Lungs clear. Heart RRR, no murmur. No edema.\n\nA/P\n- HTN: controlled.\n- CAD: stable, continue current regimen. Lipids today.\n- COPD: stable.\n- CKD 3a: BMP + UACR today.\nAWV in September - flu shot then, hopefully."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-21a",
+          "kind": "portal_message",
+          "start": "2025-07-21T08:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2025-07-21T08:50",
+              "body": "Morning Vern - labs from Thursday are all steady. Kidney function where it always is, no protein in the urine, LDL still in the 70s. Nothing to change. See you in September."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-17a",
+          "kind": "annual_physical",
+          "start": "2025-09-17T09:40",
+          "end": "2025-09-17T10:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2025-09-17T10:20"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-09-17T10:22"},
+            {"vaccine": "RSV, adjuvanted (Arexvy)", "date": "2025-09-17T10:24"}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2025-09-17T09:40"},
+            {"procedure": "Immunization administration", "performed": "2025-09-17T10:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2025-09-17T10:35",
+              "body": "Subsequent AWV.\n\nHRA updated. Still independent, no falls, no new hearing or vision issues. No memory concerns. PHQ-2 0. Still mulling over the proxy form.\n\nInterval history: flu in April, fully recovered. Otherwise quiet year. Heading abroad on a trip next month.\n\nExam: vitals as charted. Lungs clear. Heart RRR. No edema.\n\nPrevention:\n- Flu: after this spring he's agreeable. High-dose given.\n- COVID 2025-26 given.\n- RSV: eligible with COPD, given today (Arexvy). Warned the arm may be sore with three shots.\n- LDCT due ~November, will order closer to then.\n- Colonoscopy 2018 normal; at 75 we'll talk about whether to repeat.\n\nTravel: long flight - usual advice to get up and walk, keep fluids up.\n\nRTC ~3 months, after he's back."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

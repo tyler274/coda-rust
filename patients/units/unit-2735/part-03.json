@@ -1,0 +1,424 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002735",
+      "events": [
+        {
+          "id": "2026-01-27a",
+          "kind": "office_visit",
+          "start": "2026-01-27T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Preoperative evaluation",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-01-27T15:50", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-27T15:50", "results": [{"test": "Glucose"}, {"test": "Potassium"}, {"test": "Creatinine"}]},
+            {"panel": null, "collected": "2026-01-27T15:50", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-01-27T15:35",
+              "text": "Normal sinus rhythm. PR, QRS and QT intervals normal. Normal axis. No AV block or bundle branch block. No ST-segment or T-wave abnormality.",
+              "conclusion": "Normal sinus rhythm. No conduction abnormality. Normal ECG."
+            }
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-01-27T15:20"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2026-01-27T15:35"},
+            {"procedure": "Venipuncture", "performed": "2026-01-27T15:50"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Preoperative Evaluation",
+              "author": "PCP",
+              "date": "2026-01-27T16:15",
+              "body": "PREOPERATIVE MEDICAL EVALUATION\nProcedure: laparoscopic cholecystectomy, 2/6/2026, general surgery. General anesthesia planned.\n\nHistory: cholangitis from a common duct stone 12/2025 treated with ERCP, sphincterotomy and extraction; long history of gallstones with colic. No pain since discharge. T2DM on metformin and glipizide, HTN on lisinopril, obesity, on atorvastatin.\nPrior anesthesia: T&A as a child, C-section 1994 - no problems she knows of. No family history of anesthesia reactions.\nFunctional capacity: walks 30 min, climbs 2 flights without stopping, well over 4 METs. No chest pain, dyspnea, orthopnea, palpitations or syncope. No snoring or daytime sleepiness she has noticed.\nNKDA. Former smoker.\n\nExam: vitals as charted. Airway: normal mouth opening, neck full range. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. No edema.\n\nECG today: normal sinus rhythm, normal intervals, no conduction abnormality.\n\nAssessment: low risk for a low-risk procedure. No further cardiac testing needed. Medically optimized.\n\nPeriop plan:\n- Metformin: hold the morning of surgery, resume when eating.\n- Glipizide: hold the morning of surgery, resume when eating normally.\n- Lisinopril: hold the morning of surgery, resume the next day if BP allows.\n- Atorvastatin: continue.\n- Check sugar the morning of surgery.\nCBC, BMP and A1c drawn today; will forward with this note and the ECG to the surgery office."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-28a",
+          "kind": "portal_message",
+          "start": "2026-01-28T12:45",
+          "reason": "Preoperative results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pre-op labs",
+              "author": "PCP",
+              "date": "2026-01-28T12:45",
+              "body": "Hi Sandra, your pre-op blood count and chemistry are normal and your ECG was normal. The A1c came back a little higher at 7.9 - not surprising after being so sick in December, and fine for surgery. We'll recheck it in the spring. I faxed everything to the surgeon's office this morning, so you're all set for 2/6. Remember: no metformin, glipizide or lisinopril the morning of surgery. Good luck!"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-06a",
+          "kind": "procedure_visit",
+          "start": "2026-02-06T07:30",
+          "end": "2026-02-07T11:15",
+          "service": "General Surgery",
+          "reason": "Laparoscopic cholecystectomy",
+          "vitals": [
+            {"time": "2026-02-06T08:41", "hr": 40, "bp": [110, 70]}
+          ],
+          "conditions": [
+            {"label": "Vagal bradycardia secondary to pneumoperitoneum", "icd10": "R00.1", "action": "diagnosed", "onset": "2026-02-06"},
+            {"label": "Cholelithiasis", "action": "resolved", "note": "Status post laparoscopic cholecystectomy 2026-02-06"}
+          ],
+          "medications": [
+            {"drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth every 6 hours as needed for severe pain. Dispense 10 tablets.", "dose": {"value": 1, "unit": "tablet"}, "frequency": "Q6H PRN", "route": "Oral", "course": "short", "reason": "Postoperative pain"},
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "start", "sig": "Take 2 tablets by mouth every 8 hours as needed for pain", "dose": {"value": 1000, "unit": "mg"}, "frequency": "Q8H PRN", "route": "Oral", "course": "short", "reason": "Postoperative pain"}
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-02-06T09:20",
+              "issued": "2026-02-09T14:00",
+              "text": "SPECIMEN: Gallbladder, laparoscopic cholecystectomy.\nGROSS: Received in formalin is an intact gallbladder with attached cystic duct. The serosa is smooth. The lumen contains multiple yellow-green faceted stones. The mucosa is velvety.\nMICROSCOPIC: Sections show gallbladder wall with no dysplasia or malignancy.",
+              "conclusion": "Gallbladder with cholelithiasis. Negative for dysplasia and malignancy."
+            }
+          ],
+          "procedures": [
+            {"procedure": "Laparoscopic cholecystectomy", "performed": "2026-02-06T08:10"}
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative Report",
+              "author": "general surgery",
+              "date": "2026-02-10T10:30",
+              "body": "OPERATIVE REPORT\nDate of surgery: 02/06/2026\nPreoperative diagnosis: symptomatic cholelithiasis, status post ERCP for choledocholithiasis with cholangitis.\nPostoperative diagnosis: same.\nProcedure: laparoscopic cholecystectomy.\nAnesthesia: general endotracheal.\nEBL: minimal. Specimen: gallbladder to pathology. Complications: intraoperative bradycardia with insufflation, resolved (see below).\n\nDescription: After induction and intubation the abdomen was prepped and draped. Periumbilical access with a Hasson technique, CO2 pneumoperitoneum established, three additional ports placed under direct vision. About thirty minutes into the case, during insufflation, anesthesia called a sudden fall in heart rate to 40 with blood pressure 110/70; she was otherwise stable and there had been no technical difficulty. The abdomen was desufflated and atropine 0.5 mg IV given by anesthesia, with heart rate recovering to the 70s within about a minute. After a brief pause, pneumoperitoneum was re-established slowly at a lower pressure without recurrence. The gallbladder was retracted, the critical view of safety obtained, and the cystic duct and artery clipped and divided. The gallbladder was removed from the liver bed with cautery and extracted in a bag. Hemostasis confirmed. Ports removed under vision, fascia closed at the umbilicus, skin closed with absorbable suture.\n\nImpression: uncomplicated laparoscopic cholecystectomy apart from vagal bradycardia from the pneumoperitoneum, which responded promptly.\nPlan: overnight observation on telemetry given the intraoperative bradycardia."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Surgical Discharge Summary",
+              "author": "general surgery",
+              "date": "2026-02-10T10:31",
+              "body": "SHORT STAY DISCHARGE SUMMARY\nAdmitted 02/06/2026 for laparoscopic cholecystectomy; discharged 02/07/2026.\n\nIntraoperative vagal bradycardia during CO2 insufflation, treated with desufflation and atropine; procedure completed. Preoperative ECG had been normal sinus rhythm. Overnight telemetry: sinus rhythm throughout, no further bradycardia. Tolerated diet, ambulating, pain controlled with oral medicines. Sore throat from the breathing tube noted on the morning of discharge.\n\nDischarge medications: oxycodone-acetaminophen 5/325 mg 1 tab q6h prn severe pain, #10; acetaminophen 1000 mg q8h prn (do not combine above 3 g/day total acetaminophen). Resume metformin, glipizide, lisinopril and atorvastatin.\nAllergies: NKDA.\nFollow-up: surgery clinic in 2 weeks. Pathology pending at discharge."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Pathology Result Received",
+              "author": "MA",
+              "date": "2026-02-11T09:10",
+              "body": "Gallbladder pathology from 2/6 surgery received from the hospital and filed: gallstones, no dysplasia or malignancy. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "telephone",
+          "start": "2026-02-10T13:25",
+          "reason": "Hoarse voice after surgery",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Hoarseness After Surgery",
+              "author": "RN",
+              "date": "2026-02-10T13:25",
+              "body": "Pt called. Gallbladder out Friday; incisions fine, pain mild, only took 2 of the oxycodone. Her voice has been hoarse and her throat scratchy since she woke up from anesthesia, maybe a little worse yesterday after a long phone call. Swallowing OK, no trouble breathing, no noisy breathing, no fever, no cough. Advised rest the voice, warm fluids. She would like to be seen since her job is mostly on the phone. Booked Thu 2/12 with PCP. ED for any breathing difficulty."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "office_visit",
+          "start": "2026-02-12T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hoarseness",
+          "measure": ["bp", "hr", "spo2", "temp_c"],
+          "conditions": [
+            {"label": "Acute laryngitis", "icd10": "J04.0", "action": "diagnosed", "onset": "2026-02-06"},
+            {"label": "Vagal bradycardia secondary to pneumoperitoneum", "icd10": "R00.1", "action": "resolved", "note": "Transient, intraoperative; no recurrence on telemetry"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2026-02-12T11:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Hoarseness",
+              "author": "PCP",
+              "date": "2026-02-12T11:25",
+              "body": "6 days s/p lap chole (2/6, general ET anesthesia). Op note and discharge summary reviewed: bradycardia to 40 with insufflation, reversed with desufflation and atropine, case completed, no recurrence overnight on tele.\n\nHoarse since extubation with a raw throat. Not worse, not better. Swallowing solids and liquids fine. No stridor, dyspnea, cough, fever. No palpitations, lightheadedness or fainting since surgery. Incisions sore but OK. Off the oxycodone, using acetaminophen once a day.\n\nExam: afebrile, vitals as charted. Voice hoarse, breathy. Oropharynx without exudate. No neck swelling or tenderness, no nodes. No stridor. Lungs clear. Heart regular. Port sites clean, dry, no erythema.\n\nA/P\n1. Acute laryngitis - post-intubation. Voice rest (no whispering), humidifier, fluids, avoid throat clearing. Should settle over 1-2 weeks. If still hoarse at 3 weeks, call and we'll get ENT to look.\n2. Vagal bradycardia from pneumoperitoneum - single intraoperative event, normal preop ECG, no symptoms since; resolved, nothing further needed.\n3. Post-op - healing well, surgery f/u 2/20.\nWork note given for 2 days of reduced phone duties."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-20a",
+          "kind": "specialist_visit",
+          "start": "2026-02-20T10:15",
+          "service": "General Surgery",
+          "reason": "Postoperative visit",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "General Surgery Postoperative Letter",
+              "author": "general surgery",
+              "date": "2026-02-23T09:40",
+              "body": "Dear Doctor,\n\nMs. Wojcik was seen on 02/20/2026, two weeks after her laparoscopic cholecystectomy. She is eating a normal diet without pain, bowels are regular, and she has no fever. Her voice is improving. Port sites are healed with no hernia or infection.\n\nPathology showed gallstones without dysplasia or malignancy, which we reviewed with her.\n\nShe may return to all activity. No routine surgical follow-up is needed; we would be glad to see her again if any problem arises. Medications unchanged: metformin, glipizide, lisinopril, atorvastatin. NKDA.\n\nThank you for referring her.\n\nGeneral Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-26a",
+          "kind": "portal_message",
+          "start": "2026-02-26T19:20",
+          "reason": "Voice update",
+          "conditions": [
+            {"label": "Acute laryngitis", "icd10": "J04.0", "action": "resolved"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Voice is back",
+              "author": "patient",
+              "date": "2026-02-26T19:20",
+              "body": "Just wanted to say my voice is completely back to normal as of this week. Thanks for seeing me so quickly. Surgeon released me last Friday too."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Voice is back",
+              "author": "PCP",
+              "date": "2026-02-27T08:10",
+              "body": "Great news, Sandra. Glad you're through all of it. See you in May for your diabetes check, or sooner if needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-07a",
+          "kind": "hospital_admission",
+          "start": "2026-03-07T10:20",
+          "end": "2026-03-13T12:40",
+          "service": "Emergency Medicine / Critical Care",
+          "reason": "Right upper quadrant pain, fever, jaundice and confusion",
+          "vitals": [
+            {"time": "2026-03-07T10:25", "temp_c": 38.9, "bp": [90, 60], "hr": 110, "rr": 22}
+          ],
+          "conditions": [
+            {"label": "Choledocholithiasis with cholangitis", "icd10": "K80.33", "action": "diagnosed", "onset": "2026-03-06", "note": "Retained common bile duct stone after cholecystectomy"},
+            {"label": "Septic shock", "icd10": "R65.21", "action": "diagnosed", "onset": "2026-03-07"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-03-07T10:40", "results": [{"test": "White Blood Cells", "value": 18.0}, {"test": "Hemoglobin", "value": 12.5}, {"test": "Platelets", "value": 250}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2026-03-07T10:40", "results": [{"test": "Bilirubin, Total", "value": 5.2}, {"test": "Bilirubin, Direct", "value": 3.8}, {"test": "Alkaline Phosphatase", "value": 210}, {"test": "Aspartate Aminotransferase", "value": 80}, {"test": "Alanine Aminotransferase", "value": 75}]},
+            {"panel": null, "collected": "2026-03-07T10:40", "results": [{"test": "Lipase", "value": 900}, {"test": "Amylase", "loinc": "1798-8", "unit": "U/L", "value": 300}]},
+            {"panel": null, "collected": "2026-03-07T10:45", "results": [{"test": "Blood Culture", "text": "No growth at 5 days (2 of 2 sets)"}]}
+          ],
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2026-03-07T11:30",
+              "text": "ABDOMINAL ULTRASOUND (EMERGENCY)\nIndication: RUQ pain, fever, jaundice; cholecystectomy one month ago.\nComparison: RUQ ultrasound 12/01/2025.\nFindings: The gallbladder is surgically absent; no fluid collection in the gallbladder fossa. Echogenic shadowing stone in the common bile duct with dilation of the intrahepatic bile ducts. Liver normal in echotexture without focal lesion. Visualized pancreas unremarkable. Kidneys without hydronephrosis. No ascites.",
+              "conclusion": "Common bile duct stone with intrahepatic biliary dilation. Status post cholecystectomy."
+            }
+          ],
+          "medications": [
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "stop", "reason": "Held at hospital discharge after septic shock"},
+            {"drug": "amoxicillin 875 MG / clavulanate 125 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily with food through 03/16 to complete the antibiotic course", "dose": {"value": 1, "unit": "tablet"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "Cholangitis"}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2026-03-07T10:20"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2026-03-07T13:30"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-03-13T12:00"}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Physician Record",
+              "author": "emergency medicine",
+              "date": "2026-03-16T08:50",
+              "body": "REGIONAL HOSPITAL - EMERGENCY DEPARTMENT\nDate of service: 03/07/2026 (Saturday)\n\nCC: Severe right upper abdominal pain, fever, yellow skin.\n\nHPI: 55F, laparoscopic cholecystectomy 2/6/2026, ERCP with sphincterotomy and stone removal 12/2025 for cholangitis, T2DM, HTN. Since last night: severe RUQ pain, fevers, nausea and several episodes of vomiting, yellow skin this morning. Over the past hour in the department she has become more confused and drowsy.\n\nMeds: metformin 1000 mg BID, glipizide 5 mg daily, lisinopril 10 mg daily, atorvastatin 20 mg qHS. NKDA.\n\nExam: T 38.9 C (102 F), BP 90/60, HR 110, RR 22. Jaundiced, in obvious distress, drowsy and intermittently confused. Marked RUQ tenderness. Port sites healed. Lungs clear.\n\nLabs: WBC 18.0, Hgb 12.5, plt 250. T bili 5.2, direct 3.8, alk phos 210, AST 80, ALT 75. Amylase 300, lipase 900. Blood cultures x2.\nUltrasound: CBD stone with intrahepatic ductal dilation; gallbladder absent.\n\nCourse: IV fluid boluses with BP persistently low; norepinephrine started. IV piperacillin-tazobactam after cultures. Critical care and GI consulted.\n\nImpression: recurrent choledocholithiasis with acute cholangitis; septic shock.\nDisposition: ICU."
+            },
+            {
+              "type": "Procedure Note",
+              "title": "ERCP Report",
+              "author": "gastroenterology",
+              "date": "2026-03-16T08:51",
+              "body": "ENDOSCOPIC RETROGRADE CHOLANGIOPANCREATOGRAPHY\nDate of procedure: 03/08/2026, ICU patient, performed under general anesthesia.\nIndication: cholangitis with septic shock; CBD stone on ultrasound; prior sphincterotomy 12/2025; cholecystectomy 2/2026.\n\nPrior sphincterotomy noted and patent. Deep biliary cannulation. Cholangiogram: dilated common bile duct with a single filling defect in the distal duct and dilated intrahepatic ducts. Cystic duct stump clips in good position, no leak. Balloon sweeps removed one stone with sludge and purulent bile. Occlusion cholangiogram: no residual filling defects, good drainage.\n\nImpression: retained/recurrent common bile duct stone, cleared.\nRecommendations: complete antibiotics; GI clinic follow-up in about 6 weeks with liver tests."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospital medicine",
+              "date": "2026-03-16T08:52",
+              "body": "DISCHARGE SUMMARY\nAdmitted 03/07/2026 (ICU 03/07-03/10), discharged 03/13/2026.\n\nDiagnoses: septic shock due to acute cholangitis; recurrent choledocholithiasis (retained common duct stone) one month after cholecystectomy. Amylase and lipase elevation on arrival with the stone impacted in the distal duct, trending down after drainage.\n\nCourse: Hypotensive despite fluid resuscitation; norepinephrine for about 24 hours in the ICU. IV piperacillin-tazobactam. ERCP 03/08 with balloon extraction of a distal duct stone; duct clear. Off norepinephrine 03/09, mentation back to baseline the same day. Transferred to the floor 03/10. Bilirubin, liver enzymes and lipase falling daily; tolerating a low-fat diet. Blood cultures without growth. Metformin and glipizide held in the ICU with insulin; resumed 03/12 when eating normally and kidney function normal.\n\nDischarge medications:\n- Amoxicillin-clavulanate 875/125 mg BID through 03/16 to complete the course.\n- Metformin 1000 mg BID, glipizide 5 mg daily, atorvastatin 20 mg qHS - continue.\n- Lisinopril 10 mg - HOLD until seen by PCP, given recent shock; blood pressure normal off it in hospital.\nAllergies: NKDA.\n\nFollow-up: PCP within 1 week (liver tests, CBC, BMP, lipase, BP check and decision on lisinopril). GI clinic in 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "telephone",
+          "start": "2026-03-16T14:05",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Transition of Care Call",
+              "author": "RN",
+              "date": "2026-03-16T14:05",
+              "body": "Hospital records received this morning, reviewed. Called pt. Home since Friday. Very tired, sleeping a lot, appetite slowly coming back. No fever, no pain, color normal. Last antibiotic dose tonight. Not taking lisinopril per hospital instructions; taking metformin, glipizide, atorvastatin. Fasting sugars ok, no lows. Has a home cuff - asked her to check BP daily and bring the readings. Booked with PCP Thu 3/19, labs same day. District has her out through next week. ED for fever, pain, jaundice or confusion."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-19a",
+          "kind": "office_visit",
+          "start": "2026-03-19T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "state": {"bp": [138, 86], "labs": {"Lipase": 36}},
+          "vitals": {"bp": [138, 86]},
+          "measure": ["hr", "spo2", "weight_kg", "temp_c"],
+          "conditions": [
+            {"label": "Septic shock", "icd10": "R65.21", "action": "resolved"},
+            {"label": "Choledocholithiasis with cholangitis", "icd10": "K80.33", "action": "resolved"}
+          ],
+          "medications": [
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"}
+          ],
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2026-03-19T14:30", "results": [{"test": "Bilirubin, Total"}, {"test": "Alkaline Phosphatase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2026-03-19T14:30", "results": [{"test": "Lipase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-03-19T14:30", "results": [{"test": "White Blood Cells"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-03-19T14:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2026-03-19T14:00"},
+            {"procedure": "Venipuncture", "performed": "2026-03-19T14:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "author": "PCP",
+              "date": "2026-03-19T14:50",
+              "body": "Hospital follow-up, high complexity. ED record, ERCP report and discharge summary reviewed.\n\nSummary: 3/7-3/13 admission (ICU 3 days) for septic shock from acute cholangitis due to a retained common duct stone, a month after lap chole. Needed norepinephrine about a day. ERCP 3/8 with balloon extraction, duct clear. Lipase was 900 on arrival with the stone at the ampulla, falling with drainage. Cultures negative. Finished amox-clav 3/16.\n\nNow: tired but improving each day, walking around the block. No pain, fever, chills, vomiting. Eating small meals. Urine and stool normal color. Thinking clear - remembers almost nothing of the first day. Home BP readings since discharge running higher than her usual. Sugars fine.\n\nMeds: metformin 1000 BID, glipizide 5, atorvastatin 20. Lisinopril on hold since discharge.\n\nExam: tired-appearing but well. Afebrile. BP as charted, above goal. Sclerae anicteric. Heart RRR. Lungs clear. Abdomen soft, nontender, port sites healed. No edema. Alert, oriented, conversing normally.\n\nA/P\n1. Septic shock from cholangitis - resolved. Off pressors since 3/9, antibiotics complete.\n2. Choledocholithiasis with cholangitis (retained stone) - cleared at ERCP, clinically resolved. Repeat LFTs, lipase, CBC today. GI clinic 4/21.\n3. HTN - BP back up off lisinopril, kidney function normal at discharge. Restart lisinopril 10 daily; BMP today and keep home log.\n4. T2DM - back on metformin/glipizide, no lows; A1c at May visit.\nShe asked whether this could happen again - explained a further duct stone is possible but much less likely now that the gallbladder is out and the duct has been cleared twice; warning signs reviewed. Return to work note for 3/30."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-20a",
+          "kind": "portal_message",
+          "start": "2026-03-20T16:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hospital follow-up labs",
+              "author": "PCP",
+              "date": "2026-03-20T16:15",
+              "body": "Hi Sandra - good news. Your liver tests, lipase and white count are all back to normal, and your kidney function and potassium are fine, so it's safe to be back on the lisinopril. Keep checking your blood pressure at home and send me a few readings in a couple of weeks. Rest up."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "specialist_visit",
+          "start": "2026-04-21T09:30",
+          "service": "Gastroenterology",
+          "reason": "Post-ERCP follow-up",
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2026-04-21T09:10", "results": [{"test": "Bilirubin, Total"}, {"test": "Alkaline Phosphatase"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Clinic Letter",
+              "author": "gastroenterology",
+              "date": "2026-04-24T11:00",
+              "body": "GASTROENTEROLOGY CLINIC\nDate of visit: 04/21/2026\n\nDear Doctor,\n\nI saw Ms. Wojcik in follow-up after her ERCP of 03/08/2026, when a retained distal common bile duct stone was cleared during an admission for cholangitis with septic shock. This followed an earlier ERCP with sphincterotomy and stone extraction in 12/2025 and laparoscopic cholecystectomy in 02/2026.\n\nShe has been well since discharge with no abdominal pain, fever, jaundice, nausea or change in stool or urine color. She is back at work full time.\n\nMedications: metformin, glipizide, lisinopril, atorvastatin. NKDA.\nExam: well appearing, anicteric. Abdomen soft and nontender.\n\nLiver tests drawn today are normal.\n\nImpression: choledocholithiasis, cleared, now status post cholecystectomy with a patent sphincterotomy.\nPlan: no further ERCP or imaging planned. She knows to seek care urgently for pain, fever or jaundice, and we would be happy to see her again if symptoms recur.\n\nSincerely,\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "office_visit",
+          "start": "2026-05-19T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "state": {"bp": [128, 80]},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2026-05-19T16:35", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-05-19T16:35", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-05-19T16:10"},
+            {"procedure": "Venipuncture", "performed": "2026-05-19T16:35"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2026-05-19T16:45",
+              "body": "S: DM/HTN f/u, first routine visit since the March admission. Feels like herself again, back to evening walks. No abdominal pain, fever or jaundice. GI letter 4/21: LFTs normal, no further ERCP planned. Back on lisinopril since 3/19 - home BPs back to her usual range. Sugars stable, no lows. Taking all meds.\n\nO: vitals as charted. Well. Sclerae anicteric. Heart RRR, lungs clear. Abd soft, nontender. Feet: intact skin, sensation normal, pulses good. No edema.\n\nA/P\n1. T2DM - A1c and BMP today. Continue metformin 1000 BID, glipizide 5.\n2. HTN - back at goal on lisinopril 10.\n3. S/p cholecystectomy, choledocholithiasis x2 cleared - doing well, nothing further.\n4. Lipids - atorvastatin 20, lipids with the fall physical.\nRTC September for physical; flu/COVID then."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-20a",
+          "kind": "portal_message",
+          "start": "2026-05-20T10:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "May labs",
+              "author": "PCP",
+              "date": "2026-05-20T10:40",
+              "body": "Hi Sandra, your A1c is 7.6 - better than January, though still a little above where you usually run. After the winter you've had I'm comfortable leaving your medicines as they are and rechecking at your physical. Kidney function and potassium are normal on the lisinopril. See you in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "pharmacy",
+          "start": "2026-06-23T09:15",
+          "reason": "Mail-order refills",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "90-Day Supply Request",
+              "author": "MA",
+              "date": "2026-06-23T09:15",
+              "body": "Mail-order renewal request: metformin 1000 mg BID, glipizide 5 mg daily, lisinopril 10 mg daily, atorvastatin 20 mg qHS, 90-day supplies. Lisinopril restarted 3/19 at the same dose. Last visit 5/19. Pended to PCP - approved, 3 refills each."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-04a",
+          "kind": "portal_message",
+          "start": "2026-08-04T08:30",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical appointment",
+              "author": "patient",
+              "date": "2026-08-04T08:30",
+              "body": "Hello, I'd like to book my yearly physical for after school starts, ideally a Tuesday early morning. Can I get my flu shot at the same time?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical appointment",
+              "author": "front desk",
+              "date": "2026-08-04T11:05",
+              "body": "Hi Sandra, you're booked Tuesday 9/22 at 7:40 AM. Please come fasting for labs. Flu vaccine should be in by then and we can give it at the visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T07:40",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,389 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002735",
+      "events": [
+        {
+          "id": "2025-01-21a",
+          "kind": "pharmacy",
+          "start": "2025-01-21T10:30",
+          "reason": "Mail-order refills",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "90-Day Supply Request",
+              "author": "MA",
+              "date": "2025-01-21T10:30",
+              "body": "Mail-order pharmacy request through her PPO for 90-day supplies of metformin 1000 mg, glipizide 5 mg, lisinopril 10 mg and atorvastatin 20 mg. All current on med list, last visit 12/17. Pended for PCP; signed with 1 refill each."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "nurse_visit",
+          "start": "2025-03-25T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2025-03-25T16:15"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2025-03-25T16:17"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2025-03-25T16:15"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2025-03-25T16:30",
+              "body": "Second Shingrix today. After dose 1 in October she had a tired, achy evening and a sore arm, gone the next day. Feeling well today.\nShingrix #2 0.5 mL IM L deltoid.\nPCV20 0.5 mL IM R deltoid (indicated with diabetes, PCP order 9/10).\nVIS given. Watched 15 min, tolerated well. Shingles series complete. Pneumococcal series complete."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-14a",
+          "kind": "portal_message",
+          "start": "2025-04-14T07:12",
+          "reason": "Gallbladder attack over the weekend",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Gallbladder again",
+              "author": "patient",
+              "date": "2025-04-14T07:12",
+              "body": "Good morning. Just letting you know I had another gallbladder attack Saturday night after we went out to dinner (I had the fish and chips, I know). Same pain under my right ribs going around to my back, lasted about 3 hours and then went away on its own. No fever and my eyes weren't yellow. I'm fine now and ate normally yesterday. Should I be doing anything?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Gallbladder again",
+              "author": "PCP",
+              "date": "2025-04-14T12:35",
+              "body": "Hi Sandra, thanks for letting me know, and glad it settled. That sounds like the same biliary colic you've had before. Since these keep coming back, I'd still recommend seeing a general surgeon about taking the gallbladder out - I'm happy to put in the referral whenever you say the word. If pain goes longer than 4-5 hours, or you get fever, chills, yellow skin or eyes, or dark urine, go to the ED rather than waiting it out. We can talk more at your visit next week."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: RE: Gallbladder again",
+              "author": "patient",
+              "date": "2025-04-14T18:02",
+              "body": "Thank you. I really can't be out for surgery before the school year is over. Can I call you in June about the referral?"
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "office_visit",
+          "start": "2025-04-22T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-04-22T16:45", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-04-22T16:45", "results": [{"test": "Glucose"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-04-22T16:20"},
+            {"procedure": "Venipuncture", "performed": "2025-04-22T16:45"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-04-22T17:05",
+              "body": "Interval: biliary colic episode 4/12 after a fried meal, about 3 h, self-limited, no fever or jaundice (portal msg). Nothing since. Eating lighter. DM - meter readings stable, no hypoglycemia. Taking all meds. Second Shingrix and PCV20 done in March.\n\nExam: NAD. Sclerae anicteric. Heart RRR, lungs clear. Abd soft, nontender in RUQ today, no mass. No edema.\n\nA/P\n1. Cholelithiasis with recurrent colic - attacks continue a few times a year. Again recommended surgical referral; she wants to wait until school lets out and will call in June. Red flags reviewed again.\n2. T2DM - A1c, BMP today. No change.\n3. HTN - fine on lisinopril 10.\nRTC July."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "office_visit",
+          "start": "2025-07-08T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-07-07a",
+          "kind": "telephone",
+          "start": "2025-07-07T15:40",
+          "reason": "Cancel appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "author": "front desk",
+              "date": "2025-07-07T15:40",
+              "body": "Pt called to cancel tomorrow's 9:00 follow-up, away with family this week. Rebooked 7/29 at 9:20."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-29a",
+          "kind": "office_visit",
+          "start": "2025-07-29T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-07-29T09:45", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2025-07-29T09:20"},
+            {"procedure": "Venipuncture", "performed": "2025-07-29T09:45"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-07-29T09:50",
+              "body": "Summer off from the district office, more walking. No gallbladder pain since April. Has not called about the surgery referral and says she'd still rather wait while things are quiet. Sugars good. No lows.\n\nAlert, well. Heart regular. Lungs clear. Abdomen soft, nontender. Feet warm, no lesions.\n\nT2DM - A1c today, continue current regimen.\nHTN - at goal.\nGallstones - asymptomatic since spring; she knows to call if attacks return, and the referral offer stands.\nPhysical in September with fasting labs, flu and COVID shots then."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "portal_message",
+          "start": "2025-08-19T20:14",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "author": "patient",
+              "date": "2025-08-19T20:14",
+              "body": "Hi, the mail order says my glipizide and atorvastatin are out of refills. Can you send new ones? Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "author": "MA",
+              "date": "2025-08-20T09:02",
+              "body": "Hi Sandra, the doctor approved both, 90 days with 3 refills, sent to the mail-order pharmacy this morning. See you at your physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": null, "collected": "2025-09-23T08:05", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-09-23T08:05", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": "Lipid Panel", "collected": "2025-09-23T08:05", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-09-23T08:05", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2025-09-23T08:05", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-09-23T08:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-09-23T08:17"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-09-23T07:40"},
+            {"procedure": "Venipuncture", "performed": "2025-09-23T08:05"},
+            {"procedure": "Immunization administration", "performed": "2025-09-23T08:15"}
+          ],
+          "orders": [
+            {"id": "mammo-2025", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "Breast cancer screening"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-09-23T08:30",
+              "body": "ANNUAL PREVENTIVE VISIT\n\n55F. Back at work since late August. Feels well. Last biliary attack in April, none since. Diabetes routine unchanged; no hypoglycemia; eye exam due in November. No chest pain, dyspnea, palpitations, edema. Bowels regular, no blood. No urinary complaints. Sleeping fine. Postmenopausal, no bleeding.\n\nMeds: metformin 1000 BID, glipizide 5 daily, lisinopril 10 daily, atorvastatin 20 qHS. NKDA.\nSocial: former smoker (quit 2015). Wine on weekends, 1-2 glasses. Walks most evenings in good weather.\n\nPHQ-9: 2.\n\nExam: well appearing. Vitals as charted.\nHEENT: TMs clear, oropharynx normal. Neck: no nodes, thyroid normal.\nBreasts: deferred to mammogram per pt preference.\nHeart RRR, no murmurs. Lungs clear.\nAbd: obese, soft, nontender, no hepatosplenomegaly.\nExt: no edema. Feet: intact skin, normal monofilament, pulses 2+.\nSkin: no suspicious lesions. Neuro: nonfocal.\n\nA/P\n1. Health maintenance: flu and COVID vaccines today. Mammogram ordered. Colonoscopy 2021 normal, next 2031. Pap/HPV 2022 negative, next due 2027. Shingrix and PCV20 complete. Tdap 2019. Hep C/HIV screened 2024.\n2. T2DM: A1c, CMP, urine microalbumin today. Eye exam with optometry in Nov.\n3. HTN: at goal. Continue lisinopril.\n4. Lipids: on atorvastatin 20, fasting lipids today.\n5. Cholelithiasis: quiet since April. She'll call if attacks return; referral offer stands.\n6. Obesity: weight about stable. Encouraged continuing evening walks.\n\nRTC 3-4 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-25a",
+          "kind": "portal_message",
+          "start": "2025-09-25T13:50",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical results",
+              "author": "PCP",
+              "date": "2025-09-25T13:50",
+              "body": "Hi Sandra, your physical labs are back. A1c is in your usual range. Kidney and liver tests, blood count and urine protein are normal. Cholesterol numbers are attached - no change to the atorvastatin. Don't forget to book the mammogram and your eye exam."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "imaging",
+          "start": "2025-10-21T15:30",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-10-21T15:30",
+              "text": "BILATERAL SCREENING MAMMOGRAM WITH TOMOSYNTHESIS\nComparison: 10/22/2024 and 10/2023.\nBreast composition: scattered areas of fibroglandular density.\nNo suspicious mass, calcification or distortion. Stable bilaterally.",
+              "conclusion": "BI-RADS 1: Negative. Annual screening recommended."
+            }
+          ],
+          "orders": [
+            {"id": "mammo-2025", "action": "done", "date": "2025-10-21T15:30"}
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "outside_records",
+          "start": "2025-11-18T10:05",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Examination Report",
+              "author": "optometry",
+              "date": "2025-11-18T10:05",
+              "body": "Annual diabetic eye exam, 11/11/2025.\nT2DM since 2018. No visual complaints.\nCorrected acuity normal both eyes; pressures normal. Dilated exam: discs and maculae normal, vessels without hemorrhage, exudate or neovascularization OU.\nAssessment: no diabetic retinopathy OU. Repeat dilated exam in 1 year.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-01a",
+          "kind": "hospital_admission",
+          "start": "2025-12-01T18:50",
+          "end": "2025-12-05T13:10",
+          "service": "Emergency Medicine / Hospital Medicine",
+          "reason": "Right upper quadrant pain, fever and jaundice",
+          "vitals": [
+            {"time": "2025-12-01T18:55", "temp_c": 38.9, "bp": [90, 60], "hr": 110}
+          ],
+          "conditions": [
+            {"label": "Choledocholithiasis with cholangitis", "icd10": "K80.33", "action": "diagnosed", "onset": "2025-11-29"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-12-01T19:10", "results": [{"test": "White Blood Cells", "value": 18.0}, {"test": "Hemoglobin", "value": 12.5}, {"test": "Platelets", "value": 250}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-12-01T19:10", "results": [{"test": "Sodium", "value": 136}, {"test": "Chloride", "value": 100}, {"test": "Bicarbonate", "value": 16}, {"test": "Blood Urea Nitrogen", "value": 18}, {"test": "Creatinine", "value": 1.0}, {"test": "Anion Gap", "value": 20}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2025-12-01T19:10", "results": [{"test": "Bilirubin, Total", "value": 3.0}, {"test": "Bilirubin, Direct", "value": 2.5}, {"test": "Aspartate Aminotransferase", "value": 80}, {"test": "Alanine Aminotransferase", "value": 75}, {"test": "Alkaline Phosphatase", "value": 300}]},
+            {"panel": null, "collected": "2025-12-01T19:10", "results": [{"test": "Lactate", "value": 4.5}]},
+            {"panel": null, "collected": "2025-12-01T19:15", "results": [{"test": "Blood Culture", "text": "No growth at 5 days (2 of 2 sets)"}]}
+          ],
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2025-12-01T20:05",
+              "text": "RIGHT UPPER QUADRANT ULTRASOUND (EMERGENCY)\nIndication: RUQ pain, fever, jaundice.\nComparison: none available.\nFindings: The common bile duct is dilated, with an echogenic shadowing stone lodged in its distal portion. The gallbladder contains multiple shadowing stones; no gallbladder wall thickening or pericholecystic fluid. Liver normal in echotexture without focal lesion. Visualized pancreas unremarkable. Right kidney without hydronephrosis. No ascites.",
+              "conclusion": "Choledocholithiasis with common bile duct dilation; stone at the distal duct. Cholelithiasis."
+            }
+          ],
+          "medications": [
+            {"drug": "amoxicillin 875 MG / clavulanate 125 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily with food through 12/08 to complete 7 days of antibiotics", "dose": {"value": 1, "unit": "tablet"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "Cholangitis"}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2025-12-01T18:50"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2025-12-01T23:30"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-12-05T12:30"}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Physician Record",
+              "author": "emergency medicine",
+              "date": "2025-12-08T09:15",
+              "body": "REGIONAL HOSPITAL - EMERGENCY DEPARTMENT\nDate of service: 12/01/2025\n\nCC: Right-sided abdominal pain, fever, yellow eyes.\n\nHPI: 55-year-old woman with known gallstones, type 2 diabetes and hypertension. Two days of constant pain under the right ribs, worse than her usual attacks and not letting up. Fevers and chills since yesterday. Noticed her eyes looked yellow this morning. Slow to answer and unsure of the date; history partly limited by her confusion.\n\nPMH: T2DM, HTN, obesity, cholelithiasis with prior biliary colic.\nMeds: metformin 1000 mg BID, glipizide 5 mg daily, lisinopril 10 mg daily, atorvastatin 20 mg qHS.\nAllergies: NKDA.\n\nExam: Temp 38.9 C (102 F), BP 90/60, HR 110. Ill appearing, scleral icterus, disoriented to date. Abdomen: RUQ tenderness, no rebound, no guarding. Lungs clear. No rash.\n\nLabs: WBC 18.0, Hgb 12.5, plt 250. Na 136, Cl 100, HCO3 16, anion gap 20, BUN 18, Cr 1.0. T bili 3.0 / direct 2.5, AST 80, ALT 75, alk phos 300. Lactate 4.5. Blood cultures x2 sent.\nBedside and formal RUQ US: dilated CBD with a distal stone; gallstones.\n\nED course: IV crystalloid bolus, with blood pressure and mentation improving. IV piperacillin-tazobactam after cultures. GI paged for ERCP.\n\nImpression: acute cholangitis from choledocholithiasis.\nDisposition: admitted to hospital medicine."
+            },
+            {
+              "type": "Procedure Note",
+              "title": "ERCP Report",
+              "author": "gastroenterology",
+              "date": "2025-12-08T09:16",
+              "body": "ENDOSCOPIC RETROGRADE CHOLANGIOPANCREATOGRAPHY\nDate of procedure: 12/02/2025\nIndication: acute cholangitis, distal CBD stone on ultrasound.\nSedation: monitored anesthesia care.\n\nThe duodenoscope was passed to the second portion of the duodenum. The major papilla appeared normal. Deep biliary cannulation achieved. Cholangiogram showed a dilated common bile duct with a filling defect in the distal duct. Biliary sphincterotomy was performed. The stone was extracted with balloon sweeps, followed by purulent bile. Final occlusion cholangiogram showed no remaining filling defects. The pancreatic duct was not injected.\n\nImpression: choledocholithiasis, cleared after sphincterotomy and balloon extraction.\nRecommendations: continue antibiotics; general surgery referral for cholecystectomy in the coming weeks."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospital medicine",
+              "date": "2025-12-08T09:17",
+              "body": "DISCHARGE SUMMARY\nAdmitted 12/01/2025, discharged 12/05/2025.\n\nDiagnosis: acute cholangitis due to choledocholithiasis. Cholelithiasis.\n\nCourse: Presented with RUQ pain, fever, jaundice and confusion; hypotension and lactate 4.5 corrected with IV fluids in the ED and she did not need pressors or ICU care. Started on IV piperacillin-tazobactam. ERCP 12/02 with sphincterotomy and stone extraction, duct clear. Fever resolved by hospital day 2, confusion cleared within the first day, and bilirubin and liver enzymes trended down daily. Blood cultures no growth. Metformin and glipizide held while inpatient with correctional insulin; restarted on discharge with normal kidney function and good intake.\n\nDischarge meds: amoxicillin-clavulanate 875/125 mg BID through 12/08 (7 days total antibiotics). Resume metformin 1000 mg BID, glipizide 5 mg daily, lisinopril 10 mg daily (blood pressure normal by discharge), atorvastatin 20 mg qHS.\nAllergies: NKDA.\n\nFollow-up: PCP within 1 week with liver tests and CBC. General surgery clinic for interval cholecystectomy - appointment made for 12/22. Return for fever, pain or yellowing."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "telephone",
+          "start": "2025-12-09T10:20",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Transition of Care Call",
+              "author": "RN",
+              "date": "2025-12-09T10:20",
+              "body": "Called pt 2 business days after discharge (hospital records received 12/8). Feels \"wiped out but so much better.\" No fever since the hospital. Pain gone. Eyes back to white. Eating small low-fat meals. Finished the last antibiotic dose last night. Back on all home meds as listed in the summary; fasting sugars a bit up the first day home, now back to her usual. Surgery appointment 12/22. Booked TCM visit with PCP 12/11 with labs. Knows to go to the ED for fever, pain or jaundice."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-11a",
+          "kind": "office_visit",
+          "start": "2025-12-11T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "conditions": [
+            {"label": "Choledocholithiasis with cholangitis", "icd10": "K80.33", "action": "resolved"}
+          ],
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2025-12-11T16:05", "results": [{"test": "Bilirubin, Total"}, {"test": "Alkaline Phosphatase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-12-11T16:05", "results": [{"test": "White Blood Cells"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-12-11T16:05", "results": [{"test": "Creatinine"}, {"test": "Bicarbonate"}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, moderate complexity", "performed": "2025-12-11T15:40"},
+            {"procedure": "Venipuncture", "performed": "2025-12-11T16:05"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "author": "PCP",
+              "date": "2025-12-11T16:20",
+              "body": "Hospital follow-up. Discharge summary, ED record and ERCP report reviewed.\n\nAdmitted 12/1-12/5 with acute cholangitis from a distal common duct stone; ERCP 12/2 with sphincterotomy and clearance. Fluids and IV antibiotics, never needed the ICU. Finished amoxicillin-clavulanate 12/8.\n\nToday: energy coming back, back at work half days this week. No pain, fever, chills. Stools and urine normal color. Eating low-fat. Sugars back to usual. Remembers little of the first evening in the ED.\n\nMeds reconciled: metformin 1000 BID, glipizide 5, lisinopril 10, atorvastatin 20. Antibiotic course complete.\n\nExam: looks well. Afebrile. Sclerae anicteric. Heart RRR. Lungs clear. Abdomen soft, mild residual RUQ discomfort on deep palpation only, no guarding. No edema.\n\nA/P\n1. Choledocholithiasis with cholangitis - treated, duct cleared, clinically resolved. Liver tests and CBC today to confirm the trend.\n2. Cholelithiasis - gallbladder still in with stones; she is now very motivated. Surgery consult 12/22 for interval cholecystectomy. Will need preop eval - book once surgery date is set.\n3. T2DM/HTN - back on usual regimen, BP fine today.\nCall or go to ED for fever, pain or jaundice before surgery."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-12a",
+          "kind": "portal_message",
+          "start": "2025-12-12T11:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Follow-up labs",
+              "author": "PCP",
+              "date": "2025-12-12T11:30",
+              "body": "Sandra - your liver tests have come back to normal and your white count is normal too. That fits with the duct being fully cleared. Keep the 12/22 surgery appointment."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-22a",
+          "kind": "specialist_visit",
+          "start": "2025-12-22T13:30",
+          "service": "General Surgery",
+          "reason": "Interval cholecystectomy consultation",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "General Surgery Consultation",
+              "author": "general surgery",
+              "date": "2025-12-23T14:10",
+              "body": "GENERAL SURGERY CLINIC - CONSULTATION LETTER\nDate of visit: 12/22/2025\nRe: Sandra Wojcik, DOB 07/20/1970\n\nDear Doctor,\n\nThank you for asking us to see Ms. Wojcik after her admission earlier this month for acute cholangitis due to choledocholithiasis, treated with ERCP, sphincterotomy and stone extraction on 12/2. She has had gallstones on imaging since 2023 with intermittent biliary colic, and her mother and sister both had gallbladder disease.\n\nShe is pain free today and has completed antibiotics. Medical history: type 2 diabetes, hypertension, obesity. Prior C-section and tonsillectomy. Medications: metformin, glipizide, lisinopril, atorvastatin. NKDA. Former smoker.\n\nExam: well appearing. Abdomen soft, nontender, healed low transverse incision.\n\nAssessment: symptomatic cholelithiasis after choledocholithiasis with cholangitis. Interval laparoscopic cholecystectomy is recommended to prevent recurrence. We discussed risks including bleeding, infection, bile leak, bile duct injury, conversion to open and the small chance of a further duct stone.\n\nPlan: laparoscopic cholecystectomy scheduled 02/06/2026. Please complete a preoperative evaluation including a 12-lead ECG given her diabetes and hypertension, and send it to our office. Hold metformin, glipizide and lisinopril the morning of surgery.\n\nSincerely,\nGeneral Surgery"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

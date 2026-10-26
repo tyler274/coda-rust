@@ -1,0 +1,1711 @@
+{
+  "unit": "unit-2820",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00002820/2022-09-20a: allergen \"Dust mites\" not in catalog (text only)"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002820",
+      "given": "Beth",
+      "family": "Lambert",
+      "birth_date": "1982-06-26",
+      "address_line": "118 Dwight Street, Apt 3",
+      "phone": "+1-774-555-0196",
+      "email": "beth.lambert@example.test",
+      "marital_status": "single",
+      "summary": "Research scientist in her early 40s with seasonal allergic rhinitis and migraine without aura who joined the practice in 2022. A changing mole on her back in 2024 proved to be a thin stage IA melanoma, treated by wide local excision, now under dermatology surveillance; cleared by occupational health for a research protocol in late 2025.",
+      "events": [
+        {
+          "id": "2022-09-06a",
+          "kind": "telephone",
+          "start": "2022-09-06T10:42",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "date": "2022-09-06T10:42",
+              "author": "front desk",
+              "body": "Caller is looking for a new primary care doctor; her previous physician is retiring and she heard about the membership model from a colleague. Reviewed how membership works, that insurance is still billed for labs, imaging, specialists and prescriptions. She would like to enroll. New patient physical booked for Tue 9/20 at 8:30, fasting for labs. Records release form emailed to beth.lambert@example.test; she will sign and return so we can request her chart from the prior office. Asked her to bring her pill bottles or a list."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "establish_care",
+          "start": "2022-09-20T08:30",
+          "end": "2022-09-20T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "conditions": [
+            {
+              "label": "Allergic rhinitis due to pollen",
+              "action": "diagnosed",
+              "onset": "1992-04-01",
+              "note": "long-standing, seasonal, worse in spring; also dust mite sensitive"
+            },
+            {
+              "label": "Migraine without aura",
+              "action": "diagnosed",
+              "onset": "2006-01-01",
+              "note": "long-standing, episodic, responds to sumatriptan"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "cetirizine hydrochloride 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "seasonal allergic rhinitis"
+            },
+            {
+              "drug": "sumatriptan 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth at migraine onset as needed; may repeat once after 2 hours. Max 2 tablets in 24 hours.",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "migraine without aura"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Penicillin",
+              "reaction": "Rash",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Dust mites",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              69
+            ],
+            "hr": 76,
+            "rr": 14,
+            "temp_c": 36.8,
+            "spo2": 96,
+            "weight_kg": 62.0,
+            "height_cm": 164.3
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-09-20T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.61
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 248
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 33
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-20T09:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-20T09:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 101
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 190
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 66
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 115
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-20T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional, 1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Biomedical research scientist (PhD)"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 40-64",
+              "performed": "2022-09-20T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-20T09:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-20T09:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-20T09:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "date": "2022-09-20T10:15",
+              "author": "PCP",
+              "body": "40F establishing care. Prior PCP retiring; records requested, not yet here.\n\nShe feels well and is here mostly to get set up. Two long-standing issues:\n- Seasonal allergies since childhood: sneezing, itchy eyes and congestion, mostly April through June, also bothered by dust at home. Takes cetirizine 10 mg every day, which keeps it tolerable. No asthma, no sinus infections to speak of.\n- Migraine without aura since her twenties. Typical pattern for her, never any visual or sensory aura or weakness. A few a month, sometimes clustered around deadlines or poor sleep. Sumatriptan 50 mg at onset aborts most within an hour or two; rarely needs the second dose. Never been on a preventive and doesn't want one.\n\nPMH: as above.\nPSH: tonsillectomy age 7; wisdom teeth out at 18.\nMeds: cetirizine 10 mg daily; sumatriptan 50 mg prn migraine.\nAllergies: penicillin (rash); dust mites.\nFHx: mother HTN; father T2DM; maternal grandmother breast cancer at 68. No melanoma or other skin cancer in the family.\nSocial: PhD research scientist at a biomedical lab. Never smoker. A glass of wine once or twice a week. No drugs. Runs a few mornings a week.\nGYN: regular cycles. Last Pap at prior office, she thinks normal, 2019.\n\nROS: negative except as in HPI.\n\nExam: well-appearing, NAD. Vitals as recorded. HEENT: TMs clear, turbinates mildly pale, oropharynx clear (tonsils surgically absent). Neck supple, no thyroid enlargement or nodes. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Skin: scattered small uniform nevi, nothing that catches my eye. Neuro: CN intact, strength and gait normal.\n\nPHQ-2 0. AUDIT-C 2.\n\nA/P\n1. Preventive: fasting CBC, CMP, lipids, A1c (father with diabetes), TSH, and one-time HIV and hep C screening today. Flu shot given. First screening mammogram - order placed, she will schedule for November. Pap due 2024 if the 2019 co-test was normal; will confirm with records. Tdap per records.\n2. Allergic rhinitis - stable on cetirizine. Mattress and pillow covers for dust mites discussed.\n3. Migraine without aura - well controlled with prn sumatriptan. Reviewed max 2 doses/24h, and to let me know if frequency climbs.\n\nRTC 1 year, sooner prn."
+            }
+          ],
+          "state": {
+            "weight_kg": 62.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Hemoglobin A1c": 5.3,
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-09-22a",
+          "kind": "portal_message",
+          "start": "2022-09-22T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2022-09-22T16:05",
+              "author": "PCP",
+              "body": "Hi Beth, your bloodwork from Tuesday is all back. Blood counts, kidney and liver tests, thyroid, sugar (A1c) and cholesterol all look healthy, and the HIV and hepatitis C screens were negative. Nothing to change. It was good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "outside_records",
+          "start": "2022-10-04T11:20",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2018-03-07T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-19T15:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-09T15:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-12T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "date": "2022-10-04T11:20",
+              "author": "MA",
+              "body": "Records received by fax from prior primary care office, 2015 to 2022, 64 pages. Scanned to media.\n\nAbstracted for the chart:\n- Problems: allergic rhinitis, seasonal; migraine without aura.\n- Meds: cetirizine 10 mg daily; sumatriptan 50 mg prn.\n- Allergies: penicillin (rash).\n- Cervical cytology with HPV co-test 08/2019: negative for intraepithelial lesion, HPV not detected.\n- Immunizations: Tdap 03/2018. COVID-19 Pfizer 03/19/2021, 04/09/2021, booster 11/12/2021. Yearly flu shots.\n- Routine labs 2019 and 2021 within normal limits.\n\nRouted to PCP for review."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "date": "2022-10-05T07:50",
+              "author": "PCP",
+              "body": "Reviewed prior records. Nothing new. Normal co-test 2019, so next cervical screening 2024. Tdap good until 2028. Immunizations entered."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "imaging",
+          "start": "2022-11-08T13:40",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-11-08T13:40",
+              "text": "Bilateral screening digital mammogram with tomosynthesis. No prior studies available for comparison; baseline examination. There are scattered areas of fibroglandular density. No suspicious mass, architectural distortion or suspicious calcifications in either breast. Skin and nipples unremarkable. No axillary adenopathy.",
+              "conclusion": "Negative baseline screening mammogram. BI-RADS 1. Routine screening in 1 year.",
+              "issued": "2022-11-09T09:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mammogram Result",
+              "date": "2022-11-10T09:30",
+              "author": "RN",
+              "body": "Hi Beth, your mammogram from Tuesday was normal. Since it was your first one there was nothing to compare against, so next year's will become the comparison. We'll remind you next fall."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "portal_message",
+          "start": "2022-12-13T20:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill Request",
+              "date": "2022-12-13T20:14",
+              "author": "patient",
+              "body": "Hello, I'm down to my last two sumatriptan from the old prescription. Could you send a new one to my usual pharmacy on file? Thanks, Beth"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill Request",
+              "date": "2022-12-14T08:02",
+              "author": "PCP",
+              "body": "Done - sumatriptan 50 mg, 9 tablets with 5 refills. Same rules as before, no more than 2 in a day."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "portal_message",
+          "start": "2023-04-11T12:37",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Allergies",
+              "date": "2023-04-11T12:37",
+              "author": "patient",
+              "body": "Pollen season has arrived early, my car is yellow. Quick question: is there any downside to staying on cetirizine every day all year rather than stopping in the winter? I've basically never stopped."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Allergies",
+              "date": "2023-04-11T17:10",
+              "author": "PCP",
+              "body": "No real downside - it is safe long term, and with the dust mite piece being year-round, staying on it makes sense. Some people notice itching for a few days if they stop suddenly, which is another reason not to bother. Saline rinses on the worst pollen days can help too."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "pharmacy",
+          "start": "2023-06-20T09:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy Refill Request",
+              "date": "2023-06-20T09:15",
+              "author": "MA",
+              "body": "Electronic refill request from pharmacy for cetirizine 10 mg #90; patient prefers the prescription so her plan covers it. Approved per standing med list, 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "annual_physical",
+          "start": "2023-09-26T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              117,
+              65
+            ],
+            "hr": 64,
+            "rr": 14,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 62.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-26T08:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 82
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-26T08:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 106
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 195
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 134
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 133
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-26T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-09-26T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-26T08:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-26T08:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-26T08:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-09-26T08:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2023-09-26T09:40",
+              "author": "PCP",
+              "body": "Annual. 41F, feeling well.\n\nInterval: no new issues this year. Allergies were rough for a few weeks in May but cetirizine got her through. Migraines unchanged, roughly 2 to 3 a month, sumatriptan still works, no new headache features, no aura. Sleep okay. Still running. Work busy with a grant cycle.\n\nMeds: cetirizine 10 mg daily; sumatriptan 50 mg prn.\nAllergies: PCN (rash); dust mites.\nSocial unchanged: never smoker, 1 to 2 drinks/wk.\n\nExam: NAD. Vitals reviewed. HEENT clear. Neck no LAD. CV RRR. Lungs CTA. Abd benign. Skin without concerning lesions on visual survey. Neuro nonfocal.\n\nPHQ-2 0.\n\nA/P\n- Health maintenance: CMP, lipids, A1c drawn. Flu and updated COVID given today, L arm. Mammogram due November, reminder sent. Pap 2024.\n- Rhinitis, migraine: stable, no changes.\n\nSee her in a year."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-28a",
+          "kind": "portal_message",
+          "start": "2023-09-28T12:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2023-09-28T12:20",
+              "author": "PCP",
+              "body": "Beth - labs from your physical are normal again this year, including the A1c and cholesterol. Nothing needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "imaging",
+          "start": "2023-11-14T14:10",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-11-14T14:10",
+              "text": "Bilateral screening digital mammogram with tomosynthesis, compared with 11/08/2022. Scattered areas of fibroglandular density. No new or suspicious mass, distortion or calcification. Stable appearance bilaterally.",
+              "conclusion": "Negative. BI-RADS 1. Annual screening recommended.",
+              "issued": "2023-11-15T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mammogram Result",
+              "date": "2023-11-16T08:45",
+              "author": "RN",
+              "body": "Your mammogram this week was normal and unchanged from last year. Next one due November 2024."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "telephone",
+          "start": "2024-03-12T08:55",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "date": "2024-03-12T08:55",
+              "author": "front desk",
+              "body": "Pt called to cancel Thursday's spring check-in, out of town for a conference. Nothing urgent going on, she says. Did not want to rebook; will message if she needs anything before her physical."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-14a",
+          "kind": "office_visit",
+          "start": "2024-03-14T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "spring check-in",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-05-20a",
+          "kind": "portal_message",
+          "start": "2024-05-20T21:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mole on my back",
+              "date": "2024-05-20T21:48",
+              "author": "patient",
+              "body": "Hi, I have a mole on my upper back that I think has been getting bigger since around the new year, and the last couple of weeks it itches. I had a friend take a photo and it looks darker in one spot than I remember. Probably nothing but I'd rather someone look at it. Is there anything this week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Mole on my back",
+              "date": "2024-05-21T07:40",
+              "author": "RN",
+              "body": "Thanks for writing, Beth. The doctor would like to take a look today - we have 11:20 open. Please reply or call to confirm."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "office_visit",
+          "start": "2024-05-21T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "changing mole on back",
+          "vitals": {
+            "bp": [
+              128,
+              71
+            ],
+            "hr": 61,
+            "temp_c": 36.6,
+            "weight_kg": 62.3
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-05-21T11:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral-2024",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "changing pigmented lesion of back, urgent"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-05-21T12:05",
+              "author": "PCP",
+              "body": "S: Mole on back. She noticed it growing starting around the turn of the year, so about 5 months, and over the past 2 weeks it has become itchy. No bleeding. No other spots she is worried about. No personal or family hx of skin cancer.\n\nO: Vitals reviewed. Back: pigmented lesion, roughly a centimeter, with an irregular, notched border and uneven color, brown with a darker black area, part of it slightly raised. Not ulcerated. Remainder of the back and shoulders shows small regular nevi only. No axillary or cervical nodes felt.\n\nA/P: Changing pigmented lesion of the back - fits several of the warning features (asymmetry, border, color, evolution). Needs dermatology eyes and likely a biopsy. Urgent referral placed, asked for an appointment within the month. Talked through what that means without getting ahead of things. She is calm about it, wants to know as soon as anything is known. Photo taken for the chart with her permission."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-23a",
+          "kind": "telephone",
+          "start": "2024-05-23T14:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral Scheduled",
+              "date": "2024-05-23T14:15",
+              "author": "front desk",
+              "body": "Dermatology accepted the urgent referral. Pt scheduled Fri 6/14 at 9:40 with the dermatology group. Office notes and photo faxed. Pt aware and confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-14a",
+          "kind": "specialist_visit",
+          "start": "2024-06-14T09:40",
+          "service": "Dermatology",
+          "reason": "changing mole on back",
+          "orders": [
+            {
+              "id": "derm-referral-2024",
+              "action": "done",
+              "date": "2024-06-14T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Consultation",
+              "date": "2024-06-18T10:30",
+              "author": "dermatology",
+              "body": "Outside dermatology consultation, date of service 06/14/2024. Received 06/18/2024.\n\nReason for referral: changing pigmented lesion on the back.\n\nMs. Lambert is a 41-year-old research scientist who reports a mole on her back that has enlarged over roughly half a year and has begun to itch in recent weeks. She is worried this could be a skin cancer. She has never had a skin cancer and knows of none in her family.\n\nPast history: seasonal allergic rhinitis; migraine without aura. Surgical: tonsillectomy (age 7), third molar extraction (age 18).\nMedications: cetirizine 10 mg daily; sumatriptan 50 mg as needed.\nAllergies: penicillin (rash); dust mites.\nSocial: never smoker; alcohol 1-2 drinks weekly; biomedical research scientist.\n\nExamination: full skin examination performed. On the back there is a 1.2 cm pigmented lesion with irregular borders and variegated pigment ranging from brown to black, with a slightly raised nodular component. The remainder of the skin examination, including scalp, nails and mucosa, is unremarkable. No cervical, axillary or inguinal lymphadenopathy.\n\nImpression: pigmented lesion of the back, clinically suspicious for melanoma.\n\nPlan: After consent, excisional biopsy performed today with 2 mm margins, elliptical excision, layered closure. Specimen sent for histopathology, oriented. Wound care reviewed. Sutures out in 2 weeks. We will contact her with results and send a copy to you.\n\nThank you for this referral."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-21a",
+          "kind": "outside_records",
+          "start": "2024-06-21T08:30",
+          "conditions": [
+            {
+              "label": "Malignant melanoma of other part of trunk",
+              "action": "diagnosed",
+              "onset": "2024-06-14",
+              "note": "back; superficial spreading, Breslow 0.6 mm, non-ulcerated, pT1a",
+              "icd10": "C43.59"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-06-14T10:05",
+              "text": "Specimen: skin, back, excisional biopsy, oriented with suture at 12 o'clock.\nGross: an ellipse of skin measuring 2.0 x 1.4 cm, excised to a depth of 0.6 cm, bearing a variegated brown-black lesion measuring 1.2 cm in greatest dimension. Inked, serially sectioned and entirely submitted.\nMicroscopic: an asymmetric, poorly circumscribed proliferation of atypical melanocytes with pagetoid spread and confluent junctional nests, with an invasive dermal component in the area corresponding to the raised portion.\nSynoptic: histologic type superficial spreading melanoma. Maximum tumor (Breslow) thickness 0.6 mm. Ulceration not identified. Dermal mitotic rate less than 1 per mm2. Microsatellites not identified. Lymphovascular invasion not identified. Perineural invasion not identified. Peripheral margins negative for invasive and in situ melanoma, closest 1 mm. Deep margin negative. Pathologic stage (AJCC 8th): pT1a.",
+              "conclusion": "Skin, back, excision: invasive melanoma, superficial spreading type, Breslow thickness 0.6 mm, non-ulcerated, mitoses less than 1/mm2, margins negative (closest 1 mm). pT1a.",
+              "issued": "2024-06-20T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Outside Pathology Reviewed",
+              "date": "2024-06-21T08:45",
+              "author": "PCP",
+              "body": "Path from dermatology's 6/14 biopsy came in this morning: superficial spreading melanoma, 0.6 mm, no ulceration, <1 mitosis/mm2, margins clear but narrow, pT1a. Dermatology plans wide excision. Added melanoma to problem list. Will call her now - want her to hear it from one of us before the derm office's call if possible."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-21b",
+          "kind": "telephone",
+          "start": "2024-06-21T09:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pathology Results Call",
+              "date": "2024-06-21T09:20",
+              "author": "PCP",
+              "body": "Called pt. Dermatology had reached her yesterday evening, so she knew the word melanoma but had questions. Went over the report in plain terms: thin (0.6 mm), not ulcerated, very low mitotic rate, which puts it in the earliest invasive category with an excellent outlook. Next step is a wider excision with 1 cm margins; for this thickness a lymph node biopsy and scans are not usually recommended, and dermatology will confirm. She asked good questions - as she put it, she reads papers for a living, she just never expected to read about herself. She has the WLE booked for 7/12. Offered a visit anytime to talk it through; she'll reach out after the surgery."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-12a",
+          "kind": "procedure_visit",
+          "start": "2024-07-12T13:00",
+          "end": "2024-07-12T14:10",
+          "service": "Dermatologic Surgery",
+          "reason": "wide local excision, melanoma of back",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Wide Local Excision",
+              "date": "2024-07-16T11:00",
+              "author": "dermatology",
+              "body": "Dermatologic surgery procedure note. Date of procedure 07/12/2024. Received 07/16/2024.\n\nPreoperative and postoperative diagnosis: invasive melanoma of the back, Breslow 0.6 mm, non-ulcerated, pT1a, status post excisional biopsy 06/14/2024.\n\nProcedure: wide local excision with 1 cm margins measured from the biopsy scar, with intermediate layered closure.\n\nAllergies: penicillin (rash). Medications reviewed.\n\nAfter informed consent and time-out, the area was marked with 1 cm margins around the healing biopsy scar and anesthetized with lidocaine 1% with epinephrine. Excision was carried to the level of the fascia. Specimen oriented and sent for pathology. Hemostasis with electrocautery. Wound closed in layers with absorbable deep sutures and nylon to the skin. Estimated blood loss minimal. No complications; the patient tolerated it well.\n\nDiscussion: sentinel lymph node biopsy and staging imaging are not indicated for a T1a melanoma without clinical nodal disease; reviewed with the patient.\n\nAftercare: keep dry 48 hours, then gentle washing. Avoid heavy lifting and strenuous upper-body exercise for 2 weeks. Suture removal in 14 days in our office. Acetaminophen for discomfort."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-19a",
+          "kind": "outside_records",
+          "start": "2024-07-19T09:05",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-07-12T13:40",
+              "text": "Specimen: skin and subcutaneous tissue, back, wide local excision, oriented.\nGross: an ellipse of skin measuring 6.0 x 3.4 cm with subcutaneous tissue to a depth of 1.5 cm, bearing a 2.0 cm healing linear scar. Margins inked; scar region entirely submitted, margins representatively submitted.\nMicroscopic: dermal scar with granulation tissue and foreign body giant cell reaction consistent with prior biopsy site. No residual in situ or invasive melanoma identified. All margins free.",
+              "conclusion": "Skin, back, wide local excision: healing biopsy site; no residual melanoma. Margins negative.",
+              "issued": "2024-07-18T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Dermatology Treatment Summary",
+              "date": "2024-07-19T09:05",
+              "author": "dermatology",
+              "body": "Dear colleague,\n\nI am writing to update you on our mutual patient Ms. Beth Lambert. She underwent wide local excision with 1 cm margins on 07/12/2024 for a superficial spreading melanoma of the back (Breslow 0.6 mm, non-ulcerated, mitotic rate <1/mm2). Final pathology shows no residual melanoma with clear margins. Her final stage is IA (pT1a, clinically node-negative).\n\nNo further treatment is required. We will see her every 6 months for full skin and lymph node examination. She has been counseled on monthly self skin examination, broad-spectrum sunscreen and protective clothing, and to call us for any new or changing lesion or a lump in the armpits or neck.\n\nAllergies on file: penicillin (rash), dust mites.\n\nWith thanks,\nDermatology"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Reviewed",
+              "date": "2024-07-19T12:30",
+              "author": "PCP",
+              "body": "WLE path clear, stage IA. Derm surveillance q6 months. Problem list updated with stage. Nothing for us to do beyond keeping an eye on the scar and nodes at her physical."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-22a",
+          "kind": "portal_message",
+          "start": "2024-07-22T19:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update",
+              "date": "2024-07-22T19:30",
+              "author": "patient",
+              "body": "Hi - just wanted to say thank you for calling me in June when the biopsy came back, it helped a lot. Dermatology says the excision was clear. The incision is sore but healing, stitches come out next week. I'll see you at my physical in the fall."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Update",
+              "date": "2024-07-23T08:15",
+              "author": "PCP",
+              "body": "That is the best possible news, Beth - I'm so glad. Take it easy on the back until dermatology clears you. See you this fall, and message anytime before then."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-01a",
+          "kind": "annual_physical",
+          "start": "2024-10-01T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical, Pap",
+          "vitals": {
+            "bp": [
+              127,
+              67
+            ],
+            "hr": 77,
+            "rr": 14,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 62.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-01T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.49
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 292
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-01T08:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 83
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-01T08:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 103
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 193
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 66
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 120
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 127
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-01T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2024-10-01T08:30",
+              "text": "Specimen: cervical, liquid-based ThinPrep. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV (cobas): not detected.",
+              "conclusion": "NILM. High-risk HPV not detected. Routine co-testing in 5 years.",
+              "issued": "2024-10-07T13:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-10-01T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-01T08:50"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-01T08:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-01T08:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-01T08:57"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2024-10-01T09:50",
+              "author": "PCP",
+              "body": "Annual exam, 42 y/o F.\n\nSince last year: melanoma of the back, found in May, biopsied 6/14 (superficial spreading, 0.6 mm, non-ulcerated, pT1a) and widely excised 7/12 with clear margins - stage IA. Derm following q6mo, first surveillance visit January. She's doing well emotionally, a rough couple of weeks in June. Now wears a hat and sunscreen on weekends outdoors.\nMigraine: same pattern, 2 to 3 a month, sumatriptan effective. Rhinitis fine on cetirizine.\n\nMeds: cetirizine 10 mg daily; sumatriptan 50 mg prn.\nAllergies: PCN - rash; dust mites.\nFHx: unchanged.\nSocial: never smoker, 1-2 drinks/wk.\n\nExam: well, NAD. HEENT nl. Neck, supraclavicular and axillary nodes negative. CV RRR. Lungs clear. Abd soft. Back: well-healed linear excision scar, flat, no pigment or nodularity along it. Visual skin survey otherwise unremarkable. Pelvic: normal external genitalia, cervix normal appearing, Pap with HPV obtained. Neuro nonfocal.\n\nPHQ-2 1.\n\nA/P\n- Hx melanoma stage IA, s/p WLE: no evidence of recurrence on my exam. Keep derm schedule.\n- Health maintenance: Pap/HPV today. CBC, CMP, lipids, A1c. Flu and COVID given. Mammogram due November - ordered. Colon screening starts at 45.\n- Migraine and rhinitis: stable, continue.\n\nReturn 1 yr."
+            }
+          ],
+          "state": {
+            "weight_kg": 62.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "portal_message",
+          "start": "2024-10-08T11:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "date": "2024-10-08T11:40",
+              "author": "PCP",
+              "body": "Beth, everything from last week is normal: blood count, chemistries, A1c and cholesterol, and your Pap with the HPV test was negative. With a normal co-test you won't need another Pap for 5 years."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "imaging",
+          "start": "2024-11-19T15:00",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-11-19T15:00",
+              "text": "Bilateral screening digital mammogram with tomosynthesis. Comparison 11/14/2023 and 11/08/2022. Breast composition: scattered areas of fibroglandular density. No suspicious masses, calcifications or areas of distortion. No change from priors.",
+              "conclusion": "Negative. BI-RADS 1. Continue annual screening.",
+              "issued": "2024-11-20T09:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mammogram Result",
+              "date": "2024-11-21T10:10",
+              "author": "RN",
+              "body": "Hi Beth, mammogram normal, no change from prior years. Next due next November."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-17a",
+          "kind": "specialist_visit",
+          "start": "2025-01-17T10:20",
+          "service": "Dermatology",
+          "reason": "melanoma surveillance",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Dermatology Surveillance Visit",
+              "date": "2025-01-21T09:00",
+              "author": "dermatology",
+              "body": "Dermatology follow-up, date of service 01/17/2025. Received 01/21/2025.\n\nMs. Lambert returns six months after wide local excision of a stage IA melanoma of the back (pT1a, Breslow 0.6 mm). She reports no new or changing spots and no lumps.\n\nAllergies: penicillin (rash); dust mites. Medications: cetirizine, sumatriptan as needed.\n\nFull skin examination: the excision scar on the back is well healed, flat and without pigment, nodularity or satellite lesions. No new atypical or suspicious lesions elsewhere. Cervical, axillary and inguinal nodes not palpable.\n\nAssessment: history of melanoma, no evidence of recurrence.\n\nPlan: continue monthly self-examination and sun protection. Return in 6 months for full skin examination."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-18a",
+          "kind": "portal_message",
+          "start": "2025-02-18T07:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "date": "2025-02-18T07:12",
+              "author": "patient",
+              "body": "Good morning - the pharmacy says I'm out of refills on both the cetirizine and the sumatriptan. Same doses as always. Thank you!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "date": "2025-02-18T10:48",
+              "author": "MA",
+              "body": "Hi Beth, the doctor approved both: cetirizine 10 mg daily, 90 days with 3 refills, and sumatriptan 50 mg, 9 tablets with 5 refills. They should be ready later today."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-15a",
+          "kind": "telehealth_visit",
+          "start": "2025-04-15T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "spring allergy symptoms",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-04-15T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2025-04-15T12:55",
+              "author": "PCP",
+              "body": "Video, she's at her office, consented, ID verified.\n\nHer usual spring allergies have come on hard the last 10 days with the warm stretch: sneezing, runny nose, itchy watery eyes, worse after her lunchtime walks. Still taking cetirizine daily. No fever, facial pain, wheeze or shortness of breath. Not sick otherwise.\n\nOn video: comfortable, mild conjunctival injection, speaking full sentences, no distress.\n\nA/P: seasonal allergic rhinitis, typical flare at peak tree pollen. Keep the cetirizine. Shower and change after time outside, windows closed, saline rinse twice a day, take the cetirizine in the evening so it covers the morning peak. Dust mite covers already in place. She'll message if not settling by mid-May."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-18a",
+          "kind": "specialist_visit",
+          "start": "2025-07-18T14:00",
+          "service": "Dermatology",
+          "reason": "melanoma surveillance",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Dermatology Surveillance Visit",
+              "date": "2025-07-22T08:40",
+              "author": "dermatology",
+              "body": "Dermatology follow-up, date of service 07/18/2025. Received 07/22/2025.\n\nOne year from treatment of stage IA melanoma of the back. No concerns today; doing monthly skin checks with a mirror and photos.\n\nAllergies: penicillin, dust mites.\n\nExam: total body skin examination. Scar intact and unremarkable. No new suspicious pigmented lesions. No palpable lymphadenopathy in the nodal basins.\n\nAssessment and plan: no evidence of recurrence. Next full skin examination in 6 months. Sun protection reinforced for the summer."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "annual_physical",
+          "start": "2025-09-30T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              123,
+              75
+            ],
+            "hr": 63,
+            "rr": 12,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 62.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-30T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.77
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 264
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-30T08:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-30T08:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 101
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 195
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 68
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 132
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 127
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-30T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 4.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-09-30T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-30T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-30T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-30T08:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-09-30T08:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2025-09-30T09:35",
+              "author": "PCP",
+              "body": "Annual, 43F. Good year.\n\n- Melanoma, stage IA back, WLE 7/2024: derm visits Jan and July both clear. Doing her own monthly checks.\n- Migraine w/o aura: unchanged, a few a month, sumatriptan works. Uses well under the monthly supply.\n- Allergic rhinitis: spring flare in April settled with the non-drug measures; cetirizine daily.\n\nMeds: cetirizine 10 mg daily; sumatriptan 50 mg prn. Allergies: penicillin (rash), dust mites.\nSocial: never smoker; 1-2 drinks/wk; still in the lab.\n\nExam: NAD. Vitals ok. HEENT unremarkable. No cervical, supraclavicular or axillary adenopathy. Heart RRR. Lungs clear. Abdomen benign, no hepatosplenomegaly. Back scar well healed, no pigment or nodules. Skin survey otherwise benign-appearing. Neuro nonfocal.\n\nPHQ-2 0, AUDIT-C 2.\n\nPlan:\n- CBC, CMP, lipids, A1c today.\n- Flu and COVID vaccines today.\n- Mammogram in November, ordered.\n- Colorectal screening: turns 45 in June 2027 - we'll go over options at next year's physical.\n- Pap/HPV next due 2029. Tdap due 2028.\n- Continue derm q6mo.\n\nNext physical fall 2026."
+            }
+          ],
+          "state": {
+            "weight_kg": 62.9
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-02a",
+          "kind": "portal_message",
+          "start": "2025-10-02T15:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2025-10-02T15:25",
+              "author": "PCP",
+              "body": "Hi Beth - your labs from Tuesday are all within the normal range: blood count, kidney, liver, A1c, cholesterol. No changes. Have a good fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "imaging",
+          "start": "2025-11-18T16:20",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-11-18T16:20",
+              "text": "Bilateral screening digital breast tomosynthesis. Compared with 11/19/2024 and earlier. Scattered fibroglandular densities. No suspicious mass, calcifications or architectural distortion. Stable.",
+              "conclusion": "Negative screening mammogram. BI-RADS 1. Annual screening.",
+              "issued": "2025-11-19T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mammogram Result",
+              "date": "2025-11-20T09:15",
+              "author": "RN",
+              "body": "Your mammogram on the 18th was normal. Next due November 2026."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "telephone",
+          "start": "2025-12-09T13:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request - Occupational Health",
+              "date": "2025-12-09T13:40",
+              "author": "front desk",
+              "body": "Fax received from her employer's occupational health service requesting a medical summary ahead of a protocol clearance visit on 12/19, with a signed authorization from the patient. Called pt to confirm she wants it sent - yes. Routed to PCP to prepare."
+            },
+            {
+              "type": "Letter",
+              "title": "Medical Summary for Occupational Health",
+              "date": "2025-12-10T08:20",
+              "author": "PCP",
+              "body": "To the occupational health physician:\n\nAt the request of our patient, Ms. Beth Lambert (DOB 06/26/1982), and with her written authorization, I am providing a summary of her care.\n\nProblems: seasonal allergic rhinitis; migraine without aura, episodic; melanoma of the back, superficial spreading, Breslow 0.6 mm, stage IA, treated with wide local excision 07/2024 with clear margins, under dermatology surveillance every 6 months with no recurrence to date.\nSurgical history: tonsillectomy in childhood; wisdom teeth extraction.\nMedications: cetirizine 10 mg daily; sumatriptan 50 mg as needed for migraine.\nAllergies: penicillin (rash); dust mites.\nImmunizations: Tdap 2018; influenza and COVID-19 current as of 09/2025.\nMost recent labs (09/2025) normal.\n\nShe has no condition that I am aware of that would limit her work. Please contact the office with questions.\n\nPrimary Care"
+            }
+          ]
+        },
+        {
+          "id": "2025-12-19a",
+          "kind": "specialist_visit",
+          "start": "2025-12-19T10:00",
+          "service": "Occupational Health",
+          "reason": "research protocol medical clearance",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Occupational Health Clearance",
+              "date": "2025-12-23T14:10",
+              "author": "occupational health",
+              "body": "Occupational health consultation, date of service 12/19/2025. Copy to primary care, received 12/23/2025.\n\nReason for visit: medical clearance for participation in a research protocol, with a systematic health assessment.\n\nEmployee: Beth Lambert, biomedical research scientist (PhD).\n\nHistory reviewed with the employee and with the primary care summary of 12/10/2025:\n- Melanoma of the back, treated in 2024, under dermatology follow-up\n- Seasonal allergic rhinitis\n- Migraine without aura\nSurgical: tonsillectomy at 7; wisdom teeth removed at 18.\nMedications: cetirizine 10 mg by mouth daily; sumatriptan 50 mg by mouth as needed for migraine.\nAllergies: penicillin (cutaneous rash); dust mites.\nFamily: mother with hypertension; father with type 2 diabetes; maternal grandmother with breast cancer at 68; no family history of melanoma or skin cancer.\nSocial: never smoker; alcohol occasional, 1-2 drinks per week.\n\nAssessment: health assessment completed. No medical condition identified that would restrict her participation.\n\nDetermination: medically cleared for the protocol without restrictions. She was asked to continue her scheduled dermatology surveillance.\n\nOccupational Health Service"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-23a",
+          "kind": "specialist_visit",
+          "start": "2026-01-23T09:00",
+          "service": "Dermatology",
+          "reason": "melanoma surveillance",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Dermatology Surveillance Visit",
+              "date": "2026-01-27T10:15",
+              "author": "dermatology",
+              "body": "Dermatology follow-up, date of service 01/23/2026. Received 01/27/2026.\n\n18 months after wide local excision for stage IA melanoma of the back. Asymptomatic.\n\nAllergies: penicillin (rash), dust mites.\n\nFull skin and nodal examination: excision scar well healed with no recurrence. No new lesions of concern. No lymphadenopathy.\n\nImpression: no evidence of disease. Continue every 6 month examinations and self-checks."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "pharmacy",
+          "start": "2026-03-17T08:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy Refill Request",
+              "date": "2026-03-17T08:30",
+              "author": "MA",
+              "body": "Electronic refill request, sumatriptan 50 mg #9. Last filled 01/2026; on the med list. Sent to PCP queue, approved with 5 refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "portal_message",
+          "start": "2026-05-12T11:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vaccine record",
+              "date": "2026-05-12T11:05",
+              "author": "patient",
+              "body": "Hi, my department is updating training files and wants a copy of my immunization record. Can you post one to the portal?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Vaccine record",
+              "date": "2026-05-12T14:30",
+              "author": "MA",
+              "body": "Hi Beth, your immunization record is now in the Documents section of the portal as a PDF. Let us know if your department needs anything signed."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-24a",
+          "kind": "specialist_visit",
+          "start": "2026-07-24T13:30",
+          "service": "Dermatology",
+          "reason": "melanoma surveillance",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Dermatology Surveillance Visit",
+              "date": "2026-07-28T09:20",
+              "author": "dermatology",
+              "body": "Dermatology follow-up, date of service 07/24/2026. Received 07/28/2026.\n\nTwo years from treatment of a stage IA melanoma of the back (pT1a). No new concerns.\n\nAllergies: penicillin (rash), dust mites.\n\nTotal body skin examination: scar stable and unremarkable. No suspicious lesions. Nodal basins without palpable nodes.\n\nAssessment: no evidence of recurrence. Next full skin examination in 6 months. Self-examination and sun protection continue."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T18:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "date": "2026-08-18T18:50",
+              "author": "patient",
+              "body": "Hi - time to book my yearly physical. Late September works best, any morning. I'd also like to go over colon cancer screening, since I turn 45 next June and want to have a plan."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "date": "2026-08-19T09:05",
+              "author": "front desk",
+              "body": "You're booked for Tuesday 9/29 at 8:00 am, fasting for labs. We've added colon screening to the visit reason so the doctor can go over the options."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-29a",
+          "kind": "annual_physical",
+          "start": "2026-09-29T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical, discuss colorectal screening",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Malignant melanoma of other part of trunk|C43.59": {
+        "code": "C43.59",
+        "display": "Malignant melanoma of other part of trunk",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    }
+  }
+}

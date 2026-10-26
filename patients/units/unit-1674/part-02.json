@@ -1,0 +1,408 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001674",
+      "events": [
+        {
+          "id": "2026-01-06a",
+          "kind": "pharmacy",
+          "start": "2026-01-06T09:12",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Refill request",
+              "author": "pharmacy",
+              "date": "2026-01-06T09:12",
+              "body": "Electronic refill request: prenatal multivitamin tablet, 1 PO daily, #30. Patient states taking for lactation. Please authorize if appropriate."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill authorized",
+              "author": "MA",
+              "date": "2026-01-06T13:40",
+              "body": "PNV refill approved per PCP standing protocol - #90, 3 refills. Pharmacy notified."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-27a",
+          "kind": "office_visit",
+          "start": "2026-01-27T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up blood pressure and iron, 3 months postpartum",
+          "conditions": [
+            {
+              "label": "Gestational hypertension",
+              "icd10": "O13.3",
+              "action": "resolved",
+              "note": "Normotensive off medication 14 weeks postpartum"
+            },
+            {
+              "label": "Pelvic girdle pain, pregnancy-related",
+              "icd10": "O26.891",
+              "action": "resolved"
+            },
+            {
+              "label": "Congenital cytomegalovirus infection",
+              "icd10": "O35.3XX0",
+              "action": "resolved",
+              "note": "Pregnancy delivered; infant's congenital CMV followed by pediatrics and pediatric ID"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              74
+            ]
+          },
+          "state": {
+            "weight_kg": 64.5,
+            "labs": {
+              "Ferritin": 24
+            }
+          },
+          "measure": [
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-01-27T15:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "iron-recheck-mar",
+              "action": "placed",
+              "order": "CBC and iron studies",
+              "category": "lab",
+              "reason": "iron deficiency anemia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-01-27T16:30",
+              "body": "F/u BP and iron, 14 wks postpartum.\n\nDoing much better. Baby home since late Nov, followed by pediatrics and peds ID. Still nursing/pumping. Sleep improving. Back and pelvic pain gone since delivery.\nStopped checking BP at home after OB visit, last readings all 110s-120s/70s.\nTaking FeSO4 daily and PNV. No ibuprofen in weeks.\nOB 12/2 postpartum note reviewed: normal recovery, BP 122/78.\n\nPHQ-9 4 (was 7 in Oct).\n\nExam: BP 116/74, repeat 114/74. Well appearing. Heart regular, no murmur. Lungs clear. No edema.\n\nA/P:\n1. Gestational hypertension - resolved, normal BP off meds well past 12 wks. With GHTN and dad's HTN she has a higher lifetime risk; BP check at least yearly with us.\n2. Pelvic girdle pain of pregnancy - resolved.\n3. CMV in pregnancy - pregnancy over, closing on her list; baby's care is with pediatrics.\n4. Iron deficiency anemia - Hgb 11.6, ferritin 12 in Dec. Continue FeSO4 daily. Recheck CBC/iron mid-March.\n5. Mood - improved, PHQ-9 4.\n\nPhysical in the summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "lab_only",
+          "start": "2026-03-17T07:35",
+          "state": {
+            "labs": {
+              "Hemoglobin": 12.4,
+              "Ferritin": 24,
+              "Iron": 70,
+              "Transferrin Saturation": 18
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-17T07:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2026-03-17T07:35",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 70
+                },
+                {
+                  "test": "Total Iron-Binding Capacity"
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 18
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 24
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-03-17T07:35"
+            }
+          ],
+          "orders": [
+            {
+              "id": "iron-recheck-mar",
+              "action": "done",
+              "date": "2026-03-17T07:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "March labs",
+              "author": "PCP",
+              "date": "2026-03-18T07:55",
+              "body": "Your labs from Tuesday: hemoglobin 12.4, now in the normal range. Ferritin up to 24 from 12 - better, but stores aren't full yet. Stay on the iron daily and we'll look again at your physical this summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "office_visit",
+          "start": "2026-04-14T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "author": "front desk",
+              "date": "2026-04-13T16:10",
+              "body": "Pt called to cancel tomorrow's check-in - nothing new, labs were fine and she'd rather keep the afternoon free. Will see PCP for physical in August. Booked 8/18 at 3:40."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "portal_message",
+          "start": "2026-05-19T21:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Iron refill",
+              "author": "patient",
+              "date": "2026-05-19T21:05",
+              "body": "Pharmacy says the iron is out of refills. Can you renew it until my physical in August?"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill sent",
+              "author": "MA",
+              "date": "2026-05-20T10:15",
+              "body": "Ferrous sulfate 325 mg daily #90, 0 refills sent per PCP (to last until 8/18 physical). Pt notified."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "portal_message",
+          "start": "2026-06-23T20:18",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vaccines while nursing",
+              "author": "patient",
+              "date": "2026-06-23T20:18",
+              "body": "Is it fine to get the flu and covid shots this fall while I'm still nursing? Want to plan ahead before school starts."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Vaccines while nursing",
+              "author": "PCP",
+              "date": "2026-06-24T07:40",
+              "body": "Yes - both are recommended while breastfeeding, and some of the antibodies even pass to the baby through milk. We'll get them on the calendar at your physical in August."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "annual_physical",
+          "start": "2026-08-18T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Iron deficiency anemia",
+              "action": "resolved",
+              "note": "Hemoglobin and ferritin normal; iron stopped"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "stop",
+              "reason": "iron stores replete"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              72
+            ]
+          },
+          "state": {
+            "weight_kg": 62.8,
+            "labs": {
+              "Hemoglobin": 12.9,
+              "Ferritin": 38,
+              "Iron": 88,
+              "Transferrin Saturation": 25,
+              "Total Cholesterol": 172,
+              "High Density Lipoprotein": 61,
+              "Triglycerides": 84,
+              "Low Density Lipoprotein": 94
+            }
+          },
+          "measure": [
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-08-18T16:20",
+              "resulted": "2026-08-19T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.9
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2026-08-18T16:20",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 88
+                },
+                {
+                  "test": "Total Iron-Binding Capacity"
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 25
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 38
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-08-18T16:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 172
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 84
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 94
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-08-18T15:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-18T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2026-08-18T17:10",
+              "body": "ANNUAL PREVENTIVE VISIT\n\n31 y/o elementary school teacher, ~10 months postpartum. Still nursing once or twice a day. Feels well. Baby followed closely by pediatrics/peds ID.\n\nInterval: no illnesses, no ED visits. BP normal at January visit. On FeSO4 325 daily and PNV.\n\nPMH: IDA (on iron), hx GHTN 2025 (resolved), hx cholelithiasis (asymptomatic). OB 2025: previa bleed, PPROM with intra-amniotic infection, preterm SVD 32 wks; baby with congenital CMV.\nMeds: FeSO4 325 daily, PNV daily. NKDA.\nFH: mother preeclampsia, father HTN. SH: never smoker, no alcohol currently.\n\nROS negative.\nPHQ-9 2.\n\nExam: BP 114/72, other vitals as charted. Well appearing. HEENT normal. Neck supple, thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen soft, non-tender, no RUQ tenderness. Skin without concerning lesions. Ext no edema.\n\nHealth maintenance:\n- Cervical: Pap/HPV cotest negative 4/2025 at OB; next due 2030. GYN with OB yearly.\n- Vaccines: Tdap 9/2025. Flu and COVID due this fall - booked flu nurse visit.\n- HIV, hep C screens negative in 2025 prenatal labs.\n- Lipids today (GHTN history).\n\nA/P:\n1. Iron deficiency anemia - labs today; if ferritin is in range, stop iron.\n2. Hx gestational HTN - BP normal; yearly checks.\n3. Lactating - continue PNV while nursing.\n4. Preventive as above.\n\nRTC 1 year, flu shot in Sept."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-20a",
+          "kind": "portal_message",
+          "start": "2026-08-20T07:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2026-08-20T07:30",
+              "body": "Hi Rachel - all good news. Hemoglobin 12.9 and ferritin 38, so your iron stores are back where they should be. You can stop the ferrous sulfate. Keep the prenatal vitamin while you're nursing. Cholesterol panel is normal. See you for the flu shot in September."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical labs",
+              "author": "patient",
+              "date": "2026-08-20T12:14",
+              "body": "Great news, thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "nurse_visit",
+          "start": "2026-09-22T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

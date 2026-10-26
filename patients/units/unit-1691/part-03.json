@@ -1,0 +1,734 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001691",
+      "events": [
+        {
+          "id": "2025-09-10a",
+          "kind": "specialist_visit",
+          "start": "2025-09-10T10:30",
+          "service": "Obstetrics",
+          "reason": "Gestational diabetes follow-up",
+          "conditions": [
+            {
+              "label": "Gestational diabetes mellitus in pregnancy, diet controlled",
+              "icd10": "O24.410",
+              "action": "resolved",
+              "note": "now insulin treated"
+            },
+            {
+              "label": "Gestational diabetes mellitus in pregnancy, insulin controlled",
+              "icd10": "O24.414",
+              "action": "diagnosed",
+              "onset": "2025-08-13"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "3 ML insulin isophane, human 100 UNT/ML Pen Injector",
+              "action": "historical",
+              "sig": "Inject 14 units under the skin at bedtime; adjust per OB to fasting glucose",
+              "dose": {
+                "value": 14,
+                "unit": "units"
+              },
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Gestational diabetes"
+            },
+            {
+              "drug": "3 ML insulin lispro 100 UNT/ML Pen Injector",
+              "action": "historical",
+              "sig": "Inject under the skin with each meal, dose by carbohydrate counting per OB scale",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Gestational diabetes"
+            }
+          ],
+          "measure": [
+            "bp"
+          ],
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-09-10T10:40",
+              "results": [
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-09-10T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Visit Letter - Gestational Diabetes",
+              "author": "obstetrics",
+              "date": "2025-09-12T09:30",
+              "body": "Obstetrics - Prenatal Visit Note (copy to PCP)\nVisit date: 09/10/2025\nPatient: Wanda Figueroa, 33 y/o G2P1001 at 27w4d, MCMA twins, complete placenta previa\n\nReason: gestational diabetes recheck, 4 weeks from diagnosis (08/13/2025).\n\nInterval: Pre-pregnancy BMI 32. Has followed the dietitian's meal plan closely and walks half an hour every day. In spite of that she describes frequent spells of blurry vision and lightheadedness. Glucose log, fasting values this past week: Mon 98, Tue 105, Wed 110, Thu 115, Fri 108, Sat 112, Sun 107 mg/dL. One-hour post-meal readings have all run above 140. No bleeding since her last visit. Still working.\n\nMeds: prenatal vitamin with iron. NKDA.\n\nExam: BP as charted. Fetal heart rates regular on both twins. Growth parameters within normal limits on this week's scan.\nUrinalysis: ketones negative, protein negative.\n\nA/P:\n1. GDM, not at goal on diet alone (fasting values mostly above 95, post-meal above 140), with symptoms. Starting insulin today: NPH 14 units at bedtime, to be titrated to her fasting numbers, plus lispro with meals dosed by carbohydrate counting. Pen teaching done with our diabetes educator; hypoglycemia recognition and treatment reviewed. She will send readings twice a week.\n2. MCMA twins: surveillance continues per MFM.\n3. Complete previa: pelvic rest, bleeding precautions reinforced.\n4. Tdap given today (27 weeks).\nReturn 1 week.\n\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-11a",
+          "kind": "portal_message",
+          "start": "2025-09-11T21:05",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Started Insulin",
+              "author": "patient",
+              "date": "2025-09-11T21:05",
+              "body": "Hi Doctor, just an update. The OB started me on insulin yesterday for the gestational diabetes, one at night and one with meals. I did my first shots and it was not as bad as I thought. My mom is giving me a hard time saying now I'll have diabetes like her. Is that true?"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Started Insulin",
+              "author": "PCP",
+              "date": "2025-09-12T08:20",
+              "body": "Good for you on the first doses. Insulin is the safest medicine for the babies, and needing it says nothing about willpower; twin pregnancies push blood sugar hard. Gestational diabetes almost always goes away after delivery. It does raise the chance of type 2 diabetes later in life, which is why we'll do a glucose test a couple of months after the babies come and then check an A1c regularly. That's a plan, not a prediction. Follow the OB's dosing and call them with any low readings."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-13a",
+          "kind": "ed_visit",
+          "start": "2025-09-13T15:40",
+          "end": "2025-09-13T22:10",
+          "service": "Emergency Medicine",
+          "reason": "Painless vaginal bleeding at 28 weeks",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-09-13T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Provider Note",
+              "author": "emergency medicine",
+              "date": "2025-09-15T08:00",
+              "body": "EMERGENCY DEPARTMENT RECORD (received by fax)\nArrival 09/13/2025 15:40\n\nCC: vaginal bleeding, 28 weeks pregnant.\n\nHPI: 33 y/o G2P1001 at 28w0d with monochorionic monoamniotic twins, known placenta previa and gestational diabetes on insulin since 9/10. Was resting on the couch this afternoon and felt a gush; found bright red blood on her clothing. No pain at all, no cramping. No trauma, no intercourse (on pelvic rest). Babies moving.\n\nMeds: insulin NPH 14 units qHS, insulin lispro with meals, prenatal vitamin with iron.\nAllergies: NKDA.\n\nExam: Vitals stable as recorded. Alert, anxious, no distress. Abdomen soft, gravid, nontender, no palpable contractions. Sterile speculum exam deferred given previa, to avoid trauma to the cervix. Pad with small amount of bright red blood.\n\nBedside ultrasound: placenta overlying the internal cervical os.\nContinuous fetal monitoring: both tracings reactive, no decelerations.\n\nMDM: painless third-trimester bleeding with known previa. Obstetrics consulted and saw her in the department; monitored together for several hours.\n\nCourse: bleeding tapered and stopped during observation. Tracings remained reassuring.\n\nDisposition: discharged home per OB with conservative previa management: modified bed rest, continued pelvic rest. Strict return precautions for any further bleeding, contractions, fluid or reduced movement. OB follow-up within 48 hours.\n\nED diagnosis: placenta previa with vaginal bleeding, 28 weeks; MCMA twin gestation.\n\nEmergency Medicine"
+            },
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Consult in ED",
+              "author": "obstetrics",
+              "date": "2025-09-15T08:05",
+              "body": "OB consult - ED\n09/13/2025\nAsked to see for painless bleeding at 28w0d. Known MCMA twins and complete previa followed by MFM; GDM on insulin.\nVSS. Abdomen soft, nontender, no contractions on toco. No SSE/SVE (previa). Bedside US confirms placenta over the os. NST reactive x2, no decels.\nImpression: first previa bleed, now resolved; maternal and fetal status reassuring.\nPlan: conservative management. Modified bed rest at home, out of work starting now; pelvic rest. Return immediately for bleeding. Will see in clinic Monday or Tuesday. Discussed with MFM.\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-15a",
+          "kind": "telephone",
+          "start": "2025-09-15T11:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED Check-in",
+              "author": "RN",
+              "date": "2025-09-15T11:20",
+              "body": "ED record from Saturday received. Called patient. No further bleeding since Saturday evening. Feeling babies move. On bed rest at home, family helping with meals and her child. Has OB appointment tomorrow. Taking insulin as directed, no lows. Knows to go straight to L&D for bleeding. Will route to PCP. She asked about work notes - advised OB office usually completes these since they set the restriction; she will message if needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "portal_message",
+          "start": "2025-09-16T14:00",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Work Leave Paperwork",
+              "author": "patient",
+              "date": "2025-09-16T14:00",
+              "body": "Hi, my HR needs medical leave forms. The OB filled out the pregnancy part today but my job's form also asks for my regular doctor to confirm I'm under care. Can you do that part? I'm uploading it now. Sorry for all the trouble."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Work Leave Paperwork",
+              "author": "PCP",
+              "date": "2025-09-16T17:30",
+              "body": "No trouble at all. I've completed and signed the primary care section confirming you're under my care and that your obstetrician has you on modified bed rest and out of work for the remainder of the pregnancy. It's faxed to the number on the form and a copy is in your portal Documents. Rest, and call any time."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-18a",
+          "kind": "ed_visit",
+          "start": "2025-09-18T06:10",
+          "end": "2025-09-18T14:45",
+          "service": "Emergency Medicine",
+          "reason": "Recurrent vaginal bleeding, placenta previa",
+          "conditions": [
+            {
+              "label": "Complete placenta previa with hemorrhage, third trimester",
+              "icd10": "O44.13",
+              "action": "diagnosed",
+              "onset": "2025-09-13"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-18T06:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 210
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-09-18T06:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-18T06:30",
+              "results": [
+                {
+                  "test": "ABO and Rh group [Type] in Blood",
+                  "loinc": "882-1",
+                  "text": "A Rh positive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-09-18T06:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Provider Note",
+              "author": "emergency medicine",
+              "date": "2025-09-19T09:15",
+              "body": "EMERGENCY DEPARTMENT RECORD\nArrival 09/18/2025 06:10\n\nChief complaint: recurrent vaginal bleeding, more than last time.\n\nHPI: 33-year-old G2P1001, 28 weeks 5 days, MCMA twins, complete placenta previa, GDM on insulin. Seen here 5 days ago for a first bleed and sent home on bed rest. Woke at 05:30 to bright red bleeding, soaking a pad quickly, heavier than Saturday. Painless. No contractions, no abdominal pain, no fall or trauma. Has followed bed rest. Per patient and OB record, blood pressures have been normal through the pregnancy and urine has shown no protein. Prior pregnancy was uncomplicated with a term vaginal birth.\n\nMeds: NPH 14 units at bedtime; lispro with meals by carb count; prenatal vitamin with iron. NKDA.\n\nExam: vitals stable as charted. Comfortable, alert and oriented. Abdomen soft, nontender, gravid. Fetal heart rate 140. Speculum exam deferred to avoid disturbing the placenta.\n\nLabs: Hgb 11.2 g/dL. Platelets 210 K. Type: A positive. PT/INR normal.\nTransabdominal US: placenta covers the internal cervical os.\n\nAssessment: recurrent hemorrhage from complete placenta previa at 28w5d, hemodynamically stable. Rh positive, no anti-D needed.\n\nCourse: OB at bedside. Two large-bore IVs. Observed on monitors. Bleeding slowed over several hours to spotting.\n\nDisposition: per OB, discharged home to continue strict modified bed rest and pelvic rest; OB clinic tomorrow. Return immediately for any bleeding, pain, contractions or decreased movement.\n\nEmergency Medicine"
+            },
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Consult in ED",
+              "author": "obstetrics",
+              "date": "2025-09-19T09:20",
+              "body": "OB consult 09/18/2025, ED. Second bleeding episode from complete previa at 28w5d, heavier than the first, now settling. VSS, abdomen benign, no uterine activity. Hgb 11.2, plt 210, A pos, coags WNL. Placenta covering os on TA US. Fetal status reassuring on monitoring.\nDx: complete placenta previa with hemorrhage.\nPlan: continue conservative management at home with strict bed rest; see in clinic tomorrow; reviewed plan with MFM.\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-19a",
+          "kind": "portal_message",
+          "start": "2025-09-19T19:40",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Back in the ER",
+              "author": "patient",
+              "date": "2025-09-19T19:40",
+              "body": "I wanted you to know I was back in the emergency room yesterday, it was a lot more blood this time. They let me go home again and I saw the OB today, everything with the babies looks ok for now. I'm honestly scared. I'm staying in bed like they said."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Back in the ER",
+              "author": "PCP",
+              "date": "2025-09-19T21:10",
+              "body": "Thank you for writing, Wanda. Being scared makes complete sense after two bleeds. I've read the ED record. Your blood count held up well and the babies looked okay, and the OB and MFM teams are watching closely. You're doing exactly the right things. If you'd like to talk, I can call you tomorrow, just reply with a good time. And go straight to labor and delivery for any bleeding; don't wait to call anyone first."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-26a",
+          "kind": "ed_visit",
+          "start": "2025-09-26T10:50",
+          "end": "2025-09-26T14:30",
+          "service": "Emergency Medicine",
+          "reason": "Decreased fetal movement",
+          "conditions": [
+            {
+              "label": "Intrauterine fetal demise, both twins",
+              "icd10": "O36.4XX0",
+              "action": "diagnosed",
+              "onset": "2025-09-25"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-09-26T10:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Provider Note",
+              "author": "emergency medicine",
+              "date": "2025-09-29T08:30",
+              "body": "EMERGENCY DEPARTMENT RECORD\nArrival 09/26/2025 10:50\n\nCC: has not felt the babies move for a day.\n\nHPI: 33F at 29w6d with monochorionic monoamniotic twins, gestational diabetes on insulin and complete placenta previa, two ED visits this month for bleeding, otherwise in regular prenatal care. Last clearly felt movement yesterday morning; nothing since despite lying on her side and eating. No bleeding since 9/18. No pain or contractions. Very distressed, asking what this means and what happens next.\n\nMeds: NPH 14 units at bedtime, lispro with meals, prenatal vitamin with iron. NKDA.\n\nExam: vital signs stable. Abdomen gravid, size appropriate for dates, soft, nontender. Doppler: no fetal heart tones obtained.\nBedside ultrasound: no cardiac activity in either twin.\n\nAssessment: intrauterine fetal demise of both twins at 29w6d.\n\nPlan: OB and MFM at bedside; findings confirmed and discussed with the patient, with family present. Social work called. Admitted to labor and delivery under OB for delivery planning; with a complete previa, delivery will be by cesarean.\n\nEmergency Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-26b",
+          "kind": "hospital_admission",
+          "start": "2025-09-26T14:30",
+          "end": "2025-09-30T11:30",
+          "service": "Obstetrics",
+          "reason": "Intrauterine fetal demise, twins; complete placenta previa",
+          "medications": [
+            {
+              "drug_text": "3 ML insulin isophane, human 100 UNT/ML Pen Injector",
+              "action": "stop",
+              "reason": "Delivered; gestational diabetes"
+            },
+            {
+              "drug": "3 ML insulin lispro 100 UNT/ML Pen Injector",
+              "action": "stop",
+              "reason": "Delivered; gestational diabetes"
+            },
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain, with food",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "route": "Oral",
+              "course": "short",
+              "reason": "Post-cesarean pain"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "route": "Oral",
+              "course": "short",
+              "reason": "Post-cesarean pain"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-26T15:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 204
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-26T15:00",
+              "results": [
+                {
+                  "test": "ABO and Rh group [Type] in Blood",
+                  "loinc": "882-1",
+                  "text": "A Rh positive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Cesarean delivery",
+              "performed": "2025-09-27T09:15"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-09-27T10:05",
+              "issued": "2025-10-02T15:00",
+              "text": "Specimen: placenta, twin gestation, 30 weeks 0 days.\nGross: single placental disc with fused membranes and no dividing membrane between the twins. Two umbilical cords inserted on the disc, each with three vessels. No true knots identified. Maternal surface intact.\nMicroscopic: villous maturation appropriate for gestational age. No acute chorioamnionitis or funisitis. No infarcts.",
+              "conclusion": "Monochorionic monoamniotic twin placenta. No other pathologic abnormality."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative Report - Cesarean Delivery",
+              "author": "obstetrics",
+              "date": "2025-10-01T10:00",
+              "body": "OPERATIVE REPORT\nDate of surgery: 09/27/2025\n\nPreoperative diagnosis: intrauterine fetal demise of monochorionic monoamniotic twins at 30w0d; complete placenta previa.\nPostoperative diagnosis: same.\nProcedure: primary low transverse cesarean delivery.\nAnesthesia: regional.\nIndication: fetal demise of both twins confirmed 09/26; vaginal delivery contraindicated by complete placenta previa. Risks, benefits and alternatives reviewed and consent obtained.\n\nFindings: two stillborn infants delivered from a single amniotic sac. Placenta implanted over the internal os, delivered intact and sent to pathology with both cords. Normal-appearing uterus, tubes and ovaries.\n\nDescription: low transverse skin incision; low transverse hysterotomy. Infants delivered atraumatically and handed to the nursing team, who kept them with the family per the patient's wishes. Placenta delivered. Hysterotomy closed in two layers; hemostasis assured. Fascia and skin closed. Blood loss within the usual range for cesarean; no transfusion. Counts correct. Patient to recovery in stable condition.\n\nObstetrics"
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "author": "obstetrics",
+              "date": "2025-10-01T10:05",
+              "body": "DISCHARGE SUMMARY\nAdmitted: 09/26/2025   Discharged: 09/30/2025\n\nAdmitting diagnosis: intrauterine fetal demise of both twins at 29w6d (MCMA gestation); complete placenta previa with prior hemorrhage; gestational diabetes on insulin.\nDischarge diagnoses: s/p primary low transverse cesarean delivery 09/27/2025 of stillborn twins at 30w0d; complete placenta previa; history of gestational diabetes.\n\nHospital course: Admitted from the ED after demise was confirmed. Admission Hgb 11.1, platelets 204; A positive. Cesarean delivery 09/27 under regional anesthesia without complication (see operative report). No transfusion. Insulin discontinued after delivery; fingerstick glucose stayed in the normal range off insulin. Pain controlled with scheduled then as-needed ibuprofen and acetaminophen. Ambulating, tolerating diet, voiding, incision clean. Supportive measures for breast engorgement reviewed (snug support, cold packs, avoid stimulation). Bereavement care: met with the unit social worker and chaplain; perinatal loss resources given. Placenta sent to pathology, result to follow.\n\nDischarge medications:\n- ibuprofen 600 mg every 6 hours as needed for pain, with food\n- acetaminophen 1000 mg every 6 hours as needed for pain\n- prenatal vitamin with iron daily\nSTOPPED: insulin NPH, insulin lispro.\n\nAllergies: NKDA.\n\nFollow-up: OB clinic 2 weeks (incision) and 6 weeks (postpartum visit). PCP within 2 weeks. 75 g 2-hour glucose tolerance test at 4 to 12 weeks postpartum. Call for fever, heavy bleeding, wound redness or drainage, calf pain, shortness of breath, or thoughts of self-harm.\n\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-01a",
+          "kind": "telephone",
+          "start": "2025-10-01T12:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "author": "PCP",
+              "date": "2025-10-01T12:50",
+              "body": "Discharge summary received this morning. Called Wanda to offer condolences and check in after discharge yesterday. She is home, family with her. Pain manageable with ibuprofen and acetaminophen, walking around the house, incision dry. Light bleeding only. No fever. Not checking sugars and off insulin as instructed. Sleeping poorly and crying a lot, which she says the social worker told her to expect; no thoughts of harming herself. Breasts sore, using the measures from the hospital. Reviewed warning signs. Visit booked for 10/14. Told her she can call me directly before then."
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Pregnant state, incidental",
+              "icd10": "Z33.1",
+              "action": "resolved"
+            },
+            {
+              "label": "Monochorionic monoamniotic twin pregnancy, second trimester",
+              "icd10": "O30.012",
+              "action": "resolved"
+            },
+            {
+              "label": "Gestational diabetes mellitus in pregnancy, insulin controlled",
+              "icd10": "O24.414",
+              "action": "resolved"
+            },
+            {
+              "label": "Complete placenta previa without hemorrhage, second trimester",
+              "icd10": "O44.02",
+              "action": "resolved"
+            },
+            {
+              "label": "Complete placenta previa with hemorrhage, third trimester",
+              "icd10": "O44.13",
+              "action": "resolved"
+            },
+            {
+              "label": "Intrauterine fetal demise, both twins",
+              "icd10": "O36.4XX0",
+              "action": "resolved"
+            },
+            {
+              "label": "History of gestational diabetes",
+              "action": "history",
+              "onset": "2025-08-13"
+            },
+            {
+              "label": "History of uterine scar from previous cesarean delivery",
+              "icd10": "Z98.891",
+              "action": "diagnosed",
+              "onset": "2025-09-27"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-03a",
+          "kind": "portal_message",
+          "start": "2025-10-03T06:55",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Question",
+              "author": "patient",
+              "date": "2025-10-03T06:55",
+              "body": "Sorry to bother you so early. My milk came in and it hurts and it feels so unfair. The hospital said cold packs and a tight bra. Is there anything else? Can I keep taking the ibuprofen for it?"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Question",
+              "author": "PCP",
+              "date": "2025-10-03T08:05",
+              "body": "You are never bothering me. I'm so sorry; this part is cruel and a lot of women in your situation say the same thing. Yes, keep the ibuprofen with food as prescribed, and acetaminophen in between if needed. Cold packs for 15 to 20 minutes several times a day, a firm supportive bra day and night, and avoid warm showers on the chest or expressing milk, since that signals the body to make more. It usually eases within a week. Call if you get a red, hot area on the breast, fever or chills."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-10a",
+          "kind": "specialist_visit",
+          "start": "2025-10-10T13:30",
+          "service": "Obstetrics",
+          "reason": "Postoperative incision check",
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Postoperative Visit",
+              "author": "obstetrics",
+              "date": "2025-10-13T09:00",
+              "body": "OB postop check, 10/10/2025, POD 13 after primary low transverse cesarean for IUFD of MCMA twins.\nRecovering. Pain mild, now acetaminophen only. Lochia light. Engorgement settling. Grieving; supports in place; declined a counseling referral for now, has the resource list. No fever.\nBP/HR as charted. Incision clean, dry and well approximated, no erythema or drainage. Fundus firm, nontender.\nPlan: routine wound care; no heavy lifting or driving until cleared; return for 6-week postpartum visit. Pathology pending review at that visit.\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "office_visit",
+          "start": "2025-10-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after hospitalization",
+          "state": {
+            "weight_kg": 86.0,
+            "hr": 72
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 8
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T10:35"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ogtt-pp",
+              "action": "placed",
+              "order": "Glucose tolerance test, 2 hour, 75 g",
+              "category": "lab",
+              "reason": "History of gestational diabetes; postpartum screen at 6-12 weeks"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-10-14T10:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Follow-up",
+              "author": "PCP",
+              "date": "2025-10-14T11:05",
+              "body": "Transitional care visit. Discharged 9/30 after cesarean delivery on 9/27 of stillborn monoamniotic twins at 30 weeks; demise found on 9/26 after a day without movement. Before that, two bleeds from a complete previa (9/13, 9/18) managed with bed rest, and gestational diabetes on insulin from 9/10. Spoke by phone 10/1. Seen by OB for incision check 10/10, healing well.\n\nToday: physically better each day. Pain minimal, acetaminophen a couple of times a day. Bleeding nearly stopped. Engorgement resolved. No fever, calf pain or breathlessness.\n\nEmotionally: up and down. Cries daily, sleep broken, some days she doesn't feel like eating, but she is getting up, caring for her child and taking walks. Has family around. No thoughts of self-harm or of not wanting to be here. Placental pathology came back showing a monoamniotic placenta and nothing else; she says not having a reason is hard. PHQ-9 8, mostly sleep, energy and sadness items.\n\nMeds: prenatal vitamin with iron, acetaminophen PRN. Insulin stopped at delivery. NKDA.\n\nExam: vitals as charted; BP normal, afebrile. Weight 86 kg. Tearful at times, appropriate, linear. Heart regular, lungs clear. Abdomen soft, appropriately tender near a clean, healing low transverse incision; no erythema. Calves soft, nontender.\n\nA/P:\n1. Post-cesarean, recovering as expected. Wound care per OB.\n2. Grief after stillbirth of twins. Symptoms fit grief at 2.5 weeks, not a depressive disorder; PHQ-9 8. Gave the perinatal loss support group information and a list of grief counselors; she'll decide. Will recheck mood and PHQ-9 at follow-up and she knows to call sooner if it deepens or any thoughts of self-harm.\n3. History of gestational diabetes: insulin off. 75 g OGTT ordered for late November, about 8 weeks postpartum. Then A1c yearly.\n4. Flu vaccine given. COVID updated dose at the pharmacy in a few weeks.\n5. Work: still on leave; will extend paperwork to cover cesarean recovery.\n6. Obesity: not a focus now.\nFollow-up in about 3 months, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "portal_message",
+          "start": "2025-10-21T10:15",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Leave Extension Form",
+              "author": "patient",
+              "date": "2025-10-21T10:15",
+              "body": "HR sent a new form to extend my leave because the first one said end of pregnancy. Uploaded it. The OB said 6 weeks from surgery at least. Thank you."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Leave Extension Form",
+              "author": "MA",
+              "date": "2025-10-22T12:00",
+              "body": "Hi Wanda, the doctor completed the extension with a return date of December 8 as you discussed at your visit, and it has been faxed to HR. A copy is in your Documents. Let us know if they need anything else."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-07a",
+          "kind": "specialist_visit",
+          "start": "2025-11-07T09:45",
+          "service": "Obstetrics",
+          "reason": "Postpartum visit",
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Postpartum Visit Letter",
+              "author": "obstetrics",
+              "date": "2025-11-11T08:45",
+              "body": "Postpartum visit, 11/07/2025 (6 weeks)\nG2P1101, s/p primary low transverse cesarean 09/27/2025 for IUFD of MCMA twins at 30w0d with complete placenta previa; GDM in pregnancy on insulin, off since delivery.\n\nFeeling physically recovered. Bleeding stopped. No pain. Bowel and bladder normal. Mood: grieving, with some good days now; following up with her PCP, who has screened her.\n\nExam: BP/HR as charted. Incision well healed. Abdomen soft, nontender. Pelvic exam: normal external genitalia, cervix closed, uterus involuted.\n\nPathology reviewed with her: monochorionic monoamniotic placenta, cords without true knots, no other abnormality.\n\nCounseling: For any future pregnancy we advise waiting at least 18 months from delivery, early glucose testing and early referral to maternal-fetal medicine. Contraception options reviewed; she wants time to think and has not chosen a method. She knows she can return any time.\n\nPlan: cleared for normal activity and return to work in December. 75 g GTT already ordered by PCP. Routine gynecologic care with PCP; Pap due 2026.\n\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "pharmacy",
+          "start": "2025-11-12T16:20",
+          "service": "Community pharmacy",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-11-12T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy Immunization Notification",
+              "author": "pharmacy",
+              "date": "2025-11-13T08:10",
+              "body": "COVID-19 mRNA vaccine (Pfizer-BioNTech), 2025-2026 formula, 0.3 mL IM left deltoid, given 11/12/2025. Screening completed; no reaction during observation."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-20a",
+          "kind": "lab_only",
+          "start": "2025-11-20T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum glucose tolerance test",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-11-20T07:50",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 89
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-20T09:55",
+              "results": [
+                {
+                  "test": "Glucose [Mass/volume] in Serum or Plasma --2 hours post 75 g glucose PO",
+                  "loinc": "1518-0",
+                  "unit": "mg/dL",
+                  "value": 118
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "ogtt-pp",
+              "action": "done",
+              "date": "2025-11-20T09:55"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-11-20T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Lab Visit - 2 Hour GTT",
+              "author": "MA",
+              "date": "2025-11-20T10:00",
+              "body": "Patient arrived fasting since 9 pm. Fasting draw 07:50. 75 g glucose drink finished 07:55. Stayed seated in the lab waiting area. 2-hour draw 09:55. Tolerated well, mild nausea only. Given juice and crackers before leaving."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-21a",
+          "kind": "portal_message",
+          "start": "2025-11-21T13:00",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Glucose Test Result",
+              "author": "PCP",
+              "date": "2025-11-21T13:00",
+              "body": "Good news on yesterday's test: fasting sugar 89 and the 2-hour value 118, both normal. The gestational diabetes has resolved and you do not have diabetes or prediabetes. Because of the pregnancy history and your mom's diabetes, we'll check an A1c once a year at your physical."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-02a",
+          "kind": "portal_message",
+          "start": "2025-12-02T09:40",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Return to Work",
+              "author": "patient",
+              "date": "2025-12-02T09:40",
+              "body": "Hi, I'm going back to work Monday the 8th. HR wants a note saying I can come back with no restrictions. The OB cleared me at my 6 week visit. Could you send one? I think going back will be good for me."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Return to Work",
+              "author": "PCP",
+              "date": "2025-12-02T14:15",
+              "body": "Of course. A return-to-work letter, full duty with no restrictions as of 12/8, is attached here and faxed to HR. I'm glad you feel ready. Go easy on yourself in the first weeks, and let me know how it's going."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

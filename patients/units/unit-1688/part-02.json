@@ -1,0 +1,426 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001688",
+      "events": [
+        {
+          "id": "2024-01-09a",
+          "kind": "office_visit",
+          "start": "2024-01-09T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "author": "front desk",
+              "date": "2024-01-08T16:30",
+              "body": "Pt called to cancel tomorrow's physical, the baby has a cold. Rebooked 2/6 at 7:45, first slot so she can get to work after."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "annual_physical",
+          "start": "2024-02-06T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 71.0, "labs": {"Hemoglobin": 12.0}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-02-06T08:20", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-02-06T08:20", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 2},
+            {"survey": "GAD-7 total score", "value": 7}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-02-06T07:45"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-02-06T08:40",
+              "body": "Annual. Back at work since late January, adjusting. Baby is 3.5 months, doing fine per her.\n\nInterval: placental abruption 10/13/23 with emergency C-section at 35 wks. Postpartum OB visit 11/28 unremarkable. Hgb 10.6 on 10/26.\n\nHTN: home readings low 130s/80s. Labetalol 200 BID. Still on PNV and folic acid, plans to keep taking them for now.\nAnxiety: busier, more worry about the baby than before, but sleeping when she can and functioning. GAD-7 7, PHQ-9 2. No meds wanted.\n\nROS otherwise negative.\nMeds: labetalol 200 mg BID, PNV w/ DHA daily, folic acid 1 mg daily. Allergies: sulfa (rash), latex (contact dermatitis).\nSH: former smoker, none since 2019. Alcohol rare.\n\nExam: vitals as charted. Well. HEENT normal, thyroid normal. Heart RRR no murmur. Lungs clear. Abdomen soft, nontender, transverse C-section scar well healed. No edema. Skin normal. Neuro grossly normal.\n\nA/P\n- Chronic HTN: at goal-ish on labetalol, continue. CMP.\n- Anxiety: stable, no meds, revisit as needed.\n- History of abruption: noted for any future pregnancy - early OB care.\n- Recheck CBC.\n- HM: Pap with HPV due 2026. Flu and COVID done in the fall.\nRTC 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-08a",
+          "kind": "portal_message",
+          "start": "2024-02-08T12:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical Labs",
+              "author": "PCP",
+              "date": "2024-02-08T12:05",
+              "body": "Tessa - your hemoglobin has recovered fully, back to your usual 12. Kidney, liver and electrolytes are normal too. No changes. Have a good week."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-13a",
+          "kind": "portal_message",
+          "start": "2024-05-13T06:52",
+          "reason": "Positive pregnancy test",
+          "conditions": [
+            {"label": "Pregnant state, incidental", "icd10": "Z33.1", "action": "diagnosed", "onset": "2024-04-23"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pregnant again",
+              "author": "patient",
+              "date": "2024-05-13T06:52",
+              "body": "Hi - positive test again yesterday, LMP was April 9. A little sooner than we planned! I called the OB office already and they're seeing me next week. Same plan with the labetalol?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pregnant again",
+              "author": "PCP",
+              "date": "2024-05-13T13:10",
+              "body": "Congratulations. Yes, same plan: labetalol 200 mg twice daily, prenatal vitamin and folic acid. Good that OB is seeing you next week - make sure they know about the abruption and the C-section in October, though they'll have the records. Send me your home pressures if they start creeping up."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "pharmacy",
+          "start": "2024-06-18T09:30",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Pharmacy Refill Request",
+              "author": "MA",
+              "date": "2024-06-18T09:30",
+              "body": "Electronic refill request from mail-order pharmacy: labetalol 200 mg tab #180 (90 days), folic acid 1 mg #90, prenatal vitamin with DHA #90. Last seen 2/6/24, BP stable. Pended to PCP. PCP approved all three with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "outside_records",
+          "start": "2024-08-21T11:40",
+          "reason": "Obstetric prenatal letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Obstetrics Prenatal Update",
+              "author": "obstetrics",
+              "date": "2024-08-21T11:40",
+              "body": "Dear Colleague,\n\nUpdate on your patient Tessa Turcotte, now G2P1 at 19 weeks (LMP 04/09/2024, EDD 01/14/2025, consistent with first-trimester ultrasound).\n\nHer history includes chronic hypertension on labetalol 200 mg twice daily and a placental abruption at 35 weeks in October 2023 delivered by emergency low transverse cesarean. Pressures have been well controlled this pregnancy. Prenatal labs are within normal limits.\n\nAfter counseling she has chosen a trial of labor after cesarean, and we agree she is a candidate. We will plan delivery on our labor and delivery unit with a latex-free setup.\n\nAllergies: sulfa (rash), latex (contact dermatitis).\n\nRegards,\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-01a",
+          "kind": "nurse_visit",
+          "start": "2024-10-01T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines in pregnancy",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-01T17:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-01T17:17"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-10-01T17:15"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2024-10-01T17:25",
+              "body": "25 wks pregnant, here for flu and 2024-25 COVID. Feeling well, no fever. No reactions to past vaccines. Latex-free. Flu (trivalent) 0.5 mL IM L deltoid, Pfizer 2024-25 IM R deltoid. VIS given, observed 15 min, fine. She'll get Tdap at OB later this month."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-07a",
+          "kind": "hospital_admission",
+          "start": "2025-01-07T01:20",
+          "end": "2025-01-14T13:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Term labor; postpartum respiratory distress and coagulopathy",
+          "conditions": [
+            {"label": "Pregnant state, incidental", "icd10": "Z33.1", "action": "resolved"},
+            {"label": "Amniotic fluid embolism in childbirth", "icd10": "O88.12", "action": "diagnosed", "onset": "2025-01-07"},
+            {"label": "Disseminated intravascular coagulation", "icd10": "D65", "action": "diagnosed", "onset": "2025-01-07"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-01-07T05:30", "results": [
+              {"test": "Peripheral blood smear", "loinc": "5909-7", "text": "Fragmented red cells (schistocytes) present"}
+            ]}
+          ],
+          "reports": [
+            {"study": "Transthoracic echocardiogram", "performed": "2025-01-07T05:15", "text": "Limited bedside study, intubated patient. Left ventricle normal in size with normal systolic function. Right ventricular systolic function is reduced, consistent with acute right ventricular dysfunction. No pericardial effusion.", "conclusion": "Acute right ventricular dysfunction. Normal left ventricular systolic function."}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2024-10-24T10:00"}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2025-01-07T01:20"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-01-14T11:00"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric and ICU Discharge Summary",
+              "author": "obstetrics",
+              "date": "2025-01-15T08:50",
+              "body": "DISCHARGE SUMMARY (received 01/15/2025)\nAdmitted 01/07/2025, discharged 01/14/2025.\nPatient: Tessa Turcotte, 33 y/o, G2P2.\n\nHistory: chronic hypertension on labetalol; anxiety disorder; placental abruption at 35 weeks in 10/2023 with emergency cesarean; laparoscopic appendectomy. Uneventful pregnancy this time with normal prenatal labs. Tdap given in our office 10/24/2024.\nAllergies: sulfonamides (rash), latex (contact dermatitis).\n\nDelivery: Admitted in spontaneous labor at term for a planned trial of labor after cesarean. Uncomplicated vaginal birth after cesarean on 01/07/2025; liveborn infant.\n\nEvent: Right after the placenta delivered she became acutely short of breath and visibly anxious. Started on supplemental oxygen and IV fluids, but she worsened: heart rate climbed quickly and she became hypotensive. She was intubated for respiratory distress and moved to the ICU. Within minutes she was oozing from IV sites and her gums. The uterus was firm and well contracted with no atony on pelvic exam, yet blood loss was soaking her perineal pads. Lungs with bilateral rales; skin cool and clammy.\n\nWork-up: peripheral smear with schistocytes. Urine output fell and creatinine rose over the first day. Stat echo showed acute right ventricular dysfunction with normal LV function.\n\nDiagnoses: amniotic fluid embolism; disseminated intravascular coagulation.\n\nICU course: supportive care with blood product replacement for the coagulopathy. Extubated 01/09. Bleeding stopped, coagulation studies normalized, urine output returned and creatinine came back to normal before transfer out of the ICU. Recovered on the postpartum floor and went home 01/14.\n\nDischarge medications: labetalol 200 mg PO BID; prenatal vitamin with DHA daily; folic acid 1 mg daily.\n\nRecommendations: repeat transthoracic echocardiogram in about 6 weeks to confirm RV recovery. PCP follow-up within 1-2 weeks with CBC, BMP and coagulation studies. Obstetric postpartum visit at 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-15a",
+          "kind": "telephone",
+          "start": "2025-01-15T15:20",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "author": "RN",
+              "date": "2025-01-15T15:20",
+              "body": "TCM call within 2 business days of discharge (home 1/14 after delivery complicated by amniotic fluid embolism, ICU stay, intubated 2 days). Pt answered, sounds tired but clear. Breathing comfortably at home, walking around the house. Bleeding light. No bleeding from gums now. Taking labetalol 200 BID, PNV, folic acid - no new meds from the hospital. Home BP in the 120s/80s. She says she is \"still processing it.\" Booked TCM visit with PCP 1/21, labs same day. ED precautions reviewed."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "office_visit",
+          "start": "2025-01-21T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Transitional care visit after ICU admission",
+          "conditions": [
+            {"label": "Amniotic fluid embolism in childbirth", "icd10": "O88.12", "action": "resolved"},
+            {"label": "Disseminated intravascular coagulation", "icd10": "D65", "action": "resolved"}
+          ],
+          "state": {"bp": [136, 86], "weight_kg": 72.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-01-21T14:10", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-01-21T14:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2025-01-21T14:10", "results": [{"test": "Prothrombin Time"}, {"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "orders": [
+            {"id": "tte-2025", "action": "placed", "order": "Transthoracic echocardiogram", "category": "imaging", "to": "Echocardiography", "reason": "follow-up of acute RV dysfunction after amniotic fluid embolism"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 4},
+            {"survey": "GAD-7 total score", "value": 9}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2025-01-21T13:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "author": "PCP",
+              "date": "2025-01-21T14:40",
+              "body": "TCM visit, discharged 1/14. Discharge summary reviewed in full.\n\nSummary: TOLAC at term 1/7, uncomplicated VBAC, then right after the placenta she developed acute respiratory distress, hypotension and DIC (bleeding from IV sites and gums, schistocytes on smear), with a rise in creatinine and acute RV dysfunction on echo. Diagnosed with amniotic fluid embolism. Intubated, ICU, blood products, extubated 1/9. Kidney function and coags back to normal before discharge.\n\nToday: two weeks out. Breathing back to normal, can do stairs. No chest pain. Bleeding is light spotting only. No bruising, gums fine. Baby well. Sleep broken by the baby; says she keeps replaying the delivery. Not wanting medication or counseling right now but appreciated talking it through.\n\nMeds: labetalol 200 mg BID, PNV w/ DHA, folic acid 1 mg. No new meds. Allergies: sulfa, latex.\n\nExam: vitals as charted, SpO2 normal on RA. Tired but well appearing. No petechiae or bruising. Gums normal. Heart regular, no murmur, no JVD. Lungs clear throughout, no rales. Abdomen soft, uterus not palpable above the pubis. No calf tenderness or edema.\nGAD-7 9, PHQ-9 4.\n\nA/P\n1. Amniotic fluid embolism with DIC, recovered - resolved clinically. CBC, BMP, PT/INR today to confirm.\n2. Acute RV dysfunction on the ICU echo - repeat TTE in ~6 weeks per discharge recs, ordered.\n3. Chronic HTN - postpartum pressures OK on labetalol 200 BID, continue.\n4. Anxiety disorder - higher than her usual, as expected after this. Will check in by portal and see her in April; she knows she can reach me any time.\nTCM: medication reconciliation done, no changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-22a",
+          "kind": "portal_message",
+          "start": "2025-01-22T10:45",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from yesterday",
+              "author": "PCP",
+              "date": "2025-01-22T10:45",
+              "body": "Good news, Tessa: blood count, platelets, kidney function and clotting tests from yesterday are all normal. The echo is scheduled for Feb 26 - the scheduling office will confirm by text."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-26a",
+          "kind": "imaging",
+          "start": "2025-02-26T09:00",
+          "service": "Echocardiography",
+          "reason": "Follow-up of right ventricular function",
+          "reports": [
+            {"study": "Transthoracic echocardiogram", "performed": "2025-02-26T09:00", "text": "Indication: follow-up of acute right ventricular dysfunction during amniotic fluid embolism, 01/2025. Technically adequate study. Left ventricle normal in size and wall thickness with normal systolic function. Normal diastolic function. Right ventricle normal in size with normal systolic function; TAPSE normal. Atria normal in size. Valves structurally normal without significant regurgitation or stenosis. Estimated RV systolic pressure normal. Inferior vena cava normal with normal respiratory variation. No pericardial effusion.", "conclusion": "Normal right ventricular size and systolic function. Normal left ventricular size and systolic function. No pericardial effusion."}
+          ],
+          "orders": [
+            {"id": "tte-2025", "action": "done", "date": "2025-02-26T09:00"}
+          ]
+        },
+        {
+          "id": "2025-02-27a",
+          "kind": "portal_message",
+          "start": "2025-02-27T08:30",
+          "reason": "Echo result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Echo result",
+              "author": "PCP",
+              "date": "2025-02-27T08:30",
+              "body": "Hi Tessa, your echo from yesterday is completely normal. The right side of the heart, which was strained during the January event, has fully recovered, and the left side is normal too. No further heart testing needed."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Echo result",
+              "author": "patient",
+              "date": "2025-02-27T19:02",
+              "body": "That is such a relief, thank you. I'll see you in April."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "portal_message",
+          "start": "2025-03-11T21:15",
+          "reason": "Leave paperwork",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Leave form",
+              "author": "patient",
+              "date": "2025-03-11T21:15",
+              "body": "Hi again, my leave is through the end of March and HR (ironic, I know) needs the return to work form from you since the ICU part was medical, not just maternity. Uploaded it. I'd like to go back April 7."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Leave form",
+              "author": "MA",
+              "date": "2025-03-12T14:00",
+              "body": "Form completed and signed by PCP: cleared to return 4/7, no restrictions. Faxed to your employer's leave administrator and saved to your documents."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "office_visit",
+          "start": "2025-04-22T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension and anxiety follow-up",
+          "state": {"bp": [132, 84], "weight_kg": 70.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-04-22T17:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 3},
+            {"survey": "GAD-7 total score", "value": 7}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-04-22T16:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-04-22T17:20",
+              "body": "Back at work two weeks. Feels physically recovered - walks with the stroller daily, no breathlessness. Echo 2/26 normal. OB postpartum visit done in Feb.\nHTN: home 120s-130s/80s on labetalol 200 BID. Continues PNV and folic acid.\nAnxiety: GAD-7 7 (9 in Jan). Fewer intrusive thoughts about the delivery. Still declines meds.\nExam: vitals as charted. Heart RRR no murmur, lungs clear, no edema.\nA/P: Chronic HTN controlled, continue. BMP. Anxiety disorder improving. Physical due - she'll book for later in the year. RTC 4-5 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "portal_message",
+          "start": "2025-07-08T12:20",
+          "reason": "Positive pregnancy test",
+          "conditions": [
+            {"label": "Pregnant state, incidental", "icd10": "Z33.1", "action": "diagnosed", "onset": "2025-06-17"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "News",
+              "author": "patient",
+              "date": "2025-07-08T12:20",
+              "body": "I wanted you to hear it from me - I'm pregnant again, test was positive Saturday. LMP June 3. Honestly nervous after last time. OB is sending me to the high-risk group and I have an appointment on the 22nd. Still taking everything the same."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: News",
+              "author": "PCP",
+              "date": "2025-07-08T17:45",
+              "body": "Thank you for telling me, Tessa. Being nervous makes complete sense. I'm glad you're already booked with maternal-fetal medicine. Keep the labetalol 200 mg twice daily, prenatal vitamin and folic acid as you are. I'll send them our notes and the echo. Message me anytime, and let's still do your physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "outside_records",
+          "start": "2025-08-19T10:30",
+          "reason": "Maternal-fetal medicine consultation letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Maternal-Fetal Medicine Consultation",
+              "author": "maternal-fetal medicine",
+              "date": "2025-08-19T10:30",
+              "body": "Dear Colleague,\n\nWe saw Ms. Turcotte on 07/22/2025 and again 08/12/2025, G3P2 at 10 weeks (LMP 06/03/2025, EDD 03/10/2026, confirmed by ultrasound).\n\nObstetric history: placental abruption at 35 weeks (10/2023) delivered by emergency cesarean; vaginal birth after cesarean at term (01/2025) complicated immediately after placental delivery by amniotic fluid embolism with DIC, ICU care and intubation, with a normal follow-up echocardiogram in 02/2025. Chronic hypertension on labetalol 200 mg twice daily, well controlled. Anxiety disorder.\n\nWe reviewed her history at length with her. Prenatal labs today are within normal limits. She continues labetalol, her prenatal vitamin with DHA and folic acid 1 mg. We will co-manage with her obstetric group with visits every 2-4 weeks and will plan her delivery at our center.\n\nAllergies: sulfa drugs (rash); latex (contact dermatitis).\n\nSincerely,\nMaternal-Fetal Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "annual_physical",
+          "start": "2025-09-16T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 73.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-09-16T08:35", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-09-16T08:35", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 2},
+            {"survey": "GAD-7 total score", "value": 8}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-09-16T08:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-09-16T08:47"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-09-16T08:00"},
+            {"procedure": "Immunization administration", "performed": "2025-09-16T08:45"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-09-16T09:10",
+              "body": "Annual exam. 15 weeks pregnant, followed by MFM and OB (letter 8/19 reviewed).\n\nFeels well physically - nausea gone. BP at MFM visits fine. On labetalol 200 BID, PNV with DHA, folic acid 1 mg. No other meds or supplements.\nAnxiety: GAD-7 8. Worried about delivery, which is fair; she says MFM spent a long time with her and that helped. Declines meds and therapy referral for now.\nPHQ-9 2.\nOB hx: abruption 10/2023 (emergency C/S at 35 wk); VBAC 1/2025 complicated by amniotic fluid embolism and DIC, ICU, recovered; echo 2/2025 normal.\nSH: HR coordinator, full time. No tobacco since 2019. No alcohol in pregnancy.\nFH unchanged.\n\nExam: vitals as charted. Well, pleasant. Thyroid normal. Heart RRR, no murmur. Lungs clear. Abdomen gravid, nontender. No edema. Skin no rash.\n\nA/P\n- Health maintenance: CBC, CMP. Flu and 2025-26 COVID given today (both fine in pregnancy). Pap with HPV due 2026 - after delivery.\n- Chronic HTN in pregnancy: office BP a little higher today than her MFM and home readings, which are at goal. MFM managing, continue labetalol.\n- Anxiety disorder: elevated with the pregnancy, monitoring.\n- History of AFE: delivery planning per MFM.\nRTC after delivery."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "pharmacy",
+          "start": "2025-12-09T08:45",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Pharmacy Refill Request",
+              "author": "MA",
+              "date": "2025-12-09T08:45",
+              "body": "Mail order requesting labetalol 200 mg #180. Pt 27 wks pregnant, MFM following, last PCP visit 9/16. Pended. PCP approved, 1 refill. PNV and folic acid still have refills on file."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1469 @@
+{
+  "unit": "unit-1849",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"prenatal multivitamin oral tablet\"",
+    "left text-only (not verified): lab \"Group B Streptococcus culture, vaginal-rectal\" LOINC 72607-8 not found"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001849",
+      "given": "Monica",
+      "family": "Krause",
+      "birth_date": "1994-02-10",
+      "address_line": "118 Pine Grove Road",
+      "phone": "+1-603-555-0143",
+      "email": "monica.krause@example.test",
+      "marital_status": "married",
+      "summary": "Thirty-year-old administrative assistant who joins in July 2024 with right carpal tunnel syndrome, treated with a night splint. Her second pregnancy (2025-2026) is complicated by mild gestational hypertension at 35 weeks and ends in a precipitous term vaginal delivery after an ED presentation; the hypertension resolves postpartum.",
+      "events": [
+        {
+          "id": "2024-07-08a",
+          "kind": "establish_care",
+          "start": "2024-07-08T09:00",
+          "end": "2024-07-08T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient; numbness and tingling right hand",
+          "conditions": [
+            {
+              "label": "Carpal tunnel syndrome",
+              "action": "diagnosed",
+              "onset": "2024-05-27",
+              "note": "right; clinical diagnosis"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "prenatal multivitamin oral tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "planning pregnancy"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              82
+            ],
+            "hr": 71,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 64.6,
+            "height_cm": 164.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-07-08T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 213
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-07-08T10:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Glucose",
+                  "value": 82
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 91
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-07-08T10:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 169
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 97
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 55
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 87
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 114
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-07-08T10:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-07-08T10:05",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Administrative assistant"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-07-08T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-07-08T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2024-07-08T09:00",
+              "author": "PCP",
+              "body": "New patient, 30 y/o F, admin assistant. Moving her care here; prior PCP and OB were at a group out of the area. Records release signed today.\n\nCC: R hand numbness/tingling.\n\nHPI: Started roughly six weeks ago. Thumb, index and middle finger on the right, pinky spared. Much worse at night; a couple of nights a week it wakes her up and she shakes the hand out. Notices it some days at the keyboard too. No injury, no fall on the hand, never had this before. No neck pain. Left hand fine.\n\nPMH: nothing chronic. G1P1 - term vaginal delivery 2021, uncomplicated per pt.\nPSH: none.\nMeds: prenatal vitamin daily (she and her husband would like a second child in the next year or so and her OB had her start it).\nAllergies: NKDA.\nFH: mother had preeclampsia with one of her pregnancies and a very fast labor with another.\nSH: admin assistant, mostly computer work. Never smoker, no alcohol.\n\nExam: well appearing. Neck full ROM, Spurling negative. R wrist: no swelling, no redness or warmth. Tinel's positive at the R carpal tunnel. Phalen's brings on her tingling at about 30 sec. Thenar bulk normal. Grip and APB strength 5/5 bilaterally. Reflexes 2+ and symmetric at biceps, triceps, brachioradialis. Sensation otherwise intact. L wrist Tinel/Phalen negative. Heart regular, lungs clear.\n\nA/P:\n1. R carpal tunnel syndrome - classic hx and exam, no weakness or atrophy. Neutral-position wrist splint at night, try to keep the wrist straight at the keyboard (she's going to ask about a keyboard tray and wrist rest at work). Video f/u in about 2 months; if not better or any weakness, will talk about next steps.\n2. Health maintenance - baseline CBC, CMP, lipids, TSH today; HIV and hep C screen offered and she accepts. Pap with HPV per prior records - will confirm when records come. PHQ-2 0.\n3. Preconception - continue prenatal vitamin."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Records Request",
+              "date": "2024-07-08T10:20",
+              "author": "front desk",
+              "body": "Records request faxed to prior primary care and OB group with signed release. Requested last 5 years of office notes, labs, immunizations, Pap results and delivery summary."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Low Density Lipoprotein": 92,
+              "Thyroid Stimulating Hormone": 1.6,
+              "Total Cholesterol": 168
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-07-10a",
+          "kind": "portal_message",
+          "start": "2024-07-10T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2024-07-10T16:40",
+              "author": "PCP",
+              "body": "Hi Monica - all of your bloodwork from Monday came back normal: blood counts, kidney and liver tests, thyroid and cholesterol. The HIV and hepatitis C screens were negative. Nothing to change. Let me know how the splint is going."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-24a",
+          "kind": "outside_records",
+          "start": "2024-07-24T11:15",
+          "reason": "Prior practice records received",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-09-13T10:30",
+              "text": "Specimen: cervical, liquid-based. Satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2021-03-19T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-04T15:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-25T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Practice Records",
+              "date": "2024-07-24T11:15",
+              "author": "front desk",
+              "body": "Records received from prior primary care/OB group (48 pages), scanned to chart. Includes office notes 2019-2024, immunization record, Pap/HPV 09/2022, and labor and delivery summary from 2021. Routed to PCP."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "date": "2024-07-25T08:10",
+              "author": "PCP",
+              "body": "Reviewed prior records. G1P1, SVD at term in 2021, uncomplicated pregnancy and delivery, normotensive throughout. Tdap given in that pregnancy (03/2021). COVID primary series 2021. Pap with HPV 09/2022 negative/negative - next due 2027. No chronic problems or meds other than prenatal vitamin. Immunization list updated."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-06a",
+          "kind": "portal_message",
+          "start": "2024-08-06T12:05",
+          "reason": "Question about wrist splint",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Splint question",
+              "date": "2024-08-06T12:05",
+              "author": "patient",
+              "body": "Hi, quick question. The splint is helping at night, I'm sleeping through most nights now. Should I be wearing it at work too? It makes typing kind of awkward. Thanks, Monica"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Splint question",
+              "date": "2024-08-06T17:30",
+              "author": "PCP",
+              "body": "Glad it's helping. Nights are the important part. During the day you don't need to wear it while typing - focus on keeping the wrist flat and taking short breaks. If you have a flare during the day, wearing it for a while is fine. We'll check in at the video visit in September."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "telehealth_visit",
+          "start": "2024-09-10T12:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Carpal tunnel follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-09-10T12:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit - Carpal Tunnel Follow-up",
+              "date": "2024-09-10T12:20",
+              "author": "PCP",
+              "body": "Video visit from her office, ID confirmed.\n\nR CTS f/u. Wearing the splint nightly since July. Now only woken by it rarely, maybe once in a few weeks. Daytime tingling here and there on long typing days, settles when she shakes it out or takes a break. Work got her a keyboard tray. No weakness, not dropping things.\n\nObs on video: no distress, opposes thumb to each finger without difficulty, makes full fist.\n\nA/P: R carpal tunnel syndrome, improving with conservative care. Keep the night splint, keep the ergonomic changes. Let me know if numbness becomes constant or any weakness. Flu shot this fall - nurse visit booked."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T08:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T08:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T08:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2024-10-08T08:30",
+              "author": "RN",
+              "body": "Here for flu and updated COVID vaccines. Not pregnant per pt. Screening questions negative, VIS provided. Flu 0.5 mL IM L deltoid, COVID 0.3 mL IM R deltoid. Lots recorded. Waited 15 minutes, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "annual_physical",
+          "start": "2025-07-08T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "annual_physical",
+          "start": "2025-07-22T08:40",
+          "end": "2025-07-22T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              124,
+              82
+            ],
+            "hr": 81,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 63.8
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-07-22T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-07-22T08:40",
+              "author": "PCP",
+              "body": "Annual exam. Rescheduled from earlier this month (childcare).\n\nInterval: doing well. R wrist - rarely bothers her now; she puts the splint on a night or two when it acts up after a heavy stretch at work. No daytime numbness, no weakness. She and her husband are planning to try for a second baby this fall/winter. Still on the prenatal vitamin.\n\nROS otherwise negative. PHQ-9 2.\n\nMeds: prenatal vitamin. NKDA. FH unchanged (mother - preeclampsia, rapid labor). Never smoker, no alcohol.\n\nExam: well, pleasant. HEENT normal, no thyroid enlargement or nodes. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. R wrist: Tinel's and Phalen's negative today, thenar bulk and strength normal. Skin no concerning lesions. No edema.\n\nA/P:\n1. Preventive - Pap/HPV 2022 negative, next 2027. Labs from last summer normal; no repeat needed. Flu shot in the fall. Tdap will be due in the next pregnancy.\n2. R carpal tunnel - quiet, splint as needed.\n3. Preconception - continue prenatal vitamin. Mentioned her mother's history of preeclampsia is worth telling her OB at the first prenatal visit. Call us with a positive test and we'll get her to OB.\n\nRTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T16:12"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T16:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2025-10-07T16:10",
+              "author": "MA",
+              "body": "Flu vaccine 0.5 mL IM L deltoid. Screening negative, VIS given, lot recorded. Tolerated well. Declined COVID booster today, may get it later."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-20a",
+          "kind": "nurse_visit",
+          "start": "2025-11-20T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Positive home pregnancy test",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "diagnosed",
+              "onset": "2025-10-31",
+              "note": "LMP 2025-10-17"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-11-20T11:35",
+              "resulted": "2025-11-20T11:45",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, straightforward MDM",
+              "performed": "2025-11-20T11:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "new pregnancy, LMP 2025-10-17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test",
+              "date": "2025-11-20T07:52",
+              "author": "patient",
+              "body": "Good morning! I got a positive home test today. My last period started October 17. Do I come in or go straight to an OB? My last one was too far away now, so happy to go wherever you recommend."
+            },
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Pregnancy Test",
+              "date": "2025-11-20T11:30",
+              "author": "RN",
+              "body": "Came in on lunch break after portal message. LMP 10/17/25, regular cycles, about 4 weeks 6 days by dates. Urine hCG positive in office. Feels well, no bleeding or cramping. Taking prenatal vitamin daily. Reviewed with PCP: referral placed to OB, pt aware OB office will call to schedule a new OB visit at around 8 weeks. Reminded to avoid alcohol and to call with bleeding or severe pain."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-12a",
+          "kind": "specialist_visit",
+          "start": "2025-12-12T09:30",
+          "service": "Obstetrics",
+          "reason": "New obstetric visit",
+          "vitals": {
+            "bp": [
+              124,
+              78
+            ],
+            "hr": 75,
+            "weight_kg": 65.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-12T10:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 232
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.47
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-12T10:40",
+              "results": [
+                {
+                  "test": "ABO and Rh group",
+                  "loinc": "882-1",
+                  "text": "O Positive"
+                },
+                {
+                  "test": "Blood group antibody screen",
+                  "loinc": "890-4",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Rubella virus IgG Ab",
+                  "loinc": "105055-8",
+                  "text": "Immune"
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-12T10:40",
+              "resulted": "2025-12-14T08:00",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": "No growth"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Obstetric ultrasound, first trimester",
+              "loinc": "11525-3",
+              "performed": "2025-12-12T10:00",
+              "text": "Transvaginal. Single intrauterine gestation. Crown-rump length consistent with 8 weeks 0 days. Embryonic cardiac activity present. Ovaries unremarkable. No free fluid.",
+              "conclusion": "Single live intrauterine pregnancy, 8w0d, concordant with LMP. EDD 07/24/2026."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "done",
+              "date": "2025-12-12T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics - New OB Visit",
+              "date": "2025-12-17T14:20",
+              "author": "obstetrics",
+              "body": "OBSTETRICS - NEW OBSTETRIC VISIT\nDate of visit: 12/12/2025\nRe: Monica Krause, DOB 02/10/1994\nReferring: primary care\n\nThank you for referring Ms. Krause for her second pregnancy. G2P1001. LMP 10/17/2025, sure, regular. Today 8w0d by LMP; transvaginal ultrasound shows a single live IUP with CRL matching dates. EDD 07/24/2026.\n\nOB hx: 2021 term SVD, uncomplicated, normotensive.\nPMH: right carpal tunnel syndrome, managed with a night splint.\nMeds: prenatal vitamin daily.\nAllergies: NKDA.\nFH: mother with preeclampsia; mother with a precipitous labor.\nSocial: never smoker, no alcohol, admin assistant.\n\nExam: BP within normal limits. Heart and lungs normal. Abdomen soft. Pelvic deferred today; Pap current (2022, NILM/HPV negative).\n\nPrenatal labs drawn today - see results.\n\nPlan: continue prenatal vitamin. Routine prenatal care q4 weeks. Anatomy scan at 20 weeks. Given family history, will watch BP closely through the third trimester.\n\nAttending obstetrician"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "date": "2025-12-18T07:50",
+              "author": "PCP",
+              "body": "OB new visit letter and prenatal labs reviewed. Single IUP 8w, EDD 7/24/26. Prenatal labs normal: O pos, antibody neg, rubella immune, HBsAg/HIV/RPR/HCV negative, urine culture neg. Referral closed."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-06a",
+          "kind": "specialist_visit",
+          "start": "2026-03-06T13:00",
+          "service": "Obstetrics",
+          "reason": "Anatomy ultrasound, 20 weeks",
+          "vitals": {
+            "bp": [
+              121,
+              76
+            ],
+            "weight_kg": 68.1
+          },
+          "reports": [
+            {
+              "study": "Obstetric ultrasound, detailed anatomy",
+              "loinc": "11525-3",
+              "performed": "2026-03-06T13:00",
+              "text": "Transabdominal. Single live intrauterine pregnancy, cephalic. Fetal heart rate normal. Biometry concordant with 20w0d by dates. Fetal anatomy survey complete and normal: head, face, spine, heart (four-chamber and outflow tracts), abdominal wall, stomach, kidneys, bladder, limbs. Placenta posterior, no previa. Amniotic fluid normal. Cervix long and closed.",
+              "conclusion": "Normal anatomy survey at 20 weeks. Growth appropriate for dates."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics - Anatomy Ultrasound",
+              "date": "2026-03-10T09:05",
+              "author": "obstetrics",
+              "body": "Detailed anatomy ultrasound performed 03/06/2026 at 20 weeks 0 days for Monica Krause. Normal survey, growth concordant with dates, posterior placenta without previa. Routine prenatal care continues. Copy to primary care."
+            }
+          ],
+          "state": {
+            "weight_kg": 68.6
+          },
+          "measure": [
+            "bp",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-01a",
+          "kind": "specialist_visit",
+          "start": "2026-05-01T10:15",
+          "service": "Obstetrics",
+          "reason": "28-week prenatal visit",
+          "vitals": {
+            "bp": [
+              110,
+              81
+            ],
+            "hr": 71,
+            "weight_kg": 72.3
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-01T09:10",
+              "results": [
+                {
+                  "test": "Glucose, 1 hour post 50 g glucose challenge",
+                  "loinc": "1504-0",
+                  "unit": "mg/dL",
+                  "value": 112
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-01T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 223
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.01
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2026-05-01T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics - 28 Week Visit",
+              "date": "2026-05-05T15:30",
+              "author": "obstetrics",
+              "body": "PRENATAL VISIT 05/01/2026 - 28w0d\nMonica Krause, G2P1001, EDD 07/24/2026\n\nFeeling well. Good fetal movement. No contractions, bleeding or leakage. No headaches or visual change.\nBP normal today. Fundal height appropriate. FHT normal.\n1-hour glucose challenge 112 mg/dL - normal, no GTT needed. CBC normal.\nTdap given today, L deltoid.\nRight wrist has not been an issue; still has the splint at home if needed.\n\nPlan: q2 week visits from 30 weeks, then weekly from 36. BP at every visit given her mother's history.\n\nObstetrics"
+            }
+          ],
+          "state": {
+            "weight_kg": 71.9,
+            "labs": {
+              "Hemoglobin": 12.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-19a",
+          "kind": "specialist_visit",
+          "start": "2026-06-19T08:50",
+          "end": "2026-06-19T13:10",
+          "service": "Obstetrics",
+          "reason": "Prenatal visit, 35 weeks; elevated blood pressure",
+          "conditions": [
+            {
+              "label": "Gestational hypertension",
+              "action": "diagnosed",
+              "onset": "2026-06-19",
+              "note": "mild, without proteinuria; 35w0d",
+              "icd10": "O13.3"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              142,
+              92
+            ],
+            "hr": 71,
+            "weight_kg": 75.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-06-19T09:20",
+              "results": [
+                {
+                  "test": "Protein/Creatinine ratio, urine",
+                  "loinc": "2890-2",
+                  "unit": "mg/mg",
+                  "value": 0.12
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-19T09:20",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 208
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.06
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-19T09:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.69
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics - Gestational Hypertension",
+              "date": "2026-06-23T11:45",
+              "author": "obstetrics",
+              "body": "OBSTETRICS - PRENATAL VISIT\nDate: 06/19/2026, 35w0d\nRe: Monica Krause, DOB 02/10/1994. cc: primary care\n\nRoutine visit. BP on arrival 142/92. Asymptomatic: no headache, no visual changes, no RUQ or epigastric pain. Good fetal movement. Kept in the office for observation and labs; repeat BP four hours later 140/90.\n\nUrine protein/creatinine ratio 0.12. Platelets, creatinine, AST and ALT all normal.\n\nAssessment: gestational hypertension, mild range, no proteinuria and no severe features. Her mother had preeclampsia.\n\nPlan:\n- Diet changes reviewed: less sodium and processed food, regular meals.\n- Home BP cuff, check twice daily, call for 160/110 or higher, headache, vision change or RUQ pain.\n- Weekly visits with BP and labs as needed.\n- Delivery at 37 weeks: induction scheduled for 07/08/2026 (37w5d).\n- Preeclampsia warning signs reviewed; she will go to labor and delivery with any of them, or with labor.\n\nObstetrics"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "date": "2026-06-23T17:10",
+              "author": "PCP",
+              "body": "OB note 6/19 reviewed: gestational hypertension at 35w, 142/92 and 140/90, UPCR 0.12, labs normal. Diet, home BP, weekly OB visits, IOL booked 7/8. Added to problem list. Sent her a note."
+            }
+          ],
+          "state": {
+            "bp": [
+              138,
+              88
+            ],
+            "weight_kg": 74.6
+          },
+          "measure": [
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-24a",
+          "kind": "portal_message",
+          "start": "2026-06-24T08:15",
+          "reason": "Gestational hypertension",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Checking in",
+              "date": "2026-06-24T08:15",
+              "author": "PCP",
+              "body": "Hi Monica - I saw the note from your OB about the blood pressure. That plan sounds right to me, and the urine and blood tests were reassuring. Keep doing the home checks and follow their instructions on when to go in. We're here if you need anything in the meantime."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Checking in",
+              "date": "2026-06-24T12:40",
+              "author": "patient",
+              "body": "Thank you! Home numbers have been about the same as at the office. Feeling fine. Induction is the 8th so the countdown is on."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-26a",
+          "kind": "specialist_visit",
+          "start": "2026-06-26T09:00",
+          "service": "Obstetrics",
+          "reason": "Prenatal visit, 36 weeks",
+          "vitals": {
+            "bp": [
+              140,
+              94
+            ],
+            "hr": 71,
+            "weight_kg": 74.2
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-06-26T09:20",
+              "resulted": "2026-06-28T10:00",
+              "results": [
+                {
+                  "test": "Group B Streptococcus culture, vaginal-rectal",
+                  "loinc": "72607-8",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics - 36 Week Visit",
+              "date": "2026-06-30T10:20",
+              "author": "obstetrics",
+              "body": "Prenatal visit 06/26/2026, 36w0d. Gestational hypertension, mild range, asymptomatic. Home readings stable. Fundal height appropriate, FHT normal, vertex. GBS swab collected - negative. Induction remains 07/08. Labor precautions reviewed.\n\nObstetrics"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-05a",
+          "kind": "ed_visit",
+          "start": "2026-07-05T06:20",
+          "end": "2026-07-05T07:05",
+          "service": "Emergency Medicine",
+          "reason": "Contractions at term",
+          "vitals": [
+            {
+              "time": "2026-07-05T06:24",
+              "bp": [
+                138,
+                88
+              ],
+              "hr": 88,
+              "temp_c": 37.1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-07-05T06:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-07-08T09:40",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT RECORD\nDate of service: 07/05/2026, arrival 06:20\nPatient: Monica Krause, 32F\n\nCC: contractions.\n\nHPI: G2P1 at 37w2d (EDD 07/24) with regular contractions for about four hours, now every five minutes, along with low back pain. No vaginal bleeding. No fluid leaking. Pregnancy has been followed by her OB and is notable for mild gestational hypertension without proteinuria, which has been managed with diet. Induction had been planned for later this week. Also has a history of carpal tunnel syndrome. First pregnancy was uncomplicated with a term vaginal birth.\n\nMeds: prenatal vitamin daily. Allergies: NKDA.\nFH: mother with preeclampsia and a precipitous labor.\nSH: never smoker, no alcohol, administrative assistant.\n\nVitals: BP 138/88, HR 88, T 37.1 C (98.8 F).\n\nExam: uncomfortable with contractions, otherwise well. Fundal height consistent with dates. Uterus irritable, contractions palpable about every 5 min. Fetal heart tones 140 bpm, 142 on recheck. Sterile speculum: cervical os closed, no blood, no pooling of fluid. No headache, no RUQ tenderness.\n\nED course: term labor in a patient with gestational hypertension. Discussed with OB on call; patient taken to labor and delivery by wheelchair at 07:05.\n\nDisposition: L&D.\nEmergency medicine physician"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-05b",
+          "kind": "hospital_admission",
+          "start": "2026-07-05T07:05",
+          "end": "2026-07-07T11:30",
+          "service": "Obstetrics",
+          "reason": "Labor at term",
+          "conditions": [
+            {
+              "label": "Precipitate labor",
+              "action": "diagnosed",
+              "onset": "2026-07-05",
+              "icd10": "O62.3"
+            },
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "resolved"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-07-05T10:30",
+              "bp": [
+                136,
+                86
+              ],
+              "hr": 84,
+              "temp_c": 36.9
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-05T07:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 231
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.16
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-07-05T07:05"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-07-07T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2026-07-08T09:45",
+              "author": "obstetrics",
+              "body": "OBSTETRIC DISCHARGE SUMMARY\nAdmitted 07/05/2026 07:05 from the emergency department. Discharged 07/07/2026.\nPatient: Monica Krause, G2P2002\n\nAdmission diagnosis: term labor, 37w2d; gestational hypertension, mild, without proteinuria.\nDischarge diagnoses: precipitous labor; spontaneous vaginal delivery at term; gestational hypertension.\n\nCourse: arrived on L&D contracting regularly. Cervical change was very rapid after arrival and she delivered a healthy infant by spontaneous vaginal delivery at 08:22, about two hours after she came into the ED. Labor was recorded as precipitous. Perineum intact. Placenta delivered spontaneously and complete. Blood loss within normal limits. GBS negative, no antibiotics needed. Infant went to the newborn nursery with routine care.\n\nPostpartum: blood pressure highest 136/86, no antihypertensive needed. No headache or visual symptoms. Ambulating, voiding, tolerating diet. CBC on admission normal.\n\nDischarge medications: prenatal vitamin daily.\nAllergies: NKDA.\n\nFollow-up: BP check in one week (primary care has agreed to see her); postpartum visit with OB at 6 weeks. Return for BP 160/110 or higher, severe headache, vision change, chest pain, shortness of breath, heavy bleeding or fever.\n\nObstetrics"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "date": "2026-07-08T13:30",
+              "author": "PCP",
+              "body": "ED record and L&D discharge summary received and reviewed. Delivered 7/5 at 37w2d, precipitous labor, SVD, healthy baby. Postpartum BPs no higher than 136/86, no meds. Seeing her Monday for BP check. Pregnancy closed on the problem list; precipitous labor added; gestational hypertension stays until OB postpartum visit."
+            }
+          ],
+          "state": {
+            "bp": [
+              130,
+              82
+            ],
+            "weight_kg": 70.2
+          }
+        },
+        {
+          "id": "2026-07-13a",
+          "kind": "office_visit",
+          "start": "2026-07-13T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum blood pressure check",
+          "conditions": [
+            {
+              "label": "Precipitate labor",
+              "action": "resolved",
+              "note": "delivered 2026-07-05",
+              "icd10": "O62.3"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              82
+            ],
+            "hr": 72,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 69.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-07-13T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Postpartum BP Check",
+              "date": "2026-07-13T10:40",
+              "author": "PCP",
+              "body": "8 days postpartum. Here for the BP check the hospital asked for. Baby came with her, doing well.\n\nDelivery 7/5 at 37w2d - went to the ED with contractions, was sent upstairs and delivered within about two hours of arriving. SVD, intact perineum, no complications. Mild gestational hypertension from 35 weeks, managed with diet; no meds needed after delivery.\n\nNow: feels good, tired in the expected way. No headache, no vision changes, no chest pain or shortness of breath, no RUQ pain, no leg swelling. Bleeding tapering. Sleeping when the baby sleeps, good support at home. PHQ-9 3.\nHome BP readings have been in the normal range.\n\nMeds: prenatal vitamin. NKDA.\n\nExam: BP 128/82. Well appearing. Heart regular, lungs clear. Abdomen soft, fundus firm below the umbilicus, nontender. Calves soft, no edema. R wrist: no complaints.\n\nA/P:\n1. Gestational hypertension, postpartum - BP normal range off meds. Keep home checks a few times a week for the next month; call for 150/100 or higher, severe headache or vision changes. OB postpartum visit 8/17 - will leave it on the list until then.\n2. S/p precipitous term vaginal delivery - recovering well. Mood screen reassuring; reviewed signs of postpartum depression to watch for.\n3. R carpal tunnel - quiet.\n4. Continue prenatal vitamin while recovering."
+            }
+          ],
+          "state": {
+            "bp": [
+              126,
+              80
+            ],
+            "weight_kg": 68.9
+          },
+          "measure": [
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-17a",
+          "kind": "specialist_visit",
+          "start": "2026-08-17T14:00",
+          "service": "Obstetrics",
+          "reason": "Postpartum visit",
+          "conditions": [
+            {
+              "label": "Gestational hypertension",
+              "action": "resolved",
+              "note": "resolved postpartum",
+              "icd10": "O13.3"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              76
+            ],
+            "hr": 68,
+            "weight_kg": 67.8
+          },
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics - Postpartum Visit",
+              "date": "2026-08-20T10:10",
+              "author": "obstetrics",
+              "body": "POSTPARTUM VISIT 08/17/2026 (6 weeks)\nMonica Krause, G2P2002, s/p precipitous SVD 07/05/2026 at 37w2d.\n\nRecovering well. Bleeding stopped. Mood good; depression screening negative. Infant thriving.\nBP 118/76. Home readings normal for several weeks.\nExam: abdomen soft, uterus involuted. Perineum healed, pelvic exam normal.\n\nAssessment: normal postpartum course. Gestational hypertension resolved.\nPlan: return to routine gynecologic care; Pap due 2027. History of gestational hypertension raises long-term cardiovascular risk - recommend yearly BP and periodic lipid screening with primary care.\n\nObstetrics"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "date": "2026-08-20T16:45",
+              "author": "PCP",
+              "body": "OB 6-week postpartum note reviewed. BP 118/76, gestational hypertension resolved - updated problem list. Pap 2027. Will reinforce yearly BP and lipids at her physical."
+            }
+          ],
+          "state": {
+            "bp": [
+              116,
+              74
+            ],
+            "weight_kg": 67.1
+          },
+          "measure": [
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-21a",
+          "kind": "portal_message",
+          "start": "2026-08-21T09:20",
+          "reason": "Follow-up after postpartum visit",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "After your postpartum visit",
+              "date": "2026-08-21T09:20",
+              "author": "PCP",
+              "body": "Hi Monica - I got the note from your OB visit. Your blood pressure is back to normal and the gestational hypertension is considered resolved, which is great. Having had high blood pressure in pregnancy means we'll keep a closer eye on your blood pressure and cholesterol over the years, so let's check them at your physical. I see you're due for that this fall - want us to book it?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: After your postpartum visit",
+              "date": "2026-08-21T13:05",
+              "author": "patient",
+              "body": "Yes please! Late September works best, before I go back to work. Morning if possible."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling",
+              "date": "2026-08-21T14:10",
+              "author": "front desk",
+              "body": "Booked annual physical 9/29 at 9:00 per pt request in portal. Confirmed by phone."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-29a",
+          "kind": "annual_physical",
+          "start": "2026-09-29T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Gestational hypertension|O13.3": {
+        "code": "O13.3",
+        "display": "Gestational [pregnancy-induced] hypertension without significant proteinuria, third trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Precipitate labor|O62.3": {
+        "code": "O62.3",
+        "display": "Precipitate labor",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "ABO and Rh group": {
+        "code": "882-1",
+        "display": "ABO and Rh group [Type] in Blood",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Blood group antibody screen": {
+        "code": "890-4",
+        "display": "Blood group antibody screen [Presence] in Serum or Plasma",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Glucose, 1 hour post 50 g glucose challenge": {
+        "code": "1504-0",
+        "display": "Glucose [Mass/volume] in Serum or Plasma --1 hour post 50 g glucose PO",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Protein/Creatinine ratio, urine": {
+        "code": "2890-2",
+        "display": "Protein/Creatinine [Mass Ratio] in Urine",
+        "unit": "mg/mg",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Rubella virus IgG Ab": {
+        "code": "105055-8",
+        "display": "Rubella virus IgG Ab [Presence] in Specimen",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Obstetric ultrasound, detailed anatomy": {
+        "code": "11525-3",
+        "display": "US for pregnancy",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Obstetric ultrasound, first trimester": {
+        "code": "11525-3",
+        "display": "US for pregnancy",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"prenatal multivitamin oral tablet\"",
+      "lab \"Group B Streptococcus culture, vaginal-rectal\" LOINC 72607-8 not found"
+    ]
+  }
+}

@@ -1,0 +1,268 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001738",
+      "given": "Christine",
+      "family": "Hartley",
+      "birth_date": "1991-07-14",
+      "address_line": "41 Orchard Hill Lane, Apt 3",
+      "phone": "+1-413-555-0128",
+      "email": "christine.hartley@example.test",
+      "marital_status": "single",
+      "summary": "Elementary school teacher with long-standing type 1 diabetes and Hashimoto hypothyroidism who joins in 2022. Alopecia areata is diagnosed by dermatology in 2024, she is admitted with DKA during a viral URI in February 2025, and in October 2025 she has idiopathic acute transverse myelitis with a good recovery through rehab and PT.",
+      "events": [
+        {
+          "id": "2022-08-17a",
+          "kind": "establish_care",
+          "start": "2022-08-17T09:30",
+          "end": "2022-08-17T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care, type 1 diabetes",
+          "conditions": [
+            {"label": "Type 1 diabetes mellitus without complications", "action": "history"},
+            {"label": "Hashimoto thyroiditis", "action": "history"}
+          ],
+          "medications": [
+            {"drug": "3 ML insulin glargine 100 UNT/ML Pen Injector", "action": "historical", "sig": "Inject 18 units under the skin at bedtime", "dose": {"value": 18, "unit": "U"}, "frequency": "NIGHTLY", "route": "Subcutaneous", "course": "chronic", "reason": "Type 1 diabetes"},
+            {"drug": "3 ML insulin lispro 100 UNT/ML Pen Injector", "action": "historical", "sig": "Inject under the skin with meals: 1 unit per 12 g carbohydrate plus correction scale", "frequency": "TID with meals", "route": "Subcutaneous", "course": "chronic", "reason": "Type 1 diabetes"},
+            {"drug": "levothyroxine sodium 0.088 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily on an empty stomach", "dose": {"value": 88, "unit": "ug"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hashimoto hypothyroidism"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 62.0, "height_cm": 165.0, "labs": {"Hemoglobin A1c": 7.1, "Thyroid Stimulating Hormone": 2.1, "Microalbumin/Creatinine Ratio": 9}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": null, "collected": "2022-08-17T10:40", "results": [{"test": "Hemoglobin A1c"}, {"test": "Thyroid Stimulating Hormone"}, {"test": "Microalbumin/Creatinine Ratio"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-08-17T10:40", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Lipid Panel", "collected": "2022-08-17T10:40", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-08-17T10:40", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per month"},
+            {"item": "Occupation", "value": "Elementary school teacher"}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2022-08-17T10:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2022-08-17T12:15", "body": "31 y/o woman, elementary school teacher, transferring care from her prior primary care office; wanted a practice where she can reach the doctor directly. Records requested.\n\nType 1 diabetes, long-standing. On Lantus 18 units at bedtime and Humalog with meals, counting carbs at 1 unit per 12 g with a correction scale. Checks fingersticks 4-5 times a day. No severe lows, no ED visits for sugars that she can recall. Last eye exam about a year ago, told no retinopathy.\n\nHashimoto hypothyroidism on levothyroxine 88 mcg, takes it first thing with water. Feels well on it.\n\nPMH: as above. PSH: wisdom teeth out at 18.\nMeds: insulin glargine 18 u qHS; insulin lispro per carb ratio 1:12 + correction; levothyroxine 88 mcg daily.\nAllergies: NKDA.\nFH: mother Hashimoto's. Father type 2 DM. Maternal aunt with RA. Sister has celiac disease.\nSH: lives in Amherst with a roommate. Teaches 2nd grade. Never smoked. A drink once or twice a month. No drugs. Walks most evenings.\n\nROS: negative except as above. No polyuria, no numbness in the feet, no vision change.\n\nExam: vitals as charted. Well appearing. HEENT unremarkable, thyroid smooth, not enlarged, no nodules. No adenopathy. Heart regular rate and rhythm, no murmur. Lungs clear. Abdomen soft, no tenderness; injection sites in the abdomen without lipohypertrophy. Extremities no edema. Feet: skin intact, pulses 2+ DP/PT, monofilament sensation intact bilaterally. Scalp and skin normal.\n\nPHQ-2 0.\n\nA/P\n1. Type 1 diabetes: A1c, CMP, urine albumin/creatinine, lipids today. Continue current regimen. Eye exam due — she will book with her optometrist.\n2. Hashimoto hypothyroidism: TSH today, continue 88 mcg.\n3. Health maintenance: flu shot this fall at a nurse visit. Prior office records for Pap and vaccine history.\nReturn in 3 months for diabetes follow-up."}
+          ]
+        },
+        {
+          "id": "2022-08-19a",
+          "kind": "portal_message",
+          "start": "2022-08-19T14:05",
+          "documents": [
+            {"type": "Patient Communication", "title": "Lab results", "author": "PCP", "date": "2022-08-19T14:05", "body": "Hi Christine, your labs from Wednesday are in. A1c is 7.1, close to where your prior office had you. Thyroid level is normal on the 88 mcg, kidney function and urine protein are normal, cholesterol is good, blood counts are normal. No changes. See you in November."}
+          ]
+        },
+        {
+          "id": "2022-09-06a",
+          "kind": "outside_records",
+          "start": "2022-09-06T11:20",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care office", "author": "MA", "date": "2022-09-06T11:20", "body": "Outside records received (38 pages) and scanned to media.\n\nAbstracted for the chart:\n- Problems: type 1 diabetes mellitus; Hashimoto hypothyroidism.\n- Medications: insulin glargine 18 units at bedtime; insulin lispro with meals by carb ratio; levothyroxine 88 mcg daily.\n- Allergies: NKDA.\n- Cervical cytology 2021: negative for intraepithelial lesion or malignancy.\n- Immunizations: childhood series complete including hepatitis B x3 and MMR x2. Last Td/Tdap date not documented.\n- A1c values over the past two years in the 7s.\n\nForwarded to PCP for review."}
+          ]
+        },
+        {
+          "id": "2022-09-21a",
+          "kind": "pharmacy",
+          "start": "2022-09-21T08:50",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request", "author": "MA", "date": "2022-09-21T08:50", "body": "Pharmacy fax requesting levothyroxine 88 mcg, now under our office. Last TSH 8/17 normal. Sent 90-day supply with 3 refills per PCP."}
+          ]
+        },
+        {
+          "id": "2022-10-12a",
+          "kind": "nurse_visit",
+          "start": "2022-10-12T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-12T15:45"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-12T15:45"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit — Influenza Vaccine", "author": "RN", "date": "2022-10-12T15:55", "body": "In after school for flu vaccine. No fever today, no prior reactions. Influenza quadrivalent 0.5 mL IM left deltoid. VIS provided. Waited 15 min, no issues."}
+          ]
+        },
+        {
+          "id": "2022-10-24a",
+          "kind": "portal_message",
+          "start": "2022-10-24T19:12",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-22T10:00"}],
+          "documents": [
+            {"type": "Patient Communication", "title": "COVID booster", "author": "patient", "date": "2022-10-24T19:12", "body": "Hello — just letting you know I got the new bivalent COVID booster at the pharmacy on Saturday (Pfizer). Sore arm and a little tired Sunday, fine now."},
+            {"type": "Patient Communication", "title": "RE: COVID booster", "author": "MA", "date": "2022-10-25T08:31", "body": "Thanks Christine, I've added it to your immunization record."}
+          ]
+        },
+        {
+          "id": "2022-11-16a",
+          "kind": "office_visit",
+          "start": "2022-11-16T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.3}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2022-11-16T16:20", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2022-11-16T16:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes Follow-up", "author": "PCP", "date": "2022-11-16T17:30", "body": "S: 3-month DM f/u. Busy start to the school year; snacking more in the afternoons and not always bolusing for it. Fasting sugars 120s-150s on her meter log. One low to 58 after a long walk, treated with juice. No numbness or vision change.\nMeds: glargine 18 u qHS, lispro 1:12 + correction, levothyroxine 88 mcg.\n\nO: vitals as charted. Alert, well. Heart regular, lungs clear. Injection sites ok.\n\nA/P: T1DM. A1c today. Talked about pre-bolusing for the afternoon snack or picking low-carb options. Keep glargine at 18 for now — fastings are acceptable. Reviewed treating lows, carrying glucose tabs on walks. F/u 3 months."}
+          ]
+        },
+        {
+          "id": "2022-11-18a",
+          "kind": "portal_message",
+          "start": "2022-11-18T12:40",
+          "documents": [
+            {"type": "Patient Communication", "title": "A1c result", "author": "PCP", "date": "2022-11-18T12:40", "body": "A1c came back 7.4 — a touch up from August, which fits the afternoon snacks we talked about. Nothing to change in your doses. Let's recheck in February."}
+          ]
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "pharmacy",
+          "start": "2023-01-10T10:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Prior authorization — insulin pens", "author": "MA", "date": "2023-01-10T10:15", "body": "New plan year. Pharmacy says Humalog KwikPen needs PA renewal. Submitted with T1DM diagnosis and current regimen. Approved through 12/31/2023. Pharmacy notified, pt notified via portal."}
+          ]
+        },
+        {
+          "id": "2023-02-22a",
+          "kind": "office_visit",
+          "start": "2023-02-22T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.0}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2023-02-22T16:30", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-02-22T16:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes Follow-up", "author": "PCP", "date": "2023-02-22T17:05", "body": "Doing better with the afternoon snack — switched to cheese and nuts on school days. Meter average down a bit. No lows below 60 since November. Fasting 110s-140s.\n\nExam: BP and weight as charted. Well appearing. No lipohypertrophy.\n\nT1DM — A1c today. No dose changes. Hypothyroid — stable, TSH due in August. Reminded about the eye exam; she has an appointment next month. Back in 3 months."}
+          ]
+        },
+        {
+          "id": "2023-03-20a",
+          "kind": "outside_records",
+          "start": "2023-03-20T13:10",
+          "documents": [
+            {"type": "Outside Records", "title": "Diabetic eye examination report", "author": "optometry", "date": "2023-03-20T13:10", "body": "Diabetic eye examination\nDate of exam: 03/14/2023\nPatient: Christine Hartley\n\nHistory: type 1 diabetes. No visual complaints.\nVisual acuity corrected 20/20 OD and OS. IOP normal OU. Anterior segment normal.\nDilated fundus exam: no diabetic retinopathy OU. No macular edema. Discs healthy.\n\nImpression: type 1 diabetes without retinopathy.\nRecommendation: repeat dilated exam in 12 months.\n\nThank you for allowing us to participate in her care."}
+          ]
+        },
+        {
+          "id": "2023-05-24a",
+          "kind": "office_visit",
+          "start": "2023-05-24T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "cancelled",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Appointment cancelled", "author": "front desk", "date": "2023-05-23T07:55", "body": "Pt called to cancel tomorrow's 3:45 — end-of-year school events. Rebooked as a video visit 6/7 with labs beforehand. Lab order already in."}
+          ]
+        },
+        {
+          "id": "2023-06-02a",
+          "kind": "lab_only",
+          "start": "2023-06-02T07:20",
+          "state": {"labs": {"Hemoglobin A1c": 7.2}},
+          "labs": [
+            {"panel": null, "collected": "2023-06-02T07:20", "results": [{"test": "Hemoglobin A1c"}]}
+          ]
+        },
+        {
+          "id": "2023-06-07a",
+          "kind": "telehealth_visit",
+          "start": "2023-06-07T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up (video)",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2023-06-07T16:50"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit — Diabetes", "author": "PCP", "date": "2023-06-07T17:15", "body": "Video, patient at home, identity verified, consented to video care.\n\nA1c 7.4 from 6/2. She thinks the last few weeks of school were chaotic — lunch on the run, some missed lunch boluses that she corrected for later. Summer is coming and she does better with routine. No lows needing help. No new symptoms.\n\nPlan: no change in doses. Physical in August with yearly labs. Message us with any meter patterns over the summer."}
+          ]
+        },
+        {
+          "id": "2023-08-16a",
+          "kind": "annual_physical",
+          "start": "2023-08-16T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"labs": {"Hemoglobin A1c": 6.9, "Tissue Transglutaminase IgA": 0.8}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": null, "collected": "2023-08-16T09:50", "results": [{"test": "Hemoglobin A1c"}, {"test": "Thyroid Stimulating Hormone"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "Tissue Transglutaminase IgA"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-08-16T09:50", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Lipid Panel", "collected": "2023-08-16T09:50", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-08-16T09:50", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2023-08-16T09:40"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2023-08-16T09:42"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-08-16T09:35"},
+            {"procedure": "Immunization administration", "performed": "2023-08-16T09:42"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-08-16T11:40", "body": "Annual exam before school starts. Good summer — hiking, sleeping well, sugars steadier. No lows needing assistance.\n\nMeds: glargine 18 u qHS; lispro 1:12 + correction; levothyroxine 88 mcg daily. NKDA.\nFH unchanged (mother Hashimoto's, father T2DM, maternal aunt RA, sister celiac).\nSH: teaching 2nd grade again this fall. Never smoker, 1-2 drinks a month.\n\nROS: negative for chest pain, dyspnea, GI symptoms, numbness, weight change, hair or skin change.\n\nExam: vitals as charted. General well. Eyes, ears, oropharynx normal. Neck supple; thyroid normal size, no nodules. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender. Skin clear. Neuro grossly normal. Diabetic foot exam: skin intact, no calluses, DP/PT 2+, monofilament intact 10/10 sites bilaterally.\n\nPHQ-2: 0.\n\nAssessment/Plan\n- T1DM: A1c, CMP, lipids, urine albumin/creatinine. Continue regimen.\n- Hashimoto: TSH.\n- Celiac screen given T1DM and her sister's celiac: tTG-IgA today.\n- One-time HIV and hepatitis C screening — she agrees.\n- Tdap today (last date unknown). PCV20 today given diabetes.\n- Pap: last 2021 normal, due 2024.\n- Flu shot in October.\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2023-08-18a",
+          "kind": "portal_message",
+          "start": "2023-08-18T15:30",
+          "documents": [
+            {"type": "Patient Communication", "title": "Physical labs", "author": "PCP", "date": "2023-08-18T15:30", "body": "Christine — all good news from Wednesday. A1c 6.8, your best since joining us. Thyroid normal, kidneys and urine protein normal, cholesterol fine. The celiac antibody screen is negative. HIV and hepatitis C screens are negative. Enjoy the last week of summer."}
+          ]
+        },
+        {
+          "id": "2023-10-04a",
+          "kind": "nurse_visit",
+          "start": "2023-10-04T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-04T15:55"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-04T15:55"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit — Influenza Vaccine", "author": "RN", "date": "2023-10-04T16:05", "body": "Flu vaccine. Feeling well, afebrile. Influenza quadrivalent 0.5 mL IM right deltoid, lot recorded. VIS given. No reaction after 15 minutes."}
+          ]
+        },
+        {
+          "id": "2023-10-16a",
+          "kind": "portal_message",
+          "start": "2023-10-16T20:02",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-14T11:30"}],
+          "documents": [
+            {"type": "Patient Communication", "title": "Updated COVID shot", "author": "patient", "date": "2023-10-16T20:02", "body": "FYI I had the updated COVID vaccine at the pharmacy this past Saturday. No problems."},
+            {"type": "Patient Communication", "title": "RE: Updated COVID shot", "author": "MA", "date": "2023-10-17T08:12", "body": "Recorded — thank you!"}
+          ]
+        },
+        {
+          "id": "2023-11-29a",
+          "kind": "office_visit",
+          "start": "2023-11-29T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.4}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2023-11-29T16:15", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-11-29T16:05"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes Follow-up", "author": "PCP", "date": "2023-11-29T17:20", "body": "DM f/u. Halloween and parent conferences — more grazing, a few post-dinner readings over 250. Fastings still 120s-140s. No lows. Feels fine.\n\nVitals as charted. Exam unremarkable; sites ok.\n\nT1DM: A1c today. Talked through bolusing for grazing (smaller boluses, or a set snack). Holiday season ahead — she knows the drill. No dose changes. RTC late Feb, video is fine."}
+          ]
+        },
+        {
+          "id": "2023-12-18a",
+          "kind": "portal_message",
+          "start": "2023-12-18T07:05",
+          "documents": [
+            {"type": "Patient Communication", "title": "Humalog refill", "author": "patient", "date": "2023-12-18T07:05", "body": "Hi, I'm down to my last box of Humalog pens and the pharmacy says I'm out of refills. Could you send a new prescription before the break? Thanks!"},
+            {"type": "Patient Communication", "title": "RE: Humalog refill", "author": "PCP", "date": "2023-12-18T12:20", "body": "Sent — same dosing, a year of refills. Your A1c from November was 7.6, a little higher with the season; nothing to change. Happy holidays."}
+          ]
+        }
+      ]
+    }
+  ]
+}

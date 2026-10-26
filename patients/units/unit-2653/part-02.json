@@ -1,0 +1,254 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002653",
+      "events": [
+        {
+          "id": "2022-03-10a",
+          "kind": "pharmacy",
+          "start": "2022-03-10T11:14",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill Request",
+              "author": "MA",
+              "date": "2022-03-10T11:14",
+              "body": "Electronic refill request from pharmacy for albuterol HFA 90 mcg inhaler, no refills remaining. Last physical 8/2021. Pended to PCP."
+            },
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill Approved",
+              "author": "PCP",
+              "date": "2022-03-10T13:02",
+              "body": "Approved albuterol HFA, 1 inhaler, 2 refills."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-08a",
+          "kind": "annual_physical",
+          "start": "2022-09-08T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2022-09-08T07:50"}
+          ],
+          "orders": [
+            {"id": "pft-2022", "action": "placed", "order": "Pulmonary function test, spirometry pre and post bronchodilator", "category": "procedure", "to": "Pulmonology", "reason": "Asthma evaluation"},
+            {"id": "pulm-referral-2022", "action": "placed", "order": "Pulmonology referral", "category": "referral", "to": "Pulmonology", "reason": "Asthma evaluation"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-09-08T07:50",
+              "body": "CPE, early before school.\n\nNo new issues. Asthma: still using albuterol a few times a week, with lifting/workouts and in cold air, same pattern as before. He's never had formal breathing tests as an adult and has only ever used a rescue inhaler. Would like to see someone about it but it isn't urgent for him.\n\nMeds: albuterol prn.\nAllergies: NKDA. Env: dust mites, seasonal pollen.\nSH: shop teacher, warehouse part time. Never smoker, 1-2 drinks/wk.\n\nExam: Well. HEENT normal. Neck no nodes. Lungs clear, no wheeze, normal expiration. Heart rrr. Abd soft. Ext no edema. Skin normal.\nPHQ-2 = 0.\n\nAssessment/Plan\n1. Asthma, mild persistent. Ordered spirometry with bronchodilator through the pulmonary group's lab and placed a pulmonology referral for evaluation. Their office will call him to schedule. Albuterol continued.\n2. HM: labs from 2020 normal, nothing due. Flu shot next month at a nurse visit. Updated Covid booster when available.\n\nRTC 1 yr."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-06a",
+          "kind": "nurse_visit",
+          "start": "2022-10-06T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-06T15:25"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-06T15:25"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "author": "RN",
+              "date": "2022-10-06T15:20",
+              "body": "Quadrivalent influenza 0.5 mL IM to left deltoid. No contraindications on screening. Pt states he is going to the pharmacy for the bivalent Covid booster later this month. Asked whether pulmonology had called him; he hasn't heard yet, gave him their scheduling number."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-03a",
+          "kind": "portal_message",
+          "start": "2022-11-03T21:15",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-21T17:10"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Booster done",
+              "author": "patient",
+              "date": "2022-11-03T21:15",
+              "body": "Got the new Covid booster 10/21 at the pharmacy. Arm sore for a day, that was it."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Booster done",
+              "author": "MA",
+              "date": "2022-11-04T08:42",
+              "body": "Recorded. Thanks for letting us know."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-19a",
+          "kind": "portal_message",
+          "start": "2023-01-19T18:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Breathing test",
+              "author": "patient",
+              "date": "2023-01-19T18:30",
+              "body": "Hi, the lung place called me back finally but the first opening for the breathing test is April. Is that ok or should I push for sooner? Nothing has changed, just want to make sure."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Breathing test",
+              "author": "PCP",
+              "date": "2023-01-20T07:55",
+              "body": "April is fine since nothing has changed. If you start needing the inhaler more, waking up at night, or it isn't helping, let me know and I'll see you sooner."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-14a",
+          "kind": "outside_records",
+          "start": "2023-04-14T10:05",
+          "reports": [
+            {
+              "study": "Spirometry",
+              "performed": "2023-04-12T08:30",
+              "issued": "2023-04-13T16:20",
+              "text": "PULMONARY FUNCTION LABORATORY\nTest date: 04/12/2023\nReferring: primary care\nIndication: asthma evaluation\nPatient: 34-year-old male, never smoker. Height 180.3 cm. Albuterol withheld morning of test.\n\nSpirometry, pre and post bronchodilator (albuterol 4 puffs via spacer):\n- FVC: pre 5.18 L (98% predicted); post 5.30 L\n- FEV1: pre 3.52 L (82% predicted); post 4.02 L, change +500 mL (+14%)\n- FEV1/FVC: pre 0.68; post 0.76\n\nTechnique: good effort, three acceptable and repeatable maneuvers. Flow-volume loops show concave expiratory limb before bronchodilator, improved after.",
+              "conclusion": "Airflow obstruction with a significant response to bronchodilator, consistent with reversible obstruction. FVC normal."
+            }
+          ],
+          "orders": [
+            {"id": "pft-2022", "action": "done", "date": "2023-04-14T10:05"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "PFT Report Received",
+              "author": "MA",
+              "date": "2023-04-14T10:05",
+              "body": "Spirometry report from the pulmonary function lab (test 4/12/2023) received by fax, scanned and routed to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-17a",
+          "kind": "portal_message",
+          "start": "2023-04-17T12:48",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Breathing Test Result",
+              "author": "PCP",
+              "date": "2023-04-17T12:48",
+              "body": "Hi Chad, your breathing test shows a narrowing of the airways that opens up well with the inhaler. That is what we expect with asthma and fits what you've told me. Keep using the albuterol as needed. The pulmonologist will go over it in more detail when you see them; their office should be in touch about a visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-25a",
+          "kind": "telephone",
+          "start": "2023-07-25T14:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Change",
+              "author": "front desk",
+              "date": "2023-07-25T14:10",
+              "body": "Pt called to cancel 8/10 physical, working full days at the warehouse through August. Offered September/October dates, he will call back when he has his school schedule."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-10a",
+          "kind": "annual_physical",
+          "start": "2023-08-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2023-10-13a",
+          "kind": "specialist_visit",
+          "start": "2023-10-13T10:30",
+          "service": "Pulmonology",
+          "reason": "Follow-up, asthma with worsening control",
+          "state": {"weight_kg": 78.0},
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg", "height_cm"],
+          "conditions": [
+            {"label": "Occupational exposure to hazardous substances", "icd10": "Z57.5", "action": "diagnosed", "onset": "2023-10-13", "note": "Dust and fumes at warehouse job"}
+          ],
+          "orders": [
+            {"id": "pulm-referral-2022", "action": "done", "date": "2023-10-17T09:20"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology Follow-up",
+              "author": "pulmonology",
+              "date": "2023-10-17T09:20",
+              "body": "OUTSIDE PULMONOLOGY GROUP\nDate of service: 10/13/2023\nRe: Chad Bradley, DOB 12/29/1988\n\nDear Doctor,\n\nI saw Mr. Bradley, a 34-year-old man, today to follow up his April spirometry and his asthma. He has had asthma since childhood and has relied only on an albuterol inhaler, which until recently he needed a few times a week, mainly with exercise and in cold air. For roughly the last two months he has been reaching for it nearly every day, and one or two nights a week he wakes up coughing and wheezy. No recent respiratory infections and no hospital stays. He told me he has not seen a clinician in more than a year.\n\nMedications: albuterol HFA 90 mcg, 2 puffs every 4-6 hours as needed.\nAllergies: dust mites, seasonal pollen. No drug allergies.\nFamily history: asthma in his mother; allergic rhinitis and hypertension in his father.\nSocial: teaches high school shop; also works part time stocking at a warehouse, where he is regularly around dust and fumes. Never smoker.\n\nExam: BMI 24. Comfortable, speaking in full sentences. There is mild expiratory wheezing on auscultation. Remainder of the exam, including HEENT, cardiac, and extremities, is normal.\n\nStudies: peak expiratory flow today is 80% of his predicted value. Spirometry in our lab in April showed reversible airflow obstruction.\n\nAssessment: Asthma with recent loss of control. He is not having an acute exacerbation and can be managed as an outpatient, but his current pattern of symptoms tells us the severity of his asthma has changed. Workplace exposure to dust and fumes is noted.\n\nPlan: continue albuterol as needed. Limit exposure to dust and fumes at the warehouse where he can. We are glad to see him again whenever needed.\n\nThank you for allowing us to participate in his care.\n\nPulmonology"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "telephone",
+          "start": "2023-10-19T12:35",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pulmonology Letter Reviewed",
+              "author": "PCP",
+              "date": "2023-10-19T12:35",
+              "body": "Reviewed pulmonology note from 10/13. Called pt, left voicemail that I'd received it and to call or message if any questions. Problem list updated with the workplace dust/fume exposure. Reminded him he is due for his physical, front desk to reach out."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-01a",
+          "kind": "portal_message",
+          "start": "2023-11-01T17:02",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-26T16:40"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-26T16:40"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Shots",
+              "author": "patient",
+              "date": "2023-11-01T17:02",
+              "body": "Got my flu and covid shots at the pharmacy last Thursday (10/26) so you can cross those off. Got your voicemail, no questions on the lung doctor stuff."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Shots",
+              "author": "MA",
+              "date": "2023-11-02T09:15",
+              "body": "Both recorded. Would you like to schedule your physical? We have openings in January if that's easier."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Shots",
+              "author": "patient",
+              "date": "2023-11-02T19:40",
+              "body": "Let me get back to you after the holidays."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

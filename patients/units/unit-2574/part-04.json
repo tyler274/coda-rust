@@ -1,0 +1,923 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002574",
+      "events": [
+        {
+          "id": "2025-03-17a",
+          "kind": "office_visit",
+          "start": "2025-03-17T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Sickle cell follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-03-17T14:45",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-03-17T14:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-03-17T14:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Sickle Cell Follow-up",
+              "author": "PCP",
+              "date": "2025-03-17T14:50",
+              "body": "Spring check. Made it through the winter without a crisis. Hip unchanged. Hematology last seen in February, same plan per pt. Still has not booked the eye exam, gave him the number again.\nMeds: hydroxyurea 1000 mg daily, folic acid 1 mg daily, penicillin VK 250 BID.\nExam: comfortable. Lungs clear. Heart regular. Abdomen soft, spleen tip palpable, nontender.\nA/P: HbSS stable. CBC today since hematology's results don't always reach us. Physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "portal_message",
+          "start": "2025-03-18T08:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "CBC",
+              "author": "PCP",
+              "date": "2025-03-18T08:30",
+              "body": "Hemoglobin is right around 9, same as the last couple of years. White count and platelets at your usual. All good."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-13a",
+          "kind": "hospital_admission",
+          "start": "2025-06-13T21:40",
+          "end": "2025-06-17T11:00",
+          "service": "Emergency Medicine / General Surgery",
+          "reason": "Left upper quadrant pain",
+          "conditions": [
+            {
+              "label": "Splenic laceration",
+              "icd10": "S36.039A",
+              "action": "diagnosed",
+              "onset": "2025-06-13",
+              "note": "atraumatic, subcapsular hematoma, setting of infectious mononucleosis; managed nonoperatively"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-06-13T21:45",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 120,
+              "rr": 22,
+              "temp_c": 37.8
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-13T22:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 15.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                }
+              ],
+              "resulted": "2025-06-13T22:45"
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-06-13T22:05",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 45
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 50
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ],
+              "resulted": "2025-06-13T22:45"
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-13T22:05",
+              "results": [
+                {
+                  "test": "Monospot (heterophile antibody)",
+                  "loinc": "31418-7",
+                  "text": "Positive"
+                }
+              ],
+              "resulted": "2025-06-13T22:45"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2025-06-13T23:10",
+              "text": "Limited abdominal ultrasound, ED. The spleen is enlarged. A hypoechoic area along the splenic margin is suggestive of a subcapsular hematoma. Liver of normal echotexture. Gallbladder without stones. Kidneys without hydronephrosis.",
+              "conclusion": "Enlarged spleen with a hypoechoic area suggestive of subcapsular hematoma."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "author": "emergency medicine",
+              "date": "2025-06-19T10:15",
+              "body": "Regional hospital ED, 06/13/2025, evening.\n25 y/o M, HbSS, functional asplenia. Abrupt severe LUQ pain this evening going up into the L shoulder. For about a week before: sore throat, fevers, worn out, better with rest and fluids over the last couple of days. No fall, no blow to the abdomen, no sports.\nMeds: hydroxyurea 1000 mg daily, folic acid 1 mg daily, PCN VK 250 mg BID. NKDA.\nBP 90/60, HR 120, RR 22, T 37.8.\nPale, sweaty. Abd: LUQ tender with guarding; bowel sounds present and normal; no rebound, not rigid.\nHgb 9.8, WBC 15,000, plt 250,000. AST 45, ALT 50. Monospot positive.\nBedside/formal US: enlarged spleen, hypoechoic area c/w subcapsular hematoma.\nImp: atraumatic splenic laceration with subcapsular hematoma in the setting of recent infectious mononucleosis. Fluid resuscitation started, surgery consulted, admitted."
+            },
+            {
+              "type": "Discharge summary",
+              "title": "Discharge Summary",
+              "author": "general surgery",
+              "date": "2025-06-19T10:20",
+              "body": "Admit 06/13/2025 - Discharge 06/17/2025. Surgical service.\nDx: splenic laceration, subcapsular hematoma, nonoperative management. Recent mononucleosis.\nCourse: IV fluids, bed rest, serial hemoglobins, which held steady. Heart rate and blood pressure normalized within the first day. No transfusion. No operation. Hydroxyurea and home meds continued. Pain controlled and tolerating diet at discharge.\nInstructions: no lifting over 10 lb, no contact sports or strenuous activity until seen in surgery clinic. Return for worse abdominal pain, dizziness or fainting.\nFollow-up: PCP 1 week; surgery clinic 6-8 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "office_visit",
+          "start": "2025-06-24T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, splenic laceration",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-24T11:00",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-06-24T10:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-06-24T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "author": "PCP",
+              "date": "2025-06-24T11:05",
+              "body": "TCM visit. Records from the regional hospital reviewed (ED note and discharge summary arrived 6/19; spoke with pt by phone 6/18 to set this up).\nAdmitted 6/13-6/17 with an atraumatic splenic laceration and subcapsular hematoma after a week of what turned out to be mono (monospot +). Managed without surgery, no transfusion.\nToday: LUQ soreness down to a 2, only with twisting. Sore throat gone, no fever since discharge. Eating fine. Staying off work this week, library is holding his hours.\nMeds unchanged, reconciled: hydroxyurea 1000 mg daily, folic acid 1 mg daily, penicillin VK 250 mg BID.\nExam: tired-looking but comfortable. Abdomen soft, mild LUQ tenderness, no guarding; spleen not examined deeply.\nA/P\n1. Splenic laceration, healing, nonoperative. Repeat CBC today. Keep surgery's restrictions: no lifting over 10 lb, no contact or strenuous activity until surgery clinic (booked for August). Any sudden pain, dizziness or faint = ED.\n2. HbSS / asplenia: no changes. Fever rule as always.\nWork note given for this week."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-18a",
+          "kind": "portal_message",
+          "start": "2025-08-18T18:20",
+          "reason": "Surgery clinic visit update",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Cleared",
+              "author": "patient",
+              "date": "2025-08-18T18:20",
+              "body": "Saw the surgeon today. He said my spleen is healed enough and I can go back to normal stuff. They didn't give me papers. Just letting you know."
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Cleared",
+              "author": "RN",
+              "date": "2025-08-18T19:05",
+              "body": "Great news, thanks for telling us. We'll ask the surgery clinic for their note. See you for your physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-08a",
+          "kind": "annual_physical",
+          "start": "2025-09-08T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Splenic laceration",
+              "icd10": "S36.039A",
+              "action": "resolved"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-09-08T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-08T09:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-08T09:40",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-08T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-08T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-09-08T09:55",
+              "body": "Annual.\nInterval: June admission for atraumatic splenic laceration with mono, nonoperative. Surgery clinic cleared him in mid-August per his report (their note never came; re-requested). No abdominal pain now. Back at full hours at work and doing fall classes.\nNo crises this year.\nMeds: hydroxyurea 1000 mg daily, folic acid 1 mg daily, penicillin VK 250 mg BID. NKDA.\nNever smoker, alcohol rare.\nROS negative.\nExam: well. Lungs clear. Heart regular. Abdomen soft, nontender, spleen tip palpable as on prior exams. R hip end-range IR pain as before.\nPHQ-2 1.\nA/P\n- Splenic laceration: resolved, cleared by surgery. Off the active list.\n- HbSS: stable. Annual labs including liver tests (AST/ALT were up a little with the mono).\n- Splenomegaly: unchanged.\n- Vaccines: flu and COVID in October. MenACWY booster due next June.\n- Eye exam overdue; referral placed so the eye office calls him."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ophtho-ref-2025",
+              "action": "placed",
+              "order": "Ophthalmology referral",
+              "category": "referral",
+              "to": "Ophthalmology",
+              "reason": "Dilated retinal exam, sickle cell disease"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "portal_message",
+          "start": "2025-09-09T13:45",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Labs from your physical",
+              "author": "PCP",
+              "date": "2025-09-09T13:45",
+              "body": "Your liver tests are back to normal after the mono, hemoglobin is near your usual 9, kidneys and urine fine."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T15:45",
+          "reason": "Influenza and COVID-19 vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T15:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T15:52"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Vaccines",
+              "author": "RN",
+              "date": "2025-10-14T16:05",
+              "body": "Flu R deltoid, COVID L deltoid, both 2025-26 formulas. No complaints. Tolerated, observed, discharged."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-12a",
+          "kind": "hospital_admission",
+          "start": "2025-12-12T15:20",
+          "end": "2025-12-14T13:00",
+          "service": "Emergency Medicine / Inpatient Medicine",
+          "reason": "Jaundice and dark urine after transfusion",
+          "conditions": [
+            {
+              "label": "Sickle cell disease with vaso-occlusive crisis",
+              "icd10": "D57.00",
+              "action": "diagnosed",
+              "onset": "2025-11-29",
+              "note": "admitted 11/29-12/3 at the regional hospital with red cell transfusion 12/2, per patient and ED note; no records received"
+            },
+            {
+              "label": "Delayed hemolytic transfusion reaction",
+              "icd10": "T80.A19A",
+              "action": "diagnosed",
+              "onset": "2025-12-10"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-12-12T15:25",
+              "temp_c": 37.8,
+              "bp": [
+                130,
+                80
+              ],
+              "hr": 105,
+              "rr": 18
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-12T15:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 7.0
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 21.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ],
+              "resulted": "2025-12-12T16:30"
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-12-12T15:50",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 3.5
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.8
+                }
+              ],
+              "resulted": "2025-12-12T16:30"
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-12T15:50",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 600
+                }
+              ],
+              "resulted": "2025-12-12T16:30"
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-12T15:50",
+              "results": [
+                {
+                  "test": "Haptoglobin",
+                  "loinc": "4542-7",
+                  "unit": "mg/dL",
+                  "text": "<10"
+                }
+              ],
+              "resulted": "2025-12-12T16:30"
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-12T15:50",
+              "results": [
+                {
+                  "test": "Reticulocyte count",
+                  "loinc": "17849-1",
+                  "unit": "%",
+                  "value": 15
+                }
+              ],
+              "resulted": "2025-12-12T16:30"
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-12T15:50",
+              "results": [
+                {
+                  "test": "Direct antiglobulin test",
+                  "loinc": "1007-4",
+                  "text": "Positive"
+                }
+              ],
+              "resulted": "2025-12-12T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "author": "emergency medicine",
+              "date": "2025-12-17T09:30",
+              "body": "Regional hospital ED, 12/12/2025.\n25 y/o M with HbSS and functional asplenia; splenic laceration about six months ago, managed without surgery. Two days of increasing fatigue, yellow eyes and dark urine. Was admitted here 11/29-12/3 for a pain crisis and got a red cell transfusion on 12/2, ten days ago.\nMeds: folic acid 1 mg daily, penicillin VK 250 mg BID, hydroxyurea 1000 mg daily. NKDA.\nT 37.8, BP 130/80, HR 105, RR 18.\nScleral icterus. Mild splenomegaly. No rash. No lymphadenopathy.\nHgb 7.0 (baseline about 9). T bili 3.5, direct 0.8. LDH 600. Haptoglobin <10. Retic 15%. DAT positive; negative before the transfusion.\nImp: delayed hemolytic transfusion reaction. Blood bank notified, hematology consulted. Admitted for monitoring; avoid further transfusion if at all possible."
+            },
+            {
+              "type": "Discharge summary",
+              "title": "Discharge Summary",
+              "author": "hospital medicine",
+              "date": "2025-12-17T09:35",
+              "body": "Admit 12/12/2025 - Discharge 12/14/2025.\nDx: delayed hemolytic transfusion reaction after 12/2 transfusion. HbSS.\nCourse: observed with daily labs; hemoglobin held without further transfusion. Blood bank antibody workup sent, results to his hematologist. Hematology saw him in house. Folic acid and hydroxyurea continued. No pain crisis during the stay.\nImportant: any future transfusion only after his hematologist and the blood bank are contacted.\nFollow-up: PCP within 1 week; hematology clinic early January."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-18a",
+          "kind": "office_visit",
+          "start": "2025-12-18T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, transfusion reaction",
+          "conditions": [
+            {
+              "label": "Sickle cell disease with vaso-occlusive crisis",
+              "icd10": "D57.00",
+              "action": "resolved"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 7.7,
+              "Hematocrit": 23.0,
+              "Bilirubin, Total": 3.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-18T11:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-12-18T11:40",
+              "results": [
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-12-18T11:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-18T11:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "author": "PCP",
+              "date": "2025-12-18T11:50",
+              "body": "TCM. ED note and discharge summary received yesterday and reviewed. We had no records from the 11/29-12/3 crisis admission; pt filled in the history: pain crisis in the cold, admitted, one unit of blood on 12/2. Then on 12/10 he started getting tired and yellow, and urine went dark, back to the ED 12/12. Delayed hemolytic transfusion reaction, DAT positive, no more blood given, home 12/14.\nToday: still tired but better each day. Eyes less yellow, urine lighter. Pain from the crisis gone. No fever, chest pain, SOB.\nMeds reconciled, unchanged: hydroxyurea 1000 mg daily, folic acid 1 mg daily, penicillin VK 250 mg BID.\nExam: tired but comfortable. Mild scleral icterus. Lungs clear. Heart regular. Abdomen soft, spleen tip palpable, nontender.\nA/P\n1. DHTR, improving clinically. CBC and bili today. Recheck in 3-4 weeks. Added a transfusion alert to his chart: contact hematology and blood bank before any transfusion.\n2. VOC late Nov, resolved.\n3. HbSS: hematology early January.\nED for fever, worsening jaundice, chest pain or breathlessness."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-19a",
+          "kind": "portal_message",
+          "start": "2025-12-19T10:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Yesterday's labs",
+              "author": "PCP",
+              "date": "2025-12-19T10:10",
+              "body": "Hemoglobin is a bit higher than at the ED and bilirubin is coming down. That fits with the reaction settling. Recheck around January 12. Rest up over the holidays."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-12a",
+          "kind": "lab_only",
+          "start": "2026-01-12T08:20",
+          "reason": "Recheck after transfusion reaction",
+          "state": {
+            "labs": {
+              "Hemoglobin": 8.9,
+              "Hematocrit": 26.5,
+              "Bilirubin, Total": 2.6
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-12T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.9
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-12T08:20",
+              "results": [
+                {
+                  "test": "Reticulocyte count",
+                  "loinc": "17849-1",
+                  "unit": "%",
+                  "value": 8
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-01-12T08:20",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-01-12T08:20"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "portal_message",
+          "start": "2026-01-13T12:40",
+          "reason": "Lab results",
+          "conditions": [
+            {
+              "label": "Delayed hemolytic transfusion reaction",
+              "icd10": "T80.A19A",
+              "action": "resolved",
+              "note": "transfusion caution remains: contact hematology and blood bank before any transfusion"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Recheck labs",
+              "author": "PCP",
+              "date": "2026-01-13T12:40",
+              "body": "Darnell, hemoglobin is back to 8.9, retic 8%, bilirubin 2.6. That's basically your baseline, so the transfusion reaction has run its course. The transfusion warning stays on your chart for good. Did you get in to hematology?"
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Recheck labs",
+              "author": "patient",
+              "date": "2026-01-13T18:15",
+              "body": "Yes last Thursday. They said same meds and they have the antibody stuff on file. I feel normal again."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "office_visit",
+          "start": "2026-03-16T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Sickle cell follow-up",
+          "state": {
+            "labs": {
+              "Hemoglobin": 9.0,
+              "Hematocrit": 26.9,
+              "Bilirubin, Total": 2.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-03-16T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Sickle Cell Follow-up",
+              "author": "PCP",
+              "date": "2026-03-16T15:00",
+              "body": "Routine. Feels well, energy back. No crises since November. Hematology in January: no changes, antibody results on file with them.\nEye office never reached him after the September referral; he called them himself last week and is waiting for a date.\nMeds: hydroxyurea 1000 mg daily, folic acid 1 mg daily, penicillin VK 250 mg BID.\nExam: well. Lungs clear. Heart regular. Abdomen soft, spleen tip palpable, nontender.\nA/P: HbSS stable. Transfusion alert stays. Physical in June with yearly labs and MenACWY booster."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-15a",
+          "kind": "annual_physical",
+          "start": "2026-06-15T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-06-15T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-15T09:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-15T09:50",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2026-06-15T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-06-15T09:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2026-06-15T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-15T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2026-06-15T10:10",
+              "body": "Yearly exam, 26 y/o with HbSS.\nSince last physical: VOC admission with transfusion late Nov, then delayed hemolytic transfusion reaction in Dec, recovered by January. Nothing since. Splenic laceration last June, healed.\nEye appointment is set for July.\nMeds: hydroxyurea 1000 mg daily, folic acid 1 mg daily, penicillin VK 250 mg BID. NKDA. Transfusion alert on chart.\nSH: library part time, classes. Never smoker; alcohol rare.\nROS negative.\nExam: well. HEENT normal. Lungs clear. Heart regular. Abdomen soft, spleen tip palpable, nontender. R hip end-range IR pain, same as always. No leg ulcers.\nPHQ-2 0.\nA/P: HbSS stable. Annual CBC, CMP, urine albumin. MenACWY booster today (5 yr). Flu/COVID this fall; sickle cell visit in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "portal_message",
+          "start": "2026-06-16T15:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2026-06-16T15:30",
+              "body": "All stable. Hemoglobin about 9, kidneys normal, urine protein negative. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-10a",
+          "kind": "pharmacy",
+          "start": "2026-08-10T09:15",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy Refill Request",
+              "author": "MA",
+              "date": "2026-08-10T09:15",
+              "body": "Folic acid 1 mg refill request from pharmacy, approved per protocol, 90 days x3. Hydroxyurea on the same fax redirected to hematology."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-14a",
+          "kind": "office_visit",
+          "start": "2026-09-14T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Sickle cell follow-up and flu vaccine",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

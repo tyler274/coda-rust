@@ -1,0 +1,1342 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001793",
+      "events": [
+        {
+          "id": "2025-01-21a",
+          "kind": "pharmacy",
+          "start": "2025-01-21T11:20",
+          "reason": "Refill request sertraline",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Sertraline Refill",
+              "author": "MA",
+              "date": "2025-01-21T11:20",
+              "body": "Refill request from pharmacy: sertraline 100 mg tab, 90-day supply. Last seen 6/19/24, missed 8/21. Pended to PCP with a note that she is overdue for a visit.\n\nPCP: 90 days sent. Front desk please offer her an appointment in February."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-03a",
+          "kind": "hospital_admission",
+          "start": "2025-02-03T19:50",
+          "end": "2025-02-05T13:00",
+          "service": "Emergency Medicine / Internal Medicine",
+          "reason": "Altered mental status after sertraline overdose",
+          "conditions": [
+            {
+              "label": "Serotonin syndrome",
+              "icd10": "G25.79",
+              "action": "diagnosed",
+              "onset": "2025-02-03",
+              "note": "intentional sertraline overdose"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Sodium": 140,
+              "Potassium": 4.0,
+              "Chloride": 100,
+              "Bicarbonate": 24,
+              "Blood Urea Nitrogen": 18,
+              "Creatinine": 0.9,
+              "Glucose": 90
+            }
+          },
+          "vitals": [
+            {
+              "time": "2025-02-03T19:55",
+              "bp": [
+                130,
+                85
+              ],
+              "hr": 110,
+              "rr": 16,
+              "temp_c": 37.3,
+              "spo2": 98
+            },
+            {
+              "time": "2025-02-04T07:30",
+              "bp": [
+                122,
+                78
+              ],
+              "hr": 92,
+              "rr": 16,
+              "temp_c": 37.0,
+              "spo2": 99
+            },
+            {
+              "time": "2025-02-05T08:00",
+              "bp": [
+                114,
+                72
+              ],
+              "hr": 78,
+              "rr": 14,
+              "temp_c": 36.8,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-02-03T20:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-03T20:10",
+              "resulted": "2025-02-03T22:40",
+              "results": [
+                {
+                  "test": "Ethanol",
+                  "loinc": "5643-2",
+                  "unit": "mg/dL",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Salicylate",
+                  "loinc": "4024-6",
+                  "unit": "mg/dL",
+                  "text": "Undetectable"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-02-03T19:50"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-02-04T01:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-02-05T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "author": "emergency medicine",
+              "date": "2025-02-06T10:00",
+              "body": "ED PHYSICIAN NOTE - 02/03/2025 19:50\n\n25-year-old woman with borderline personality disorder, depression and bulimia nervosa, previously seen here for self-inflicted cuts, brought in by her roommate, who found her sleepy and confused with an empty sertraline bottle beside her.\n\nHome meds per pharmacy fill history: ethinyl estradiol/norethindrone daily. (Sertraline - see HPI.)\nNKDA. Never smoker, no EtOH.\n\nVitals: HR 110, BP 130/85, RR 16.\nExam: somnolent, rouses to voice, follows simple commands. Pupils dilated, reactive. Mucous membranes dry. Tachycardic, regular. Lungs clear. Abdomen soft.\n\nLabs: Na 140, K 4.0, Cl 100, HCO3 24, BUN 18, Cr 0.9, glucose 90. Ethanol not detected. Urine drug screen negative for common drugs of abuse. Salicylate pending at time of this note.\n\nImpression: intentional sertraline ingestion with serotonin toxicity.\nPlan: IV fluids, lorazepam IV as needed for agitation, cardiac monitoring, poison center consulted, admit to medicine. Psychiatry to see when medically appropriate."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospital medicine",
+              "date": "2025-02-06T10:00",
+              "body": "DISCHARGE SUMMARY\nAdmitted 02/03/2025 - Discharged 02/05/2025\nService: Hospital Medicine\n\nPrincipal diagnosis: Serotonin syndrome following intentional sertraline overdose.\nOther: borderline personality disorder; major depressive disorder; bulimia nervosa; recurrent UTI.\n\nCourse: Admitted from the ED after ingesting a bottle of sertraline. Salicylate level returned undetectable. Managed with IV fluids, telemetry and as-needed lorazepam. Mental status cleared and heart rate settled within about 24 hours. Sertraline was held during the stay. Psychiatry consultation on 02/04: impulsive overdose in the setting of chronic emotional dysregulation, no ongoing suicidal intent, safety plan completed with the patient, outpatient follow-up appropriate. Psychiatry recommended resuming sertraline 100 mg at discharge.\n\nDischarge medications: sertraline 100 mg daily (resume); ethinyl estradiol 0.035 mg / norethindrone 1 mg daily.\nAllergies: NKDA.\nFollow-up: PCP within 1 week; outpatient psychiatry within 2 weeks.\n\nHospital Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2025-02-07a",
+          "kind": "telephone",
+          "start": "2025-02-07T10:30",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "author": "RN",
+              "date": "2025-02-07T10:45",
+              "body": "Called within 2 business days of discharge. Pt home, roommate there. Has her discharge paperwork, restarted sertraline yesterday as instructed. Denies confusion, tremor, fever. Denies SI. Psychiatry appt 2/18. Confirmed PCP visit Monday 2/10 at 1:30."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-10a",
+          "kind": "office_visit",
+          "start": "2025-02-10T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, sertraline overdose",
+          "conditions": [
+            {
+              "label": "Serotonin syndrome",
+              "icd10": "G25.79",
+              "action": "resolved"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 18
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-02-10T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "author": "PCP",
+              "date": "2025-02-10T14:40",
+              "body": "Post-hospital visit. Admitted 2/3-2/5 for serotonin syndrome after taking her bottle of sertraline. Discharge summary reviewed.\n\nShe remembers little of that evening. Says she was 'done with everything' after a bad week but now says she didn't really want to die. Back on sertraline 100 since discharge. No tremor, sweats, or confusion. Sleep poor. Not back at work yet, going back Thursday.\n\nExam: alert, tearful at times, oriented. HR normal, no clonus, reflexes normal, pupils normal. Vitals as charted.\nPHQ-9 18. Asked about current SI: passive at times, no plan or intent today. She agreed to the safety plan from the hospital and we went through it line by line. Roommate is helping hold onto medications.\n\nA/P\n1. Serotonin syndrome - resolved.\n2. Intentional overdose / MDD / BPD - continue sertraline 100 per psychiatry; will now send 30-day supplies only, no auto-refill. Psychiatry 2/18. Therapist this week.\n3. TCM: medication reconciliation done, records reviewed.\nRTC 1 month, call anytime."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "outside_records",
+          "start": "2025-03-25T14:45",
+          "reason": "Psychiatry follow-up letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up Letter",
+              "author": "psychiatry",
+              "date": "2025-03-25T14:45",
+              "body": "Re: Sophia Labrie\n\nSeen 02/18 and 03/20/2025 after her February admission for serotonin syndrome. She is engaged with individual therapy again and her mood is slowly improving; she denies current suicidal thinking. Diagnoses: borderline personality disorder, major depressive disorder. Medication: sertraline 100 mg daily, unchanged. Return here in 2 months.\n\nOutpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2025-04-17a",
+          "kind": "annual_physical",
+          "start": "2025-04-17T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-17T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-04-17T08:45",
+              "results": [
+                {
+                  "test": "Potassium"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 13
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-04-17T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-04-17T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-04-17T09:30",
+              "body": "Yearly visit, just turned 26.\n\nSince last year: overnight ED stay June 2024 for cutting; admission Feb 2025 for sertraline overdose with serotonin syndrome. Seeing psychiatry every 1-2 months and therapy weekly. Mood 'better than February.' No self-harm since February. No purging per her. No urinary symptoms since November.\nMeds: sertraline 100 mg daily (30-day fills), OCP daily. NKDA.\nSH: back at work part time. No tobacco, no alcohol.\n\nExam: thin, well groomed, weight stable. Vitals as charted. Eyes and ears normal. Thyroid nonpalpable. Heart regular rate and rhythm, no murmurs. Lungs clear. Abdomen soft, no tenderness or masses. Skin with old forearm scars, nothing new. Normal gait.\nPHQ-9 13. No SI.\n\nA/P\n- Preventive: Pap normal 2024, next 2027. HIV/HCV done. Flu and COVID this fall.\n- Purging history: CBC, CMP today.\n- MDD/BPD: continue current plan, psychiatry managing.\n- OCP: BP normal, continue.\nRTC in a few months."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-21a",
+          "kind": "portal_message",
+          "start": "2025-04-21T12:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Annual Labs",
+              "author": "PCP",
+              "date": "2025-04-21T12:05",
+              "body": "Sophia, your blood count and chemistry panel are normal, including potassium and kidney function. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "pharmacy",
+          "start": "2025-06-10T09:00",
+          "reason": "Refill oral contraceptive",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Oral Contraceptive Refill",
+              "author": "MA",
+              "date": "2025-06-10T09:00",
+              "body": "Pharmacy requesting ethinyl estradiol 0.035 / norethindrone 1 mg, 3-month supply. BP normal 4/17/25. Approved per PCP protocol, sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-21a",
+          "kind": "hospital_admission",
+          "start": "2025-08-21T16:15",
+          "end": "2025-08-22T15:00",
+          "service": "Emergency Medicine / Internal Medicine",
+          "reason": "Acetaminophen ingestion, suicide attempt",
+          "conditions": [
+            {
+              "label": "Acetaminophen toxicity",
+              "icd10": "T39.1X2A",
+              "action": "diagnosed",
+              "onset": "2025-08-21"
+            },
+            {
+              "label": "Suicide attempt",
+              "icd10": "T14.91XA",
+              "action": "diagnosed",
+              "onset": "2025-08-21"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-08-21T16:20",
+              "bp": [
+                118,
+                72
+              ],
+              "hr": 78,
+              "rr": 14,
+              "temp_c": 36.8,
+              "spo2": 99
+            },
+            {
+              "time": "2025-08-22T06:00",
+              "bp": [
+                112,
+                70
+              ],
+              "hr": 72,
+              "rr": 14,
+              "temp_c": 36.7,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-21T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-08-21T16:30",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-08-21T16:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-21T16:30",
+              "resulted": "2025-08-21T17:20",
+              "results": [
+                {
+                  "test": "Acetaminophen [Mass/volume] in Serum or Plasma",
+                  "loinc": "3298-7",
+                  "unit": "ug/mL",
+                  "value": 150
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-21T18:15",
+              "resulted": "2025-08-21T19:05",
+              "results": [
+                {
+                  "test": "Acetaminophen [Mass/volume] in Serum or Plasma",
+                  "loinc": "3298-7",
+                  "unit": "ug/mL",
+                  "value": 162
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-08-22T12:30",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-08-22T12:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-08-21T16:15"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-08-21T21:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-08-22T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2025-08-22T16:30",
+              "body": "EMERGENCY DEPARTMENT\nArrived 08/21/2025 16:15\n\nChief concern: took acetaminophen to end her life, about 2 hours prior.\n\n26F, BPD, MDD, bulimia nervosa, prior ED visits for cutting and an admission in February for sertraline overdose. She swallowed 'a handful' of extra-strength 500 mg acetaminophen around 14:15. Roommate found the empty bottle, which held 50 tablets, and drove her in. No symptoms. She says she regrets it.\n\nMeds on file: ethinyl estradiol/norethindrone daily. NKDA. No tobacco or alcohol.\n\nVitals normal. Exam: alert and oriented x3, no distress, no RUQ tenderness, otherwise unremarkable.\n\nLabs: acetaminophen 150 mcg/mL at 16:30 (about 2 h after ingestion) - too early to plot. CBC, LFTs, INR sent. Repeat level at 4 h: 162 mcg/mL, above the treatment line. AST/ALT and INR normal.\n\nPlan: IV N-acetylcysteine, standard 21-hour regimen, started 19:20. 1:1 sitter. Admit to medicine. Poison center aware. Psychiatry once medically clear."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Medical Discharge Summary",
+              "author": "hospital medicine",
+              "date": "2025-08-22T16:30",
+              "body": "Hospital Medicine Discharge / Transfer Summary\nAdmit 08/21/2025 - Transfer 08/22/2025\n\nDiagnoses: acetaminophen toxicity, intentional (suicide attempt). Borderline personality disorder. Major depressive disorder.\n\nCourse: 4-hour acetaminophen level 162 mcg/mL. Completed the 21-hour IV N-acetylcysteine protocol without reaction. AST, ALT and INR normal on arrival and again at completion. No hepatotoxicity. Continuous observation throughout.\n\nMedically cleared 08/22. Transferred to the inpatient psychiatric unit for suicide attempt.\nHome medications (per patient): sertraline 100 mg daily; ethinyl estradiol 0.035 mg / norethindrone 1 mg daily.\n\nHospital Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2025-08-22a",
+          "kind": "hospital_admission",
+          "start": "2025-08-22T15:30",
+          "end": "2025-08-29T11:00",
+          "service": "Inpatient Psychiatry",
+          "reason": "Suicide attempt by acetaminophen ingestion",
+          "procedures": [
+            {
+              "procedure": "Psychiatric diagnostic evaluation with medical services",
+              "performed": "2025-08-22T17:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Psychiatric Discharge Summary",
+              "author": "inpatient psychiatry",
+              "date": "2025-09-02T09:15",
+              "body": "INPATIENT PSYCHIATRY - DISCHARGE SUMMARY\nAdmission 08/22/2025. Discharge 08/29/2025.\n\nReason for admission: suicide attempt by acetaminophen overdose, transferred from medicine after N-acetylcysteine treatment.\n\nHistory: 26-year-old woman with borderline personality disorder and major depressive disorder, chronic self-injury, a February 2025 sertraline overdose, and bulimia nervosa. Family history of maternal depression, paternal substance use and suicide of a maternal uncle.\n\nHospital course: participated in groups and individual sessions; developed a written crisis plan; family meeting with roommate by phone. Mood improved over the week; by discharge she denied suicidal ideation, intent or plan and was future oriented. No medication changes were made.\n\nDischarge diagnoses: borderline personality disorder; major depressive disorder; suicide attempt.\nDischarge medications: sertraline 100 mg daily; ethinyl estradiol 0.035 mg / norethindrone 1 mg daily.\nAllergies: NKDA.\nFollow-up: outpatient psychiatry 09/04; therapist 09/02; PCP within 1 week. Medications to be held by roommate.\n\nInpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-03a",
+          "kind": "office_visit",
+          "start": "2025-09-03T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital visit",
+          "conditions": [
+            {
+              "label": "Acetaminophen toxicity",
+              "icd10": "T39.1X2A",
+              "action": "resolved"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-09-03T12:15",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 15
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-09-03T11:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-03T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "author": "PCP",
+              "date": "2025-09-03T12:40",
+              "body": "TCM visit. Acetaminophen overdose 8/21, NAC, LFTs never rose; then a week on the inpatient psych unit, home 8/29. Both summaries reviewed today.\n\nShe was quiet but talked more as the visit went on. Says this was the first time she 'actually meant it.' Now: no SI, no intent, no plan; names her roommate and therapist as supports, saw therapist yesterday, psychiatry tomorrow. Roommate keeping her meds and there's no acetaminophen in the apartment now.\nNo RUQ pain, no nausea, no jaundice.\n\nExam: no scleral icterus, abdomen soft and nontender, liver edge not felt. Vitals as charted.\nPHQ-9 15.\n\nA/P\n1. Acetaminophen toxicity - treated, no liver injury in hospital; hepatic panel today to close the loop. Resolved.\n2. Suicide attempt, MDD, BPD - sertraline 100 continues, 30 days at a time. Crisis plan from the unit in her chart. I'll check in by phone in 2 weeks.\n3. Med rec done."
+            },
+            {
+              "type": "Result Note",
+              "title": "Hepatic Panel",
+              "author": "PCP",
+              "date": "2025-09-04T08:00",
+              "body": "Liver tests normal. Sent pt a short note."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-17a",
+          "kind": "telephone",
+          "start": "2025-09-17T16:00",
+          "reason": "Check-in after hospitalization",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Check-in Call",
+              "author": "PCP",
+              "date": "2025-09-17T16:15",
+              "body": "Called as promised. She's back at work three mornings a week. Saw psychiatry 9/4, no changes. No SI. Sleeping better. She asked if she can do her flu shot in October - yes, nurse visit. Next PCP visit December."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "measure": [
+            "temp_c"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T15:50"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Influenza Immunization",
+              "author": "RN",
+              "date": "2025-10-14T16:00",
+              "body": "Flu vaccine given, 0.5 mL IM R deltoid. Screening questions negative, afebrile. VIS reviewed. No reaction during observation."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "outside_records",
+          "start": "2025-10-21T10:30",
+          "reason": "Psychiatry follow-up letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up Letter",
+              "author": "psychiatry",
+              "date": "2025-10-21T10:30",
+              "body": "Dear Doctor,\n\nUpdate on our mutual patient after her August acetaminophen overdose and psychiatric admission. I have seen her three times since discharge, most recently 10/16/2025. She attends weekly therapy. Mood fair, no suicidal ideation reported, crisis plan in place. Diagnoses: borderline personality disorder; major depressive disorder. Sertraline remains 100 mg daily. Next visit in 6 weeks.\n\nOutpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "portal_message",
+          "start": "2025-11-04T18:25",
+          "reason": "COVID vaccine update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-11-01T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Covid vaccine",
+              "author": "patient",
+              "date": "2025-11-04T18:25",
+              "body": "Just letting you know I got this year's covid shot at the pharmacy on 11/1 (Pfizer)."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Covid vaccine",
+              "author": "MA",
+              "date": "2025-11-05T08:20",
+              "body": "Thanks Sophia, recorded."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "office_visit",
+          "start": "2025-12-09T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up depression",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 12
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-12-09T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-12-09T14:55",
+              "body": "Routine f/u. Steadier this fall. Work going ok, picked up an extra morning. Psychiatry every 6 wks, therapy weekly. No self-harm since the summer. Eating regular meals, denies purging. Holidays are a hard time for her; she has a plan for them with her therapist.\nMeds: sertraline 100 (30-day fills, roommate holds the bottle), OCP.\n\nVitals as charted, weight stable. Calm, good eye contact, linear thought.\nPHQ-9 12. No SI.\n\nA/P: MDD/BPD - continue. Physical in the spring. Call or text if things slip."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "pharmacy",
+          "start": "2026-01-13T09:30",
+          "reason": "Refill sertraline",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Sertraline 30-day Refill",
+              "author": "MA",
+              "date": "2026-01-13T09:30",
+              "body": "Monthly sertraline 100 mg #30 due. Per PCP standing plan, 30 tablets, no refills. Sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-18a",
+          "kind": "hospital_admission",
+          "start": "2026-02-18T21:30",
+          "end": "2026-02-21T12:00",
+          "service": "Emergency Medicine / Critical Care",
+          "reason": "Tricyclic antidepressant overdose with seizures",
+          "conditions": [
+            {
+              "label": "Tricyclic antidepressant overdose",
+              "icd10": "T43.012A",
+              "action": "diagnosed",
+              "onset": "2026-02-18"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Sodium": 140,
+              "Potassium": 4.0,
+              "Bicarbonate": 22,
+              "Creatinine": 1.0
+            }
+          },
+          "vitals": [
+            {
+              "time": "2026-02-18T21:35",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 120,
+              "rr": 20,
+              "temp_c": 37.6,
+              "spo2": 96
+            },
+            {
+              "time": "2026-02-19T07:00",
+              "bp": [
+                108,
+                68
+              ],
+              "hr": 98,
+              "rr": 16,
+              "temp_c": 37.1,
+              "spo2": 98
+            },
+            {
+              "time": "2026-02-21T08:00",
+              "bp": [
+                114,
+                72
+              ],
+              "hr": 80,
+              "rr": 14,
+              "temp_c": 36.8,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-18T21:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 22
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                }
+              ],
+              "resulted": "2026-02-18T22:30"
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-18T21:45",
+              "results": [
+                {
+                  "test": "pH of Blood",
+                  "loinc": "11558-4",
+                  "unit": "[pH]",
+                  "value": 7.31
+                }
+              ],
+              "resulted": "2026-02-18T22:30"
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-02-18T21:40",
+              "text": "Sinus tachycardia, rate 120. QRS duration 120 ms. Occasional premature ventricular complexes.",
+              "conclusion": "Sinus tachycardia with QRS widening to 120 ms and occasional PVCs, consistent with sodium channel blockade.",
+              "issued": "2026-02-18T22:00"
+            },
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-02-19T07:15",
+              "text": "Sinus rhythm, rate 98. QRS duration 98 ms. No ectopy.",
+              "conclusion": "QRS narrowed to 98 ms after bicarbonate.",
+              "issued": "2026-02-19T08:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-02-18T21:30"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-02-19T00:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-02-21T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2026-02-23T13:00",
+              "body": "ED Record\n02/18/2026 21:30\n\nFriends brought her in after finding her at home confused and agitated. They say she has been down lately and think she may have overdosed on 'her medication.' Known to us: BPD, prior ED visits for self-harm and overdose (sertraline 02/2025, acetaminophen 08/2025).\n\nHome meds (records): sertraline 100 mg daily; ethinyl estradiol/norethindrone daily. NKDA.\n\nArrival: HR 120, BP 90/60.\nExam: confused, agitated, tachycardic. Pupils dilated. Skin dry. Brief generalized seizures, on and off, in the department.\n\nLabs: Na 140, K 4.0, HCO3 22, Cr 1.0. Blood pH 7.31. Urine drug screen positive for tricyclic antidepressants.\nECG: QRS 120 ms with occasional PVCs.\n\nAssessment: tricyclic antidepressant overdose with seizures, QRS widening and hypotension.\nTreatment: IV lorazepam for seizures, IV sodium bicarbonate in boluses then infusion, IV fluids. Poison center consulted. Admit ICU.\nSource of the tricyclic not established."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "ICU and Hospital Discharge Summary",
+              "author": "critical care",
+              "date": "2026-02-23T13:00",
+              "body": "Critical Care / Medicine Discharge Summary\n02/18/2026 - 02/21/2026\n\nPrincipal diagnosis: tricyclic antidepressant overdose, intentional, with seizures, QRS prolongation and hypotension.\n\nICU course (02/18-02/20): bicarbonate boluses followed by infusion. QRS 98 ms on the morning ECG of 02/19 and stayed narrow. No seizures after the ED. Blood pressure recovered with fluids alone. Mental status normal by 02/20. Moved to the medical floor 02/20.\nFloor (02/20-02/21): stable. Psychiatry consulted; recommended inpatient psychiatric admission.\n\nNo tricyclic was on her medication list, and where the tablets came from was not determined.\n\nTransfer medications: sertraline 100 mg daily (held in ICU, restarted 02/21 per psychiatry); ethinyl estradiol 0.035 mg / norethindrone 1 mg daily.\nAllergies: NKDA.\nTransferred to inpatient psychiatry 02/21/2026.\n\nCritical Care"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-21a",
+          "kind": "hospital_admission",
+          "start": "2026-02-21T13:00",
+          "end": "2026-03-03T10:30",
+          "service": "Inpatient Psychiatry",
+          "reason": "Intentional tricyclic overdose",
+          "procedures": [
+            {
+              "procedure": "Psychiatric diagnostic evaluation with medical services",
+              "performed": "2026-02-21T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Psychiatric Discharge Summary",
+              "author": "inpatient psychiatry",
+              "date": "2026-03-05T11:20",
+              "body": "Inpatient Psychiatric Unit - Discharge\nAdmitted 02/21/2026 from medicine after intentional tricyclic overdose. Discharged 03/03/2026.\n\nThird overdose in a year (sertraline 02/2025, acetaminophen 08/2025). Background of borderline personality disorder, major depressive disorder and bulimia nervosa; maternal uncle died by suicide.\n\nCourse: low mood and hopelessness on admission that lifted over the stay. Engaged in individual and group therapy; updated safety plan reviewed with two friends who will check in daily. At discharge, denies suicidal ideation, intent or plan.\n\nDischarge diagnoses: borderline personality disorder; major depressive disorder.\nDischarge medications: sertraline 100 mg daily; ethinyl estradiol 0.035 mg / norethindrone 1 mg daily. No changes.\nFollow-up: outpatient psychiatry 03/06/2026; therapist this week; PCP within 7 days.\n\nInpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-04a",
+          "kind": "telephone",
+          "start": "2026-03-04T09:40",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "author": "RN",
+              "date": "2026-03-04T09:55",
+              "body": "TCM call. Home since yesterday, a friend staying with her this week. Has sertraline, taking it. No seizures, palpitations or confusion. No SI. Psych appt Friday. PCP visit Monday 3/9 confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "office_visit",
+          "start": "2026-03-09T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital visit, tricyclic overdose",
+          "conditions": [
+            {
+              "label": "Tricyclic antidepressant overdose",
+              "icd10": "T43.012A",
+              "action": "resolved"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 17
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-03-09T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "author": "PCP",
+              "date": "2026-03-09T11:20",
+              "body": "TCM. ICU 2/18-2/20 for a tricyclic overdose with seizures and a wide QRS, bicarbonate, then 2/21-3/3 inpatient psych. Read both summaries.\n\nTired, low, but came on time with her friend. No SI now; no intent or plan. Saw psychiatry Friday, no med changes. Therapy tomorrow.\nNo palpitations, no further seizures, no headaches.\n\nExam: alert, oriented, flat affect. Heart regular, normal rate. Lungs clear. Neuro nonfocal. Vitals as charted.\nPHQ-9 17.\n\nA/P\n1. TCA overdose - medically recovered. Resolved.\n2. MDD / BPD / prior suicide attempt - sertraline 100 continues, 30 days at a time, friends checking in daily. Safety plan reviewed and updated with her today.\n3. TCM: meds reconciled.\nSee her for the annual in April; message anytime."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-23a",
+          "kind": "annual_physical",
+          "start": "2026-04-23T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-04-23T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-04-23T09:10",
+              "results": [
+                {
+                  "test": "Potassium"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 14
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-04-23T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-23T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2026-04-23T09:45",
+              "body": "Annual, 27 this month.\n\nInterval: Feb 2026 TCA overdose, ICU, then inpatient psych to 3/3. Since then psychiatry every 3-4 weeks, therapy weekly. Some better weeks. No self-harm since February. Denies purging. No UTIs this year. Working part time.\nMeds: sertraline 100 daily (30-day fills), OCP daily. NKDA. Never smoker, no alcohol.\n\nExam: thin, weight unchanged. Vitals as charted. Oropharynx clear. No lymphadenopathy. Heart: normal S1 S2, no murmur. Lungs clear. Abdomen benign. Skin: old forearm scars only. Neuro nonfocal.\nPHQ-9 14. No SI today.\n\nA/P\n- Prevention: Pap 2027. Flu/COVID in fall. HIV/HCV done once.\n- Purging history - CBC, CMP.\n- MDD/BPD - keep current plan with psychiatry.\n- Contraception - BP normal, refill OCP.\nNext in about 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-24a",
+          "kind": "portal_message",
+          "start": "2026-04-24T15:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2026-04-24T15:10",
+              "body": "Hi Sophia, blood counts and chemistries from yesterday are all in the normal range. Nothing to change."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab Results",
+              "author": "patient",
+              "date": "2026-04-24T19:31",
+              "body": "good, thanks. also can the birth control be sent to the pharmacy near work instead? same chain, the one on main st"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab Results",
+              "author": "MA",
+              "date": "2026-04-25T09:00",
+              "body": "Done - pharmacy updated and the refill is there."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-08a",
+          "kind": "hospital_admission",
+          "start": "2026-06-08T06:40",
+          "end": "2026-06-11T13:00",
+          "service": "Critical Care",
+          "reason": "Unresponsive, amitriptyline overdose",
+          "conditions": [
+            {
+              "label": "Tricyclic antidepressant overdose",
+              "icd10": "T43.012A",
+              "action": "diagnosed",
+              "onset": "2026-06-08",
+              "note": "amitriptyline"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-06-08T06:45",
+              "bp": [
+                85,
+                50
+              ],
+              "hr": 120,
+              "rr": 22,
+              "temp_c": 39.1,
+              "spo2": 95
+            },
+            {
+              "time": "2026-06-08T09:30",
+              "bp": [
+                108,
+                66
+              ],
+              "hr": 106,
+              "rr": 18,
+              "temp_c": 38.3,
+              "spo2": 97
+            },
+            {
+              "time": "2026-06-09T07:00",
+              "bp": [
+                112,
+                70
+              ],
+              "hr": 88,
+              "rr": 16,
+              "temp_c": 37.1,
+              "spo2": 98
+            },
+            {
+              "time": "2026-06-11T08:00",
+              "bp": [
+                110,
+                68
+              ],
+              "hr": 76,
+              "rr": 14,
+              "temp_c": 36.8,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-06-08T07:00",
+              "results": [
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-08T07:00",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-06-08T06:50",
+              "text": "Sinus tachycardia, rate 120. QRS duration 120 ms.",
+              "conclusion": "Sinus tachycardia with QRS 120 ms.",
+              "issued": "2026-06-08T07:10"
+            },
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-06-08T10:00",
+              "text": "Sinus tachycardia, rate 104. QRS duration 104 ms.",
+              "conclusion": "QRS 104 ms after sodium bicarbonate.",
+              "issued": "2026-06-08T10:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-06-08T06:40"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-06-08T08:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-06-11T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Critical Care Discharge Summary",
+              "author": "critical care",
+              "date": "2026-06-12T14:00",
+              "body": "MEDICAL ICU - DISCHARGE / TRANSFER SUMMARY\nAdmission 06/08/2026, transfer to psychiatry 06/11/2026\n\nPresentation: 27-year-old woman with borderline personality disorder and several prior overdoses, among them a tricyclic overdose about four months ago, brought in by friends who found her unresponsive at home next to an empty bottle labeled amitriptyline.\n\nHome medications (records): sertraline 100 mg daily; ethinyl estradiol/norethindrone daily. NKDA.\n\nOn arrival: T 39.1 C, BP 85/50, HR 120, RR 22. Drowsy, rouses to voice. Pupils dilated. Bowel sounds diminished. ECG with QRS 120 ms.\n\nCourse: sodium bicarbonate boluses then infusion; 2 L IV crystalloid; external cooling. BP 108/66 after fluids and QRS 104 ms on repeat ECG that morning. Afebrile by 06/09. No seizures. Bicarbonate weaned 06/10. Mentation back to baseline 06/10. Psychiatry consulted.\n\nDiagnosis: tricyclic antidepressant (amitriptyline) overdose, intentional. Where the amitriptyline came from was not established.\nTransfer medications: sertraline 100 mg daily (resumed 06/11 per psychiatry); ethinyl estradiol 0.035 mg / norethindrone 1 mg daily.\nTransferred to inpatient psychiatry 06/11/2026.\n\nMedical ICU"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-11a",
+          "kind": "hospital_admission",
+          "start": "2026-06-11T14:00",
+          "end": "2026-06-24T11:00",
+          "service": "Inpatient Psychiatry",
+          "reason": "Intentional amitriptyline overdose",
+          "procedures": [
+            {
+              "procedure": "Psychiatric diagnostic evaluation with medical services",
+              "performed": "2026-06-11T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Psychiatric Discharge Summary",
+              "author": "inpatient psychiatry",
+              "date": "2026-06-26T10:40",
+              "body": "PSYCHIATRY INPATIENT SERVICE - DISCHARGE SUMMARY\n06/11/2026 to 06/24/2026\n\nAdmitted after medical ICU care for an intentional amitriptyline overdose, her second tricyclic overdose this year.\n\nCourse: two-week stay. Initially withdrawn, then engaged in daily individual sessions and group programming. Crisis plan rebuilt with her outpatient therapist joining by video; friends again agreed to hold medications. At discharge she denies suicidal ideation, intent or plan.\n\nDischarge diagnoses: borderline personality disorder; major depressive disorder.\nDischarge medications: sertraline 100 mg daily; ethinyl estradiol 0.035 mg / norethindrone 1 mg daily.\nAllergies: NKDA.\nFollow-up: outpatient psychiatry 06/26; therapist 06/25; PCP within 7 days.\n\nPsychiatry Inpatient Service"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-25a",
+          "kind": "telephone",
+          "start": "2026-06-25T11:15",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "author": "RN",
+              "date": "2026-06-25T11:30",
+              "body": "Spoke with pt, discharged yesterday. Friend with her. Taking sertraline, friend has the bottle. No fever, no palpitations. No SI. Therapy today at 2, psychiatry tomorrow. PCP visit 6/29 at 9:00 confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-29a",
+          "kind": "office_visit",
+          "start": "2026-06-29T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital visit, amitriptyline overdose",
+          "conditions": [
+            {
+              "label": "Tricyclic antidepressant overdose",
+              "icd10": "T43.012A",
+              "action": "resolved"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-06-29T09:40",
+              "results": [
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 16
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-06-29T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-29T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "author": "PCP",
+              "date": "2026-06-29T10:05",
+              "body": "TCM after ICU 6/8-6/11 (amitriptyline overdose, fever, low BP, QRS 120 -> bicarb, fluids, cooling) and inpatient psych 6/11-6/24. Summaries reviewed.\n\nShe's flat but present. Says the last two weeks on the unit were 'actually useful,' especially having her therapist on the calls. No SI today, no intent, no plan. Friends holding meds. Psychiatry saw her 6/26, no medication changes.\nNo palpitations, no confusion, eating.\n\nExam: afebrile, heart regular, lungs clear, abdomen soft with normal bowel sounds. Neuro grossly normal. Weight about the same.\nPHQ-9 16.\nBMP today.\n\nA/P\n1. Amitriptyline overdose - recovered. Resolved.\n2. MDD/BPD/suicide attempt - sertraline 100, 30-day supplies, plan per psychiatry and therapist. Safety plan reviewed.\n3. Recheck in a month."
+            },
+            {
+              "type": "Result Note",
+              "title": "BMP",
+              "author": "PCP",
+              "date": "2026-06-29T17:20",
+              "body": "BMP normal. No action."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "outside_records",
+          "start": "2026-07-14T13:30",
+          "reason": "Psychiatry follow-up letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up Letter",
+              "author": "psychiatry",
+              "date": "2026-07-14T13:30",
+              "body": "Dear colleague,\n\nI saw Ms. Labrie 06/26 and 07/10/2026 after her June admission. She is attending therapy weekly and has her friends' support with medication storage. She denies current suicidal ideation. Diagnoses are unchanged: borderline personality disorder and major depressive disorder. She continues sertraline 100 mg daily; no other medications were started. I will see her every 2-3 weeks for now.\n\nOutpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "office_visit",
+          "start": "2026-07-28T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up depression",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 13
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-07-28T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-07-28T16:20",
+              "body": "1-month f/u. A bit brighter today. Back at work two mornings a week. Psychiatry every 2-3 wks, therapy weekly. No self-harm, no purging per her. Sleep ok.\n\nVitals as charted, weight steady. Better eye contact than last month.\nPHQ-9 13. No SI, no plan or intent.\n\nA/P: MDD/BPD - continue sertraline 100, 30 days at a time. Keep psych and therapy. See me in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T20:15",
+          "reason": "Refill and appointment",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "refill + appt",
+              "author": "patient",
+              "date": "2026-08-18T20:15",
+              "body": "Hi, my sertraline runs out next week. Also can I move my september appointment to a thursday, my work schedule changed again."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: refill + appt",
+              "author": "front desk",
+              "date": "2026-08-19T09:10",
+              "body": "Hi Sophia, you're now booked Thursday 9/10 at 3:30. The doctor will handle the refill."
+            },
+            {
+              "type": "Refill Request",
+              "title": "Sertraline 30-day Refill",
+              "author": "PCP",
+              "date": "2026-08-19T12:30",
+              "body": "Sertraline 100 mg #30, no refills, sent. Saw her 7/28."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T15:30",
+          "appointment": "booked",
+          "reason": "Follow-up depression and borderline personality disorder"
+        }
+      ]
+    }
+  ]
+}

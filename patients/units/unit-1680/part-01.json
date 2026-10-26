@@ -1,0 +1,305 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001680",
+      "given": "Fatou",
+      "family": "Bryant",
+      "birth_date": "1993-09-06",
+      "address_line": "27 Bay Road, Apt 3",
+      "phone": "+1-413-555-0137",
+      "email": "fatou.bryant@example.test",
+      "marital_status": "single",
+      "summary": "Administrative assistant who joined the practice healthy at 25, had a 10-week pregnancy loss in 2021, then developed systemic lupus in 2022 with photosensitive rash, cytopenias and two lupus nephritis flares, autoimmune pericarditis, two episodes of lupus-related hemolysis with severe thrombocytopenia (ADAMTS13 normal), and two dehydration illnesses, one with NSAID-associated acute kidney injury. Antiphospholipid testing has been negative. Stable on hydroxychloroquine and low-dose prednisone in 2026.",
+      "events": [
+        {
+          "id": "2019-08-20a",
+          "kind": "establish_care",
+          "start": "2019-08-20T09:00",
+          "end": "2019-08-20T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 80.5, "height_cm": 167.0},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Occasional (less than 1 drink per week)"},
+            {"item": "Occupation", "value": "Administrative assistant"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2019-08-20T09:45", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-08-20T09:45", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2019-08-20T09:45", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2019-08-20T09:45", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2019-08-20T09:45", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2019-08-20T09:40"}],
+          "procedures": [{"procedure": "Preventive visit, new patient, 18-39", "performed": "2019-08-20T09:00"}],
+          "orders": [{"id": "prior-records-2019", "action": "placed", "order": "Request records from prior primary care practice", "category": "referral", "to": "Prior primary care practice", "reason": "establishing care"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit — Establish Care",
+              "author": "PCP",
+              "date": "2019-08-20T10:05",
+              "body": "25 y/o woman establishing care. Moved her primary care here after her old office's hours stopped working with her job; she is an administrative assistant at a property management company and wanted a place she can text.\n\nNo complaints today. Feels well. Periods regular. No meds, no supplements.\n\nPMH: none.\nPSH: wisdom teeth out as a teenager.\nMeds: none.\nAllergies: NKDA.\nFH: mother has lupus (on treatment, followed by rheumatology). Maternal aunt with rheumatoid arthritis. Paternal grandmother with Hashimoto thyroiditis. No early heart disease or cancers she knows of.\nSH: never smoker. Drinks rarely, less than one drink a week. No drugs. Lives in Hadley. Exercises some, walks on weekends.\n\nROS negative except as above. No joint pain, rashes, mouth sores, or hair loss.\n\nExam: vitals as charted. Well appearing. HEENT normal, oropharynx clear, no oral lesions. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Joints without swelling or tenderness. Skin clear, no rash. Neuro nonfocal.\n\nA/P\n1. Health maintenance. Tdap today (no record of one in the last 10 years). Baseline CBC, CMP, lipids. HIV and hep C screening once, she agrees. Requesting old records for Pap and immunization history; she thinks her last Pap was a couple of years ago and normal, and believes she had the HPV shots in high school.\n2. Family history of autoimmune disease. Discussed what symptoms to report (joint swelling, rash, mouth sores, unexplained fatigue). No testing indicated today.\n\nPHQ-2 negative. Return for annual visit next year or sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2019-08-23a",
+          "kind": "portal_message",
+          "start": "2019-08-23T13:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent lab results",
+              "author": "PCP",
+              "date": "2019-08-23T13:20",
+              "body": "Hi Fatou, your blood work from Tuesday is all normal: blood counts, kidney and liver tests, sugar and cholesterol. The HIV and hepatitis C screens were negative. Nothing to do. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "outside_records",
+          "start": "2019-09-10T11:00",
+          "reason": "Prior practice records received",
+          "orders": [{"id": "prior-records-2019", "action": "done", "date": "2019-09-10T11:00"}],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "author": "front desk",
+              "date": "2019-09-10T11:00",
+              "body": "Received 14 pages by fax from patient's previous primary care office. Scanned to media.\n\nSummary for chart (RN):\n- Seen there 2014 to 2018 for routine visits only.\n- Cervical cytology 2017: negative for intraepithelial lesion or malignancy.\n- HPV vaccine series x3 completed 2009 to 2010.\n- MMR x2 and varicella x2 documented in childhood records.\n- Influenza vaccine most years.\n- Problem list empty. No medications. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-08T16:45"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-08T16:45"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Influenza Vaccine",
+              "author": "RN",
+              "date": "2019-10-08T16:50",
+              "body": "Here after work for flu vaccine. Denies fever or illness today, no prior reactions. Quadrivalent flu 0.5 mL IM R deltoid. VIS given. Tolerated well, left in good condition."
+            }
+          ]
+        },
+        {
+          "id": "2020-04-14a",
+          "kind": "portal_message",
+          "start": "2020-04-14T08:12",
+          "reason": "Question about working in office during pandemic",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question about going in to work",
+              "author": "patient",
+              "date": "2020-04-14T08:12",
+              "body": "Hi, my office wants some of us back at the front desk two days a week. I'm healthy but I live with my mom who has lupus and takes medicine for it. Is there anything I should do or is that a reason to stay remote? Thank you."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question about going in to work",
+              "author": "PCP",
+              "date": "2020-04-14T12:40",
+              "body": "Good question. You yourself don't have a condition that puts you at higher risk. Because your mom is on immune-suppressing medicine, it's reasonable to ask your employer for remote work if they can do it, and I'm glad to write a letter supporting that if it would help. If you do go in: mask, distance at the desk, hand hygiene, and change clothes when you get home. Let me know about the letter."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question about going in to work",
+              "author": "patient",
+              "date": "2020-04-14T17:05",
+              "body": "That would help, thank you. My manager's name doesn't need to be on it, just to whom it may concern."
+            },
+            {
+              "type": "Letter",
+              "title": "Work accommodation letter",
+              "author": "PCP",
+              "date": "2020-04-15T09:10",
+              "body": "To whom it may concern,\n\nFatou Bryant is a patient in our practice. She lives with a household member who takes immunosuppressive medication. I support remote work for her where her duties allow, to reduce exposure risk to that household member during the current pandemic.\n\nPlease contact our office with any questions.\n\nPrimary Care Physician"
+            }
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "annual_physical",
+          "start": "2020-09-22T08:30",
+          "end": "2020-09-22T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2020-09-22T08:55",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy."
+            }
+          ],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-09-22T09:05"}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2020-09-22T08:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2020-09-22T09:25",
+              "body": "Annual. Doing well. Has been working from home most of the spring and summer, back in the office two days a week now. Sleeping OK. Walking most evenings. No complaints.\n\nMeds: none. Allergies: NKDA.\nSH unchanged, never smoker, rare alcohol.\nROS: no joint pain or swelling, no rashes, no mouth sores, no fevers.\n\nExam: vitals as charted, weight about the same as last year. Well appearing. Skin without rash. Oropharynx clear. Thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen benign. No joint synovitis. Pelvic: normal external genitalia, cervix normal appearing, Pap obtained. No adnexal masses.\n\nA/P: Healthy 27 y/o.\n- Pap today (last 2017 normal, due).\n- Flu shot today.\n- PHQ-2 negative.\n- Labs not needed this year; baseline last August normal.\nRTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-29a",
+          "kind": "portal_message",
+          "start": "2020-09-29T15:02",
+          "reason": "Pap result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "author": "PCP",
+              "date": "2020-09-29T15:02",
+              "body": "Your Pap from last week is normal. Next one in 3 years, or at 30 we can switch to the Pap plus HPV test every 5 years."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-16a",
+          "kind": "portal_message",
+          "start": "2021-02-16T07:48",
+          "reason": "Positive home pregnancy test",
+          "orders": [{"id": "ob-referral-2021", "action": "placed", "order": "Obstetrics referral", "category": "referral", "to": "Obstetrics and Gynecology", "reason": "positive home pregnancy test"}],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test",
+              "author": "patient",
+              "date": "2021-02-16T07:48",
+              "body": "Good morning. I took a home pregnancy test this morning and it was positive. My last period started around January 8 I think. I'm not sure what I'm supposed to do first. Do I come to you or go straight to an OB?"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Call re: positive home pregnancy test",
+              "author": "PCP",
+              "date": "2021-02-16T12:15",
+              "body": "Called pt back. Positive home test this AM, LMP about 01/08/21, so roughly 5-6 weeks. Feels fine, mild nausea, no bleeding or pain. Not taking any meds. Excited, a little nervous.\n\nReviewed: avoid alcohol, no smoking (never smoker), check with us or OB before any new OTC medicine. Gave return precautions for heavy bleeding, one-sided pain, or fainting.\n\nReferral placed to an outside OB group in Northampton for first prenatal visit; front desk to send referral and she will call them today. She will let us know the date."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-19a",
+          "kind": "outside_records",
+          "start": "2021-04-19T10:30",
+          "reason": "OB records received",
+          "orders": [{"id": "ob-referral-2021", "action": "done", "date": "2021-04-19T10:30"}],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics and Gynecology — Procedure Note and Visit Summary",
+              "author": "obstetrics and gynecology",
+              "date": "2021-04-19T10:30",
+              "body": "OUTSIDE OB/GYN GROUP\nDate of service: 04/12/2021\nPatient: Fatou Bryant  DOB 09/06/1993\n\nVisit summary: G1 at 10 weeks by dates and first-trimester ultrasound at 7 weeks with cardiac activity noted. Presented with cramping and spotting. Transvaginal ultrasound today shows an intrauterine gestation without cardiac activity, consistent with fetal demise. Options reviewed; patient chose uterine evacuation.\n\nProcedure: suction dilation and curettage under MAC. Findings: products of conception obtained, sent to pathology. EBL 50 mL. No complications.\n\nPathology: chorionic villi and decidua, consistent with products of conception.\n\nAssessment and plan: missed abortion at 10 weeks, uterus evacuated. Reviewed that most first-trimester losses are single events. Because the loss occurred at 10 weeks and her mother has lupus, antiphospholipid antibody testing is reasonable before a future pregnancy; patient may discuss with her PCP or with us at follow-up. Pelvic rest 2 weeks. Bleeding and fever precautions. Postoperative visit 2 weeks.\n\nAllergies: NKDA. Medications: none."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-20a",
+          "kind": "telephone",
+          "start": "2021-04-20T17:10",
+          "reason": "Check-in after pregnancy loss",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP call after D&C",
+              "author": "PCP",
+              "date": "2021-04-20T17:10",
+              "body": "Saw OB records come through, called to check in. Pt had D&C last Monday. Light bleeding only, no fever, cramping minimal. Sad, taking the week off. Has her mom and a friend nearby. Mood: grieving, not hopeless, sleeping OK.\n\nOB mentioned antiphospholipid testing before any future pregnancy. She doesn't have plans to try again right now. Told her we can do that whenever she wants. Offered a visit or a counseling referral if things get heavier; she'll reach out."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-08a",
+          "kind": "pharmacy",
+          "start": "2021-05-08T10:20",
+          "reason": "COVID-19 vaccine dose 1",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-05-08T10:20"}],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy immunization report",
+              "author": "pharmacy",
+              "date": "2021-05-10T08:00",
+              "body": "Community pharmacy immunization report. COVID-19 vaccine, Pfizer-BioNTech, dose 1 of 2, 0.3 mL IM L deltoid, 05/08/2021. No immediate reaction."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-29a",
+          "kind": "pharmacy",
+          "start": "2021-05-29T11:05",
+          "reason": "COVID-19 vaccine dose 2",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-05-29T11:05"}],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy immunization report",
+              "author": "pharmacy",
+              "date": "2021-06-01T08:00",
+              "body": "Community pharmacy immunization report. COVID-19 vaccine, Pfizer-BioNTech, dose 2 of 2, 0.3 mL IM L deltoid, 05/29/2021. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "annual_physical",
+          "start": "2021-09-28T08:30",
+          "end": "2021-09-28T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-09-28T09:00"}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2021-09-28T08:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2021-09-28T09:20",
+              "body": "Annual exam.\n\nInterval: pregnancy loss at 10 wk in April with D&C at an outside OB, recovered physically. Periods back to normal since June. Mood was low for a while over the spring, better now; still thinks about it. Not trying to conceive at present. Back in the office full time. COVID vaccine x2 in May at the pharmacy.\n\nMeds: none. NKDA.\nROS: no joint pain, rashes, oral sores, fevers. Energy fine.\n\nExam: vitals as charted. Well appearing. Skin clear. Mouth without ulcers. Heart RRR, no murmur. Lungs clear. Abdomen soft. Joints normal. No edema.\n\nPHQ-9 3. Reviewed.\n\nA/P\n- History of first-trimester loss; OB suggested antiphospholipid testing before another pregnancy. Pt prefers to wait until she is planning. Fine.\n- Flu shot today.\n- Pap up to date (2020).\n- Encouraged COVID booster when eligible.\nRTC 1 yr."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-04a",
+          "kind": "pharmacy",
+          "start": "2021-12-04T09:40",
+          "reason": "COVID-19 booster",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-12-04T09:40"}],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy immunization report",
+              "author": "pharmacy",
+              "date": "2021-12-06T08:00",
+              "body": "Community pharmacy immunization report. COVID-19 vaccine, Pfizer-BioNTech, booster dose, 0.3 mL IM R deltoid, 12/04/2021."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

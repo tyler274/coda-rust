@@ -1,0 +1,1793 @@
+{
+  "unit": "unit-2788",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"alpha 1-proteinase inhibitor, human 1000 MG Injection\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002788",
+      "given": "Megan",
+      "family": "Larkin",
+      "birth_date": "1987-01-09",
+      "address_line": "41 Linden St, Apt 2",
+      "phone": "+1-201-555-0104",
+      "email": "megan.larkin@example.test",
+      "marital_status": "single",
+      "summary": "Graphic designer in her late thirties with lifelong mild persistent asthma and atopic dermatitis who joins in 2023. Progressive dyspnea in 2024 leads to pulmonology, basilar emphysema and PiZZ alpha-1 antitrypsin deficiency on weekly augmentation; in 2025 Raynaud-type episodes and hand stiffness lead to rheumatology and seropositive rheumatoid arthritis on hydroxychloroquine.",
+      "events": [
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Mild persistent asthma",
+              "action": "history",
+              "onset": "2012-06-01",
+              "note": "Childhood asthma, quiet through teens, recurred mid-twenties"
+            },
+            {
+              "label": "Atopic dermatitis",
+              "action": "history",
+              "onset": "1995-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "fluticasone propionate 0.11 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 2 puffs twice daily, rinse mouth after use",
+              "dose": {
+                "value": 220,
+                "unit": "mcg"
+              },
+              "frequency": "BID",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "Mild persistent asthma"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheeze or shortness of breath",
+              "dose": {
+                "value": 180,
+                "unit": "mcg"
+              },
+              "frequency": "PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "Mild persistent asthma"
+            },
+            {
+              "drug": "triamcinolone acetonide 1 MG/ML Topical Cream",
+              "action": "historical",
+              "sig": "Apply thin layer to affected areas twice daily during flares",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "chronic",
+              "reason": "Atopic dermatitis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              79
+            ],
+            "hr": 84,
+            "rr": 16,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 60.7,
+            "height_cm": 164.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-12T10:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.52
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-12T10:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 85
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-12T10:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 181
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 106
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 68
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 120
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T10:05",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Graphic designer"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-09-12T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-12T10:05"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-12T10:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-12T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-09-12T09:20",
+              "author": "PCP",
+              "body": "NEW PATIENT VISIT\n\n36F graphic designer, works from home most days, moving her care here from her old practice. Main reason: wants one doctor she can reach. No acute concerns.\n\nASTHMA: had asthma as a kid, says she 'grew out of it' in high school, then it came back around 25 or so. Old PCP called it mild persistent and put her on fluticasone 110, 2 puffs BID; takes it every day, rinses after. Albuterol maybe once or twice a month, mostly with colds or cold air running. No nighttime symptoms, no ED visits or oral steroid bursts she can remember in years.\n\nECZEMA: lifelong, flares in the winter on the inner elbows and backs of knees. Triamcinolone cream BID during flares, a tube lasts her most of a winter.\n\nPMH: asthma, atopic dermatitis.\nPSH: T&A at age 7.\nMeds: fluticasone HFA 110 mcg 2 puffs BID; albuterol HFA 2 puffs q4-6h prn; triamcinolone 0.1% cream BID prn flares.\nAllergies: NKDA.\nFHx: father had emphysema, diagnosed in his mid-40s. Mother has eczema. Maternal aunt with rheumatoid arthritis.\nSH: never smoked, does not drink, no drugs. Lives in Holyoke. Graphic designer.\nGYN: Pap with HPV last year at the old office, normal per pt.\n\nROS: no dyspnea at baseline, no chronic cough, no chest pain, no joint pain, no weight change. Otherwise negative.\n\nEXAM: well appearing, in no distress.\nHEENT: TMs clear, oropharynx clear, tonsils surgically absent.\nNeck: supple, no adenopathy, no thyromegaly.\nLungs: clear, good air entry, no wheeze.\nCV: RRR, no murmur.\nAbd: soft, nontender.\nSkin: mild dry patches antecubital fossae bilaterally, no excoriation or infection.\nExt: no edema.\nPHQ-2: 0.\n\nA/P\n1. Mild persistent asthma: well controlled on current ICS. Continue fluticasone 110 2 puffs BID, albuterol prn. Asked her to let me know if she needs albuterol more than twice a week.\n2. Atopic dermatitis: quiet now. Triamcinolone prn, emollients daily.\n3. Health maintenance: baseline CBC, CMP, lipids, one-time HIV and HCV today. Flu vaccine given. Records request to prior practice for Pap and immunization dates. COVID booster when the new formula is out.\n\nRTC for physical in the spring."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.2,
+            "height_cm": 165.0,
+            "labs": {
+              "High Density Lipoprotein": 63,
+              "Low Density Lipoprotein": 103,
+              "Total Cholesterol": 181,
+              "Triglycerides": 76
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2023-09-14T16:40",
+              "author": "PCP",
+              "body": "Hi Megan, your labs from Tuesday are back. Blood counts, kidney and liver tests, and cholesterol all look good, and the HIV and hepatitis C screens were negative. Nothing to change. Welcome to the practice."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "outside_records",
+          "start": "2023-09-26T11:15",
+          "reason": "Records from prior primary care practice",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-03-22T09:30",
+              "text": "Specimen adequate for evaluation, transformation zone present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-04-16T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Summary",
+              "date": "2023-09-26T11:15",
+              "author": "outside primary care",
+              "body": "Records received from prior primary care office (fax, 9 pages, mostly visit stubs and medication lists).\n\nSummary abstracted by MA:\n- Asthma: childhood asthma per history; symptoms recurred in her mid-twenties and she was treated as mild persistent asthma, on fluticasone HFA 110 mcg 2 puffs BID with albuterol prn since then.\n- Eczema: triamcinolone 0.1% cream prn.\n- Pap with HPV co-test 03/2022: NILM, HPV negative.\n- Tdap 04/2019.\n- Allergies: NKDA.\n\nNo PFTs or imaging in the packet. Scanned to media."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2023-10-17T08:45",
+              "author": "RN",
+              "body": "Here for 2023-24 COVID vaccine. No fever today, no prior reactions beyond a sore arm. Pfizer 0.3 mL IM L deltoid, lot logged. Waited 15 min, fine. Card updated."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "pharmacy",
+          "start": "2024-01-23T13:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2024-01-23T13:05",
+              "author": "MA",
+              "body": "Pharmacy fax: fluticasone HFA 110 mcg, no refills left. Last seen 9/12/23, on med list, controlled. Routed to PCP.\n\nPCP: approved, 90-day supply with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "office_visit",
+          "start": "2024-02-06T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Asthma check",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-03-05a",
+          "kind": "portal_message",
+          "start": "2024-03-05T20:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Eczema cream",
+              "date": "2024-03-05T20:12",
+              "author": "patient",
+              "body": "Hi, my eczema has been bad this winter, mostly both elbows and behind my knees, itchy at night. I'm almost out of the triamcinolone. Could you send a new tube? Sorry I cancelled last month, deadline week."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Eczema cream",
+              "date": "2024-03-06T08:31",
+              "author": "PCP",
+              "body": "No problem at all. I sent a larger tube of the triamcinolone to your pharmacy. Twice a day on the patches for up to two weeks, then back off, and keep a thick moisturizer on after showers. If it looks weepy, crusted or isn't settling in two weeks, send a photo or come in. We'll catch up at your physical in May."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "annual_physical",
+          "start": "2024-05-21T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              127,
+              79
+            ],
+            "hr": 79,
+            "rr": 17,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 60.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-05-21T08:35",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 277
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-05-21T08:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Glucose",
+                  "value": 99
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-05-21T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-05-21T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-05-21T08:00",
+              "author": "PCP",
+              "body": "ANNUAL PREVENTIVE VISIT\n\nS: 37F feeling well. Asthma: daily fluticasone, albuterol a handful of times since the fall, none in the past month. Eczema calmed down once the heat came on less, using the cream rarely now. Sleeping OK, busy with freelance work on top of her job. Walks most evenings.\n\nMeds: fluticasone HFA 110 2 puffs BID, albuterol prn, triamcinolone cream prn.\nAllergies: NKDA.\nSH: never smoker, no alcohol.\n\nROS: no cough, no exertional dyspnea, no wheeze at night, no joint complaints. Negative otherwise.\n\nExam: NAD.\nHEENT normal. Neck no nodes or thyroid enlargement.\nLungs clear bilaterally, no wheeze.\nHeart regular, no murmurs.\nAbdomen soft, no masses.\nSkin: a few faint dry patches L antecubital, otherwise clear.\nExt warm, no edema.\nPHQ-2: 0.\n\nA/P\n- Health maintenance: Pap/HPV 2022 normal, next due 2027. Tdap 2019. Flu and COVID up to date for the season. CBC and CMP today.\n- Asthma: controlled, no change.\n- Eczema: emollients, cream prn.\n\nReturn in a year, sooner prn."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-23a",
+          "kind": "portal_message",
+          "start": "2024-05-23T12:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-05-23T12:20",
+              "author": "PCP",
+              "body": "Megan, your blood count and chemistry panel from the physical are normal. Have a good summer."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "office_visit",
+          "start": "2024-09-24T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shortness of breath and cough",
+          "vitals": {
+            "bp": [
+              124,
+              77
+            ],
+            "hr": 81,
+            "rr": 17,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 61.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-09-24T10:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-24T11:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-09-24T11:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "Progressive exertional dyspnea and chronic productive cough despite ICS"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-09-24T10:40",
+              "author": "PCP",
+              "body": "S: 37F with asthma here because her breathing has been getting worse since around early June. Notices it walking up the hill to the bus and carrying groceries up to her apartment, has stopped her evening walks the last few weeks. Coughs every day now, brings up clear phlegm, worse in the mornings. No fever, no chest pain, no hemoptysis, no leg swelling, no weight loss. Says she has not missed fluticasone doses. Albuterol now a few times a week, helps a little but not like it used to. No sick contacts. No new pets, no mold at home, no change at work (desk job). Never smoked, no vaping.\n\nFHx reviewed: father with emphysema in his 40s.\n\nO: comfortable at rest, speaks full sentences.\nLungs: air movement fair, prolonged expiratory phase, no crackles, no focal findings.\nCV: regular, no murmur, no JVD.\nExt: no edema, no clubbing.\n\nA/P\n1. Progressive exertional dyspnea and daily productive cough in an adherent asthmatic, several months, never smoker. Not behaving like her usual asthma. Referring to pulmonology for full evaluation including PFTs and imaging; asked them to see her soon. Continue fluticasone and albuterol in the meantime; ED or call if dyspneic at rest.\n2. Flu vaccine given today.\n\nRTC after pulmonology."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-22T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2024-10-22T16:15",
+              "author": "RN",
+              "body": "2024-25 COVID vaccine, Moderna 0.5 mL IM R deltoid. Pt asked about pulmonology wait; front desk called referral line, appt 12/4. Observed 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-16a",
+          "kind": "outside_records",
+          "start": "2024-12-16T14:30",
+          "reason": "Pulmonology consult letter",
+          "conditions": [
+            {
+              "label": "Emphysema",
+              "action": "diagnosed",
+              "onset": "2024-12-04",
+              "note": "Basilar-predominant on chest x-ray at pulmonology",
+              "icd10": "J43.9"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "done",
+              "date": "2024-12-16T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology Consultation",
+              "date": "2024-12-16T14:30",
+              "author": "pulmonology",
+              "body": "OUTSIDE PULMONOLOGY CONSULTATION\nDate of visit: 12/04/2024\nReferred by: primary care\n\nThank you for sending Ms. Larkin, a 37-year-old never smoker with asthma, for evaluation of worsening breathlessness.\n\nShe describes half a year of steadily increasing shortness of breath and a daily cough raising clear sputum, despite taking her inhaled fluticasone faithfully. No smoking history and no occupational dust or fume exposure. Her father was diagnosed with emphysema at 44.\n\nMedications: fluticasone HFA 110 mcg 2 puffs twice daily; albuterol HFA as needed; triamcinolone cream for eczema.\nAllergies: NKDA.\n\nExam: breath sounds diminished at both bases with a prolonged expiratory phase.\n\nData:\n- CBC within normal limits.\n- Chest radiograph: hyperinflated lungs with emphysematous change most marked at the bases.\n- Spirometry: FEV1/FVC 65% (normal >70%), consistent with obstruction; minimal response to bronchodilator.\n\nImpression: fixed airflow obstruction with lower-zone emphysema in a young never smoker with a father who had early emphysema. This pattern raises strong concern for alpha-1 antitrypsin deficiency. A serum alpha-1 antitrypsin level was drawn today and is pending; we will phenotype if it is low.\n\nPlan: continue current inhalers. Will call her with results and see her back in about six weeks with full PFTs.\n\nPulmonology"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-20a",
+          "kind": "portal_message",
+          "start": "2024-12-20T09:02",
+          "conditions": [
+            {
+              "label": "Alpha-1-antitrypsin deficiency",
+              "action": "diagnosed",
+              "onset": "2024-12-19",
+              "note": "PiZZ per pulmonology; level and phenotype copy requested"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Alpha-1 results",
+              "date": "2024-12-20T09:02",
+              "author": "patient",
+              "body": "Hi, the lung doctor's office called yesterday. They said my alpha-1 level is really low and the genetic type came back ZZ, so I have alpha-1 antitrypsin deficiency. I see them again in January. I'm honestly a little freaked out and wondering if this is what my dad had. Can we talk about it before then?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Alpha-1 results",
+              "date": "2024-12-20T12:47",
+              "author": "PCP",
+              "body": "Megan, thank you for letting me know, and I'm sorry, that is a lot to take in right before the holidays. It does explain the breathing changes, and it is very possible it is what your father had. There is treatment for this and pulmonology will walk you through it. I've asked their office to fax the results to us. Let's sit down early January; the front desk will reach out with a time. Keep using your inhalers as you have been."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-06a",
+          "kind": "outside_records",
+          "start": "2025-01-06T10:25",
+          "reason": "Pulmonology lab results",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-12-04T11:10",
+              "results": [
+                {
+                  "test": "Alpha-1 antitrypsin",
+                  "loinc": "6771-0",
+                  "unit": "mg/dL",
+                  "value": 21,
+                  "resulted": "2024-12-11T15:00"
+                },
+                {
+                  "test": "Alpha-1 antitrypsin phenotype",
+                  "loinc": "32769-2",
+                  "text": "PiZZ",
+                  "resulted": "2024-12-19T10:30"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outside Lab Results",
+              "date": "2025-01-06T10:25",
+              "author": "front desk",
+              "body": "Fax from pulmonology office, 2 pages: serum alpha-1 antitrypsin 21 mg/dL (ref 100-190), collected 12/04/2024; alpha-1 antitrypsin phenotype PiZZ, reported 12/19/2024. Scanned and routed to PCP.\n\nPCP: reviewed. Consistent with what pt reported. Visit set for 1/8."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-08a",
+          "kind": "office_visit",
+          "start": "2025-01-08T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New diagnosis of alpha-1 antitrypsin deficiency",
+          "vitals": {
+            "bp": [
+              111,
+              78
+            ],
+            "hr": 78,
+            "rr": 16,
+            "spo2": 98,
+            "weight_kg": 61.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-08T13:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-01-08T14:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2025-01-08T14:05"
+            },
+            {
+              "vaccine": "Hepatitis A, adult",
+              "date": "2025-01-08T14:06"
+            },
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2025-01-08T14:07"
+            }
+          ],
+          "orders": [
+            {
+              "id": "liver-us",
+              "action": "placed",
+              "order": "Abdominal ultrasound",
+              "category": "imaging",
+              "reason": "Alpha-1 antitrypsin deficiency, PiZZ, baseline liver imaging"
+            },
+            {
+              "id": "liver-panel",
+              "action": "placed",
+              "order": "Hepatic Panel (LFT)",
+              "category": "lab",
+              "reason": "Alpha-1 antitrypsin deficiency, PiZZ"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-01-08T13:20",
+              "author": "PCP",
+              "body": "S: Here to talk through the new alpha-1 diagnosis. Pulmonology saw her 12/4 for the dyspnea: basilar emphysema on CXR, obstruction on spirometry with little bronchodilator response. AAT level came back 21 mg/dL, phenotype PiZZ (fax 1/6). She has pulm follow-up 1/22 for full PFTs. Breathing about the same as the fall, cough with clear sputum most mornings. Still on fluticasone BID and albuterol a few times a week. Has been reading online and is worried about her liver and about what this means for work and the long term. She thinks her father's emphysema was probably the same thing; he was never tested that she knows of.\n\nO: comfortable, no accessory muscle use.\nLungs: diminished at the bases, prolonged expiration, no wheeze.\nCV regular. Abd soft, liver not palpable below the costal margin, no splenomegaly. No jaundice. No clubbing or edema.\n\nA/P\n1. Alpha-1 antitrypsin deficiency, PiZZ, with emphysema. Explained the lung and liver sides of this in plain terms. Pulmonology will discuss augmentation therapy at her next visit. From our side: vaccines to protect lungs and liver, a baseline liver panel and abdominal ultrasound, and absolute smoke avoidance, which she already does. Gave her the patient foundation's information sheet. Mentioned that blood relatives can be tested if they want to be, through their own doctors.\n2. Vaccines today: PCV20, hepatitis A #1, Heplisav-B #1. Heplisav #2 in one month, hep A #2 in six months.\n3. Asthma: no change to inhalers pending pulmonology.\n\nRTC in spring or after pulm, sooner if worse."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-05a",
+          "kind": "outside_records",
+          "start": "2025-02-05T09:10",
+          "reason": "Pulmonology follow-up note",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-01-22T09:40",
+              "results": [
+                {
+                  "test": "Immunoglobulin A",
+                  "loinc": "2458-8",
+                  "unit": "mg/dL",
+                  "value": 210
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology Follow-up",
+              "date": "2025-02-05T09:10",
+              "author": "pulmonology",
+              "body": "PULMONOLOGY FOLLOW-UP\nDate of visit: 01/22/2025\n\nMs. Larkin returns after her alpha-1 testing: serum level 21 mg/dL, PiZZ.\n\nComplete PFTs: post-bronchodilator FEV1 58% predicted, FEV1/FVC 0.65; DLCO 63% predicted.\nCT chest: panlobular emphysema with lower-lobe predominance. No pulmonary nodules. No bronchiectasis.\nSerum IgA 210 mg/dL, normal.\n\nAssessment: severe alpha-1 antitrypsin deficiency (ZZ) with emphysema and moderate airflow obstruction.\n\nPlan:\n- Start weekly intravenous alpha-1 proteinase inhibitor 60 mg/kg through a home-infusion service; benefits investigation and authorization under way.\n- Continue fluticasone and albuterol as prescribed.\n- Hepatitis A and B and pneumococcal vaccination through primary care.\n- Liver tests yearly and a baseline liver ultrasound, also through primary care.\n- No exposure to tobacco smoke.\n- Return in about six months.\n\nPulmonology"
+            }
+          ]
+        },
+        {
+          "id": "2025-02-05b",
+          "kind": "nurse_visit",
+          "start": "2025-02-05T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis B vaccine dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-02-05T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2025-02-05T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2025-02-05T16:35",
+              "author": "RN",
+              "body": "Heplisav-B dose 2 of 2, 0.5 mL IM L deltoid. Tolerated dose 1 without issue. Reminded about hep A #2 in July and her ultrasound on 2/19 (nothing to eat after midnight)."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-19a",
+          "kind": "imaging",
+          "start": "2025-02-19T07:45",
+          "reason": "Baseline liver imaging, alpha-1 antitrypsin deficiency",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-02-19T07:30",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 89
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2025-02-19T07:45",
+              "text": "Indication: alpha-1 antitrypsin deficiency, PiZZ; baseline. Technique: grayscale and color Doppler of the upper abdomen. Liver: normal in size, measuring 14.1 cm in the midclavicular line, with smooth contour and normal homogeneous echotexture. No focal hepatic lesion. Hepatic and portal veins patent with normal flow direction. Gallbladder without stones or wall thickening. Common bile duct 3 mm. Pancreas partly obscured by bowel gas, visualized portions normal. Spleen normal at 9.8 cm. Both kidneys normal in size without hydronephrosis. No ascites.",
+              "conclusion": "Normal abdominal ultrasound. No sonographic evidence of liver disease."
+            }
+          ],
+          "orders": [
+            {
+              "id": "liver-us",
+              "action": "done",
+              "date": "2025-02-19T07:45"
+            },
+            {
+              "id": "liver-panel",
+              "action": "done",
+              "date": "2025-02-19T07:30"
+            }
+          ]
+        },
+        {
+          "id": "2025-02-21a",
+          "kind": "portal_message",
+          "start": "2025-02-21T11:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Liver results",
+              "date": "2025-02-21T11:15",
+              "author": "PCP",
+              "body": "Hi Megan, good news: your liver blood tests are all normal and the ultrasound shows a normal-sized, healthy-looking liver with no masses. We'll repeat the liver tests once a year. Pulmonology's note came through too, so I know they're arranging the weekly infusions."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "telephone",
+          "start": "2025-03-04T14:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Home Infusion Pharmacy",
+              "date": "2025-03-04T14:50",
+              "author": "RN",
+              "body": "Call from home-infusion specialty pharmacy coordinating weekly alpha-1 augmentation ordered by pulmonology. Insurance approval received. Requested PCP contact info, current med list, allergy status and recent weight. Gave NKDA, weight 61 kg at 1/8 visit, med list as on file. First nurse home visit planned for 3/11. They will fax a start-of-care notice."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-12a",
+          "kind": "pharmacy",
+          "start": "2025-03-12T10:05",
+          "medications": [
+            {
+              "drug_text": "alpha 1-proteinase inhibitor, human 1000 MG Injection",
+              "action": "historical",
+              "sig": "60 mg/kg IV once weekly by home infusion",
+              "dose": {
+                "value": 60,
+                "unit": "mg/kg"
+              },
+              "frequency": "WEEKLY",
+              "route": "Intravenous",
+              "course": "chronic",
+              "reason": "Alpha-1 antitrypsin deficiency with emphysema"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Home Infusion Start of Care",
+              "date": "2025-03-12T10:05",
+              "author": "home infusion pharmacy",
+              "body": "START OF CARE NOTICE\nPatient: Megan Larkin\nTherapy: alpha-1 proteinase inhibitor (human), 60 mg/kg IV weekly; ordering provider pulmonology.\nFirst infusion given at home 03/11/2025 by infusion RN via peripheral IV, completed without reaction. Vital signs stable before and after. Patient taught signs of infusion reaction. Weekly visits scheduled.\nThis notice is for the primary care record."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "annual_physical",
+          "start": "2025-06-10T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "medications": [
+            {
+              "drug_text": "ibuprofen 200 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 to 2 tablets by mouth every 6 to 8 hours as needed for joint pain, no more than 1200 mg per day",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hand aches"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              81
+            ],
+            "hr": 75,
+            "rr": 17,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 62.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-10T08:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 256
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.49
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-06-10T08:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-06-10T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-06-10T08:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-06-10T08:20",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n\nS: 38F. Alpha-1 (PiZZ) with emphysema, on weekly home augmentation since March, no reactions; the infusion nurse comes Tuesday evenings. Feels her breathing is a bit better than in the winter, back to short walks, still a morning cough. Fluticasone BID, albuterol a couple of times a week. Eczema quiet.\n\nNew: for about a month her hands ache and feel stiff when she gets up, loosens up after she gets going. Thinks it's from long days on the tablet and mouse. Taking OTC ibuprofen 200 mg, 1-2 tabs every 6-8 h on the bad days, never more than 6 a day.\n\nMeds: fluticasone HFA 110 2 puffs BID; albuterol prn; triamcinolone cream prn; alpha-1 proteinase inhibitor 60 mg/kg IV weekly (pulm); ibuprofen OTC prn.\nAllergies: NKDA.\nSH: never smoker, no alcohol.\nPHQ-2: 1.\n\nExam: well appearing.\nLungs: diminished at bases, prolonged expiration, no wheeze.\nHeart regular, no murmur.\nAbd soft, no hepatosplenomegaly.\nHands: full range of motion, grip intact.\nSkin clear.\nExt: no edema.\n\nA/P\n1. Alpha-1 antitrypsin deficiency with emphysema: on augmentation, followed by pulm. CMP today for yearly liver check.\n2. Asthma: unchanged regimen.\n3. Hand aches/stiffness, about a month: likely overuse from work. OK to use ibuprofen as she is, with food, within the daily max. Ergonomics. Let me know if it lasts or spreads.\n4. Health maintenance: hep A #2 due July, booked. Pap/HPV due 2027. CBC, CMP.\n\nRTC 1 year, sooner prn."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-12a",
+          "kind": "portal_message",
+          "start": "2025-06-12T17:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from your physical",
+              "date": "2025-06-12T17:05",
+              "author": "PCP",
+              "body": "Megan, blood counts, kidney function and liver tests are all normal again. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-15a",
+          "kind": "nurse_visit",
+          "start": "2025-07-15T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis A vaccine dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-07-15T12:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis A, adult",
+              "date": "2025-07-15T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2025-07-15T12:15",
+              "author": "RN",
+              "body": "Hepatitis A adult dose 2 of 2, 1 mL IM R deltoid. Hep A and B series now complete. No reaction after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-25a",
+          "kind": "portal_message",
+          "start": "2025-08-25T19:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pulmonology update",
+              "date": "2025-08-25T19:40",
+              "author": "patient",
+              "body": "FYI I saw pulmonology last Wednesday. They said things look stable and to keep doing the weekly infusions and inhalers the same. They want to see me again in about six months. I don't think they send you notes so wanted you to know."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pulmonology update",
+              "date": "2025-08-26T08:12",
+              "author": "PCP",
+              "body": "Thanks Megan, that's helpful and good to hear. I'll note it in your chart."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "office_visit",
+          "start": "2025-10-14T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fingers changing color in the cold, joint pain",
+          "vitals": {
+            "bp": [
+              125,
+              80
+            ],
+            "hr": 78,
+            "rr": 16,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 61.3
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-10-14T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T09:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T09:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T09:42"
+            }
+          ],
+          "orders": [
+            {
+              "id": "rheum-referral",
+              "action": "placed",
+              "order": "Rheumatology referral",
+              "category": "referral",
+              "to": "Rheumatology",
+              "reason": "Episodic digital color change with cold, hand and knee joint pain with morning stiffness"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-10-14T09:00",
+              "author": "PCP",
+              "body": "S: Two things since spring that are not going away. (1) Her fingers go white, then blue, when she's out in the cold or stressed (first noticed it at the grocery freezer aisle in May, now most mornings at the bus stop). Painful while it lasts, sometimes tingles, color comes back over several minutes. (2) The hand aching from June has not settled, and now her knees ache too; stiff in the morning, takes a while to get moving. Ibuprofen takes the edge off. No rash, no mouth ulcers, no dysphagia, no skin thickening she has noticed. Breathing stable on the infusions.\n\nMeds reviewed, unchanged from June. NKDA.\nFHx: maternal aunt with RA.\n\nO: fingers normal color in the warm room, capillary refill brisk, no digital ulcers or pitting. Lungs: diminished at bases, prolonged expiration, as before.\n\nA/P\n1. Episodic cold-triggered digital color change with joint pain and morning stiffness in hands and knees, ~5 months, family history of RA. Concerned for an inflammatory or connective tissue process. Referral to rheumatology; they prefer to order their own serologies, so not drawing today. Keep hands and core warm, gloves before going out. Continue ibuprofen prn within the max.\n2. Flu and COVID vaccines today.\n\nFollow up after rheumatology."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-03a",
+          "kind": "portal_message",
+          "start": "2025-12-03T07:55",
+          "conditions": [
+            {
+              "label": "Rheumatoid arthritis",
+              "action": "diagnosed",
+              "onset": "2025-05-01",
+              "note": "Seropositive, per rheumatology; diagnosed 2025-12-02"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "hydroxychloroquine sulfate 200 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Rheumatoid arthritis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Rheumatology results",
+              "date": "2025-12-03T07:55",
+              "author": "patient",
+              "body": "Hi, rheumatology called yesterday with my blood work. They said it's rheumatoid arthritis, the antibody tests were positive and my inflammation numbers are up, and the finger color thing is Raynaud's. They started me on hydroxychloroquine 200 mg twice a day and want me to get an eye exam. Do you have an eye doctor you like?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Rheumatology results",
+              "date": "2025-12-03T12:30",
+              "author": "PCP",
+              "body": "Thanks for the update, Megan. I'm glad they got to an answer. Hydroxychloroquine is a gentle first medicine for RA and usually takes a couple of months to show its full effect; take it with food if it upsets your stomach. Our front desk will send you two local eye offices that do the baseline retina testing. I've also asked rheumatology for their consult note."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-17a",
+          "kind": "outside_records",
+          "start": "2025-12-17T13:40",
+          "reason": "Rheumatology consult letter",
+          "conditions": [
+            {
+              "label": "Raynaud phenomenon",
+              "action": "diagnosed",
+              "onset": "2025-05-01"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-11-24T11:30",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 50
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 24
+                },
+                {
+                  "test": "Antinuclear Antibodies",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Rheumatoid Factor",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Cyclic Citrullinated Peptide Antibody",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "rheum-referral",
+              "action": "done",
+              "date": "2025-12-17T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Consultation",
+              "date": "2025-12-17T13:40",
+              "author": "rheumatology",
+              "body": "RHEUMATOLOGY CONSULTATION\nDate of visit: 11/24/2025\n\nReason for referral: cold-induced finger color change and joint symptoms.\n\nHistory: 38-year-old woman with mild persistent asthma, atopic dermatitis and alpha-1 antitrypsin deficiency on augmentation. For roughly half a year her fingers blanch and then turn blue on cold exposure or under stress; the attacks hurt and sometimes tingle. Intermittent pain and morning stiffness in the hands and knees over the same period. Family history: father with emphysema at 44, a maternal aunt with RA, mother with eczema. No tobacco, alcohol or drug use.\n\nMedications: fluticasone, albuterol prn, triamcinolone cream, ibuprofen prn, weekly alpha-1 proteinase inhibitor. Allergies: NKDA.\n\nExam: vitals normal. Both hands show fingertip pallor; no digital ulcers, no gangrene; capillary refill under 2 seconds. Remainder of the examination unremarkable.\n\nLaboratory (drawn at visit): CBC normal. ESR 50 mm/hr (0-20). CRP 24 mg/L (<10). ANA positive. Anti-centromere negative. Anti-Scl-70 negative. RF positive. Anti-CCP positive.\n\nAssessment:\n1. Rheumatoid arthritis, seropositive (RF and anti-CCP), with elevated inflammatory markers.\n2. Raynaud phenomenon. Negative scleroderma-associated antibodies and no features of systemic sclerosis on exam.\n\nPlan (discussed by phone 12/02/2025):\n- Hydroxychloroquine 200 mg twice daily. Chosen as initial therapy in view of her lung disease and PiZZ status.\n- Baseline eye examination within the first year.\n- Raynaud: warm gloves, layered clothing, avoid cold exposure; no medication at this time.\n- Ibuprofen as needed may continue.\n- Return in about 4 months.\n\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "outside_records",
+          "start": "2026-01-20T15:20",
+          "reason": "Baseline eye examination for hydroxychloroquine",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Eye Examination Report",
+              "date": "2026-01-20T15:20",
+              "author": "ophthalmology",
+              "body": "EYE EXAMINATION\nDate of exam: 01/13/2026\nReason: baseline screening before long-term hydroxychloroquine (started 12/2025 by rheumatology).\n\nVisual acuity 20/20 OD, 20/20 OS with correction. Pupils equal, no afferent defect. Intraocular pressures normal. Anterior segments quiet. Dilated fundus exam: healthy optic nerves, maculae flat with normal foveal reflex, vessels and periphery normal OU.\nAutomated 10-2 visual fields: full OU, reliable.\nSD-OCT macula: normal retinal layers OU, no parafoveal thinning.\n\nImpression: normal baseline exam, no evidence of hydroxychloroquine retinal toxicity.\nPlan: annual screening beginning after 5 years of use, sooner if visual symptoms.\n\nOphthalmology"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "portal_message",
+          "start": "2026-02-10T18:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Albuterol refill",
+              "date": "2026-02-10T18:25",
+              "author": "patient",
+              "body": "Hi, could I get a refill on my albuterol? I left one at my mom's and the other is about empty. Still only using it a couple of times a week."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Albuterol refill",
+              "date": "2026-02-11T09:05",
+              "author": "MA",
+              "body": "Hi Megan, the doctor approved it and it went to your pharmacy this morning, two inhalers so you can keep a spare. If you find you're using it more than usual, let us know."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-03a",
+          "kind": "telephone",
+          "start": "2026-03-03T11:35",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Home Infusion Pharmacy",
+              "date": "2026-03-03T11:35",
+              "author": "RN",
+              "body": "Home-infusion pharmacy called: insurer's annual reauthorization for weekly alpha-1 augmentation is being handled by pulmonology, they only needed the current med list and allergy status for their file. Confirmed NKDA and current meds, including hydroxychloroquine added by rheumatology in December. No action needed from PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "annual_physical",
+          "start": "2026-06-09T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              129,
+              78
+            ],
+            "hr": 85,
+            "rr": 17,
+            "temp_c": 36.7,
+            "spo2": 96,
+            "weight_kg": 61.2
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-06-09T09:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 247
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.55
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 35
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-09T09:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 83
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-06-09T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-09T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-06-09T08:40",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n\nS: 39F here for her yearly.\n- RA: on hydroxychloroquine 200 BID since December. Saw rheumatology in March: morning stiffness now about 15 minutes instead of most of the morning, hands and knees hurt less, staying on the same dose. She did not get a note from that visit and neither did we. Uses ibuprofen maybe once a week now.\n- Raynaud: fewer attacks with gloves and layering, a few over the winter.\n- Alpha-1 with emphysema: weekly home infusions continue without problems. Breathing steady, walks most days, morning cough lighter.\n- Asthma: fluticasone BID, albuterol a couple of times a week.\n- Eczema: quiet, cream now and then.\n- Baseline eye exam in January normal.\n\nMeds: fluticasone HFA 110 2 puffs BID; albuterol HFA prn; triamcinolone 0.1% cream prn; hydroxychloroquine 200 mg BID (rheum); alpha-1 proteinase inhibitor 60 mg/kg IV weekly (pulm); ibuprofen 200 mg OTC prn.\nAllergies: NKDA.\nSH: never smoker, no alcohol. Still designing, mostly from home.\nPHQ-2: 0.\n\nExam: well.\nLungs: diminished at the bases with prolonged expiration, no wheeze, unchanged.\nHeart regular, no murmur.\nAbd soft, no organomegaly.\nHands: fingers pink and warm, no ulcers.\nSkin: clear today.\nExt: no edema.\n\nA/P\n1. RA: improving on hydroxychloroquine per rheumatology. CBC with diff and CMP today.\n2. Raynaud: conservative measures working.\n3. AATD/emphysema: stable on augmentation, followed by pulmonology. Yearly liver tests today.\n4. Asthma, eczema: no changes.\n5. Health maintenance: turns 40 in January, so we talked about starting screening mammograms then; she'd like to. Pap/HPV due 2027. Flu and COVID vaccines at the October visit.\n\nRTC October."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-11a",
+          "kind": "portal_message",
+          "start": "2026-06-11T13:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your labs",
+              "date": "2026-06-11T13:50",
+              "author": "PCP",
+              "body": "Hi Megan, your blood counts, kidney function and liver tests from Tuesday are all normal, which is what we want to see on hydroxychloroquine and with alpha-1. Enjoy the summer and see you in October."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T21:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Fluticasone refill and October appt",
+              "date": "2026-08-18T21:10",
+              "author": "patient",
+              "body": "Hello, the pharmacy says my fluticasone is out of refills. Also just checking I'm still on for October 13 in the morning, I have it in my calendar."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Fluticasone refill and October appt",
+              "date": "2026-08-19T08:47",
+              "author": "front desk",
+              "body": "Hi Megan, you're confirmed for Tuesday 10/13 at 9:20. The refill request went to the doctor and was approved this morning, a 90-day supply with refills is at your pharmacy."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-13a",
+          "kind": "office_visit",
+          "start": "2026-10-13T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up asthma and alpha-1 antitrypsin deficiency; flu and COVID vaccines",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Emphysema|J43.9": {
+        "code": "J43.9",
+        "display": "Emphysema, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "fluticasone propionate 0.11 MG/ACTUAT Metered Dose Inhaler": {
+        "code": "895999",
+        "display": "120 ACTUAT fluticasone propionate 0.11 MG/ACTUAT Metered Dose Inhaler",
+        "ingredient": "fluticasone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "ibuprofen 200 MG Oral Tablet": {
+        "code": "310965",
+        "display": "ibuprofen 200 MG Oral Tablet",
+        "ingredient": "ibuprofen",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Alpha-1 antitrypsin": {
+        "code": "6771-0",
+        "display": "Alpha 1 antitrypsin [Mass/volume] in Serum or Plasma by Nephelometry",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Alpha-1 antitrypsin phenotype": {
+        "code": "32769-2",
+        "display": "Alpha 1 antitrypsin phenotype [Interpretation] in Serum or Plasma",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Immunoglobulin A": {
+        "code": "2458-8",
+        "display": "IgA [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"alpha 1-proteinase inhibitor, human 1000 MG Injection\""
+    ]
+  }
+}

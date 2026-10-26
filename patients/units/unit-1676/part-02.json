@@ -1,0 +1,461 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001676",
+      "events": [
+        {
+          "id": "2025-01-09a",
+          "kind": "pharmacy",
+          "start": "2025-01-09T11:02",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "author": "MA",
+              "date": "2025-01-09T11:02",
+              "body": "Pharmacy refill request: prenatal vitamin, #90 with 3 refills. Patient is 15 wks, followed by OB. Pended for PCP.\nPCP: approved, sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-04a",
+          "kind": "ed_visit",
+          "start": "2025-05-04T13:05",
+          "end": "2025-05-04T19:40",
+          "service": "Obstetrics — Labor and Delivery Triage",
+          "reason": "contractions at 32 weeks",
+          "vitals": [
+            {
+              "time": "2025-05-04T13:15",
+              "bp": [
+                120,
+                78
+              ],
+              "hr": 88,
+              "temp_c": 37.1
+            },
+            {
+              "time": "2025-05-04T17:30",
+              "bp": [
+                116,
+                72
+              ],
+              "hr": 82,
+              "temp_c": 36.9
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Preterm labor without delivery, third trimester",
+              "icd10": "O60.03",
+              "action": "diagnosed",
+              "onset": "2025-05-04",
+              "note": "Threatened preterm labor at 32 weeks; fFN positive, cervical length 25 mm, 2 cm/50%."
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "prescribed by obstetrics in pregnancy"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-05-04T13:30",
+              "resulted": "2025-05-04T14:25",
+              "results": [
+                {
+                  "test": "Fetal fibronectin",
+                  "loinc": "20404-0",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Transvaginal ultrasound, cervical length",
+              "loinc": "11525-3",
+              "performed": "2025-05-04T14:40",
+              "text": "Transvaginal ultrasound for cervical length at 32 weeks 0 days. Single live intrauterine pregnancy noted on brief transabdominal survey, cephalic. Cervical length measured three times on transvaginal view; shortest reproducible measurement 25 mm. No funneling seen at rest.",
+              "conclusion": "Cervical length 25 mm."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2025-05-04T13:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Labor and Delivery Triage Record (outside)",
+              "author": "obstetrics",
+              "date": "2025-05-06T08:30",
+              "body": "LABOR & DELIVERY TRIAGE — regional hospital obstetrics service\nDate of service: 05/04/2025\n\n29 y/o G2P1001 at 32w0d by LMP c/w early US, presenting with contractions. Painful tightening every 5 min for the last 2 hours, getting stronger. No bleeding, no leakage of fluid. Good fetal movement. Prior pregnancy: term SVD, healthy baby, no complications. This pregnancy has gone smoothly; prenatal care with our group since 8 wks.\n\nMeds: prenatal vitamin (folic acid 800 mcg) daily; ferrous sulfate 325 mg daily.\nAllergies: NKDA.\nPMH: none significant. PSH: none.\nFH: maternal second cousin with spina bifida; mother with 1 miscarriage.\nSH: elementary teacher. Never smoker. No alcohol in pregnancy, occasional before.\n\nVS on arrival: BP 120/78, HR 88, T 37.1 C (98.8 F).\nAbd: fundal height 30 cm. Uterus firm with palpable contractions, nontender between them.\nSSE: no pooling, no blood; fFN swab collected before any digital exam.\nSVE: 2 cm / 50%.\nFHT 150, regular.\n\nfFN: positive.\nTVUS: cervical length 25 mm.\n\nAssessment: threatened preterm labor, 32 weeks.\n\nCourse: monitored on the unit. Contractions spaced out over the next several hours and had stopped by early evening. Repeat cervical check unchanged. Tracing reassuring throughout.\n\nDisposition: home 19:40. Pelvic rest. Preterm labor precautions reviewed; return for regular contractions, bleeding, fluid or decreased movement. Follow up in our clinic this week.\n\ncc: primary care"
+            },
+            {
+              "type": "Outside Records",
+              "title": "Records received: L&D triage 5/4",
+              "author": "MA",
+              "date": "2025-05-06T08:35",
+              "body": "Fax from hospital L&D, triage visit 5/4/25. Scanned and routed to PCP. Ferrous sulfate 325 mg daily from OB added to med list as outside prescription."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-06a",
+          "kind": "telephone",
+          "start": "2025-05-06T15:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Check-in after L&D visit",
+              "author": "RN",
+              "date": "2025-05-06T15:40",
+              "body": "Called pt per PCP after triage record came in. She is home, no contractions since Sunday evening, baby moving well. Took the rest of the week off from school, OB clinic visit Thursday. Knows when to go back to L&D. Asked her to let us know if she needs a work note beyond what OB gives. Message to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-02a",
+          "kind": "specialist_visit",
+          "start": "2025-06-02T09:40",
+          "service": "Obstetrics & Gynecology",
+          "reason": "36-week prenatal visit",
+          "state": {
+            "weight_kg": 76.1
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Streptococcus B carrier state complicating pregnancy",
+              "icd10": "O99.820",
+              "action": "diagnosed",
+              "onset": "2025-06-02",
+              "note": "Rectovaginal culture positive at 36 weeks; intrapartum prophylaxis planned."
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-06-02T09:55",
+              "resulted": "2025-06-04T07:30",
+              "results": [
+                {
+                  "test": "Group B Streptococcus screening culture, vaginal-rectal",
+                  "loinc": "11475-1",
+                  "text": "Positive: Streptococcus agalactiae (group B) isolated"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-04-07T10:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2024",
+              "action": "done",
+              "date": "2025-06-02T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Prenatal Visit (outside)",
+              "author": "obstetrics",
+              "date": "2025-06-04T13:10",
+              "body": "Prenatal visit, 36w1d. G2P1001.\n\nSeen after her triage visit in early May for threatened preterm labor. No further contractions. Denies discharge, fever or urinary symptoms. Active fetal movement.\n\nMeds: PNV daily, ferrous sulfate 325 mg daily. NKDA.\nVitals today normal. FHR regular, no decelerations on brief monitoring.\nTdap given 04/07/25 at 28 wks.\n\nGBS: rectovaginal culture collected today. Result 6/4: POSITIVE for group B strep.\n\nPlan: GBS positive — IV penicillin in labor; she is aware and knows to come in early once labor starts or with any rupture of membranes. Weekly visits until delivery. Preterm labor problem can be considered closed at term.\n\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-22a",
+          "kind": "hospital_admission",
+          "start": "2025-06-22T04:50",
+          "end": "2025-06-24T11:30",
+          "service": "Obstetrics — Labor and Delivery",
+          "reason": "spontaneous labor at 39 weeks",
+          "vitals": [
+            {
+              "time": "2025-06-22T05:00",
+              "bp": [
+                124,
+                80
+              ],
+              "hr": 92,
+              "temp_c": 36.8,
+              "spo2": 99
+            },
+            {
+              "time": "2025-06-23T08:00",
+              "bp": [
+                112,
+                70
+              ],
+              "hr": 78,
+              "temp_c": 36.9
+            },
+            {
+              "time": "2025-06-24T08:00",
+              "bp": [
+                114,
+                72
+              ],
+              "hr": 74,
+              "temp_c": 36.7
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Preterm labor without delivery, third trimester",
+              "icd10": "O60.03",
+              "action": "resolved"
+            },
+            {
+              "label": "Streptococcus B carrier state complicating pregnancy",
+              "icd10": "O99.820",
+              "action": "resolved"
+            },
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "resolved"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-22T05:20",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-06-22T05:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-06-24T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary (outside)",
+              "author": "obstetrics",
+              "date": "2025-06-26T10:15",
+              "body": "Admitted 06/22/2025, discharged 06/24/2025.\n\n29 y/o G2P1001 at 39w0d admitted in spontaneous labor. GBS positive this pregnancy; penicillin G IV started on admission, more than 4 hours before delivery. Labor progressed without augmentation. Spontaneous vaginal delivery of a vigorous liveborn term infant, to the newborn nursery. Placenta delivered spontaneously, intact. No laceration requiring repair. EBL within normal limits.\n\nPostpartum course uncomplicated. Afebrile. Ambulating, voiding, tolerating diet. Breast and newborn care teaching done.\n\nDischarge diagnoses: term pregnancy, delivered by SVD; GBS carrier, adequately treated in labor. Prior threatened preterm labor at 32 wks, resolved; delivered at term.\n\nDischarge meds: prenatal vitamin daily; ferrous sulfate 325 mg daily.\nAllergies: NKDA.\nFollow-up: OB postpartum visit in 6 weeks. Primary care as needed.\n\nNow G2P2002."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-27a",
+          "kind": "portal_message",
+          "start": "2025-06-27T21:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Baby update",
+              "author": "patient",
+              "date": "2025-06-27T21:14",
+              "body": "Just wanted to let you know the baby came on the 22nd, right on time, and everyone is home and doing well. Tired but happy. Do I need to see you for anything or just OB for now?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Baby update",
+              "author": "PCP",
+              "date": "2025-06-28T08:02",
+              "body": "Congratulations to all of you! I read the hospital summary and everything went smoothly. Just OB for now; they'll see you at six weeks. We'll catch up at your physical in the fall. Reach out any time if something comes up, including mood, sleep or feeding questions."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-04a",
+          "kind": "specialist_visit",
+          "start": "2025-08-04T10:20",
+          "service": "Obstetrics & Gynecology",
+          "reason": "postpartum visit",
+          "state": {
+            "weight_kg": 68.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Postpartum Visit (outside)",
+              "author": "obstetrics",
+              "date": "2025-08-06T09:00",
+              "body": "Postpartum visit, 6 weeks after SVD on 6/22. Lochia has stopped. No pain, no urinary or bowel complaints. Sleeping in stretches; good support at home. Edinburgh screen negative.\n\nVitals normal. Breasts without masses or tenderness. Abdomen soft, uterus not palpable. Perineum healed. Speculum and bimanual normal.\n\nAssessment: normal postpartum course.\nPlan: may resume all activity. Continue PNV; may continue iron until bottle is finished. Contraception reviewed; she declines a method for now. Return to primary care for routine care. Annual GYN with us or PCP.\n\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T15:45",
+          "reason": "annual physical",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "author": "front desk",
+              "date": "2025-09-22T07:50",
+              "body": "Pt called to cancel tomorrow's physical, parent-teacher meeting at school. Rebooked 10/14 at 3:45."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "annual_physical",
+          "start": "2025-10-14T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {
+            "weight_kg": 66.9
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-14T16:25",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-14T16:25",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T16:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-14T16:32"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-10-14T15:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T16:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-14T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-10-14T16:45",
+              "body": "Annual. Nearly 4 months postpartum, second child born 6/22 at term. Back at school since late August. Tired, as expected with an infant, but sleeping in reasonable blocks now. Mood good; husband and her mother are helping. No gallbladder symptoms.\n\nPregnancy review: L&D triage at 32 wks for contractions with positive fFN and cervix 25 mm, settled with observation. GBS positive at 36 wks, treated in labor. Delivered vaginally at 39 wks without complication. OB postpartum visit normal in August.\n\nMeds: prenatal vitamin daily, ferrous sulfate 325 mg daily (from OB; still taking). NKDA.\nNo contraception; they'd like to space the next one but aren't strict about it.\n\nExam: Vitals as charted. Weight down about 2 kg since August, a couple of kilos above her pre-pregnancy weight. Well appearing. Thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no RUQ tenderness. Ext no edema. Affect bright.\n\nPHQ-9 2. AUDIT-C 1.\n\nA/P:\n1. Preventive. Flu and 2025-26 COVID vaccines today. Pap next due 2027. CBC on iron and BMP.\n2. Postpartum, doing well. Fine to keep the prenatal vitamin; she can stop the iron once the count is back if she wants.\n3. Hx gallstones, asymptomatic.\n4. G2P2.\n\nRTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-16a",
+          "kind": "portal_message",
+          "start": "2025-10-16T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2025-10-16T12:30",
+              "body": "Hi Willa, your blood count is normal, no sign of anemia, and your kidney function and chemistries are normal. You can keep or stop the iron, your choice. Hope the arm feels better today."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results",
+              "author": "patient",
+              "date": "2025-10-16T18:05",
+              "body": "Thanks! Arm is a little sore from the COVID one but fine. I think I'll keep taking the iron until it runs out."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

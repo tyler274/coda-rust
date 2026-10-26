@@ -1,0 +1,233 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001732",
+      "given": "Isabelle",
+      "family": "Murphy",
+      "birth_date": "1994-08-27",
+      "address_line": "41 Crescent Hill Rd",
+      "phone": "+1-860-555-0138",
+      "email": "isabelle.murphy@example.test",
+      "marital_status": "married",
+      "summary": "Healthy elementary school teacher who joined in 2023 and had her first pregnancy in 2025-26. Ten days after an uncomplicated delivery she was admitted for postpartum psychosis and started olanzapine, then had right lactational mastitis and postpartum depression treated with sertraline and therapy; she is improving at today.",
+      "events": [
+        {
+          "id": "2023-08-08a",
+          "kind": "establish_care",
+          "start": "2023-08-08T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care and physical",
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 63.0, "height_cm": 165.0, "labs": {"Total Cholesterol": 174, "Hemoglobin A1c": 5.2, "Low Density Lipoprotein": 93}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "Occupation", "value": "Elementary school teacher"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per month"}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-08-08T10:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-08-08T10:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-08-08T10:20", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-08-08T10:20", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": null, "collected": "2023-08-08T10:20", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2023-08-08T10:20", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2023-08-08T09:30"},
+            {"procedure": "Venipuncture", "performed": "2023-08-08T10:20"}
+          ],
+          "orders": [{"id": "prior-records-2023", "action": "placed", "order": "Request records from prior primary care office", "category": "procedure", "reason": "establishing care"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-08-08T09:30",
+              "body": "28 yo woman, elementary school teacher, here to establish. Her old PCP left practice in the spring and she'd rather not start over in a big group. No complaints today.\n\nPMH: none. No surgeries. Meds: none. Allergies: NKDA.\nFH: father with type 2 diabetes. Mother had depression after her second pregnancy. Maternal aunt has bipolar I disorder.\nSH: married, lives in Northampton. Teaches elementary school. Never smoked. Alcohol a drink or two a month at most. No drug use. Walks most evenings.\nGYN: regular cycles. Last Pap 2021 at prior office, she believes normal.\nROS: negative in full.\n\nExam: vitals as charted. Well, pleasant. HEENT clear, TMs normal. Neck supple, thyroid normal size, no adenopathy. Heart RRR, no murmur. Lungs clear bilaterally. Abd soft, nontender, no masses. Ext without edema. Skin without concerning lesions. Neuro grossly intact. Mood euthymic.\n\nPHQ-9: 2.\n\nA/P: Healthy adult, new to the practice.\n- Baseline CBC, CMP, lipids. A1c given father's diabetes.\n- HIV and hep C one-time screens, she agreed.\n- Records requested from prior PCP for Pap and immunization history.\n- Flu shot in the fall here.\n- Physical yearly."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-10a",
+          "kind": "portal_message",
+          "start": "2023-08-10T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent labs",
+              "author": "PCP",
+              "date": "2023-08-10T16:40",
+              "body": "Hi Isabelle, everything from Tuesday's blood work came back normal: blood counts, kidney and liver tests, cholesterol, and your A1c is in the normal range. HIV and hepatitis C screens were negative. Nothing to change. Enjoy the rest of the summer before school starts."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-21a",
+          "kind": "outside_records",
+          "start": "2023-08-21T11:05",
+          "reason": "Records from prior primary care office",
+          "orders": [{"id": "prior-records-2023", "action": "done", "date": "2023-08-21T11:05"}],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2021-06-14T10:00", "text": "Specimen adequate for evaluation; endocervical/transformation zone component present. Negative for intraepithelial lesion or malignancy.", "conclusion": "NILM."}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "author": "MA",
+              "date": "2023-08-21T11:05",
+              "body": "Records received from prior primary care office, 22 pages, scanned to media.\n\nAbstracted:\n- Healthy, no chronic problems on their list. No medications. NKDA.\n- Pap 06/2021: NILM.\n- Immunizations: childhood series documented as complete. Tdap 2016. Annual flu shots most years.\n- Last physical there 06/2021, unremarkable."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-05a",
+          "kind": "nurse_visit",
+          "start": "2023-10-05T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-05T15:50"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-05T15:50"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "author": "RN",
+              "date": "2023-10-05T15:45",
+              "body": "Came in after school for flu vaccine. No fever today, no prior vaccine reactions, NKDA. Influenza quadrivalent 0.5 mL IM left deltoid. VIS given. Waited 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-23a",
+          "kind": "portal_message",
+          "start": "2023-10-23T19:12",
+          "reason": "Outside vaccine",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-21T11:00"}],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID vaccine",
+              "author": "patient",
+              "date": "2023-10-23T19:12",
+              "body": "Hi, I got the new COVID shot at the pharmacy near school Saturday (Pfizer). Wanted it in my record. Arm sore one day, otherwise fine."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: COVID vaccine",
+              "author": "MA",
+              "date": "2023-10-24T08:30",
+              "body": "Thanks, Isabelle. Added to your immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-05a",
+          "kind": "office_visit",
+          "start": "2024-03-05T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "author": "front desk",
+              "date": "2024-03-04T17:02",
+              "body": "Pt called, parent-teacher conferences moved to tomorrow morning. Cancelled 3/5 physical. Rebooked for April vacation week, 4/16 at 9:00."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "annual_physical",
+          "start": "2024-04-16T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 63.4},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 1}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-04-16T09:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-04-16T09:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2024-04-16T09:35", "issued": "2024-04-19T08:15", "text": "Liquid-based preparation. Specimen adequate; transformation zone component present. Negative for intraepithelial lesion or malignancy.", "conclusion": "NILM."}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-04-16T09:00"},
+            {"procedure": "Venipuncture", "performed": "2024-04-16T09:50"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-04-16T09:00",
+              "body": "Annual exam, on school vacation this week. Feels well. Sleeping fine, busy year with a big class. No meds. NKDA. Never smoker, rare alcohol.\n\nROS negative.\n\nExam: vitals as charted, weight steady. Alert, well-appearing. HEENT normal. Thyroid not palpable. Lungs clear. Heart regular, no murmur. Breasts symmetric without masses, nipples normal, no axillary nodes. Abdomen soft. Pelvic: external genitalia normal, vagina and cervix normal, Pap collected. Bimanual without masses or tenderness. Skin clear. Mood good, PHQ-9 1.\n\nA/P: Well adult.\n- Pap today, 3 years since the last. Once she is 30 we can switch to co-testing every 5 years.\n- CBC, CMP.\n- Tdap was 2016, good until 2026.\n- Flu shot this fall.\n- Asked about pregnancy plans, not this year she says. Will revisit."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-19a",
+          "kind": "portal_message",
+          "start": "2024-04-19T12:20",
+          "reason": "Pap and lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and labs",
+              "author": "PCP",
+              "date": "2024-04-19T12:20",
+              "body": "Isabelle, your Pap was normal, so the next one is due in 3 years. Blood counts and chemistry were normal too. See you next spring."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-08T15:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-08T15:35"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "author": "MA",
+              "date": "2024-10-08T15:30",
+              "body": "Flu vaccine, trivalent, 0.5 mL IM right deltoid. Screening negative, feeling well. VIS reviewed. Observed 15 minutes, tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-21a",
+          "kind": "portal_message",
+          "start": "2024-10-21T20:05",
+          "reason": "Outside vaccine",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-19T10:30"}],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "covid shot",
+              "author": "patient",
+              "date": "2024-10-21T20:05",
+              "body": "Got this year's COVID booster (Moderna) at the pharmacy on Saturday the 19th, for my chart."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: covid shot",
+              "author": "MA",
+              "date": "2024-10-22T09:10",
+              "body": "Recorded, thank you!"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

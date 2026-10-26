@@ -1,0 +1,685 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002839",
+   "events": [
+    {
+     "id": "2024-01-22a",
+     "kind": "specialist_visit",
+     "start": "2024-01-22T10:00",
+     "service": "Gastroenterology",
+     "reason": "Ulcerative colitis follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gastroenterology follow-up",
+       "author": "gastroenterology",
+       "date": "2024-01-25T14:10",
+       "body": "Arlene Jacobs   DOB 01/30/1955   Seen 01/22/2024\n\nUlcerative colitis, one year from diagnosis. She remains well on mesalamine 800 mg three times daily: formed stools once or twice daily, no bleeding, no nocturnal symptoms. She asked whether the doses could be combined; since she is doing well on the current regimen I would rather not change it this year, and she agreed.\n\nInterval history notable for recurrence of her breast cancer in bone, on letrozole and zoledronic acid through oncology. Creatinine stable on her quarterly labs.\n\nExam: abdomen soft, nontender.\n\nPlan: continue mesalamine 800 mg TID. Follow-up in one year, sooner for any return of bleeding.\n\nGastroenterology"
+      }
+     ]
+    },
+    {
+     "id": "2024-02-26a",
+     "kind": "annual_physical",
+     "start": "2024-02-26T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "medications": [
+      {
+       "drug": "acetaminophen 500 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1-2 tablets by mouth every 8 hours as needed for hip pain; no more than 3,000 mg per day",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "Q8H PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Right hip pain"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-02-26T10:20",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-02-26T10:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2024-02-26T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2024-02-26T11:50",
+       "body": "AWV, subsequent.\n\nInterval: metastatic breast cancer to bone diagnosed 11-12/2023, on letrozole and monthly zoledronic acid via oncology. UC quiet on mesalamine.\n\nNew: right hip pain for about two months - deep, in the groin, worse with walking and standing, not better resting. No fall or injury. Rheumatology appointment already booked for late March; she'd like them to look at it.\n\nPHQ-2: 1. No falls. Uses the handrail on stairs. Cognition and function unchanged.\n\nExam: vitals as charted. Walks unaided. Hip exam deferred to rheum visit next month.\n\nPlan:\n- Right hip pain: acetaminophen up to 1 g three times a day as needed. Keep the March rheum visit; call sooner if pain becomes severe or she can't bear weight.\n- MTX labs today.\n- Vaccines current.\n- Continue oncology plan."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-27a",
+     "kind": "specialist_visit",
+     "start": "2024-03-27T14:15",
+     "service": "Rheumatology",
+     "reason": "Right hip pain",
+     "orders": [
+      {
+       "id": "mri-pelvis-2024",
+       "action": "placed",
+       "order": "MRI pelvis without contrast",
+       "category": "imaging",
+       "reason": "right hip pain, limited internal rotation"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology visit - right hip pain",
+       "author": "rheumatology",
+       "date": "2024-04-02T09:30",
+       "body": "Re: Arlene Jacobs   DOB 01/30/1955   Visit 03/27/2024\n\nMs. Jacobs came in for her scheduled RA visit with three months of progressively worsening right hip pain. It is deep and aching, worse with weight bearing, and does not ease with rest. No injury. No fever, chills, weight loss or night sweats. Her hands and wrists have been quiet.\n\nBackground: long-standing RA on methotrexate, folic acid and daily prednisone; osteoporosis; ulcerative colitis; metastatic breast cancer in bone, on letrozole and zoledronic acid; hypertension on amlodipine and HCTZ; hyperlipidemia.\n\nExam: right hip with limited internal rotation and abduction and mild groin tenderness. No overlying redness, swelling or warmth. Neurovascular exam of both legs normal. No small-joint synovitis.\n\nAssessment: right hip pain with restricted rotation in a patient on chronic glucocorticoids and with known bone metastases. Avascular necrosis is the main concern; a metastatic lesion must be excluded.\n\nPlan: MRI of the pelvis without contrast (ordered, scheduled 3/29). Continue methotrexate 15 mg weekly, folic acid and prednisone 5 mg. I will call her with the result.\n\nAddendum 04/01/2024: MRI shows avascular necrosis of the right femoral head without collapse; no metastatic lesion in the pelvis or proximal femurs. Discussed with patient; recommend orthopedic evaluation.\n\nRheumatology"
+      }
+     ]
+    },
+    {
+     "id": "2024-03-29a",
+     "kind": "imaging",
+     "start": "2024-03-29T07:30",
+     "service": "Radiology",
+     "reason": "MRI pelvis",
+     "orders": [
+      {
+       "id": "mri-pelvis-2024",
+       "action": "done",
+       "date": "2024-03-29T07:30"
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Avascular necrosis of femoral head, right",
+       "icd10": "M87.051",
+       "action": "diagnosed",
+       "onset": "2023-12-27"
+      }
+     ],
+     "reports": [
+      {
+       "study": "MRI pelvis without contrast",
+       "loinc": "24872-4",
+       "performed": "2024-03-29T07:30",
+       "text": "MRI of the pelvis and both hips without contrast. Indication: right hip pain, history of breast cancer metastatic to bone, chronic steroids. Right femoral head: serpiginous subchondral low-signal line in the anterosuperior femoral head with surrounding bone marrow edema. Articular surface preserved, no subchondral collapse or fracture. Left femoral head normal. No focal marrow-replacing lesion in the pelvis or proximal femora. Sacroiliac joints unremarkable. Visualized pelvic soft tissues unremarkable.",
+       "conclusion": "Avascular necrosis of the right femoral head without collapse. No osseous metastatic lesion in the pelvis or proximal femora."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-01a",
+     "kind": "portal_message",
+     "start": "2024-04-01T17:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "MRI result and referral",
+     "orders": [
+      {
+       "id": "ortho-referral-2024",
+       "action": "placed",
+       "order": "Orthopedic surgery referral",
+       "category": "referral",
+       "to": "Orthopedics",
+       "reason": "avascular necrosis right femoral head"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Hip MRI",
+       "author": "patient",
+       "date": "2024-04-01T13:05",
+       "body": "Rheumatology called me about the MRI. She said the hip bone isn't getting enough blood and I should see an orthopedic doctor. Can you send the referral? And it is NOT the cancer, which I was very relieved to hear."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Hip MRI",
+       "author": "PCP",
+       "date": "2024-04-01T17:20",
+       "body": "Yes - that's avascular necrosis of the right femoral head, and the MRI shows the bone has kept its shape, which is good news. I've placed the orthopedic referral today. Until you see them, use the acetaminophen as needed and go easy on long walks; a cane in your left hand will take some load off the right hip."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-22a",
+     "kind": "specialist_visit",
+     "start": "2024-04-22T10:45",
+     "service": "Orthopedics",
+     "reason": "Avascular necrosis right hip",
+     "orders": [
+      {
+       "id": "ortho-referral-2024",
+       "action": "done",
+       "date": "2024-04-22T10:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Orthopedic consultation",
+       "author": "orthopedics",
+       "date": "2024-04-25T08:30",
+       "body": "ORTHOPAEDIC SURGERY CONSULTATION\nArlene Jacobs   DOB 01/30/1955   Date of service 04/22/2024\n\nReferred for right femoral head avascular necrosis seen on MRI 3/29/2024. Four months of right groin pain with weight bearing. Risk factors include long-term prednisone. Also has bone-only metastatic breast cancer on letrozole and zoledronic acid, RA on methotrexate, ulcerative colitis.\n\nExam: right hip internal rotation and abduction limited and painful at end range. No leg length discrepancy. Distal neurovascular exam intact.\n\nImaging: MRI reviewed - pre-collapse lesion in the anterosuperior head, no collapse.\n\nAssessment: right femoral head AVN, pre-collapse.\n\nPlan: nonoperative management for now.\n- Protected weight bearing with a cane in the left hand.\n- Physical therapy for hip range of motion and gait.\n- Acetaminophen as needed; avoid NSAIDs given her colitis and medications.\n- Radiographs in 6 months to look for collapse.\nReturn in 6 months.\n\nOrthopaedic Surgery"
+      }
+     ]
+    },
+    {
+     "id": "2024-04-24a",
+     "kind": "imaging",
+     "start": "2024-04-24T10:00",
+     "service": "Nuclear Medicine",
+     "reason": "Restaging bone scan",
+     "reports": [
+      {
+       "study": "Whole-body bone scan",
+       "loinc": "25031-6",
+       "performed": "2024-04-24T10:00",
+       "text": "Whole-body planar imaging after IV Tc-99m MDP, compared with 11/08/2023. Previously noted uptake at T7, T10 and the right 6th and 8th ribs is unchanged in distribution and intensity. No new foci.",
+       "conclusion": "Stable osseous metastatic disease. No new lesions."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-29a",
+     "kind": "specialist_visit",
+     "start": "2024-04-29T13:30",
+     "service": "Oncology",
+     "reason": "Metastatic breast cancer follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Oncology follow-up",
+       "author": "oncology",
+       "date": "2024-05-01T09:00",
+       "body": "MEDICAL ONCOLOGY\nArlene Jacobs   DOB 01/30/1955   Visit 04/29/2024\n\nBone-only metastatic breast cancer, on letrozole 2.5 mg daily and zoledronic acid every 4 weeks since 12/2023, tolerating both. Restaging bone scan 4/24: stable, no new lesions. CA 27-29 today 34 U/mL (64 before treatment; reference <38). Interval MRI for hip pain showed right femoral head AVN, not metastasis; orthopedics is managing nonoperatively.\n\nExam: spine nontender; uses a cane.\n\nPlan: continue letrozole. Continue zoledronic acid 4 mg every 4 weeks with creatinine before each dose. Bone scan again in 6 months. Reminded her to tell her dentist about the zoledronic acid.\n\nMedical Oncology"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-04-29T13:00",
+       "results": [
+        {
+         "test": "Cancer antigen 27-29",
+         "loinc": "17842-6",
+         "unit": "U/mL",
+         "value": 34
+        }
+       ],
+       "resulted": "2024-04-30T10:00"
+      }
+     ]
+    },
+    {
+     "id": "2024-06-03a",
+     "kind": "lab_only",
+     "start": "2024-06-03T08:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Methotrexate monitoring and lipids",
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-06-03T08:10",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-06-03T08:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-06-03T08:10",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "2024-06-10a",
+     "kind": "office_visit",
+     "start": "2024-06-10T13:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic disease follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-06-10T13:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Primary Care Office Visit",
+       "author": "PCP",
+       "date": "2024-06-10T14:00",
+       "body": "S: F/u. Hip better with PT and the cane, using acetaminophen once a day or less. Finished 8 PT sessions, does the home program. Zoledronic acid infusions monthly at oncology, no problems. Bowels normal. No chest pain or SOB.\nO: VS as charted, BP at goal. Walks with cane. Lungs clear, heart RRR, no edema.\nLabs 6/3: CBC/CMP normal, creatinine stable. LDL at goal.\nA/P:\n- R femoral head AVN - improving on nonoperative plan, ortho f/u October.\n- Metastatic breast ca to bone - letrozole and zoledronic acid per oncology.\n- HTN, HLD - continue.\n- RA, UC - stable on current regimens.\nRTC 3 months with labs."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-09a",
+     "kind": "portal_message",
+     "start": "2024-09-09T18:47",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Jaw pain after tooth extraction",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Jaw pain",
+       "author": "patient",
+       "date": "2024-09-09T18:47",
+       "body": "I had a lower back tooth pulled on August 26th at my dentist's. The jaw has been sore and swollen since the week after, and I can feel something sharp where the tooth was. I had my infusion today and mentioned it to the nurse there, she said to call you or the dentist. Dentist is on vacation until the 23rd. Could someone look at it?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Jaw pain",
+       "author": "front desk",
+       "date": "2024-09-10T08:20",
+       "body": "Hi Arlene, we have an opening Wednesday 9/11 at 10:30 with your doctor. Booked you - reply if that doesn't work."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-11a",
+     "kind": "office_visit",
+     "start": "2024-09-11T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Jaw pain and swelling after extraction",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-09-11T10:30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ent-referral-2024",
+       "action": "placed",
+       "order": "Otolaryngology referral",
+       "category": "referral",
+       "to": "Otolaryngology",
+       "reason": "exposed bone at extraction site, on zoledronic acid"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Primary Care Office Visit",
+       "author": "PCP",
+       "date": "2024-09-11T11:25",
+       "body": "CC: jaw pain after tooth extraction\n\nHPI: Lower posterior molar extracted 8/26 by her dentist. Pain and swelling of the lower jaw began shortly afterward and have not settled. Feels a rough edge with her tongue. No fever, eating soft foods. On zoledronic acid q4wk since 12/2023 for bone mets (last dose 9/9), alendronate 2021-2023 before that. Also chronic prednisone and MTX.\n\nExam: afebrile per vitals. Mild swelling along the lower jaw. Intraoral: at the extraction socket, an area of exposed yellow-white bone, no pus. No neck nodes.\n\nA/P: Exposed bone at a recent extraction site in a patient on monthly zoledronic acid - concerning for medication-related osteonecrosis of the jaw.\n- Urgent ENT referral (head and neck), appointment 9/23.\n- Message sent to oncology re: zoledronic acid; they will hold further doses pending ENT.\n- Soft diet, careful brushing, acetaminophen for pain.\n- Call for fever, pus or spreading swelling."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-23a",
+     "kind": "specialist_visit",
+     "start": "2024-09-23T09:15",
+     "service": "Otolaryngology",
+     "reason": "Jaw pain after extraction",
+     "vitals": {
+      "temp_c": 37.2,
+      "bp": [
+       130,
+       85
+      ],
+      "hr": 78
+     },
+     "conditions": [
+      {
+       "label": "Osteonecrosis of jaw due to bisphosphonate",
+       "icd10": "M87.180",
+       "action": "diagnosed",
+       "onset": "2024-09-02"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "zoledronic acid 0.04 MG/ML Injectable Solution",
+       "action": "stop",
+       "reason": "Osteonecrosis of the jaw"
+      },
+      {
+       "drug_text": "chlorhexidine gluconate 1.2 MG/ML Mouthwash",
+       "action": "historical",
+       "sig": "Rinse with 15 mL for 30 seconds and spit, twice daily",
+       "dose": {
+        "value": 15,
+        "unit": "mL"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Osteonecrosis of the jaw"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-09-23T08:40",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 7.5
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 13.2
+        },
+        {
+         "test": "Platelets",
+         "value": 250
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-09-23T08:40",
+       "results": [
+        {
+         "test": "Erythrocyte Sedimentation Rate",
+         "value": 20
+        },
+        {
+         "test": "C Reactive Protein",
+         "value": 2.5
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "ent-referral-2024",
+       "action": "done",
+       "date": "2024-09-23T09:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Otolaryngology consultation",
+       "author": "otolaryngology",
+       "date": "2024-09-26T11:40",
+       "body": "OTOLARYNGOLOGY - HEAD AND NECK SURGERY\nArlene Jacobs   DOB 01/30/1955   Date of service 09/23/2024\n\nReason for referral: lower jaw pain and swelling after dental extraction.\n\nHPI: Three weeks of pain and swelling of the lower jaw that started soon after a tooth extraction on 8/26. She receives zoledronic acid every 4 weeks for osteoporosis and bone metastases from breast cancer (since 12/2023; alendronate before that).\n\nPMH: metastatic breast cancer to bone on letrozole, osteoporosis, RA on methotrexate and prednisone, ulcerative colitis on mesalamine, hypertension, hyperlipidemia, right femoral head AVN. NKDA. Former smoker.\n\nVitals: T 37.2 C, BP 130/85, pulse 78.\n\nExam: swelling over the mandible. Intraoral exam shows exposed necrotic bone at the extraction site. No purulence. No cervical or submandibular lymphadenopathy. Remainder of head and neck exam normal.\n\nLabs today: WBC 7.5, hemoglobin 13.2, platelets 250, ESR 20, CRP 2.5.\n\nImpression: bisphosphonate-related osteonecrosis of the jaw.\n\nPlan:\n1. Chlorhexidine 0.12% rinse twice daily.\n2. Zoledronic acid discontinued - discussed with her oncologist, who agrees.\n3. Avoid further dental extractions; gentle oral hygiene; acetaminophen for pain.\n4. Return in about 3 months, sooner for drainage, fever or worsening swelling.\n\nOtolaryngology"
+      }
+     ]
+    },
+    {
+     "id": "2024-09-30a",
+     "kind": "lab_only",
+     "start": "2024-09-30T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Methotrexate monitoring labs",
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-09-30T08:00",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-09-30T08:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lab review",
+       "author": "PCP",
+       "date": "2024-10-01T07:30",
+       "body": "MTX labs fine. Zoledronic acid now stopped (jaw) - updated med list per ENT letter."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-07a",
+     "kind": "nurse_visit",
+     "start": "2024-10-07T10:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2024-10-07T10:15"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-10-07T10:18"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-10-07T10:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Nurse Visit - Immunization",
+       "author": "RN",
+       "date": "2024-10-07T10:30",
+       "body": "High-dose flu and 2024-25 COVID vaccine given. Jaw still sore, using rinse. Cane today."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-21a",
+     "kind": "specialist_visit",
+     "start": "2024-10-21T11:00",
+     "service": "Orthopedics",
+     "reason": "AVN right hip follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Orthopedic follow-up",
+       "author": "orthopedics",
+       "date": "2024-10-24T15:15",
+       "body": "Arlene Jacobs   DOB 01/30/1955   Visit 10/21/2024\n\nSix-month follow-up of right femoral head AVN. Pain is mild and intermittent; she completed physical therapy and still walks with a cane outdoors.\n\nExam: improved hip motion compared with April; mild discomfort at end range of internal rotation.\n\nRadiographs today (AP pelvis and frog-lateral right hip): femoral head contour preserved, no collapse.\n\nPlan: continue nonoperative care and cane as needed. Return in 6 months or sooner if pain worsens.\n\nOrthopaedic Surgery"
+      }
+     ]
+    },
+    {
+     "id": "2024-10-23a",
+     "kind": "imaging",
+     "start": "2024-10-23T09:00",
+     "service": "Radiology",
+     "reason": "Restaging bone scan and mammogram",
+     "reports": [
+      {
+       "study": "Whole-body bone scan",
+       "loinc": "25031-6",
+       "performed": "2024-10-23T09:00",
+       "text": "Whole-body planar imaging with Tc-99m MDP compared with 04/24/2024. Known uptake at T7, T10 and right 6th and 8th ribs unchanged. No new osseous lesions.",
+       "conclusion": "Stable osseous metastases. No new lesions."
+      },
+      {
+       "study": "Diagnostic mammogram",
+       "performed": "2024-10-23T11:30",
+       "text": "Bilateral diagnostic mammogram with tomosynthesis. Comparison 2020-2023. Scattered fibroglandular density. Stable left breast lumpectomy changes. No suspicious findings.",
+       "conclusion": "BI-RADS 2: benign."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-28a",
+     "kind": "specialist_visit",
+     "start": "2024-10-28T14:00",
+     "service": "Oncology",
+     "reason": "Metastatic breast cancer follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Oncology follow-up",
+       "author": "oncology",
+       "date": "2024-10-30T10:20",
+       "body": "MEDICAL ONCOLOGY\nArlene Jacobs   DOB 01/30/1955   Visit 10/28/2024\n\nBone-only metastatic breast cancer. Zoledronic acid was stopped in September after she developed osteonecrosis of the jaw following an extraction; ENT is following. Restaging bone scan 10/23 stable without new lesions; mammogram 10/23 benign.\n\nShe continues letrozole 2.5 mg daily without difficulty. She reports jaw soreness but no other bone pain. Exam: spine nontender.\n\nPlan: continue letrozole. Zoledronic acid remains held because of the jaw. Bone scan in about 6 months. Follow-up then.\n\nMedical Oncology"
+      }
+     ]
+    },
+    {
+     "id": "2024-12-09a",
+     "kind": "office_visit",
+     "start": "2024-12-09T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic disease follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-12-09T10:15",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-12-09T10:15",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-12-09T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Primary Care Office Visit",
+       "author": "PCP",
+       "date": "2024-12-09T10:50",
+       "body": "S: Jaw still aches where the tooth was and hasn't closed over; using chlorhexidine rinse BID. ENT follow-up next week. Hip mild, cane outdoors only. Bowels fine on mesalamine. Off zoledronic acid since Sept.\nO: VS as charted, BP ok. Mouth: small area of exposed bone posterior lower jaw, no pus. Heart RRR, lungs clear. No edema.\nA/P:\n- BRONJ - ENT 12/18. Keep rinsing.\n- HTN, HLD stable, no changes.\n- RA, UC stable.\n- Metastatic breast ca - letrozole per oncology, bone scan spring.\nMTX labs today."
+      }
+     ]
+    },
+    {
+     "id": "2024-12-18a",
+     "kind": "specialist_visit",
+     "start": "2024-12-18T13:30",
+     "service": "Otolaryngology",
+     "reason": "Persistent jaw pain",
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2024-12-18T14:00",
+       "issued": "2024-12-23T12:00",
+       "text": "Specimen: posterior mandible, biopsy. Microscopic: fragments of non-viable bone with empty lacunae, surrounded by inflammatory debris. No malignant cells identified.",
+       "conclusion": "Necrotic bone with inflammatory debris. Negative for malignancy."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Otolaryngology follow-up",
+       "author": "otolaryngology",
+       "date": "2024-12-20T09:45",
+       "body": "OTOLARYNGOLOGY\nArlene Jacobs   DOB 01/30/1955   Date of service 12/18/2024\n\n69-year-old woman with metastatic breast cancer on letrozole who received zoledronic acid every 4 weeks for about a year until it was stopped in September, seen again for jaw pain. Pain has persisted for three months since the extraction about four months ago; she says the socket \"never fully healed.\" No fever, trauma or recent infection.\n\nExam: exposed bone in the posterior mandible with surrounding gingival recession. No purulent drainage. No regional lymphadenopathy.\n\nPanoramic radiograph today: sclerotic bone with areas of irregular lucency in the mandible at the extraction site.\n\nProcedure: biopsy of the exposed lesion performed today under local anesthesia, sent to pathology.\n\nImpression: persistent bisphosphonate-related osteonecrosis of the jaw; biopsy to exclude metastatic disease.\n\nPlan: continue chlorhexidine rinse. We will call with pathology. Return in 3 months.\n\nOtolaryngology"
+      }
+     ]
+    },
+    {
+     "id": "2024-12-27a",
+     "kind": "telephone",
+     "start": "2024-12-27T11:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Jaw biopsy result",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Jaw biopsy result",
+       "author": "PCP",
+       "date": "2024-12-27T11:15",
+       "body": "ENT path in: necrotic bone with inflammatory debris, no malignancy. Called pt - she had already heard from ENT on 12/23 and was relieved. No change to plan."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

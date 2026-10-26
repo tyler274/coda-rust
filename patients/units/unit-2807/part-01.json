@@ -1,0 +1,286 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002807",
+      "given": "Abigail",
+      "family": "Paquette",
+      "birth_date": "1980-07-27",
+      "address_line": "37 Fuller Street",
+      "phone": "+1-646-555-0176",
+      "email": "abigail.paquette@example.test",
+      "marital_status": "single",
+      "summary": "Healthy corporate project manager who joins in 2023. From early 2025 she has intermittent dysphagia and chest discomfort that fail a PPI trial; ENT calls it esophageal dysmotility, a barium swallow shows corkscrew contractions, EGD is normal and manometry in 2026 shows distal esophageal spasm managed without medication.",
+      "events": [
+        {
+          "id": "2023-08-29a",
+          "kind": "portal_message",
+          "start": "2023-08-29T19:42",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New patient - records",
+              "author": "patient",
+              "date": "2023-08-29T19:42",
+              "body": "Hi, I'm booked for my first appointment on 9/12. My old doctor's office said they can fax my records if you send them a request. Is there a form I should sign? Thanks, Abby Paquette"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: New patient - records",
+              "author": "front desk",
+              "date": "2023-08-30T09:15",
+              "body": "Hi Abigail, welcome! I've attached a records release form. Sign it and send it back through the portal and we'll request everything from your prior office before your visit. See you on the 12th."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-07a",
+          "kind": "outside_records",
+          "start": "2023-09-07T14:05",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "author": "front desk",
+              "date": "2023-09-07T14:05",
+              "body": "Records received by fax, 14 pages, from patient's previous primary care practice. Scanned to chart.\n\nSummary for provider review:\n- Problem list: none.\n- Medications: none.\n- Allergies: NKDA.\n- Screening mammogram 10/2022: BI-RADS 1, negative.\n- Pap with HPV co-test 06/2021: NILM, high-risk HPV not detected.\n- Immunizations: Tdap 05/2019.\n- Last annual exam there 10/2022, unremarkable."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T08:30",
+          "end": "2023-09-12T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care and annual exam",
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Occasional (1-2 drinks per week)"},
+            {"item": "Occupation", "value": "Corporate Project Manager"}
+          ],
+          "state": {"weight_kg": 63.5, "height_cm": 165.1, "labs": {"Total Cholesterol": 170, "Low Density Lipoprotein": 92, "Thyroid Stimulating Hormone": 1.8}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 2}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-09-12T09:35", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-12T09:35", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-12T09:35", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-09-12T09:35", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2023-09-12T09:35", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2023-09-12T09:35", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-09-12T09:25"}
+          ],
+          "orders": [
+            {"id": "mammo-2023", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "Routine breast cancer screening"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 40-64", "performed": "2023-09-12T08:30"},
+            {"procedure": "Immunization administration", "performed": "2023-09-12T09:25"},
+            {"procedure": "Venipuncture", "performed": "2023-09-12T09:35"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit - Establish Care",
+              "author": "PCP",
+              "date": "2023-09-12T10:10",
+              "body": "43 y/o woman new to the practice, transferring for the membership model; her previous office was hard to reach by phone. Feels well. No active concerns today.\n\nPMH: none. No surgeries. No hospitalizations.\nMeds: none, no supplements.\nAllergies: NKDA.\nFamily hx: mother - hypothyroidism. Father - essential HTN.\nSocial: project manager at a large company, long days at a desk, some deadline stress she describes as manageable. Never smoked. 1-2 drinks a week. No drugs. Walks most evenings.\nGyn: menses regular.\nHealth maintenance from prior records: mammogram 10/2022 negative, Pap/HPV 6/2021 negative (next co-test 2026), Tdap 5/2019.\n\nROS: negative across systems.\n\nExam: NAD, pleasant. HEENT clear, TMs normal. Neck supple, thyroid normal size without nodules, no adenopathy. Heart RRR, no murmur. Lungs CTA bilaterally. Abd soft, NT, no masses. Skin without suspicious lesions. Extremities warm, no edema. Neuro nonfocal.\n\nA/P:\n1. Adult preventive exam. Healthy. CBC, CMP, lipids. TSH given mom's thyroid disease. One-time hep C and HIV screens, she agreed.\n2. Breast screening - mammogram ordered for October.\n3. Flu vaccine today.\n4. PHQ-2 0, AUDIT-C low risk.\nPortal for results. Annual next September."
+            },
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "author": "MA",
+              "date": "2023-09-12T09:27",
+              "body": "Influenza vaccine 0.5 mL IM given L deltoid after screening questions reviewed (no prior reaction, not ill today). VIS provided. Tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T16:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2023-09-14T16:20",
+              "body": "Abby - everything from Tuesday came back fine. Blood counts, kidney and liver numbers, cholesterol and thyroid are all in the normal range, and the hepatitis C and HIV screens were nonreactive. No changes needed. Mammogram order is in; radiology will call you to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-06a",
+          "kind": "pharmacy",
+          "start": "2023-10-06T17:40",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-06T17:40"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization record",
+              "author": "front desk",
+              "date": "2023-10-09T10:02",
+              "body": "Immunization registry update from community pharmacy: COVID-19 2023-2024 formula vaccine given 10/06/2023. Added to immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "imaging",
+          "start": "2023-10-19T11:00",
+          "orders": [
+            {"id": "mammo-2023", "action": "done", "date": "2023-10-19T11:00"}
+          ],
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-10-19T11:00",
+              "text": "Bilateral digital screening mammogram with tomosynthesis. Comparison: 10/2022 from outside facility. Breast composition: scattered areas of fibroglandular density. No suspicious mass, architectural distortion or suspicious calcifications in either breast. Skin and nipples unremarkable.",
+              "conclusion": "BI-RADS 1: Negative. Routine annual screening recommended."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "author": "RN",
+              "date": "2023-10-20T13:12",
+              "body": "Screening mammogram negative, BI-RADS 1. Result released to portal with a note that the next one is due in a year."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-11a",
+          "kind": "portal_message",
+          "start": "2024-03-11T12:31",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vaccine record",
+              "author": "patient",
+              "date": "2024-03-11T12:31",
+              "body": "Could you send me a printable copy of my vaccine history? HR needs it for a client site visit next month."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Vaccine record",
+              "author": "front desk",
+              "date": "2024-03-11T15:48",
+              "body": "Hi Abigail, your immunization record is now under Documents in the portal as a PDF. Let us know if HR needs it on letterhead."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "annual_physical",
+          "start": "2024-09-10T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment rescheduled",
+              "author": "front desk",
+              "date": "2024-09-09T08:52",
+              "body": "Pt called, work travel this week. Cancelled 9/10 physical, rebooked 9/17 8:00. Lab draw same morning, fasting not required."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "annual_physical",
+          "start": "2024-09-17T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2024-09-17T08:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-17T08:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-17T08:50", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-09-17T08:45"}
+          ],
+          "orders": [
+            {"id": "mammo-2024", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "Annual breast cancer screening"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-09-17T08:00"},
+            {"procedure": "Immunization administration", "performed": "2024-09-17T08:45"},
+            {"procedure": "Venipuncture", "performed": "2024-09-17T08:50"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-17T11:40",
+              "body": "Annual exam. Abby has been well this year - no visits, no illnesses worth mentioning. Busy at work with a big rollout over the summer; sleeping okay. Still walking evenings.\n\nMeds: none. Allergies: NKDA.\nFH unchanged (mother hypothyroid, father HTN). Never smoker, light alcohol.\n\nROS: no chest pain, dyspnea, GI or GU complaints. Menses regular.\n\nExam: well-appearing. Vitals reviewed, BP normal. Thyroid without enlargement or nodules. No cervical or supraclavicular nodes. Cardiac exam regular, no murmur or rub. Lungs clear. Abdomen benign. No edema. Skin: no concerning moles on full check.\n\nAssessment/plan:\n- Well adult. CBC, CMP, lipid panel today.\n- Mammogram due next month, order placed.\n- Pap/HPV next due 2026.\n- Colon cancer screening starts at 45 - will bring up next year.\n- Flu shot given. Updated COVID shot at her pharmacy when it's out.\n- PHQ-2 negative.\nRTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-19a",
+          "kind": "portal_message",
+          "start": "2024-09-19T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2024-09-19T07:55",
+              "body": "Hi Abby, labs from your physical look good - counts, chemistries and cholesterol all normal. Nothing to follow up on."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-04a",
+          "kind": "pharmacy",
+          "start": "2024-10-04T18:10",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-04T18:10"}
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "imaging",
+          "start": "2024-10-24T09:40",
+          "orders": [
+            {"id": "mammo-2024", "action": "done", "date": "2024-10-24T09:40"}
+          ],
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-10-24T09:40",
+              "text": "Digital breast tomosynthesis screening, both breasts. Compared with 10/19/2023 and 10/2022. Scattered fibroglandular densities. No new mass, distortion or grouped calcifications. Stable appearance.",
+              "conclusion": "Negative (BI-RADS 1). Return for screening in 12 months."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "author": "RN",
+              "date": "2024-10-25T10:30",
+              "body": "Mammogram 10/24 negative. Patient notified via portal. Recall set for 10/2025."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1220 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002050",
+      "events": [
+        {
+          "id": "2025-06-15a",
+          "kind": "ed_visit",
+          "start": "2025-06-15T04:10",
+          "end": "2025-06-15T09:20",
+          "service": "Emergency Medicine (regional hospital)",
+          "reason": "Left flank pain, vomiting, fevers",
+          "vitals": [
+            {
+              "time": "2025-06-15T04:15",
+              "temp_c": 38.7,
+              "bp": [
+                145,
+                90
+              ],
+              "hr": 102
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Ischemia and infarction of kidney",
+              "icd10": "N28.0",
+              "action": "diagnosed",
+              "onset": "2025-06-15",
+              "note": "Left renal infarction"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-15T04:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 15.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-15T04:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.2
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-06-15T04:50",
+              "results": [
+                {
+                  "test": "Urine Blood",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "text": "Present"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2025-06-15T06:30",
+              "text": "Technique: helical CT of the abdomen and pelvis after intravenous contrast, portal venous phase. Comparison: none.\nKidneys: wedge-shaped region of decreased enhancement in the cortex of the left kidney. Right kidney enhances normally. No hydronephrosis or stone on either side. No perinephric collection.\nLiver, spleen, pancreas, adrenals: unremarkable. Gallbladder unremarkable. Bowel normal caliber. No free fluid or free air. No adenopathy. Bladder unremarkable. Osseous structures without acute finding.",
+              "conclusion": "Wedge-shaped area of decreased enhancement in the left renal cortex, consistent with renal infarction."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-06-15T04:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Provider Note",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2025-06-25T09:00",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nDate of service: 06/15/2025 (copy received 06/25/2025)\n\nChief complaint: left flank pain.\n\nHPI: 45M with severe opioid use disorder on buprenorphine, chronic hepatitis C, and a hospitalization this spring for MSSA aortic valve endocarditis treated with 6 weeks of cefazolin, here with abrupt severe left flank pain that started about 6 hours ago, with nausea and repeated vomiting. Over the past two weeks he has had intermittent fevers and soaking night sweats. He admits to injecting again over the last several weeks.\n\nMeds: buprenorphine-naloxone 8-2 mg SL daily, naloxone nasal PRN, amlodipine 5 mg daily, sertraline 50 mg daily. NKDA.\n\nTriage: T 38.7 C (101.7 F), BP 145/90, HR 102.\nExam: uncomfortable, writhing. Grade 3/6 systolic murmur at the left lower sternal border, new compared with what he reports being told. Lungs clear. Abdomen soft, left CVA tenderness. No peritoneal signs.\n\nResults: WBC 15.0, Hgb 13.2, plt 250. Cr 1.2, BUN 21. UA with blood and protein, RBCs present, no casts. CT A/P with contrast: wedge-shaped hypoenhancing area in the left renal cortex - renal infarct.\n\nMDM: renal infarct in a patient with recent S. aureus endocarditis and fevers - embolic, recurrent infection likely. Blood cultures x2 drawn. Symptom control in the ED. Medicine admission.\n\nDisposition: admitted to hospital medicine."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-15b",
+          "kind": "hospital_admission",
+          "start": "2025-06-15T09:20",
+          "end": "2025-06-24T12:30",
+          "service": "Internal Medicine (regional hospital)",
+          "reason": "Renal infarction, recurrent endocarditis",
+          "conditions": [
+            {
+              "label": "Acute and subacute infective endocarditis",
+              "icd10": "I33.0",
+              "action": "diagnosed",
+              "onset": "2025-06-15",
+              "note": "Relapse, aortic valve, MSSA"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "cefazolin 2000 MG Injection",
+              "action": "historical",
+              "sig": "2 g IV every 8 hours through 2025-07-28",
+              "dose": {
+                "value": 2,
+                "unit": "g"
+              },
+              "frequency": "Q8H",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "Relapsed MSSA aortic valve endocarditis; prescribed by hospital and infectious disease"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-06-15T04:45",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "Set 1 of 2: Staphylococcus aureus, methicillin-susceptible",
+                  "resulted": "2025-06-16T10:00"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-15T05:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "Set 2 of 2: Staphylococcus aureus, methicillin-susceptible",
+                  "resulted": "2025-06-16T13:00"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-17T06:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days",
+                  "resulted": "2025-06-22T08:00"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-06-16T10:15",
+              "text": "Indication: S. aureus bacteremia, prior aortic valve endocarditis, renal infarct. Comparison: TTE 03/2025. LV normal size and thickness, LVEF approximately 60%, normal wall motion. RV normal. Aortic valve trileaflet with a 0.7 cm mobile echodensity on the leaflets consistent with vegetation; mild aortic regurgitation; no perivalvular abscess. Mitral valve without vegetation, trace regurgitation. Tricuspid valve normal. No pericardial effusion.",
+              "conclusion": "Aortic valve vegetation 0.7 cm, mild aortic regurgitation, no abscess. LVEF 60%."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospitalist",
+              "date": "2025-06-25T09:05",
+              "body": "REGIONAL HOSPITAL - DISCHARGE SUMMARY\nAdmission 06/15/2025 via ED; discharge 06/24/2025.\n\nDiagnoses: relapsed methicillin-susceptible S. aureus aortic valve endocarditis; left renal infarction (septic embolism); opioid use disorder with recent injection use.\n\nCourse: Admission blood cultures grew MSSA in both sets. TTE showed a persistent 0.7 cm aortic valve vegetation with mild AR, no abscess, LVEF 60%. Cardiac surgery was consulted and did not recommend surgery given no heart failure, no abscess and a vegetation that had become smaller. Cefazolin 2 g IV q8h restarted; repeat cultures 06/17 negative and that date begins a 6-week course through 07/28/2025. Flank pain controlled and resolved by day 3. Creatinine 1.2 on arrival. Addiction medicine re-engaged; buprenorphine-naloxone 8-2 mg continued and the program was updated. After discussion with ID, home infusion via a new right arm PICC (placed 06/20) with weekly labs.\n\nDischarge medications: cefazolin 2 g IV q8h through 07/28/2025; buprenorphine-naloxone 8-2 mg SL daily; naloxone 4 mg nasal PRN; amlodipine 5 mg daily; sertraline 50 mg daily.\nAllergies: NKDA.\nFollow-up: PCP 1 week, ID clinic 07/29/2025."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-26a",
+          "kind": "telephone",
+          "start": "2025-06-26T10:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2025-06-26T10:15",
+              "body": "Called after 6/24 discharge. No fever. Flank pain gone. Infusion company out Tuesday, cefazolin going q8h. Has meds. Program appointment Friday. Scheduled TCM visit Monday 6/30. ED record and DC summary received yesterday, routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-30a",
+          "kind": "office_visit",
+          "start": "2025-06-30T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "state": {
+            "labs": {
+              "Creatinine": 1.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-30T10:00",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-30T10:00",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-06-30T09:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-06-30T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-06-30T10:15",
+              "body": "TCM VISIT\n\nSecond admission this year: 6/15-6/24, left renal infarct from relapsed MSSA aortic valve endocarditis. ED record and discharge summary reviewed; med list matches.\n\nHe's quiet today. Says he started using again in May after finishing antibiotics, \"thought I was done with it.\" Since admission: none, and he's seeing the program weekly. No fever, no flank pain, eating.\n\nExam: afebrile, vitals per flowsheet. 3/6 systolic murmur LLSB. Lungs clear. No CVA tenderness today. PICC R arm clean.\n\nPlan\n- Endocarditis relapse: cefazolin to 7/28, ID 7/29. Infusion labs to ID.\n- Renal infarct: BMP today to see where creatinine settles.\n- OUD: frank talk about the next episode being worse. He agrees. Naloxone at home. Program aware of admission.\n- HTN, depression: same meds.\nSee 6-8 wks after antibiotics."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-01a",
+          "kind": "portal_message",
+          "start": "2025-07-01T13:10",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Kidney test",
+              "author": "PCP",
+              "date": "2025-07-01T13:10",
+              "body": "Rodney - kidney function (creatinine) is 1.1. That's a touch higher than your usual, which fits with the small area of kidney that lost blood flow. Nothing to change; we'll keep checking it. Blood count is fine."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-29a",
+          "kind": "specialist_visit",
+          "start": "2025-07-29T13:30",
+          "service": "Infectious Disease (outside clinic)",
+          "reason": "Endocarditis follow-up",
+          "medications": [
+            {
+              "drug_text": "cefazolin 2000 MG Injection",
+              "action": "stop",
+              "reason": "Course completed 2025-07-28"
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Acute and subacute infective endocarditis",
+              "icd10": "I33.0",
+              "action": "resolved",
+              "note": "Second course completed"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Clinic Letter",
+              "author": "infectious disease",
+              "date": "2025-07-31T08:45",
+              "body": "OUTSIDE INFECTIOUS DISEASE CLINIC\nVisit: 07/29/2025\n\nDear colleague,\n\nFollow-up of relapsed MSSA aortic valve endocarditis with left renal infarction. Mr. Ferraro completed cefazolin yesterday. He has been afebrile and the infusion log shows the course completed. PICC removed today without difficulty.\n\nHe tells me he has not injected since the June admission. I emphasized again that a third episode would carry real risk to his valves and brain, and he should come in for any fever.\n\nNo further antibiotics. ID follow-up as needed; please re-refer if bacteremia recurs.\n\nNKDA.\n\nInfectious disease"
+            }
+          ]
+        },
+        {
+          "id": "2025-08-27a",
+          "kind": "office_visit",
+          "start": "2025-08-27T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "state": {
+            "bp": [
+              134,
+              84
+            ],
+            "weight_kg": 77.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 10
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-27T14:35",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-27T14:35",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-08-27T14:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-27T14:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-08-27T14:45",
+              "body": "Follow-up. Antibiotics done 7/28, PICC out 7/29.\n\nS: No fevers since. Energy coming back slowly. Not using - program weekly, he says the urine tests have been clean. Mood so-so, PHQ 10. Still 1 ppd. Hasn't found work; looking.\n\nO: BP 130/86. Afebrile. Wt 77.7 kg. Systolic murmur LLSB, same. Lungs clear. Abd soft, no CVA tenderness. Arms clean.\n\nA/P\n1. S/p two courses for MSSA aortic valve IE - no symptoms. Fever plan reviewed.\n2. Left renal infarct - CMP today, following creatinine.\n3. MDD recurrent - PHQ 10, continue sertraline 50.\n4. OUD - in remission from injecting since June by report, on bup.\n5. HTN - controlled.\n6. Tobacco - counseled.\nFlu/COVID nurse visit October, physical November."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-16a",
+          "kind": "nurse_visit",
+          "start": "2025-10-16T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-16T10:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-16T10:17"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-16T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2025-10-16T10:30",
+              "body": "Flu 0.5 mL IM R deltoid and Moderna 2025-26 0.5 mL IM L deltoid. Afebrile, no complaints. VIS reviewed. Observed 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "annual_physical",
+          "start": "2025-11-04T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "rr",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 9
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-11-04T09:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-11-04T09:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-04T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-11-04T09:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-11-04T09:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "Colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-11-04T10:00",
+              "body": "Annual exam, 46 last month.\n\nBig year: MSSA aortic valve endocarditis in March, relapse with left renal infarct in June, both treated. Feeling well now. No fever, sweats or flank pain. Reports no injecting since June; still on bup/nlx 8/2 with program. Smoking 1 ppd. Alcohol rare. Mood PHQ 9.\n\nMeds: amlodipine 5, sertraline 50, naloxone PRN, bup/nlx (outside). NKDA.\n\nExam: NAD. HEENT ok, dentition fair. Neck supple, no nodes. Heart regular, 3/6 systolic murmur LLSB unchanged. Lungs clear. Abd benign, no CVA tenderness. Skin: old scars, no new injection sites. Ext warm, no edema. Neuro nonfocal.\n\nA/P\n- Prevention: flu/COVID done 10/16. FIT kit again. Lipids, A1c, CMP.\n- s/p IE x2 - reviewed fever plan once more.\n- Renal infarct - creatinine follow-up today.\n- HTN controlled; MDD stable on sertraline 50; HCV chronic; OUD on bup.\n- Tobacco - counseled, not ready.\nRTC 3-4 mo."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-14a",
+          "kind": "lab_only",
+          "start": "2025-11-14T08:30",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-11-11T07:00",
+              "resulted": "2025-11-14T08:30",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "done",
+              "date": "2025-11-14T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Physical results",
+              "author": "PCP",
+              "date": "2025-11-14T11:00",
+              "body": "Hi Rodney - FIT negative again, good for another year. Cholesterol, sugar and liver tests normal; kidney number steady at 1.1. Have a good Thanksgiving week coming up."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-13a",
+          "kind": "hospital_admission",
+          "start": "2025-12-13T03:40",
+          "end": "2025-12-30T11:00",
+          "service": "Intensive Care Unit (regional hospital)",
+          "reason": "Fever, left-sided weakness, slurred speech",
+          "vitals": [
+            {
+              "time": "2025-12-13T03:45",
+              "temp_c": 38.9,
+              "hr": 110,
+              "bp": [
+                125,
+                70
+              ]
+            },
+            {
+              "time": "2025-12-30T08:00",
+              "temp_c": 36.7,
+              "hr": 80,
+              "bp": [
+                130,
+                82
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Acute and subacute infective endocarditis",
+              "icd10": "I33.0",
+              "action": "diagnosed",
+              "onset": "2025-12-13",
+              "note": "Native mitral valve, MSSA; third episode"
+            },
+            {
+              "label": "Cerebral infarction due to embolism of unspecified cerebral artery",
+              "icd10": "I63.40",
+              "action": "diagnosed",
+              "onset": "2025-12-13",
+              "note": "Septic emboli, right frontal and parietal cortex"
+            },
+            {
+              "label": "Nonrheumatic mitral (valve) insufficiency",
+              "icd10": "I34.0",
+              "action": "diagnosed",
+              "onset": "2025-12-13",
+              "note": "Moderate"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "cefazolin 2000 MG Injection",
+              "action": "historical",
+              "sig": "2 g IV every 8 hours through 2026-01-24",
+              "dose": {
+                "value": 2,
+                "unit": "g"
+              },
+              "frequency": "Q8H",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "MSSA mitral valve endocarditis; prescribed by hospital and infectious disease"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-12-13T04:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "Staphylococcus aureus, methicillin-susceptible",
+                  "resulted": "2025-12-14T11:00"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-14T06:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days",
+                  "resulted": "2025-12-19T08:00"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2025-12-13T04:20",
+              "text": "Indication: acute left-sided weakness and dysarthria, fever. Technique: axial non-contrast CT of the head. No intracranial hemorrhage. No mass effect or midline shift. Gray-white differentiation preserved. Ventricles and sulci normal for age. No extra-axial collection. Calvarium intact. Visualized sinuses and mastoids clear.",
+              "conclusion": "No hemorrhage."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-12-13T13:00",
+              "text": "Indication: S. aureus bacteremia, embolic stroke, prior aortic valve endocarditis. Comparison: TTE 06/2025. LV normal size, LVEF approximately 60%. RV normal. Native mitral valve with vegetations on the leaflets; moderate mitral regurgitation. Aortic valve trileaflet, no vegetation seen, previously noted echodensity no longer visible. Tricuspid and pulmonic valves normal. No pericardial effusion.",
+              "conclusion": "Native mitral valve vegetations with moderate mitral regurgitation. Aortic valve without vegetation. LVEF 60%."
+            },
+            {
+              "study": "MRI brain without contrast",
+              "performed": "2025-12-14T09:30",
+              "text": "Indication: left-sided weakness, endocarditis. Technique: multiplanar multisequence MRI of the brain including diffusion and susceptibility-weighted imaging. Several small foci of restricted diffusion in the right frontal and parietal cortex, consistent with acute infarcts. No hemorrhage on susceptibility imaging. No ring-enhancing lesion or abscess pattern; no extra-axial collection. Ventricles normal. Flow voids preserved.",
+              "conclusion": "Several small acute right frontal and parietal cortical infarcts consistent with septic emboli. No hemorrhage or abscess."
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "ICU Admission Note",
+              "author": "critical care",
+              "date": "2026-01-02T09:00",
+              "body": "REGIONAL HOSPITAL - INTENSIVE CARE UNIT ADMISSION NOTE\nDate: 12/13/2025 (received 01/02/2026)\n\n46-year-old man with severe opioid use disorder and injection drug use, chronic HCV, hypertension and recurrent depression, previously admitted twice this year for MSSA aortic valve endocarditis, the second time with a left renal infarct. Two weeks of fever, chills and a new headache, with about 10 pounds of weight loss over that time. Tonight he developed sudden weakness of the left side and slurred speech, and EMS brought him in.\n\nMeds: buprenorphine-naloxone 8-2 mg daily, naloxone nasal PRN, amlodipine 5 mg, sertraline 50 mg. NKDA.\n\nVitals: T 38.9 C, HR 110, BP 125/70.\nExam: febrile, dysarthric, left face/arm/leg weakness. Murmur consistent with mitral regurgitation. Fundoscopy shows Roth spots. Lungs clear.\n\nCT head non-contrast: no hemorrhage. Blood cultures drawn. Echo to follow.\n\nImpression: recurrent S. aureus endocarditis with embolic stroke. Not a thrombolysis candidate (endocarditis). Neurology and ID consulted, neuro checks q1h, start cefazolin after cultures, continue buprenorphine."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospitalist",
+              "date": "2026-01-02T09:10",
+              "body": "REGIONAL HOSPITAL - DISCHARGE SUMMARY\nAdmitted 12/13/2025 (ICU through 12/16, then medicine); discharged 12/30/2025 to a skilled nursing facility.\n\nDiagnoses: infective endocarditis of the native mitral valve, methicillin-susceptible S. aureus (third episode in 2025); embolic ischemic stroke (septic emboli); moderate mitral regurgitation; opioid use disorder.\n\nCourse: Blood cultures grew MSSA; repeat cultures 12/14 no growth. TTE showed mitral valve vegetations with moderate MR; aortic valve now without vegetation; LVEF 60%. MRI brain 12/14: several small acute right frontal and parietal cortical infarcts consistent with septic emboli, no hemorrhage or abscess. Left-sided weakness and dysarthria improved steadily and were back to baseline on 12/20 per neurology. Cardiac surgery evaluated: no surgery recommended at this time; outpatient cardiology and repeat echo after treatment. Cefazolin 2 g IV q8h, 6 weeks from 12/14, through 01/24/2026. Addiction medicine: buprenorphine-naloxone 8-2 mg continued, program updated. Given recurrent infection, ID and the team recommended finishing IV therapy at a skilled nursing facility, which he accepted.\n\nDischarge medications: cefazolin 2 g IV q8h through 01/24/2026; buprenorphine-naloxone 8-2 mg SL daily; naloxone 4 mg nasal PRN; amlodipine 5 mg daily; sertraline 50 mg daily.\nAllergies: NKDA.\nFollow-up: PCP after SNF discharge; neurology clinic 02/2026; cardiology with echo 03/2026."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-15a",
+          "kind": "telephone",
+          "start": "2025-12-15T08:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Hospital notification",
+              "author": "PCP",
+              "date": "2025-12-15T08:50",
+              "body": "Hospital case manager called: Rodney admitted Saturday to the ICU, endocarditis again with a stroke. Moved to step-down plan. I called his program to let them know, per their standing request. Will see him after discharge."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-05a",
+          "kind": "telephone",
+          "start": "2026-01-05T14:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "SNF medication reconciliation",
+              "author": "RN",
+              "date": "2026-01-05T14:20",
+              "body": "Call from the skilled nursing facility nurse to confirm home meds. Confirmed: amlodipine 5 mg daily, sertraline 50 mg daily, naloxone nasal PRN, bup/nlx 8/2 daily (outside program, they are coordinating directly with the program). Cefazolin through 1/24 per hospital. Asked them to fax the SNF discharge summary."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-24a",
+          "kind": "outside_records",
+          "start": "2026-01-24T10:00",
+          "medications": [
+            {
+              "drug_text": "cefazolin 2000 MG Injection",
+              "action": "stop",
+              "reason": "Course completed 2026-01-24"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Skilled Nursing Facility Discharge Summary",
+              "author": "skilled nursing facility",
+              "date": "2026-01-26T09:15",
+              "body": "SKILLED NURSING FACILITY DISCHARGE SUMMARY\nStay: 12/30/2025 - 01/24/2026 (received 01/26/2026)\n\nAdmitted from the regional hospital to complete IV cefazolin for MSSA mitral valve endocarditis complicated by embolic stroke. All doses given; final dose 01/24 morning. PICC removed 01/24, tip intact. Afebrile throughout. Weekly CBC and BMP sent to ID, stable. Neurologically at baseline; ambulating independently, speech normal. PT signed off at admission as independent.\n\nBuprenorphine-naloxone 8-2 mg daily given from his program's supply. No behavioral events.\n\nDischarge medications: buprenorphine-naloxone 8-2 mg SL daily; naloxone 4 mg nasal PRN; amlodipine 5 mg daily; sertraline 50 mg daily.\nAllergies: NKDA.\nDischarged home. PCP visit scheduled 01/28."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-28a",
+          "kind": "office_visit",
+          "start": "2026-01-28T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-discharge follow-up",
+          "state": {
+            "weight_kg": 73.3
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 11
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Acute and subacute infective endocarditis",
+              "icd10": "I33.0",
+              "action": "resolved",
+              "note": "Third course completed 2026-01-24"
+            },
+            {
+              "label": "Cerebral infarction due to embolism of unspecified cerebral artery",
+              "icd10": "I63.40",
+              "action": "resolved"
+            },
+            {
+              "label": "History of stroke without residual deficits",
+              "action": "diagnosed",
+              "onset": "2025-12-13"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-28T11:15",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-28T11:15",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-01-28T10:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-01-28T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Discharge Visit",
+              "author": "PCP",
+              "date": "2026-01-28T11:30",
+              "body": "POST-DISCHARGE (TCM)\n\nHospital 12/13-12/30 (ICU first), SNF 12/30-1/24. MSSA endocarditis, now native mitral valve, with septic emboli to the right hemisphere. ICU note, hospital and SNF summaries reviewed; meds reconciled.\n\nS: Home since Saturday. Feels \"like I got hit by a truck three times, but I'm walking.\" No weakness, speech normal, no headache, no fever. Lost about 10 lb before the admission and hasn't gained it back. Has not used since before December - \"I can't do this again.\" Program visit tomorrow. PHQ 11.\n\nO: afebrile, BP per flowsheet. Wt 73.6 kg. Alert, fluent, no dysarthria. Holosystolic apical murmur radiating to the axilla - new character vs. before (mitral). Lungs clear. Neuro: CN intact, strength 5/5 all four, finger-nose normal, gait normal. Fundi not examined. Arms: healed PICC site L.\n\nA/P\n1. MSSA mitral valve endocarditis, third episode - completed cefazolin 1/24. CBC/BMP. Cardiology + echo in March.\n2. Embolic stroke 12/2025 - no residual deficit. Moved to history. Neurology clinic 2/24.\n3. Moderate mitral regurgitation - per cardiology.\n4. Renal infarct - creatinine today.\n5. OUD - longest he has gone; continue program and naloxone.\n6. MDD - PHQ 11 after a hard winter; sertraline 50 continued; he declined a change.\n7. HTN - amlodipine 5.\nRTC 2 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-29a",
+          "kind": "portal_message",
+          "start": "2026-01-29T16:00",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Labs",
+              "author": "PCP",
+              "date": "2026-01-29T16:00",
+              "body": "Labs from yesterday: hemoglobin 12.1 - still a little low after everything, should keep rising. White count normal. Kidney number 1.0, about where it has been since the summer. Good to have you home."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-18a",
+          "kind": "portal_message",
+          "start": "2026-02-18T19:30",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "rides",
+              "author": "patient",
+              "date": "2026-02-18T19:30",
+              "body": "do you know how to get the medicaid ride for the neuro and heart appts? the number on the paper didn't work"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: rides",
+              "author": "front desk",
+              "date": "2026-02-19T09:45",
+              "body": "Hi Rodney, we called the transportation line for you and booked a ride for 2/24 (neurology). For the 3/11 cardiology visit you need to call at least 2 business days ahead - number is in your after-visit summary under \"Transportation.\" Call us if it doesn't go through."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "specialist_visit",
+          "start": "2026-02-24T11:00",
+          "service": "Neurology (outside clinic)",
+          "reason": "Post-stroke follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Clinic Letter",
+              "author": "neurology",
+              "date": "2026-02-26T14:00",
+              "body": "OUTSIDE NEUROLOGY CLINIC\nVisit 02/24/2026\n\nDear Doctor,\n\nThank you for asking us to see Mr. Ferraro after his December embolic strokes, septic emboli from S. aureus mitral valve endocarditis. MRI at the time showed several small right frontal and parietal cortical infarcts without hemorrhage.\n\nHe reports no residual symptoms. Examination today: fluent speech without dysarthria, cranial nerves normal, full strength, normal coordination, sensation and gait.\n\nImpression: embolic infarcts with no residual deficit. No further neurology follow-up is needed; please re-refer for new symptoms.\n\nNKDA.\n\nNeurology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-11a",
+          "kind": "specialist_visit",
+          "start": "2026-03-11T09:00",
+          "service": "Cardiology (outside clinic)",
+          "reason": "Mitral regurgitation, post-endocarditis",
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-03-11T08:15",
+              "text": "Indication: follow-up after mitral valve endocarditis. Comparison: TTE 12/2025. LV normal size and wall thickness, LVEF approximately 60%, normal wall motion. RV normal. Mitral valve: no vegetation identified; moderate mitral regurgitation. Aortic valve trileaflet, no vegetation. Tricuspid and pulmonic valves normal. No pericardial effusion.",
+              "conclusion": "No vegetation. Moderate mitral regurgitation. LVEF 60%."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Consultation",
+              "author": "cardiology",
+              "date": "2026-03-13T10:30",
+              "body": "OUTSIDE CARDIOLOGY GROUP\nDate of service: 03/11/2026\n\nDear colleague,\n\nI saw Mr. Ferraro, 46, after three episodes of MSSA endocarditis in 2025 (aortic valve twice, then the native mitral valve in December with embolic stroke). He completed IV therapy in January and feels well, with no exertional limitation, orthopnea or edema.\n\nEcho today: no residual vegetation; moderate mitral regurgitation; LVEF 60%.\n\nExam: BP and HR acceptable, holosystolic murmur at the apex. Lungs clear. No edema.\n\nAssessment: moderate MR after healed endocarditis, compensated. No indication for intervention now.\n\nPlan: repeat echo in about a year, sooner for symptoms. Continue his current medications. Return in 12 months.\n\nAllergies: NKDA.\n\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-26a",
+          "kind": "office_visit",
+          "start": "2026-03-26T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "state": {
+            "bp": [
+              134,
+              82
+            ],
+            "weight_kg": 75.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-26T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-03-26T15:50",
+              "body": "2-month f/u.\n\nNeuro 2/24: no deficit, discharged from their clinic. Cardiology 3/11: echo with no vegetation, moderate MR, EF 60%, repeat in a year. Letters reviewed.\n\nS: Feeling better than any time last year. No fevers. Program every 2 weeks now, no use since December by his account. Still smoking a pack, \"one thing at a time.\" Mood PHQ 9.\n\nO: BP 144/75. Apical holosystolic murmur, unchanged. Lungs clear. No edema. Speech and gait normal.\n\nA/P\n- s/p MSSA endocarditis x3 - stable, fever plan.\n- Moderate MR - cardiology yearly echo.\n- History of stroke, no deficit.\n- Renal infarct - creatinine 1.0-1.1, stable.\n- OUD - no injecting since 12/2025 per pt.\n- MDD - sertraline 50.\n- HTN - a bit high today, usually at goal; recheck in June.\nRTC June with labs."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-13a",
+          "kind": "outside_records",
+          "start": "2026-05-13T11:20",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Care coordination letter - addiction treatment program",
+              "author": "addiction medicine",
+              "date": "2026-05-13T11:20",
+              "body": "Re: Rodney Ferraro, DOB 10/20/1979\n\nDear primary care physician,\n\nUpdate for your records: Mr. Ferraro remains in our office-based program on buprenorphine/naloxone 8 mg/2 mg film daily. He has reported no injection or other opioid use since December 2025, and his toxicology since his hospital and nursing facility stays has been consistent with prescribed buprenorphine only. Visits are now every two weeks. He has naloxone.\n\nThank you for keeping us informed during his admissions.\n\nAddiction medicine"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-10a",
+          "kind": "office_visit",
+          "start": "2026-06-10T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up with labs",
+          "state": {
+            "weight_kg": 78.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 8
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-10T09:20",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-10T09:20",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-06-10T09:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-10T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-06-10T08:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-10T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-06-10T09:30",
+              "body": "F/u + labs.\n\nProgram letter 5/13 reviewed - tox consistent with bup only since winter. He confirms: no use. Weight back up to 78 kg. No fevers, no SOB, no swelling. Still looking for work. PHQ 8. Smoking 1 ppd.\n\nExam: BP and vitals per flowsheet. Apical holosystolic murmur unchanged. Lungs clear. No edema. Neuro normal.\n\nA/P\n- Moderate MR, s/p endocarditis x3 - stable; cardiology/echo due 3/2027.\n- Renal infarct - CMP today.\n- HCV chronic - LFTs today.\n- OUD on bup, no use since 12/2025.\n- MDD recurrent - better, sertraline 50.\n- HTN on amlodipine 5 - second reading in the 140s this spring. Asked him to bring home cuff readings in September before adding anything.\n- Tobacco - counseled.\n- Labs: CMP, CBC, lipids, A1c (due).\nRTC September, flu shot then."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-12a",
+          "kind": "portal_message",
+          "start": "2026-06-12T12:05",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "June labs",
+              "author": "PCP",
+              "date": "2026-06-12T12:05",
+              "body": "Rodney - hemoglobin is back to normal. Kidney number about 1.0, steady, liver tests and cholesterol normal, A1c normal. See you in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-23a",
+          "kind": "pharmacy",
+          "start": "2026-07-23T09:35",
+          "medications": [
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Renewed"
+            },
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "naloxone hydrochloride 40 MG/ML Nasal Spray",
+              "action": "stop",
+              "reason": "Renewed"
+            },
+            {
+              "drug": "naloxone hydrochloride 40 MG/ML Nasal Spray",
+              "action": "start",
+              "sig": "Spray 4 mg into one nostril for suspected overdose; may repeat in 2-3 minutes in the other nostril",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Nasal",
+              "course": "chronic",
+              "reason": "Overdose reversal"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy renewals",
+              "author": "MA",
+              "date": "2026-07-23T09:35",
+              "body": "Pharmacy renewal requests: amlodipine 5 mg (90 day) and naloxone 4 mg nasal 2-pack (pt says the one at home expired). Both sent per PCP protocol, seen 6/10."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "portal_message",
+          "start": "2026-08-19T17:45",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "flu shot",
+              "author": "patient",
+              "date": "2026-08-19T17:45",
+              "body": "can i get the flu shot at my sept appt or do i need a separate nurse one. also what day was that appt again"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: flu shot",
+              "author": "front desk",
+              "date": "2026-08-20T08:40",
+              "body": "Hi Rodney - you're booked Wednesday 9/23 at 10:00. Flu shots usually arrive mid-September, so the doctor can give it at that visit. See you then!"
+            }
+          ]
+        },
+        {
+          "id": "2026-09-23a",
+          "kind": "office_visit",
+          "start": "2026-09-23T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

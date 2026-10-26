@@ -1,0 +1,200 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002578",
+      "events": [
+        {
+          "id": "2024-03-12a",
+          "kind": "portal_message",
+          "start": "2024-03-12T22:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "acne question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Skin",
+              "author": "patient",
+              "date": "2024-03-12T22:40",
+              "body": "my face has been breaking out more with midterms. should I put the adapalene on twice a day instead?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Skin",
+              "author": "PCP",
+              "date": "2024-03-13T07:55",
+              "body": "Stick with once a night. Twice a day mostly just makes it red and peely without clearing faster. Give a flare 6 to 8 weeks to settle, wash with something gentle, and don't pick. If it is still bad by your physical we can talk about other options."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-25a",
+          "kind": "annual_physical",
+          "start": "2024-06-25T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "temp_c", "rr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 3}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, weekends"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-06-25T08:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-06-25T09:30",
+              "body": "Yearly visit. Home for part of the summer, back on campus in a few weeks.\n\nSkin settled after the March flare; still on adapalene nightly. Allergy season okay this year on daily cetirizine April through May, now off it.\nMeds: cetirizine PRN, adapalene 0.1% nightly. NKDA.\nSocial: dorm. Weekend drinking, a little more than last year he says, still no binges he can name, no driving. No tobacco or vapes.\n\nPHQ-2 0, AUDIT-C 3.\n\nExam: well. Vitals ok. HEENT normal. Neck supple. Heart and lungs normal. Abdomen soft. Skin: a few comedones on the forehead, no cysts. Neuro grossly normal.\n\nA/P\n- Healthy 19 y/o.\n- Acne mild, controlled. Continue.\n- Allergic rhinitis, seasonal, controlled.\n- Alcohol: AUDIT-C under the cutoff; reviewed limits and not mixing with anything else.\n- Fall vaccines when available. Physical next summer."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-03a",
+          "kind": "ed_visit",
+          "start": "2024-08-03T14:10",
+          "end": "2024-08-03T19:45",
+          "service": "Emergency Medicine",
+          "reason": "fever, headache, neck stiffness",
+          "conditions": [
+            {"label": "Meningococcal meningitis", "icd10": "A39.0", "action": "diagnosed", "onset": "2024-08-03"}
+          ],
+          "vitals": [
+            {"time": "2024-08-03T14:15", "temp_c": 39.2, "hr": 110, "bp": [130, 75]}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2024-08-03T15:30", "resulted": "2024-08-03T16:40", "results": [
+              {"test": "CSF leukocytes", "loinc": "806-0", "unit": "/uL", "value": 1200},
+              {"test": "CSF neutrophils", "loinc": "13516-0", "unit": "%", "value": 80},
+              {"test": "CSF glucose", "loinc": "2342-4", "unit": "mg/dL", "value": 20},
+              {"test": "CSF protein", "loinc": "2880-3", "unit": "mg/dL", "value": 180},
+              {"test": "CSF Gram stain", "loinc": "664-3", "text": "Gram-negative diplococci"}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2024-08-03T14:10"}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Physician Note",
+              "author": "emergency medicine",
+              "date": "2024-08-09T11:20",
+              "body": "Regional hospital emergency department. Date of service 08/03/2024. Faxed to primary care 08/09/2024.\n\n19M, college student, living in campus dorm. About 12 h of fever, bad headache and stiff neck. Says several friends in the dorm have been sick lately with something similar.\nPMH: seasonal allergies, acne. PSH: tonsillectomy, wisdom teeth. Meds: cetirizine PRN, adapalene gel. Allergies: NKDA. Never smoker, social EtOH.\n\nT 39.2 C, HR 110, BP 130/75.\nToxic-appearing, photophobic. Kernig and Brudzinski both positive. Petechiae across the trunk and both legs.\n\nLP: CSF WBC 1200/mm3, 80% PMNs; glucose 20; protein 180. Gram stain with gram-negative diplococci.\n\nImpression: meningococcal meningitis.\nCeftriaxone 2 g IV given in the ED. Droplet precautions. Admitted to medicine. Public health notified per protocol for contact tracing."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-05a",
+          "kind": "telephone",
+          "start": "2024-08-05T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "family call, patient hospitalized",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call From Patient's Mother",
+              "author": "PCP",
+              "date": "2024-08-05T08:40",
+              "body": "Mother called (on file as OK to share). Gavin went to the ED Saturday afternoon with fever, headache and stiff neck and was admitted; they told the family it is meningococcal meningitis and he is on IV antibiotics. She says he is more awake today and texting. Asked whether the family needs anything: the hospital and the health department are handling contacts, so follow their instructions. Asked her to have him message us when he is discharged so we can see him in the next week or two, and to have the hospital fax records. Will watch for them."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-12a",
+          "kind": "portal_message",
+          "start": "2024-08-12T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "home from hospital",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Home",
+              "author": "patient",
+              "date": "2024-08-12T10:05",
+              "body": "hi, I got out of the hospital saturday. they said I'm done with antibiotics and I don't have any to take at home. mom said you wanted to see me?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Home",
+              "author": "PCP",
+              "date": "2024-08-12T12:30",
+              "body": "Glad you're home. Yes, I'd like to see you next week. The front desk has you down for Tuesday the 20th at 10:20. Rest, drink plenty, and call or text right away for a new fever, worse headache, a rash, or if you feel confused."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "office_visit",
+          "start": "2024-08-20T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-hospital follow-up, meningitis",
+          "conditions": [
+            {"label": "Meningococcal meningitis", "icd10": "A39.0", "action": "resolved"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "rr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-08-20T10:55", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-08-20T10:20"},
+            {"procedure": "Venipuncture", "performed": "2024-08-20T10:55"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Follow-up",
+              "author": "PCP",
+              "date": "2024-08-20T11:15",
+              "body": "Follow-up after admission for meningococcal meningitis.\n\nGot to the ED on 8/3 after about half a day of fever, headache and neck stiffness. ED note (faxed 8/9) shows LP with very high white count, low glucose, high protein and gram-negative diplococci. Per Gavin, about a week inpatient on IV antibiotics, home 8/10, nothing to take home. No discharge summary here yet.\n\nNow: headache gone since the hospital. Tired, naps in the afternoon, getting better each day. No fever, neck pain, rash, vision changes, ringing or trouble hearing. Eating normally.\nMeds: cetirizine PRN, adapalene. NKDA.\n\nExam: looks well. Afebrile. Alert, oriented, conversational. Skin clear, no petechiae or marks. Neck supple, full range. Heart regular, lungs clear. Cranial nerves intact, hears whispered voice both sides, strength and gait normal.\n\nA/P\n1. Meningococcal meningitis, treated inpatient, recovered. Fatigue expected for a few weeks. Back to normal activity as energy allows; ease in. CBC today.\n2. Seasonal allergic rhinitis and acne, no changes.\nWill keep asking for the hospital summary."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "portal_message",
+          "start": "2024-08-21T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "result note",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood Count",
+              "author": "PCP",
+              "date": "2024-08-21T08:10",
+              "body": "Your blood count from yesterday is completely normal: white cells, red cells and platelets all where they should be. Keep resting up, and reach out if anything changes."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T16:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza and COVID-19 vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-08T16:55"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T16:57"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-10-08T16:55"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit: Fall Vaccines",
+              "author": "RN",
+              "date": "2024-10-08T17:10",
+              "body": "Here for flu and 2024-25 COVID. Feeling well, no fever. Trivalent flu L deltoid, COVID R deltoid, IM. Lots on the record. Tolerated well, observed, left without problems."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

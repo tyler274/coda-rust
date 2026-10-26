@@ -1,0 +1,454 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001690",
+      "given": "Iris",
+      "family": "Castro",
+      "birth_date": "1996-08-20",
+      "address_line": "88 Linden Street, Apt 2",
+      "phone": "+1-201-555-0114",
+      "email": "iris.castro@example.test",
+      "marital_status": "married",
+      "summary": "Thirty-year-old marketing coordinator with generalized anxiety disorder, hypothyroidism and iron deficiency anemia who joined in August 2024 while planning a pregnancy. Her first pregnancy ended with PPROM at 35 weeks complicated by chorioamnionitis and a preterm vaginal birth in May 2025; her second ended with a term vaginal birth in May 2026. Primary care follows her mood, thyroid and iron between two obstetric courses.",
+      "events": [
+        {
+          "id": "2024-08-13a",
+          "kind": "establish_care",
+          "start": "2024-08-13T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish primary care",
+          "conditions": [
+            {
+              "label": "Generalized anxiety disorder",
+              "action": "history"
+            },
+            {
+              "label": "Hypothyroidism",
+              "action": "history"
+            },
+            {
+              "label": "Iron deficiency anemia",
+              "action": "history"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "levothyroxine sodium 0.088 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning on an empty stomach",
+              "dose": {
+                "value": 88,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypothyroidism"
+            },
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Generalized anxiety disorder"
+            },
+            {
+              "drug_text": "prenatal multivitamin with iron Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Iron deficiency anemia; planning pregnancy"
+            },
+            {
+              "drug_text": "docusate sodium 100 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily as needed for constipation",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Penicillin",
+              "reaction": "Anaphylaxis",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            },
+            {
+              "substance": "Latex",
+              "reaction": "Contact dermatitis",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "state": {
+            "weight_kg": 64.0,
+            "height_cm": 163.0,
+            "labs": {
+              "Hemoglobin": 11.9,
+              "Ferritin": 16,
+              "Thyroid Stimulating Hormone": 2.0,
+              "Free Thyroxine": 1.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-13T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.9
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-13T10:05",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 16
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-13T10:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-13T10:05",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None; abstains during her childbearing years"
+            },
+            {
+              "item": "Occupation",
+              "value": "Marketing coordinator"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-08-13T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-13T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2024-08-13T09:20",
+              "body": "27F here to get set up with us. Had been seeing a PCP in the area but wanted a practice she can reach directly. Records release signed today.\n\nShe would like to start trying for a pregnancy this fall, which is why she has been on a prenatal vitamin with iron for a few months. Wants to make sure her thyroid and anxiety are where they should be before then.\n\nAnxiety: GAD, on sertraline 50 for some time, feels it works. Some worry around work deadlines, sleeps fine. No panic attacks. Not interested in changing anything. GAD-7 6, PHQ-9 3.\nThyroid: hypothyroid, levothyroxine 88 mcg each morning, takes it apart from the vitamin. Last TSH was \"normal\" per her, will see records.\nIron: told years ago she was iron deficient. Gets her iron from the prenatal now. Uses docusate now and then for constipation from the iron.\n\nPSH: lap appendectomy at 16; wisdom teeth out.\nMeds: levothyroxine 88 mcg daily; sertraline 50 mg daily; prenatal vitamin w/ iron 1 tab daily; docusate 100 mg prn.\nAllergies: PENICILLIN - anaphylaxis. LATEX - contact dermatitis (gloves).\nFH: mother had preterm premature rupture of membranes with a pregnancy. Father with type 2 diabetes. Sister had chorioamnionitis in a prior pregnancy.\nSH: marketing coordinator. Never smoked. No alcohol at all right now. Never pregnant.\n\nExam: vitals as charted. Well appearing, pleasant. Thyroid smooth, not enlarged, no nodules. Heart regular, no murmur. Lungs clear. Abd soft, well-healed laparoscopic scars. No edema. Affect bright, speech normal.\n\nA/P\n1. GAD - stable on sertraline 50. Talked through sertraline in pregnancy; reasonable to continue, she prefers to stay on it.\n2. Hypothyroidism - TSH today. Once pregnant she should let us know right away so we can recheck.\n3. Iron deficiency anemia - CBC and ferritin. Continue prenatal with iron.\n4. Preconception - on prenatal vitamin already. CMP for baseline.\n5. Health maintenance - will look for her last Pap in outside records. Flu/COVID this fall.\n\nFollow up after labs, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-14a",
+          "kind": "portal_message",
+          "start": "2024-08-14T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent lab results",
+              "author": "PCP",
+              "date": "2024-08-14T16:40",
+              "body": "Hi Iris, your labs from yesterday are in. Thyroid level is normal on the 88 mcg, so no change. Kidney, liver and sugar are normal. Your hemoglobin is 11.9, just under the normal range, and your ferritin (iron stores) is 16, on the low side. That fits with the iron deficiency you've had before. Keep taking the prenatal with iron every day, and we will recheck in a few months or once you are pregnant. Let me know if you have questions."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-26a",
+          "kind": "outside_records",
+          "start": "2024-08-26T11:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Records from prior primary care practice",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2023-06-07T10:00",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. General categorization: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "author": "outside primary care",
+              "date": "2024-08-26T11:15",
+              "body": "Records received from prior primary care office, 38 pages, covering 2019 to 2024.\n\nProblem list: generalized anxiety disorder; hypothyroidism; iron deficiency anemia.\nMedications at last visit: levothyroxine 88 mcg daily, sertraline 50 mg daily, prenatal multivitamin with iron daily, docusate 100 mg as needed.\nAllergies: penicillin (anaphylaxis); latex (contact dermatitis).\nSurgical history: laparoscopic appendectomy (adolescent), third molar extraction.\nCervical cytology 06/2023: negative for intraepithelial lesion or malignancy.\n\nNo outstanding orders or referrals."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Records Review",
+              "author": "PCP",
+              "date": "2024-08-27T08:10",
+              "body": "Old records reviewed. Lists match what she told us. Pap 6/2023 NILM, next due 2026. Abstracted."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "pharmacy",
+          "start": "2024-09-10T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy Refill Request",
+              "author": "RN",
+              "date": "2024-09-10T10:30",
+              "body": "Pharmacy fax: refill request sertraline 50 mg, last filled by prior PCP. Pt seen 8/13, on med list. 90-day supply with 1 refill sent per PCP protocol."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-03a",
+          "kind": "portal_message",
+          "start": "2024-10-03T07:52",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Positive home pregnancy test",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "diagnosed",
+              "onset": "2024-08-27",
+              "note": "LMP 2024-08-27"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2024",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "New pregnancy, LMP 2024-08-27"
+            },
+            {
+              "id": "tsh-2024-10",
+              "action": "placed",
+              "order": "TSH and free T4",
+              "category": "lab",
+              "reason": "Hypothyroidism in early pregnancy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test!",
+              "author": "patient",
+              "date": "2024-10-03T07:52",
+              "body": "Hi, I took a test this morning and it was positive! First day of my last period was August 27. You said to let you know right away for the thyroid. Also is it really ok to keep taking the sertraline? I'm a little nervous now that it's real. Who should I see for OB?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive test!",
+              "author": "PCP",
+              "date": "2024-10-03T12:25",
+              "body": "Congratulations! That puts you at about 5 weeks. I've put in a referral to an obstetrics group near you; they usually see new pregnancies around 8 weeks. I also ordered a thyroid level (TSH and free T4), you can come in for the blood draw any morning this week or next.\n\nYes, keep taking the sertraline 50 mg. It is one of the most studied medicines in pregnancy, and stopping it suddenly would be the bigger risk for you. Keep the levothyroxine and prenatal vitamin going too. Any bleeding or bad cramping, call us or the OB right away."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-07a",
+          "kind": "lab_only",
+          "start": "2024-10-07T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "TSH in early pregnancy",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-10-07T08:15",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Free Thyroxine"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "tsh-2024-10",
+              "action": "done",
+              "date": "2024-10-07T08:15"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-07T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "TSH Result Note",
+              "author": "PCP",
+              "date": "2024-10-08T13:00",
+              "body": "TSH and free T4 normal at ~6 wks. Continue levothyroxine 88 mcg. Will copy OB once she is seen. Message sent to pt."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-22T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T16:18"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2024-10-22T16:10",
+              "body": "Pt ~8 wks pregnant, here for flu and COVID. Screening questions reviewed, no contraindications. Latex allergy - non-latex gloves used. Influenza 0.5 mL IM right deltoid; COVID-19 Pfizer 2024-25 0.3 mL IM left deltoid. Observed 15 min, no reaction. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "outside_records",
+          "start": "2024-11-12T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Obstetrics new pregnancy visit letter",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-10-24T10:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2024",
+              "action": "done",
+              "date": "2024-11-12T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics Consultation Letter",
+              "author": "obstetrics",
+              "date": "2024-11-12T14:00",
+              "body": "Dear Doctor,\n\nThank you for referring Ms. Castro, whom we saw on 10/24/2024 for her initial obstetric visit. She is a 28-year-old G1P0 at 8 weeks 2 days by a certain last menstrual period of 8/27/2024.\n\nHistory reviewed: generalized anxiety disorder on sertraline 50 mg, hypothyroidism on levothyroxine 88 mcg, history of iron deficiency anemia on a prenatal vitamin with iron. Allergies: penicillin (anaphylaxis), latex. Family history notable for PPROM in her mother and chorioamnionitis in her sister.\n\nTransvaginal ultrasound showed a single intrauterine pregnancy with cardiac activity, crown-rump length consistent with dates. EDD 6/3/2025 by LMP, confirmed by ultrasound.\n\nInitial prenatal labs: HIV nonreactive, hepatitis B surface antigen negative, hepatitis C antibody nonreactive, RPR nonreactive. Remaining routine prenatal labs were unremarkable.\n\nPlan: continue current medications. We will follow her through the pregnancy and send updates. Please continue to manage her thyroid and anxiety; we would appreciate copies of TSH results.\n\nSincerely,\nObstetrics"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2168 @@
+{
+  "unit": "unit-2122",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002122",
+      "given": "Viktor",
+      "family": "Michaud",
+      "birth_date": "1975-09-10",
+      "address_line": "212 Laurel Park Rd, Northampton, MA 01060",
+      "phone": "+1-917-555-0101",
+      "email": "viktor.michaud@example.test",
+      "marital_status": "single",
+      "summary": "Senior financial analyst who joins the practice at 48 with unexplained chronic liver disease, severe hypercholesterolemia after atorvastatin myopathy, and joint pain. Diabetes appears in 2025, cardiology names familial hypercholesterolemia and adds colesevelam, and in 2026 gastroenterology finds hereditary hemochromatosis with arthropathy and starts phlebotomy.",
+      "events": [
+        {
+          "id": "2023-08-29a",
+          "kind": "telephone",
+          "start": "2023-08-29T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2023-08-29T10:20",
+              "author": "front desk",
+              "body": "Caller is looking to join the practice. Moving his care from a practice he has used for years, says he wants a doctor he can actually reach. Works long hours in finance, prefers early morning slots. Insurance BCBS PPO, card info taken. Booked new pt visit 9/12 at 7:40 am. Asked him to bring his med bottles and sign a records release at check-in so we can request his old chart. He said his old office has his labs \"for the liver thing and the cholesterol.\""
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T07:40",
+          "end": "2023-09-12T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Chronic liver disease",
+              "action": "diagnosed",
+              "onset": "2020-06-01",
+              "note": "Raised liver enzymes known at prior practice; cause not established",
+              "icd10": "K76.9"
+            },
+            {
+              "label": "Pure hypercholesterolemia",
+              "action": "diagnosed",
+              "onset": "2015-01-01",
+              "note": "Severe, per prior practice"
+            },
+            {
+              "label": "History of statin-associated myopathy",
+              "action": "history",
+              "onset": "2021-01-01",
+              "note": "Atorvastatin, diffuse myalgia with raised CK, at prior practice",
+              "icd10": "Z87.39"
+            },
+            {
+              "label": "Inflammatory polyarthropathy",
+              "action": "diagnosed",
+              "onset": "2021-01-01",
+              "note": "Joint pain and stiffness on prior practice list; acetaminophen as needed",
+              "icd10": "M06.4"
+            },
+            {
+              "label": "Acquired absence of gallbladder",
+              "action": "history",
+              "onset": "2018-03-01",
+              "note": "Cholecystectomy at age 42"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ezetimibe 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypercholesterolemia"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for joint pain",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Joint pain"
+            },
+            {
+              "drug": "cholecalciferol 0.05 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule (2000 units) by mouth daily",
+              "dose": {
+                "value": 2000,
+                "unit": "[iU]"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Atorvastatin",
+              "reaction": "Muscle pain",
+              "severity": "moderate",
+              "criticality": "low",
+              "type": "intolerance"
+            },
+            {
+              "substance": "Sulfonamide antibiotics",
+              "reaction": "Rash",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              77
+            ],
+            "hr": 79,
+            "spo2": 97,
+            "weight_kg": 84.0,
+            "height_cm": 180.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-12T08:35",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 66
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 79
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-12T08:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 268
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 192
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 44
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 140
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 224
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-12T08:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 213
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.16
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T08:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Never; lifetime abstinent"
+            },
+            {
+              "item": "Occupation",
+              "value": "Senior financial analyst"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-09-12T07:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2023",
+              "action": "placed",
+              "order": "Outside records request, prior primary care",
+              "category": "procedure",
+              "reason": "Establishing care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-09-12T08:30",
+              "author": "PCP",
+              "body": "NEW PATIENT VISIT\n\n48 yo man transferring care. Says his prior office was fine but he could never get a call back. Wants one place that keeps track of his liver numbers and his cholesterol.\n\nHPI / history as he tells it:\n- Liver: told several years ago his liver enzymes were \"high and staying high.\" Never drinks, never has. He recalls blood tests and being told nothing specific was found; no records with him. No jaundice, no swelling of the belly or legs that he has noticed.\n- Cholesterol: has known it is very high for a long time. Was put on atorvastatin around 2021 and within weeks had aching in his thighs, shoulders and arms; blood test showed a muscle enzyme elevation and the drug was stopped. Started on ezetimibe after that and has taken it daily since. Not on anything else for lipids.\n- Joints: aching and stiffness in several joints that his old office called inflammatory arthritis. Takes acetaminophen 500 mg when it flares, a few times a week. Never seen rheumatology.\n- Gallbladder out in 2018, uncomplicated.\n\nMeds: ezetimibe 10 mg daily; acetaminophen 500 mg q6h prn joint pain; vitamin D3 2000 units daily.\nAllergies: atorvastatin (myalgias with CK rise) -- intolerance; sulfa antibiotics -- rash.\nFamily: father had an MI at 42 and high cholesterol. Mother has type 2 diabetes. One brother has cirrhosis, cause never explained to the family as far as he knows.\nSocial: senior financial analyst, long weeks especially in close periods. Single, lives alone. Never smoked, no alcohol ever, no drugs. Walks most evenings.\n\nROS: no chest pain, no exertional symptoms, no GI bleeding, no change in bowels. Otherwise negative.\n\nExam: well-appearing, NAD. Vitals per flowsheet. HEENT unremarkable. Neck supple, no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, healed laparoscopic scars, no organomegaly appreciated. No edema. Joints without effusion or warmth today, full range in hands, wrists, knees. Skin no rash. Neuro grossly normal. PHQ-2 0.\n\nA/P\n1. Chronic liver disease, cause not established -- CMP today, will get the old workup.\n2. Severe hypercholesterolemia on ezetimibe, statin intolerant -- lipid panel today. Strong family history. Likely needs a lipid specialist; will decide once I see numbers.\n3. Inflammatory arthropathy per prior list -- acetaminophen as needed, quiet today.\n4. Health maintenance: HCV and HIV screen today (he agrees), A1c. Will ask the prior office about colonoscopy and vaccines.\n\nRecords release signed. RTC about 6 months, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 84.0,
+            "height_cm": 180.0,
+            "labs": {
+              "Alanine Aminotransferase": 79,
+              "Aspartate Aminotransferase": 66,
+              "High Density Lipoprotein": 44,
+              "Low Density Lipoprotein": 190,
+              "Total Cholesterol": 264,
+              "Triglycerides": 140
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T17:05",
+          "orders": [
+            {
+              "id": "cards-referral-2023",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "Severe hypercholesterolemia on ezetimibe, statin intolerant, father MI at 42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2023-09-14T17:05",
+              "author": "PCP",
+              "body": "Hi Viktor,\n\nYour results are back. Kidney function, blood counts and sugar (A1c 5.5) are normal. The hepatitis C and HIV screens are negative.\n\nYour liver enzymes are up: AST 66 and ALT 79. That matches what you told me, and I will compare against your old records when they arrive.\n\nYour LDL is 192 on ezetimibe, which is high, and with your father's heart attack at 42 I think it is worth having a cardiologist who focuses on cholesterol weigh in. I have put in the referral. Their office should call you; if you don't hear in two weeks, let us know.\n\nBest,\nYour PCP"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-05a",
+          "kind": "outside_records",
+          "start": "2023-10-05T11:30",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2021-11-09T08:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-06-04T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2023",
+              "action": "done",
+              "date": "2023-10-05T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records summary",
+              "date": "2023-10-05T11:30",
+              "author": "outside primary care",
+              "body": "Records received by fax, 6 pages: problem list, medication list, immunization record, one procedure report. No lab reports included.\n\nPROBLEM LIST (prior office): elevated liver enzymes / chronic liver disease, etiology undetermined; hypercholesterolemia, severe; statin myopathy (atorvastatin) 2021; joint pain - inflammatory arthropathy; s/p cholecystectomy 2018.\n\nMEDICATIONS: ezetimibe 10 mg daily (started 2021 after atorvastatin discontinued for myalgias and CK elevation); acetaminophen 500 mg PRN; vitamin D3 2000 IU daily.\n\nALLERGIES: atorvastatin - myalgia/CK elevation; sulfa - rash.\n\nIMMUNIZATIONS: Tdap 06/2019.\n\nPROCEDURE: screening colonoscopy 11/2021 to the cecum, good prep, no polyps; repeat in 10 years.\n\nScanned to chart. -- MA"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T07:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T07:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T07:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization visit",
+              "date": "2023-10-10T07:50",
+              "author": "RN",
+              "body": "In before work for vaccines. No fever today, no prior vaccine reactions. Flu quadrivalent 0.5 mL IM left deltoid. Pfizer 2023-24 formula 0.3 mL IM right deltoid. VIS reviewed. Waited 15 minutes, no reaction. Asked about the cardiology referral -- he has the number, hasn't called yet, \"quarter end.\""
+            }
+          ]
+        },
+        {
+          "id": "2024-01-22a",
+          "kind": "pharmacy",
+          "start": "2024-01-22T09:10",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Ezetimibe refill",
+              "date": "2024-01-22T09:10",
+              "author": "MA",
+              "body": "Pharmacy fax requesting new rx for ezetimibe 10 mg -- prior prescriber's refills exhausted. Last fill 12/2023. Routed to PCP. Approved 90 days x 3 refills, e-sent."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "office_visit",
+          "start": "2024-03-19T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up liver enzymes and cholesterol",
+          "vitals": {
+            "bp": [
+              109,
+              79
+            ],
+            "hr": 79,
+            "spo2": 98,
+            "weight_kg": 83.6
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-03-19T08:10",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 65
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 84
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-03-19T08:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 256
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 185
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 43
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 142
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 213
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-03-19T07:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-03-19T08:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2024-03-19T08:05"
+            },
+            {
+              "vaccine": "Hepatitis A, adult",
+              "date": "2024-03-19T08:06"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-03-19T08:20",
+              "author": "PCP",
+              "body": "S: Six-month follow-up. Feels fine. Joints about the same, uses acetaminophen a couple of times a week, never more than 2 tablets a day. Taking ezetimibe daily. Has not scheduled with cardiology -- work has been heavy, says he will get to it. Old records came: they confirm the atorvastatin story, colonoscopy 2021 clean, but no lab reports and nothing about how the liver was worked up.\n\nO: Vitals per flowsheet. Alert, comfortable. Heart RRR. Lungs clear. Abdomen soft, nontender, no organomegaly. No edema.\n\nA/P:\n- Chronic liver disease, cause unclear: repeat hepatic panel today. With chronic liver disease he should be protected against hep A and B -- he agrees. Heplisav-B #1 and hep A #1 today.\n- Hypercholesterolemia: lipids today. Encouraged him again to see cardiology.\n- Joints: acetaminophen as needed.\nRTC September for physical."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-21a",
+          "kind": "portal_message",
+          "start": "2024-03-21T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-03-21T12:40",
+              "author": "PCP",
+              "body": "Viktor -- liver enzymes are about where they were in September, not climbing. LDL still about 190. Same plan: ezetimibe, and please make that cardiology appointment when you can. Nurse visit in about a month for the second hepatitis B shot."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results",
+              "date": "2024-03-21T19:55",
+              "author": "patient",
+              "body": "Thanks. Will book the nurse visit. Cardiology I will look at after tax season."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-23a",
+          "kind": "nurse_visit",
+          "start": "2024-04-23T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis B vaccine dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-04-23T07:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2024-04-23T07:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization visit",
+              "date": "2024-04-23T07:45",
+              "author": "RN",
+              "body": "Heplisav-B dose 2 of 2, 0.5 mL IM left deltoid. Tolerated dose 1 without problems. Series complete. Hep A dose 2 due in the fall -- reminder set for his flu shot visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "telephone",
+          "start": "2024-05-07T14:15",
+          "orders": [
+            {
+              "id": "cards-referral-2023",
+              "action": "cancelled",
+              "date": "2024-05-07T14:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral follow-up",
+              "date": "2024-05-07T14:15",
+              "author": "MA",
+              "body": "Cardiology office notified us the referral expired, never scheduled (3 attempts to reach pt). Called pt: he would rather hold off for now and keep working on diet; will bring it up at his physical. Referral closed. FYI to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "annual_physical",
+          "start": "2024-09-17T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              118,
+              79
+            ],
+            "hr": 64,
+            "spo2": 98,
+            "weight_kg": 83.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-17T08:20",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 66
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 77
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-17T08:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 262
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 188
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 44
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 149
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 218
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-17T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-09-17T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-17T08:35",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL -- 49M\n\nInterval: no new problems. Joints unchanged, acetaminophen as needed. Ezetimibe daily, vitamin D daily. Still walking most evenings. Sleep ok when work allows.\n\nWe talked about cardiology again. He would like to give diet another year before adding appointments; he has cut back on red meat and cheese. I told him I think he is underestimating his risk with his father's history, and he heard that. Revisit at next physical, sooner if anything changes.\n\nROS negative for chest pain, dyspnea, palpitations, GI symptoms, urinary symptoms.\n\nExam: vitals per flowsheet. General well. Eyes, ears, oropharynx normal. Neck no nodes or thyroid enlargement. Heart RRR no murmur. Lungs clear. Abdomen soft nontender, no masses or organomegaly. Extremities no edema. Joints without synovitis. Skin unremarkable. PHQ-2 0.\n\nPrevention: colonoscopy 2021 normal. Tdap 2019. Heplisav-B complete; hep A #2 with flu shot next month. Hep C/HIV done 2023.\n\nPlan: CMP, lipids, A1c today. Return in spring for liver follow-up."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Low Density Lipoprotein": 188,
+              "Total Cholesterol": 262
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-19a",
+          "kind": "portal_message",
+          "start": "2024-09-19T13:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "date": "2024-09-19T13:10",
+              "author": "PCP",
+              "body": "Hi Viktor, A1c 5.6, kidneys fine. Liver enzymes steady compared with last year. LDL 188 -- diet changes haven't moved it much, which is typical when the cause is mostly genetic. The cardiology door is open whenever you want it. Flu shot and hep A #2 next month."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T07:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-08T07:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-08T07:36"
+            },
+            {
+              "vaccine": "Hepatitis A, adult",
+              "date": "2024-10-08T07:38"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization visit",
+              "date": "2024-10-08T07:55",
+              "author": "RN",
+              "body": "Flu 0.5 mL IM L deltoid; Moderna 2024-25 0.5 mL IM R deltoid; Hep A adult dose 2 of 2, 1 mL IM L deltoid (separate site). Screening questions negative. Observed 15 min, fine. Hep A series complete."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "portal_message",
+          "start": "2025-02-11T06:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill",
+              "date": "2025-02-11T06:48",
+              "author": "patient",
+              "body": "Morning - pharmacy says ezetimibe is out of refills again. Same pharmacy as before. Thank you."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill",
+              "date": "2025-02-11T09:30",
+              "author": "MA",
+              "body": "Sent ezetimibe 10 mg, 90-day supply with 3 refills, approved by your doctor. You are due for your spring follow-up -- front desk will reach out to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "office_visit",
+          "start": "2025-03-18T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up liver enzymes",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2025-03-17T16:40",
+              "author": "front desk",
+              "body": "Pt called to cancel tomorrow 7:40 -- traveling for work all week. Rebooked 4/8 7:40 am."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "office_visit",
+          "start": "2025-04-08T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up liver enzymes and joint pain",
+          "vitals": {
+            "bp": [
+              123,
+              81
+            ],
+            "hr": 69,
+            "spo2": 97,
+            "weight_kg": 84.2
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-04-08T08:05",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 71
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 76
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 67
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-04-08T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-04-08T08:15",
+              "author": "PCP",
+              "body": "Brief follow-up, rescheduled from March.\n\nFeels well. Joints: same pattern of aching and morning stiffness on and off, worse after long days at the desk; acetaminophen helps, still under 2 g/day. Taking ezetimibe and D3. No abdominal symptoms, no jaundice.\n\nVitals per flowsheet. Comfortable. Heart and lungs normal. Abdomen soft, nontender. Hands and knees without swelling.\n\nA/P\n- Chronic liver disease, cause unclear: hepatic panel today.\n- Joints: continue acetaminophen as needed.\n- Lipids: due at physical in September; will reopen the cardiology question then.\nRTC Sept."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-10a",
+          "kind": "portal_message",
+          "start": "2025-04-10T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Liver tests",
+              "date": "2025-04-10T12:15",
+              "author": "PCP",
+              "body": "Liver enzymes are about where they have been for the past year and a half -- mildly up, stable, normal bilirubin and albumin. See you in September."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "annual_physical",
+          "start": "2025-09-16T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, fasting labs",
+          "vitals": {
+            "bp": [
+              121,
+              78
+            ],
+            "hr": 71,
+            "spo2": 98,
+            "weight_kg": 84.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-16T08:20",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 138
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 62
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 83
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-16T08:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 260
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 185
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 42
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 135
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 218
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-16T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-09-16T07:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-16T08:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2025-09-16T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-16T08:40",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n\n50 yo M, birthday last week. Fasting this morning.\n\nInterval history: no illnesses this year. Joints the same, acetaminophen as needed. Ezetimibe daily. Diet: has kept the changes he made last year. Work as busy as ever.\n\nCholesterol: he raised it himself today -- turned 50, thinking about his father. Agrees to cardiology this time.\n\nROS: no chest pain, dyspnea, palpitations, syncope. No abdominal pain, no change in bowel habits. No polyuria or polydipsia noted.\n\nExam: vitals per flowsheet. Well appearing. HEENT normal. Neck supple. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no masses. Extremities no edema, pulses 2+. Joints no synovitis. Skin no rash. PHQ-2 0.\n\nPrevention: colonoscopy 2021 normal. Tdap 2019. Hep A and B series done. PCV20 today given chronic liver disease. Shingles vaccine now that he is 50 -- will start with flu shot next month.\n\nPlan: CMP, lipids, A1c. Cardiology referral once lipids result so they have the numbers. Follow up by phone on results."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Glucose": 138,
+              "Hemoglobin A1c": 7.0,
+              "High Density Lipoprotein": 42,
+              "Low Density Lipoprotein": 185,
+              "Total Cholesterol": 260,
+              "Triglycerides": 135
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-18a",
+          "kind": "telephone",
+          "start": "2025-09-18T12:30",
+          "conditions": [
+            {
+              "label": "Type 2 diabetes mellitus without complications",
+              "action": "diagnosed",
+              "onset": "2025-09-16"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "metformin hydrochloride 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Type 2 diabetes"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral-2025",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "Severe hypercholesterolemia, LDL 185 on ezetimibe, atorvastatin myopathy, father MI at 42, new diabetes"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results call",
+              "date": "2025-09-18T12:45",
+              "author": "PCP",
+              "body": "Called pt with physical labs.\n\nA1c 7.0 and fasting glucose 138 on the same draw -- that meets criteria for type 2 diabetes. A1c was 5.6 a year ago, so this is new. Discussed what it means; he took it calmly, mentioned his mother has diabetes. Starting metformin 500 mg twice daily with meals. Reviewed GI side effects, take with food. Recheck A1c in about 4 months.\n\nLipids: TC 260, LDL 185, HDL 42, TG 135 on ezetimibe. Cardiology referral placed today -- statin intolerance, LDL still high, father with early MI, and now diabetes. He will schedule this time.\n\nLiver enzymes unchanged from spring.\n\nMetformin e-sent. Diabetes education handout sent to portal."
+            },
+            {
+              "type": "Referral",
+              "title": "Referral to Cardiology",
+              "date": "2025-09-18T13:00",
+              "author": "PCP",
+              "body": "Reason for referral: lipid management in a statin-intolerant patient.\n\n50 yo man with longstanding severe hypercholesterolemia. Atorvastatin stopped in 2021 for diffuse myalgias with CK elevation. On ezetimibe 10 mg daily since. Fasting lipids 9/16/2025: TC 260, LDL 185, HDL 42, TG 135. Father MI at 42. New type 2 diabetes this week (A1c 7.0), metformin started. Also chronic liver disease of unclear cause with mildly raised transaminases.\n\nAllergies: atorvastatin (myalgia, CK rise); sulfa (rash).\n\nPlease advise on further LDL lowering. Thank you."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines and shingles vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T07:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T07:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T07:36"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-10-07T07:38"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization visit",
+              "date": "2025-10-07T07:55",
+              "author": "RN",
+              "body": "Flu 0.5 mL IM L deltoid. Pfizer 2025-26 0.3 mL IM R deltoid. Shingrix dose 1, 0.5 mL IM L deltoid, separate site, warned about a sore arm and feeling tired for a day or two. Dose 2 due in 2 to 6 months, will line up with his January diabetes visit. Says metformin is going down fine. Cardiology appt is 10/16."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-17a",
+          "kind": "portal_message",
+          "start": "2025-10-17T07:02",
+          "conditions": [
+            {
+              "label": "Heterozygous familial hypercholesterolemia",
+              "action": "diagnosed",
+              "onset": "2025-10-16",
+              "note": "Clinical diagnosis by cardiology"
+            },
+            {
+              "label": "Pure hypercholesterolemia",
+              "action": "resolved",
+              "note": "Replaced by familial hypercholesterolemia"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "colesevelam hydrochloride 625 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 3 tablets by mouth twice daily with meals",
+              "dose": {
+                "value": 1875,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Familial hypercholesterolemia; prescribed by cardiology"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral-2025",
+              "action": "done",
+              "date": "2025-10-17T07:02"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Saw cardiology",
+              "date": "2025-10-17T07:02",
+              "author": "patient",
+              "body": "Saw the cardiologist yesterday. She went through my numbers from September and my dad's history and said this is familial hypercholesterolemia, the genetic kind. She didn't want to try another statin right now after what happened with atorvastatin. Started me on colesevelam, 3 pills twice a day with meals, stays on ezetimibe. Said it can help blood sugar a little too. She said she would send you a letter. Should I separate it from my other pills?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Saw cardiology",
+              "date": "2025-10-17T12:20",
+              "author": "PCP",
+              "body": "Thanks for the update -- I've added colesevelam to your list and updated the diagnosis. Yes: colesevelam can bind other medicines in the gut. Take your vitamin D at least 4 hours before it; metformin and ezetimibe are fine to keep with meals as you do now, but I'll ask the pharmacist to double-check the timing. We'll recheck lipids with your January diabetes visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "pharmacy",
+          "start": "2025-10-20T10:05",
+          "documents": [
+            {
+              "type": "Medication Reconciliation",
+              "title": "Fill history reviewed",
+              "date": "2025-10-20T10:05",
+              "author": "MA",
+              "body": "External fill history: colesevelam 625 mg #180, filled 10/16/2025, prescriber outside cardiology. Matches pt report. Also active: ezetimibe 10 mg, metformin 500 mg. Med list reconciled. Pharmacist note via fax: take vitamin D 4 hours before colesevelam; no change needed for metformin or ezetimibe timing as currently taken."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "outside_records",
+          "start": "2025-12-09T14:20",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology consultation letter",
+              "date": "2025-12-09T14:20",
+              "author": "cardiology",
+              "body": "Outside cardiology -- preventive / lipid clinic. Date of service 10/16/2025. Received 12/9/2025.\n\nDear colleague,\n\nI saw Mr. Michaud for lipid management after statin intolerance. Atorvastatin was previously stopped for diffuse myalgias with a CK rise. He has been on ezetimibe 10 mg daily. He also carries diagnoses of chronic liver disease of unclear cause, recently diagnosed type 2 diabetes on metformin 500 mg twice daily, and an inflammatory arthropathy treated with acetaminophen. Never smoker, no alcohol. Father with myocardial infarction at 42.\n\nI reviewed your fasting panel from 9/16/2025 (TC 260, LDL 185, HDL 42, TG 135). The LDL level on therapy and the premature coronary disease in his father support a clinical diagnosis of heterozygous familial hypercholesterolemia.\n\nAllergies: atorvastatin (myopathy, CK elevation); sulfonamides (rash).\n\nPlan: start colesevelam 1875 mg twice daily with meals in addition to ezetimibe. Lipid panel in about 3 months through your office. Return to our clinic as needed.\n\nSincerely,\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "office_visit",
+          "start": "2026-01-13T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up; fatigue and joint stiffness",
+          "vitals": {
+            "bp": [
+              119,
+              76
+            ],
+            "hr": 63,
+            "spo2": 98,
+            "weight_kg": 83.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-01-13T08:15",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 92
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 105
+                },
+                {
+                  "test": "Glucose",
+                  "value": 123
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 55
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-01-13T08:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 228
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 158
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 44
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 132
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 184
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-01-13T08:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 215
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.02
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 63
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-13T08:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.6
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-13T07:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2026-01-13T08:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2026-01-13T08:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2026",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "Chronic liver disease of unknown cause with rising transaminases, fatigue, abdominal pain"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "date": "2026-01-13T08:45",
+              "author": "PCP",
+              "body": "S: Four-month diabetes check, first since metformin. Taking metformin 500 bid, colesevelam 3 tabs bid, ezetimibe, D3 in the morning away from colesevelam. No hypoglycemia symptoms.\n\nNew since the fall: tired most days, since around October -- he first put it down to year-end at work, but it has not let up over the holidays. Intermittent abdominal pain, hard for him to localize, comes and goes, no relation to meals he can find, no vomiting, no black stools. Joints are stiffer than they used to be, especially mornings, and the acetaminophen does less. No fevers, no weight change he has noticed, no rash.\n\nO: vitals per flowsheet, weight stable. Tired-appearing but comfortable. Sclerae anicteric. Heart RRR. Lungs clear. Abdomen soft, nondistended, no guarding. Hands: no swelling or warmth today. Feet: skin intact, pulses 2+, monofilament sensation intact bilaterally, no calluses.\n\nA/P\n1. Type 2 diabetes: A1c today, urine albumin/creatinine. Continue metformin.\n2. FH on ezetimibe + colesevelam: lipids today, about 3 months on colesevelam as cardiology asked.\n3. Fatigue, abdominal pain, joint stiffness x ~3 months, in a man with chronic liver disease nobody has explained: CMP, CBC, TSH today. Regardless of results, I want gastroenterology to look at the liver properly -- referral placed.\n4. Shingrix #2 today.\nRTC after GI, or sooner if symptoms worsen."
+            },
+            {
+              "type": "Referral",
+              "title": "Referral to Gastroenterology",
+              "date": "2026-01-13T09:00",
+              "author": "PCP",
+              "body": "Reason for referral: chronic liver disease of undetermined cause, now with symptoms.\n\n50 yo man, never drinks. Transaminases mildly raised since at least 2023 (AST 66, ALT 79 then; stable through 2025). Prior practice evaluation not available to us. Now about 3 months of fatigue, intermittent abdominal pain and worsening joint stiffness. Type 2 diabetes diagnosed 9/2025 on metformin. Heterozygous FH on ezetimibe and colesevelam (atorvastatin myopathy 2021). S/p cholecystectomy 2018. Brother with cirrhosis of unknown cause.\n\nLabs from today to follow.\n\nAllergies: atorvastatin (myalgia, CK rise); sulfa (rash).\n\nPlease evaluate. Thank you."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 105,
+              "Aspartate Aminotransferase": 92,
+              "Glucose": 128,
+              "Hemoglobin A1c": 6.6,
+              "Low Density Lipoprotein": 158,
+              "Microalbumin/Creatinine Ratio": 9,
+              "Thyroid Stimulating Hormone": 1.8,
+              "Total Cholesterol": 232
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-16a",
+          "kind": "portal_message",
+          "start": "2026-01-16T12:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "January labs",
+              "date": "2026-01-16T12:05",
+              "author": "PCP",
+              "body": "Hi Viktor,\n\n- A1c 6.6, down from 7.0. Good.\n- LDL 158, down from 185 since colesevelam. Still above where we'd like it; I'll copy cardiology.\n- Thyroid, blood counts and kidney function normal. Urine protein normal.\n- Liver enzymes: AST 92 and ALT 105, higher than they have been. Bilirubin and albumin normal.\n\nThe liver numbers are part of why I want gastroenterology involved. Their office should call you; tell us if they haven't in a couple of weeks.\n\nYour PCP"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-03a",
+          "kind": "telephone",
+          "start": "2026-02-03T11:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "GI scheduling",
+              "date": "2026-02-03T11:20",
+              "author": "front desk",
+              "body": "Pt called -- GI's first new-patient opening is 4/21. Asked if we could get him in sooner. Called GI office, no earlier slots, added to their cancellation list. Labs and referral note faxed to GI again at their request. Pt aware; told him to call us if he feels worse before then."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-22a",
+          "kind": "portal_message",
+          "start": "2026-04-22T06:55",
+          "orders": [
+            {
+              "id": "gi-referral-2026",
+              "action": "done",
+              "date": "2026-04-22T06:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "GI appointment",
+              "date": "2026-04-22T06:55",
+              "author": "patient",
+              "body": "Saw GI yesterday. He examined me and said my liver is enlarged and asked whether anyone had commented on my skin color -- apparently I have a bronze tint. Blood work there showed iron very high, ferritin 2500. He thinks it's hemochromatosis and that it could explain the liver, the joints, maybe even the diabetes. Sending a gene test and an ultrasound next week. He said a letter will come to you. Honestly a little rattled -- my brother's liver comes to mind."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: GI appointment",
+              "date": "2026-04-22T12:40",
+              "author": "PCP",
+              "body": "Thank you for telling me right away. That fits the picture, and if the gene test confirms it, the good news is that it is treatable -- removing blood regularly brings the iron down, and that protects the liver and other organs. Let's get the ultrasound and gene test done, and once GI's plan is set I'd like to see you in the office. Your brother's doctors may want to know about this too; we can talk about that when I see you. Call anytime before then."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-30a",
+          "kind": "imaging",
+          "start": "2026-04-30T15:40",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2026-04-30T09:30",
+              "text": "OUTSIDE IMAGING -- copy to primary care.\nEXAM: Ultrasound abdomen, complete.\nINDICATION: Iron overload, suspected hemochromatosis; hepatomegaly on exam.\nCOMPARISON: None.\nFINDINGS: The liver is enlarged, measuring 19.5 cm in craniocaudal length at the midclavicular line. Contour is smooth. No focal hepatic lesion. Portal vein patent with normal hepatopetal flow. No intrahepatic or extrahepatic biliary dilatation; common duct 5 mm, within normal limits after cholecystectomy. Gallbladder surgically absent. Spleen 11.2 cm, normal. Pancreas visualized portions unremarkable. Kidneys normal in size without hydronephrosis. Abdominal aorta normal caliber. No ascites.",
+              "conclusion": "Hepatomegaly with smooth contour and no focal liver lesion. Normal spleen. No ascites. Status post cholecystectomy."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Outside abdominal ultrasound received",
+              "date": "2026-04-30T15:40",
+              "author": "MA",
+              "body": "Outside ultrasound report (ordered by GI, cc PCP) received and scanned. Routed to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-06a",
+          "kind": "portal_message",
+          "start": "2026-05-06T18:30",
+          "conditions": [
+            {
+              "label": "Hereditary hemochromatosis",
+              "action": "diagnosed",
+              "onset": "2026-04-21",
+              "note": "With arthropathy; HFE C282Y homozygous",
+              "icd10": "E83.110"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Gene test",
+              "date": "2026-05-06T18:30",
+              "author": "patient",
+              "body": "GI called today. Two copies of the C282Y gene, so hemochromatosis is confirmed. Weekly blood removal starts next Tuesday at the infusion center, a pint each time, until the ferritin gets down to 50-100. They said no iron pills or vitamin C supplements and no raw shellfish. My vitamin D is ok right? Also the ultrasound -- GI said the liver is big but nothing else concerning. Can I book with you after I've had a couple of sessions?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Gene test",
+              "date": "2026-05-06T20:05",
+              "author": "PCP",
+              "body": "Thanks Viktor. I saw the ultrasound too -- enlarged liver, smooth, no spots or lesions, spleen normal. Vitamin D is fine to keep. I've added hereditary hemochromatosis to your problem list. Front desk will book you for the week of May 18."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-14a",
+          "kind": "outside_records",
+          "start": "2026-05-14T10:45",
+          "labs": [
+            {
+              "panel": "Iron Studies",
+              "collected": "2026-04-21T10:30",
+              "resulted": "2026-04-22T09:00",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 2500
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 85
+                },
+                {
+                  "test": "Iron",
+                  "value": 232
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 273
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-04-21T10:30",
+              "resulted": "2026-04-21T16:00",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 98
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 110
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 59
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-21T10:30",
+              "resulted": "2026-04-21T16:00",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 160
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-21T10:30",
+              "resulted": "2026-05-04T14:00",
+              "results": [
+                {
+                  "test": "HFE gene p.C282Y",
+                  "loinc": "21695-2",
+                  "text": "Homozygous"
+                },
+                {
+                  "test": "HFE gene p.H63D",
+                  "loinc": "21696-0",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology consultation letter",
+              "date": "2026-05-14T10:45",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology and hepatology. Date of service 4/21/2026; genotype addendum 5/4/2026. Received 5/14/2026.\n\nDear colleague,\n\nThank you for referring Mr. Michaud, a 50-year-old man with long-standing transaminase elevation of undetermined cause.\n\nHe describes about six months of fatigue, abdominal pain and joint stiffness. Type 2 diabetes was diagnosed last September. He is a lifelong nonsmoker and has never used alcohol. His mother has type 2 diabetes; his father had an MI at 42 and hyperlipidemia; a brother has cirrhosis of unknown cause. Prior cholecystectomy. Medications: ezetimibe 10 mg daily, colesevelam 1875 mg twice daily, metformin 500 mg twice daily, acetaminophen 500 mg every 6 hours as needed, vitamin D3 2000 units daily. Allergies: atorvastatin (myopathy, CK rise); sulfonamides (rash).\n\nExamination: bronze discoloration of the skin. The liver is enlarged. Abdomen otherwise soft.\n\nLaboratory (4/21): ferritin 2500 ng/mL (24-336); transferrin saturation 85% (20-50); AST 98 U/L; ALT 110 U/L; fasting glucose 160 mg/dL.\n\nImpression: hereditary hemochromatosis with arthropathy, with iron-related liver disease. The skin finding, hepatomegaly, joint symptoms and new diabetes all fit.\n\nAddendum 5/4: HFE genotyping shows C282Y homozygosity; H63D not detected. Ultrasound 4/30: hepatomegaly, smooth contour, no focal lesion, normal spleen, no ascites.\n\nPlan:\n1. Therapeutic phlebotomy, 500 mL weekly at our infusion center, beginning 5/12, with hemoglobin checked before each session. Target ferritin 50-100 ng/mL, then maintenance.\n2. Avoid iron and vitamin C supplements and raw shellfish. Continue complete abstinence from alcohol.\n3. First-degree relatives should be offered iron studies and HFE testing.\n4. Fibrosis assessment at follow-up once iron depletion is under way.\n5. Ferritin and liver tests can be drawn at your office every 6 to 8 weeks; please send results.\n\nSincerely,\nGastroenterology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Ferritin": 2500,
+              "Iron": 232,
+              "Total Iron-Binding Capacity": 273,
+              "Transferrin Saturation": 85
+            }
+          }
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "office_visit",
+          "start": "2026-05-19T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after gastroenterology, hemochromatosis",
+          "conditions": [
+            {
+              "label": "Inflammatory polyarthropathy",
+              "action": "resolved",
+              "note": "Now attributed to hemochromatosis arthropathy",
+              "icd10": "M06.4"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              84
+            ],
+            "hr": 78,
+            "spo2": 98,
+            "weight_kg": 84.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-19T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-05-19T08:30",
+              "author": "PCP",
+              "body": "S: Here to go over the hemochromatosis diagnosis. GI letter, ultrasound and genotype reviewed with him. First phlebotomy last Tuesday went without trouble; second session is today after work. Fatigue unchanged so far. Joints still stiff in the mornings. Abdominal pain on and off, no worse. Taking metformin, colesevelam, ezetimibe, D3; acetaminophen a few times a week. Has not taken any iron or vitamin C. He has told his brother, who plans to raise it with his own doctors.\n\nO: vitals per flowsheet. Bronze tint to the skin, as GI described. Sclerae anicteric. Heart RRR. Lungs clear. Abdomen soft, liver edge palpable below the right costal margin, nontender, no ascites. No edema. Hands without synovitis.\n\nA/P\n1. Hereditary hemochromatosis (C282Y homozygous) with arthropathy and liver involvement. Phlebotomy per GI. We will draw ferritin and liver tests here every 6-8 weeks and send to GI. Problem list updated: inflammatory arthropathy folded into hemochromatosis arthropathy; liver disease now attributed to iron overload.\n2. Acetaminophen: fine for joint pain, but keep to no more than 2 g a day (4 tablets) given the liver.\n3. Type 2 diabetes: continue metformin; A1c with the July draw.\n4. FH: continue ezetimibe and colesevelam.\n5. Supplements: vitamin D ok. No multivitamin with iron, no vitamin C.\nLabs in July. RTC with the September physical."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "portal_message",
+          "start": "2026-06-16T21:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question",
+              "date": "2026-06-16T21:10",
+              "author": "patient",
+              "body": "Quick one: is a protein shake ok? The one at my gym has added iron and vitamin C in it. 6 sessions done now, hemoglobin has been fine each time they check."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question",
+              "date": "2026-06-17T09:15",
+              "author": "RN",
+              "body": "Hi Viktor, per your doctor: skip shakes or bars with added iron or vitamin C. A plain protein powder without them is fine. Good to hear the sessions are going smoothly. Your next labs here are around July 21 -- no fasting needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-30a",
+          "kind": "outside_records",
+          "start": "2026-06-30T13:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye examination report",
+              "date": "2026-06-30T13:30",
+              "author": "optometry",
+              "body": "Optometry -- diabetic eye examination. Date of exam 6/25/2026.\n\nPatient with type 2 diabetes since 2025. Visual acuity 20/20 OD, 20/20 OS with correction. Pupils equal and reactive. Intraocular pressures 15 OD, 16 OS. Dilated fundus exam: optic nerves healthy, maculae flat, no hemorrhages, microaneurysms or exudates in either eye.\n\nImpression: no diabetic retinopathy. Repeat dilated exam in one year."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "lab_only",
+          "start": "2026-07-21T07:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Ferritin and liver tests for GI; A1c",
+          "labs": [
+            {
+              "panel": "Iron Studies",
+              "collected": "2026-07-21T07:25",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 1710
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 78
+                },
+                {
+                  "test": "Iron",
+                  "value": 208
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 267
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-21T07:25",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 218
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-07-21T07:25",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 74
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 83
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-21T07:25",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Glucose",
+                  "value": 125
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-21T07:25",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-07-21T07:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Lab draw",
+              "date": "2026-07-21T07:35",
+              "author": "MA",
+              "body": "Venipuncture L antecubital, one stick. Pt reports 10 phlebotomy sessions so far, last one 7/14. Results to be faxed to GI per their letter."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 83,
+              "Aspartate Aminotransferase": 74,
+              "Ferritin": 1710,
+              "Hemoglobin": 13.9,
+              "Hemoglobin A1c": 6.9,
+              "Iron": 208,
+              "Total Iron-Binding Capacity": 267,
+              "Transferrin Saturation": 78
+            }
+          }
+        },
+        {
+          "id": "2026-07-23a",
+          "kind": "portal_message",
+          "start": "2026-07-23T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "July labs",
+              "date": "2026-07-23T12:30",
+              "author": "PCP",
+              "body": "Hi Viktor, progress:\n- Ferritin 1710, down from 2500 in April. Transferrin saturation 78%, down from 85%.\n- Hemoglobin 13.9 -- tolerating the sessions well.\n- Liver enzymes AST 74, ALT 83, the best they've been since you joined.\n- A1c 6.9, a little up from 6.6 in January. We'll look at that together in September.\nCopy faxed to GI. Keep going with the weekly sessions."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: July labs",
+              "date": "2026-07-23T18:45",
+              "author": "patient",
+              "body": "Good to see the liver numbers come down. Still tired by the end of the week but the joints are no worse. See you in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "pharmacy",
+          "start": "2026-08-18T09:40",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Metformin refill",
+              "date": "2026-08-18T09:40",
+              "author": "MA",
+              "body": "eRx renewal request: metformin 500 mg twice daily, 90-day supply. Last A1c 6.9 (7/21). Approved by PCP x 1 refill to carry him past the September physical. Colesevelam renewal request redirected to cardiology (their prescription) -- pharmacy notified."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical; diabetes and hemochromatosis follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Chronic liver disease|K76.9": {
+        "code": "K76.9",
+        "display": "Liver disease, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hereditary hemochromatosis|E83.110": {
+        "code": "E83.110",
+        "display": "Hereditary hemochromatosis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of statin-associated myopathy|Z87.39": {
+        "code": "Z87.39",
+        "display": "Personal history of other diseases of the musculoskeletal system and connective tissue",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Inflammatory polyarthropathy|M06.4": {
+        "code": "M06.4",
+        "display": "Inflammatory polyarthropathy",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "colesevelam hydrochloride 625 MG Oral Tablet": {
+        "code": "866910",
+        "display": "colesevelam hydrochloride 625 MG Oral Tablet",
+        "ingredient": "colesevelam",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "HFE gene p.C282Y": {
+        "code": "21695-2",
+        "display": "HFE gene.p.Cys282Tyr [Presence] in Blood or Tissue by Molecular genetics method",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "HFE gene p.H63D": {
+        "code": "21696-0",
+        "display": "HFE gene p.His63Asp [Presence] in Blood or Tissue by Molecular genetics method",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

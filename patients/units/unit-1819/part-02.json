@@ -1,0 +1,976 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001819",
+   "events": [
+    {
+     "id": "2023-03-17a",
+     "kind": "portal_message",
+     "start": "2023-03-17T16:48",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Fatigue, joint aches, facial rash",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Tired, achy joints, rash",
+       "author": "patient",
+       "date": "2023-03-17T16:48",
+       "body": "Hi, I'd like to come in. I've been really tired for months now - since around the fall - and my joints ache, mostly my wrists and knees. I also keep getting a red rash across my cheeks after I've been outside in the sun, like after recess duty. It fades after a day or two. My aunt has lupus so I'm a little worried."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Tired, achy joints, rash",
+       "author": "RN",
+       "date": "2023-03-18T09:05",
+       "body": "Hi Nilda, thanks for letting us know. I've booked you with your doctor on 3/21 at 1:20 pm. If you develop fever, chest pain or shortness of breath before then, please call us right away."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-21a",
+     "kind": "office_visit",
+     "start": "2023-03-21T13:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Fatigue, joint pain, facial rash",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "orders": [
+      {
+       "id": "rheum-ref-2023",
+       "action": "placed",
+       "order": "Rheumatology referral",
+       "category": "referral",
+       "to": "Rheumatology",
+       "reason": "Fatigue, polyarthralgia, photosensitive facial rash"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-03-21T13:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-03-21T14:30",
+       "body": "OFFICE VISIT\n\nCC: fatigue, joint pain, facial rash.\n\nHPI: 35F with APL in remission (2018) presents with roughly 5 months of tiredness that sleep doesn't fix and aching joints - wrists and knees mostly. Separately notices a red rash across her cheeks after time outdoors in the sun, lasting a day or two. No fevers. No bleeding or bruising. Maternal aunt has SLE.\n\nMeds: folic acid 1 mg, vitamin D3 2000 units.\nAllergies: NKDA.\n\nExam: BP 121/67, HR 63, T 36.4, wt 62.0 kg.\nSkin: no rash on the face today. Wrists and knees: no swelling or effusion, full range of motion. Heart RRR, lungs clear, abdomen soft and nontender. No lymphadenopathy.\n\nA/P:\nFatigue + inflammatory-sounding arthralgia + photosensitive facial rash by history, FH of SLE -> concerned for lupus.\n- Rheumatology referral placed; asked front desk to push for an early slot. Rheumatology does its own serologies and baseline labs at the consult, so not drawing today.\n- Sun protection: broad-spectrum sunscreen, hat for recess duty.\n- Call if fever, chest pain, worsening joints."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-23a",
+     "kind": "telephone",
+     "start": "2023-03-23T11:02",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Referral scheduling",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Referral scheduled",
+       "author": "front desk",
+       "date": "2023-03-23T11:05",
+       "body": "Rheumatology accepted referral. Consult 4/11 at 10:30. Called pt, she has the date and address. Asked to arrive 15 min early for labs paperwork."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-11a",
+     "kind": "specialist_visit",
+     "start": "2023-04-11T10:30",
+     "service": "Rheumatology",
+     "reason": "Rheumatology consultation",
+     "state": {
+      "labs": {
+       "Hemoglobin": 10.5,
+       "White Blood Cells": 3.5,
+       "Platelets": 100
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Systemic lupus erythematosus",
+       "action": "diagnosed"
+      },
+      {
+       "label": "Thrombocytopenia",
+       "action": "diagnosed",
+       "note": "Attributed to SLE"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "hydroxychloroquine sulfate 200 MG Oral Tablet",
+       "sig": "Take 1 tablet (200 mg) by mouth once daily",
+       "dose": {
+        "value": 200,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Systemic lupus erythematosus",
+       "action": "historical"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2023-04-11T11:20",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 10.5
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 3.5
+        },
+        {
+         "test": "Platelets",
+         "value": 100
+        }
+       ],
+       "resulted": "2023-04-11T16:40"
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-04-11T11:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ],
+       "resulted": "2023-04-11T16:40"
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2023-04-11T11:20",
+       "results": [
+        {
+         "test": "Urine Protein",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Blood",
+         "text": "Negative"
+        }
+       ],
+       "resulted": "2023-04-11T15:10"
+      },
+      {
+       "panel": null,
+       "collected": "2023-04-11T11:20",
+       "results": [
+        {
+         "test": "Antinuclear Antibodies",
+         "text": "Positive, titer 1:640"
+        }
+       ],
+       "resulted": "2023-04-13T09:30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "rheum-ref-2023",
+       "action": "done",
+       "date": "2023-04-11T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology Consultation",
+       "author": "rheumatology",
+       "date": "2023-04-13T14:10",
+       "body": "RHEUMATOLOGY CONSULTATION\nDate of service: 04/11/2023\nPatient: Nilda Mendez, 35-year-old woman\nReferred by: primary care, for fatigue, joint pain and facial rash\n\nThank you for sending Ms. Mendez to us.\n\nHistory: She describes about six months of tiredness along with aching in her joints, worst in the wrists and knees, and a rash over her face that comes and goes after she has been out in the sun. She has a history of acute promyelocytic leukemia diagnosed in 2018, treated and in remission.\n\nMedications: folic acid 1 mg daily; vitamin D3 2000 units daily.\nAllergies: no known drug allergies.\nFamily history: mother with rheumatoid arthritis; maternal aunt with systemic lupus erythematosus; father with hypertension.\nSocial: elementary school teacher. Never smoker, no alcohol.\n\nExamination: BP 109/78, pulse 70, weight 61.5 kg. Malar rash over both cheeks and the nasal bridge. Mild synovitis of both wrists and both knees. No oral ulcers. Heart and lungs normal. No edema.\n\nLaboratory (drawn here 04/11/2023):\n- Hemoglobin 10.5 g/dL (low)\n- White blood cells 3,500/uL (low)\n- Platelets 100,000/uL (low)\n- ANA positive, titer 1:640\n- Anti-dsDNA positive\n- C3 low, C4 low\n- Creatinine 0.78 mg/dL\n- Urinalysis negative for protein and blood\n\nImpression: Systemic lupus erythematosus, with malar rash and photosensitivity, inflammatory arthritis of the wrists and knees, and leukopenia, anemia and thrombocytopenia that I attribute to lupus. Strongly positive ANA, positive dsDNA and low complements support the diagnosis. Kidney function and urine are normal.\n\nPlan:\n1. Hydroxychloroquine 200 mg daily, started today.\n2. Strict sun protection - broad-spectrum sunscreen, hat, avoid midday sun.\n3. Baseline retinal examination for hydroxychloroquine - referral to ophthalmology placed.\n4. Return in about 3 months with CBC, C3/C4, creatinine and urinalysis.\n\nMedications at the end of this visit: hydroxychloroquine 200 mg daily (new today); folic acid 1 mg daily; vitamin D3 2000 units daily.\n\nRheumatology"
+      }
+     ]
+    },
+    {
+     "id": "2023-04-14a",
+     "kind": "portal_message",
+     "start": "2023-04-14T21:06",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Question about new medication",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "New lupus medicine",
+       "author": "patient",
+       "date": "2023-04-14T21:06",
+       "body": "Hi, rheumatology told me I have lupus and started me on hydroxychloroquine. I'm still trying to get pregnant. Is this medicine safe if I do get pregnant? I forgot to ask there. Kind of overwhelmed."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: New lupus medicine",
+       "author": "PCP",
+       "date": "2023-04-15T10:20",
+       "body": "Hi Nilda, I got the rheumatology letter - I'm sorry, that's a lot to take in at once. Hydroxychloroquine is one of the lupus medicines that is generally continued in pregnancy, so it's not a reason to stop trying. Do keep taking it every day, and please also ask rheumatology at your next visit so they can plan with you. Happy to talk by phone or in person if helpful."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-22a",
+     "kind": "specialist_visit",
+     "start": "2023-05-22T14:00",
+     "service": "Ophthalmology",
+     "reason": "Baseline hydroxychloroquine eye exam",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Ophthalmology - baseline exam",
+       "author": "ophthalmology",
+       "date": "2023-05-24T09:30",
+       "body": "OPHTHALMOLOGY\nDate of exam: 05/22/2023\nReason: baseline examination before long-term hydroxychloroquine (SLE).\n\nVisual acuity: 20/20 OD, 20/20 OS. Pupils equal and reactive, no APD. IOP normal OU. Anterior segment unremarkable OU.\nDilated fundus exam: optic nerves healthy; maculae normal with no pigmentary change; periphery flat.\nSD-OCT macula: normal foveal contour and outer retinal layers OU.\nAutomated visual fields 10-2: full OU.\n\nImpression: normal baseline examination; no evidence of retinopathy.\nPlan: annual hydroxychloroquine screening beginning after 5 years of use, sooner if visual symptoms."
+      }
+     ]
+    },
+    {
+     "id": "2023-07-13a",
+     "kind": "specialist_visit",
+     "start": "2023-07-13T09:15",
+     "service": "Rheumatology",
+     "reason": "Rheumatology follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin": 13.2,
+       "White Blood Cells": 5.2,
+       "Platelets": 214
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Thrombocytopenia",
+       "action": "resolved"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2023-07-13T09:50",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ],
+       "resulted": "2023-07-13T14:30"
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-07-13T09:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ],
+       "resulted": "2023-07-13T14:30"
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2023-07-13T09:50",
+       "results": [
+        {
+         "test": "Urine Protein",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Blood",
+         "text": "Negative"
+        }
+       ],
+       "resulted": "2023-07-13T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology follow-up",
+       "author": "rheumatology",
+       "date": "2023-07-14T16:00",
+       "body": "RHEUMATOLOGY FOLLOW-UP\nDate of service: 07/13/2023\n\nMs. Mendez returns 3 months after starting hydroxychloroquine for SLE. Joint pain much improved, energy coming back, and she has had no new facial rash using sun protection. Taking hydroxychloroquine daily without side effects.\n\nExam: BP 108/67, weight 61.9 kg. No rash. No synovitis. Heart and lungs normal.\n\nLabs 07/13/2023: WBC 4.9, hemoglobin 13.2, platelets 218 - counts back to normal. C3 and C4 normal. Creatinine 0.76. Urinalysis without protein or blood.\nOphthalmology baseline exam normal.\n\nAssessment: SLE responding well to hydroxychloroquine. Cytopenias, including the thrombocytopenia, have resolved.\nPlan: continue hydroxychloroquine 200 mg daily. Labs and visit in about 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-09a",
+     "kind": "annual_physical",
+     "start": "2023-08-09T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 3
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2023-08-09T09:10",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ],
+       "resulted": "2023-08-09T13:40"
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-08-09T09:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ],
+       "resulted": "2023-08-09T14:55"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2023-08-09T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2023-08-09T10:45",
+       "body": "ANNUAL PHYSICAL - 35F\n\nInterval: diagnosed with SLE by rheumatology 4/2023 - started hydroxychloroquine; joints and fatigue much better, counts normalized per rheum 7/2023. Baseline eye exam normal. Still trying to conceive, about a year now; on folic acid.\nNo bruising/bleeding. No rash this summer with sun protection.\n\nMeds: hydroxychloroquine 200 mg daily (rheum), folic acid 1 mg daily, vitamin D3 2000 units daily.\nAllergies: NKDA.\nSH: never smoker, no alcohol.\n\nExam: BP 104/77, HR 67, wt 62.2 kg.\nWell. No malar rash. Joints without swelling. CV RRR, no murmur. Lungs clear. Abd soft, no organomegaly. Skin no petechiae. Neuro grossly intact.\n\nPHQ-9: 3.\n\nA/P:\n1. SLE - stable on HCQ, rheum following q3 mo.\n2. APL in CR - CBC today.\n3. Preventive: CMP. Flu and updated COVID vaccine in the fall. Cervical screening due 2024.\nRTC 1 year."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-10a",
+     "kind": "portal_message",
+     "start": "2023-08-10T07:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2023-08-10T07:40",
+       "body": "Hi Nilda - blood counts are back where they belong (hemoglobin 13.4, white count 5.0, platelets 221); the MCH flagged a touch high at 31.3, a red cell measure that isn't a concern. Kidney and liver tests are normal. Glad the hydroxychloroquine is working."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-06a",
+     "kind": "nurse_visit",
+     "start": "2023-10-06T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2023-10-06T16:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-06T16:08"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-06T16:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Flu and COVID vaccines",
+       "author": "RN",
+       "date": "2023-10-06T16:12",
+       "body": "Flu vaccine IM L deltoid; updated COVID-19 vaccine IM R deltoid. Pt on hydroxychloroquine - no contraindication. Not pregnant per pt. VIS given, tolerated well, observed 15 min."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-24a",
+     "kind": "specialist_visit",
+     "start": "2023-10-24T13:45",
+     "service": "Rheumatology",
+     "reason": "Rheumatology follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2023-10-24T14:20",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ],
+       "resulted": "2023-10-24T18:10"
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-10-24T14:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ],
+       "resulted": "2023-10-24T18:10"
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2023-10-24T14:20",
+       "results": [
+        {
+         "test": "Urine Protein",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Blood",
+         "text": "Negative"
+        }
+       ],
+       "resulted": "2023-10-24T17:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology follow-up",
+       "author": "rheumatology",
+       "date": "2023-10-25T12:15",
+       "body": "RHEUMATOLOGY FOLLOW-UP\nDate of service: 10/24/2023\n\nSLE on hydroxychloroquine 200 mg daily. Doing well - no joint swelling, no rash, energy normal. Adherent.\n\nExam: BP 117/70, weight 62.5 kg. No synovitis, skin clear.\nLabs: CBC normal (WBC 4.8, Hgb 12.7, plt 186). C3, C4 normal. Creatinine 0.8. UA negative for protein and blood.\n\nAssessment/plan: quiescent SLE. Continue hydroxychloroquine. Return in 3-4 months with labs."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-05a",
+     "kind": "office_visit",
+     "start": "2023-12-05T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Difficulty conceiving",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "orders": [
+      {
+       "id": "gyn-ref-2023",
+       "action": "placed",
+       "order": "Gynecology referral",
+       "category": "referral",
+       "to": "Obstetrics & Gynecology",
+       "reason": "Not pregnant after about 17 months of trying"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2023-12-05T15:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-12-05T16:30",
+       "body": "OFFICE VISIT\n\nCC: not pregnant yet.\n\n35F, SLE (quiet on HCQ), APL in CR. Trying to conceive since about 7/2022 - roughly 17 months - without a pregnancy. Periods are regular, every 28 days, normal flow. No pelvic pain. On folic acid 1 mg daily.\n\nExam: BP 106/69, HR 63, wt 61.8 kg. Well-appearing. Thyroid not enlarged. No galactorrhea reported.\n\nA/P: more than a year of trying without pregnancy at 35 -> referral to gynecology for evaluation. She'd prefer to go straight to them for the workup labs. Referral placed; continue folic acid."
+      }
+     ]
+    },
+    {
+     "id": "2024-01-10a",
+     "kind": "specialist_visit",
+     "start": "2024-01-10T09:00",
+     "service": "Obstetrics & Gynecology",
+     "reason": "Gynecology consultation",
+     "measure": [
+      "bp",
+      "weight_kg"
+     ],
+     "state": {
+      "labs": {
+       "Thyroid Stimulating Hormone": 1.7,
+       "Prolactin": 11.5
+      }
+     },
+     "conditions": [
+      {
+       "label": "Hypergonadotropic hypogonadism",
+       "icd10": "E28.39",
+       "action": "diagnosed",
+       "note": "Diminished ovarian reserve: low AMH, low-normal estradiol, FSH 14.8; regular 28-day cycles"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-01-10T09:40",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ],
+       "resulted": "2024-01-11T12:00"
+      },
+      {
+       "panel": null,
+       "collected": "2024-01-10T09:40",
+       "results": [
+        {
+         "test": "Prolactin"
+        }
+       ],
+       "resulted": "2024-01-11T12:00"
+      },
+      {
+       "panel": null,
+       "collected": "2024-01-10T09:40",
+       "results": [
+        {
+         "test": "Follicle Stimulating Hormone",
+         "value": 14.8
+        }
+       ],
+       "resulted": "2024-01-11T12:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "gyn-ref-2023",
+       "action": "done",
+       "date": "2024-01-10T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gynecology Consultation",
+       "author": "gynecology",
+       "date": "2024-01-12T10:40",
+       "body": "OBSTETRICS & GYNECOLOGY CONSULTATION\nDate of service: 01/10/2024\nReason for referral: no pregnancy after about 18 months of trying.\n\nMany thanks for referring Ms. Mendez. She is a 35-year-old woman who has been trying for a year and a half without conceiving, even though her periods come like clockwork every 28 days. Her history includes systemic lupus erythematosus, quiet on hydroxychloroquine, and acute promyelocytic leukemia treated in 2018 and in remission. Medications: hydroxychloroquine 200 mg daily, folic acid 1 mg daily, vitamin D3 2000 units daily. No known drug allergies.\nFamily history: her mother went through menopause at 38.\n\nExamination: BP 103/78, weight 62.5 kg. General, breast, abdominal and pelvic examinations are unremarkable.\n\nLaboratory (cycle day 3, drawn 01/10/2024):\n- TSH 1.7 - normal\n- Prolactin 11.9 - normal\n- Estradiol - low-normal\n- Anti-Mullerian hormone - low\n- FSH 14.8 mIU/mL - elevated for early follicular phase\n\nAssessment: diminished ovarian reserve, with an elevated early-follicular FSH, low AMH and low-normal estradiol - hypergonadotropic hypogonadism - in a woman with regular ovulatory-pattern cycles.\n\nPlan: I went through these results with her and what they mean, and we discussed her options in general terms. She would like time to think things over. No treatment started today and no further referral at this time.\n\nGynecology"
+      }
+     ]
+    },
+    {
+     "id": "2024-02-15a",
+     "kind": "specialist_visit",
+     "start": "2024-02-15T10:45",
+     "service": "Rheumatology",
+     "reason": "Rheumatology follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-02-15T11:15",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ],
+       "resulted": "2024-02-15T15:30"
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-02-15T11:15",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ],
+       "resulted": "2024-02-15T15:30"
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2024-02-15T11:15",
+       "results": [
+        {
+         "test": "Urine Protein",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Blood",
+         "text": "Negative"
+        }
+       ],
+       "resulted": "2024-02-15T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology follow-up",
+       "author": "rheumatology",
+       "date": "2024-02-16T15:30",
+       "body": "RHEUMATOLOGY FOLLOW-UP\nDate of service: 02/15/2024\n\nSLE, stable. No arthritis, rash, mouth sores or chest symptoms since last visit. Taking hydroxychloroquine daily.\n\nExam: BP 114/70, wt 61.8 kg. Unremarkable; no synovitis.\nLabs: CBC - WBC 5.4, Hgb 13.3, plt 204; MCH 31.1, marginally above range, not significant. C3 and C4 normal. Creatinine 0.84. UA: no protein, no blood.\n\nPlan: continue hydroxychloroquine 200 mg daily. Follow up 4 months."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-12a",
+     "kind": "office_visit",
+     "start": "2024-03-12T16:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up visit",
+     "appointment": "no-show"
+    },
+    {
+     "id": "2024-03-13a",
+     "kind": "telephone",
+     "start": "2024-03-13T09:25",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Missed appointment",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed appointment",
+       "author": "front desk",
+       "date": "2024-03-13T09:30",
+       "body": "Pt no-showed 3/12 4:20 pm follow-up. Called - she apologized, forgot because of parent-teacher conferences that afternoon. Says rheumatology is seeing her every few months and she's feeling fine; would rather just come for her annual physical in the summer. Booked annual 8/15 9:40. Routed to PCP FYI."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-05a",
+     "kind": "specialist_visit",
+     "start": "2024-06-05T08:45",
+     "service": "Rheumatology",
+     "reason": "Rheumatology follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-06-05T09:20",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ],
+       "resulted": "2024-06-05T13:50"
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-06-05T09:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ],
+       "resulted": "2024-06-05T13:50"
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2024-06-05T09:20",
+       "results": [
+        {
+         "test": "Urine Protein",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Blood",
+         "text": "Negative"
+        }
+       ],
+       "resulted": "2024-06-05T12:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology follow-up",
+       "author": "rheumatology",
+       "date": "2024-06-05T17:20",
+       "body": "RHEUMATOLOGY FOLLOW-UP\nDate of service: 06/05/2024\n\nLupus remains quiet on hydroxychloroquine. School year wrapping up; feels well.\nExam: BP 108/66, pulse 74. Joints normal, no rash.\nLabs: CBC normal; complements normal; creatinine 0.89; urinalysis negative for protein and blood.\nPlan: continue current dose; reinforced sun protection for the summer. Return in about 5 months."
+      }
+     ]
+    },
+    {
+     "id": "2024-08-15a",
+     "kind": "annual_physical",
+     "start": "2024-08-15T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-08-15T10:25",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ],
+       "resulted": "2024-08-15T15:00"
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-08-15T10:25",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ],
+       "resulted": "2024-08-15T16:10"
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-08-15T10:25",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ],
+       "resulted": "2024-08-15T16:10"
+      },
+      {
+       "panel": null,
+       "collected": "2024-08-15T10:15",
+       "results": [
+        {
+         "test": "High-risk HPV DNA",
+         "text": "Not detected"
+        }
+       ],
+       "resulted": "2024-08-20T11:30"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Cervical cytology (Pap) with HPV",
+       "performed": "2024-08-15T10:15",
+       "issued": "2024-08-20T11:30",
+       "text": "Specimen: cervical, liquid-based preparation. Adequacy: satisfactory for evaluation; endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+       "conclusion": "NILM; high-risk HPV not detected."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2024-08-15T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2024-08-15T11:30",
+       "body": "ANNUAL PHYSICAL - 36F\n\nInterval: SLE quiet on HCQ per rheumatology (seen 6/2024, labs normal). Seen by gyn 1/2024 - diminished ovarian reserve, labeled hypergonadotropic hypogonadism; cycles remain regular, no treatment. No hospitalizations.\nFeels well. No bruising, bleeding, joint swelling or rash.\n\nMeds: hydroxychloroquine 200 mg daily, folic acid 1 mg daily, vitamin D3 2000 units daily.\nAllergies: NKDA.\nSH: never smoker, no alcohol.\n\nExam: BP 116/75, HR 66, wt 62.1 kg.\nGen well. HEENT normal. Neck no LAD. CV RRR, no murmur. Lungs clear. Breasts deferred per pt preference, no concerns. Abd soft. Pelvic: normal external genitalia, cervix normal appearing; cytology/HPV co-test collected. Skin clear. Ext no edema.\n\nPHQ-2: 0.\n\nA/P:\n1. Cervical cancer screening - co-test sent (last 2019 normal).\n2. Labs: CBC, CMP, lipid panel.\n3. SLE, APL in CR, hypergonadotropic hypogonadism - stable; specialists following as above.\n4. Vaccines: flu + updated COVID this fall.\nFolic acid refilled. RTC 1 yr."
+      }
+     ]
+    },
+    {
+     "id": "2024-08-20a",
+     "kind": "portal_message",
+     "start": "2024-08-20T13:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Test results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Test results",
+       "author": "PCP",
+       "date": "2024-08-20T13:15",
+       "body": "Hi Nilda - your cervical screening came back normal (no abnormal cells, HPV not detected), so the next one isn't due for 5 years. Blood counts are healthy (the monocyte percentage is a hair over the lab's range at 9%, which means nothing by itself), kidney and liver tests are normal, and cholesterol is fine (LDL 97)."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-02a",
+     "kind": "nurse_visit",
+     "start": "2024-10-02T15:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2024-10-02T15:20"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-10-02T15:23"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-10-02T15:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Flu and COVID vaccines",
+       "author": "RN",
+       "date": "2024-10-02T15:28",
+       "body": "Influenza (trivalent) IM left deltoid and 2024-25 COVID-19 vaccine IM right deltoid. No contraindications on screening. VIS provided. No reaction during 15 min observation."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-14a",
+     "kind": "specialist_visit",
+     "start": "2024-11-14T14:30",
+     "service": "Rheumatology",
+     "reason": "Rheumatology follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-11-14T15:00",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ],
+       "resulted": "2024-11-14T19:10"
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-11-14T15:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ],
+       "resulted": "2024-11-14T19:10"
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2024-11-14T15:00",
+       "results": [
+        {
+         "test": "Urine Protein",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Blood",
+         "text": "Negative"
+        }
+       ],
+       "resulted": "2024-11-14T18:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology follow-up",
+       "author": "rheumatology",
+       "date": "2024-11-15T11:00",
+       "body": "RHEUMATOLOGY FOLLOW-UP\nDate of service: 11/14/2024\n\nSLE on hydroxychloroquine since 4/2023. No flares. Joints fine, no rash, energy good.\nExam: BP 116/84, weight 61.7 kg. No synovitis. Skin clear.\nLabs: CBC normal (WBC 5.3, Hgb 12.9, plt 211); C3/C4 normal; creatinine 0.76; UA negative for protein and blood.\nPlan: continue hydroxychloroquine 200 mg daily. Next visit in about 5 months."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

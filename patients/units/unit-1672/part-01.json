@@ -1,0 +1,504 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001672",
+      "given": "Lily",
+      "family": "Dion",
+      "birth_date": "1991-03-08",
+      "address_line": "38 Briar Hill Road",
+      "phone": "+1-413-555-0186",
+      "email": "lily.dion@example.test",
+      "marital_status": "married",
+      "summary": "Elementary school teacher with generalized anxiety on sertraline who joins in 2021. Her 2023 delivery is followed by peripartum cardiomyopathy (LVEF 35%, recovered to 55%) and postpartum thyroiditis; a twin pregnancy ends in an emergency cesarean for vasa previa in 2025, then impaired glucose tolerance after diet-controlled gestational diabetes, and a fourth pregnancy ends in a planned repeat cesarean in 2026.",
+      "events": [
+        {
+          "id": "2021-07-26a",
+          "kind": "telephone",
+          "start": "2021-07-26T10:12",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "author": "front desk",
+              "date": "2021-07-26T10:12",
+              "body": "Caller would like to become a patient here. Teaches 2nd grade, wants to get set up before school starts and liked that she can text the doctor. Current PCP group is closing its office near her. Insurance Blue Cross PPO, card info taken. Booked new pt physical 8/17 8:00 am. Records release emailed to her, she will sign and send back today so we can request records from the prior office. Asked her to bring med bottles."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-09a",
+          "kind": "outside_records",
+          "start": "2021-08-09T14:30",
+          "reason": "Prior practice records received",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-20T09:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-10T09:00"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2020-02-11T10:00",
+              "text": "Specimen: cervical, liquid-based preparation. Satisfactory for evaluation; endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Practice",
+              "author": "MA",
+              "date": "2021-08-09T14:30",
+              "body": "Records received by secure fax from prior primary care office, 41 pages, scanned to media.\n\nAbstracted for the chart:\n- Generalized anxiety disorder, followed there since 2016, on sertraline 50 mg daily since 2016.\n- Gallstones seen on an abdominal ultrasound in 2018 done for a brief episode of upper abdominal pain; managed expectantly, no surgery, no further episodes documented.\n- D&C 2019 for an early pregnancy loss (first pregnancy).\n- Allergies listed: sulfa drugs, latex. Reactions not documented in their record.\n- Pap with HPV 02/2020 negative.\n- COVID-19 vaccine (Pfizer) 3/20/21 and 4/10/21.\n\nRouted to PCP for review before 8/17 visit."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-17a",
+          "kind": "establish_care",
+          "start": "2021-08-17T08:00",
+          "end": "2021-08-17T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care, physical",
+          "conditions": [
+            {
+              "label": "Generalized anxiety disorder",
+              "action": "diagnosed",
+              "onset": "2016-01-01",
+              "note": "On sertraline since 2016"
+            },
+            {
+              "label": "Cholelithiasis",
+              "action": "history",
+              "onset": "2018-01-01",
+              "note": "Asymptomatic gallstones on 2018 ultrasound, no surgery"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Generalized anxiety disorder"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfonamide antibiotics",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Latex",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "state": {
+            "weight_kg": 58.5,
+            "height_cm": 160.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.6,
+              "Hemoglobin A1c": 5.3,
+              "Free Thyroxine": 1.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-08-17T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-08-17T08:40",
+              "results": [
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-08-17T08:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-17T08:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2021-08-17T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "New Patient Physical",
+              "author": "PCP",
+              "date": "2021-08-17T09:40",
+              "body": "30F here to establish. Teaches second grade in the district, married, no kids yet.\n\nHPI: Generalized anxiety since about 2016 — worry that \"runs in the background,\" worse in August before the school year and around evaluations. Has been on sertraline 50 mg daily since, which she feels is the right dose. No panic attacks lately. Sleeping ok most nights. Denies low mood, no SI.\n\nPMH: GAD. Gallstones found on an US in 2018 after one episode of upper abdominal pain that settled on its own; never had surgery, no attacks since.\nPSH: D&C 2019 (early pregnancy loss).\nOB: G1P0, one early loss.\nMeds: sertraline 50 mg daily.\nAllergies: sulfa, latex (she doesn't remember the reactions).\nFH: mother type 2 diabetes. Maternal aunt with an autoimmune thyroid problem. Paternal grandmother had dilated cardiomyopathy.\nSH: never smoker, no alcohol, no drugs. Walks most evenings.\n\nROS: negative in detail except as above.\n\nExam: vitals as charted. Well appearing, pleasant. HEENT normal. Neck supple, thyroid normal size, no nodules. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no RUQ tenderness. Ext no edema. Skin no rashes. Neuro nonfocal. Mood good, affect bright.\n\nGAD-7 6, PHQ-9 3.\n\nA/P\n1. GAD — stable on sertraline 50, continue. Refills sent. Reassess at each visit.\n2. Cholelithiasis, asymptomatic — no action; reviewed what biliary colic feels like.\n3. Health maintenance — Pap/HPV 2020 negative, next 2025. COVID primary series done. Flu shot when available in Oct. Screening labs today incl HIV and hep C once.\n4. Allergies sulfa/latex entered.\n\nRTC 1 yr for physical, sooner prn. She can text with questions."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-19a",
+          "kind": "portal_message",
+          "start": "2021-08-19T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2021-08-19T16:05",
+              "body": "Hi Lily, all of your labs from Tuesday came back normal: blood count, kidney and liver tests, cholesterol, thyroid and A1c (diabetes screen). The HIV and hepatitis C screens were nonreactive. Nothing to do. Nice to meet you!"
+            }
+          ]
+        },
+        {
+          "id": "2021-10-04a",
+          "kind": "nurse_visit",
+          "start": "2021-10-04T15:40",
+          "reason": "Flu shot",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-04T15:45"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-04T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "author": "RN",
+              "date": "2021-10-04T15:50",
+              "body": "Came after school for flu vaccine. Screening questions negative, no prior reactions. Latex-free gloves and bandage used. Quadrivalent flu 0.5 mL IM R deltoid. Tolerated, VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-15a",
+          "kind": "portal_message",
+          "start": "2021-11-15T07:22",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-13T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID Booster",
+              "author": "patient",
+              "date": "2021-11-15T07:22",
+              "body": "Hi, just letting you know I got my Pfizer booster Saturday 11/13 at the pharmacy by my school. Can you add it to my record? Felt tired Sunday but fine now."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: COVID Booster",
+              "author": "MA",
+              "date": "2021-11-15T09:10",
+              "body": "Thanks Lily, added to your immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-10a",
+          "kind": "pharmacy",
+          "start": "2022-01-10T11:30",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Sertraline Refill",
+              "author": "MA",
+              "date": "2022-01-10T11:30",
+              "body": "Pharmacy fax: sertraline 50 mg #90 refill request. Last seen 8/17/21. Pended for PCP.\n\nPCP: approved x 3, 90 day supply. Please have her book a check-in for anxiety in the next month or two."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-16a",
+          "kind": "telehealth_visit",
+          "start": "2022-02-16T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anxiety follow-up",
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2022-02-16T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit — Anxiety",
+              "author": "PCP",
+              "date": "2022-02-16T16:10",
+              "body": "Video visit from her classroom after dismissal.\n\nS: Anxiety doing well. Winter has been busy with staffing shortages at school, but she is coping. Taking sertraline daily, no side effects. Sleep fine. They are thinking about trying for a pregnancy later this year, asked about sertraline in pregnancy.\nO: Well appearing on video, calm, linear. GAD-7 4.\nA/P: GAD, controlled on sertraline 50 mg.\n- Continue.\n- Discussed sertraline in pregnancy: it is one of the better-studied SSRIs and most people stay on it when anxiety has needed treatment; stopping abruptly is the bigger risk. Start a prenatal vitamin with folic acid when trying. Let us know when she starts.\n- F/u at physical in August."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-13a",
+          "kind": "telehealth_visit",
+          "start": "2022-06-13T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anxiety check-in",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-06-13b",
+          "kind": "portal_message",
+          "start": "2022-06-13T16:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed Visit",
+              "author": "front desk",
+              "date": "2022-06-13T16:30",
+              "body": "Hi Lily, we missed you for your 4:00 video visit today. Please reply or call to reschedule if you still want a check-in before your physical."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Missed Visit",
+              "author": "patient",
+              "date": "2022-06-13T19:48",
+              "body": "So sorry!! Last week of school and I had bus duty, completely forgot. I'm doing fine, I'll just see her at the physical in August."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "annual_physical",
+          "start": "2022-08-23T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "weight_kg": 59.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-23T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-08-23T08:55",
+              "results": [
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-08-23T08:55",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-23T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 4
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-08-23T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-08-23T09:30",
+              "body": "31 y/o here for yearly physical, back-to-school week.\n\nInterval: no illnesses. Anxiety steady on sertraline 50, GAD-7 4. Trying to conceive since spring, not yet. Not on a prenatal vitamin. No GI symptoms, no biliary pain.\n\nMeds: sertraline 50 mg daily.\nAllergies: sulfa, latex.\nFH: mother T2DM, maternal aunt autoimmune thyroid disease, paternal GM dilated cardiomyopathy. No changes.\nSH: teacher, never smoker, no alcohol.\n\nExam: vitals as charted, weight 59 kg. Thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abd soft, nontender. No edema. Normal affect.\n\nA/P:\n- GAD — stable, continue sertraline.\n- Preconception — start an OTC prenatal vitamin daily, added to med list. If not pregnant after a year of trying, let us know and we can start a workup or send to GYN.\n- Labs today, will message.\n- Flu + bivalent COVID booster in early October, RN visit.\n- Pap due 2025.\nRTC 1 yr."
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "prenatal multivitamin Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Preconception"
+            }
+          ]
+        },
+        {
+          "id": "2022-08-25a",
+          "kind": "portal_message",
+          "start": "2022-08-25T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2022-08-25T12:40",
+              "body": "Labs look good — blood counts, kidney function, sugars/A1c, thyroid and cholesterol all normal. See you in October for shots."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-03a",
+          "kind": "nurse_visit",
+          "start": "2022-10-03T15:30",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-03T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-03T15:37"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-03T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "author": "RN",
+              "date": "2022-10-03T15:45",
+              "body": "Flu (quadrivalent) 0.5 mL IM L deltoid and Pfizer bivalent booster IM R deltoid. Latex-free supplies. Not pregnant per pt (LMP last week). Observed 15 min, no reaction. VIS for both."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

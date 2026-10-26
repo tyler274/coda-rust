@@ -1,0 +1,1486 @@
+{
+  "unit": "unit-1899",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"prenatal vitamin with minerals and folic acid greater than 0.8 MG Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001899",
+      "given": "Wanda",
+      "family": "Alicea",
+      "birth_date": "1997-02-19",
+      "address_line": "61 Belcher Street, Apt 2",
+      "phone": "+1-413-555-0135",
+      "email": "wanda.alicea@example.test",
+      "marital_status": "married",
+      "summary": "Healthy 27-year-old digital marketing specialist who joined in August 2024, started a prenatal vitamin before trying to conceive and became pregnant in May 2025. Tinea corporis of the left forearm twice in the pregnancy, treated by outside dermatology with topical clotrimazole. Listeria bacteremia at 36 weeks after deli meat and soft cheese, treated with 14 days of IV ampicillin, then a term vaginal delivery in February 2026.",
+      "events": [
+        {
+          "id": "2024-08-19a",
+          "kind": "outside_records",
+          "start": "2024-08-19T10:20",
+          "reason": "Records from prior primary care office",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2022-05-17T09:30",
+              "text": "Specimen: cervical, liquid-based preparation. Adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "NILM. Routine screening interval."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Tonsillectomy",
+              "performed": "2003-07-10T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2024-08-19T10:20",
+              "author": "front desk",
+              "body": "Records received by secure fax from her previous primary care office (seen there 2019-2024) ahead of her new patient visit. 14 pages: last two preventive visit notes, immunization record, one Pap report (05/2022, NILM), labs from 2023 (CBC and metabolic panel, unremarkable per their note). Childhood series complete on the immunization record, MMR x2 and varicella x2 documented. Surgical history on their list: tonsillectomy as a child. No active problems, no medications. Scanned to media, routed to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "establish_care",
+          "start": "2024-08-21T08:40",
+          "end": "2024-08-21T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              72
+            ],
+            "hr": 74,
+            "rr": 17,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 62.6,
+            "height_cm": 162.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-21T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.43
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 274
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-21T09:35",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 15
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 87
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-08-21T09:35",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 98
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 171
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 54
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 97
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-21T09:35",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Digital marketing specialist"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2024-08-21T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-21T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "date": "2024-08-21T09:50",
+              "author": "PCP",
+              "body": "27F here to establish care. Moved her primary care here after her old office's physician retired; prior records reviewed (Pap 2022 NILM, immunizations complete as a child).\n\nNo concerns today. Works as a digital marketing specialist, mostly remote. Never smoked, does not drink. Two dogs at home. Exercises a few times a week.\n\nPMH: none. PSH: tonsillectomy at age 6. Meds: none. Allergies: NKDA.\nFH: mother with type 2 diabetes; father with hypertension.\n\nROS: negative in full.\n\nExam: vitals as charted. Well appearing. HEENT unremarkable, tonsils surgically absent. Thyroid not enlarged. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Skin clear. No edema. Neuro grossly normal. Affect bright.\nPHQ-2: 0.\n\nA/P: healthy adult, preventive visit.\n- Baseline CBC, CMP, lipids, TSH. A1c given her mother's diabetes. One-time HIV and hepatitis C screening, she agrees.\n- Cervical screening: Pap 2022 normal, next due 2025.\n- Flu and COVID vaccines when the fall supply arrives; nurse visit.\n- Return yearly, sooner as needed. She has the practice number for calls and texts."
+            }
+          ],
+          "state": {
+            "weight_kg": 62.0,
+            "height_cm": 163.0,
+            "labs": {
+              "Hemoglobin A1c": 5.2,
+              "Thyroid Stimulating Hormone": 1.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-08-23a",
+          "kind": "portal_message",
+          "start": "2024-08-23T13:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2024-08-23T13:05",
+              "author": "PCP",
+              "body": "Hi Wanda, all of Wednesday's blood work came back normal: blood counts, kidney and liver tests, cholesterol, thyroid and A1c (no sign of diabetes). HIV and hepatitis C screens were negative. No changes needed. See you at your physical next summer."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "nurse_visit",
+          "start": "2024-10-09T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-09T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-09T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-09T16:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2024-10-09T16:25",
+              "author": "RN",
+              "body": "In for seasonal flu vaccine and 2024-2025 COVID vaccine. No fever today, no prior reactions, NKDA. Flu given L deltoid, COVID given R deltoid, lots and VIS dates in the immunization record. Waited 15 min in the lobby without issue."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "telehealth_visit",
+          "start": "2025-03-11T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Preconception questions",
+          "medications": [
+            {
+              "drug_text": "prenatal vitamin with minerals and folic acid greater than 0.8 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Preconception folic acid"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-03-11T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2025-03-11T12:55",
+              "author": "PCP",
+              "body": "Video visit, patient at home, identity verified.\n\nShe is hoping to get pregnant this year and wanted to know what she should do beforehand. Cycles regular. No medications. Never smoker, no alcohol. Healthy, labs in August normal.\n\nDiscussed: start a prenatal vitamin with folic acid now, ideally at least a month before trying. Her immunization record shows MMR and varicella series complete. Pap due later this year, can be done by OB at the first prenatal visit or here. Let us know when she has a positive test and we will get her to an OB group.\n\nPlan: prenatal vitamin 1 tab daily, sent to her pharmacy. No other changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "portal_message",
+          "start": "2025-06-24T07:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test",
+              "date": "2025-06-24T07:48",
+              "author": "patient",
+              "body": "Hi! I took a home pregnancy test today and it's positive. First day of my last period was May 26. What do I do next? Still taking the prenatal vitamin every day."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive test",
+              "date": "2025-06-24T09:20",
+              "author": "RN",
+              "body": "Congratulations! Please come in tomorrow for a quick urine test to confirm, and we'll send the referral to an OB group. Keep taking the prenatal vitamin. If you have heavy bleeding or one-sided pain, call us right away."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-25a",
+          "kind": "nurse_visit",
+          "start": "2025-06-25T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pregnancy confirmation",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "diagnosed",
+              "onset": "2025-05-26",
+              "note": "G1P0, LMP 2025-05-26"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-06-25T11:05",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "First pregnancy, prenatal care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit: Pregnancy Test",
+              "date": "2025-06-25T11:20",
+              "author": "RN",
+              "body": "Urine hCG positive. LMP 5/26/25, about 4 1/2 weeks. G1. No bleeding or cramping. On prenatal vitamin daily. Referral to OB sent per PCP; she will call to set up the first prenatal visit at 8 weeks. Reviewed reasons to call."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-26a",
+          "kind": "portal_message",
+          "start": "2025-06-26T20:14",
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "Pruritic annular rash, left forearm, early pregnancy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Rash on my arm",
+              "date": "2025-06-26T20:14",
+              "author": "patient",
+              "body": "Sorry to bug you again. I've had a really itchy rash on my left forearm for about 5 days, it's a circle and it's getting bigger. Photo attached. Is there anything I can put on it now that I'm pregnant?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Rash on my arm",
+              "date": "2025-06-27T08:05",
+              "author": "PCP",
+              "body": "Thanks for the photo. Since you're newly pregnant I'd like a dermatologist to look at it and pick the treatment. They had an opening Monday the 30th at 2:30 and we've booked it for you. Until then avoid scratching and don't put any steroid cream on it."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-30a",
+          "kind": "specialist_visit",
+          "start": "2025-06-30T14:30",
+          "service": "Dermatology",
+          "reason": "Itchy rash, left forearm",
+          "conditions": [
+            {
+              "label": "Tinea corporis",
+              "action": "diagnosed",
+              "onset": "2025-06-21",
+              "icd10": "B35.4"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "clotrimazole 10 MG/ML Topical Cream",
+              "action": "start",
+              "sig": "Apply a thin layer to the rash and 2 cm of surrounding skin twice daily for 4 weeks",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "short",
+              "reason": "Tinea corporis"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "done",
+              "date": "2025-06-30T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Consultation",
+              "date": "2025-07-02T09:10",
+              "author": "dermatology",
+              "body": "Dermatology consultation. Visit date 06/30/2025. Received 07/02/2025.\n\nReason for referral: pruritic rash, left forearm, in early pregnancy.\n\nHistory: 28-year-old woman, G1P0 at about 5 weeks by LMP, with one week of a very itchy rash on the left forearm. She reports it began as a small red ring that has slowly widened, clearing in the middle with a red scaly rim. A few weeks ago she began going to hot yoga classes at her gym and uses her own mat. She has two dogs that often sleep on her bed. No new soaps or lotions. No other rashes.\nPMH: current pregnancy. PSH: tonsillectomy in childhood.\nMedications: prenatal vitamin daily.\nAllergies: NKDA.\nFamily history: maternal type 2 diabetes, paternal hypertension.\nSocial: digital marketing; never smoker; no alcohol.\n\nExam: Left forearm with two annular, erythematous plaques, each with a raised scaly border and central clearing. Remainder of the exposed skin, scalp and nails unremarkable.\n\nKOH preparation from the leading edge: branching septate hyphae.\n\nAssessment: tinea corporis, left forearm.\n\nPlan:\n1. Clotrimazole 1% cream twice daily to the plaques and a margin of normal skin, 4 weeks. A topical azole is appropriate in pregnancy; no oral antifungal.\n2. Wash towels and bedding in hot water; keep the area dry.\n3. Return if not clearing in 4 weeks or if it spreads.\n\nThank you for this referral.\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-21a",
+          "kind": "specialist_visit",
+          "start": "2025-07-21T09:00",
+          "service": "Obstetrics",
+          "reason": "First prenatal visit",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-21T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.35
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 274
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-21T10:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Urine Culture",
+                  "text": "No growth"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2025-07-21T09:30",
+              "text": "Specimen: cervical, liquid-based preparation. Adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "NILM."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "done",
+              "date": "2025-07-21T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics: New Prenatal Visit Summary",
+              "date": "2025-07-24T15:30",
+              "author": "obstetrics",
+              "body": "OB new prenatal visit, 07/21/2025. Copy to primary care.\n\nG1P0 at 8w0d by LMP 05/26/2025. Transvaginal dating ultrasound today: single intrauterine pregnancy, crown-rump length consistent with 8w0d, cardiac activity present. EDD 03/02/2026 by LMP, confirmed by ultrasound.\n\nFeels well; mild nausea, no vomiting. No bleeding. On prenatal vitamin. Recently treated by dermatology for tinea on the left forearm with clotrimazole cream, improving.\nAllergies: NKDA.\n\nExam: BP and weight per our flowsheet, normal. Pelvic exam normal. Pap collected.\n\nPrenatal labs drawn today: CBC, HIV, hepatitis B surface antigen, RPR, urine culture; results normal (attached). Pap NILM.\n\nPlan: routine prenatal care, visits every 4 weeks, anatomy ultrasound at 18-20 weeks, glucose challenge at 24-28 weeks.\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-30a",
+          "kind": "portal_message",
+          "start": "2025-07-30T18:40",
+          "conditions": [
+            {
+              "label": "Tinea corporis",
+              "action": "resolved",
+              "icd10": "B35.4"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "clotrimazole 10 MG/ML Topical Cream",
+              "action": "stop",
+              "reason": "Course complete, rash cleared"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Arm rash update",
+              "date": "2025-07-30T18:40",
+              "author": "patient",
+              "body": "Just an update, the rash on my arm is completely gone. I finished the 4 weeks of the cream. Also saw OB last week and everything looks good!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Arm rash update",
+              "date": "2025-07-31T07:55",
+              "author": "PCP",
+              "body": "Great news on both counts. I'll mark the ringworm as resolved. If it comes back, send a picture."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-25a",
+          "kind": "annual_physical",
+          "start": "2025-08-25T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "date": "2025-08-21T11:30",
+              "author": "front desk",
+              "body": "Patient called to cancel her 8/25 physical. Seeing OB every month and would rather do the physical after the baby is born. Will call to rebook. Reminded her she can still reach the office for anything in between."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-09-17a",
+          "kind": "pharmacy",
+          "start": "2025-09-17T10:12",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: prenatal vitamin",
+              "date": "2025-09-17T10:12",
+              "author": "MA",
+              "body": "Pharmacy refill request for prenatal vitamin, 1 tab daily, #90. Active on med list, taking daily per patient. Approved per PCP protocol with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-01a",
+          "kind": "nurse_visit",
+          "start": "2025-10-01T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines in pregnancy",
+          "vitals": {
+            "temp_c": 36.8
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-01T08:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-01T08:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-01T08:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2025-10-01T08:35",
+              "author": "RN",
+              "body": "18 weeks pregnant, here for flu and COVID vaccines, both recommended in pregnancy and OB agrees. Afebrile. No prior reactions. Flu L deltoid, COVID R deltoid. Tolerated well; observed 15 minutes. Will let OB know at her next visit."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-10-06a",
+          "kind": "imaging",
+          "start": "2025-10-06T13:00",
+          "service": "Obstetrics",
+          "reason": "Fetal anatomy ultrasound",
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Obstetric Ultrasound, Detailed Anatomy",
+              "date": "2025-10-09T08:45",
+              "author": "obstetrics",
+              "body": "OBSTETRIC ULTRASOUND, ANATOMY SURVEY. Exam date 10/06/2025. Received 10/09/2025.\nIndication: routine anatomy survey, 19w0d by dates.\nFindings: single live intrauterine pregnancy, cephalic. Fetal heart rate normal. Biometry consistent with dates; estimated fetal weight appropriate for gestational age. Fetal anatomy surveyed and normal, including brain, face, spine, four-chamber heart and outflow tracts, abdominal wall, kidneys, bladder and limbs. Placenta posterior, clear of the cervix. Amniotic fluid normal. Cervical length normal.\nImpression: normal anatomy survey; growth appropriate for dates."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-13a",
+          "kind": "specialist_visit",
+          "start": "2025-10-13T10:45",
+          "service": "Dermatology",
+          "reason": "Rash on left forearm again",
+          "conditions": [
+            {
+              "label": "Tinea corporis",
+              "action": "diagnosed",
+              "onset": "2025-10-06",
+              "note": "Recurrence, same site",
+              "icd10": "B35.4"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "clotrimazole 10 MG/ML Topical Cream",
+              "action": "start",
+              "sig": "Apply twice daily to the plaques and surrounding skin; continue for 2 weeks after the skin looks clear",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "short",
+              "reason": "Recurrent tinea corporis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Follow-up",
+              "date": "2025-10-16T14:20",
+              "author": "dermatology",
+              "body": "Dermatology follow-up. Visit date 10/13/2025. Received 10/16/2025.\n\nSeen here 06/30 for tinea corporis of the left forearm, which cleared with 4 weeks of clotrimazole. She is now 20 weeks pregnant. For the past week the same area has been itching intensely again: ring-shaped patches with a red, flaky edge that are spreading outward and paler in the middle. She has kept going to hot yoga since early summer on her own mat, and the two dogs still sleep on the bed.\nMedications: prenatal vitamin.\nAllergies: NKDA.\n\nExam: two annular erythematous plaques on the left forearm with raised scaly borders and central clearing. No other sites involved.\n\nKOH preparation: branching septate hyphae.\n\nAssessment: recurrent tinea corporis, left forearm, likely reinfection from a household or gym source.\n\nPlan:\n1. Restart clotrimazole 1% cream twice daily and continue for 2 full weeks after the skin looks clear.\n2. Wipe down the mat after every class and wash it weekly; shower soon after class.\n3. Have the dogs checked by their veterinarian for ringworm; keep them off the bed until then.\n4. Return if it recurs again.\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-21a",
+          "kind": "portal_message",
+          "start": "2025-11-21T12:10",
+          "conditions": [
+            {
+              "label": "Tinea corporis",
+              "action": "resolved",
+              "icd10": "B35.4"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "clotrimazole 10 MG/ML Topical Cream",
+              "action": "stop",
+              "reason": "Course complete"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Rash",
+              "date": "2025-11-21T12:10",
+              "author": "patient",
+              "body": "The ringworm cleared up again a couple of weeks ago and I kept the cream going 2 more weeks like they said, just stopped it. Fingers crossed it stays away this time."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Rash",
+              "date": "2025-11-21T15:02",
+              "author": "MA",
+              "body": "Thanks for letting us know! The doctor has updated your chart."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-09a",
+          "kind": "outside_records",
+          "start": "2026-01-09T11:40",
+          "reason": "Prenatal visit summary from OB",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-11-24T09:45",
+              "resulted": "2025-11-24T15:10",
+              "results": [
+                {
+                  "test": "Glucose 1 hour post 50 g glucose",
+                  "loinc": "1504-0",
+                  "unit": "mg/dL",
+                  "value": 112
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-12-08T10:15"
+            },
+            {
+              "vaccine": "RSV, bivalent (Abrysvo)",
+              "date": "2026-01-05T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics: Prenatal Course Summary",
+              "date": "2026-01-09T11:40",
+              "author": "obstetrics",
+              "body": "Prenatal summary for primary care, visits 11/24/2025 through 01/05/2026.\n\nG1P0, EDD 03/02/2026.\n11/24/2025 (26w0d): 1-hour 50 g glucose challenge 112 mg/dL, normal. Fundal height and fetal heart tones appropriate.\n12/08/2025 (28w0d): Tdap given. Feels well, good fetal movement.\n01/05/2026 (32w0d): RSV vaccine (Abrysvo) given. Fundal height measuring with dates; BP normal; no edema. Pregnancy progressing normally.\nMedications: prenatal vitamin. Allergies: NKDA.\nNext visits every 2 weeks, then weekly from 36 weeks.\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-04a",
+          "kind": "ed_visit",
+          "start": "2026-02-04T14:05",
+          "end": "2026-02-04T19:30",
+          "service": "Emergency Medicine",
+          "reason": "Fever, body aches, lower abdominal cramping at 36 weeks",
+          "medications": [
+            {
+              "drug_text": "ampicillin 2000 MG Injection",
+              "action": "start",
+              "sig": "2 g IV every 4 hours",
+              "dose": {
+                "value": 2,
+                "unit": "g"
+              },
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "Suspected listeriosis in pregnancy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              137,
+              71
+            ],
+            "hr": 65,
+            "rr": 16,
+            "temp_c": 38.6,
+            "spo2": 98
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-04T14:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 14.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.44
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 283
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-04T14:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-04T14:40",
+              "results": [
+                {
+                  "test": "Lactate",
+                  "value": 1.1
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-02-04T14:50",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.013
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.7
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-04T14:50",
+              "resulted": "2026-02-06T09:00",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": "No growth"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-04T14:45",
+              "resulted": "2026-02-06T07:30",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "Set 1 of 2: Listeria monocytogenes isolated. Susceptible to ampicillin."
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-04T14:48",
+              "resulted": "2026-02-06T07:30",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "Set 2 of 2: Listeria monocytogenes isolated. Susceptible to ampicillin."
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-02-04T14:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-02-09T10:15",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT RECORD. Regional hospital ED, seen 02/04/2026. Received by the practice 02/09/2026.\n\nCC: fever and aches, 36 weeks pregnant.\n\nHPI: 28F G1P0 at 36w2d (EDD 03/02/2026) with two days of fever, feeling run down and diffuse muscle aches. Also some mild crampy lower abdominal discomfort and a little more vaginal discharge than usual. Denies fluid leaking or contractions. No travel, no one sick at home. Pregnancy uncomplicated to date per patient and OB records. On questioning, she ate deli meats from the fridge and imported soft cheeses at a family picnic five days ago. History of tinea corporis of the forearm this pregnancy, treated by dermatology, resolved.\nMeds: prenatal vitamin. Allergies: NKDA.\nPSH: tonsillectomy. Social: never smoker, no alcohol.\n\nExam: T 38.6 C (101.5 F); other vitals per nursing flowsheet. Fatigued appearing, alert and oriented. Neck supple, no meningismus. Heart regular. Lungs clear. Abdomen gravid, soft, uterus nontender. No CVA tenderness. Fetal heart tones present, reassuring on monitoring.\n\nLabs: WBC 14.6, mild leukocytosis. BMP and lactate within normal limits. UA negative. Urine and blood cultures (2 sets) sent.\n\nMDM: febrile illness in late pregnancy after high-risk foods; concern for listeriosis. Started ampicillin 2 g IV every 4 hours after cultures. Discussed with OB on call; admitted to the obstetric service for IV antibiotics and fetal monitoring.\nDisposition: admitted, stable."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Lactate": 1.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-02-04b",
+          "kind": "hospital_admission",
+          "start": "2026-02-04T19:30",
+          "end": "2026-02-08T13:00",
+          "service": "Obstetrics",
+          "reason": "Febrile illness in pregnancy, suspected listeriosis",
+          "conditions": [
+            {
+              "label": "Listeriosis",
+              "action": "diagnosed",
+              "onset": "2026-02-02",
+              "note": "Ampicillin-susceptible Listeria monocytogenes bacteremia at 36 weeks",
+              "icd10": "A32.9"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              73
+            ],
+            "hr": 78,
+            "weight_kg": 73.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-02-06T06:00",
+              "resulted": "2026-02-11T06:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days."
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-06T06:03",
+              "resulted": "2026-02-11T06:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days."
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-02-04T19:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-02-08T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary, Obstetric Service",
+              "date": "2026-02-09T10:20",
+              "author": "obstetrics",
+              "body": "DISCHARGE SUMMARY. Admitted 02/04/2026 from the ED, discharged 02/08/2026. Received 02/09/2026.\n\nDiagnosis: listeriosis (Listeria monocytogenes bacteremia) in pregnancy, 36 weeks.\n\nCourse: 28-year-old G1P0 admitted at 36w2d with fever after eating deli meat and soft cheese. Started on ampicillin 2 g IV every 4 hours in the ED after cultures. Both admission blood culture sets grew Listeria monocytogenes, ampicillin-susceptible, reported 02/06. She was afebrile from hospital day 2 and the myalgias and cramping settled. Repeat blood cultures 02/06 negative (final no growth). Continuous and then twice-daily fetal monitoring reassuring; nonstress tests reactive throughout. No contractions, membranes intact, no labor.\n\nA PICC line was placed in the right arm on 02/07 for home infusion.\n\nDischarge medications: ampicillin 2 g IV every 4 hours via home infusion, last dose 02/17/2026 to complete 14 days; prenatal vitamin daily.\nAllergies: NKDA.\n\nFollow-up: home infusion nursing for PICC care and removal; OB clinic twice weekly for nonstress tests until delivery; primary care this week. Return for fever, contractions, leaking fluid or decreased fetal movement. Avoid deli meats, unpasteurized cheeses and refrigerated smoked fish for the rest of the pregnancy.\nObstetrics"
+            }
+          ],
+          "state": {
+            "weight_kg": 73.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-05a",
+          "kind": "portal_message",
+          "start": "2026-02-05T08:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "In the hospital",
+              "date": "2026-02-05T08:22",
+              "author": "patient",
+              "body": "Wanted you to know I'm in the hospital since yesterday with a fever. They think it might be listeria from something I ate. Baby is ok on the monitor. They've got me on IV antibiotics."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: In the hospital",
+              "date": "2026-02-05T09:40",
+              "author": "PCP",
+              "body": "Thank you for telling me, Wanda. You're in the right place, and starting antibiotics early matters most. I'll watch for the hospital records. Message me when you're home and we'll set up a video visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "telehealth_visit",
+          "start": "2026-02-10T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after hospital stay",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2026-02-10T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit: Post-Discharge",
+              "date": "2026-02-10T12:45",
+              "author": "PCP",
+              "body": "Video visit, patient at home, identity verified.\n\nAdmitted 2/4-2/8 at 36 weeks with Listeria bacteremia; ED record and discharge summary reviewed. On ampicillin 2 g IV q4h by home infusion through 2/17, PICC right arm. Infusion nurse visiting; pump working.\n\nFeels much better. No fever since the hospital. Aches gone. No contractions or leaking, baby moving well. PICC site looks clean on camera, no redness or swelling in the arm. Seeing OB twice a week for NSTs.\n\nA/P: listeriosis in pregnancy, responding to treatment.\n- Finish the full 14 days; infusion nurse to pull the PICC after the last dose.\n- Call for fever, arm swelling or redness at the line, or any OB warning signs.\n- Reviewed foods to avoid for the rest of the pregnancy, per the discharge instructions.\n- Will see her in clinic after the baby comes."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-18a",
+          "kind": "outside_records",
+          "start": "2026-02-19T09:30",
+          "reason": "Home infusion nursing note",
+          "medications": [
+            {
+              "drug_text": "ampicillin 2000 MG Injection",
+              "action": "stop",
+              "reason": "14-day course complete"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Home Infusion Nursing Visit",
+              "date": "2026-02-19T09:30",
+              "author": "home infusion RN",
+              "body": "Home infusion nursing visit 02/18/2026. Received 02/19/2026.\nIV ampicillin course completed with the final dose 02/17/2026, 14 days total. No missed doses. Afebrile. Right arm PICC removed intact today, tip intact, pressure held, site clean and dry with dressing applied. No arm swelling. Patient instructed on site care. Discharged from home infusion services."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-23a",
+          "kind": "hospital_admission",
+          "start": "2026-02-23T03:40",
+          "end": "2026-02-25T11:30",
+          "service": "Obstetrics",
+          "reason": "Labor at term",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "resolved"
+            },
+            {
+              "label": "Listeriosis",
+              "action": "resolved",
+              "icd10": "A32.9"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Delivery Discharge Summary",
+              "date": "2026-02-27T14:05",
+              "author": "obstetrics",
+              "body": "OBSTETRIC DISCHARGE SUMMARY. Admitted 02/23/2026 in labor, discharged 02/25/2026. Received 02/27/2026.\n\n29-year-old G1P0 at 39w0d, admitted in spontaneous labor. Antepartum course notable for Listeria bacteremia at 36 weeks treated with 14 days of IV ampicillin (completed 02/17), blood cultures cleared. Afebrile throughout labor.\n\nUncomplicated spontaneous vaginal delivery 02/23/2026 of a liveborn girl, 3240 g, Apgars 8 and 9. Placenta delivered intact. Pediatrics examined the newborn given the maternal infection: well appearing, no signs of infection, routine newborn care.\n\nPostpartum course routine; mother afebrile and well. Now G1P1.\nDischarge medications: prenatal vitamin daily.\nAllergies: NKDA.\nFollow-up: OB postpartum visit in 6 weeks; pediatrics for the baby.\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-03a",
+          "kind": "portal_message",
+          "start": "2026-03-03T21:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "She's here",
+              "date": "2026-03-03T21:15",
+              "author": "patient",
+              "body": "Just wanted to share our daughter arrived on the 23rd! Everything went smoothly and the pediatrician said she's perfect. I'm tired but feeling good. Should I keep taking the prenatal vitamin?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: She's here",
+              "date": "2026-03-04T07:30",
+              "author": "PCP",
+              "body": "Congratulations to you all! So glad it went smoothly after February. Yes, keep taking the prenatal vitamin for now. Let's see you in clinic after your OB postpartum visit; the front desk will reach out to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-06a",
+          "kind": "specialist_visit",
+          "start": "2026-04-06T15:00",
+          "service": "Obstetrics",
+          "reason": "Postpartum visit",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics: Postpartum Visit",
+              "date": "2026-04-09T10:00",
+              "author": "obstetrics",
+              "body": "Postpartum visit 04/06/2026, 6 weeks after an uncomplicated vaginal delivery. Copy to primary care.\nFeeling well. Bleeding stopped. No fevers. Sleeping when the baby sleeps; good support at home. Postpartum mood screen normal.\nExam: BP normal. Breasts normal. Abdomen soft, uterus involuted. Perineum healed. \nAssessment: normal postpartum recovery. Continue prenatal vitamin. Routine gynecologic care; next Pap per screening guidelines. Return to primary care for general care.\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "office_visit",
+          "start": "2026-05-12T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum check-in",
+          "vitals": {
+            "bp": [
+              127,
+              71
+            ],
+            "hr": 67,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 65.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-12T10:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.34
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 32.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 291
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-05-12T10:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-05-12T10:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2026-05-12T11:05",
+              "author": "PCP",
+              "body": "29F, about 11 weeks after a vaginal delivery on 2/23, here to check in. Baby with her, doing well.\n\nInterval: Listeria bacteremia at 36 weeks, 14 days IV ampicillin, PICC out 2/18, cultures cleared. Delivered at term, uncomplicated; newborn well per pediatrics. OB postpartum visit 4/6 normal.\n\nToday: feels good, tired in the expected way. No fevers since February. No rash on the arm since November. Mood good; PHQ-9 3. Eating and sleeping okay for a new parent. Still on the prenatal vitamin.\n\nExam: vitals as charted, weight down to 66 kg. Well appearing. Old PICC site right arm healed. Heart regular, lungs clear. Abdomen soft. Left forearm skin clear. No edema.\n\nA/P:\n1. Listeriosis, resolved. No further testing needed.\n2. Postpartum, well. CBC today to check her counts after the infection and delivery.\n3. Tinea corporis, no recurrence.\n4. Health maintenance: Pap 07/2025 NILM. Flu and COVID vaccines this fall. Rebook the physical she postponed last year for late summer."
+            }
+          ],
+          "state": {
+            "weight_kg": 66.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-13a",
+          "kind": "portal_message",
+          "start": "2026-05-13T14:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your blood count",
+              "date": "2026-05-13T14:25",
+              "author": "PCP",
+              "body": "Hi Wanda, your blood count from yesterday is normal: no anemia, white count back in the normal range. Nothing to do. Enjoy the summer with her."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "portal_message",
+          "start": "2026-07-28T09:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Booking my physical",
+              "date": "2026-07-28T09:02",
+              "author": "patient",
+              "body": "Hi, I'd like to book the physical I skipped last year. Mornings are easiest, mid September if possible. Also my prenatal vitamin is getting low, I think there's a refill left."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Booking my physical",
+              "date": "2026-07-28T11:40",
+              "author": "front desk",
+              "body": "You're booked for Wednesday 9/16 at 9:00 with your doctor. The pharmacy shows one refill left on the prenatal vitamin, so you can request it directly. See you then!"
+            }
+          ]
+        },
+        {
+          "id": "2026-09-16a",
+          "kind": "annual_physical",
+          "start": "2026-09-16T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Listeriosis|A32.9": {
+        "code": "A32.9",
+        "display": "Listeriosis, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Tinea corporis|B35.4": {
+        "code": "B35.4",
+        "display": "Tinea corporis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "ampicillin 2000 MG Injection": {
+        "code": "1721476",
+        "display": "ampicillin 2000 MG Injection",
+        "ingredient": "ampicillin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "clotrimazole 10 MG/ML Topical Cream": {
+        "code": "309367",
+        "display": "clotrimazole 10 MG/ML Topical Cream",
+        "ingredient": "clotrimazole",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Glucose 1 hour post 50 g glucose": {
+        "code": "1504-0",
+        "display": "Glucose [Mass/volume] in Serum or Plasma --1 hour post 50 g glucose PO",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"prenatal vitamin with minerals and folic acid greater than 0.8 MG Oral Tablet\""
+    ]
+  }
+}

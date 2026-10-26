@@ -1,0 +1,157 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001687",
+      "events": [
+        {
+          "id": "2026-01-26a",
+          "kind": "outside_records",
+          "start": "2026-01-26T09:45",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2026-01-21T14:20"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics Prenatal Update",
+              "author": "obstetrics",
+              "date": "2026-01-26T09:45",
+              "body": "Interval prenatal summary for primary care. 2026-01-21, 27w4d by ultrasound dating. Growth appropriate, fetal heart tones normal. Third-trimester labs unremarkable. Tdap given, left deltoid. Asthma without symptoms. Delivery planning: labor at the hospital as with prior births.\n- Obstetrics office"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-05a",
+          "kind": "hospital_admission",
+          "start": "2026-04-05T03:15",
+          "end": "2026-04-08T11:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "active labor at term",
+          "conditions": [
+            {"label": "Obstructed labor due to incomplete rotation of fetal head", "icd10": "O64.0XX0", "action": "diagnosed", "onset": "2026-04-05"},
+            {"label": "Obstructed labor due to incomplete rotation of fetal head", "icd10": "O64.0XX0", "action": "resolved"},
+            {"label": "Supervision of normal pregnancy", "action": "resolved"},
+            {"label": "History of cesarean delivery", "icd10": "Z98.891", "action": "diagnosed", "onset": "2026-04-05"}
+          ],
+          "medications": [
+            {"drug": "ibuprofen 600 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 6 hours as needed for incisional pain", "dose": {"value": 600, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "short", "reason": "post-cesarean incisional pain"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "author": "obstetrics",
+              "date": "2026-04-09T13:40",
+              "body": "REGIONAL HOSPITAL - OBSTETRICS\nDISCHARGE SUMMARY\nAdmitted: 2026-04-05   Discharged: 2026-04-08\nProcedure: primary low transverse cesarean delivery, 2026-04-05\n\n30 y/o G3P2002 at 38w1d by first-trimester ultrasound (EDD 2026-04-18).\n\nDischarge diagnoses:\n1. Intrauterine pregnancy at term, delivered by cesarean\n2. Arrest of descent, fetal head in right occiput transverse\n3. Mild intermittent asthma\n\nRelevant history: two prior labors, 2024-06-19 and 2025-06-15, each with active phase arrest, both ending in vaginal delivery. Prenatal course this pregnancy unremarkable, prenatal labs unremarkable.\n\nHospital course: Admitted in active labor and progressed to complete dilation with an epidural in place. Second stage: she pushed well for 3 hours with adequate contractions. The vertex came down to +1 station early and then made no further descent over the final hour. On exam the cervix was fully dilated and effaced, the head at +1 with the sagittal suture in the right occiput transverse position. The fetal heart rate tracing was reassuring. Maternal vital signs were stable; she denied pain, only exhaustion. With arrest of descent at +1 in a transverse position, operative vaginal delivery was not an option, and after discussion she consented to cesarean. Low transverse cesarean under the existing epidural, liveborn infant, no intraoperative complications.\n\nPostoperative course uncomplicated. Pain controlled on oral medication, tolerating diet, ambulating, incision clean and dry. Discharged postoperative day 3.\n\nAllergies: No known drug allergies.\nDischarge medications:\n- Ibuprofen 600 mg PO every 6 hours as needed for incisional pain (new, short course)\n- Albuterol HFA 2 puffs every 4-6 hours as needed (home medication)\nFollow-up: OB incision check in 1-2 weeks, postpartum visit at 6 weeks. PCP follow-up after discharge.\n\n- Obstetrics attending"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-13a",
+          "kind": "telephone",
+          "start": "2026-04-13T11:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge Call",
+              "author": "RN",
+              "date": "2026-04-13T11:25",
+              "body": "Spoke with pt after discharge summary arrived. Home since Wed after C-section on 4/5. Sore but managing with ibuprofen. Incision looks fine to her, no redness or drainage, no fever. Bleeding lighter each day. No leg swelling, no SOB, no wheezing. OB incision check is Friday. Scheduled PCP follow-up for early May; she'd like after the school's spring break week."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-07a",
+          "kind": "office_visit",
+          "start": "2026-05-07T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-hospital follow-up",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "author": "front desk",
+              "date": "2026-05-07T08:05",
+              "body": "Pt called to cancel today's 2pm, childcare fell through for the afternoon. Rebooked Thu 5/21 at 1:30."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-21a",
+          "kind": "office_visit",
+          "start": "2026-05-21T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after cesarean delivery",
+          "medications": [
+            {"drug": "ibuprofen 600 MG Oral Tablet", "action": "stop", "reason": "course finished"}
+          ],
+          "state": {"weight_kg": 71.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-05-21T14:05", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "White Blood Cells"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 4}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2026-05-21T13:30"},
+            {"procedure": "Venipuncture", "performed": "2026-05-21T14:05"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-05-21T13:30",
+              "body": "S: 30F here about 6.5 weeks after her third delivery, a cesarean on 4/5 for arrest of descent (head stuck transverse at +1 after 3 h of pushing) - her first two were vaginal. Summary reviewed. Saw OB for incision check and the 6-week visit last week; OB happy with healing. She stopped the ibuprofen about two weeks ago, no pain now except when lifting the toddler. No fevers. Bleeding has stopped. No calf pain, no SOB. Bowel and bladder normal.\n\nMood: honest that it's a lot with three under two, but says she's ok. PHQ-9 4, mostly sleep and energy, no anhedonia, no thoughts of self-harm. Has help.\n\nAsthma: fine, no albuterol since the fall.\n\nMeds: albuterol prn. NKDA.\n\nO: Vitals reviewed, normal. Looks tired, in good spirits. Lungs clear. Heart regular. Abdomen soft, Pfannenstiel incision well healed, no erythema or tenderness. Calves soft, nontender. Normal affect.\n\nA/P\n1. Status post cesarean delivery - recovering well. CBC today. Added to surgical history.\n2. Postpartum mood - screen negative. Reviewed warning signs; she has our cell.\n3. Mild intermittent asthma - stable.\n4. Physical due in the fall; front desk to book."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-22a",
+          "kind": "portal_message",
+          "start": "2026-05-22T09:20",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CBC Result",
+              "author": "PCP",
+              "date": "2026-05-22T09:20",
+              "body": "Blood count from yesterday is normal - hemoglobin has recovered fine after surgery. No iron or anything else needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-09a",
+          "kind": "portal_message",
+          "start": "2026-07-09T20:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Inhaler before school starts",
+              "author": "patient",
+              "date": "2026-07-09T20:30",
+              "body": "Hi - my albuterol expired in the spring, can you send a new one before school starts? I like to keep one in my desk. I'm fine, haven't needed it. Also do I need to book my physical?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Inhaler before school starts",
+              "author": "MA",
+              "date": "2026-07-10T10:15",
+              "body": "Hi Samantha, new albuterol sent to your pharmacy (two inhalers so you can keep one at school). Your physical is booked for Thursday 9/17 at 9:00. Please come fasting."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-17a",
+          "kind": "annual_physical",
+          "start": "2026-09-17T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

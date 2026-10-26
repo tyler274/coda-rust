@@ -1,0 +1,239 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002073",
+      "events": [
+        {
+          "id": "2025-01-21a",
+          "kind": "pharmacy",
+          "start": "2025-01-21T11:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "prior authorization renewal",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "PA renewal", "author": "MA", "date": "2025-01-21T11:15", "body": "Pharmacy: MassHealth PA for pancrelipase expired, pt at counter. Renewal submitted with GI letter and fecal elastase result attached. Pharmacy gave a 5-day supply in the meantime."},
+            {"type": "Telephone Encounter", "title": "PA approved", "author": "MA", "date": "2025-01-23T09:40", "body": "Renewal approved x12 months. Pharmacy and pt notified."}
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "specialist_visit",
+          "start": "2025-03-11T09:00",
+          "service": "Health Department TB Clinic",
+          "reason": "completion of TB treatment",
+          "medications": [
+            {"drug_text": "isoniazid 300 MG Oral Tablet", "action": "stop", "reason": "treatment completed"},
+            {"drug_text": "rifampin 300 MG Oral Capsule", "action": "stop", "reason": "treatment completed"},
+            {"drug_text": "pyridoxine hydrochloride 50 MG Oral Tablet", "action": "stop", "reason": "isoniazid completed"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "TB Clinic Completion Letter", "author": "TB clinic", "date": "2025-03-20T10:15", "body": "TB CLINIC, TREATMENT COMPLETION\nVisit 03/11/2025\n\nYour patient has completed 6 months of directly observed therapy for drug-susceptible tuberculous spondylitis of T9-T10: isoniazid, rifampin, pyrazinamide and ethambutol for 2 months, then isoniazid and rifampin for 4 months, with pyridoxine. All medications stopped today.\n\nMRI thoracic spine 03/04/2025: interval healing at T9-T10; the prevertebral collection has resolved; no new bone destruction.\n\nHe is asymptomatic apart from mild residual stiffness. He is discharged from TB clinic. Please contact us for any recurrent back pain, fever or night sweats."}
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "office_visit",
+          "start": "2025-03-25T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after TB treatment",
+          "conditions": [
+            {"label": "Tuberculous spondylitis (Pott disease)", "icd10": "A18.01", "action": "resolved", "note": "6 months of therapy completed 2025-03-11"},
+            {"label": "Anemia of chronic disease", "icd10": "D63.8", "action": "resolved"}
+          ],
+          "state": {"weight_kg": 56.0, "labs": {"Erythrocyte Sedimentation Rate": 18, "Hemoglobin": 12.9, "Albumin": 3.8}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-03-25T08:15", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin", "value": 12.9}, {"test": "Mean Corpuscular Volume"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2025-03-25T08:15", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 18}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-03-25T08:15", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Albumin"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Bilirubin, Total"}]}
+          ],
+          "surveys": [{"survey": "AUDIT-C total score", "value": 8}, {"survey": "PHQ-9 total score", "value": 5}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-03-25T07:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-03-25T08:30", "body": "Finished TB treatment 3/11, completion letter and MRI (healing, collection gone) reviewed. Back just a little stiff in the mornings. No sweats, weight 56.\nHgb 12.9 and ESR 18 today: anemia has resolved and inflammation is down. Pott disease and anemia of chronic disease marked resolved.\nAlcohol: now that the DOT nurse isn't coming he's drinking again, most evenings. AUDIT-C 8. We talked about the pattern: he does well with daily structure. Offered the outpatient program and a daily check-in option again; declines for now but took the number.\nEPI stable on enzymes. Cerebellar gait unchanged.\nRTC 3 months, sooner for yellow eyes, belly pain or confusion."}
+          ]
+        },
+        {
+          "id": "2025-05-10a",
+          "kind": "hospital_admission",
+          "start": "2025-05-10T14:20",
+          "end": "2025-05-15T12:30",
+          "service": "Emergency Medicine",
+          "reason": "abdominal pain, jaundice",
+          "conditions": [{"label": "Alcoholic hepatitis", "icd10": "K70.10", "action": "diagnosed", "onset": "2025-04-26"}],
+          "state": {"weight_kg": 54.5, "labs": {"White Blood Cells": 12.0, "Hemoglobin": 13.2, "Platelets": 95, "Aspartate Aminotransferase": 180, "Alanine Aminotransferase": 60, "Bilirubin, Total": 6.2, "Bilirubin, Direct": 4.1, "Alkaline Phosphatase": 120, "Prothrombin Time-International Normalized Ratio": 1.6, "Prothrombin Time": 18.6, "Albumin": 3.2}},
+          "vitals": [{"time": "2025-05-10T14:30", "temp_c": 38.3}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-05-10T14:50", "results": [{"test": "White Blood Cells", "value": 12.0}, {"test": "Hemoglobin", "value": 13.2}, {"test": "Platelets", "value": 95}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2025-05-10T14:50", "results": [{"test": "Aspartate Aminotransferase", "value": 180}, {"test": "Alanine Aminotransferase", "value": 60}, {"test": "Bilirubin, Total", "value": 6.2}, {"test": "Bilirubin, Direct", "value": 4.1}, {"test": "Alkaline Phosphatase", "value": 120}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2025-05-10T14:50", "results": [{"test": "Prothrombin Time-International Normalized Ratio", "value": 1.6}]},
+            {"panel": null, "collected": "2025-05-10T15:05", "results": [{"test": "Blood Culture", "text": "No growth at 5 days"}]},
+            {"panel": "Urinalysis", "collected": "2025-05-10T15:30", "results": [{"test": "Urine Leukocyte Esterase", "text": "Negative"}, {"test": "Urine Nitrite", "text": "Negative"}, {"test": "Urine Blood", "text": "Negative"}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2025-05-15T05:30", "results": [{"test": "Bilirubin, Total", "value": 4.8}, {"test": "Bilirubin, Direct", "value": 3.1}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2025-05-15T05:30", "results": [{"test": "Prothrombin Time", "value": 16.4}, {"test": "Prothrombin Time-International Normalized Ratio", "value": 1.4}]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 1 view", "performed": "2025-05-10T15:40", "text": "Portable AP view. Lungs clear. No effusion. Heart size normal.", "conclusion": "No acute cardiopulmonary process."},
+            {"study": "Right upper quadrant ultrasound", "performed": "2025-05-10T18:10", "text": "Indication: jaundice, right upper quadrant pain.\nLiver enlarged and diffusely echogenic. No focal lesion. No intrahepatic or extrahepatic biliary dilatation; common duct 4 mm. Gallbladder without stones or wall thickening. Portal vein patent with hepatopetal flow. Spleen normal in size. No ascites.", "conclusion": "Hepatomegaly with diffusely echogenic liver. No biliary obstruction. No ascites."}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2025-05-19T09:30", "body": "EMERGENCY DEPARTMENT RECORD\nArrival 05/10/2025 14:20\n\nCC: belly pain and yellow eyes.\n\n53-year-old man with chronic pancreatitis with exocrine insufficiency and alcoholic cerebellar degeneration, here with two weeks of worsening abdominal pain, jaundice and a falling appetite. Drinking about six beers daily, a pattern of roughly 20 years.\n\nMeds: pancrelipase, thiamine, folic acid, multivitamin. NKDA.\n\nT 38.3 C (100.9 F). Icteric sclerae. Liver enlarged and tender. Abdomen otherwise soft.\n\nWBC 12.0, Hgb 13.2, platelets 95. AST 180, ALT 60, total bilirubin 6.2, direct 4.1, alkaline phosphatase 120. INR 1.6.\n\nImpression: alcoholic hepatitis. Admit to medicine."},
+            {"type": "Discharge Summary", "title": "Hospital Discharge Summary", "author": "hospital medicine", "date": "2025-05-19T09:30", "body": "DISCHARGE SUMMARY\nAdmitted 05/10/2025, discharged 05/15/2025.\n\nDiagnosis: alcoholic hepatitis.\nOther: severe alcohol use disorder, alcoholic liver disease, chronic pancreatitis with exocrine insufficiency, alcoholic cerebellar degeneration, protein-calorie malnutrition, thiamine deficiency; history of tuberculous spondylitis, treated.\n\nCourse: fever on arrival prompted an infection workup: blood cultures no growth, urinalysis negative, chest x-ray clear. RUQ ultrasound showed an enlarged echogenic liver without biliary obstruction or ascites, portal vein patent. Managed with abstinence, nutrition support with enzyme replacement, IV then oral thiamine and withdrawal monitoring; no withdrawal symptoms developed. Fever resolved. Jaundice improving: bilirubin 4.8 and INR 1.4 on the day of discharge.\n\nDischarge medications: unchanged home medications (pancrelipase with meals and snacks, thiamine 100 mg, folic acid 1 mg, multivitamin). NKDA.\n\nFollow-up: primary care within one week with hepatic panel and INR. No alcohol."}
+          ]
+        },
+        {
+          "id": "2025-05-12a",
+          "kind": "telephone",
+          "start": "2025-05-12T10:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "family call",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call from brother", "author": "RN", "date": "2025-05-12T10:50", "body": "Brother calling: Rohan admitted Saturday, yellow, told it's alcohol hepatitis. Booked post-discharge visit 5/20 tentatively. Requested records."}
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "office_visit",
+          "start": "2025-05-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, alcoholic hepatitis",
+          "state": {"weight_kg": 54.0, "labs": {"Bilirubin, Total": 3.9, "Prothrombin Time-International Normalized Ratio": 1.3, "Prothrombin Time": 15.3, "Aspartate Aminotransferase": 120, "Alanine Aminotransferase": 52, "Platelets": 108, "Bilirubin, Direct": 2.4, "White Blood Cells": 7.4}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2025-05-20T08:40", "results": [{"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Bilirubin, Total", "value": 3.9}, {"test": "Bilirubin, Direct", "value": 2.4}, {"test": "Albumin"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2025-05-20T08:40", "results": [{"test": "Prothrombin Time-International Normalized Ratio", "value": 1.3}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-05-20T08:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "surveys": [{"survey": "AUDIT-C total score", "value": 10}],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2025-05-20T08:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-hospital Visit", "author": "PCP", "date": "2025-05-20T08:55", "body": "Seen with brother after admission 5/10-5/15 for alcoholic hepatitis. Summary reviewed.\n\nNo alcohol since 5/9. Appetite slowly coming back. Belly much less sore. Eyes still yellow but less. No confusion, no black stool, no swelling.\n\nExam: afebrile. Scleral icterus. Liver edge palpable and mildly tender. No ascites, no asterixis.\n\nLabs today: bilirubin 3.9 (4.8 at discharge), INR 1.3.\n\nA/P\n1. Alcoholic hepatitis, improving. Absolute abstinence. Weekly-ish labs for now, next in 4 weeks unless worse. Small frequent meals with enzymes.\n2. Severe AUD: frank talk with both of them; this is the third serious alcohol complication. He says he's done. Program info again; brother will drive him to an intake if he calls.\n3. Weight 54."}
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "lab_only",
+          "start": "2025-06-17T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "liver tests",
+          "state": {"labs": {"Bilirubin, Total": 1.8, "Prothrombin Time-International Normalized Ratio": 1.2, "Prothrombin Time": 14.1, "Platelets": 128, "Bilirubin, Direct": 0.9, "Aspartate Aminotransferase": 84, "Alanine Aminotransferase": 45}},
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2025-06-17T07:30", "results": [{"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Bilirubin, Total", "value": 1.8}, {"test": "Bilirubin, Direct", "value": 0.9}, {"test": "Albumin"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2025-06-17T07:30", "results": [{"test": "Prothrombin Time-International Normalized Ratio", "value": 1.2}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-06-17T07:30", "results": [{"test": "Hemoglobin"}, {"test": "Platelets", "value": 128}]}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Liver tests", "author": "PCP", "date": "2025-06-17T17:05", "body": "Rohan, good progress: bilirubin is down to 1.8, clotting test 1.2 and platelets 128, all moving the right way. Keep doing what you're doing. See you in August."}
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "office_visit",
+          "start": "2025-08-12T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up alcoholic hepatitis",
+          "conditions": [{"label": "Alcoholic hepatitis", "icd10": "K70.10", "action": "resolved"}],
+          "state": {"weight_kg": 56.2, "labs": {"Bilirubin, Total": 1.1, "Bilirubin, Direct": 0.4, "Aspartate Aminotransferase": 61, "Alanine Aminotransferase": 39, "Platelets": 141, "Prothrombin Time-International Normalized Ratio": 1.1, "Prothrombin Time": 13.0, "Albumin": 3.6}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2025-08-12T08:20", "results": [{"test": "Aspartate Aminotransferase", "value": 61}, {"test": "Alanine Aminotransferase", "value": 39}, {"test": "Bilirubin, Total", "value": 1.1}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-08-12T08:20", "results": [{"test": "Hemoglobin"}, {"test": "Platelets", "value": 141}]}
+          ],
+          "surveys": [{"survey": "AUDIT-C total score", "value": 6}, {"survey": "PHQ-9 total score", "value": 6}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-08-12T07:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-08-12T08:35", "body": "S: Feels like himself. Jaundice gone. Back at work part days, ground level. Stayed dry until the Fourth, then \"a few times\" since; nothing like before, he says.\nO: Anicteric. Liver edge not palpable now. No ascites. Wide-based gait unchanged.\nLabs: bilirubin 1.1, AST 61, ALT 39, platelets 141.\nA/P: alcoholic hepatitis resolved; removed from active list. ALD remains. AUD: slipping; named it plainly, he agreed. PHQ-9 6, no SI; mostly frustration about work. Program number again. Flu/COVID in October. RTC 3 months."}
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "portal_message",
+          "start": "2025-09-09T20:44",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refill request",
+          "documents": [
+            {"type": "Patient Message", "title": "refill", "author": "patient", "date": "2025-09-09T20:44", "body": "need refill vitamin b1 and the folic. same pharmacy. thank you doctor"},
+            {"type": "Patient Message", "title": "RE: refill", "author": "MA", "date": "2025-09-10T08:30", "body": "Sent both to your pharmacy, 90 days with refills. -MA for your doctor"}
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-14T07:35"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-10-14T07:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-14T07:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse visit", "author": "RN", "date": "2025-10-14T07:50", "body": "Flu and COVID vaccines given, both deltoids. FIT kit given; last year's never came back, reminded him it just goes in the mail."}
+          ]
+        },
+        {
+          "id": "2025-10-28a",
+          "kind": "lab_only",
+          "start": "2025-10-28T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "colorectal cancer screening",
+          "labs": [{"panel": null, "collected": "2025-10-24T08:00", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Result note", "author": "PCP", "date": "2025-10-28T13:20", "body": "FIT negative. Portal note sent."}
+          ]
+        },
+        {
+          "id": "2025-11-02a",
+          "kind": "ed_visit",
+          "start": "2025-11-02T11:10",
+          "end": "2025-11-04T10:00",
+          "service": "Emergency Medicine",
+          "reason": "confusion, agitation after stopping alcohol",
+          "conditions": [{"label": "Alcohol withdrawal, uncomplicated", "icd10": "F10.230", "action": "diagnosed", "onset": "2025-11-02"}],
+          "state": {"labs": {"Aspartate Aminotransferase": 72, "Alanine Aminotransferase": 50, "Gamma Glutamyl Transferase": 300, "Mean Corpuscular Volume": 96, "Creatinine": 1.0, "Blood Urea Nitrogen": 18, "Platelets": 160}},
+          "vitals": [{"time": "2025-11-02T11:15", "bp": [160, 100], "hr": 120, "rr": 22, "temp_c": 38.2}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-11-02T11:40", "results": [{"test": "Sodium", "value": 140}, {"test": "Potassium", "value": 4.0}, {"test": "Chloride", "value": 100}, {"test": "Blood Urea Nitrogen", "value": 18}, {"test": "Creatinine", "value": 1.0}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2025-11-02T11:40", "results": [{"test": "Aspartate Aminotransferase", "value": 72}, {"test": "Alanine Aminotransferase", "value": 50}]},
+            {"panel": null, "collected": "2025-11-02T11:40", "results": [{"test": "Gamma Glutamyl Transferase", "value": 300}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-11-02T11:40", "results": [{"test": "Mean Corpuscular Volume", "value": 96}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2025-11-02T11:25", "text": "Sinus tachycardia, rate 120. Normal axis. Normal intervals. No ST or T wave changes.", "conclusion": "Sinus tachycardia, otherwise normal ECG."}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2025-11-10T08:15", "body": "EMERGENCY DEPARTMENT / OBSERVATION RECORD\nArrival 11/02/2025 11:10. Discharged from observation 11/04/2025.\n\nBrought in by family for confusion and agitation. Severe alcohol use disorder, history of alcoholic hepatitis earlier this year. Was drinking heavily until two days ago and has had nothing since.\n\nBP 160/100, HR 120, RR 22, T 38.2 C.\nTremulous, sweaty, anxious. Oriented to self only, not to place or date. Nonfocal neurologic exam.\n\nNa 140, K 4.0, Cl 100, BUN 18, Cr 1.0. AST 72, ALT 50, GGT 300. MCV 96.\nECG: sinus tachycardia, no other abnormality.\n\nAssessment: alcohol withdrawal, uncomplicated (no seizures, no hallucinations).\nTreatment: symptom-triggered lorazepam, IV thiamine, fluids; placed in observation. Mental status cleared by the following morning; CIWA scores low by day 2.\n\nDischarged home with family. Home medications unchanged. Primary care follow-up within the week; outpatient addiction treatment resources provided."}
+          ]
+        },
+        {
+          "id": "2025-11-03a",
+          "kind": "telephone",
+          "start": "2025-11-03T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "family call",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call from brother", "author": "RN", "date": "2025-11-03T09:05", "body": "Brother: took Rohan to the ED yesterday, confused and shaking after he stopped drinking Friday. Kept overnight, more himself this morning. Booked follow-up 11/13. Records requested."}
+          ]
+        },
+        {
+          "id": "2025-11-13a",
+          "kind": "office_visit",
+          "start": "2025-11-13T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, alcohol withdrawal",
+          "conditions": [{"label": "Alcohol withdrawal, uncomplicated", "icd10": "F10.230", "action": "resolved"}],
+          "state": {"weight_kg": 55.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-11-13T08:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Albumin"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Bilirubin, Total"}]},
+            {"panel": null, "collected": "2025-11-13T08:20", "results": [{"test": "Magnesium"}]}
+          ],
+          "surveys": [{"survey": "AUDIT-C total score", "value": 11}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-11-13T07:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-11-13T08:30", "body": "ED/observation record 11/2-11/4 reviewed: withdrawal with confusion, cleared overnight on lorazepam, no seizures.\n\nHe remembers little of the first day. Drinking had crept back up over September and October to every night, then he stopped on his own that Friday. Has not had a drink since the ED. Shaky for a couple of days, now fine.\nBP normal today, HR 80s. No tremor. Oriented, conversational.\n\nA/P: alcohol withdrawal episode, resolved. Severe AUD with a growing list of complications. Long conversation: next time he stops he needs medical help to do it; never alone. He and his brother have the ED plan. Offered referral to an addiction medicine clinic: he'll \"think on it.\" Labs today. Thiamine daily. RTC 6 to 8 weeks."}
+          ]
+        }
+      ]
+    }
+  ]
+}

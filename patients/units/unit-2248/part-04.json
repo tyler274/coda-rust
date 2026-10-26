@@ -1,0 +1,459 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002248",
+      "events": [
+        {
+          "id": "2026-01-13a",
+          "kind": "office_visit",
+          "start": "2026-01-13T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 6}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-13T10:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-01-13T10:00"},
+            {"procedure": "Venipuncture", "performed": "2026-01-13T10:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2026-01-13T10:35",
+              "body": "3 months after the ICD. No shocks. Device clinic letter from December received: working normally, nothing treated. Winter has been long without driving; his daughter takes him shopping on Saturdays. Mood a little lower with the cold and being stuck at home, PHQ-9 6, no SI; still walks the dog. Chest pressure a few times since Christmas, on exertion, settles with rest.\nNever got the October discharge summary or the implant report; the device letter covers it.\nExam: vitals reviewed. ICD pocket healed. Heart regular. Lungs clear. Trace ankle edema.\nA/P: MDD partial remission, mild seasonal dip, continue mirtazapine 30; offered counseling again, declined. VT s/p ICD, CAD, HTN stable on current meds; BMP. Driving okay again in April per cardiology. RTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "portal_message",
+          "start": "2026-02-10T20:05",
+          "reason": "Question about driving",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Driving",
+              "author": "patient",
+              "date": "2026-02-10T20:05",
+              "body": "Is it April 6 or April 9 that I can drive again? My daughter says 9 but I think 6. Going a little stir crazy."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Driving",
+              "author": "PCP",
+              "date": "2026-02-11T08:20",
+              "body": "Hi Paul, the clock started the day of the episode, October 6, so six months is April 6. Cardiology has the final word, so please confirm with them at your next device check. Hang in there."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-03a",
+          "kind": "telephone",
+          "start": "2026-03-03T09:15",
+          "reason": "Chest pressure more frequent",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Patient call: chest pressure",
+              "author": "RN",
+              "date": "2026-03-03T09:25",
+              "body": "Pt called: over the past week or so the chest pressure is coming more often and with less effort, walking to the mailbox, and once on Sunday sitting in his chair, lasted about 10 minutes and went away on its own. None today. No shock from the device. No shortness of breath, no fainting. Advised 911 for any pressure at rest lasting more than a few minutes. Routed to PCP urgently."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP addendum",
+              "author": "PCP",
+              "date": "2026-03-03T11:10",
+              "body": "Called his cardiologist directly. They will see him tomorrow and likely plan a cath with premedication for the contrast allergy. Called Paul back: appointment 3/4 morning. Reviewed 911 precautions again; daughter will drive him."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "procedure_visit",
+          "start": "2026-03-09T07:00",
+          "end": "2026-03-09T16:30",
+          "service": "Cardiology",
+          "reason": "Diagnostic cardiac catheterization for unstable angina",
+          "conditions": [
+            {"label": "Unstable angina", "icd10": "I20.0", "action": "diagnosed", "onset": "2026-02-23"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-03-09T07:15", "results": [{"test": "Hemoglobin", "value": 14.0}, {"test": "Platelets"}]}
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "hospital_admission",
+          "start": "2026-03-10T05:50",
+          "end": "2026-03-12T14:00",
+          "service": "Internal Medicine",
+          "reason": "Flank pain and dizziness after catheterization",
+          "vitals": [
+            {"time": "2026-03-10T05:55", "bp": [90, 50], "hr": 110},
+            {"time": "2026-03-10T09:00", "bp": [108, 64], "hr": 92, "rr": 18, "spo2": 97},
+            {"time": "2026-03-12T08:00", "bp": [122, 70], "hr": 74, "rr": 14, "spo2": 98, "temp_c": 36.8}
+          ],
+          "conditions": [
+            {"label": "Retroperitoneal hematoma following cardiac catheterization", "icd10": "K68.3", "action": "diagnosed", "onset": "2026-03-10"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-03-10T06:05", "results": [{"test": "Hemoglobin", "value": 10.0}, {"test": "Platelets"}, {"test": "White Blood Cells"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-03-10T06:05", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2026-03-10T06:05", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-03-11T05:30", "results": [{"test": "Hemoglobin", "value": 9.8}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-03-12T05:30", "results": [{"test": "Hemoglobin", "value": 10.1}]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2026-03-10T05:50"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2026-03-10T10:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-03-12T13:00"}
+          ],
+          "documents": [
+            {
+              "type": "ED Record",
+              "title": "Emergency department physician record",
+              "author": "emergency medicine",
+              "date": "2026-03-11T15:30",
+              "body": "Regional hospital emergency department. Faxed 03/11/2026. Date of service 03/10/2026.\n\nCC: left flank pain, dizzy.\nHPI: 72-year-old man with CAD, prior MIs, ICD, who had an outpatient diagnostic cardiac catheterization yesterday for unstable angina via the left femoral artery, discharged home last evening. Around 4 this morning he had a sudden onset of severe left flank pain and felt dizzy when he stood. Arrived about 2 hours after onset.\nMeds: aspirin 81, atorvastatin 40, metoprolol succinate 50, lisinopril 20, nifedipine ER 30, mirtazapine 30, acetaminophen prn.\nAllergies: iodinated contrast media (anaphylactoid) - premedicated for yesterday's procedure.\nExam: BP 90/50, HR 110. Pale and sweaty. Abdomen soft; tender in the left flank, no guarding or rebound, no peritoneal signs. Left groin access site with small bruise, no expanding hematoma, distal pulses present.\nLabs: hemoglobin 10.0 g/dL; pre-procedure hemoglobin yesterday 14.0 g/dL.\nBedside ultrasound (ED): no free intraperitoneal fluid.\nECG: no new changes compared with prior (paced).\nCT abdomen and pelvis WITHOUT contrast (contrast allergy): left retroperitoneal hematoma along the psoas, about 9.4 x 6.1 cm. No intraperitoneal blood.\nImpression: retroperitoneal hematoma after femoral catheterization, with hypotension responding to fluids.\nPlan: IV fluids, type and screen, serial hemoglobin, hold aspirin, bed rest. Admit to medicine with cardiology following."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "hospital medicine",
+              "date": "2026-03-13T11:00",
+              "body": "Regional hospital, medicine service. Admitted 03/10/2026, discharged 03/12/2026.\n\nDiagnosis: left retroperitoneal hematoma following left femoral cardiac catheterization (03/09/2026).\nOther: unstable angina (catheterization 03/09: patent LAD stent, right coronary and circumflex disease unchanged from 04/2025, no intervention; medical therapy continued per cardiology); CAD with prior MIs; complete heart block and VT with dual-chamber ICD; hypertension; contrast allergy.\n\nCourse: hypotension resolved with IV fluids. Hemoglobin 14.0 before the catheterization, 10.0 on arrival, 9.8 on 03/11, 10.1 on 03/12; no transfusion needed. Managed conservatively. Bed rest the first day, then walking without difficulty. Flank pain improving. Aspirin held for 2 days and resumed on discharge with cardiology agreement.\n\nDischarge medications: unchanged from admission.\nFollow-up: PCP within 1 week with CBC. Return for worsening flank or back pain, dizziness, fainting or black stools."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "office_visit",
+          "start": "2026-03-17T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "conditions": [
+            {"label": "Unstable angina", "icd10": "I20.0", "action": "resolved"}
+          ],
+          "state": {"labs": {"Hemoglobin": 10.9}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-03-17T13:30", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, moderate complexity", "performed": "2026-03-17T13:00"},
+            {"procedure": "Venipuncture", "performed": "2026-03-17T13:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "author": "PCP",
+              "date": "2026-03-17T13:40",
+              "body": "TCM. ED record and discharge summary received and reviewed. The cath report itself has not come to us; summary says stent open, other disease unchanged, no new stent.\n\nHome since 3/12. Flank ache much better, now a dull soreness when he twists. No dizziness. No black stools. No chest pressure at rest since the cath; occasional exertional pressure like before. Back on aspirin since discharge.\n\nExam: vitals reviewed. Comfortable. Left flank mildly tender, fading bruise over left flank and groin, no mass. Groin site healed. Heart regular. Lungs clear. Trace edema.\n\nA/P:\n1. Retroperitoneal hematoma after cath, resolving clinically. CBC today. Return precautions reviewed.\n2. Unstable angina episode, back to his usual exertional pattern; cardiology continuing medical therapy.\n3. Other meds unchanged.\nRTC 4 weeks or sooner."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-19a",
+          "kind": "portal_message",
+          "start": "2026-03-19T09:05",
+          "reason": "Lab result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "author": "PCP",
+              "date": "2026-03-19T09:05",
+              "body": "Paul, your blood count is a little higher than when you left the hospital, so the bleeding behind the kidney has stopped and your body is rebuilding. We'll recheck at your next visit. Call if the flank pain comes back or you feel faint."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "outside_records",
+          "start": "2026-03-24T10:30",
+          "reason": "Remote device transmission",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "ICD remote transmission",
+              "author": "cardiology",
+              "date": "2026-03-24T10:30",
+              "body": "Outside cardiology device clinic. Scheduled remote transmission 03/20/2026, dual-chamber ICD.\nBattery and lead measurements stable and within normal limits. No ventricular arrhythmia episodes, no therapies delivered. Normal device function. Next remote in 3 months; in-office check due June."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-07a",
+          "kind": "hospital_admission",
+          "start": "2026-04-07T21:10",
+          "end": "2026-04-10T12:00",
+          "service": "Gastroenterology",
+          "reason": "Rectal bleeding and abdominal pain",
+          "vitals": [
+            {"time": "2026-04-07T21:15", "bp": [95, 60], "hr": 110, "rr": 22},
+            {"time": "2026-04-08T02:00", "bp": [112, 66], "hr": 94, "rr": 18, "spo2": 97},
+            {"time": "2026-04-10T08:00", "bp": [120, 72], "hr": 76, "rr": 14, "spo2": 98, "temp_c": 36.7}
+          ],
+          "conditions": [
+            {"label": "Upper gastrointestinal hemorrhage from duodenal ulcer", "icd10": "K26.4", "action": "diagnosed", "onset": "2026-04-07"}
+          ],
+          "medications": [
+            {"drug": "pantoprazole 40 MG Delayed Release Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily before breakfast and supper for 8 weeks", "dose": {"value": 40, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Bleeding duodenal ulcer"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-04-07T21:20", "results": [{"test": "Hemoglobin", "value": 8.2}, {"test": "Hematocrit", "value": 24.5}, {"test": "Platelets", "value": 220}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2026-04-07T21:20", "results": [{"test": "Prothrombin Time-International Normalized Ratio", "value": 1.0}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-04-07T21:20", "results": [{"test": "Creatinine", "value": 1.1}, {"test": "Blood Urea Nitrogen", "value": 29}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-04-08T06:00", "results": [{"test": "Hemoglobin", "value": 8.9}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-04-10T05:45", "results": [{"test": "Hemoglobin", "value": 9.3}]}
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-04-08T10:30",
+              "issued": "2026-04-09T16:00",
+              "text": "Specimen: gastric antrum and body, biopsies.\nGross: four tan mucosal fragments.\nMicroscopic: gastric mucosa with preserved architecture, no significant inflammation, no intestinal metaplasia or dysplasia. Immunostain for Helicobacter pylori negative.",
+              "conclusion": "Benign gastric mucosa. Negative for Helicobacter pylori."
+            }
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2026-04-07T21:10"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2026-04-08T00:30"},
+            {"procedure": "Upper endoscopy with biopsy", "performed": "2026-04-08T10:30"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-04-10T11:00"}
+          ],
+          "documents": [
+            {
+              "type": "ED Record",
+              "title": "Emergency department physician record",
+              "author": "emergency medicine",
+              "date": "2026-04-09T08:45",
+              "body": "Regional hospital emergency department. Faxed 04/09/2026. Date of service 04/07/2026.\n\nCC: rectal bleeding.\nHPI: 72-year-old man with CAD and prior MIs, ICD, on aspirin, recently admitted for a retroperitoneal hematoma after catheterization, now with 2 hours of severe cramping abdominal pain and several bloody bowel movements, bright red. Pale and sweaty on arrival.\nMeds: aspirin 81, atorvastatin 40, metoprolol succinate 50, lisinopril 20, nifedipine ER 30, mirtazapine 30, acetaminophen prn.\nAllergies: iodinated contrast (anaphylactoid).\nExam: BP 95/60, HR 110, RR 22. Abdomen soft, mild tenderness throughout, no rebound or guarding. Rectal: bright red blood.\nLabs: Hgb 8.2, Hct 24.5, platelets 220, INR 1.0, creatinine 1.1, BUN 29.\nAssessment: brisk GI bleed with hemodynamic compromise. BUN out of proportion to creatinine favors an upper source.\nED management: two large-bore IVs, crystalloid, IV pantoprazole bolus and infusion, aspirin held, 1 unit packed red cells ordered. GI consulted for endoscopy.\nDisposition: admitted, step-down unit."
+            },
+            {
+              "type": "Procedure Note",
+              "title": "Upper endoscopy report",
+              "author": "gastroenterology",
+              "date": "2026-04-13T10:15",
+              "body": "Regional hospital endoscopy unit. Procedure date 04/08/2026. Received 04/13/2026.\nIndication: hematochezia with hemodynamic instability and elevated BUN; suspected upper GI bleed.\nSedation: monitored anesthesia care.\nFindings: Esophagus normal. Stomach normal; biopsies taken from antrum and body for H. pylori. Duodenal bulb: 1 cm ulcer with a non-bleeding visible vessel, no active bleeding. Second portion of the duodenum normal.\nTherapy: dilute epinephrine injected around the vessel; two hemostatic clips placed with good result.\nImpression: duodenal bulb ulcer with non-bleeding visible vessel, treated endoscopically.\nRecommendations: high-dose PPI, then pantoprazole 40 mg twice daily for 8 weeks followed by once daily while on aspirin. Follow biopsies. Resume aspirin in 3 days if no rebleeding, per cardiology. GI clinic in 6-8 weeks."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "hospital medicine",
+              "date": "2026-04-13T10:20",
+              "body": "Regional hospital. Admitted 04/07/2026, discharged 04/10/2026.\n\nPrincipal diagnosis: upper gastrointestinal hemorrhage from a duodenal bulb ulcer.\nCourse: presented with hematochezia, BP 95/60 and HR 110, hemoglobin 8.2. IV pantoprazole. Transfused 1 unit packed red cells given his coronary disease, hemoglobin 8.9 afterward. EGD 04/08: 1 cm duodenal bulb ulcer with visible vessel, injected and clipped. No rebleeding. Gastric biopsies negative for H. pylori. Aspirin held for 3 days and restarted 04/10 after discussion with cardiology. Hemoglobin 9.3 at discharge.\n\nDischarge medications: NEW pantoprazole 40 mg twice daily for 8 weeks, then 40 mg once daily. Continue aspirin 81, atorvastatin 40, metoprolol succinate 50, lisinopril 20, nifedipine ER 30, mirtazapine 30, acetaminophen prn. Avoid NSAIDs.\nFollow-up: PCP within 1 week with CBC; GI clinic 6-8 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "office_visit",
+          "start": "2026-04-14T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "state": {"labs": {"Hemoglobin": 10.0}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-04-14T12:00", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2026-04-14T11:30"},
+            {"procedure": "Venipuncture", "performed": "2026-04-14T12:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "author": "PCP",
+              "date": "2026-04-14T12:05",
+              "body": "TCM. Daughter here. ED record, endoscopy report and discharge summary all received 4/9-4/13 and reviewed.\n\nSecond hospital stay in a month: 4/7-4/10 for a bleeding duodenal ulcer, transfused 1 unit, ulcer clipped, H. pylori negative. Aspirin back on since 4/10. Pantoprazole twice a day.\n\nSince home: stools brown, no more blood. No abdominal pain. Tired, slower than usual on the hill with the dog. No chest pressure at rest. No lightheadedness standing. Flank soreness gone. Driving again since 4/6 with cardiology's okay, keeping trips short.\n\nMeds reconciled with the discharge list: aspirin 81, atorvastatin 40, metoprolol succinate 50, lisinopril 20, nifedipine ER 30, pantoprazole 40 BID (new), mirtazapine 30, acetaminophen prn. Reminded: no ibuprofen or naproxen; acetaminophen only for knees.\n\nExam: vitals reviewed. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Trace ankle edema.\n\nA/P:\n1. Upper GI bleed from duodenal ulcer: PPI BID 8 weeks then daily. GI clinic in May/June. CBC today; expect slow rise.\n2. Blood loss after two bleeds: check CBC, pace activity, call for black or bloody stools, dizziness, chest pain.\n3. CAD/ICD/HTN: unchanged.\n4. Mood: PHQ deferred today; he says he is \"tired of hospitals\" but not down. Will screen next visit.\nRTC 4 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-28a",
+          "kind": "portal_message",
+          "start": "2026-04-28T14:15",
+          "reason": "Question about aspirin",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Aspirin?",
+              "author": "patient",
+              "date": "2026-04-28T14:15",
+              "body": "My daughter wants to know if I should really keep taking the baby aspirin after all the bleeding. I don't want to go back in there."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Aspirin?",
+              "author": "PCP",
+              "date": "2026-04-28T17:40",
+              "body": "Good question, and I understand the worry. With your stent and two heart attacks, your cardiologist and the GI team both felt the aspirin protects you more than it risks you, now that the ulcer is treated and you are on pantoprazole to protect the stomach. So yes, please keep taking it, and keep the pantoprazole twice a day for now. If you ever see black or bloody stools, call us right away or go to the ED."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "office_visit",
+          "start": "2026-05-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after GI bleed",
+          "conditions": [
+            {"label": "Retroperitoneal hematoma following cardiac catheterization", "icd10": "K68.3", "action": "resolved"}
+          ],
+          "state": {"labs": {"Hemoglobin": 11.2}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 6}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-05-12T10:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-05-12T10:30", "results": [{"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-05-12T10:00"},
+            {"procedure": "Venipuncture", "performed": "2026-05-12T10:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2026-05-12T10:40",
+              "body": "Five weeks after the GI bleed. More energy, walking the full loop with the dog again. Stools normal. No abdominal pain. Taking pantoprazole twice daily and aspirin. Chest pressure only with real exertion. Planting a smaller garden this year. PHQ-9 6, no SI; says it's been a hard spring but he's \"coming out of it.\"\nExam: vitals reviewed. Color better. Heart regular. Lungs clear. Abdomen soft, nontender. No flank tenderness. Trace edema.\nA/P: GI bleed, recovering, CBC today; GI clinic 5/28. Retroperitoneal hematoma resolved clinically. MDD partial remission, continue mirtazapine. Rest unchanged. RTC 2 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-02a",
+          "kind": "outside_records",
+          "start": "2026-06-02T15:45",
+          "reason": "Gastroenterology letter",
+          "medications": [
+            {"drug": "pantoprazole 40 MG Delayed Release Oral Tablet", "action": "stop", "reason": "8-week twice-daily course complete; changed to once daily"},
+            {"drug": "pantoprazole 40 MG Delayed Release Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily before breakfast", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Gastroprotection while on aspirin; healed duodenal ulcer"}
+          ],
+          "conditions": [
+            {"label": "Upper gastrointestinal hemorrhage from duodenal ulcer", "icd10": "K26.4", "action": "resolved"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology clinic letter",
+              "author": "gastroenterology",
+              "date": "2026-06-02T15:45",
+              "body": "Outside gastroenterology clinic. Visit 05/28/2026.\nDear colleague,\nMr. Pelletier returns after his April admission for a bleeding duodenal bulb ulcer, treated with epinephrine and clips. Gastric biopsies were negative for H. pylori; the ulcer is attributed to aspirin. No further bleeding, normal stools, no dyspepsia.\nMedications include aspirin 81 mg and pantoprazole 40 mg twice daily.\nAllergies: iodinated contrast.\nExam: well, abdomen soft and nontender.\nPlan: complete the twice-daily course this week, then pantoprazole 40 mg once daily long-term for as long as he takes aspirin. A duodenal ulcer with H. pylori-negative biopsies does not need a repeat endoscopy. Avoid NSAIDs. We are happy to see him again if needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "outside_records",
+          "start": "2026-06-23T11:20",
+          "reason": "Device clinic report",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "ICD in-office check",
+              "author": "cardiology",
+              "date": "2026-06-23T11:20",
+              "body": "Outside cardiology device clinic. In-office interrogation 06/18/2026, dual-chamber ICD.\nNormal sensing, impedance and thresholds. Battery good. No ventricular tachyarrhythmia episodes since the last check; no shocks or ATP since implant. Ventricular pacing frequent, expected with his AV block.\nImpression: normal ICD function. Continue remote monitoring every 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "office_visit",
+          "start": "2026-07-14T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "state": {"labs": {"Hemoglobin": 13.0}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 5}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-07-14T10:00", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-07-14T10:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-07-14T09:30"},
+            {"procedure": "Venipuncture", "performed": "2026-07-14T10:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2026-07-14T10:10",
+              "body": "Summer check. Best he's felt since winter. Tomatoes coming in. Walks twice a day. No bleeding, stools normal, on pantoprazole once daily since early June per GI. Chest pressure occasionally on the steep part of the hill, eases in a minute or two. No shocks. Ankles swell a little by evening, wears the stockings most days.\nPHQ-9 5. Sleeping well on mirtazapine.\nGI letter and June device check reviewed: both fine.\nExam: vitals reviewed. Heart regular. Lungs clear. Abdomen benign. Trace-1+ ankle edema, symmetric. Knees crepitus, unchanged.\nA/P: blood count should be back near his normal; CBC and CMP today. CAD/angina stable on aspirin, atorvastatin 40, metoprolol, nifedipine, lisinopril. VT s/p ICD, no events. HTN fine. Nifedipine edema stable. MDD partial remission. AWV in September with lipids, flu shot then."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-16a",
+          "kind": "portal_message",
+          "start": "2026-07-16T08:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2026-07-16T08:30",
+              "body": "Paul, good news: your blood count is nearly back to your usual level from before this spring. Kidney, liver and potassium all normal. No changes to your medicines. See you in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "pharmacy",
+          "start": "2026-08-11T09:45",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Pantoprazole renewal",
+              "author": "MA",
+              "date": "2026-08-11T09:45",
+              "body": "Mail order requesting 90-day pantoprazole 40 mg once daily (current prescription from the hospital/GI). Long-term per GI letter 6/2. Approved by PCP x 90 days, 3 refills. Also renewed atorvastatin 40 and lisinopril 20."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T19:30",
+          "reason": "Scheduling question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical and flu shot",
+              "author": "patient",
+              "date": "2026-08-18T19:30",
+              "body": "Is my physical still the 22nd of September? Can I get the flu shot that day or is it too early? Also do I need to fast."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical and flu shot",
+              "author": "front desk",
+              "date": "2026-08-19T09:15",
+              "body": "Hi Mr. Pelletier, yes, Tuesday September 22 at 8:30 with the doctor. Flu shots should be in by then and you can get it at the visit. Please come fasting since the doctor will check cholesterol; water and your morning pills are fine."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

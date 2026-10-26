@@ -1,0 +1,561 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001819",
+   "given": "Nilda",
+   "family": "Mendez",
+   "birth_date": "1988-02-20",
+   "address_line": "47 Hathaway Lane, Westhampton, MA 01027",
+   "phone": "+1-860-555-0173",
+   "email": "nilda.mendez@example.test",
+   "marital_status": "married",
+   "summary": "Elementary school teacher from Westhampton who joined in 2020 with acute promyelocytic leukemia (2018) in remission. SLE diagnosed 2023 on hydroxychloroquine; diminished ovarian reserve 2024; APL relapse 10/2025 treated with ATRA to a second remission; corticosteroid-induced psychosis 4/2026 during a lupus flare, resolved.",
+   "events": [
+    {
+     "id": "2020-09-15a",
+     "kind": "telephone",
+     "start": "2020-09-15T10:12",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient scheduling",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient call",
+       "author": "front desk",
+       "date": "2020-09-15T10:20",
+       "body": "Caller: patient. Wants to establish primary care with us; no current PCP locally.\nStates hx of leukemia, finished treatment, \"in remission.\" Scheduled new patient visit 9/22 at 8:40.\nInsurance BCBS PPO, verified.\nRecords release forms emailed to pt for (1) prior PCP office and (2) the cancer center where she was treated. She will sign and return."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-22a",
+     "kind": "establish_care",
+     "start": "2020-09-22T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Establish care",
+     "end": "2020-09-22T09:45",
+     "state": {
+      "weight_kg": 62.0,
+      "height_cm": 163.0,
+      "bp": [
+       114,
+       72
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "conditions": [
+      {
+       "label": "Acute promyelocytic leukemia, in remission",
+       "icd10": "C92.41",
+       "action": "diagnosed",
+       "note": "Diagnosed 2018 at age 30, treated at an outside cancer center; treatment completed, complete remission"
+      },
+      {
+       "label": "Family history of hereditary hemorrhagic telangiectasia",
+       "icd10": "Z82.49",
+       "action": "diagnosed",
+       "note": "Patient-reported; relative not specified"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "cholecalciferol 0.05 MG Oral Capsule",
+       "sig": "Take 1 capsule (2000 units) by mouth once daily (OTC)",
+       "dose": {
+        "value": 2000,
+        "unit": "[iU]"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "action": "historical"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "None"
+      },
+      {
+       "item": "Occupation",
+       "value": "Elementary school teacher"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2020-09-22T09:30",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ],
+       "resulted": "2020-09-22T15:10"
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2020-09-22T09:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ],
+       "resulted": "2020-09-22T16:02"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2020-09-22T09:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2020-09-22T08:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2020-09-22T12:30",
+       "body": "NEW PATIENT VISIT\n\nCC: establish care.\n\nHPI: 32 y/o woman, elementary school teacher, new to the practice. Her one medical issue is acute promyelocytic leukemia, diagnosed 2018 when she was 30 and treated at an outside cancer center. She says treatment is finished and she was told she is in complete remission. Does not have the details of her treatment with her; release signed, records requested from the cancer center and from her prior PCP.\nCurrently feels well. Good energy. Denies fevers, sweats, weight change, bruising, nosebleeds, gum bleeding, joint pain, rash.\n\nPMH: APL 2018, treated, in CR.\nPSH: none.\nMeds: vitamin D3 2000 units daily (OTC).\nAllergies: NKDA.\nFH: mother - rheumatoid arthritis. Maternal aunt - SLE. Father - HTN. She also mentions hereditary hemorrhagic telangiectasia \"runs in the family,\" but isn't sure which relative has it.\nSH: teaches elementary school. Never smoker. No alcohol. No drug use.\nGYN: menses regular.\nHealth maintenance: cervical screening done at prior office 2019, told normal. Not sure when last tetanus shot was.\n\nROS: negative except as above.\n\nExam: BP 116/69, HR 72, T 36.7, SpO2 96%, wt 62.0 kg, ht 163.1 cm, BMI 23.3.\nWell-appearing, NAD. Skin: no petechiae, no bruising, no rash. HEENT: conjunctivae pink, oropharynx clear, gums normal. Neck: supple, no lymphadenopathy, thyroid normal. CV: RRR, normal S1/S2, no murmurs. Lungs: CTA bilaterally. Abd: soft, nontender, no hepatosplenomegaly. Ext: no edema. Neuro: alert, CN intact, strength and gait normal.\n\nPHQ-2: 0.\n\nA/P:\n1. Acute promyelocytic leukemia, in complete remission (dx 2018, outside treatment completed). Asymptomatic, exam benign. CBC w/ diff and CMP today as baseline. Will review cancer center records when they arrive.\n2. Health maintenance: flu vaccine given today. Cervical screening 2019 normal per pt - confirm on records; next due 2024. HIV/HCV screening at her physical. Tetanus status - check prior records.\n3. Vitamin D3 OTC - continue.\n\nRTC ~1 year for annual physical, sooner prn."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-23a",
+     "kind": "portal_message",
+     "start": "2020-09-23T07:55",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2020-09-23T07:55",
+       "body": "Hi Nilda,\nNice meeting you yesterday. Your labs look good. Blood counts are healthy (hemoglobin 13.5, white count 7.4, platelets 262); the monocyte percentage in the differential is a hair over the lab's cutoff at 9%, which doesn't mean anything on its own. Kidney and liver tests are normal.\nWe'll be in touch once your records come in. See you next year for your physical."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-06a",
+     "kind": "outside_records",
+     "start": "2020-10-06T11:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Outside records received",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Cancer center treatment summary",
+       "author": "hematology/oncology",
+       "date": "2020-10-06T11:20",
+       "body": "OUTSIDE RECORD - received by fax 10/06/2020\nSource: outside cancer center, leukemia program. Survivorship summary.\n\nPatient: Nilda Mendez, DOB 02/20/1988.\nDiagnosis: acute promyelocytic leukemia, diagnosed 2018.\nStatus: treatment completed at this center. Patient achieved complete remission and remains in remission at last evaluation.\nRecommendations: routine care with primary care physician; report new fatigue, bleeding or bruising promptly; CBC at least yearly."
+      },
+      {
+       "type": "Progress Notes",
+       "title": "Outside records review",
+       "author": "PCP",
+       "date": "2020-10-08T17:40",
+       "body": "Records review.\n- Cancer center survivorship summary: APL dx 2018, treatment completed there, in CR. Packet does not include treatment specifics. They suggest yearly CBC with PCP - will do with physicals.\n- Prior PCP records: cervical cytology with HPV co-test 2019 - normal (NILM, HPV negative). Last tetanus booster 2012 -> next due 2022. No other active problems listed.\nScanned to chart. Problem list updated."
+      }
+     ]
+    },
+    {
+     "id": "2021-01-26a",
+     "kind": "telephone",
+     "start": "2021-01-26T13:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "COVID vaccine question",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "COVID vaccine question",
+       "author": "RN",
+       "date": "2021-01-26T13:15",
+       "body": "Pt called asking whether her leukemia history means she should or shouldn't get the COVID vaccine, and whether teachers can sign up yet.\nReviewed chart: APL in remission, no current treatment. Advised there is no reason from her history to avoid the vaccine and we recommend it once she is eligible. Gave her the state sign-up info; educators expected in an upcoming phase.\nPt verbalized understanding."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-06a",
+     "kind": "portal_message",
+     "start": "2021-04-06T19:42",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "COVID vaccine record",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-03-10T15:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-03-31T15:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "COVID vaccine record",
+       "author": "patient",
+       "date": "2021-04-06T19:42",
+       "body": "Hi - I got both COVID shots at the regional vaccine site, first one 3/10 and second 3/31. I attached a picture of my card so you have it. Arm was sore for a day, that's it.\nNilda"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: COVID vaccine record",
+       "author": "MA",
+       "date": "2021-04-07T09:10",
+       "body": "Thanks Nilda - I checked the card image and entered both doses (3/10/21 and 3/31/21) in your immunization record."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-12a",
+     "kind": "annual_physical",
+     "start": "2021-08-12T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2021-08-12T09:58",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ],
+       "resulted": "2021-08-12T14:20"
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-08-12T09:58",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ],
+       "resulted": "2021-08-12T15:40"
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-08-12T09:58",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ],
+       "resulted": "2021-08-12T15:40"
+      },
+      {
+       "panel": null,
+       "collected": "2021-08-12T09:58",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ],
+       "resulted": "2021-08-13T10:15"
+      },
+      {
+       "panel": null,
+       "collected": "2021-08-12T09:58",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ],
+       "resulted": "2021-08-13T10:15"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2021-08-12T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2021-08-12T11:50",
+       "body": "ANNUAL PHYSICAL - 33F\n\nInterval: doing well. No illnesses this year. Summer off from school; back to the classroom in a few weeks. Energy good. No bruising or bleeding. Both COVID vaccine doses done in the spring.\n\nMeds: vitamin D3 2000 units daily.\nAllergies: NKDA.\nSH: never smoker, no alcohol. Exercises - walks most days.\nGYN: regular menses.\n\nROS: neg.\n\nExam: BP 116/72, HR 67, wt 61.8 kg, BMI 23.2.\nGen: well. HEENT: normal. Neck: no LAD, no thyroid enlargement. CV: RRR, no murmur. Lungs: clear. Abd: soft, NT, no organomegaly. Skin: no petechiae, no rash. Ext: no edema. Neuro: grossly normal.\n\nPHQ-2: 0.\n\nA/P:\n1. Preventive: CBC w/ diff, CMP, lipid panel. One-time HIV and hepatitis C screening today - she agrees. Tetanus due next year. Flu shot this fall - nurse visit.\n2. APL in CR - asymptomatic, yearly CBC as cancer center suggested; drawn today.\nRTC 1 yr."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-13a",
+     "kind": "portal_message",
+     "start": "2021-08-13T12:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2021-08-13T12:30",
+       "body": "Hi Nilda - all of your labs from the physical are normal. Blood counts normal, kidney and liver normal. Cholesterol looks good: LDL 98, HDL 53. HIV and hepatitis C screens are negative.\nEnjoy the rest of the summer!"
+      }
+     ]
+    },
+    {
+     "id": "2021-10-21a",
+     "kind": "nurse_visit",
+     "start": "2021-10-21T15:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-21T15:50"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-21T15:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Influenza vaccine",
+       "author": "RN",
+       "date": "2021-10-21T15:55",
+       "body": "Influenza vaccine (quadrivalent) 0.5 mL IM, left deltoid. Screening questions negative, no egg/vaccine reactions in the past. Current VIS provided. Observed 15 min, no reaction. Pt left in good condition."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-08a",
+     "kind": "portal_message",
+     "start": "2022-03-08T20:14",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Immunization record request",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Immunization record",
+       "author": "patient",
+       "date": "2022-03-08T20:14",
+       "body": "Hello, the school district HR office is asking for a copy of my vaccine record (including COVID) for my file. Can you send it or put it on the portal? Thank you!"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Immunization record",
+       "author": "front desk",
+       "date": "2022-03-09T08:45",
+       "body": "Hi Ms. Mendez, your immunization record has been printed to PDF and posted under Documents in the portal. Let us know if HR needs it on letterhead."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-12a",
+     "kind": "annual_physical",
+     "start": "2022-07-12T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "medications": [
+      {
+       "drug": "folic acid 1 MG Oral Tablet",
+       "sig": "Take 1 tablet (1 mg) by mouth once daily",
+       "dose": {
+        "value": 1,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Preconception supplement",
+       "action": "start"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2022-07-12T10:42",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ],
+       "resulted": "2022-07-12T15:05"
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-07-12T10:42",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ],
+       "resulted": "2022-07-12T16:20"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2022-07-12T10:40"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-11-20T11:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2022-07-12T10:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-07-12T10:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2022-07-12T12:20",
+       "body": "ANNUAL PHYSICAL - 34F\n\nInterval: no new medical problems. Got a COVID booster at a pharmacy in 11/2021 (per pt; recorded). She has started trying to conceive this summer and she wants to make sure she is \"ready.\"\nFeels well. No bruising/bleeding, no joint pain, no rash.\n\nMeds: vitamin D3 2000 units daily.\nAllergies: NKDA.\nSH: never smoker, no alcohol, no drugs.\nGYN: cycles regular.\n\nROS: neg.\n\nExam: BP 111/81, HR 60, wt 62.2 kg.\nWell-appearing. HEENT nl. CV RRR, no m/r/g. Lungs clear. Abd benign. Skin clear, no petechiae. Ext no edema. Neuro nonfocal.\n\nPHQ-2: 0.\n\nA/P:\n1. Preconception: start folic acid 1 mg daily - sent to pharmacy. Avoid alcohol, continue vitamin D. Reviewed calling us/OB once pregnant.\n2. Preventive: tetanus-diphtheria-pertussis booster given today (last tetanus 2012). CBC, CMP. Flu and COVID in the fall.\n3. APL in CR: CBC today.\nRTC 1 yr."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-14a",
+     "kind": "portal_message",
+     "start": "2022-07-14T08:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2022-07-14T08:10",
+       "body": "Nilda - labs from your physical look fine. Blood count is healthy (hemoglobin 12.9, platelets 260) - the MCH, one of the red cell measurements, flagged just over the range at 31.5, which isn't significant. Kidney and liver normal. Folic acid should be ready at the pharmacy. Good luck!"
+      }
+     ]
+    },
+    {
+     "id": "2022-10-14a",
+     "kind": "nurse_visit",
+     "start": "2022-10-14T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2022-10-14T15:35"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-14T15:38"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-14T15:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Flu and COVID vaccines",
+       "author": "RN",
+       "date": "2022-10-14T15:45",
+       "body": "Flu vaccine 0.5 mL IM right deltoid. COVID-19 bivalent booster IM left deltoid. Screening reviewed - no contraindications, not currently pregnant per pt. VIS/EUA fact sheet given. Observed 15 min without reaction."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

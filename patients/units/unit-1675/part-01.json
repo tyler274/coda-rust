@@ -1,0 +1,508 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001675",
+      "given": "Yvette",
+      "family": "Reed",
+      "birth_date": "1996-02-01",
+      "address_line": "62 Lathrop Street",
+      "phone": "+1-774-555-0158",
+      "email": "yvette.reed@example.test",
+      "marital_status": "married",
+      "summary": "Thirty-year-old HR coordinator with obesity and gestational hypertension in her first pregnancy who joined the practice after that delivery. Her second pregnancy develops preeclampsia at 26 weeks that turns severe at 34 weeks, ending in a repeat cesarean; the practice manages postpartum blood pressure until nifedipine is stopped.",
+      "events": [
+        {
+          "id": "2024-03-27a",
+          "kind": "telephone",
+          "start": "2024-03-27T10:12",
+          "reason": "New patient scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2024-03-27T10:12",
+              "body": "Caller is a 28 y/o woman wanting a new PCP, started a job in January with PPO coverage through her employer. Had a baby by C-section in January, says she is doing fine, OB still following her for the postpartum part. No PCP since college health. Booked new patient physical 4/9 at 9:00. Sent release form for prior primary care and her OB group, she signed it on the portal same day. Reminded her to bring any meds/vitamins she takes."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-05a",
+          "kind": "outside_records",
+          "start": "2024-04-05T14:30",
+          "reason": "Prior primary care and obstetric records",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-10-18T10:00"
+            },
+            {
+              "vaccine": "Influenza, unspecified",
+              "date": "2023-10-18T10:05"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2023-06-21T09:30",
+              "text": "Specimen: ThinPrep cervical cytology. Specimen adequacy: satisfactory for evaluation, endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy (NILM)."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records received: prior primary care and OB group",
+              "author": "MA",
+              "date": "2024-04-05T14:30",
+              "body": "Records received by portal upload and fax, 31 pages, scanned to media.\n\nPrior primary care (college health center, last visit 2019): sports physical forms, immunization record. Surgical history: laparoscopic appendectomy 2014, uncomplicated.\n\nOB group, 2023-2024: G1 prenatal care starting 06/2023. Pap 6/21/2023 NILM. Tdap and flu shot 10/18/2023. Gestational hypertension diagnosed in the third trimester, no proteinuria documented in the pages received. Delivered 01/2024 by low transverse cesarean section; operative report not included in the pages sent. Postpartum visit note: blood pressure back to normal, no BP medication on discharge med list.\n\nAbstracted to chart: Pap, Tdap/flu dates. Flagged for PCP review before 4/9 visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-09a",
+          "kind": "establish_care",
+          "start": "2024-04-09T09:00",
+          "end": "2024-04-09T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care, new patient physical",
+          "conditions": [
+            {
+              "label": "History of gestational hypertension",
+              "icd10": "Z87.59",
+              "action": "history",
+              "onset": "2023-12-01",
+              "note": "First pregnancy, delivered by cesarean 01/2024; resolved postpartum"
+            },
+            {
+              "label": "Obesity, unspecified",
+              "action": "diagnosed",
+              "onset": "2024-04-09",
+              "note": "BMI 31"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social drinking, a drink or two a month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Human resources coordinator"
+            }
+          ],
+          "state": {
+            "weight_kg": 84.5,
+            "height_cm": 165.1,
+            "labs": {
+              "Hemoglobin A1c": 5.3,
+              "Thyroid Stimulating Hormone": 1.8,
+              "Low Density Lipoprotein": 94
+            }
+          },
+          "vitals": {
+            "weight_kg": 84.5,
+            "height_cm": 165.1
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-04-09T10:15",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-04-09T10:15",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-04-09T10:15",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-04-09T10:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2024-04-09T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-04-09T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Physical",
+              "author": "PCP",
+              "date": "2024-04-09T10:40",
+              "body": "NEW PATIENT VISIT\n\nYvette is 28, here to set up primary care. She had her first baby by C-section about 12 weeks ago and has been released from routine OB follow-up. Feels well. Sleep is broken with the baby but she is managing, good support at home. Back at work as an HR coordinator, mostly desk-based.\n\nOB history: G1P1. That pregnancy was complicated by gestational hypertension late in the third trimester; per the OB records she did not need a BP medicine after delivery and her pressure was normal at the postpartum check. Low transverse cesarean, January 2024. No diabetes in that pregnancy that she knows of.\n\nPMH: as above. No chronic medical problems.\nPSH: laparoscopic appendectomy 2014 (age 18); low transverse cesarean 01/2024.\nMeds: none, no supplements.\nAllergies: NKDA.\nFamily hx: mother had preeclampsia with her pregnancies and has high blood pressure. Father with hypertension, diagnosed in his mid-40s. Sister had gestational diabetes.\nSocial: never smoker. Alcohol occasionally, a drink or two a month. No drugs. Walks with the stroller on weekends.\n\nROS: no headaches, chest pain, palpitations, shortness of breath, leg swelling. Incision healed. Mood good, PHQ-2 negative.\n\nExam:\nVitals as charted. BMI 31.\nGen: well-appearing, pleasant.\nHEENT: normal. Neck supple, thyroid not enlarged.\nHeart: RRR, no murmur.\nLungs: clear.\nAbd: soft, nontender; healed Pfannenstiel incision and small laparoscopic port scars.\nExt: no edema.\nSkin: no rashes.\nPsych: normal mood and affect.\n\nAssessment / plan:\n1. Health maintenance. Pap 6/2023 normal at OB, next cytology due 2026. Tdap and flu given 10/2023 in pregnancy. Will do flu and updated COVID this fall. HIV and hep C screening today (once in adulthood).\n2. Obesity, BMI 31. Discussed this gently; she would like to lose the pregnancy weight and get back to the gym. Baseline CBC, CMP, lipids, A1c, TSH. Sister's GDM and her weight are reasons to keep an eye on A1c.\n3. History of gestational hypertension. Her BP is normal today. I explained that high blood pressure in pregnancy raises the chance of hypertension later and of it recurring in a future pregnancy, so we will check her BP every year and she should let her OB know about it early in any next pregnancy. Strong family history adds to that.\n\nReturn in 1 year for physical, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-10a",
+          "kind": "portal_message",
+          "start": "2024-04-10T16:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2024-04-10T16:20",
+              "body": "Hi Yvette, everything from yesterday came back fine. Blood counts, kidney and liver tests, sugar (A1c), thyroid and cholesterol are all in the normal range, and the HIV and hepatitis C screens are negative. Nothing to change. We'll repeat a few of these at your physical next spring. Good to meet you!"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-22T17:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T17:17"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T17:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2024-10-22T17:25",
+              "body": "Here after work for flu and COVID. Not pregnant, feeling well today, no fever. No prior vaccine reactions. VIS sheets given.\nInfluenza (trivalent) 0.5 mL IM right deltoid.\nCOVID-19 mRNA 2024-25 formula 0.3 mL IM left deltoid.\nWaited 15 min in the lobby, no reaction. Left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "portal_message",
+          "start": "2025-01-21T12:48",
+          "reason": "Employer wellness form",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Wellness form for work",
+              "author": "patient",
+              "date": "2025-01-21T12:48",
+              "body": "Hi, our benefits program gives a premium discount if a doctor signs the biometric screening form. It asks for BP, BMI and cholesterol from the last 12 months. Can I upload it here or do I need to come in? I can bring it to my physical in April too if that's easier. Thanks, Yvette"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Wellness form for work",
+              "author": "MA",
+              "date": "2025-01-22T09:05",
+              "body": "Hi Yvette, you can upload it here. Your labs and vitals from April 9 are inside the 12-month window, so we can fill it from those. We'll put it in the doctor's folder to sign and upload it back to you within a few business days."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Wellness form for work",
+              "author": "MA",
+              "date": "2025-01-24T15:30",
+              "body": "The signed form is attached to this message. Let us know if HR needs anything else."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-15a",
+          "kind": "annual_physical",
+          "start": "2025-04-15T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "weight_kg": 85.4
+          },
+          "vitals": {
+            "weight_kg": 85.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-15T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-04-15T09:30",
+              "results": [
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-04-15T09:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-15T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-04-15T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-04-15T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-04-15T09:20",
+              "body": "Annual exam.\n\nDoing well. Baby is 15 months, sleeping through now. Joined the gym at work in the fall, goes twice a week when she can; weight about the same as last year. No headaches, chest pain, dyspnea, swelling. Periods regular. No new meds, no supplements.\nAllergies NKDA. Never smoker, alcohol rare.\nFH unchanged (mother preeclampsia + HTN, father HTN, sister GDM).\n\nExam: vitals as charted, BP normal. BMI 31. Well appearing. Thyroid normal. Heart RRR no murmur. Lungs clear. Abdomen soft, nontender. No edema. Mood and affect normal. PHQ-2 0.\n\nA/P\n- Preventive: flu + COVID done in October. Pap next due 2026. Labs today: CBC, CMP, lipids, A1c.\n- Obesity: BMI essentially unchanged. Talked about adding a third weekly workout, the lunch-hour walking group at her office, and cutting back on takeout. She is not interested in medication for weight right now, which is reasonable.\n- Hx gestational HTN: BP normal again. Recheck yearly. If she plans another pregnancy, start a prenatal vitamin beforehand and tell OB about the prior GHTN early.\n\nRTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-17a",
+          "kind": "portal_message",
+          "start": "2025-04-17T11:02",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical labs reviewed",
+              "author": "PCP",
+              "date": "2025-04-17T11:02",
+              "body": "Yvette, your labs are normal: blood count, kidney, liver, A1c and cholesterol all fine and close to last year. Keep up the gym. See you next spring."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-27a",
+          "kind": "portal_message",
+          "start": "2025-10-27T07:51",
+          "reason": "Positive pregnancy test",
+          "conditions": [
+            {
+              "label": "Pregnant state, incidental",
+              "icd10": "Z33.1",
+              "action": "diagnosed",
+              "onset": "2025-09-17",
+              "note": "LMP 2025-09-17 by patient report"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "prenatal multivitamin Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pregnancy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pregnant!",
+              "author": "patient",
+              "date": "2025-10-27T07:51",
+              "body": "Good morning, wanted to let you know I got a positive pregnancy test this weekend. Last period started 9/17. I started taking a prenatal vitamin from the drugstore (one a day, has folic acid, iron and DHA). I called my OB from last time and they have me in for an intake 11/12. Should I still get the flu shot and the COVID one this year? And is there anything you want me to do before I see OB? Thank you!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pregnant!",
+              "author": "PCP",
+              "date": "2025-10-27T12:34",
+              "body": "Congratulations, Yvette! Yes to both vaccines; flu and COVID are recommended in pregnancy and we can give them together. Keep taking the prenatal vitamin. At your OB intake, make sure they know about the gestational hypertension last time and your mom's history, since that changes how closely they watch your blood pressure. The front desk will reach out to book the shots this week."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-30a",
+          "kind": "nurse_visit",
+          "start": "2025-10-30T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines, pregnant",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-30T16:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-30T16:47"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-30T16:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2025-10-30T17:00",
+              "body": "About 6 weeks pregnant by LMP. Afebrile, feels well, a little queasy in the mornings. BP normal today. Thimerosal-free flu vaccine 0.5 mL IM L deltoid; COVID-19 mRNA 2025-26 formula 0.5 mL IM R deltoid. VIS given, 15 minute wait without problems. Pt states OB intake is 11/12."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-12a",
+          "kind": "outside_records",
+          "start": "2025-12-12T13:15",
+          "reason": "OB prenatal update",
+          "medications": [
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily at bedtime",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Preeclampsia prophylaxis, prior gestational hypertension"
+            },
+            {
+              "drug_text": "calcium carbonate 500 MG Chewable Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pregnancy supplementation"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "OB prenatal care letter",
+              "author": "obstetrics",
+              "date": "2025-12-12T13:15",
+              "body": "Re: Yvette Reed, DOB 02/01/1996\n\nDear Doctor,\n\nThis is to update you that Ms. Reed has started prenatal care with our group for her second pregnancy (G2P1).\n\nNew OB visit 11/12/2025 at 8w0d: dating ultrasound concordant with her LMP of 9/17/2025; EDD 6/24/2026. Routine prenatal laboratory studies were unremarkable. Blood pressure normal.\n\nSeen again 12/10/2025 at 12w0d. Because her first pregnancy was complicated by gestational hypertension, she meets criteria for low-dose aspirin, and we started aspirin 81 mg nightly today, to continue until delivery. We also started calcium carbonate 500 mg twice daily. She continues her prenatal vitamin. The pregnancy has otherwise been uncomplicated.\n\nPrior cesarean: we will discuss mode of delivery in the third trimester.\n\nCurrent medications: prenatal vitamin daily; aspirin 81 mg daily; calcium carbonate 500 mg BID.\nAllergies: NKDA.\n\nWe will keep you informed.\n\nObstetrics & Gynecology"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

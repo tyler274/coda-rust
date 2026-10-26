@@ -1,0 +1,834 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002050",
+      "given": "Rodney",
+      "family": "Ferraro",
+      "birth_date": "1979-10-20",
+      "address_line": "27 Kellogg Avenue, Apt 2B",
+      "phone": "+1-646-555-0131",
+      "email": "rodney.ferraro@example.test",
+      "marital_status": "single",
+      "summary": "Unemployed construction laborer with severe opioid use disorder on buprenorphine from an outside program, chronic hepatitis C, hypertension and recurrent depression who joins in 2022. In 2025 he has three episodes of MSSA endocarditis: aortic valve in March, a relapse with renal infarction in June, and mitral valve involvement with embolic stroke in December, each treated with six weeks of cefazolin. He recovers without deficit and reports no injecting since.",
+      "events": [
+        {
+          "id": "2022-09-13a",
+          "kind": "establish_care",
+          "start": "2022-09-13T09:40",
+          "end": "2022-09-13T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Opioid use disorder",
+              "action": "diagnosed",
+              "note": "Severe. On buprenorphine/naloxone through an outside addiction treatment program; intermittent injection use."
+            },
+            {
+              "label": "Chronic hepatitis C",
+              "action": "diagnosed"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed"
+            },
+            {
+              "label": "Major depressive disorder, recurrent, moderate",
+              "action": "diagnosed"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "diagnosed",
+              "note": "1 pack per day, 20 pack-years"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "buprenorphine 8 MG / naloxone 2 MG Sublingual Film",
+              "action": "historical",
+              "sig": "Dissolve 1 film under the tongue daily",
+              "dose": {
+                "value": 1,
+                "unit": "film"
+              },
+              "frequency": "DAILY",
+              "route": "Sublingual",
+              "course": "chronic",
+              "reason": "Opioid use disorder; prescribed by outside addiction treatment program"
+            },
+            {
+              "drug": "naloxone hydrochloride 40 MG/ML Nasal Spray",
+              "action": "historical",
+              "sig": "Spray 4 mg into one nostril for suspected overdose; may repeat in 2-3 minutes in the other nostril",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Nasal",
+              "course": "chronic",
+              "reason": "Overdose reversal"
+            },
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Depression"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              136,
+              86
+            ],
+            "weight_kg": 80.3,
+            "height_cm": 178.0,
+            "labs": {
+              "Total Cholesterol": 191,
+              "Hemoglobin A1c": 5.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "rr",
+            "weight_kg",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 11
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction laborer, currently unemployed"
+            },
+            {
+              "item": "Housing status",
+              "value": "Lives alone in an apartment"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-13T10:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-13T10:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-13T10:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T10:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Hepatitis C Viral Load, PCR",
+                  "value": 1840000
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-09-13T09:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-13T10:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "records-prior-pcp",
+              "action": "placed",
+              "order": "Request records from prior primary care office",
+              "category": "procedure",
+              "reason": "New patient"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-09-13T10:40",
+              "body": "NEW PATIENT VISIT\n\n42M establishing care. Wants a doctor closer to home than his old office; records release signed today.\n\nWhat he wants from us: someone to keep his blood pressure and mood meds going and to know him if something goes wrong.\n\nPMH (per pt, records requested):\n- Opioid use disorder, severe. Gets buprenorphine/naloxone 8/2 mg film daily from an outside office-based addiction program, sees them monthly with urine testing there. Has naloxone at home. Honest that he still injects \"once in a while\" - last time a few months ago. Uses new needles from the syringe service most of the time, not always.\n- Chronic hepatitis C. Knows he has it. No liver symptoms.\n- Hypertension on amlodipine 5 mg.\n- Depression, recurrent - on sertraline 50 mg, says it takes the edge off.\n\nPSH: ORIF right femur 2020. I&D left forearm abscess 2021.\n\nMeds: bup/nlx 8/2 mg SL daily (program), naloxone 4 mg nasal PRN, amlodipine 5 mg daily, sertraline 50 mg daily.\nAllergies: NKDA.\n\nFHx: father MI at 58, also had HTN. Mother T2DM. Brother with opioid use disorder.\n\nSH: construction laborer, out of work right now. Lives alone, apartment in Amherst. Smokes 1 ppd x 20 yrs. Alcohol maybe 1-2 drinks a month. Injection opioid use as above, no other drugs he'll name.\n\nROS: tired a lot, sleep broken. No chest pain, no SOB, no fevers, no jaundice, no abdominal pain.\n\nExam: well-appearing, thin. HEENT normal. Neck supple, no LAD. Heart regular rate and rhythm, no murmur. Lungs clear. Abd soft, nontender, no hepatosplenomegaly. Ext: old healed scar left forearm, well-healed lateral R thigh scar; scattered old track marks antecubital fossae, no erythema or fluctuance. Neuro grossly normal.\nPHQ-9 11. AUDIT-C 1.\n\nA/P\n1. HTN - BP fine today on amlodipine 5. Continue.\n2. MDD, recurrent, moderate - PHQ 11. Continue sertraline 50. He does not want counseling right now. Safety: denies SI.\n3. OUD, severe, on buprenorphine - continue with his program; I'll be the backup. Naloxone in hand. Talked through safer injection basics when he does use.\n4. Chronic HCV - viral load today, liver panel.\n5. Tobacco - not ready to quit, open to talking again.\n6. Prevention - HIV screen, hep B serologies (if nonimmune will vaccinate), lipids, A1c. Flu/COVID next month at nurse visit.\n\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-15a",
+          "kind": "portal_message",
+          "start": "2022-09-15T16:20",
+          "orders": [
+            {
+              "id": "heplisav-series",
+              "action": "placed",
+              "order": "Hepatitis B vaccine series (Heplisav-B)",
+              "category": "procedure",
+              "reason": "Hepatitis B nonimmune"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2022-09-15T16:20",
+              "body": "Hi Rodney,\n\nYour labs from Tuesday are in. Kidneys, liver tests, blood counts, cholesterol and sugar all look fine. HIV test is negative.\n\nThe hepatitis C viral load is positive (1,840,000), which fits with what you already knew - it means the virus is active in your blood. Your liver enzymes are normal right now.\n\nYou are not immune to hepatitis B, so I'd like to start the 2-shot hep B vaccine. We can do the first one with your flu shot in October.\n\nTalk soon,\nPrimary care"
+            }
+          ]
+        },
+        {
+          "id": "2022-09-21a",
+          "kind": "outside_records",
+          "start": "2022-09-21T11:05",
+          "orders": [
+            {
+              "id": "records-prior-pcp",
+              "action": "done",
+              "date": "2022-09-21T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "front desk",
+              "date": "2022-09-21T11:05",
+              "body": "Faxed records received, 23 pages, from his previous primary care office, scanned to chart.\n\nSummary sheet from that office:\nProblems: opioid use disorder (on buprenorphine, outside prescriber); hepatitis C, chronic; hypertension; depression, recurrent; tobacco use.\nSurgical: ORIF right femur (2020); incision and drainage, abscess L forearm (2021).\nMedications: amlodipine 5 mg daily; sertraline 50 mg daily; naloxone nasal spray PRN; buprenorphine-naloxone 8-2 mg film daily (outside).\nAllergies: NKDA.\nLast visit there about 8 months ago.\n\nRouted to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-12a",
+          "kind": "nurse_visit",
+          "start": "2022-10-12T14:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-12T14:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-12T14:22"
+            },
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2022-10-12T14:24"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-12T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2022-10-12T14:35",
+              "body": "In for flu, COVID booster and first Heplisav-B. Feeling well, no fever. Screening questions negative, NKDA.\nFlu 0.5 mL IM L deltoid. Pfizer bivalent 0.3 mL IM R deltoid. Heplisav-B 0.5 mL IM L deltoid, below flu site.\nVIS given. Waited 15 min, fine. Dose 2 Heplisav due in 1 month - scheduled mid-November."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-14a",
+          "kind": "nurse_visit",
+          "start": "2022-11-14T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis B vaccine dose 2",
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2022-11-14T10:35"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-11-14T10:35"
+            }
+          ],
+          "orders": [
+            {
+              "id": "heplisav-series",
+              "action": "done",
+              "date": "2022-11-14T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Heplisav-B #2",
+              "author": "RN",
+              "date": "2022-11-14T10:45",
+              "body": "Second Heplisav-B, 0.5 mL IM R deltoid. Tolerated first dose fine except sore arm. Series complete. No reaction during wait."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-08a",
+          "kind": "office_visit",
+          "start": "2022-12-08T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up hypertension and mood",
+          "state": {
+            "bp": [
+              134,
+              84
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-12-08T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2022-12-08T15:55",
+              "body": "F/u BP and mood.\n\nS: Doing \"about the same.\" Takes amlodipine most days, misses maybe one a week. Sertraline daily. Still with the program, last visit there 2 wks ago, says urine was fine. Sleep still choppy. Smoking a pack a day, no change.\n\nO: BP and vitals per flowsheet. Comfortable. Heart RRR, no murmur. Lungs clear. Skin: no new injection sites seen, arms clean.\nPHQ-9 9.\n\nA/P:\n- HTN: at goal. No change.\n- Depression: PHQ down to 9. Continue sertraline 50. Gave the number for the counseling center again.\n- OUD: stable on buprenorphine through program.\n- HCV: reviewed viral load again, he understands it's active.\n- Smoking: brief counseling, not ready.\n- Hep B series done.\n\nRTC 3 mo."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-26a",
+          "kind": "pharmacy",
+          "start": "2023-01-26T09:10",
+          "medications": [
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Prescription taken over by primary care"
+            },
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy refill request - amlodipine",
+              "author": "MA",
+              "date": "2023-01-26T09:10",
+              "body": "Refill request from pharmacy for amlodipine 5 mg - last fill was under his old doctor and there are no refills left. Seen here 12/8, BP ok. Sent new Rx: amlodipine 5 mg #90, 3 refills, per PCP standing refill protocol."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-20a",
+          "kind": "office_visit",
+          "start": "2023-03-20T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "3-month follow-up",
+          "state": {
+            "bp": [
+              132,
+              82
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 8
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Prescription taken over by primary care"
+            },
+            {
+              "drug": "naloxone hydrochloride 40 MG/ML Nasal Spray",
+              "action": "stop",
+              "reason": "Prescription taken over by primary care"
+            },
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Depression"
+            },
+            {
+              "drug": "naloxone hydrochloride 40 MG/ML Nasal Spray",
+              "action": "start",
+              "sig": "Spray 4 mg into one nostril for suspected overdose; may repeat in 2-3 minutes in the other nostril",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Nasal",
+              "course": "chronic",
+              "reason": "Overdose reversal"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-03-20T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-03-20T09:05",
+              "body": "Routine f/u.\n\nFeels a bit better now that the days are longer. Taking amlodipine and sertraline. Program visits monthly, no use since before Christmas by his account. Still 1 ppd.\n\nVitals reviewed, BP 130s/80s. Heart regular, no murmur, lungs clear, no edema. Arms without new marks.\nPHQ-9 8.\n\nPlan\n- HTN at goal on amlodipine 5.\n- Depression improving, sertraline 50 - I'm taking over this Rx, sent 90 days with refills.\n- New naloxone 2-pack sent, his old one expires this spring.\n- OUD: continue program. Smoking: not ready, revisit.\n- Annual physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "outside_records",
+          "start": "2023-04-11T13:30",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Care coordination letter - addiction treatment program",
+              "author": "addiction medicine",
+              "date": "2023-04-11T13:30",
+              "body": "Re: Rodney Ferraro, DOB 10/20/1979\n\nTo the primary care physician:\n\nThis letter is to confirm that Mr. Ferraro is enrolled in our office-based opioid treatment program and is prescribed buprenorphine/naloxone 8 mg/2 mg sublingual film once daily. He attends monthly visits with toxicology monitoring. He has had occasional returns to use over the past year and remains engaged. He carries naloxone.\n\nWe would appreciate being notified of any hospitalizations or new controlled medications.\n\nAllergies: NKDA.\n\nAddiction medicine, outside office-based treatment program"
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "office_visit",
+          "start": "2023-06-13T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "3-month follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-06-14a",
+          "kind": "telephone",
+          "start": "2023-06-14T11:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment outreach",
+              "author": "front desk",
+              "date": "2023-06-14T11:00",
+              "body": "Called re missed visit yesterday. Pt said he forgot, phone had been off. Offered video visit since he doesn't have a ride this month - booked 6/29 telehealth."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-29a",
+          "kind": "telehealth_visit",
+          "start": "2023-06-29T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up (video)",
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2023-06-29T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "author": "PCP",
+              "date": "2023-06-29T13:25",
+              "body": "Video visit, pt at home in Amherst, ID confirmed by DOB.\n\nSorry about missing last time. Doing ok. Home BP cuff borrowed from a neighbor: readings he gives me 128-136 over low 80s. Mood steady, PHQ-9 9 by verbal. Taking meds. Still smoking, still with program.\n\nAssessment: HTN controlled by home readings; depression stable on sertraline 50; OUD in treatment.\nPlan: no changes. Physical in September, fasting not needed. Encouraged him to keep the program schedule."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "bp": [
+              136,
+              84
+            ],
+            "weight_kg": 79.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "rr",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-19T09:45",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-19T09:45",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-19T09:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-19T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-09-19T09:40"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2023-09-19T09:41"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-09-19T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-19T09:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-19T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-09-19T09:50",
+              "body": "ANNUAL PREVENTIVE VISIT\n\n43M. Here for physical. No new complaints. Back pain? no. Breathing ok, morning cough from smoking.\n\nInterval: missed June visit, did video instead. Still with the buprenorphine program; says he slipped once in the summer, injected, used a clean kit, no infection after.\n\nMeds: amlodipine 5 daily, sertraline 50 daily, naloxone PRN, bup/nlx 8/2 daily (program).\nAllergies: NKDA.\nFHx unchanged: father MI 58 + HTN, mother T2DM, brother OUD.\nSH: unemployed laborer, lives alone. 1 ppd x ~21 yrs. ETOH 1-2/month.\n\nExam: NAD. HEENT: TMs clear, oropharynx with some dental wear, no lesions. Neck: no thyromegaly or nodes. CV: RRR, no murmur. Lungs: clear, no wheeze. Abd: soft, NT, no organomegaly. Skin: old track scars, no active lesions. Ext: no edema. Neuro: nonfocal.\nPHQ-9 7. AUDIT-C 1.\n\nA/P\n- Health maintenance: PCV20 today (smoker, chronic liver infection) and Tdap - due. Colon screening starts at 45, next year. Not eligible for lung CT yet (age). Flu/COVID in October.\n- HTN on amlodipine 5 - 152/85 on intake today, at goal at every other visit. Recheck next time, no change.\n- Depression - best PHQ yet. Continue sertraline.\n- OUD - continue program; naloxone current.\n- HCV - chronic, liver tests today.\n- Tobacco - 5 min counseling. Not ready. \"Maybe when it gets cold.\"\n- Labs: CMP, CBC, lipid, A1c."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-21a",
+          "kind": "portal_message",
+          "start": "2023-09-21T12:40",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2023-09-21T12:40",
+              "body": "Rodney - all your labs from the physical came back normal: kidneys, liver, blood count, cholesterol and sugar. Nothing to change. See you for flu/COVID shots next month."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-18a",
+          "kind": "nurse_visit",
+          "start": "2023-10-18T11:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-18T11:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2023-10-18T11:52"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-18T11:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2023-10-18T12:05",
+              "body": "Flu 0.5 mL IM L deltoid; Moderna 2023-24 formula 0.5 mL IM R deltoid. No fever today, no prior reactions besides sore arm. VIS given, observed 15 minutes, left in good condition."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-04a",
+          "kind": "telephone",
+          "start": "2023-12-04T16:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill - sertraline",
+              "author": "RN",
+              "date": "2023-12-04T16:10",
+              "body": "Pt called, pharmacy says sertraline has no refills. Checked - last Rx was 90 days x1 refill from March, so he's due. Also asked about naloxone, still has the 2-pack unused, ok.\nSertraline 50 mg #90 + 3 RF sent per protocol. Next visit due Feb - he'll call to book."
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Renewed"
+            },
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Depression"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

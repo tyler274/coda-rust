@@ -1,0 +1,310 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002688",
+      "given": "August",
+      "family": "Curran",
+      "birth_date": "2002-03-08",
+      "address_line": "118 Station Road",
+      "phone": "+1-774-555-0108",
+      "email": "august.curran@example.test",
+      "marital_status": "single",
+      "summary": "Healthy young construction worker who joined in 2024 taking an over-the-counter zinc supplement. A 2025 physical found a high serum zinc and elevated triglycerides; zinc was stopped and normalized. In March 2026 he was admitted with hypertriglyceridemia-induced acute pancreatitis and has since done well on fenofibrate.",
+      "events": [
+        {
+          "id": "2024-09-05a",
+          "kind": "outside_records",
+          "start": "2024-09-05T10:20",
+          "service": "Health Information Management",
+          "reason": "Records from prior practice",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records received from prior pediatric and adolescent practice",
+              "author": "front desk",
+              "date": "2024-09-05T10:20",
+              "body": "Records received by fax from patient's prior pediatric/adolescent practice ahead of his new patient appointment on 9/17. 22 pages. Covers well visits through age 18 (last well visit 2020).\n\nSummary for the chart:\n- No chronic problems listed. No surgeries. No hospitalizations.\n- No known drug allergies.\n- Childhood immunization series documented as complete, including adolescent boosters.\n- Growth and development normal throughout. Sports physicals for high school football, all cleared.\n\nScanned to media. Routed to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "establish_care",
+          "start": "2024-09-17T07:40",
+          "end": "2024-09-17T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "medications": [
+            {"drug_text": "zinc gluconate 50 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily (self-started, over the counter)", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"},
+            {"drug_text": "multivitamin Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic"}
+          ],
+          "state": {"weight_kg": 82.0, "height_cm": 180.0},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 2-3 drinks per week"},
+            {"item": "Occupation", "value": "Construction worker"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-17T08:35", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-17T08:35", "results": [{"test": "Creatinine"}]},
+            {"panel": null, "collected": "2024-09-17T08:35", "results": [
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, low MDM", "performed": "2024-09-17T07:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2024-09-17T08:30",
+              "body": "NEW PATIENT VISIT\n\n22 y/o man here to establish care. Aged out of his pediatric practice a few years ago and hasn't had a doctor since. Works construction (commercial framing crew), employer plan. No complaints today, just wants a doctor on file. Early appt so he can get to the site by 9.\n\nPMH: none. Prior records reviewed, unremarkable.\nPSH: none.\nMeds: none prescribed. Takes zinc gluconate 50 mg once a day, started on his own a while back because a coworker said it keeps you from getting sick. Also a daily multivitamin.\nAllergies: NKDA.\nFHx: father with high blood pressure. Mother gets migraines. No known inherited metabolic problems in the family that he is aware of.\nSHx: lives in Amherst, single. Never smoker, no vaping. Alcohol socially, 2-3 drinks a week. No drugs.\n\nROS: negative in detail.\n\nExam: well appearing, muscular. Vitals as charted.\nHEENT: TMs clear, oropharynx normal. Neck supple, no thyroid enlargement, no nodes.\nHeart RRR, no murmur. Lungs clear.\nAbd soft, NT, no organomegaly.\nExt: no edema. Skin: no rashes, a few healed abrasions on forearms.\nNeuro nonfocal. Mood good, PHQ-2 0.\n\nA/P: healthy young adult establishing care.\n- Baseline CBC, CMP. One-time HIV and hep C screen, he agrees.\n- Zinc: told him I'm not convinced it does much; fine to bring it up again at his physical.\n- Flu shot: none today, nurse visit next month when supply is in.\n- Encouraged sunscreen and hearing protection on site.\n- Physical next summer. He prefers early morning slots."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-20a",
+          "kind": "portal_message",
+          "start": "2024-09-20T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2024-09-20T16:05",
+              "body": "Hi August, your blood count, kidney and liver tests, and electrolytes all came back normal. HIV and hepatitis C screens were negative. Nothing to change. Good to meet you this week. We'll see you for the flu shot next month."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T07:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-10-22T07:25"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-10-22T07:25"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "author": "RN",
+              "date": "2024-10-22T07:35",
+              "body": "In before work for flu vaccine. Denies fever or illness today. No prior vaccine reactions, NKDA. Influenza quadrivalent 0.5 mL IM left deltoid, lot and expiration in MAR. VIS given. Declined COVID vaccine today, says he may get it later. Tolerated well, left after 15 min without issue."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-30a",
+          "kind": "portal_message",
+          "start": "2025-07-30T19:42",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "author": "patient",
+              "date": "2025-07-30T19:42",
+              "body": "hey I have a physical on aug 12 but we're pouring a foundation that whole week and I can't get off. can I do the end of the month instead, early if possible. thanks"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "author": "front desk",
+              "date": "2025-07-31T08:50",
+              "body": "Hi August, no problem. I moved you to Thursday 8/28 at 7:30 AM. Please come fasting (water and black coffee are fine) since the doctor will draw labs that morning."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "annual_physical",
+          "start": "2025-08-12T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-08-28a",
+          "kind": "annual_physical",
+          "start": "2025-08-28T07:30",
+          "end": "2025-08-28T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"labs": {"Triglycerides": 486, "Low Density Lipoprotein": 88, "High Density Lipoprotein": 42, "Total Cholesterol": 198}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2025-08-28T08:15", "resulted": "2025-09-02T11:40", "results": [
+              {"test": "Total Cholesterol", "value": 198},
+              {"test": "High Density Lipoprotein", "value": 42},
+              {"test": "Triglycerides", "value": 486},
+              {"test": "Low Density Lipoprotein", "value": 88},
+              {"test": "Non-HDL Cholesterol", "value": 156}
+            ]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-08-28T08:15", "results": [{"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-08-28T08:15", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2025-08-28T08:15", "resulted": "2025-09-02T11:40", "results": [
+              {"test": "Zinc", "loinc": "5763-8", "unit": "ug/dL", "value": 162}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-08-28T07:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-08-28T08:10",
+              "body": "PREVENTIVE VISIT\n\nAugust is 23, here fasting for his physical. Rescheduled from earlier this month around a work pour. Feels fine. Busy season at work, long days, no injuries this year. Sleeping ok.\n\nMeds: zinc gluconate 50 mg daily (still taking, every day), multivitamin daily. NKDA.\nSocial: never smoker. Drinks socially on weekends, 2-3 drinks a week. No drugs.\nFamily: dad with hypertension, mom migraines.\n\nROS: no chest pain, no shortness of breath, no abdominal pain, no change in bowels, no urinary symptoms. No headaches. PHQ-2 0.\n\nExam: vitals as charted. Well appearing.\nHEENT normal. Neck no nodes, thyroid normal.\nHeart regular, no murmur. Lungs clear bilaterally.\nAbdomen soft, nontender, no hepatosplenomegaly.\nSkin: no rash. Ext: no edema.\nNeuro: nonfocal.\n\nA/P\n1. Health maintenance: fasting lipids, CMP, CBC today. Flu vaccine this fall.\n2. Zinc supplement: 50 mg is more than the daily upper limit for adults. Adding a serum zinc to today's draw to see where he is before we talk about it.\n3. Hearing protection and sunscreen reviewed again.\n\nWill message with results."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-02a",
+          "kind": "portal_message",
+          "start": "2025-09-02T15:20",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results from your physical",
+              "author": "PCP",
+              "date": "2025-09-02T15:20",
+              "body": "Hi August, your results are back. Your blood count and kidney and liver tests are normal. Two things I'd like to go over with you in person: your zinc level is above the normal range, and your triglycerides (a type of blood fat) are elevated even though your cholesterol numbers are fine. The lab also noted no chylomicron layer when your sample was refrigerated, which is reassuring. Nothing urgent, but please book a short visit in the next week or two. The front desk has early slots."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-08a",
+          "kind": "office_visit",
+          "start": "2025-09-08T07:30",
+          "end": "2025-09-08T07:55",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Review laboratory results",
+          "conditions": [
+            {"label": "Hyperzincemia", "icd10": "E83.2", "action": "diagnosed", "onset": "2025-08-28"},
+            {"label": "Hypertriglyceridemia", "action": "diagnosed", "onset": "2025-08-28"}
+          ],
+          "medications": [
+            {"drug_text": "zinc gluconate 50 MG Oral Tablet", "action": "stop", "reason": "Hyperzincemia"}
+          ],
+          "measure": ["bp", "hr", "weight_kg"],
+          "orders": [
+            {"id": "zinc-recheck", "action": "placed", "order": "Zinc, serum", "category": "lab", "reason": "Recheck after stopping supplement"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2025-09-08T07:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Lab Review",
+              "author": "PCP",
+              "date": "2025-09-08T07:55",
+              "body": "S: Here to go over labs from his 8/28 physical. No symptoms. Still taking zinc gluconate 50 mg every day plus a multivitamin. No other supplements, no protein powders. Asked again about family history: he says his dad was in the hospital with pancreatitis about five years ago. He doesn't know details, thinks dad was in for several days. Dad otherwise has blood pressure trouble. No one in the family he knows of with cholesterol or metabolic disorders.\n\nO: Vitals as charted. Looks well.\nSkin: no xanthomas on hands, elbows, knees or eyelids.\nAbd: soft, nontender, liver and spleen not enlarged.\n\nLabs 8/28 (fasting):\n- Lipids: total cholesterol 198, LDL 88, HDL 42, all in range. Triglycerides 486, elevated.\n- Lab comment: refrigerated plasma without a chylomicron layer.\n- Serum zinc 162 mcg/dL (ref 60-120).\n- CMP and CBC normal.\n\nA/P:\n1. Hyperzincemia. Explained to him; most likely from taking 50 mg a day for a long stretch. Stop the zinc. Multivitamin is fine to continue. Repeat zinc in about 3 months.\n2. Hypertriglyceridemia, fasting TG 486 with normal LDL and HDL. No chylomicrons. Will repeat fasting lipids with his physical next year.\n\nHe was fine with the plan. RTC for lab draw in December."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "portal_message",
+          "start": "2025-09-09T21:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "multivitamin",
+              "author": "patient",
+              "date": "2025-09-09T21:14",
+              "body": "I looked at my multivitamin and it has zinc in it too. Is that ok or should I stop that one too?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: multivitamin",
+              "author": "PCP",
+              "date": "2025-09-10T07:05",
+              "body": "Good catch. The amount in a standard multivitamin is about the normal daily intake, so the multivitamin is fine to keep. It was the extra 50 mg tablet on top of it that pushed your level up. See you in December for the recheck."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-16a",
+          "kind": "nurse_visit",
+          "start": "2025-10-16T07:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-16T07:20"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2025-10-16T07:20"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Flu Shot",
+              "author": "RN",
+              "date": "2025-10-16T07:30",
+              "body": "Flu vaccine 2025-26 trivalent, 0.5 mL IM R deltoid. Screening questions negative, feels well. VIS provided. Again declines COVID vaccine. No reaction during observation."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-02a",
+          "kind": "lab_only",
+          "start": "2025-12-02T07:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Repeat serum zinc",
+          "conditions": [
+            {"label": "Hyperzincemia", "icd10": "E83.2", "action": "resolved"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-12-02T07:10", "resulted": "2025-12-03T13:25", "results": [
+              {"test": "Zinc", "loinc": "5763-8", "unit": "ug/dL", "value": 94}
+            ]}
+          ],
+          "orders": [
+            {"id": "zinc-recheck", "action": "done", "date": "2025-12-02T07:10"}
+          ],
+          "procedures": [
+            {"procedure": "Venipuncture", "performed": "2025-12-02T07:10"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Lab Draw",
+              "author": "MA",
+              "date": "2025-12-02T07:15",
+              "body": "Venipuncture L antecubital, one attempt, serum zinc per standing order. Pt states he stopped the zinc tablets in September. Tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-03a",
+          "kind": "portal_message",
+          "start": "2025-12-03T17:40",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Zinc recheck",
+              "author": "PCP",
+              "date": "2025-12-03T17:40",
+              "body": "August, your zinc is back to normal at 94 since stopping the supplement. No need to recheck it. Stay off the separate zinc tablets; the multivitamin is fine. We'll look at your triglycerides again at your physical next summer."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

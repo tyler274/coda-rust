@@ -1,0 +1,236 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001760",
+      "events": [
+        {
+          "id": "2025-01-21a",
+          "kind": "lab_only",
+          "start": "2025-01-21T07:35",
+          "reason": "Chlamydia retest",
+          "conditions": [
+            {"label": "Chlamydial infection of lower genitourinary tract", "icd10": "A56.00", "action": "resolved"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-01-21T07:40", "resulted": "2025-01-22T15:10", "results": [
+              {"test": "Chlamydia trachomatis NAAT", "text": "Not detected"},
+              {"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"}
+            ]}
+          ],
+          "orders": [{"id": "ct-retest", "action": "done", "date": "2025-01-21T07:40"}],
+          "documents": [
+            {"type": "Lab Note", "title": "Specimen Collection", "author": "MA", "date": "2025-01-21T07:45", "body": "Pt in before school for 3-month retest. Self-collected vaginal swab for GC/CT NAAT, instructions given. Sent to lab."},
+            {"type": "Patient Message", "title": "Retest result", "author": "PCP", "date": "2025-01-22T16:30", "body": "Your repeat chlamydia and gonorrhea tests are negative, so the infection is cleared. Nothing else to do."}
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "portal_message",
+          "start": "2025-04-08T21:05",
+          "reason": "Refill",
+          "documents": [
+            {"type": "Patient Message", "title": "Refill", "author": "patient", "date": "2025-04-08T21:05", "body": "Could I get a refill on the ibuprofen 600? Same as always, mostly for the first days of my period."},
+            {"type": "Patient Message", "title": "RE: Refill", "author": "RN", "date": "2025-04-09T09:15", "body": "Sent to your pharmacy, 60 tablets with 2 refills. Take with food."}
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "annual_physical",
+          "start": "2025-08-19T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-08-19T09:55", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-08-19T09:55", "results": [{"test": "Creatinine"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 1}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-08-19T09:20"},
+            {"procedure": "Venipuncture", "performed": "2025-08-19T09:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-08-19T09:50", "body": "Annual, back to her August slot.\n\nDoing well. Chlamydia treated last fall, January retest negative. Endometriosis: cramps the first day or two of her period, ibuprofen takes care of it, otherwise pain free. Regular 28-day cycles. Not using any contraception; still no pregnancy, still undecided about IVF and not in a hurry to decide.\n\nMeds: prenatal vitamin daily, ibuprofen 600 prn. NKDA.\nSH: teaching 2nd grade again this year. Never smoker. Wine about once a week.\n\nExam: vitals as charted. Well appearing. Neck without thyromegaly. Heart regular rhythm, no murmur. Lungs clear. Abdomen soft, nontender. Skin normal.\n\nA/P\n1. Endometriosis, controlled with prn NSAID.\n2. Tubal factor infertility, not pursuing treatment for now.\n3. Preventive: Pap next due 2029. CBC/CMP today. Flu shot this fall.\nPHQ-2 0, AUDIT-C 1. Return 1 year."}
+          ]
+        },
+        {
+          "id": "2025-08-21a",
+          "kind": "portal_message",
+          "start": "2025-08-21T12:05",
+          "reason": "Results",
+          "documents": [
+            {"type": "Patient Message", "title": "Labs", "author": "PCP", "date": "2025-08-21T12:05", "body": "Hi Melissa, blood counts, kidney, liver and electrolytes are all normal."}
+          ]
+        },
+        {
+          "id": "2025-10-19a",
+          "kind": "ed_visit",
+          "start": "2025-10-19T13:20",
+          "end": "2025-10-19T20:15",
+          "service": "Emergency Medicine (outside)",
+          "reason": "Severe right lower quadrant pain",
+          "conditions": [
+            {"label": "Right tubal pregnancy without intrauterine pregnancy", "icd10": "O00.101", "action": "diagnosed", "onset": "2025-10-19", "note": "Ruptured"}
+          ],
+          "vitals": [
+            {"time": "2025-10-19T13:30", "bp": [110, 70], "hr": 98, "temp_c": 37.2, "rr": 18, "spo2": 99},
+            {"time": "2025-10-19T16:45", "bp": [108, 68], "hr": 94, "temp_c": 37.1, "rr": 18, "spo2": 99}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-10-19T13:40", "results": [{"test": "Pregnancy Test, Urine", "text": "Positive"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-10-19T13:55", "results": [{"test": "Hemoglobin", "value": 11.8}]},
+            {"panel": null, "collected": "2025-10-19T13:55", "results": [
+              {"test": "hCG, quantitative", "loinc": "21198-7", "unit": "m[IU]/mL", "value": 2850},
+              {"test": "ABO and Rh group", "loinc": "882-1", "text": "A Rh(D) positive"}
+            ]},
+            {"panel": null, "collected": "2025-10-19T14:20", "resulted": "2025-10-20T16:00", "results": [
+              {"test": "Chlamydia trachomatis NAAT", "text": "Not detected"},
+              {"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"}
+            ]}
+          ],
+          "reports": [
+            {"study": "Pelvic ultrasound", "performed": "2025-10-19T15:10", "text": "Transvaginal ultrasound with color Doppler. Uterus retroverted, normal in size. No intrauterine gestational sac, yolk sac or embryo; empty uterine cavity. Right adnexa: 3.0 cm complex mass separate from the right ovary, with no internal flow on color Doppler. Right ovary separately visualized with a small known endometrioma. Left ovary normal in size with small known endometrioma. Small amount of free fluid in the posterior cul-de-sac.", "conclusion": "Positive pregnancy test with no intrauterine pregnancy and a 3 cm complex right adnexal mass with small free fluid, consistent with right ectopic pregnancy."}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2025-10-19T13:20"}],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2025-10-22T09:40", "body": "Regional hospital emergency department\nDate of service: 10/19/2025, arrived 13:20\nAllergies: NKDA\n\nCC: sudden severe right lower quadrant pain.\n\nHPI: 36 yo G1 with endometriosis (laparoscopic excision 2023), chronic pelvic pain and tubal factor infertility, arrives with abrupt severe right lower abdominal pain starting late this morning. Two days of light intermittent vaginal spotting. LMP about 6 weeks ago; cycles regular every 28 days. Chlamydia treated a year ago. Sexually active with one partner; condoms used inconsistently.\nMeds: ibuprofen 600 mg prn, prenatal vitamin.\n\nExam: BP 110/70, HR 98, T 37.2 C (99.0 F). Uncomfortable, holding still. Abdomen tender in the RLQ with rebound. Pelvic: os closed, no active bleeding in the vault, cervical motion tenderness present; no adnexal mass felt.\n\nED course: urine hCG positive. Quantitative hCG 2,850. Hgb 11.8. Type A positive. Cervical GC/CT NAAT sent. PID entered the differential given cervical motion tenderness and her history; with a positive pregnancy test, the bedside concern shifted to ectopic. Transvaginal US: empty uterus, 3 cm complex right adnexal mass without Doppler flow, small free fluid. IV fluids and analgesia. Gynecology at bedside; taken to the OR for laparoscopy.\n\nImpression: right tubal ectopic pregnancy with peritoneal signs, suspected rupture. Rh positive, no anti-D needed.\nDisposition: OR, then admit to gynecology."}
+          ]
+        },
+        {
+          "id": "2025-10-19b",
+          "kind": "hospital_admission",
+          "start": "2025-10-19T20:15",
+          "end": "2025-10-20T10:30",
+          "service": "Gynecology — Inpatient (outside)",
+          "reason": "Ruptured right tubal ectopic pregnancy",
+          "procedures": [
+            {"procedure": "Laparoscopic right salpingectomy for ruptured tubal ectopic pregnancy", "performed": "2025-10-19T20:40"}
+          ],
+          "medications": [
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets by mouth every 6 hours as needed for pain, no more than 6 tablets a day", "dose": {"value": 1000, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "short", "reason": "Post-operative pain"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2025-10-19T21:30", "issued": "2025-10-22T11:45", "text": "Specimen: right fallopian tube, laparoscopic salpingectomy.\nGross: segment of fallopian tube, 5.8 cm in length, with a 2.9 cm ruptured, hemorrhagic dilatation of the ampulla; blood clot submitted separately.\nMicroscopic: chorionic villi and trophoblast within the tubal lumen and wall with associated hemorrhage. No hydropic change or atypical trophoblastic proliferation.", "conclusion": "Right fallopian tube: chorionic villi with hemorrhage, consistent with tubal ectopic pregnancy."}
+          ],
+          "documents": [
+            {"type": "Operative Note", "title": "Operative Report — Laparoscopic Right Salpingectomy", "author": "hospital gynecology", "date": "2025-10-22T09:45", "body": "Regional hospital, gynecology\nDate of surgery: 10/19/2025\nPreoperative diagnosis: right ectopic pregnancy, suspected rupture.\nPostoperative diagnosis: ruptured right ampullary tubal ectopic pregnancy; hemoperitoneum.\nProcedure: laparoscopic right salpingectomy, evacuation of hemoperitoneum.\nAnesthesia: general. Allergies: NKDA.\n\nFindings: about 300 mL of blood and clot in the pelvis. Right tube with a ruptured ampullary ectopic, actively oozing. Left tube unchanged from prior description, left in place. Both ovaries with small endometriomas, not disturbed. Scattered endometriosis on the pelvic peritoneum.\n\nDescription: three-port laparoscopy. Hemoperitoneum suctioned. Right mesosalpinx sealed and divided, tube removed in a bag. Irrigation until clear, hemostasis confirmed. No complications. To recovery in stable condition."},
+            {"type": "Discharge Summary", "title": "Discharge Summary — Gynecology", "author": "hospital gynecology", "date": "2025-10-22T09:50", "body": "Admitted 10/19/2025 from the ED; discharged 10/20/2025.\nDiagnosis: ruptured right tubal ectopic pregnancy.\nProcedure: laparoscopic right salpingectomy 10/19/2025.\n\nCourse: uncomplicated overnight. Pain controlled with oral medicine, tolerating diet, ambulating, voiding. Vital signs normal. Rh positive, no Rh immune globulin given.\n\nDischarge medications: ibuprofen 600 mg every 6-8 hours as needed; acetaminophen 1,000 mg every 6 hours as needed; prenatal vitamin.\nInstructions: no lifting over 15 lb or intercourse for 2 weeks. Serum hCG weekly until negative. Gynecology office visit in 3 weeks. Return for fever, worsening pain, heavy bleeding, fainting.\nPathology pending at discharge.\nCopy to primary care physician."}
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "portal_message",
+          "start": "2025-10-21T10:15",
+          "reason": "Hospital stay",
+          "orders": [
+            {"id": "records-er-oct25", "action": "placed", "order": "Request ED and hospital records", "category": "procedure", "reason": "ED visit and surgery 10/19"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "In the hospital this weekend", "author": "patient", "date": "2025-10-21T10:15", "body": "Wanted you to know, I went to the ER Sunday with terrible pain on my right side. It was an ectopic pregnancy and they had to take out my right tube. Home since yesterday. I'm okay, mostly sore and sad. They said to follow up with gyn in 3 weeks."},
+            {"type": "Patient Message", "title": "RE: In the hospital this weekend", "author": "PCP", "date": "2025-10-21T11:30", "body": "Melissa, I'm so sorry. I'm glad you went in right away. We'll get the records from the hospital and our nurse will call you tomorrow to check on you; let's also see you in the office next week."},
+            {"type": "Administrative Note", "title": "Records request", "author": "front desk", "date": "2025-10-21T11:45", "body": "Records request faxed to regional hospital HIM for ED visit, operative report and discharge summary 10/19-10/20/2025."}
+          ]
+        },
+        {
+          "id": "2025-10-22a",
+          "kind": "telephone",
+          "start": "2025-10-22T14:30",
+          "reason": "Post-discharge call",
+          "orders": [{"id": "records-er-oct25", "action": "done", "date": "2025-10-22T14:30"}],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-Discharge Call", "author": "RN", "date": "2025-10-22T14:45", "body": "Records received this morning and reviewed with PCP. Called pt, day 3 after laparoscopic right salpingectomy for ruptured ectopic. Pain 3/10, using ibuprofen and acetaminophen, not needing anything stronger. Afebrile. Light spotting only. Incisions dry, no redness. Eating and walking fine. Husband home with her. Out of school this week. Has hCG draw scheduled with gyn next week and gyn visit 11/12. Office visit here booked 10/30. Reviewed reasons to call."}
+          ]
+        },
+        {
+          "id": "2025-10-30a",
+          "kind": "office_visit",
+          "start": "2025-10-30T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after ectopic pregnancy surgery",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-10-30T15:50", "results": [{"test": "Hemoglobin", "value": 12.4}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 4},
+            {"survey": "Pain severity (0-10)", "value": 1}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, moderate complexity", "performed": "2025-10-30T15:20"},
+            {"procedure": "Venipuncture", "performed": "2025-10-30T15:50"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Follow-Up", "author": "PCP", "date": "2025-10-30T15:55", "body": "Seen 11 days after ED visit and laparoscopic right salpingectomy for a ruptured right tubal ectopic (10/19). Records reviewed: Hgb 11.8 in the ED, ~300 mL hemoperitoneum, Rh positive. Pathology confirmed tubal ectopic.\n\nFeeling physically much better, sore only when she twists. Spotting stopped. No fever. Using ibuprofen once a day at most, stopped acetaminophen. Back at school Monday.\nEmotionally: she had noticed her period was late but hadn't tested before the pain started. Sad, some crying, sleeping okay, still enjoying her class and her husband. PHQ-9 4. No thoughts of self-harm.\n\nMeds: ibuprofen 600 prn, prenatal vitamin. NKDA.\n\nExam: vitals as charted. Well, a little tearful talking about it. Abdomen soft, three port sites clean, dry and healing.\n\nA/P\n1. Ruptured right tubal ectopic s/p right salpingectomy, recovering well. CBC today to see the hemoglobin recovering. hCG follow-up with gyn.\n2. Grief after pregnancy loss: normal response, she has support; gave resources and invited her to reach out.\n3. Endometriosis, tubal factor infertility: per op note left tube unchanged. Gyn will go over what this means for future fertility at the 11/12 visit.\n4. Flu shot: wants to wait a week, nurse visit booked."},
+            {"type": "Patient Message", "title": "Blood count", "author": "PCP", "date": "2025-10-31T08:30", "body": "Your hemoglobin is 12.4 today, up from 11.8 in the ER, so your blood count is recovering on its own. No iron needed."}
+          ]
+        },
+        {
+          "id": "2025-11-06a",
+          "kind": "nurse_visit",
+          "start": "2025-11-06T15:35",
+          "reason": "Flu shot",
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2025-11-06T15:40"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-11-06T15:40"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit — Influenza Vaccine", "author": "MA", "date": "2025-11-06T15:45", "body": "Flu vaccine (trivalent) L deltoid. Declined COVID booster this year for now. VIS given, no reaction."}
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "outside_records",
+          "start": "2025-11-18T10:20",
+          "reason": "Gynecology post-op note",
+          "conditions": [
+            {"label": "Right tubal pregnancy without intrauterine pregnancy", "icd10": "O00.101", "action": "resolved", "note": "hCG negative 11/10/2025 after salpingectomy"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-11-10T08:15", "results": [
+              {"test": "hCG, quantitative", "loinc": "21198-7", "unit": "m[IU]/mL", "text": "<5"}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology Post-Operative Visit", "author": "gynecology", "date": "2025-11-18T10:20", "body": "Outside OB/GYN group\nDate of visit: 11/12/2025\n\nThree weeks after laparoscopic right salpingectomy for ruptured right ampullary ectopic (performed by the hospital gynecology team). Recovering well. Port sites healed. Serum hCG on 11/10 below 5, so resolved. Pathology: chorionic villi in the right tube, consistent with ectopic.\n\nCounseling: her right tube is gone and the left was blocked at her 2023 laparoscopy and looked the same at this surgery. Pregnancy from here would realistically mean IVF. We offered a referral back to reproductive endocrinology whenever she and her husband want it; they'd like to wait. Period pain to be managed with ibuprofen as before.\n\nMeds: ibuprofen 600 mg prn, prenatal vitamin. NKDA.\nOB/GYN"}
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "office_visit",
+          "start": "2026-02-24T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, endometriosis and pelvic pain",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 1},
+            {"survey": "Pain severity (0-10)", "value": 1}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2026-02-24T15:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit — Follow-Up", "author": "PCP", "date": "2026-02-24T16:05", "body": "Four months out from the ectopic and salpingectomy. Physically fine. Periods every 28 days, first day or two painful, ibuprofen 600 twice on those days works. No pain between, no pain with intercourse, bowels normal.\nShe and her husband have talked about IVF and haven't decided. \"Maybe next year.\" Mood better, getting back to normal.\n\nMeds: ibuprofen prn, prenatal vitamin. NKDA.\n\nExam: vitals as charted. Well. Abdomen soft, nontender, port scars healed.\n\nA/P\n1. Endometriosis with chronic pelvic pain, controlled on prn ibuprofen.\n2. Tubal factor infertility, s/p right salpingectomy; IVF undecided, she knows how to reach REI.\n3. Annual physical in the fall."}
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "portal_message",
+          "start": "2026-07-14T10:20",
+          "reason": "Refill and scheduling",
+          "documents": [
+            {"type": "Patient Message", "title": "Refill and physical", "author": "patient", "date": "2026-07-14T10:20", "body": "Hi! Could you send another ibuprofen 600 refill? Also I'd like to book my physical, ideally an afternoon in September after 3."},
+            {"type": "Patient Message", "title": "RE: Refill and physical", "author": "RN", "date": "2026-07-14T11:40", "body": "Refill sent, 60 tablets with 2 refills."},
+            {"type": "Patient Message", "title": "RE: Refill and physical", "author": "front desk", "date": "2026-07-14T12:05", "body": "You're booked for your physical on Thursday, September 10 at 3:40 pm."}
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "annual_physical",
+          "start": "2026-09-10T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

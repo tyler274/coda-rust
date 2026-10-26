@@ -1,0 +1,18 @@
+# unit-1876 story
+
+- 2025-08-25 establish care: mouth corners, sore tongue, facial rash ~4 wk, post-RYGB nausea; joining problems and supplements; GI referral (A1, S, R4)
+- 2025-09-03 outside records: prior PCP and bariatric program; RYGB 2024-03, prior preeclampsia, Tdap 2021, Pap 2023 (S, R3, P)
+- 2025-09-29 GI consult (letter received 2025-10-08): angular cheilitis, glossitis, seborrheic-type rash; labs; riboflavin 2.4 low; riboflavin deficiency; riboflavin 100 mg started (S, A2, A3)
+- 2025-10-09 portal: PCP acknowledges GI letter, patient started riboflavin (S, A3)
+- 2025-10-20 nurse visit: influenza and COVID vaccines (P)
+- 2025-11-17 follow-up: mouth/tongue/rash resolved, nausea intermittent (A4)
+- 2026-01-12 annual physical: pregnancy planning; bariatric and screening labs; riboflavin 13.6 (P, A5)
+- 2026-01-16 portal results: all normal, riboflavin stopped, deficiency resolved (A5, R6)
+- 2026-03-04 pharmacy: prenatal vitamin refill (P)
+- 2026-03-23 office visit cancelled (P)
+- 2026-05-27 portal: positive home pregnancy test, LMP 2026-04-20; OB referral (A6)
+- 2026-05-28 front desk: OB appointment confirmed (A6)
+- 2026-06-29 OB first prenatal visit (letter received 2026-07-06): 10 wk, BP 128/82, BMI 35; high-risk supervision; aspirin 81 mg from 12 wk (S, R1, R2, R5)
+- 2026-07-08 portal: aspirin with bypass question; aspirin on list as OB-prescribed (R1, P)
+- 2026-08-17 portal: immunization record for school district (P)
+- 2026-09-21 booked follow-up visit (P)

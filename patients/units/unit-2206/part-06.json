@@ -1,0 +1,698 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002206",
+      "events": [
+        {
+          "id": "2026-01-20a",
+          "kind": "pharmacy",
+          "start": "2026-01-20T09:30",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Mail-order refill request",
+              "author": "MA",
+              "date": "2026-01-20T09:30",
+              "body": "Mail order renewal request: lisinopril 20 mg #90, amlodipine 10 mg #90, metformin 1000 mg #180. Last visit 12/9/2025, BMP normal. Sent per protocol for PCP cosign.\n\nPCP: signed."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-07a",
+          "kind": "ed_visit",
+          "start": "2026-03-07T06:50",
+          "end": "2026-03-07T10:30",
+          "service": "Emergency Medicine",
+          "reason": "Substernal chest pain and shortness of breath",
+          "conditions": [
+            {
+              "label": "Non-ST elevation myocardial infarction",
+              "icd10": "I21.4",
+              "action": "diagnosed",
+              "onset": "2026-03-07"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-03-07T06:55",
+              "temp_c": 37.5,
+              "hr": 104,
+              "rr": 28,
+              "bp": [
+                100,
+                78
+              ],
+              "spo2": 88
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-03-07T07:10",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "value": 1850
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-07T07:10",
+              "results": [
+                {
+                  "test": "N-terminal Pro-B-Type Natriuretic Peptide",
+                  "value": 4820
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-03-07T06:58",
+              "text": "Sinus tachycardia at 104 bpm. Normal axis. Voltage criteria for left ventricular hypertrophy. Horizontal ST depression in V3 through V6. No ST elevation. No acute Q waves.",
+              "conclusion": "Sinus tachycardia with LVH voltage and horizontal ST depression V3-V6."
+            },
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2026-03-07T07:20",
+              "text": "Portable AP upright chest. Bilateral perihilar airspace opacities. Mildly enlarged cardiac silhouette. No pneumothorax. Right chest port with catheter tip at the cavoatrial junction.",
+              "conclusion": "Bilateral perihilar infiltrates and mildly enlarged cardiac silhouette."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-03-07T06:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Record",
+              "title": "Emergency Department Physician Record",
+              "author": "emergency medicine",
+              "date": "2026-03-24T15:10",
+              "body": "EMERGENCY DEPARTMENT\nDate of service: 03/07/2026 06:50\nCarl Clark, 73 M\n\nCC: chest pain, short of breath.\n\nHPI: Woke with severe pressure behind the sternum about two hours before arrival, with breathlessness that has steadily worsened. Wife called EMS. Background: type 2 diabetes on oral medication, hypertension on lisinopril, hyperlipidemia, LVH, stage IV colon cancer with liver metastases on maintenance chemotherapy, postoperative AF in 2025.\n\nMeds: metformin 1000 mg BID, lisinopril 20 mg daily, aspirin 81 mg daily. NKDA.\nSH: never smoker, no alcohol.\n\nVitals: T 37.5 C (99.5 F), HR 104, RR 28, BP 100/78, SpO2 88% on room air.\n\nExam: Anxious, speaking in short phrases. JVP elevated. Crackles throughout both lung fields. Tachycardic, regular; S3 and S4 present. No murmur. Abdomen soft. No leg swelling.\n\nECG: sinus tachycardia 104, LVH voltage, horizontal ST depression V3-V6, no ST elevation.\nPortable CXR: bilateral perihilar infiltrates, mildly enlarged cardiac silhouette.\nhs-Troponin I 1,850 ng/L. NT-proBNP 4,820 pg/mL.\n\nED course: BiPAP with improvement in work of breathing and saturation to 95%. Furosemide 40 mg IV. Aspirin 324 mg chewed. Heparin infusion started. Cardiology consulted at bedside.\n\nImpression: acute non-ST elevation myocardial infarction with pulmonary edema.\nDisposition: admitted to cardiac care unit.\n\nEmergency Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-07b",
+          "kind": "hospital_admission",
+          "start": "2026-03-07T10:30",
+          "end": "2026-03-12T13:00",
+          "service": "Cardiology",
+          "reason": "NSTEMI with pulmonary edema",
+          "medications": [
+            {
+              "drug": "amlodipine 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Stopped at hospital discharge; metoprolol started"
+            },
+            {
+              "drug": "clopidogrel 75 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily (12 months after stent)",
+              "dose": {
+                "value": 75,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Drug-eluting stent to LAD"
+            },
+            {
+              "drug": "atorvastatin 80 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 80,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Coronary artery disease"
+            },
+            {
+              "drug": "24 HR metoprolol succinate 25 MG Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "After myocardial infarction"
+            },
+            {
+              "drug_text": "nitroglycerin 0.4 MG Sublingual Tablet",
+              "action": "start",
+              "sig": "Place 1 tablet under the tongue every 5 minutes as needed for chest pain, up to 3; call 911 if pain persists",
+              "dose": {
+                "value": 0.4,
+                "unit": "mg"
+              },
+              "route": "Sublingual",
+              "course": "chronic",
+              "reason": "Coronary artery disease"
+            },
+            {
+              "drug": "furosemide 20 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily for 5 days",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Resolving pulmonary edema"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-03-07T19:00",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "value": 16400
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-03-09T15:00",
+              "text": "Complete study. Left ventricle normal in size with concentric left ventricular hypertrophy. Hypokinesis of the anterior wall. LVEF 50% (biplane). Right ventricle normal in size and function. Atria normal. Aortic, mitral, tricuspid and pulmonic valves without significant stenosis or regurgitation. No pericardial effusion.",
+              "conclusion": "Concentric LVH. Anterior wall hypokinesis with LVEF 50%. Normal valves. No pericardial effusion."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Coronary stent placement, single vessel",
+              "performed": "2026-03-09T09:40"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-03-12T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Cardiac Catheterization Report",
+              "author": "cardiology",
+              "date": "2026-03-24T15:10",
+              "body": "CARDIAC CATHETERIZATION LABORATORY\nDate: 03/09/2026\nPatient: Carl Clark, 73 M\nIndication: NSTEMI.\nAccess: right radial artery, 6 Fr. Hemostasis with radial band.\n\nCoronary angiography:\n- Left main: no significant disease.\n- LAD: 90% stenosis of the proximal segment. Distal vessel without significant disease.\n- Left circumflex: 30% stenosis.\n- RCA: 40% stenosis. Dominant.\n\nIntervention: proximal LAD treated with one drug-eluting stent after predilation. 0% residual stenosis, TIMI 3 flow.\n\nConclusion: single-vessel culprit disease of the proximal LAD, treated with one DES. Nonobstructive disease of the circumflex and RCA.\nRecommendations: aspirin indefinitely, clopidogrel for 12 months, high-intensity statin.\n\nInterventional Cardiology"
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "cardiology",
+              "date": "2026-03-24T15:10",
+              "body": "DISCHARGE SUMMARY\nAdmitted 03/07/2026 via ED   Discharged 03/12/2026\nService: Cardiology\n\nDiagnoses: Acute non-ST elevation myocardial infarction with acute pulmonary edema. Coronary artery disease, s/p DES to proximal LAD 3/9. Left ventricular hypertrophy. Type 2 diabetes. Hypertension. Hyperlipidemia. Stage IV colon adenocarcinoma with liver metastases.\n\nCourse: Presented with 2 hours of substernal pressure and dyspnea, hypoxemic to 88%, BP 100/78, with pulmonary edema on exam and chest film. ECG with ST depression V3-V6; hs-troponin I 1,850 rising to a peak of 16,400 ng/L; NT-proBNP 4,820. Treated with BiPAP, IV furosemide, aspirin and heparin; off BiPAP within 24 hours and on room air by 3/8. Angiography 3/9 via the radial artery: proximal LAD 90% treated with one drug-eluting stent; circumflex 30%, RCA 40%. Echo 3/9: concentric LVH, anterior hypokinesis, LVEF 50%, normal valves. Lisinopril held for the first day for soft pressures and then resumed. Metformin held around contrast and resumed 48 hours afterward. No arrhythmia on telemetry.\n\nOncology (inpatient consult): maintenance 5-FU/leucovorin to be held; outpatient oncology follow-up to decide next steps.\n\nDischarge medications:\n- Aspirin 81 mg daily (continue)\n- Clopidogrel 75 mg daily x 12 months (NEW)\n- Atorvastatin 80 mg daily (NEW)\n- Metoprolol succinate 25 mg daily (NEW)\n- Lisinopril 20 mg daily (continue)\n- Metformin 1000 mg twice daily (continue)\n- Furosemide 20 mg daily for 5 days, then stop (NEW)\n- Nitroglycerin 0.4 mg SL as needed for chest pain (NEW)\n- STOP amlodipine\n\nAllergies: NKDA.\nFollow-up: PCP within 1 week; cardiology 4-6 weeks; cardiac rehabilitation referral placed; oncology.\n\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "telephone",
+          "start": "2026-03-09T08:20",
+          "reason": "Wife calls: patient hospitalized",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from patient's wife",
+              "author": "RN",
+              "date": "2026-03-09T08:20",
+              "body": "Mrs. Clark called: Carl was taken by ambulance Saturday morning with chest pain and trouble breathing, told he had a heart attack. In the cardiac unit, breathing better, off the mask. Having a heart catheterization today. She asked us to cancel his visit tomorrow.\n\nCancelled 3/10 appt. Will book TCM visit once discharged. Records request sent. PCP informed."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "office_visit",
+          "start": "2026-03-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "office_visit",
+          "start": "2026-03-17T09:40",
+          "end": "2026-03-17T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after myocardial infarction",
+          "conditions": [
+            {
+              "label": "Coronary artery disease",
+              "action": "diagnosed",
+              "onset": "2026-03-09"
+            },
+            {
+              "label": "Presence of coronary artery stent",
+              "action": "diagnosed",
+              "onset": "2026-03-09"
+            }
+          ],
+          "state": {
+            "bp": [
+              120,
+              74
+            ],
+            "hr": 64,
+            "weight_kg": 69.0,
+            "labs": {
+              "Hemoglobin": 13.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-17T10:20",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-03-17T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "author": "PCP",
+              "date": "2026-03-17T10:55",
+              "body": "TCM visit after admission 3/7-3/12 for heart attack. Wife present. Discharge summary not yet received - history from them and the printed discharge instructions and medication list he brought.\n\nPer paperwork: NSTEMI; catheterization 3/9 through the right wrist with one stent to the LAD; echo \"pumping 50%\". Fluid in the lungs at arrival, treated.\n\nSince home: no chest pain, no nitro used. Breathing back to normal; sleeps flat. No palpitations. Finished the 5 days of furosemide yesterday. Wrist site fine. Walking short distances in the house and driveway. Scared but steady.\n\nMedication reconciliation - our list still had amlodipine; per discharge list it was stopped. Updated:\n- aspirin 81 daily\n- clopidogrel 75 daily (12 months)\n- atorvastatin 80 daily\n- metoprolol succinate 25 daily\n- lisinopril 20 daily\n- metformin 1000 BID\n- nitroglycerin 0.4 SL PRN\n- amlodipine STOPPED; furosemide course done\n- oncology has held his maintenance chemo\nReviewed each pill with wife; pill box redone. Nitro instructions reviewed: sit down, one tablet, may repeat every 5 min x2, call 911 if not gone after the first.\n\nExam: NAD. HR 60s, regular. BP fine. Lungs clear, no crackles. Heart RRR, S4, no murmur, no S3. JVP not raised. R radial site healed, radial pulse intact. No edema.\n\nA/P:\n1. NSTEMI s/p DES to proximal LAD; CAD - on DAPT, high-intensity statin, beta-blocker, ACE inhibitor. Cardiac rehab referral placed by hospital - wife will call to schedule. Cardiology f/u 4/14.\n2. Pulmonary edema at presentation - resolved clinically.\n3. HTN - controlled on lisinopril + metoprolol.\n4. T2DM - metformin resumed.\n5. Metastatic colon cancer - maintenance therapy on hold per oncology.\nBMP today (recent diuretic). RTC 4-5 weeks.\n\nTCM high complexity, 50 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "outside_records",
+          "start": "2026-03-24T15:30",
+          "reason": "Hospital records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hospital records received",
+              "author": "MA",
+              "date": "2026-03-24T15:30",
+              "body": "Records for 3/7-3/12 admission received after second request: ED record, catheterization report, echo, discharge summary. Scanned to chart and routed to PCP.\n\nPCP: reviewed. Matches the discharge list reconciled at the 3/17 visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-02a",
+          "kind": "outside_records",
+          "start": "2026-04-02T14:00",
+          "reason": "Cardiac rehabilitation intake",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Cardiac Rehabilitation Initial Assessment",
+              "author": "cardiac rehabilitation",
+              "date": "2026-04-02T14:00",
+              "body": "CARDIAC REHABILITATION - INITIAL ASSESSMENT\nPatient: Carl Clark, 73 M\nReferral diagnosis: NSTEMI 3/7/2026, DES to proximal LAD 3/9/2026. LVEF 50%.\nStart date: 03/31/2026. Program: 36 sessions, 3x/week.\n\nResting heart rate and blood pressure within target. Six-minute walk completed without symptoms or ECG changes on telemetry.\nRisk factors: diabetes, hypertension, hyperlipidemia. Never smoker.\nGoals: walk 30 minutes daily, return to yard work, diabetes-friendly heart-healthy diet (dietitian session scheduled).\n\nWe will send a discharge report at program completion.\nCardiac Rehabilitation"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-07a",
+          "kind": "portal_message",
+          "start": "2026-04-07T16:45",
+          "reason": "Cardiac rehab question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "rehab",
+              "author": "patient",
+              "date": "2026-04-07T16:45",
+              "body": "Started cardiac rehab last week, 3 days a week. They are nice there. They asked if I can do yard work yet - raking, pushing the mower. I see the heart doctor next Tuesday."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: rehab",
+              "author": "PCP",
+              "date": "2026-04-07T19:10",
+              "body": "Great news about rehab. Light yard work is reasonable as long as you can talk while you do it; save heavy lifting and the push mower until you've talked with cardiology next week and the rehab team says your exercise tolerance is there. Stop and use your nitro if you get chest pressure."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "office_visit",
+          "start": "2026-04-21T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-MI follow-up",
+          "state": {
+            "bp": [
+              118,
+              72
+            ],
+            "hr": 62
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-21T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2026-04-21T14:40",
+              "body": "Post-MI follow-up.\n\nSaw cardiology 4/14 - per patient \"they're happy with me,\" no medicine changes, keep going to rehab. No note from cardiology yet; requested. Rehab 3x/week, up to 25 minutes on the treadmill. No chest pain, no nitro use, no dyspnea, no palpitations. Taking all medications, no bleeding problems on aspirin + clopidogrel. No muscle aches on atorvastatin.\n\nExam: BP and HR controlled. Heart regular, S4. Lungs clear. No edema.\n\nA/P:\n1. CAD s/p NSTEMI and LAD stent - stable. Continue DAPT, atorvastatin 80, metoprolol, lisinopril. Fasting lipid panel + CMP in mid-May (8 weeks on statin).\n2. HTN - at goal.\n3. T2DM - A1c at June visit.\n4. Colon cancer - oncology CT in May.\nRTC June."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "specialist_visit",
+          "start": "2026-05-12T13:00",
+          "service": "Oncology",
+          "reason": "Surveillance restaging",
+          "medications": [
+            {
+              "drug_text": "fluorouracil 50 MG/ML Injectable Solution",
+              "action": "stop",
+              "reason": "Treatment break after myocardial infarction; disease stable"
+            },
+            {
+              "drug_text": "leucovorin calcium 10 MG/ML Injectable Solution",
+              "action": "stop",
+              "reason": "Treatment break"
+            },
+            {
+              "drug_text": "ondansetron 8 MG Oral Tablet",
+              "action": "stop",
+              "reason": "No longer needed off chemotherapy"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-12T12:20",
+              "results": [
+                {
+                  "test": "Carcinoembryonic Antigen",
+                  "loinc": "2039-6",
+                  "unit": "ng/mL",
+                  "value": 6.4
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2026-05-12T08:30",
+              "text": "Comparison: 10/28/2025.\nMultiple hypoattenuating liver lesions in both lobes, stable in size; largest 2.3 cm in the right lobe. No new hepatic lesions. Postsurgical changes of right hemicolectomy; anastomosis intact. No lymphadenopathy, ascites or peritoneal nodularity. Other abdominal organs unremarkable.",
+              "conclusion": "Stable hepatic metastases, largest 2.3 cm. No new disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology Follow-up",
+              "author": "oncology",
+              "date": "2026-05-26T09:20",
+              "body": "MEDICAL ONCOLOGY - FOLLOW-UP\nVisit 05/12/2026\nCarl Clark, 73 M\nDiagnosis: stage IV adenocarcinoma of the ascending colon, liver metastases. s/p right hemicolectomy 3/2025; FOLFOX x12 5/2025-10/2025; maintenance 5-FU/leucovorin from 11/11/2025, held since his NSTEMI in March 2026 (DES to LAD 3/9/2026).\n\nInterval: recovering well from the MI; in cardiac rehab. No abdominal symptoms. Weight stable. ECOG 1.\n\nCT A/P today: liver metastases stable, largest 2.3 cm; no new disease. CEA 6.4 ng/mL (5.9 in October).\n\nAssessment/plan: disease controlled. Given the recent MI and stable disease we agreed on a formal treatment break - maintenance 5-FU/leucovorin discontinued. Surveillance CT and CEA every 3 months; next in August. Ondansetron no longer needed. Port flush every 6-8 weeks.\n\nAllergies: NKDA.\nMedical Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "lab_only",
+          "start": "2026-05-19T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fasting lipid panel and CMP on atorvastatin",
+          "state": {
+            "labs": {
+              "Low Density Lipoprotein": 62,
+              "Total Cholesterol": 125,
+              "Triglycerides": 120
+            }
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-05-19T07:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-05-19T07:45",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-05-19T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab result note",
+              "author": "PCP",
+              "date": "2026-05-20T12:30",
+              "body": "Lipids on atorvastatin 80: LDL 62, at goal for CAD (under 70). Liver enzymes normal on the statin. Creatinine and potassium normal. Portal message sent to patient."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-21a",
+          "kind": "portal_message",
+          "start": "2026-05-21T09:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cholesterol results",
+              "author": "PCP",
+              "date": "2026-05-21T09:10",
+              "body": "Good news - your LDL cholesterol is 62 on the atorvastatin, right where we want it after a heart attack. Liver tests and kidney function are normal. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "outside_records",
+          "start": "2026-06-16T11:50",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Examination Report",
+              "author": "optometry",
+              "date": "2026-06-16T11:50",
+              "body": "Diabetic eye exam - DOS 06/09/2026 - Carl Clark.\nNo exam on file for 2025 (patient in cancer treatment).\nVA 20/25 OU with correction. IOP normal. Dilated fundus: no diabetic retinopathy, no macular edema OU.\nImpression: Type 2 diabetes without retinopathy. Return 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-19a",
+          "kind": "outside_records",
+          "start": "2026-06-19T09:30",
+          "reason": "Cardiac rehabilitation discharge report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Cardiac Rehabilitation Discharge Report",
+              "author": "cardiac rehabilitation",
+              "date": "2026-06-19T09:30",
+              "body": "CARDIAC REHABILITATION - DISCHARGE SUMMARY\nCarl Clark. Program 03/31/2026 - 06/18/2026, 34 of 36 sessions attended (2 missed for an oncology appointment and a scan).\n\nNo angina, arrhythmia or abnormal BP responses during sessions. Exercise duration increased from 15 to 40 minutes. Home walking program in place. Diet education completed with spouse.\n\nRecommendations: continue home exercise 30-40 minutes most days; follow up with cardiology and primary care.\nCardiac Rehabilitation"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "office_visit",
+          "start": "2026-06-23T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes, hypertension and coronary follow-up",
+          "state": {
+            "bp": [
+              120,
+              72
+            ],
+            "labs": {
+              "Hemoglobin A1c": 6.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-06-23T11:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-23T11:05",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-06-23T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2026-06-23T11:30",
+              "body": "DM/HTN/CAD.\n\nFinished cardiac rehab last week (12 weeks), got a certificate. Walking 30 minutes most days on his own now. No chest pain, no nitro, no dyspnea. Oncology note 5/26: liver lesions stable, CEA 6.4, maintenance chemo stopped - treatment break with CT every 3 months, next in August. Eye exam this month normal. Cardiology note from April still not received despite two requests.\n\nMeds: aspirin 81, clopidogrel 75, atorvastatin 80, metoprolol succ 25, lisinopril 20, metformin 1000 BID, NTG PRN.\n\nExam: BP and HR at goal. Heart regular, S4. Lungs clear. No edema. Feet: normal sensation and pulses, no lesions.\n\nA/P:\n1. T2DM - A1c 6.9 today. Continue metformin.\n2. CAD s/p NSTEMI/LAD DES - stable, LDL 62 in May. Continue current regimen; clopidogrel through March 2027.\n3. HTN - controlled.\n4. Metastatic colon cancer - on treatment break, surveillance per oncology.\nUrine microalbumin today. RTC September (book now)."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "pharmacy",
+          "start": "2026-07-21T10:15",
+          "reason": "Refill requests",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill requests",
+              "author": "MA",
+              "date": "2026-07-21T10:15",
+              "body": "Mail-order pharmacy requesting 90-day supplies of clopidogrel 75, atorvastatin 80 and metoprolol succinate 25 (hospital wrote 30-day scripts). Pended.\n\nPCP: approved 90 days, 3 refills each; clopidogrel through 3/2027 only."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T13:20",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "september appt",
+              "author": "patient",
+              "date": "2026-08-11T13:20",
+              "body": "My CT with the cancer doctor is the third week of August. Can I keep the September 22 appointment with you, or should I move it so you have the results? Also when can I get my flu shot this year."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: september appt",
+              "author": "front desk",
+              "date": "2026-08-11T15:05",
+              "body": "Hi Mr. Clark, September 22 works well - that gives oncology time to send their note. Flu shots arrive in mid-September; we can give yours at that visit. See you then!"
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "office_visit",
+          "start": "2026-09-22T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and coronary artery disease follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

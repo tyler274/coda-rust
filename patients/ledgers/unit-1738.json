@@ -1,0 +1,3249 @@
+{
+  "unit": "unit-1738",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001738",
+      "given": "Christine",
+      "family": "Hartley",
+      "birth_date": "1991-07-14",
+      "address_line": "41 Orchard Hill Lane, Apt 3",
+      "phone": "+1-413-555-0128",
+      "email": "christine.hartley@example.test",
+      "marital_status": "single",
+      "summary": "Elementary school teacher with long-standing type 1 diabetes and Hashimoto hypothyroidism who joins in 2022. Alopecia areata is diagnosed by dermatology in 2024, she is admitted with DKA during a viral URI in February 2025, and in October 2025 she has idiopathic acute transverse myelitis with a good recovery through rehab and PT.",
+      "events": [
+        {
+          "id": "2022-08-17a",
+          "kind": "establish_care",
+          "start": "2022-08-17T09:30",
+          "end": "2022-08-17T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care, type 1 diabetes",
+          "conditions": [
+            {
+              "label": "Type 1 diabetes mellitus without complications",
+              "action": "history"
+            },
+            {
+              "label": "Hashimoto thyroiditis",
+              "action": "history"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+              "action": "historical",
+              "sig": "Inject 18 units under the skin at bedtime",
+              "dose": {
+                "value": 18,
+                "unit": "U"
+              },
+              "frequency": "NIGHTLY",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Type 1 diabetes"
+            },
+            {
+              "drug": "3 ML insulin lispro 100 UNT/ML Pen Injector",
+              "action": "historical",
+              "sig": "Inject under the skin with meals: 1 unit per 12 g carbohydrate plus correction scale",
+              "frequency": "TID with meals",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Type 1 diabetes"
+            },
+            {
+              "drug": "levothyroxine sodium 0.088 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily on an empty stomach",
+              "dose": {
+                "value": 88,
+                "unit": "ug"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hashimoto hypothyroidism"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              135,
+              72
+            ],
+            "hr": 67,
+            "temp_c": 37.1,
+            "spo2": 98,
+            "weight_kg": 62.1,
+            "height_cm": 165.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-08-17T10:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.1
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-08-17T10:40",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-08-17T10:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 102
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 185
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 93
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 121
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-17T10:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 246
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-08-17T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-08-17T12:15",
+              "author": "PCP",
+              "body": "31 y/o woman, elementary school teacher, transferring care from her prior primary care office; wanted a practice where she can reach the doctor directly. Records requested.\n\nType 1 diabetes, long-standing. On Lantus 18 units at bedtime and Humalog with meals, counting carbs at 1 unit per 12 g with a correction scale. Checks fingersticks 4-5 times a day. No severe lows, no ED visits for sugars that she can recall. Last eye exam about a year ago, told no retinopathy.\n\nHashimoto hypothyroidism on levothyroxine 88 mcg, takes it first thing with water. Feels well on it.\n\nPMH: as above. PSH: wisdom teeth out at 18.\nMeds: insulin glargine 18 u qHS; insulin lispro per carb ratio 1:12 + correction; levothyroxine 88 mcg daily.\nAllergies: NKDA.\nFH: mother Hashimoto's. Father type 2 DM. Maternal aunt with RA. Sister has celiac disease.\nSH: lives in Amherst with a roommate. Teaches 2nd grade. Never smoked. A drink once or twice a month. No drugs. Walks most evenings.\n\nROS: negative except as above. No polyuria, no numbness in the feet, no vision change.\n\nExam: vitals as charted. Well appearing. HEENT unremarkable, thyroid smooth, not enlarged, no nodules. No adenopathy. Heart regular rate and rhythm, no murmur. Lungs clear. Abdomen soft, no tenderness; injection sites in the abdomen without lipohypertrophy. Extremities no edema. Feet: skin intact, pulses 2+ DP/PT, monofilament sensation intact bilaterally. Scalp and skin normal.\n\nPHQ-2 0.\n\nA/P\n1. Type 1 diabetes: A1c, CMP, urine albumin/creatinine, lipids today. Continue current regimen. Eye exam due — she will book with her optometrist.\n2. Hashimoto hypothyroidism: TSH today, continue 88 mcg.\n3. Health maintenance: flu shot this fall at a nurse visit. Prior office records for Pap and vaccine history.\nReturn in 3 months for diabetes follow-up."
+            }
+          ],
+          "state": {
+            "weight_kg": 62.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Hemoglobin A1c": 7.1,
+              "Microalbumin/Creatinine Ratio": 9,
+              "Thyroid Stimulating Hormone": 2.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-08-19a",
+          "kind": "portal_message",
+          "start": "2022-08-19T14:05",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab results",
+              "date": "2022-08-19T14:05",
+              "author": "PCP",
+              "body": "Hi Christine, your labs from Wednesday are in. A1c is 7.1, close to where your prior office had you. Thyroid level is normal on the 88 mcg, kidney function and urine protein are normal, cholesterol is good, blood counts are normal. No changes. See you in November."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-06a",
+          "kind": "outside_records",
+          "start": "2022-09-06T11:20",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2022-09-06T11:20",
+              "author": "MA",
+              "body": "Outside records received (38 pages) and scanned to media.\n\nAbstracted for the chart:\n- Problems: type 1 diabetes mellitus; Hashimoto hypothyroidism.\n- Medications: insulin glargine 18 units at bedtime; insulin lispro with meals by carb ratio; levothyroxine 88 mcg daily.\n- Allergies: NKDA.\n- Cervical cytology 2021: negative for intraepithelial lesion or malignancy.\n- Immunizations: childhood series complete including hepatitis B x3 and MMR x2. Last Td/Tdap date not documented.\n- A1c values over the past two years in the 7s.\n\nForwarded to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-21a",
+          "kind": "pharmacy",
+          "start": "2022-09-21T08:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2022-09-21T08:50",
+              "author": "MA",
+              "body": "Pharmacy fax requesting levothyroxine 88 mcg, now under our office. Last TSH 8/17 normal. Sent 90-day supply with 3 refills per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-12a",
+          "kind": "nurse_visit",
+          "start": "2022-10-12T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-12T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-12T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Influenza Vaccine",
+              "date": "2022-10-12T15:55",
+              "author": "RN",
+              "body": "In after school for flu vaccine. No fever today, no prior reactions. Influenza quadrivalent 0.5 mL IM left deltoid. VIS provided. Waited 15 min, no issues."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-24a",
+          "kind": "portal_message",
+          "start": "2022-10-24T19:12",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-22T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "COVID booster",
+              "date": "2022-10-24T19:12",
+              "author": "patient",
+              "body": "Hello — just letting you know I got the new bivalent COVID booster at the pharmacy on Saturday (Pfizer). Sore arm and a little tired Sunday, fine now."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: COVID booster",
+              "date": "2022-10-25T08:31",
+              "author": "MA",
+              "body": "Thanks Christine, I've added it to your immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-16a",
+          "kind": "office_visit",
+          "start": "2022-11-16T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              123,
+              77
+            ],
+            "hr": 81,
+            "weight_kg": 62.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-11-16T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-11-16T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "date": "2022-11-16T17:30",
+              "author": "PCP",
+              "body": "S: 3-month DM f/u. Busy start to the school year; snacking more in the afternoons and not always bolusing for it. Fasting sugars 120s-150s on her meter log. One low to 58 after a long walk, treated with juice. No numbness or vision change.\nMeds: glargine 18 u qHS, lispro 1:12 + correction, levothyroxine 88 mcg.\n\nO: vitals as charted. Alert, well. Heart regular, lungs clear. Injection sites ok.\n\nA/P: T1DM. A1c today. Talked about pre-bolusing for the afternoon snack or picking low-carb options. Keep glargine at 18 for now — fastings are acceptable. Reviewed treating lows, carrying glucose tabs on walks. F/u 3 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-11-18a",
+          "kind": "portal_message",
+          "start": "2022-11-18T12:40",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "A1c result",
+              "date": "2022-11-18T12:40",
+              "author": "PCP",
+              "body": "A1c came back 7.4 — a touch up from August, which fits the afternoon snacks we talked about. Nothing to change in your doses. Let's recheck in February."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "pharmacy",
+          "start": "2023-01-10T10:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization — insulin pens",
+              "date": "2023-01-10T10:15",
+              "author": "MA",
+              "body": "New plan year. Pharmacy says Humalog KwikPen needs PA renewal. Submitted with T1DM diagnosis and current regimen. Approved through 12/31/2023. Pharmacy notified, pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-22a",
+          "kind": "office_visit",
+          "start": "2023-02-22T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              120,
+              76
+            ],
+            "hr": 75,
+            "weight_kg": 62.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-02-22T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-02-22T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "date": "2023-02-22T17:05",
+              "author": "PCP",
+              "body": "Doing better with the afternoon snack — switched to cheese and nuts on school days. Meter average down a bit. No lows below 60 since November. Fasting 110s-140s.\n\nExam: BP and weight as charted. Well appearing. No lipohypertrophy.\n\nT1DM — A1c today. No dose changes. Hypothyroid — stable, TSH due in August. Reminded about the eye exam; she has an appointment next month. Back in 3 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-03-20a",
+          "kind": "outside_records",
+          "start": "2023-03-20T13:10",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye examination report",
+              "date": "2023-03-20T13:10",
+              "author": "optometry",
+              "body": "Diabetic eye examination\nDate of exam: 03/14/2023\nPatient: Christine Hartley\n\nHistory: type 1 diabetes. No visual complaints.\nVisual acuity corrected 20/20 OD and OS. IOP normal OU. Anterior segment normal.\nDilated fundus exam: no diabetic retinopathy OU. No macular edema. Discs healthy.\n\nImpression: type 1 diabetes without retinopathy.\nRecommendation: repeat dilated exam in 12 months.\n\nThank you for allowing us to participate in her care."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-24a",
+          "kind": "office_visit",
+          "start": "2023-05-24T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2023-05-23T07:55",
+              "author": "front desk",
+              "body": "Pt called to cancel tomorrow's 3:45 — end-of-year school events. Rebooked as a video visit 6/7 with labs beforehand. Lab order already in."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2023-06-02a",
+          "kind": "lab_only",
+          "start": "2023-06-02T07:20",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-06-02T07:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                }
+              ]
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.2
+            }
+          }
+        },
+        {
+          "id": "2023-06-07a",
+          "kind": "telehealth_visit",
+          "start": "2023-06-07T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up (video)",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2023-06-07T16:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit — Diabetes",
+              "date": "2023-06-07T17:15",
+              "author": "PCP",
+              "body": "Video, patient at home, identity verified, consented to video care.\n\nA1c 7.4 from 6/2. She thinks the last few weeks of school were chaotic — lunch on the run, some missed lunch boluses that she corrected for later. Summer is coming and she does better with routine. No lows needing help. No new symptoms.\n\nPlan: no change in doses. Physical in August with yearly labs. Message us with any meter patterns over the summer."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-16a",
+          "kind": "annual_physical",
+          "start": "2023-08-16T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              133,
+              77
+            ],
+            "hr": 72,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 61.5,
+            "height_cm": 165.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-08-16T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.8
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 9
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Tissue Transglutaminase IgA",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-16T09:50",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 114
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-16T09:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 57
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 181
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 119
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-16T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.59
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 260
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-08-16T09:35"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-08-16T09:42"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-08-16T09:40"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-08-16T09:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-08-16T11:40",
+              "author": "PCP",
+              "body": "Annual exam before school starts. Good summer — hiking, sleeping well, sugars steadier. No lows needing assistance.\n\nMeds: glargine 18 u qHS; lispro 1:12 + correction; levothyroxine 88 mcg daily. NKDA.\nFH unchanged (mother Hashimoto's, father T2DM, maternal aunt RA, sister celiac).\nSH: teaching 2nd grade again this fall. Never smoker, 1-2 drinks a month.\n\nROS: negative for chest pain, dyspnea, GI symptoms, numbness, weight change, hair or skin change.\n\nExam: vitals as charted. General well. Eyes, ears, oropharynx normal. Neck supple; thyroid normal size, no nodules. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender. Skin clear. Neuro grossly normal. Diabetic foot exam: skin intact, no calluses, DP/PT 2+, monofilament intact 10/10 sites bilaterally.\n\nPHQ-2: 0.\n\nAssessment/Plan\n- T1DM: A1c, CMP, lipids, urine albumin/creatinine. Continue regimen.\n- Hashimoto: TSH.\n- Celiac screen given T1DM and her sister's celiac: tTG-IgA today.\n- One-time HIV and hepatitis C screening — she agrees.\n- Tdap today (last date unknown). PCV20 today given diabetes.\n- Pap: last 2021 normal, due 2024.\n- Flu shot in October.\nRTC 3 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 6.9,
+              "Tissue Transglutaminase IgA": 0.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-08-18a",
+          "kind": "portal_message",
+          "start": "2023-08-18T15:30",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Physical labs",
+              "date": "2023-08-18T15:30",
+              "author": "PCP",
+              "body": "Christine — all good news from Wednesday. A1c 6.8, your best since joining us. Thyroid normal, kidneys and urine protein normal, cholesterol fine. The celiac antibody screen is negative. HIV and hepatitis C screens are negative. Enjoy the last week of summer."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-04a",
+          "kind": "nurse_visit",
+          "start": "2023-10-04T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-04T15:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-04T15:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Influenza Vaccine",
+              "date": "2023-10-04T16:05",
+              "author": "RN",
+              "body": "Flu vaccine. Feeling well, afebrile. Influenza quadrivalent 0.5 mL IM right deltoid, lot recorded. VIS given. No reaction after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-16a",
+          "kind": "portal_message",
+          "start": "2023-10-16T20:02",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-14T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Updated COVID shot",
+              "date": "2023-10-16T20:02",
+              "author": "patient",
+              "body": "FYI I had the updated COVID vaccine at the pharmacy this past Saturday. No problems."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Updated COVID shot",
+              "date": "2023-10-17T08:12",
+              "author": "MA",
+              "body": "Recorded — thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2023-11-29a",
+          "kind": "office_visit",
+          "start": "2023-11-29T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              130,
+              72
+            ],
+            "hr": 80,
+            "weight_kg": 60.7
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-11-29T16:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-11-29T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "date": "2023-11-29T17:20",
+              "author": "PCP",
+              "body": "DM f/u. Halloween and parent conferences — more grazing, a few post-dinner readings over 250. Fastings still 120s-140s. No lows. Feels fine.\n\nVitals as charted. Exam unremarkable; sites ok.\n\nT1DM: A1c today. Talked through bolusing for grazing (smaller boluses, or a set snack). Holiday season ahead — she knows the drill. No dose changes. RTC late Feb, video is fine."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-12-18a",
+          "kind": "portal_message",
+          "start": "2023-12-18T07:05",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Humalog refill",
+              "date": "2023-12-18T07:05",
+              "author": "patient",
+              "body": "Hi, I'm down to my last box of Humalog pens and the pharmacy says I'm out of refills. Could you send a new prescription before the break? Thanks!"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Humalog refill",
+              "date": "2023-12-18T12:20",
+              "author": "PCP",
+              "body": "Sent — same dosing, a year of refills. Your A1c from November was 7.6, a little higher with the season; nothing to change. Happy holidays."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "pharmacy",
+          "start": "2024-01-09T09:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization renewal",
+              "date": "2024-01-09T09:40",
+              "author": "MA",
+              "body": "PA renewal for Humalog KwikPen and Lantus SoloStar for 2024 plan year submitted through the insurer portal. Both approved same day, valid through 12/31/2024. Pharmacy aware."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-26a",
+          "kind": "lab_only",
+          "start": "2024-02-26T07:15",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-02-26T07:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.9
+                }
+              ]
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.1
+            }
+          }
+        },
+        {
+          "id": "2024-02-28a",
+          "kind": "telehealth_visit",
+          "start": "2024-02-28T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up (video)",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-02-28T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit — Diabetes",
+              "date": "2024-02-28T17:00",
+              "author": "PCP",
+              "body": "Video visit from home; ID confirmed; consent for telehealth given.\n\nReviewed Monday's A1c, 6.9 — down from November. Holidays went better than she expected. Meter downloads show fasting mostly 110-150, a few post-lunch spikes on indoor-recess days. Lows: two in the 60s, both self-treated. No other concerns.\n\nMeds unchanged: glargine 18 u nightly, lispro by 1:12 carb ratio + correction, levothyroxine 88 mcg.\n\nPlan: continue. Eye exam due next month. Office visit in May; physical August."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-25a",
+          "kind": "outside_records",
+          "start": "2024-03-25T10:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye examination report",
+              "date": "2024-03-25T10:30",
+              "author": "optometry",
+              "body": "Annual diabetic eye exam — exam date 03/19/2024.\n\nNo change in vision. BCVA 20/20 each eye. Pupils equal, no APD. Pressures normal.\nDilated exam: clear media; no microaneurysms, hemorrhages or exudates either eye; maculae flat.\n\nAssessment: no diabetic retinopathy.\nPlan: return in one year."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-20a",
+          "kind": "office_visit",
+          "start": "2024-05-20T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up; hair loss",
+          "vitals": {
+            "bp": [
+              112,
+              78
+            ],
+            "hr": 72,
+            "weight_kg": 62.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-05-20T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-05-20T16:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "Patchy scalp hair loss"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-05-20T17:40",
+              "author": "PCP",
+              "body": "Two things today.\n\n1) Hair loss. About six weeks ago her hairdresser pointed out a bald spot at the back of her head; since then she's found two more. No itching, pain or burning. Hasn't changed products, no tight hairstyles, no recent illness. Not losing hair diffusely in the shower.\nExam: scalp with round, smooth, completely bald patches, no scale, no redness. Skin otherwise normal.\nThis looks like patchy alopecia, possibly alopecia areata, which would fit with her other autoimmune conditions. Thyroid has been steady. Referring to dermatology to confirm and talk about options. She'd like an appointment early in the summer break.\n\n2) T1DM. Meter averages a bit better this spring. No lows needing help. A1c today.\n\nMeds unchanged. Vitals as charted.\n\nPlan: derm referral placed. A1c today. Physical in August."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-22a",
+          "kind": "portal_message",
+          "start": "2024-05-22T13:15",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "A1c result",
+              "date": "2024-05-22T13:15",
+              "author": "PCP",
+              "body": "Your A1c is 6.8% — tied with your best since you joined us. Whatever you changed this spring, keep doing it. Our referral coordinator will be in touch about dermatology."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-04a",
+          "kind": "telephone",
+          "start": "2024-06-04T11:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral scheduled",
+              "date": "2024-06-04T11:05",
+              "author": "front desk",
+              "body": "Dermatology referral faxed with last note and labs. Derm office scheduled her for 7/1 at 10:20. Pt informed by phone, aware to bring med list."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-01a",
+          "kind": "specialist_visit",
+          "start": "2024-07-01T10:20",
+          "service": "Dermatology",
+          "reason": "Patchy scalp hair loss",
+          "conditions": [
+            {
+              "label": "Alopecia areata",
+              "action": "diagnosed",
+              "onset": "2024-04-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "clobetasol propionate 0.5 MG/ML Topical Solution",
+              "action": "start",
+              "sig": "Apply a thin layer to each bald scalp patch twice daily; not on the face",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "chronic",
+              "reason": "Alopecia areata"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-07-01T11:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.5
+                },
+                {
+                  "test": "Antinuclear Antibodies",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-07-01T11:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 234
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "done",
+              "date": "2024-07-01T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Consultation",
+              "date": "2024-07-03T09:10",
+              "author": "dermatology",
+              "body": "DERMATOLOGY CONSULTATION\nDate of visit: 07/01/2024\nReferred by: primary care physician\nReason: patchy hair loss of the scalp\n\nDear Doctor,\n\nThank you for referring Ms. Hartley, a 32-year-old teacher, whom we saw today.\n\nHistory: Over roughly three months she has developed several round bald patches on the scalp, each sharply outlined and completely smooth. They cause no pain, itching or burning. No new hair products or traction styles.\n\nPast history: type 1 diabetes; Hashimoto hypothyroidism. Wisdom teeth extraction at 18.\nMedications: insulin glargine 18 units at bedtime; insulin lispro with meals (carb ratio 1:12); levothyroxine 88 mcg daily.\nAllergies: no known drug allergies.\nFamily history: mother with Hashimoto thyroiditis, father with type 2 diabetes, maternal aunt with rheumatoid arthritis, sister with celiac disease.\nSocial: never smoker; alcohol 1-2 drinks a month; elementary school teacher.\n\nExamination: Three coin-sized patches of alopecia on the scalp with no scale and no erythema. Short broken exclamation-mark hairs at the edges of the patches. No palpable cervical or occipital nodes. Fingernails show pitting. No other skin lesions on full skin exam. Otherwise unremarkable.\n\nData: Your office's recent hemoglobin A1c was 6.8%. Today we drew TSH, CBC and ANA: TSH 2.5 mIU/L (reference 0.4-4.0), CBC within normal limits, ANA negative.\n\nImpression: Alopecia areata, patchy, with nail pitting, in the setting of other autoimmune disease.\n\nPlan: We reviewed the usual course and the treatment options, and agreed to start a potent topical steroid. Clobetasol propionate 0.05% solution: apply a thin layer to each bald patch twice daily; keep it off the face. We discussed skin thinning, which we will check for. Follow-up in 3 months.\n\nSincerely,\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2024-07-05a",
+          "kind": "portal_message",
+          "start": "2024-07-05T10:45",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Dermatology visit",
+              "date": "2024-07-05T10:45",
+              "author": "PCP",
+              "body": "Hi Christine, I got the dermatology letter. Alopecia areata confirmed, and the bloodwork they drew (thyroid, blood counts, ANA) was all normal. The clobetasol solution they started is a strong steroid, so use it only on the patches and keep it off your face. I've added both to your chart. Let me know if anything changes before your August physical."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Dermatology visit",
+              "date": "2024-07-05T18:30",
+              "author": "patient",
+              "body": "Thank you! Honestly relieved it has a name. See you in August."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "annual_physical",
+          "start": "2024-08-21T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              112,
+              78
+            ],
+            "hr": 68,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 62.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-08-21T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.6
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-21T09:40",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.6
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 121
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 63
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-08-21T09:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 103
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 97
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 184
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2024-08-21T09:20",
+              "text": "Specimen: cervical, liquid-based. Specimen adequacy: satisfactory for evaluation; transformation zone component present.\nInterpretation: negative for intraepithelial lesion or malignancy.\nHigh-risk HPV DNA: not detected.",
+              "conclusion": "NILM. High-risk HPV negative.",
+              "issued": "2024-08-27T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-08-21T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-08-21T12:05",
+              "author": "PCP",
+              "body": "Annual physical. Turned 33 last month. Summer was restful. Using the clobetasol solution on the patches twice daily without irritation. Wearing her hair down over them and isn't bothered. Diabetes steady; no severe lows.\n\nMedications: Lantus 18 units qHS, Humalog 1:12 + correction, levothyroxine 88 mcg, clobetasol 0.05% solution to scalp patches BID. NKDA.\nProblems: T1DM, Hashimoto hypothyroidism, alopecia areata (derm 7/2024, on topical clobetasol).\nSocial: still teaching 2nd grade; never smoker; alcohol a couple of drinks a month.\n\nROS otherwise negative.\n\nExam: vitals as charted. General well. Scalp: three smooth round bald patches, no thinning of the skin. HEENT normal. Thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen soft. Pelvic: normal external genitalia, vagina and cervix normal; Pap/HPV collected. Skin otherwise clear. Feet: intact skin, pulses full, monofilament normal both feet.\n\nPHQ-2 0.\n\nA/P\n- T1DM: A1c, CMP, urine albumin/creatinine, lipids. Continue regimen.\n- Hypothyroidism: TSH.\n- Alopecia areata: clobetasol per derm; derm recheck in October.\n- Cervical screening: co-test today.\n- Flu shot in the fall; she gets COVID boosters at the pharmacy.\nRTC 3 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-28a",
+          "kind": "portal_message",
+          "start": "2024-08-28T09:20",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Physical results",
+              "date": "2024-08-28T09:20",
+              "author": "PCP",
+              "body": "Pap test is normal and HPV is negative, so the next cervical screen is in five years. Your other labs from the physical were all fine as well — thyroid normal, kidneys and urine normal, cholesterol good. Have a great start to the school year."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-07a",
+          "kind": "specialist_visit",
+          "start": "2024-10-07T15:40",
+          "service": "Dermatology",
+          "reason": "Alopecia areata follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Follow-up",
+              "date": "2024-10-08T08:50",
+              "author": "dermatology",
+              "body": "DERMATOLOGY FOLLOW-UP\nDate of visit: 10/07/2024\n\nDear Doctor,\n\nMs. Hartley returned for her alopecia areata, three months after starting clobetasol propionate 0.05% solution twice daily to the patches. She has used it as directed and has had no irritation.\n\nExamination: Fine new hairs growing in all three scalp patches. No new patches. No skin atrophy, telangiectasia or folliculitis at the treated sites. Nail pitting unchanged.\n\nImpression: Patchy alopecia areata, responding to topical steroid.\n\nPlan: Continue clobetasol 0.05% solution twice daily to the patches. Recheck in 3 months.\n\nSincerely,\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "nurse_visit",
+          "start": "2024-10-09T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-09T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-09T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Influenza Vaccine",
+              "date": "2024-10-09T16:00",
+              "author": "RN",
+              "body": "Seasonal flu vaccine. Screening negative. 0.5 mL IM L deltoid. Tolerated. VIS reviewed. Observed 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-21a",
+          "kind": "portal_message",
+          "start": "2024-10-21T17:40",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-19T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "COVID vaccine",
+              "date": "2024-10-21T17:40",
+              "author": "patient",
+              "body": "Got this year's COVID shot (Moderna) at the pharmacy Saturday morning. Can you add it to my chart?"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: COVID vaccine",
+              "date": "2024-10-22T08:05",
+              "author": "MA",
+              "body": "Done, it's on your record now."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-20a",
+          "kind": "office_visit",
+          "start": "2024-11-20T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              124,
+              82
+            ],
+            "hr": 67,
+            "weight_kg": 61.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-11-20T16:25",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-11-20T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "date": "2024-11-20T17:25",
+              "author": "PCP",
+              "body": "Routine T1DM visit. Fall has been fine. Meter log reviewed: fastings 110s-150s, evening readings a bit higher on conference nights. No lows below 55. Hair filling in on the patches with the clobetasol; derm rechecks in January.\n\nVitals as charted. Exam: well, sites without lipohypertrophy.\n\nPlan: A1c today. No changes to insulin. Refilled levothyroxine. Next visit in about 3 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-08a",
+          "kind": "pharmacy",
+          "start": "2025-01-08T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization renewal",
+              "date": "2025-01-08T10:05",
+              "author": "MA",
+              "body": "Annual PA for insulin pens (Lantus SoloStar, Humalog KwikPen) resubmitted for 2025. Approved 1/8/2025-12/31/2025. Pharmacy notified."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-13a",
+          "kind": "specialist_visit",
+          "start": "2025-01-13T15:40",
+          "service": "Dermatology",
+          "reason": "Alopecia areata follow-up",
+          "medications": [
+            {
+              "drug_text": "clobetasol propionate 0.5 MG/ML Topical Solution",
+              "action": "stop",
+              "reason": "Alopecia areata regrown"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Follow-up",
+              "date": "2025-01-14T08:45",
+              "author": "dermatology",
+              "body": "DERMATOLOGY FOLLOW-UP\nDate of visit: 01/13/2025\n\nDear Doctor,\n\nMs. Hartley returned for her alopecia areata, six months into clobetasol propionate 0.05% solution twice daily to the patches.\n\nExamination: All three scalp patches have filled in with regrown hair. No new patches. No skin atrophy or folliculitis at the treated sites. Nail pitting unchanged.\n\nImpression: Patchy alopecia areata, regrown on topical steroid.\n\nPlan: Stop clobetasol. Alopecia areata can recur; she will restart the solution on any new patch and call us. Follow-up as needed.\n\nSincerely,\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2025-02-18a",
+          "kind": "hospital_admission",
+          "start": "2025-02-18T21:40",
+          "end": "2025-02-21T13:30",
+          "service": "Medical Intensive Care",
+          "reason": "Diabetic ketoacidosis",
+          "conditions": [
+            {
+              "label": "Type 1 diabetes mellitus with ketoacidosis without coma",
+              "action": "diagnosed",
+              "onset": "2025-02-18",
+              "icd10": "E10.10"
+            },
+            {
+              "label": "Acute upper respiratory infection",
+              "action": "diagnosed",
+              "onset": "2025-02-14"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-02-18T21:45",
+              "bp": [
+                102,
+                64
+              ],
+              "hr": 121,
+              "rr": 30,
+              "temp_c": 37.7,
+              "spo2": 98
+            },
+            {
+              "time": "2025-02-19T06:00",
+              "bp": [
+                110,
+                70
+              ],
+              "hr": 98,
+              "rr": 20,
+              "temp_c": 37.2,
+              "spo2": 98
+            },
+            {
+              "time": "2025-02-21T08:00",
+              "bp": [
+                114,
+                72
+              ],
+              "hr": 80,
+              "rr": 16,
+              "temp_c": 36.8,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-02-18T21:55",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 438
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 9
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 25
+                },
+                {
+                  "test": "Potassium",
+                  "value": 5.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-18T21:55",
+              "results": [
+                {
+                  "test": "Arterial pH",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.14
+                },
+                {
+                  "test": "Beta-hydroxybutyrate",
+                  "loinc": "6873-4",
+                  "unit": "mmol/L",
+                  "value": 6.4
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.8
+                },
+                {
+                  "test": "SARS-CoV-2 (COVID-19) PCR",
+                  "text": "Not detected"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-02-18T22:20",
+              "results": [
+                {
+                  "test": "Urine Ketones",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.8
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 2
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-02-19T05:30",
+              "results": [
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.67
+                },
+                {
+                  "test": "Calcium",
+                  "value": 8.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-02-18T23:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-02-21T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Provider Note",
+              "date": "2025-02-19T09:15",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT — PROVIDER NOTE\nDate of service: 02/18/2025, arrival 21:40\n\nCC: confusion, vomiting, fast breathing\n\nHPI: 33-year-old woman with type 1 diabetes, Hashimoto hypothyroidism and alopecia areata, brought in by her roommate, who found her confused and vomiting and breathing rapidly. Per patient and roommate, she has had a cold for several days — congestion, sore throat, cough — with poor appetite, and has not been taking her insulin regularly while sick.\n\nMeds: insulin glargine 18 units nightly; insulin lispro with meals, carb ratio 1:12; levothyroxine 88 mcg daily.\nAllergies: NKDA.\n\nExam: ill-appearing, drowsy but answers questions. Mucous membranes dry. Deep, rapid respirations. Fruity odor on the breath. Lungs clear. Heart tachycardic, regular. Abdomen soft, nontender. No focal neuro deficit.\n\nData: arterial blood gas with high anion gap metabolic acidosis, pH 7.14. Glucose 438, bicarbonate 9, anion gap 25, potassium 5.3. Beta-hydroxybutyrate 6.4. Urinalysis positive for ketones and glucose. SARS-CoV-2 PCR not detected.\n\nED course: two liters normal saline, insulin infusion per DKA protocol, potassium added to fluids once K below 5.\n\nImpression: diabetic ketoacidosis precipitated by viral upper respiratory infection and missed insulin.\nDisposition: admitted to the medical ICU."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2025-02-24T08:40",
+              "author": "hospital medicine",
+              "body": "DISCHARGE SUMMARY\nAdmitted: 02/18/2025   Discharged: 02/21/2025\nAdmitting unit: medical ICU, transferred to medicine floor 02/19/2025\n\nPrincipal diagnosis: diabetic ketoacidosis, type 1 diabetes\nSecondary: viral upper respiratory infection; Hashimoto hypothyroidism; alopecia areata\n\nHospital course:\nPresented from home after several days of a viral URI with irregular insulin use; confused, vomiting and tachypneic on arrival with dry mucosa, Kussmaul breathing and ketotic breath. Arterial gas showed a high anion gap metabolic acidosis (pH 7.14); glucose 438, bicarbonate 9, anion gap 25, K 5.3, beta-hydroxybutyrate 6.4; urine positive for ketones and glucose. Hemoglobin A1c 7.8%. COVID PCR negative.\nManaged in the ICU with IV fluids, insulin infusion and potassium replacement. Mental status cleared within hours. Anion gap closed overnight and she was moved to the floor on 2/19, bridged to subcutaneous glargine and lispro at her home doses. Eating normally by 2/20. URI symptoms improving.\nDiabetes education reviewed sick-day management: never stop basal insulin, check glucose every 2-4 hours and ketones when ill, fluids, and when to call or come in.\n\nCondition at discharge: stable, alert, ambulatory.\nAllergies: NKDA.\nDischarge medications (unchanged):\n- Insulin glargine 18 units subcutaneously at bedtime\n- Insulin lispro with meals, 1 unit per 12 g carbohydrate plus correction\n- Levothyroxine 88 mcg daily\n\nFollow-up: primary care within one week."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-25a",
+          "kind": "office_visit",
+          "start": "2025-02-25T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, DKA",
+          "conditions": [
+            {
+              "label": "Type 1 diabetes mellitus with ketoacidosis without coma",
+              "action": "resolved",
+              "icd10": "E10.10"
+            },
+            {
+              "label": "Acute upper respiratory infection",
+              "action": "resolved"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              79
+            ],
+            "hr": 64,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 62.2
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-02-25T16:15",
+              "results": [
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-02-25T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-02-25T17:45",
+              "author": "PCP",
+              "body": "Seen 4 days after discharge from a 3-day admission (ICU then floor) for DKA. Summary reviewed.\n\nShe says she felt so sick with the cold that she couldn't eat, and figured she shouldn't take insulin without eating — skipped the Lantus two nights and most of the Humalog. Her roommate found her confused on the 18th. She's embarrassed and wants to make sure it doesn't happen again.\n\nNow: eating normally, energy coming back, cough nearly gone, no fever. Sugars since discharge 100s-180s. Taking Lantus 18 nightly and Humalog with meals.\n\nExam: vitals as charted. Alert, comfortable. Mucous membranes moist. Lungs clear. Heart regular.\n\nA/P\n1. DKA, resolved. Precipitant: viral URI with missed basal insulin. Went over sick-day rules again in detail — basal insulin always, even if not eating; glucose every 2-4 hours; ketone check if over 250 or vomiting; sugar-containing fluids if not eating; call us early, any hour, if ketones moderate/large or she can't keep fluids down. She has urine ketone strips at home. Wrote the plan out for her fridge.\n2. URI — resolved.\n3. T1DM — no dose changes. BMP today.\n4. Hashimoto, alopecia areata — stable.\nRTC May for routine DM visit, sooner if needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-05a",
+          "kind": "portal_message",
+          "start": "2025-03-05T19:25",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Checking in",
+              "date": "2025-03-05T19:25",
+              "author": "patient",
+              "body": "Back at school this week and feeling like myself again. Sugars have been behaving. The sick-day sheet is on my fridge. Also saw my bloodwork from last week was normal — thank you."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Checking in",
+              "date": "2025-03-06T07:40",
+              "author": "PCP",
+              "body": "So glad to hear it. Yes, the chemistry panel was completely back to normal. Remember you can reach me directly if you ever get sick and the numbers start climbing."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-24a",
+          "kind": "outside_records",
+          "start": "2025-03-24T14:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye examination report",
+              "date": "2025-03-24T14:00",
+              "author": "optometry",
+              "body": "Diabetic eye exam, 03/18/2025.\nVA 20/20 OD, 20/20 OS with correction. IOP within normal limits.\nDilated fundus: no diabetic retinopathy in either eye; no macular edema.\nImpression: no retinopathy. Recall 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-21a",
+          "kind": "office_visit",
+          "start": "2025-05-21T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              139,
+              77
+            ],
+            "hr": 75,
+            "weight_kg": 61.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-05-21T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-05-21T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "date": "2025-05-21T17:15",
+              "author": "PCP",
+              "body": "DM f/u, first routine visit since the February admission. No illnesses since. Has not missed basal doses. Sugars mostly 100-200, some higher afternoons. One low to 62.\n\nVitals as charted. Exam: well; injection sites fine; scalp hair full, no new patches.\n\nA/P: T1DM — A1c today; no changes. Sick-day plan reviewed briefly; she has strips at home and they're in date. Hashimoto stable; TSH with the August physical."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-11a",
+          "kind": "pharmacy",
+          "start": "2025-06-11T09:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill — levothyroxine",
+              "date": "2025-06-11T09:25",
+              "author": "MA",
+              "body": "Electronic refill request levothyroxine 88 mcg #90. Last TSH 7/2024 normal, physical booked for August. Approved per protocol, 1 refill to bridge to physical."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "annual_physical",
+          "start": "2025-08-20T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              122,
+              74
+            ],
+            "hr": 75,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 62.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-08-20T09:25",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.9
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-20T09:25",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.69
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.0
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-08-20T09:25",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 95
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 101
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 115
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-20T09:25",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.53
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 257
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-08-20T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-08-20T11:50",
+              "author": "PCP",
+              "body": "Yearly physical. 34 now. No hospital visits since February. Summer was quiet; a little anxious about getting sick once school starts, given last winter — we talked it through. Sleeping ok, mood good otherwise.\n\nMeds: glargine 18 u qHS, lispro 1:12 + correction, levothyroxine 88 mcg. NKDA.\nPMH: T1DM; DKA 2/2025 with a viral URI; Hashimoto hypothyroidism; alopecia areata (regrown on clobetasol, stopped 1/2025).\nFH and SH unchanged.\n\nExam: vitals as charted. NAD. Scalp: hair full over the old patches; no new ones. Eyes normal. Thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen benign. Skin normal elsewhere; nails with pitting. Neuro: normal gait. Feet: no ulcers or calluses, pulses 2+, monofilament intact bilaterally.\n\nPHQ-2: 1.\n\nPlan\n- T1DM: A1c, CMP, urine albumin/creatinine, lipids.\n- Hashimoto: TSH.\n- Pap/HPV next 2029.\n- Flu vaccine in the fall.\n- Sick-day plan reviewed once more.\nNext visit in 3 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-22a",
+          "kind": "portal_message",
+          "start": "2025-08-22T12:10",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab results",
+              "date": "2025-08-22T12:10",
+              "author": "PCP",
+              "body": "Hi Christine — labs from Wednesday look good. A1c is back around 7, thyroid, kidneys, liver and cholesterol all normal, urine protein normal. Good luck with the new class."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "portal_message",
+          "start": "2025-10-07T06:45",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Head cold",
+              "date": "2025-10-07T06:45",
+              "author": "patient",
+              "body": "Morning — I picked up a cold from my class, stuffy nose and scratchy throat since Sunday. No fever. Sugars are running a bit higher (low 200s a couple of times) and I checked ketones twice, both negative. Took my Lantus as usual. Anything else I should be doing?"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Head cold",
+              "date": "2025-10-07T08:20",
+              "author": "RN",
+              "body": "Sounds like you're doing exactly the right things. Keep taking your Lantus every night, cover meals with Humalog plus correction, drink plenty, and recheck ketones if you're over 250 or feel nauseated. If ketones come back moderate or large, or you can't keep fluids down, call right away — day or night. Feel better!"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-29a",
+          "kind": "telephone",
+          "start": "2025-10-29T06:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "After-hours call",
+              "date": "2025-10-29T07:05",
+              "author": "PCP",
+              "body": "Pt called my cell at 6:50. Two days of tingling that started in her toes and has crept up to around her belly button, legs getting weaker — had trouble with the stairs last night — and she's had trouble getting her urine started since yesterday. Sugars fine, no fever. No back trauma.\n\nConcerned for a spinal cord process. Told her to go to the ED now, not to drive; her roommate will take her. Called ahead to the ED physician."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-29b",
+          "kind": "hospital_admission",
+          "start": "2025-10-29T07:40",
+          "end": "2025-11-04T11:00",
+          "service": "Neurology",
+          "reason": "Acute transverse myelitis",
+          "conditions": [
+            {
+              "label": "Acute transverse myelitis",
+              "action": "diagnosed",
+              "onset": "2025-10-27",
+              "icd10": "G37.3"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "methylprednisolone sodium succinate 1000 MG Injection",
+              "action": "start",
+              "sig": "1 g IV once daily for 5 days",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "Acute transverse myelitis"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-10-29T07:50",
+              "bp": [
+                128,
+                80
+              ],
+              "hr": 88,
+              "rr": 16,
+              "temp_c": 36.8,
+              "spo2": 99
+            },
+            {
+              "time": "2025-11-04T08:00",
+              "bp": [
+                118,
+                74
+              ],
+              "hr": 76,
+              "rr": 14,
+              "temp_c": 36.6,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-29T08:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 224
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.53
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-29T08:10",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.67
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 63
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-29T08:10",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 20
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 1
+                },
+                {
+                  "test": "Aquaporin-4 antibody, serum",
+                  "loinc": "43638-6",
+                  "text": "Negative",
+                  "resulted": "2025-11-01T14:00"
+                },
+                {
+                  "test": "MOG antibody, serum",
+                  "loinc": "106548-1",
+                  "text": "Negative",
+                  "resulted": "2025-11-01T14:00"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-30T11:30",
+              "results": [
+                {
+                  "test": "CSF white blood cells",
+                  "loinc": "26465-5",
+                  "unit": "/uL",
+                  "value": 11
+                },
+                {
+                  "test": "CSF protein",
+                  "loinc": "2880-3",
+                  "unit": "mg/dL",
+                  "value": 49
+                },
+                {
+                  "test": "CSF glucose",
+                  "loinc": "2342-4",
+                  "unit": "mg/dL",
+                  "value": 71
+                },
+                {
+                  "test": "CSF oligoclonal bands",
+                  "loinc": "32358-4",
+                  "text": "Absent",
+                  "resulted": "2025-11-03T10:00"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "MRI thoracic spine with and without contrast",
+              "loinc": "24981-3",
+              "performed": "2025-10-29T10:15",
+              "text": "MRI THORACIC SPINE WITHOUT AND WITH IV GADOLINIUM\nIndication: progressive bilateral leg weakness, ascending sensory change, urinary retention.\nTechnique: sagittal and axial T1, T2 and STIR images; post-contrast T1 sagittal and axial.\nFindings: Ill-defined T2-hyperintense signal within the spinal cord extending from T5 to T7. No enhancement of the lesion after gadolinium. Vertebral body heights and alignment preserved; marrow signal normal. No disc herniation, canal stenosis or cord compression. No epidural collection. Paraspinal soft tissues normal.",
+              "conclusion": "T2-hyperintense intramedullary lesion from T5 to T7 without enhancement. No compressive lesion."
+            },
+            {
+              "study": "MRI brain with and without contrast",
+              "loinc": "24587-8",
+              "performed": "2025-10-30T08:40",
+              "text": "MRI BRAIN WITHOUT AND WITH IV CONTRAST\nIndication: transverse myelitis, evaluate for demyelinating disease.\nFindings: No T2/FLAIR white matter lesions. No abnormal enhancement. No restricted diffusion. Ventricles and sulci normal for age. No mass, hemorrhage or extra-axial collection. Optic nerves symmetric and normal in signal. Major flow voids present.",
+              "conclusion": "Normal MRI of the brain. No demyelinating lesions."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-10-29T09:30"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-10-29T14:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-11-04T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Provider Note",
+              "date": "2025-10-30T08:20",
+              "author": "emergency medicine",
+              "body": "ED PROVIDER NOTE — 10/29/2025, arrived 07:40; PCP called ahead.\n\nChief complaint: leg weakness and trouble urinating x 2 days.\n\nHPI: 34-year-old woman with T1DM, Hashimoto hypothyroidism, alopecia areata and DKA in February of this year. Two days of worsening weakness in both legs. Tingling began in the toes and has risen to the level of the umbilicus. Since yesterday, difficulty starting her stream and incomplete emptying. Had a mild cold about three weeks ago that went away on its own; no other recent infections and no recent vaccines. No back pain, no trauma, no vision loss.\n\nMeds: glargine 18 u nightly, lispro with meals (1:12), levothyroxine 88 mcg. NKDA.\n\nExam: alert, oriented, anxious. CN intact. Arms normal strength and reflexes. Legs: strength 3/5 bilaterally, reflexes brisk/hyperreflexic at knees and ankles, Babinski present bilaterally. Light touch and pinprick reduced below the umbilicus. Bladder scan post-void residual 520 mL; Foley placed.\n\nLabs: WBC 7.0 (7,000/uL). ESR 20 mm/h. CRP 1 mg/L. CMP normal. Aquaporin-4 and MOG antibodies sent.\nMRI thoracic spine: T2-hyperintense cord lesion from T5 to T7, no enhancement with gadolinium.\n\nImpression: acute myelopathy, likely transverse myelitis. Neurology consulted at bedside; admitted to neurology for IV steroids and workup."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Neurology Discharge Summary",
+              "date": "2025-11-05T09:30",
+              "author": "neurology",
+              "body": "NEUROLOGY DISCHARGE SUMMARY\nAdmission 10/29/2025 — discharge to acute inpatient rehabilitation 11/04/2025\n\nDiagnosis: idiopathic acute transverse myelitis, T5-T7\n\nPresentation: 2 days of progressive bilateral leg weakness with an ascending sensory level to the umbilicus and urinary retention, three weeks after a self-limited respiratory illness. Leg strength 3/5 with hyperreflexia and bilateral Babinski signs. MRI: non-enhancing T2 lesion T5-T7.\n\nWorkup:\n- MRI brain with and without contrast 10/30: normal; no demyelinating lesions.\n- Lumbar puncture 10/30: CSF WBC 11/uL, lymphocyte predominant; protein 49 mg/dL; glucose 71 mg/dL; oligoclonal bands absent.\n- Serum aquaporin-4 IgG negative; MOG IgG negative.\n- WBC 7.0, ESR 20, CRP 1, CMP normal.\n\nTreatment: IV methylprednisolone 1 g daily x 5 days (10/29-11/2), completed; no oral taper. Glucose rose on steroids as expected and was covered with correction insulin in addition to her usual basal-bolus doses; back to home doses at discharge.\nBladder: Foley removed 11/2; voiding trial passed, post-void residuals under 100 mL since.\n\nStatus at transfer: strength 4-/5 in both legs, walking short distances with a walker and assistance. Sensation still reduced below the mid-abdomen, improving.\n\nDischarge medications: insulin glargine 18 units at bedtime; insulin lispro with meals (1:12 plus correction); levothyroxine 88 mcg daily. Methylprednisolone course complete.\nAllergies: NKDA.\n\nFollow-up: inpatient rehabilitation; neurology clinic in about 6 weeks; repeat thoracic spine MRI in about 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "hospital_admission",
+          "start": "2025-11-04T13:00",
+          "end": "2025-11-20T11:00",
+          "service": "Inpatient Rehabilitation",
+          "reason": "Rehabilitation after transverse myelitis",
+          "procedures": [
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-11-20T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Inpatient Rehabilitation Discharge Summary",
+              "date": "2025-11-21T15:00",
+              "author": "physical medicine and rehabilitation",
+              "body": "ACUTE INPATIENT REHABILITATION — DISCHARGE SUMMARY\nAdmitted 11/04/2025 from neurology; discharged home 11/20/2025.\n\nRehab diagnosis: paraparesis due to idiopathic acute transverse myelitis (T5-T7), s/p IV methylprednisolone.\nOther: type 1 diabetes on basal-bolus insulin; Hashimoto hypothyroidism; alopecia areata.\n\nCourse: 3 hours/day of PT and OT. Steady gains in strength and gait. Glucose managed on her home regimen with her own carb counting; no hypoglycemia requiring treatment by staff. Bladder: voiding independently throughout, no catheterization needed.\n\nAt discharge:\n- Strength: hip flexors 4/5 bilaterally; knee extension, ankle dorsiflexion and plantarflexion 4+/5 bilaterally.\n- Gait: about 150 feet with a rolling walker, supervision on stairs.\n- Sensation: numbness of both feet persists; trunk sensation improved.\n- Independent with self-care.\n\nEquipment: rolling walker, shower chair.\nMedications: insulin glargine 18 units at bedtime; insulin lispro with meals per carb ratio 1:12 plus correction; levothyroxine 88 mcg daily.\nAllergies: NKDA.\n\nPlan: outpatient PT twice weekly; PCP within 1 week; neurology follow-up as scheduled. Off work for now."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-24a",
+          "kind": "office_visit",
+          "start": "2025-11-24T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital and rehab follow-up",
+          "vitals": {
+            "bp": [
+              130,
+              68
+            ],
+            "hr": 77,
+            "temp_c": 36.9,
+            "spo2": 100,
+            "weight_kg": 61.6
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-11-24T14:15"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-11-24T14:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-11-24T14:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pt-referral",
+              "action": "placed",
+              "order": "Outpatient physical therapy referral",
+              "category": "referral",
+              "to": "Physical Therapy",
+              "reason": "Gait and leg strength after transverse myelitis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-11-24T16:30",
+              "author": "PCP",
+              "body": "Here with her mother, walking in with the rolling walker. Home 4 days from inpatient rehab after a week on neurology for transverse myelitis (T5-T7). Neurology and rehab summaries reviewed in full.\n\nShe's tired but encouraged. Legs a little stronger every day; feet still numb, \"like wearing thick socks.\" Bladder working normally — no retention, no incontinence. Bowels normal. Sugars were high during the steroid days but have settled to her usual range on the home doses; no lows. Sleeping ok. Scared at first, now focused on PT.\n\nMeds: glargine 18 u qHS, lispro 1:12 + correction, levothyroxine 88 mcg. Steroid course finished 11/2. NKDA.\n\nExam: vitals as charted. Alert, good spirits. Lungs clear, heart regular. Legs: hip flexion 4/5, distal 4+/5 bilaterally; decreased light touch both feet. Gait slow and steady with walker. Feet: skin intact, no wounds, pulses normal.\n\nA/P\n1. Idiopathic acute transverse myelitis, recovering. Outpatient PT referral placed (twice weekly). Neurology follow-up mid-December, repeat MRI in spring per neurology. Foot care with reduced sensation — daily inspection, well-fitting shoes.\n2. T1DM: stable after steroid hyperglycemia. Continue. A1c due in February.\n3. Hashimoto, alopecia areata: stable.\n4. Flu vaccine today (deferred this fall during the illness).\n5. Work: on leave through winter break; we'll do short-term disability paperwork.\nRTC 6-8 weeks, sooner if any new weakness, numbness, vision change or bladder trouble."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-25a",
+          "kind": "telephone",
+          "start": "2025-11-25T10:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Disability paperwork",
+              "date": "2025-11-25T10:10",
+              "author": "front desk",
+              "body": "Short-term disability claim form dropped off by pt's mother. Clinician section routed to PCP. Hospital and rehab summaries attached. Completed form faxed to the insurer 11/26; copy scanned to chart."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-01a",
+          "kind": "specialist_visit",
+          "start": "2025-12-01T09:00",
+          "service": "Physical Therapy",
+          "reason": "PT evaluation after transverse myelitis",
+          "procedures": [
+            {
+              "procedure": "Physical therapy evaluation, moderate complexity",
+              "performed": "2025-12-01T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pt-referral",
+              "action": "done",
+              "date": "2025-12-01T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Physical Therapy Initial Evaluation",
+              "date": "2025-12-02T12:00",
+              "author": "physical therapy",
+              "body": "OUTPATIENT PHYSICAL THERAPY — INITIAL EVALUATION, 12/01/2025\nReferral: primary care. Dx: transverse myelitis T5-T7 with lower extremity weakness.\n\nSubjective: discharged from inpatient rehab 11/20. Walking at home with rolling walker. Goal: walk without a device and return to teaching in January.\n\nObjective: Hip flexors 4/5 bilat; knee ext 4+/5; ankle DF/PF 4+/5. Light touch reduced both feet. Gait with rolling walker, slow, reduced step length. Needs arms to rise from a chair.\n\nAssessment: good rehab potential.\nPlan: 2x/week for 12 weeks — strengthening, gait and balance training, progression to cane, home program."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-16a",
+          "kind": "specialist_visit",
+          "start": "2025-12-16T14:00",
+          "service": "Neurology",
+          "reason": "Transverse myelitis follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Clinic Follow-up",
+              "date": "2025-12-18T09:45",
+              "author": "neurology",
+              "body": "NEUROLOGY CLINIC — 12/16/2025\n\nDear Doctor,\n\nMs. Hartley returns six weeks after admission for idiopathic acute transverse myelitis (T5-T7; AQP4 and MOG antibodies negative; normal brain MRI; CSF without oligoclonal bands), treated with 5 days of IV methylprednisolone.\n\nShe is improving steadily with PT. Walks indoors with a cane now. Bladder function normal. Persistent numbness of both feet. No new symptoms; no vision changes.\n\nExam: strength 4+/5 throughout both legs. Reduced light touch in both feet. Walks with a cane.\n\nImpression: good ongoing recovery. Nothing to suggest a relapsing disorder at this point; no maintenance therapy indicated.\nPlan: continue PT. Repeat MRI thoracic spine with and without contrast in April. Return after the MRI.\n\nSincerely,\nNeurology"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-07a",
+          "kind": "portal_message",
+          "start": "2026-01-07T08:10",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Back to work",
+              "date": "2026-01-07T08:10",
+              "author": "patient",
+              "body": "Good news — PT and neurology both think I'm ready to go back to my classroom after break. The school needs a note from you saying I can return, with whatever limits you think I need. I'm using the cane in the hallways but not in the room."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Back to work",
+              "date": "2026-01-07T12:30",
+              "author": "PCP",
+              "body": "That's wonderful. Letter attached and a copy is in your chart: cleared to return to full duties, with a seat available as needed, no recess or bus duty through February, and time off for PT appointments. Ask if they need anything else."
+            },
+            {
+              "type": "Letter",
+              "title": "Return to Work Letter",
+              "date": "2026-01-07T12:25",
+              "author": "PCP",
+              "body": "To whom it may concern:\n\nChristine Hartley is under my care and may return to work as a classroom teacher on January 12, 2026.\n\nThrough February 28, 2026, please allow: access to a seat as needed, no outdoor recess or bus duty, and time for twice-weekly physical therapy appointments.\n\nPlease contact the office with any questions.\n\nPrimary Care Physician"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-08a",
+          "kind": "pharmacy",
+          "start": "2026-01-08T09:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization renewal",
+              "date": "2026-01-08T09:50",
+              "author": "MA",
+              "body": "Insulin pen PA for 2026 — insurer auto-renewed Lantus SoloStar; Humalog KwikPen needed a new form, submitted and approved 1/8. Pharmacy confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-25a",
+          "kind": "office_visit",
+          "start": "2026-02-25T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and myelitis follow-up",
+          "vitals": {
+            "bp": [
+              121,
+              76
+            ],
+            "hr": 74,
+            "weight_kg": 62.3
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-02-25T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-02-25T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-02-25T17:35",
+              "author": "PCP",
+              "body": "F/u myelitis recovery and T1DM.\n\nBack teaching since 1/12. Tired by Friday but managing. Cane only for longer walks and outside on ice. PT twice a week, expects to finish next month. Feet still numb but less so. Bladder normal.\n\nSugars a little higher this winter — less walking, more grab-and-go food. No lows needing help. No illnesses this winter; flu shot in November.\n\nVitals as charted. Exam: alert. Heart regular, lungs clear. Legs strong against resistance, slight hip flexor weakness. Light touch reduced over both feet. Gait steady without the cane in the office.\n\nA/P\n1. Transverse myelitis — recovering well. Neurology after the April MRI.\n2. T1DM — A1c today; expect it a bit up. No dose changes yet; she'd like to see what spring brings once she's walking more.\n3. Hashimoto, alopecia areata — stable.\nRTC May."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-23a",
+          "kind": "outside_records",
+          "start": "2026-03-23T11:15",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye examination report",
+              "date": "2026-03-23T11:15",
+              "author": "optometry",
+              "body": "Diabetic eye examination 03/17/2026.\nNo visual symptoms. BCVA 20/20 OU. Pupils normal. IOP normal.\nDilated fundus OU: no retinopathy, no macular edema. Optic nerves pink and sharp.\nImpression: type 1 diabetes, no diabetic retinopathy. Next exam in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-27a",
+          "kind": "outside_records",
+          "start": "2026-03-27T14:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Physical therapy discharge summary",
+              "date": "2026-03-27T14:30",
+              "author": "physical therapy",
+              "body": "OUTPATIENT PHYSICAL THERAPY — DISCHARGE SUMMARY\nDates of care: 12/01/2025 - 03/24/2026, 23 visits.\nDiagnosis: lower extremity weakness after transverse myelitis T5-T7.\n\nStatus at discharge: walking without an assistive device indoors and outdoors, including stairs with a rail. Independent with home exercise program. Residual numbness both feet.\n\nGoals met: independent community ambulation without device; return to work.\nDischarged to home program. Re-referral welcome if function declines."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "imaging",
+          "start": "2026-04-14T07:30",
+          "service": "Radiology",
+          "reason": "Follow-up transverse myelitis",
+          "reports": [
+            {
+              "study": "MRI thoracic spine with and without contrast",
+              "loinc": "24981-3",
+              "performed": "2026-04-14T07:30",
+              "text": "MRI THORACIC SPINE WITHOUT AND WITH IV GADOLINIUM\nIndication: follow-up of transverse myelitis T5-T7.\nComparison: 10/29/2025.\nTechnique: sagittal and axial T1, T2 and STIR; post-contrast T1.\nFindings: The intramedullary T2-hyperintense signal at T5-T7 is smaller than on the prior study. No enhancement. No new cord lesions. Alignment and vertebral body heights normal. No disc herniation or stenosis.",
+              "conclusion": "Interval decrease of the T5-T7 cord signal abnormality. No enhancement and no new lesions."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "specialist_visit",
+          "start": "2026-04-21T10:00",
+          "service": "Neurology",
+          "reason": "Transverse myelitis follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Clinic Follow-up",
+              "date": "2026-04-23T08:50",
+              "author": "neurology",
+              "body": "NEUROLOGY CLINIC — 04/21/2026\n\nDear Doctor,\n\nFollow-up visit for idiopathic acute transverse myelitis (10/2025), six months out.\n\nShe finished PT in March and walks without any device. Teaching full time. Mild numbness remains in both feet. Bladder and bowel normal. No new neurologic symptoms in the interval.\n\nExam: strength 5/5 in both legs except hip flexors 5-/5 bilaterally. Mildly reduced light touch in both feet. Gait normal.\n\nMRI thoracic spine 4/14/2026: T5-T7 signal smaller, no enhancement, no new lesions.\n\nImpression: monophasic idiopathic transverse myelitis with near-complete recovery. No further treatment needed.\nPlan: return to neurology in 6 months, sooner for any new weakness, sensory change, vision loss or bladder symptoms.\n\nSincerely,\nNeurology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-20a",
+          "kind": "office_visit",
+          "start": "2026-05-20T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              128,
+              75
+            ],
+            "hr": 73,
+            "weight_kg": 62.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-20T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-05-20T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "date": "2026-05-20T17:10",
+              "author": "PCP",
+              "body": "T1DM visit. Walking again in the evenings since April, and her afternoon sugars show it. Fasting 110-140. No lows below 60.\n\nNeurology letter from April reviewed — near-complete recovery, no treatment, follow-up in the fall.\n\nVitals as charted. Exam: well. Gait normal. Feet: skin intact, pulses normal; light touch mildly reduced both feet.\n\nPlan: A1c today. No insulin changes. Physical in August."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-15a",
+          "kind": "pharmacy",
+          "start": "2026-06-15T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill — levothyroxine",
+              "date": "2026-06-15T09:05",
+              "author": "MA",
+              "body": "Refill request levothyroxine 88 mcg 90-day. TSH 8/2025 normal. Sent with 1 refill; TSH due with August physical."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "annual_physical",
+          "start": "2026-08-19T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              123,
+              78
+            ],
+            "hr": 80,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 62.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-08-19T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.8
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-08-19T09:20",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.67
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 67
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-08-19T09:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 106
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 114
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 194
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 65
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 129
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-08-19T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-08-19T11:30",
+              "author": "PCP",
+              "body": "Annual exam. 35 last month. A good summer — back to hiking, short trails. No illnesses, no hospital visits this year. Feet still a bit numb at the toes, otherwise she feels back to herself. Starting the school year next week.\n\nMeds: insulin glargine 18 u qHS; insulin lispro 1:12 + correction; levothyroxine 88 mcg daily. NKDA.\nProblems: T1DM; Hashimoto hypothyroidism; alopecia areata (in remission); DKA 2/2025 (resolved); idiopathic transverse myelitis 10/2025 (recovered, neurology following).\nFH: mother Hashimoto's; father T2DM; maternal aunt RA; sister celiac.\nSH: teacher; lives with a roommate; never smoker; 1-2 drinks a month.\n\nROS: no weakness, no bladder change, no vision change. Otherwise negative.\n\nExam: vitals as charted. Well. Scalp: hair full, no patches of alopecia. Thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen soft. Neuro: strength full except slight hip flexor weakness, gait normal. Feet: skin intact, no calluses, pulses 2+, light touch mildly reduced over the toes, monofilament felt at all sites.\n\nPHQ-2: 0.\n\nA/P\n- T1DM: A1c, CMP, urine albumin/creatinine, lipids. No changes. Sick-day plan refreshed before school.\n- Hashimoto: TSH.\n- Transverse myelitis: recovered; neurology in October.\n- Alopecia areata: in remission since 1/2025.\n- Flu vaccine this fall. Pap/HPV due 2029.\nRTC November."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 6.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-21a",
+          "kind": "portal_message",
+          "start": "2026-08-21T13:20",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Physical labs",
+              "date": "2026-08-21T13:20",
+              "author": "PCP",
+              "body": "Your physical labs are back and look good: A1c a little better than in May, thyroid normal, kidneys and urine protein normal, cholesterol fine. Have a great first week with the new class. See you in November."
+            }
+          ]
+        },
+        {
+          "id": "2026-11-18a",
+          "kind": "office_visit",
+          "start": "2026-11-18T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute transverse myelitis|G37.3": {
+        "code": "G37.3",
+        "display": "Acute transverse myelitis in demyelinating disease of central nervous system",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Type 1 diabetes mellitus with ketoacidosis without coma|E10.10": {
+        "code": "E10.10",
+        "display": "Type 1 diabetes mellitus with ketoacidosis without coma",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "clobetasol propionate 0.5 MG/ML Topical Solution": {
+        "code": "861487",
+        "display": "clobetasol propionate 0.5 MG/ML Topical Solution",
+        "ingredient": "clobetasol",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "methylprednisolone sodium succinate 1000 MG Injection": {
+        "code": "1743726",
+        "display": "methylprednisolone 1000 MG Injection",
+        "ingredient": "methylprednisolone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Aquaporin-4 antibody, serum": {
+        "code": "43638-6",
+        "display": "Aquaporin 4 water channel IgG Ab [Presence] in Serum or Plasma",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Arterial pH": {
+        "code": "2744-1",
+        "display": "pH of Arterial blood",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Beta-hydroxybutyrate": {
+        "code": "6873-4",
+        "display": "Beta hydroxybutyrate [Moles/volume] in Serum or Plasma",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "CSF glucose": {
+        "code": "2342-4",
+        "display": "Glucose [Mass/volume] in Cerebrospinal Fluid",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "CSF oligoclonal bands": {
+        "code": "32358-4",
+        "display": "Oligoclonal bands [Presence] in Cerebrospinal Fluid",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "CSF protein": {
+        "code": "2880-3",
+        "display": "Protein [Mass/volume] in Cerebrospinal Fluid",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "CSF white blood cells": {
+        "code": "26465-5",
+        "display": "Leukocytes [#/volume] in Cerebrospinal Fluid",
+        "unit": "/uL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "MOG antibody, serum": {
+        "code": "106548-1",
+        "display": "Myelin oligodendrocyte glycoprotein IgG Ab [Presence] in Serum or Plasma by Immunofluorescence",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "MRI brain with and without contrast": {
+        "code": "24587-8",
+        "display": "MR Brain WO and W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "MRI thoracic spine with and without contrast": {
+        "code": "24981-3",
+        "display": "MR Thoracic spine WO and W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

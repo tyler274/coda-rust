@@ -1,0 +1,4141 @@
+{
+  "unit": "unit-2118",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002118",
+      "given": "Dale",
+      "family": "Bradley",
+      "birth_date": "1981-04-05",
+      "address_line": "17 Mill River Lane",
+      "phone": "+1-617-555-0186",
+      "email": "dale.bradley@example.test",
+      "marital_status": "single",
+      "summary": "Forty-year-old international business development manager with bipolar disorder on lithium and stage 3a CKD who joins in 2021. Lithium-era nephrogenic diabetes insipidus is found in 2024, then ciguatera on vacation, saline-induced hyperchloremic acidosis during home IV hydration in 2025, and Ebola virus disease after a 2026 work trip to Guinea, from which he recovers.",
+      "events": [
+        {
+          "id": "2021-08-11a",
+          "kind": "outside_records",
+          "start": "2021-08-11T10:20",
+          "reason": "Records from prior primary care office",
+          "conditions": [
+            {
+              "label": "Chronic kidney disease, stage 3a",
+              "action": "history",
+              "onset": "2020-01-01"
+            },
+            {
+              "label": "Bipolar disorder, unspecified",
+              "action": "history",
+              "onset": "2019-01-01"
+            },
+            {
+              "label": "Acquired absence of other specified parts of digestive tract",
+              "action": "history",
+              "onset": "1999-06-01",
+              "note": "appendectomy at age 18",
+              "icd10": "Z90.49"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "lithium carbonate 300 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth twice daily",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Bipolar disorder"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-09T09:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-30T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2021-08-11T10:20",
+              "author": "outside primary care",
+              "body": "Summary of care, prior primary care office, sent at patient request ahead of transfer.\n\nPatient: Dale Bradley, DOB 04/05/1981.\n\nProblems:\n1. Bipolar disorder. Lithium started 2019 by his psychiatrist at the time. Mood has been stable on it and he has had no episodes since. Once he was stable the psychiatrist handed prescribing back to us; we have refilled it since.\n2. Chronic kidney disease. Creatinine 1.6 in 2020, 1.7 in spring 2021. eGFR around 50. No proteinuria on prior UA.\n3. S/p appendectomy at 18.\n\nMedications: lithium carbonate 300 mg capsule, 1 cap twice a day.\nAllergies: NKDA.\nImmunizations: COVID-19 Pfizer x2, April 2021. Tdap date not on file.\nFamily hx: father bipolar disorder; mother hypertension.\nSocial: never smoker, a few drinks a week, works in international business development.\n\nLast lithium level 0.7 (spring 2021). TSH and calcium normal at that draw."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-24a",
+          "kind": "establish_care",
+          "start": "2021-08-24T09:00",
+          "end": "2021-08-24T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care and physical",
+          "vitals": {
+            "bp": [
+              119,
+              81
+            ],
+            "hr": 77,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 74.5,
+            "height_cm": 181.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-08-24T10:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.72
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 51
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 90
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-08-24T10:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.41
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 211
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-08-24T10:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 105
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 52
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 82
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 173
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 121
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2021-08-24T10:05",
+              "results": [
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.014
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-24T10:05",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.7
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.6
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 2-3 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "International business development manager"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 40-64",
+              "performed": "2021-08-24T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-08-24T09:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-08-24T10:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2021-08-24T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit and Physical",
+              "date": "2021-08-24T10:00",
+              "author": "PCP",
+              "body": "New patient. 40M moving his care here after relocating to Haydenville. Records from his prior office reviewed before today.\n\nHe is here mostly to get established. Feels well. Works in international business development, on the road abroad several times a year. Sleeps fine, exercises a few times a week.\n\nBipolar disorder: on lithium since 2019, started by a psychiatrist; prior PCP had been refilling. Mood steady, no highs or lows he can remember in the last two years, no thoughts of self-harm. Takes it twice a day with meals and rarely misses. Happy to keep labs here.\n\nKidneys: knows he has 'reduced kidney function' — creatinine 1.6-1.7 on outside labs. No swelling, no urinary complaints.\n\nPMH: bipolar disorder; CKD stage 3a. PSH: appendectomy at 18.\nMeds: lithium carbonate 300 mg BID.\nAllergies: NKDA.\nFH: father with bipolar disorder; mother with hypertension.\nSH: never smoker, 2-3 drinks a week, no drug use. Single.\n\nROS otherwise negative.\n\nExam: well-appearing, calm, good eye contact, organized thought. HEENT unremarkable. Thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Abdomen soft, old RLQ scar. No edema. No tremor at rest or with arms outstretched. Skin clear.\n\nA/P\n1. Bipolar disorder, stable on lithium — continue 300 mg BID. Lithium level, TSH, calcium today, then every 6 months with kidney labs. PHQ-9 2.\n2. CKD 3a — CMP, UA, urine albumin/creatinine. Avoid NSAIDs; told him why.\n3. Health maintenance — lipids, A1c, one-time HIV and hep C screens. Tdap today (no date on file). COVID primary series done in April. Flu shot in the fall.\n\nRTC 6 months for labs, 1 year for physical."
+            },
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2021-08-24T09:52",
+              "author": "MA",
+              "body": "Tdap 0.5 mL IM left deltoid. VIS given. Pt tolerated well, no reaction after 15 minutes."
+            }
+          ],
+          "state": {
+            "weight_kg": 74.5,
+            "height_cm": 180.0,
+            "labs": {
+              "Blood Urea Nitrogen": 21,
+              "Creatinine": 1.7,
+              "Hemoglobin A1c": 5.3,
+              "High Density Lipoprotein": 54,
+              "Lithium": 0.7,
+              "Low Density Lipoprotein": 108,
+              "Microalbumin/Creatinine Ratio": 11,
+              "Thyroid Stimulating Hormone": 2.1,
+              "Triglycerides": 91
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-08-26a",
+          "kind": "portal_message",
+          "start": "2021-08-26T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2021-08-26T16:40",
+              "author": "PCP",
+              "body": "Hi Dale,\n\nYour labs from Tuesday are in. Lithium level is in the target range. Kidney function is about where your old office had it (creatinine 1.7) — stable, and there's no protein in the urine, which is good. Thyroid, calcium, blood count, sugar and cholesterol all normal. HIV and hepatitis C screens negative.\n\nNo changes. We'll repeat the lithium and kidney labs in about six months.\n\n— your primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2021-10-14a",
+          "kind": "nurse_visit",
+          "start": "2021-10-14T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-14T08:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-14T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Influenza Vaccine",
+              "date": "2021-10-14T08:25",
+              "author": "RN",
+              "body": "In for flu vaccine before a work trip next week. Denies fever or illness today. Influenza quadrivalent 0.5 mL IM right deltoid. Waited 15 min, fine."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-08a",
+          "kind": "portal_message",
+          "start": "2021-11-08T07:55",
+          "reason": "COVID booster received",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-06T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Booster",
+              "date": "2021-11-08T07:55",
+              "author": "patient",
+              "body": "Got my COVID booster Saturday at the pharmacy (Pfizer). Sending a photo of the card for my record. Arm was sore that night, nothing else."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Booster",
+              "date": "2021-11-08T11:30",
+              "author": "MA",
+              "body": "Thanks Dale — added the 11/6 booster to your immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-23a",
+          "kind": "lab_only",
+          "start": "2022-02-23T07:40",
+          "reason": "Lithium and kidney monitoring",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-02-23T07:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.72
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 51
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-02-23T07:40",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-02-23T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab review",
+              "date": "2022-02-24T12:10",
+              "author": "PCP",
+              "body": "Trough lithium level in range. Creatinine steady at baseline, lytes and calcium normal. Continue current dose. Portal message sent."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-09a",
+          "kind": "portal_message",
+          "start": "2022-05-09T13:05",
+          "reason": "Early refill before travel",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill before trip",
+              "date": "2022-05-09T13:05",
+              "author": "patient",
+              "body": "I'm leaving for two weeks overseas for work on the 20th and I'll run out of lithium while I'm gone. Can you send the 90-day refill early? Same pharmacy."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill before trip",
+              "date": "2022-05-09T15:20",
+              "author": "RN",
+              "body": "Sent. The pharmacy may need to run a vacation override with your insurance — if they give you trouble, call us and we'll talk to them. Safe travels."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "pharmacy",
+          "start": "2022-05-10T10:00",
+          "reason": "Vacation override",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy call",
+              "date": "2022-05-10T10:00",
+              "author": "RN",
+              "body": "Pharmacy called — early fill of lithium rejected by insurer. Gave travel dates; pharmacy submitted vacation override and it went through. 90-day supply ready today. Pt notified by text."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-30a",
+          "kind": "annual_physical",
+          "start": "2022-08-30T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              132,
+              72
+            ],
+            "hr": 75,
+            "rr": 15,
+            "temp_c": 37.1,
+            "spo2": 96,
+            "weight_kg": 73.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-08-30T09:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.75
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 50
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 90
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-30T09:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.41
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 85
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 27.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 226
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-08-30T09:15",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 112
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 55
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 96
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 186
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 131
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-08-30T09:15",
+              "results": [
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.017
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-30T09:15",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.7
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-08-30T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-08-30T09:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-08-30T09:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2022-08-30T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-08-30T09:20",
+              "author": "PCP",
+              "body": "Annual. Doing well. Busy year — trips to Europe and Asia, no illness on the road. Mood even; sleeping 7 hours. Lithium BID without missed doses. No tremor, no thirst or urinary change, no GI upset.\n\nMeds: lithium carbonate 300 mg BID. NKDA.\nSH unchanged: never smoker, 2-3 drinks/week.\n\nExam: NAD. HEENT normal. Neck no thyromegaly. Heart regular without murmur. Lungs clear. Abd soft, nontender. No edema. Neuro nonfocal, no tremor. Affect bright, appropriate.\n\nPHQ-9 1.\n\nA/P\n- Bipolar disorder: stable. Continue lithium; level and TSH today.\n- CKD 3a: CMP, UA, urine albumin/creatinine. Remains off NSAIDs.\n- Prevention: hepatitis B series — Heplisav dose 1 today, dose 2 in a month with flu shot. Lipids today. Colon screening starts at 45.\n\nRTC 1 year; labs again in about 6 months."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab review",
+              "date": "2022-08-31T17:00",
+              "author": "PCP",
+              "body": "Lithium therapeutic, TSH normal, creatinine at his baseline, lipids fine, urine albumin normal. No changes. Released to portal with a short note."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-06a",
+          "kind": "nurse_visit",
+          "start": "2022-10-06T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu, hepatitis B #2, COVID booster",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-06T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-06T16:15"
+            },
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2022-10-06T16:16"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-06T16:18"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Vaccines",
+              "date": "2022-10-06T16:35",
+              "author": "RN",
+              "body": "Three vaccines today per PCP plan. Feels well, no fever.\n- Influenza quadrivalent 0.5 mL IM L deltoid\n- Heplisav-B dose 2, 0.5 mL IM R deltoid (series complete)\n- COVID-19 Pfizer bivalent 0.3 mL IM L deltoid, separate site\nVIS given for each. Observed 15 min without reaction."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-12a",
+          "kind": "nurse_visit",
+          "start": "2022-12-12T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab draw: lithium and kidney monitoring",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-12-12b",
+          "kind": "telephone",
+          "start": "2022-12-12T14:45",
+          "reason": "Missed lab appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed lab draw",
+              "date": "2022-12-12T14:45",
+              "author": "front desk",
+              "body": "Pt missed 7:30 lab draw. Reached him — he's traveling until the holidays. Rebooked for 1/9 at 7:30."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-09a",
+          "kind": "lab_only",
+          "start": "2023-01-09T07:35",
+          "reason": "Lithium and kidney monitoring",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-01-09T07:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.64
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 20
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 54
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-01-09T07:35",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-01-09T07:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab review",
+              "date": "2023-01-09T15:50",
+              "author": "PCP",
+              "body": "Lithium in range, creatinine unchanged from his baseline, sodium and calcium normal. Same plan. Next set with the physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-22a",
+          "kind": "pharmacy",
+          "start": "2023-03-22T09:10",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill — lithium",
+              "date": "2023-03-22T09:10",
+              "author": "RN",
+              "body": "Electronic refill request from pharmacy for lithium carbonate 300 mg caps, #180 (90 days). Level 1/9 therapeutic, kidney labs stable. Approved with 1 refill per PCP standing plan."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-07a",
+          "kind": "portal_message",
+          "start": "2023-06-07T21:14",
+          "reason": "Medication letter for travel",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Letter for customs?",
+              "date": "2023-06-07T21:14",
+              "author": "patient",
+              "body": "Hi — I have a long trip coming up with a few countries in a row and a colleague told me some places want a doctor's letter for prescription meds. Could you write something short saying I take lithium? Thanks."
+            },
+            {
+              "type": "Letter",
+              "title": "Medication letter",
+              "date": "2023-06-08T10:30",
+              "author": "PCP",
+              "body": "To whom it may concern:\n\nDale Bradley (date of birth 04/05/1981) is a patient of this practice. He takes lithium carbonate 300 mg by mouth twice daily, prescribed by this office, and is carrying a supply for his personal use during travel. Please contact the office with questions.\n\nPrimary care physician"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Letter for customs?",
+              "date": "2023-06-08T10:34",
+              "author": "PCP",
+              "body": "Letter is attached to this message on letterhead — print a copy and keep it with the bottles in their original labeled containers. Have a good trip."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-13a",
+          "kind": "annual_physical",
+          "start": "2023-09-13T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              127,
+              69
+            ],
+            "hr": 72,
+            "rr": 16,
+            "temp_c": 36.8,
+            "spo2": 95,
+            "weight_kg": 74.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-13T11:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.61
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 19
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 54
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 83
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-13T11:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.24
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 219
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-13T11:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 115
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 56
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 83
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 188
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 132
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-09-13T11:10",
+              "results": [
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.015
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-13T11:10",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.7
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.2
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-09-13T10:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-13T11:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-09-13T11:15",
+              "author": "PCP",
+              "body": "Physical. 42M. Says this summer was the most travel he's done in years; fine on the road, some jet lag. Mood stable — a bit tired after trips, nothing beyond that. PHQ-9 3. No tremor, diarrhea, or confusion. Not taking anything over the counter except the occasional Tylenol.\n\nMeds: lithium carbonate 300 mg BID. NKDA.\n\nExam: well. BP and weight unchanged. Heart regular, no murmur. Lungs clear. Abdomen benign. No edema. No tremor. Thyroid normal size.\n\nA/P\n- Bipolar disorder on lithium — steady. Level, TSH, calcium today.\n- CKD 3a — CMP, UA, urine albumin/creatinine.\n- Preventive — lipids. Flu and the updated COVID vaccine next month at a nurse visit.\n\nRTC 1 yr, labs midyear."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab review",
+              "date": "2023-09-14T08:05",
+              "author": "PCP",
+              "body": "Everything about where it has been: creatinine at his baseline, lithium therapeutic, TSH/Ca normal, urine albumin normal, lipids OK. Released."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "nurse_visit",
+          "start": "2023-10-19T12:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-19T12:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-19T12:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-19T12:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Vaccines",
+              "date": "2023-10-19T12:40",
+              "author": "MA",
+              "body": "Flu (quadrivalent) 0.5 mL IM R deltoid and Pfizer 2023-24 COVID 0.3 mL IM L deltoid. No acute illness today. Tolerated, observed 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-04a",
+          "kind": "office_visit",
+          "start": "2024-03-04T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thirst and frequent urination",
+          "vitals": {
+            "bp": [
+              124,
+              78
+            ],
+            "hr": 76,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 95,
+            "weight_kg": 74.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-04T14:50",
+              "resulted": "2024-03-05T08:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 145
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.73
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 19
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 50
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 18
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-04T14:50",
+              "resulted": "2024-03-05T08:30",
+              "results": [
+                {
+                  "test": "Serum osmolality",
+                  "loinc": "2692-2",
+                  "unit": "mosm/kg",
+                  "value": 302
+                },
+                {
+                  "test": "Urine osmolality",
+                  "loinc": "2695-5",
+                  "unit": "mosm/kg",
+                  "value": 148
+                },
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-04T14:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-03-04T14:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "osm-labs-2024",
+              "action": "placed",
+              "order": "Serum and urine osmolality",
+              "category": "lab",
+              "reason": "polyuria and polydipsia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Thirst and Urination",
+              "date": "2024-03-04T14:45",
+              "author": "PCP",
+              "body": "S: 42M on lithium for bipolar disorder (about 5 years now) with CKD 3a. For the past several months he has been thirsty all the time and urinating far more, and it keeps getting worse. Up three or four times a night to void. Tired during the day even though he gets enough sleep. Drinking roughly 4-5 L of water a day; keeps a bottle on his desk at work because if he goes without he gets lightheaded and his mouth goes dry. No travel lately, no vomiting or diarrhea. Mood stable, no change in lithium dose or timing, no new meds or supplements.\n\nO: T 36.7, BP 124/78, P 76. BMI 23. Alert, oriented, conversational, no change in mentation. Mucous membranes a little dry. Heart regular. Lungs clear. Abdomen soft. No edema. No tremor. Exam otherwise unremarkable.\n\nA/P: Polyuria and polydipsia on long-term lithium. Need to sort out water diuresis versus solute (glucose, calcium) and kidney-concentrating defect.\n- BMP (sodium, glucose, calcium, creatinine), serum osmolality, urine osmolality, lithium level today.\n- Do not restrict fluids at home — drink to thirst.\n- Will call with results; if the picture fits, a desmopressin trial here in the office later this week.\n\nPatient agrees."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Lithium": 0.8
+            }
+          },
+          "measure": [
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-05a",
+          "kind": "telephone",
+          "start": "2024-03-05T11:15",
+          "reason": "Result call",
+          "orders": [
+            {
+              "id": "osm-labs-2024",
+              "action": "done",
+              "date": "2024-03-05T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results — osmolality",
+              "date": "2024-03-05T11:15",
+              "author": "PCP",
+              "body": "Called pt. Serum osm 302 with Na 145 — concentrated blood — while urine osm only 148, i.e., dilute urine despite that. Glucose and calcium normal; lithium 0.8; creatinine at his usual. Picture is a concentrating defect. Explained plan for desmopressin trial Thursday morning: come in having drunk normally, we'll check urine before and two hours after a small injection. He'll come at 8."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-07a",
+          "kind": "procedure_visit",
+          "start": "2024-03-07T08:00",
+          "end": "2024-03-07T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Desmopressin trial",
+          "conditions": [
+            {
+              "label": "Nephrogenic diabetes insipidus",
+              "action": "diagnosed",
+              "onset": "2023-10-01",
+              "icd10": "N25.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "desmopressin acetate 0.004 MG/ML Injectable Solution",
+              "action": "start",
+              "sig": "2 mcg subcutaneously once in office",
+              "dose": {
+                "value": 2,
+                "unit": "mcg"
+              },
+              "frequency": "ONCE",
+              "route": "Subcutaneous",
+              "course": "short",
+              "reason": "desmopressin trial"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              69
+            ],
+            "hr": 65,
+            "weight_kg": 73.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-03-07T08:05",
+              "results": [
+                {
+                  "test": "Urine osmolality",
+                  "loinc": "2695-5",
+                  "unit": "mosm/kg",
+                  "value": 152
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-07T10:10",
+              "resulted": "2024-03-07T13:40",
+              "results": [
+                {
+                  "test": "Urine osmolality",
+                  "loinc": "2695-5",
+                  "unit": "mosm/kg",
+                  "value": 163
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-07T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Desmopressin Trial",
+              "date": "2024-03-07T10:20",
+              "author": "RN",
+              "body": "Pt arrived 0800, drank normally overnight. Baseline urine collected 0805. Desmopressin 2 mcg SC L abdomen at 0812 per PCP order. Pt allowed water to thirst. Voided 0910 (large volume) and second sample collected 1010. VS stable throughout. No headache or nausea. Pt to wait for PCP call this afternoon."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Desmopressin Trial — Result",
+              "date": "2024-03-07T14:00",
+              "author": "PCP",
+              "body": "Urine osm 152 before desmopressin and 163 two hours after — essentially no response, against a serum osm of 302 on Monday. That is nephrogenic diabetes insipidus.\n\nSpoke with him by phone. He understands his kidneys aren't responding to the water-holding hormone and that the thirst is protective: never restrict his own water, keep fluids with him when traveling, and call early with any vomiting or diarrhea since he can dry out fast.\n\nPlan: continue lithium 300 mg BID unchanged. NDI added to problem list. Sodium and kidney labs with his usual lithium checks."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-19a",
+          "kind": "ed_visit",
+          "start": "2024-06-19T19:40",
+          "end": "2024-06-20T00:10",
+          "service": "Emergency Medicine",
+          "reason": "Vomiting, diarrhea and tingling after a fish meal",
+          "conditions": [
+            {
+              "label": "Ciguatera fish poisoning",
+              "action": "diagnosed",
+              "onset": "2024-06-19",
+              "icd10": "T61.01XA"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ondansetron 4 MG Disintegrating Oral Tablet",
+              "action": "historical",
+              "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "nausea"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              73
+            ],
+            "hr": 66,
+            "rr": 15,
+            "temp_c": 36.9,
+            "spo2": 97
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-06-19T20:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.34
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 251
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-06-19T20:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.68
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 51
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2024-06-19T19:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record (outside, received)",
+              "date": "2024-06-28T09:30",
+              "author": "emergency medicine",
+              "body": "Received by fax 06/28/2024 at patient request. Emergency department, Nassau, Bahamas. Date of service 06/19/2024.\n\nVisitor, 43-year-old man on holiday. About three hours after a dinner of grilled reef fish at a seaside restaurant he developed nausea, repeated vomiting and loose stools. Gut symptoms came first; over the next few hours his hands and feet began to tingle ('pins and needles') and he noticed cold water felt hot on his skin and a warm cup felt cold. No fever. Has only been in the Caribbean. His companion had a different meal and is well.\n\nPMH (per patient): bipolar disorder on lithium; chronic kidney disease; nephrogenic diabetes insipidus. Appendectomy. Medications: lithium carbonate 300 mg twice daily. Allergies: none known.\n\nVitals stable on arrival and at discharge.\nExam: alert and oriented, mildly dry. Cranial nerves intact. Strength 5/5 throughout. Light touch reduced in a stocking-and-glove pattern. No rash. No rigidity. Abdomen soft, nontender.\n\nLabs: CBC normal. Electrolytes normal. Creatinine elevated, consistent with his known kidney disease.\n\nImpression: ciguatera fish poisoning.\n\nED course: IV fluids 1 L, ondansetron 4 mg IV with relief of nausea. Tolerating fluids by mouth at discharge.\n\nDischarge: ondansetron 4 mg ODT q8h prn. No fish or alcohol for the next several months — they can bring symptoms back. Tingling and temperature reversal may last weeks. See your own doctor when home. Return for weakness, trouble breathing, fainting or a slow pulse."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2024-06-24a",
+          "kind": "portal_message",
+          "start": "2024-06-24T08:02",
+          "reason": "Tingling after food poisoning abroad",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Food poisoning on vacation",
+              "date": "2024-06-24T08:02",
+              "author": "patient",
+              "body": "Back from the Bahamas. Last Wednesday I got sick a few hours after eating fish — throwing up, diarrhea — and ended up in the ER there. They said ciguatera. Stomach is fine now but my hands and feet still tingle and cold things feel hot, which is bizarre. Do I need to be seen? I'm keeping up with water."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Food poisoning on vacation",
+              "date": "2024-06-24T09:15",
+              "author": "PCP",
+              "body": "Glad you're home. Yes, I'd like to see you — let's do Wednesday. With the vomiting and your kidneys I also want to check your sodium and lithium level. If you can get the ER paperwork sent to us, please do. In the meantime keep drinking, and skip alcohol."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-26a",
+          "kind": "office_visit",
+          "start": "2024-06-26T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after ED visit for ciguatera",
+          "vitals": {
+            "bp": [
+              110,
+              71
+            ],
+            "hr": 72,
+            "rr": 15,
+            "temp_c": 37.0,
+            "spo2": 96,
+            "weight_kg": 75.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-06-26T11:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.67
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 52
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-26T11:40",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-06-26T11:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-06-26T11:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Visit",
+              "date": "2024-06-26T11:35",
+              "author": "PCP",
+              "body": "Seen in an emergency department in the Bahamas 6/19 — GI illness starting about 3 h after grilled fish, then distal paresthesias and hot/cold reversal. Told ciguatera; got IV fluids and ondansetron. Paperwork not here yet.\n\nNow: vomiting and diarrhea stopped by the next morning. Used two ondansetron tabs, none since Friday. Still has tingling in fingers and soles, and cold drinks feel 'spicy-hot' in his mouth, but both a little less each day. No weakness, no palpitations, no dizziness. Drinking his usual large volumes. Has not had alcohol or fish since.\n\nMeds: lithium 300 mg BID (never stopped). NKDA.\n\nExam: well, hydrated. HR regular. CN intact. Strength full, reflexes 2+ and symmetric. Light touch decreased in stocking-glove distribution; vibration and position sense preserved. Gait normal.\n\nA/P\n1. Ciguatera fish poisoning with persistent sensory symptoms — expected to fade over weeks. Avoid fish and alcohol for a few months. No specific treatment. Call if weakness or worsening.\n2. NDI / CKD 3a / lithium, after a few days of GI losses — BMP and lithium level today.\n\nCheck in by phone in about 6 weeks."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-27a",
+          "kind": "portal_message",
+          "start": "2024-06-27T13:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from yesterday",
+              "date": "2024-06-27T13:20",
+              "author": "PCP",
+              "body": "Sodium and potassium normal, kidney numbers right at your usual, lithium level 0.8 — no harm done from the vomiting. Keep up the fluids, and let the tingling settle on its own."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-08a",
+          "kind": "telephone",
+          "start": "2024-08-08T16:30",
+          "reason": "Check-in after ciguatera",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Phone follow-up",
+              "date": "2024-08-08T16:30",
+              "author": "PCP",
+              "body": "Planned call. Tingling much better — only notices it now and then in his toes. Cold drinks still feel a bit odd occasionally. No weakness. Has stayed off fish and alcohol. Reassured; will reassess at his September physical."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Ciguatera fish poisoning",
+              "action": "resolved",
+              "icd10": "T61.01XA"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              113,
+              72
+            ],
+            "hr": 78,
+            "rr": 15,
+            "temp_c": 37.3,
+            "spo2": 97,
+            "weight_kg": 73.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-24T08:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.71
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 50
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-24T08:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.19
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 245
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-24T08:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 104
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 55
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 95
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 178
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 123
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-09-24T08:45",
+              "results": [
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.015
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.1
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-24T08:45",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.2
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-09-24T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-24T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-24T08:50",
+              "author": "PCP",
+              "body": "Annual exam, 43M.\n\nInterval: NDI diagnosed in March by desmopressin trial; drinks to thirst, nocturia twice nightly, which he has made peace with. Ciguatera in June — tingling and temperature reversal fully gone since late August. Back to eating fish occasionally and his usual couple of drinks, without any return of symptoms. Mood steady. PHQ-9 2.\n\nMeds: lithium carbonate 300 mg BID. NKDA.\n\nExam: well-appearing. Vitals reviewed. HEENT normal, moist mucosa. Neck supple, thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen soft. No edema. Neuro: strength, reflexes, light touch and vibration normal in all four limbs. No tremor.\n\nA/P\n- Ciguatera poisoning — resolved; off the active list.\n- NDI, CKD 3a, bipolar disorder on lithium — CMP, lithium level, TSH, UA, urine albumin/creatinine. Same lithium dose.\n- Prevention — lipids today; flu and COVID at a nurse visit in October. Colon cancer screening at 45 — we'll set it up next year.\n\nRTC 1 year; labs around February."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab review",
+              "date": "2024-09-25T07:45",
+              "author": "PCP",
+              "body": "Creatinine at his baseline, Na normal, lithium therapeutic, TSH normal, UA dilute but otherwise clean, urine albumin normal, lipids fine. Message to pt."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-17a",
+          "kind": "nurse_visit",
+          "start": "2024-10-17T17:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-17T17:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-17T17:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-17T17:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Vaccines",
+              "date": "2024-10-17T17:20",
+              "author": "RN",
+              "body": "Late-day vaccine visit after work. Influenza trivalent 0.5 mL IM left arm; Pfizer 2024-25 COVID 0.3 mL IM right arm. Screening questions negative. Watched 15 min, no problems."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-12a",
+          "kind": "lab_only",
+          "start": "2025-02-12T07:45",
+          "reason": "Lithium and kidney monitoring",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-02-12T07:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.75
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 49
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-12T07:45",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-02-12T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab review",
+              "date": "2025-02-12T16:20",
+              "author": "PCP",
+              "body": "Lithium therapeutic. Na normal. Creatinine unchanged. Will go over in person at his March visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-20a",
+          "kind": "office_visit",
+          "start": "2025-03-20T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up: kidneys, NDI, lithium",
+          "vitals": {
+            "bp": [
+              114,
+              81
+            ],
+            "hr": 69,
+            "rr": 14,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 74.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-03-20T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Chronic Care Follow-up",
+              "date": "2025-03-20T15:55",
+              "author": "PCP",
+              "body": "Six-month check on his chronic issues. February labs reviewed with him: creatinine at baseline, lithium in range, sodium normal.\n\nNDI: still drinking a lot, up twice a night; no dizzy spells since he started keeping water with him everywhere. Bipolar disorder: steady, nothing to report. Uses Tylenol only. Traveling less this quarter.\n\nExam: well. Mucous membranes moist. Heart regular, lungs clear, no edema, no tremor.\n\nA/P\n- CKD 3a: stable. NSAID avoidance reinforced.\n- NDI: drink to thirst; call early with any GI illness.\n- Bipolar disorder on lithium 300 mg BID: continue; next labs with the October physical.\n\nRTC October."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "telehealth_visit",
+          "start": "2025-06-17T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vomiting and diarrhea, can't keep up with fluids",
+          "conditions": [
+            {
+              "label": "Infectious gastroenteritis",
+              "action": "diagnosed",
+              "onset": "2025-06-15",
+              "icd10": "A09"
+            },
+            {
+              "label": "Dehydration",
+              "action": "diagnosed",
+              "onset": "2025-06-16",
+              "icd10": "E86.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "1000 ML sodium chloride 9 MG/ML Injection",
+              "action": "start",
+              "sig": "Infuse 1,000 mL IV over 2 hours twice daily for 5 days (home infusion)",
+              "dose": {
+                "value": 1000,
+                "unit": "mL"
+              },
+              "frequency": "BID",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "dehydration"
+            },
+            {
+              "drug": "ondansetron 4 MG Disintegrating Oral Tablet",
+              "action": "start",
+              "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "nausea and vomiting"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2025-06-17T10:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "home-infusion-2025",
+              "action": "placed",
+              "order": "Home infusion nursing, IV hydration",
+              "category": "referral",
+              "to": "Home infusion agency",
+              "reason": "dehydration from gastroenteritis with nephrogenic diabetes insipidus"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit — Vomiting and Diarrhea",
+              "date": "2025-06-17T11:05",
+              "author": "PCP",
+              "body": "Video visit, pt at home. Called this morning.\n\nSince Sunday night: vomiting several times a day and watery diarrhea, maybe 6-8 times a day. No blood, no fever he's measured. Can keep down sips but with his NDI he's still urinating large amounts and can't drink enough to keep up. Lightheaded when he stands. Mouth dry. Last void dilute as always.\n\nOn video: tired-appearing, lips dry, speaking full sentences, oriented.\n\nA/P: Viral gastroenteritis with dehydration in a man with nephrogenic DI who loses free water continuously — high risk of getting behind.\n- Home IV hydration through home infusion agency: normal saline 1 L over 2 h twice daily x 5 days. Agency to place a peripheral IV this afternoon.\n- Ondansetron 4 mg ODT q8h prn so he can drink.\n- Keep taking lithium.\n- Call if he can't keep anything down, has fainting, confusion or blood in stool."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-18a",
+          "kind": "telephone",
+          "start": "2025-06-18T09:25",
+          "reason": "Home infusion update",
+          "orders": [
+            {
+              "id": "home-infusion-2025",
+              "action": "done",
+              "date": "2025-06-17T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Home infusion nurse report",
+              "date": "2025-06-18T09:25",
+              "author": "RN",
+              "body": "Home infusion RN called: 22g PIV placed L forearm yesterday afternoon, first liter in without problem, second at bedtime. Pt still with loose stools but vomiting less, took ondansetron x2. Agency visiting daily. Will call with concerns."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-23a",
+          "kind": "ed_visit",
+          "start": "2025-06-23T13:15",
+          "end": "2025-06-23T19:40",
+          "service": "Emergency Medicine",
+          "reason": "Weakness and fatigue",
+          "conditions": [
+            {
+              "label": "Hyperchloremic metabolic acidosis due to excess normal saline infusion",
+              "action": "diagnosed",
+              "onset": "2025-06-21",
+              "icd10": "E87.29"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "1000 ML sodium chloride 9 MG/ML Injection",
+              "action": "stop",
+              "reason": "hyperchloremic metabolic acidosis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              85
+            ],
+            "hr": 88,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 97
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-23T13:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 115
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 18
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 29
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 2.1
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 39
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-23T13:45",
+              "results": [
+                {
+                  "test": "pH, arterial",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.32
+                },
+                {
+                  "test": "pCO2, arterial",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 40
+                },
+                {
+                  "test": "pO2, arterial",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 98
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2025-06-23T13:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record (outside, received)",
+              "date": "2025-06-25T10:05",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Date of service 06/23/2025. Copy to primary care.\n\nCC: weak and worn out x 2 days.\n\nHPI: 44M with CKD, bipolar disorder on lithium and nephrogenic diabetes insipidus. Developed a stomach bug about a week ago; his PCP arranged home IV fluids for dehydration, which he has been getting twice a day through a home infusion service. GI symptoms are much better, but for two days he has felt profoundly weak and fatigued. No chest pain, no shortness of breath, no fever.\n\nHistory per patient and prior records: CKD; bipolar disorder; nephrogenic DI; ciguatera poisoning last year. Appendectomy. Meds: lithium carbonate 300 mg BID; normal saline 1 L IV BID at home; ondansetron prn. NKDA.\n\nExam: BP 130/85, HR 88, afebrile. Comfortable. Mucous membranes moist, skin turgor normal. Heart regular. Lungs clear. Abdomen soft, nontender. No edema. Neuro nonfocal.\n\nLabs: Na 140, K 3.9, Cl 115, HCO3 18, BUN 29, Cr 2.1, glucose 98. ABG pH 7.32 / pCO2 40 / pO2 98.\n\nMDM: Normal anion gap acidosis with chloride 115 after several days of large-volume normal saline. Volume status now replete. Picture fits hyperchloremic metabolic acidosis from excess saline.\n\nPlan: home saline discontinued — agency notified; peripheral IV removed here. Oral fluids encouraged, tolerated well in the department. Discharged home. Follow up with PCP within 2-3 days for repeat chemistry. Return for worsening weakness, confusion, or inability to drink.\n\nDx: Hyperchloremic metabolic acidosis due to excess normal saline infusion."
+            }
+          ],
+          "measure": [
+            "temp_c",
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "telephone",
+          "start": "2025-06-24T08:50",
+          "reason": "Home infusion discontinued",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Home infusion agency",
+              "date": "2025-06-24T08:50",
+              "author": "RN",
+              "body": "Home infusion agency called: ED notified them yesterday to stop the saline; IV was pulled in the ED. Remaining bags picked up this morning. Orders closed on their end. Pt has follow-up here Thursday."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-26a",
+          "kind": "office_visit",
+          "start": "2025-06-26T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after ED visit",
+          "conditions": [
+            {
+              "label": "Infectious gastroenteritis",
+              "action": "resolved",
+              "icd10": "A09"
+            },
+            {
+              "label": "Dehydration",
+              "action": "resolved",
+              "icd10": "E86.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              68
+            ],
+            "hr": 84,
+            "rr": 14,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 73.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-26T09:55",
+              "resulted": "2025-06-26T15:30",
+              "results": [
+                {
+                  "test": "Chloride",
+                  "value": 109
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 22
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.9
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 20
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 44
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-06-26T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-06-26T09:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Follow-up",
+              "date": "2025-06-26T09:50",
+              "author": "PCP",
+              "body": "Seen in the ED Monday for weakness after five days of home normal saline — chloride 115, bicarb 18, pH 7.32, creatinine 2.1. Diagnosed with hyperchloremic metabolic acidosis from the saline; infusions stopped.\n\nToday: energy coming back. No vomiting since last Thursday, stools formed since the weekend. Eating normally, drinking his usual large volumes by mouth. No dizziness standing. Taking lithium as usual. No ondansetron since Saturday.\n\nExam: looks well. Moist mucosa. Heart regular. Lungs clear. Abd soft, nontender. Former IV site L forearm clean, no cord or redness.\n\nA/P\n1. Hyperchloremic metabolic acidosis — repeat BMP today.\n2. Gastroenteritis and dehydration — resolved.\n3. CKD 3a / NDI / lithium — creatinine on today's panel; lithium level with the next routine set.\n\nRepeat BMP in two weeks."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-27a",
+          "kind": "portal_message",
+          "start": "2025-06-27T08:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Yesterday's labs",
+              "date": "2025-06-27T08:15",
+              "author": "PCP",
+              "body": "Better already: chloride down to 109 and bicarbonate up to 22 (from 115 and 18 in the ED). Creatinine 1.9, coming back toward your usual. Keep drinking normally — no extra salt tablets or sports-drink loading needed. Recheck on the 10th."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-10a",
+          "kind": "lab_only",
+          "start": "2025-07-10T07:50",
+          "reason": "Repeat BMP",
+          "conditions": [
+            {
+              "label": "Hyperchloremic metabolic acidosis due to excess normal saline infusion",
+              "action": "resolved",
+              "icd10": "E87.29"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-07-10T07:50",
+              "results": [
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.7
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 50
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-07-10T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab review",
+              "date": "2025-07-10T14:30",
+              "author": "PCP",
+              "body": "Cl 104, HCO3 25, Cr 1.7 — acidosis resolved, kidney function back to baseline. Problem resolved. Pt messaged."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "annual_physical",
+          "start": "2025-10-08T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              132,
+              71
+            ],
+            "hr": 72,
+            "rr": 15,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 75.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-08T13:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.75
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 23
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 100
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 49
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-08T13:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.16
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 266
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-08T13:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 55
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 95
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 174
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 119
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-10-08T13:45",
+              "results": [
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.014
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.3
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-08T13:45",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-10-08T13:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-08T13:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2026",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "colorectal cancer screening at age 45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-10-08T13:40",
+              "author": "PCP",
+              "body": "44M, yearly exam.\n\nInterval: June gastroenteritis treated with home IV saline, then ED visit for hyperchloremic metabolic acidosis — resolved by the July recheck. Feels fully himself since. Mood stable; PHQ-9 1. NDI unchanged, drinking to thirst. Expects to be traveling more again next year.\n\nMeds: lithium carbonate 300 mg BID. NKDA.\nSH: never smoker; 2-3 drinks/wk.\n\nExam: well-appearing. HEENT normal. Neck supple, no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. No edema. Neuro nonfocal. No tremor. Skin without lesions of concern.\n\nA/P\n- CKD 3a, NDI, bipolar disorder on lithium: CMP, lithium level, TSH, UA, urine albumin/creatinine today. No change.\n- Colorectal cancer screening: turns 45 in April. Prefers stool testing to colonoscopy — FIT kit to go out in the spring.\n- Lipids today. Flu and COVID at a nurse visit later this month.\n\nRTC 1 year; labs in January."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab review",
+              "date": "2025-10-09T12:00",
+              "author": "PCP",
+              "body": "Creatinine back at 1.7 range, Na normal, lithium in range, TSH normal, urine albumin normal, lipids fine. Released."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-23a",
+          "kind": "nurse_visit",
+          "start": "2025-10-23T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-23T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-23T08:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-23T08:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Vaccines",
+              "date": "2025-10-23T08:58",
+              "author": "MA",
+              "body": "Flu trivalent 0.5 mL IM L deltoid. Moderna 2025-26 COVID 0.5 mL IM R deltoid. Denies illness. VIS reviewed. No reaction during observation."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-14a",
+          "kind": "lab_only",
+          "start": "2026-01-14T07:30",
+          "reason": "Lithium and kidney monitoring",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-14T07:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.62
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 20
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 53
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-14T07:30",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-01-14T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab review",
+              "date": "2026-01-14T17:05",
+              "author": "PCP",
+              "body": "Stable. Lithium in range, creatinine at baseline, electrolytes and calcium normal. Portal note sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-07a",
+          "kind": "portal_message",
+          "start": "2026-04-07T09:30",
+          "reason": "FIT kit",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Colon screening kit",
+              "date": "2026-04-07T09:30",
+              "author": "MA",
+              "body": "Hi Dale — happy belated birthday. As planned at your physical, a FIT (stool) kit for colon cancer screening is in the mail today. Instructions are in the box; drop it at any of the lab sites or mail it back in the prepaid envelope within a day of collecting."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Colon screening kit",
+              "date": "2026-04-07T19:48",
+              "author": "patient",
+              "body": "Thanks, will do it this month."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-24a",
+          "kind": "lab_only",
+          "start": "2026-04-24T08:10",
+          "reason": "FIT returned",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-04-23T07:00",
+              "resulted": "2026-04-27T10:40",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2026",
+              "action": "done",
+              "date": "2026-04-27T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "date": "2026-04-27T12:15",
+              "author": "PCP",
+              "body": "FIT negative. Repeat in one year. Portal message to pt."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-06a",
+          "kind": "portal_message",
+          "start": "2026-05-06T12:25",
+          "reason": "Early refill before travel",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lithium before trip",
+              "date": "2026-05-06T12:25",
+              "author": "patient",
+              "body": "I leave next week for about a month overseas for work. Can I get my lithium filled early so I have enough? Pharmacy said they need it from you."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lithium before trip",
+              "date": "2026-05-06T14:10",
+              "author": "RN",
+              "body": "Done — sent a new 90-day prescription with a note for a travel override. You should be able to pick it up tomorrow. Bring your medication letter with you."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-07a",
+          "kind": "pharmacy",
+          "start": "2026-05-07T10:15",
+          "reason": "Travel override",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy — early fill",
+              "date": "2026-05-07T10:15",
+              "author": "RN",
+              "body": "Pharmacy confirmed early fill approved by insurer as a travel override. Lithium 300 mg #180 ready."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-20a",
+          "kind": "telephone",
+          "start": "2026-06-20T07:50",
+          "reason": "Fever after travel to West Africa",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "After-hours call — fever after travel",
+              "date": "2026-06-20T08:20",
+              "author": "PCP",
+              "body": "Pt called my cell early Saturday. Back one week from a month in Guinea for work. Two days of fever, achy, sore throat; since last night vomiting and watery diarrhea, crampy belly pain. Volunteered that he helped a family prepare a body for a funeral while he was there.\n\nTold him not to come to the office or urgent care and not to take a rideshare. Spoke with the regional hospital ED attending, who will receive him through their isolation entrance; ambulance arranged with notice to EMS. Called the state public health epidemiology line; they will coordinate with the hospital. Pt understands and is staying in his own room until transport."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-20b",
+          "kind": "hospital_admission",
+          "start": "2026-06-20T09:40",
+          "end": "2026-07-09T14:00",
+          "service": "Infectious Disease — Biocontainment ICU",
+          "reason": "Fever, vomiting, diarrhea after travel to Guinea",
+          "conditions": [
+            {
+              "label": "Ebola virus disease",
+              "action": "diagnosed",
+              "onset": "2026-06-18",
+              "icd10": "A98.4"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ansuvimab-zykl 400 MG Injection",
+              "action": "historical",
+              "sig": "50 mg/kg IV once",
+              "dose": {
+                "value": 3725,
+                "unit": "mg"
+              },
+              "frequency": "ONCE",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "Ebola virus disease"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-06-20T09:55",
+              "bp": [
+                96,
+                64
+              ],
+              "hr": 110,
+              "rr": 22,
+              "temp_c": 39.2
+            },
+            {
+              "time": "2026-07-09T08:00",
+              "bp": [
+                118,
+                74
+              ],
+              "hr": 78,
+              "rr": 16,
+              "temp_c": 36.8
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-20T10:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 3.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 82
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.11
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-20T10:20",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 286
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 174
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 2.4
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 32
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 33
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 93
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-20T10:20",
+              "resulted": "2026-06-20T12:30",
+              "results": [
+                {
+                  "test": "Plasmodium Antigen, Rapid",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Malaria Smear",
+                  "text": "No malaria parasites seen"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-20T10:25",
+              "resulted": "2026-06-25T09:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-20T10:20",
+              "resulted": "2026-06-21T06:30",
+              "results": [
+                {
+                  "test": "Ebolavirus RNA, blood, PCR",
+                  "loinc": "103718-3",
+                  "text": "Detected (Zaire ebolavirus)"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-06T06:00",
+              "results": [
+                {
+                  "test": "Ebolavirus RNA, blood, PCR",
+                  "loinc": "103718-3",
+                  "text": "Not detected"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-08T06:00",
+              "results": [
+                {
+                  "test": "Ebolavirus RNA, blood, PCR",
+                  "loinc": "103718-3",
+                  "text": "Not detected"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-08T06:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 206
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.24
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-08T06:00",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 44
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 61
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.8
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 20
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 47
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-06-20T11:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-07-09T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "Admission History and Physical (outside, received)",
+              "date": "2026-06-23T15:10",
+              "author": "infectious disease",
+              "body": "Regional hospital, biocontainment intensive care unit. Admission 06/20/2026. Sent to primary care at their request.\n\nReason for admission: fever and GI illness after travel to Guinea, with high-risk exposure.\n\nHPI: 45-year-old man (CKD, bipolar disorder on lithium carbonate, nephrogenic DI; past ciguatera poisoning and saline-related hyperchloremic acidosis) came home to the US a week ago from a month of business travel in Guinea, in both cities and rural districts. While there he went to a funeral, had close contact with relatives of the person who died and helped wash and prepare the body. Now with fever, diffuse abdominal pain and many episodes of non-bloody emesis and watery stool, plus myalgias, malaise and sore throat. He did not eat undercooked meat and did not swim or wade in fresh water. His PCP and public health were in contact before arrival; he came by EMS directly into isolation.\n\nMeds: lithium carbonate 300 mg BID. Allergies: NKDA. Never smoker, social alcohol.\n\nExam: T 39.2 C, HR 110, BP 96/64, RR 22. Acutely ill, dry. Conjunctivae injected. Posterior pharynx mildly red. Heart tachycardic, regular. Lungs clear. Abdomen tender throughout, no rebound, no guarding. No rash, no petechiae, no bleeding from any site. Alert, no focal deficit.\n\nInitial labs: WBC 3.1, platelets 82, AST 286, ALT 174, creatinine 2.4. Malaria rapid antigen negative, thick and thin smears without parasites. Blood cultures sent.\n\nAssessment: suspected viral hemorrhagic fever given the funeral exposure. Full biocontainment precautions. Supportive care started while confirmatory testing is run with the state laboratory.\n\nAddendum 06/21: Ebola virus RT-PCR on blood DETECTED (Zaire). Ansuvimab given as a single infusion today. Lithium held while volume status and kidney function are unstable. Public health notified; contact tracing under way."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary (outside, received)",
+              "date": "2026-07-10T11:20",
+              "author": "infectious disease",
+              "body": "Regional hospital — biocontainment ICU, Infectious Disease service.\nAdmitted 06/20/2026. Discharged 07/09/2026.\n\nPrincipal diagnosis: Ebola virus disease (Zaire ebolavirus), confirmed by blood RT-PCR 06/21.\nOther problems: chronic kidney disease; bipolar disorder on lithium; nephrogenic diabetes insipidus; history of ciguatera poisoning.\n\nCourse: Presented febrile, tachycardic and hypotensive with vomiting and diarrhea after funeral exposure in Guinea. Malaria testing negative; blood cultures no growth. Received ansuvimab 50 mg/kg IV once on 06/21. Supportive care with IV balanced crystalloid (chosen over saline given his prior saline-related acidosis), electrolyte replacement and antiemetics; strict intake/output given his NDI. Lithium held from admission. GI losses slowed over the first week; fever resolved by 06/28. Thrombocytopenia, leukopenia and transaminase elevation improved steadily without bleeding. Creatinine 2.4 on arrival, 1.8 at discharge. Blood RT-PCR not detected 07/06 and 07/08; released from isolation by the infection prevention team and public health.\n\nDischarge labs (07/08): WBC 5.4, platelets 206, AST 44, ALT 61, creatinine 1.8.\nDischarge vitals: T 36.8, HR 78, BP 118/74, RR 16.\n\nDischarge medications: RESUME lithium carbonate 300 mg BID.\n\nSurvivor instructions: Use condoms for every sexual contact for at least 12 months from illness onset or until two semen tests are negative. Semen testing through our ID survivor clinic, starting about three months from onset. Eye exam with ophthalmology in the coming weeks. Report eye pain, redness or vision change promptly.\n\nFollow-up: PCP within 1 week (lithium level and chemistry); ID survivor clinic in about one month."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-22a",
+          "kind": "telephone",
+          "start": "2026-06-22T12:40",
+          "reason": "Call from inpatient infectious disease team",
+          "medications": [
+            {
+              "drug_text": "lithium carbonate 300 MG Oral Capsule",
+              "action": "stop",
+              "reason": "held during admission for Ebola virus disease"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Inpatient ID update",
+              "date": "2026-06-22T12:40",
+              "author": "PCP",
+              "body": "Inpatient ID attending called. Blood PCR positive for Ebola (Zaire) yesterday; got ansuvimab. Still febrile with heavy GI losses; platelets and liver tests as expected for this illness, no bleeding. Lithium on hold for now with kidney function off baseline. Confirmed his home list — lithium 300 mg BID is the only med, NKDA. Gave them his baseline creatinine (~1.7) and history of saline-related acidosis. They'll call at discharge."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-09a",
+          "kind": "telephone",
+          "start": "2026-07-09T15:30",
+          "reason": "Discharge call from hospital",
+          "medications": [
+            {
+              "drug_text": "lithium carbonate 300 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Bipolar disorder"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Discharge handoff",
+              "date": "2026-07-09T15:30",
+              "author": "PCP",
+              "body": "Discharging team called. Home today after 19 days. Two negative blood PCRs, off isolation. Creatinine 1.8, counts and LFTs much better. Agreed to resume lithium 300 mg BID tonight; I'll check a level and chemistry at his visit next week. He has his own supply at home. TCM visit booked for 7/14."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-10a",
+          "kind": "telephone",
+          "start": "2026-07-10T10:00",
+          "reason": "Transitional care call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2026-07-10T10:00",
+              "author": "RN",
+              "body": "TCM call day after discharge. Pt at home, tired but up and about, eating small meals, drinking well. No fever overnight. Restarted lithium last night. Reviewed discharge instructions with him including condom use and eye symptoms to report. Discharge summary received and routed to PCP. Visit 7/14 confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "office_visit",
+          "start": "2026-07-14T10:00",
+          "end": "2026-07-14T10:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after Ebola virus disease",
+          "vitals": {
+            "bp": [
+              126,
+              67
+            ],
+            "hr": 64,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 96,
+            "weight_kg": 74.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-14T10:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.15
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 232
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-14T10:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.79
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 20
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 47
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 16
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-14T10:45",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-07-14T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-07-14T10:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ophtho-2026",
+              "action": "placed",
+              "order": "Ophthalmology referral",
+              "category": "referral",
+              "to": "Ophthalmology",
+              "reason": "survivor eye examination after Ebola virus disease"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2026-07-14T10:50",
+              "author": "PCP",
+              "body": "TCM visit. Discharge summary reviewed in full.\n\nAdmitted 6/20-7/9 to the regional hospital's biocontainment ICU with Ebola virus disease after funeral exposure in Guinea; ansuvimab 6/21, supportive care, lithium held. Two negative blood PCRs before discharge.\n\nSince home: tired, napping most afternoons, but better each day. No fever. Appetite returning, stools normal. Drinking well. Back on lithium since 7/9 — mood steady through all of this, he says, more worn out than low.\n\nMeds: lithium carbonate 300 mg BID. NKDA.\n\nExam: well-appearing, a little tired. Afebrile. Conjunctivae clear. Pharynx normal. Heart regular. Lungs clear. Abdomen soft, nontender. No edema. No rash. Neuro nonfocal, no tremor.\n\nA/P\n1. Ebola virus disease, recovering — CBC and CMP today to confirm counts and liver tests keep improving. Reinforced: condoms with any sexual contact for at least 12 months from onset or until two negative semen tests; ID survivor clinic will run semen testing. Ophthalmology referral placed for the survivor eye exam; call right away for eye pain, redness or blurred vision.\n2. Lithium resumed — level today (5 days on), plus creatinine. CKD 3a: creatinine 1.8 at discharge.\n3. NDI — continue to drink to thirst.\n\nRecheck mid-September."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Creatinine": 1.8,
+              "Lithium": 0.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-15a",
+          "kind": "portal_message",
+          "start": "2026-07-15T13:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your labs",
+              "date": "2026-07-15T13:05",
+              "author": "PCP",
+              "body": "Good news across the board: white count, platelets and liver tests are all normal now. Creatinine is 1.8, close to your usual. Lithium level is 0.6 — on the low side of our range, which is fine while you're getting back on your feet; we'll recheck in September. Eye appointment request has gone to ophthalmology."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-05a",
+          "kind": "specialist_visit",
+          "start": "2026-08-05T13:30",
+          "service": "Ophthalmology",
+          "reason": "Eye exam after Ebola virus disease",
+          "orders": [
+            {
+              "id": "ophtho-2026",
+              "action": "done",
+              "date": "2026-08-05T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology Letter (outside, received)",
+              "date": "2026-08-07T09:40",
+              "author": "ophthalmology",
+              "body": "Outside ophthalmology practice. Date of visit 08/05/2026.\n\nThank you for sending Mr. Bradley, a 45-year-old man seen for a screening examination about seven weeks after Ebola virus disease. He has no eye pain, redness, floaters, light sensitivity or change in vision.\n\nVisual acuity 20/20 in each eye uncorrected. Pupils equal and reactive, no afferent defect. Intraocular pressures normal. Slit lamp: lids and conjunctivae quiet, corneas clear, anterior chambers deep and quiet without cell or flare, lenses clear. Dilated fundus exam: vitreous clear, discs sharp with healthy rims, maculae and vessels normal, peripheral retina flat without lesions, both eyes.\n\nImpression: normal eye examination; no evidence of uveitis.\n\nPlan: no treatment. He should return promptly for any eye pain, redness or blurring. Routine follow-up otherwise.\n\nOphthalmology"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "specialist_visit",
+          "start": "2026-08-12T09:00",
+          "service": "Infectious Disease",
+          "reason": "Ebola survivor clinic follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "ID Survivor Clinic Letter (outside, received)",
+              "date": "2026-08-14T16:15",
+              "author": "infectious disease",
+              "body": "Infectious Disease survivor clinic, regional hospital. Visit date 08/12/2026.\n\nMr. Bradley returns about one month after discharge from our biocontainment unit for Ebola virus disease (onset mid-June 2026). He reports his energy is coming back steadily; he is working from home full days and walking daily. No fevers, eye symptoms, hearing change or new joint complaints. Back on lithium without trouble. Normal eye exam with ophthalmology last week reviewed. Your July labs reviewed.\n\nExam today unremarkable.\n\nPlan:\n- Semen Ebola RNA testing to begin at three months from onset, in September 2026, then monthly until two consecutive negatives.\n- Continue condom use with any sexual contact until then, and for at least 12 months from onset.\n- Return to our clinic after the first semen result.\n\nThank you for allowing us to share in his care.\nInfectious Disease"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "portal_message",
+          "start": "2026-08-19T20:10",
+          "reason": "Update and refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update + lithium",
+              "date": "2026-08-19T20:10",
+              "author": "patient",
+              "body": "Quick update — saw the eye doctor and the ID clinic, both fine. Energy is maybe 80% of normal and better every week. I'm almost through the 90-day supply of lithium from May; can you send a refill to the usual pharmacy?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Update + lithium",
+              "date": "2026-08-20T07:45",
+              "author": "PCP",
+              "body": "Great to hear, and I've read both letters. Refill sent — same dose, 300 mg twice a day. See you on September 16th; we'll recheck the lithium level and kidney labs that morning."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-16a",
+          "kind": "office_visit",
+          "start": "2026-09-16T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up: post-hospital, lithium and kidney labs",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acquired absence of other specified parts of digestive tract|Z90.49": {
+        "code": "Z90.49",
+        "display": "Acquired absence of other specified parts of digestive tract",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Ciguatera fish poisoning|T61.01XA": {
+        "code": "T61.01XA",
+        "display": "Ciguatera fish poisoning, accidental (unintentional), initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Dehydration|E86.0": {
+        "code": "E86.0",
+        "display": "Dehydration",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Ebola virus disease|A98.4": {
+        "code": "A98.4",
+        "display": "Ebola virus disease",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hyperchloremic metabolic acidosis due to excess normal saline infusion|E87.29": {
+        "code": "E87.29",
+        "display": "Other acidosis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Infectious gastroenteritis|A09": {
+        "code": "A09",
+        "display": "Infectious gastroenteritis and colitis, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Nephrogenic diabetes insipidus|N25.1": {
+        "code": "N25.1",
+        "display": "Nephrogenic diabetes insipidus",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "1000 ML sodium chloride 9 MG/ML Injection": {
+        "code": "1807639",
+        "display": "1000 ML sodium chloride 9 MG/ML Injection",
+        "ingredient": "ml",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "ansuvimab-zykl 400 MG Injection": {
+        "code": "2472156",
+        "display": "ansuvimab-zykl 400 MG Injection",
+        "ingredient": "ansuvimab",
+        "receipt": "NLM RxNav drugs"
+      },
+      "desmopressin acetate 0.004 MG/ML Injectable Solution": {
+        "code": "849501",
+        "display": "desmopressin acetate 0.004 MG/ML Injectable Solution",
+        "ingredient": "desmopressin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "lithium carbonate 300 MG Oral Capsule": {
+        "code": "197889",
+        "display": "lithium carbonate 300 MG Oral Capsule",
+        "ingredient": "lithium",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Ebolavirus RNA, blood, PCR": {
+        "code": "103718-3",
+        "display": "Ebolavirus Bundibugyo+Reston+Sudan+Taï Forest+Zaire RNA [Presence] in Blood by NAA with non-probe detection",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Lithium": {
+        "code": "14334-7",
+        "display": "Lithium [Moles/volume] in Serum or Plasma",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Serum osmolality": {
+        "code": "2692-2",
+        "display": "Osmolality of Serum or Plasma",
+        "unit": "mosm/kg",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Urine osmolality": {
+        "code": "2695-5",
+        "display": "Osmolality of Urine",
+        "unit": "mosm/kg",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pCO2, arterial": {
+        "code": "2019-8",
+        "display": "Carbon dioxide [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH, arterial": {
+        "code": "2744-1",
+        "display": "pH of Arterial blood",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pO2, arterial": {
+        "code": "2703-7",
+        "display": "Oxygen [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

@@ -1,0 +1,252 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002234",
+      "events": [
+        {
+          "id": "2026-01-06a",
+          "kind": "ed_visit",
+          "start": "2026-01-06T15:10",
+          "end": "2026-01-06T19:30",
+          "service": "Emergency Medicine",
+          "reason": "sudden right-sided weakness and difficulty speaking",
+          "conditions": [
+            {"label": "Nontraumatic intracerebral hemorrhage", "icd10": "I61.9", "action": "diagnosed", "onset": "2026-01-06", "note": "left"},
+            {"label": "Anticoagulation-related hemorrhage", "icd10": "D68.32", "action": "diagnosed", "onset": "2026-01-06", "note": "warfarin, INR 3.8"}
+          ],
+          "vitals": [{"time": "2026-01-06T15:15", "bp": [160, 90], "hr": 78}],
+          "labs": [
+            {"panel": "Prothrombin Time with INR", "collected": "2026-01-06T15:30", "results": [{"test": "Prothrombin Time-International Normalized Ratio", "value": 3.8}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-01-06T15:30", "results": [{"test": "Hemoglobin", "value": 13.2}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-06T15:30", "results": [{"test": "Creatinine", "value": 1.1}]}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2026-01-06T15:10"}],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency department note", "author": "emergency medicine", "date": "2026-01-08T09:40", "body": "ED provider note, date of service 1/6/2026, faxed copy.\nCC: abrupt right-sided weakness, trouble talking.\nHPI: 69M with HTN, T2DM on insulin, chronic AF on warfarin, CKD 3, hernia repair last summer. Per wife, fine before lying down for an afternoon nap; on waking could not get words out and his right arm and leg were weak. Brought by EMS.\nAllergies: NKDA.\nVitals on arrival: BP 160/90, HR 78, irregularly irregular.\nExam: awake and alert, anxious. Expressive aphasia - comprehension preserved, halting nonfluent speech. Right arm and leg weakness.\nData: INR 3.8. Hgb 13.2. Creatinine 1.1. Urine drug screen positive for cocaine. Non-contrast CT head: left intracerebral hemorrhage.\nED course: stroke team at bedside. Warfarin reversed with 4-factor PCC and IV vitamin K. BP managed to target. Admitted to neuro ICU.\nImpression: left intracerebral hemorrhage on warfarin with supratherapeutic INR."}
+          ]
+        },
+        {
+          "id": "2026-01-06b",
+          "kind": "hospital_admission",
+          "start": "2026-01-06T19:30",
+          "end": "2026-01-12T13:00",
+          "service": "Neurology",
+          "reason": "left intracerebral hemorrhage",
+          "conditions": [{"label": "Cocaine-induced cerebral vasculopathy", "icd10": "I67.89", "action": "diagnosed", "onset": "2026-01-06"}],
+          "medications": [{"drug": "warfarin sodium 5 MG Oral Tablet", "action": "stop", "reason": "intracerebral hemorrhage"}],
+          "procedures": [{"procedure": "Initial hospital inpatient care", "performed": "2026-01-06T19:30"}],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital discharge summary", "author": "neurology", "date": "2026-01-13T15:20", "body": "Discharge summary (brief), admission 1/6/2026 - 1/12/2026.\nDiagnoses: left intracerebral hemorrhage, warfarin-associated (INR 3.8, reversed in ED). Cocaine-induced cerebral vasculopathy.\nCourse: neuro ICU then stroke unit. CT angiography of the head: multifocal segmental narrowing of intracranial arteries; with positive cocaine screen, read as cocaine-related vasculopathy. Patient acknowledged intermittent cocaine use; counseled on abstinence. Aphasia and right-sided weakness improved through the stay; walking with supervision at discharge.\nAllergies: NKDA.\nDischarge medications: metoprolol tartrate 50 mg BID, amlodipine 5 mg daily, insulin glargine 20 units qhs. WARFARIN STOPPED - do not restart until cleared by stroke neurology.\nFollow-up: PCP within 1 week; stroke neurology clinic in about 6 weeks; outpatient PT and speech therapy referrals placed."}
+          ]
+        },
+        {
+          "id": "2026-01-09a",
+          "kind": "telephone",
+          "start": "2026-01-09T11:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Wife calling: patient in hospital", "author": "RN", "date": "2026-01-09T11:15", "body": "Wife called to let us know he's been in the hospital since Tuesday with a bleed in the brain. Says he is talking better each day. ED note came by fax yesterday, given to PCP. Asked her to have the hospital fax the discharge summary and to book a visit within a week of discharge; scheduled for 1/16. Cancelled his standing INR appointment - warfarin is stopped."}
+          ]
+        },
+        {
+          "id": "2026-01-16a",
+          "kind": "office_visit",
+          "start": "2026-01-16T10:00",
+          "end": "2026-01-16T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, intracerebral hemorrhage",
+          "vitals": {"bp": [134, 82]},
+          "state": {"bp": [134, 82], "weight_kg": 92.0},
+          "measure": ["hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-01-16T10:40", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-16T10:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2026-01-16T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Transitional Care Visit", "author": "PCP", "date": "2026-01-16T11:10", "body": "Seen with his wife, 4 days after discharge for a left intracerebral hemorrhage on warfarin (INR 3.8 in the ED). Discharge summary received 1/13: cocaine-related cerebral vasculopathy on CT angiography, cocaine screen positive.\n\nHe is embarrassed about the cocaine. Says it was 'here and there' with an old work friend, never daily, and that he has not used since and won't. Wife present and aware. Still smoking.\n\nSpeech: some pauses hunting for words, otherwise fluent, understands well. Right hand grip a bit weaker than left; walking on his own, slowly. PT and speech therapy start next week.\n\nMeds reconciled: metoprolol tartrate 50 BID, amlodipine 5, glargine 20 units qhs. Warfarin stopped by the hospital; not restarting until stroke neurology weighs in (visit mid-February). He knows not to take any he has at home - wife bagged the bottle.\n\nExam: BP 134/82. HR irregular, rate controlled. Alert, mild word-finding pauses, follows complex commands. Right grip 4+/5, otherwise strength full. Gait slow, steady.\n\nA/P:\n1. Left ICH, anticoagulant-related, improving deficits. Therapy as arranged. BP at target, no change.\n2. Cocaine-induced cerebral vasculopathy - abstinence discussed at length; resources given. He declines a referral for substance use counseling for now.\n3. Chronic AF - off anticoagulation for now, rate controlled.\n4. T2DM, CKD 3a - BMP, CBC today.\n5. Tobacco - advised quitting, especially now.\nReturn after the neurology visit."}
+          ]
+        },
+        {
+          "id": "2026-01-27a",
+          "kind": "portal_message",
+          "start": "2026-01-27T19:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Therapy question", "author": "patient", "date": "2026-01-27T19:05", "body": "This is his wife writing. Bob started speech therapy and physical therapy. They want to do 2 times a week each for 6 weeks. Is that okay with you, he gets tired. Also is it ok for him to drive yet."},
+            {"type": "Patient Message", "title": "RE: Therapy question", "author": "PCP", "date": "2026-01-27T21:10", "body": "Hi, thanks for the update. Yes, the therapy schedule is right on track and the tiredness is common after a brain bleed - rest between sessions is fine. Please hold off on driving until neurology clears him in February. Let us know if his speech or strength gets worse at any point - that would be a 911 call."}
+          ]
+        },
+        {
+          "id": "2026-02-19a",
+          "kind": "office_visit",
+          "start": "2026-02-19T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after neurology visit; anticoagulation",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "medications": [{"drug": "warfarin sodium 5 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily in the evening, or as directed per INR (goal 2.0-3.0)", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "chronic atrial fibrillation"}],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2026-02-19T09:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2026-02-19T10:30", "body": "Saw stroke neurology on 2/17. No letter yet; per patient and wife, they told him he could go back on his blood thinner and could drive locally. Called neurology clinic during the visit (see phone note): confirmed clearance to resume warfarin.\n\nDoing well. Speech pauses less often. Grip nearly back. Finishing PT next month. No cocaine since January. Still smoking.\n\nExam: BP per flowsheet. Irregular, rate controlled. Speech fluent with rare pause. Strength symmetric except trace right grip weakness.\n\nPlan:\n1. Chronic AF - restart warfarin 5 mg nightly; INR in 1 week, then weekly until stable. Reviewed bleeding warning signs again and the importance of steady dosing.\n2. ICH recovery - continue therapy.\n3. Cocaine abstinence - commended; continue.\n4. Other chronic issues unchanged."}
+          ]
+        },
+        {
+          "id": "2026-02-19b",
+          "kind": "telephone",
+          "start": "2026-02-19T10:10",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call to stroke neurology", "author": "PCP", "date": "2026-02-19T10:10", "body": "Spoke with neurology clinic nurse about the 2/17 visit. Neurology attending's plan: OK to resume warfarin now, INR goal 2-3; repeat imaging only if new symptoms. Clinic letter to follow by fax."}
+          ]
+        },
+        {
+          "id": "2026-02-26a",
+          "kind": "lab_only",
+          "start": "2026-02-26T09:10",
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2026-02-26T09:10", "results": [{"test": "Prothrombin Time-International Normalized Ratio", "value": 1.9}]}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation check after restart", "author": "RN", "date": "2026-02-26T09:20", "body": "INR 1.9 one week after restarting warfarin. No bleeding, no headache. Continue 5 mg nightly; recheck in 2 weeks."}
+          ]
+        },
+        {
+          "id": "2026-03-12a",
+          "kind": "lab_only",
+          "start": "2026-03-12T09:00",
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2026-03-12T09:00", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation check", "author": "RN", "date": "2026-03-12T09:10", "body": "INR in range now. No bleeding. Same dose; next check 4 weeks. Neurology letter still not received - requested again."}
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "office_visit",
+          "start": "2026-04-14T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic care follow-up, ICH recovery",
+          "state": {"labs": {"Hemoglobin": 12.5}},
+          "conditions": [{"label": "Anticoagulation-related hemorrhage", "icd10": "D68.32", "action": "resolved"}],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-04-14T09:10", "results": [{"test": "Hemoglobin", "value": 12.5}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2026-04-14T09:10", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-04-14T09:10", "results": [{"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2026-04-14T08:45", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-04-14T08:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2026-04-14T09:25", "body": "Three months after the brain bleed. Finished PT and speech therapy. Strength back. Wife notices he still pauses for a word now and then, more when tired. Driving locally. No cocaine since January, which he volunteered. Still smoking.\nOn warfarin again since 2/19 without bleeding.\nExam: BP per flowsheet. Irregular, rate controlled. Speech fluent with an occasional pause. Strength 5/5 throughout, gait normal.\nA/P: Bleeding complication closed out on the problem list; ICH and vasculopathy remain. AF - INR today, same dose. T2DM - A1c. CKD - BMP. CBC today, Hgb 12.5. Keep the September wellness visit."}
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "lab_only",
+          "start": "2026-05-19T09:20",
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2026-05-19T09:20", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation check", "author": "RN", "date": "2026-05-19T09:30", "body": "INR checked, reviewed. No bleeding, no falls. Continue 5 mg nightly. Next 5 weeks."}
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "portal_message",
+          "start": "2026-06-23T08:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Refills", "author": "patient", "date": "2026-06-23T08:30", "body": "Need refills on the insulin pens and the metoprolol before the 4th of July please. Same pharmacy."},
+            {"type": "Patient Message", "title": "RE: Refills", "author": "MA", "date": "2026-06-23T11:45", "body": "Sent both to your pharmacy, 90-day supply. Your INR check is due next week, please call to schedule."}
+          ]
+        },
+        {
+          "id": "2026-07-05a",
+          "kind": "hospital_admission",
+          "start": "2026-07-05T03:40",
+          "end": "2026-07-12T12:30",
+          "service": "Internal Medicine",
+          "reason": "massive pulmonary embolism",
+          "conditions": [
+            {"label": "Pulmonary embolism", "icd10": "I26.99", "action": "diagnosed", "onset": "2026-07-05", "note": "massive"},
+            {"label": "Anticoagulation-related hemorrhage", "icd10": "D68.32", "action": "diagnosed", "onset": "2026-07-05", "note": "on IV heparin"},
+            {"label": "Gross hematuria", "icd10": "R31.0", "action": "diagnosed", "onset": "2026-07-05"}
+          ],
+          "vitals": [{"time": "2026-07-06T14:00", "bp": [100, 58], "hr": 88, "rr": 18}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-07-06T14:20", "results": [{"test": "Hemoglobin", "value": 8.6}, {"test": "Platelets", "value": 220}]}
+          ],
+          "procedures": [{"procedure": "Initial hospital inpatient care", "performed": "2026-07-05T03:40"}],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital discharge summary", "author": "hospital medicine", "date": "2026-07-13T10:05", "body": "Discharge summary, admitted 7/5/2026, discharged 7/12/2026.\nPrincipal diagnosis: massive pulmonary embolism. Secondary: bleeding on IV heparin with hematuria and IV-site oozing.\nBackground: 69M, chronic AF on warfarin, prior warfarin-associated left ICH (1/2026) with cocaine-induced cerebral vasculopathy, HTN, T2DM, CKD 3. NKDA.\nCourse: admitted to ICU with massive PE on CT pulmonary angiogram; IV unfractionated heparin started. Hospital day 2 (7/6): new gross hematuria and persistent oozing from IV sites. BP 100/58, pulse 88, RR 18. Diffuse ecchymoses on both arms; abdomen mildly tender, not distended. Hgb 8.6 (baseline 12.5), platelets 220K, aPTT prolonged, PT normal. Heparin paused; resumed after 12 hours at a lower aPTT target once oozing stopped. No transfusion required. Hematuria cleared by day 5. Warfarin overlapped with heparin to therapeutic INR.\nNote: admission PT normal despite warfarin on home list.\nDischarge Hgb 9.4.\nDischarge meds: warfarin 5 mg daily (INR goal 2-3), metoprolol tartrate 50 mg BID, amlodipine 5 mg daily, insulin glargine 20 units qhs.\nFollow-up: PCP in 2-3 days with CBC and INR; outpatient evaluation of hematuria."}
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "office_visit",
+          "start": "2026-07-14T09:00",
+          "end": "2026-07-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, pulmonary embolism and bleeding",
+          "state": {"labs": {"Hemoglobin": 10.1, "Prothrombin Time-International Normalized Ratio": 2.3}},
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-07-14T09:30", "results": [{"test": "Hemoglobin", "value": 10.1}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-07-14T09:30", "results": [{"test": "Potassium"}, {"test": "Creatinine"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2026-07-14T09:05", "results": [{"test": "Prothrombin Time-International Normalized Ratio", "value": 2.3}]}
+          ],
+          "orders": [{"id": "urology-referral", "action": "placed", "order": "Urology referral", "category": "referral", "to": "Urology", "reason": "gross hematuria while on IV heparin, current smoker"}],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2026-07-14T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Transitional Care Visit", "author": "PCP", "date": "2026-07-14T10:10", "body": "Two days home after a week-long admission for massive PE. Bled on heparin on day 2 - blood in the urine and oozing from IV sites, Hgb down to 8.6 - heparin paused and restarted lower, no transfusion. Discharged on warfarin 5 mg. Summary received yesterday; it notes his PT was normal on arrival.\n\nFeels washed out. Short of breath on the stairs, better each day. No chest pain. Urine clear since the hospital. Bruises on the arms fading.\n\nExam: vitals per flowsheet, saturating well on room air. Irregular, rate controlled. Lungs clear. Arms with fading yellow-green ecchymoses. Abdomen soft, nontender. Calves soft, no swelling.\n\nData: Hgb 10.1 today. INR 2.3.\n\nA/P:\n1. Massive PE, on warfarin - INR in range; weekly checks for now. Went over taking every dose; wife fills his pill box.\n2. Bleeding on heparin, recovering - Hgb rising. Recheck in about 4 weeks.\n3. Gross hematuria - cleared, but in a 69-year-old smoker it needs a urology evaluation regardless of the anticoagulation. Referral placed.\n4. ICH history/cocaine vasculopathy - no new neuro symptoms.\n5. Chronic issues unchanged; resume usual schedule."}
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "lab_only",
+          "start": "2026-07-21T09:10",
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2026-07-21T09:10", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation check", "author": "RN", "date": "2026-07-21T09:20", "body": "INR checked one week after discharge. No bleeding, urine clear, bruises nearly gone. Breathing better. Continue 5 mg nightly; next check 2 weeks."}
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "portal_message",
+          "start": "2026-07-28T13:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Urology appointment", "author": "patient", "date": "2026-07-28T13:20", "body": "Urology called. First opening is September 17. Is that soon enough or should I push."},
+            {"type": "Patient Message", "title": "RE: Urology appointment", "author": "PCP", "date": "2026-07-28T16:00", "body": "September 17 is fine since the bleeding has stopped. Take it. If you see blood in your urine again before then, call us that day."}
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "office_visit",
+          "start": "2026-08-11T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, anemia after bleeding; anticoagulation",
+          "state": {"labs": {"Hemoglobin": 11.6, "Prothrombin Time-International Normalized Ratio": 2.5}},
+          "conditions": [{"label": "Anticoagulation-related hemorrhage", "icd10": "D68.32", "action": "resolved"}],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-08-11T10:50", "results": [{"test": "Hemoglobin", "value": 11.6}, {"test": "Platelets"}]},
+            {"panel": "Urinalysis", "collected": "2026-08-11T10:30", "results": [{"test": "Urine Blood", "text": "Negative"}, {"test": "Urine Protein", "text": "Negative"}, {"test": "Urine Red Blood Cells"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2026-08-11T10:25", "results": [{"test": "Prothrombin Time-International Normalized Ratio", "value": 2.5}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-08-11T10:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2026-08-11T11:00", "body": "One month after the PE admission. Energy mostly back, stairs fine. No bleeding, urine clear, no bruising. No cocaine. Still smoking.\nExam: irregular, rate controlled. Lungs clear. No ecchymoses. No leg swelling.\nData: Hgb 11.6, up from 10.1. INR 2.5. UA negative for blood.\nA/P: Bleeding on heparin resolved - off the active list; gross hematuria stays open until urology. PE on warfarin, in range - INR every 2 weeks, then monthly. Anemia recovering. Hematuria resolved on UA; urology visit 9/17 stands. Annual wellness and diabetes labs at the September visit."}
+          ]
+        },
+        {
+          "id": "2026-08-25a",
+          "kind": "lab_only",
+          "start": "2026-08-25T09:00",
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2026-08-25T09:00", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation check", "author": "RN", "date": "2026-08-25T09:10", "body": "INR checked. No bleeding, no missed doses. Same dose. Moving to monthly checks; next with his September visit."}
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T08:00",
+          "reason": "annual wellness visit and chronic care follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

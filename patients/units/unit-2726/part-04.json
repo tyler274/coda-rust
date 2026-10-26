@@ -1,0 +1,700 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002726",
+      "events": [
+        {
+          "id": "2026-01-12a",
+          "kind": "specialist_visit",
+          "start": "2026-01-12T09:45",
+          "service": "Oncology",
+          "reason": "Surveillance MRI review",
+          "reports": [
+            {
+              "study": "MRI brain with and without contrast",
+              "loinc": "24587-8",
+              "performed": "2026-01-08T17:40",
+              "text": "Comparison 7/10/2025. No abnormal enhancement. No new parenchymal signal abnormality. No mass effect.",
+              "conclusion": "Stable. No evidence of recurrent CNS lymphoma."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neuro-oncology surveillance letter",
+              "author": "oncology",
+              "date": "2026-01-14T11:20",
+              "body": "Outside oncology center. Visit 01/12/2026.\n\nDear Doctor,\n\nMs. Diallo remains in complete remission of her primary CNS lymphoma about 16 months after finishing treatment; the 1/8 MRI is clear. She feels well and has had no seizures off levetiracetam. Next MRI in six months.\n\nNeuro-Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-09a",
+          "kind": "pharmacy",
+          "start": "2026-02-09T10:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization - hydroxychloroquine",
+              "author": "MA",
+              "date": "2026-02-09T10:15",
+              "body": "Pharmacy notice: insurer requires annual PA renewal for hydroxychloroquine 200 mg #180/90 days. Submitted online with SLE dx and rheum notes. Approved same day through 2/2027. Pharmacy notified, pt aware."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "office_visit",
+          "start": "2026-03-16T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              152,
+              94
+            ]
+          },
+          "measure": [
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-16T11:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "hydralazine hydrochloride 25 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth three times daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension above goal on three drugs"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-16T10:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-03-16T11:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit - Hypertension",
+              "author": "PCP",
+              "date": "2026-03-16T11:25",
+              "body": "S: Brought home log (new cuff): mostly 145-155/88-96 over the last month. Taking lisinopril 20, amlodipine 5, HCTZ 25 and KCl every day. Salt intake moderate. No headache, chest pain, dyspnea or vision change. Lupus quiet, prednisone 10.\n\nO: BP 152/94 (repeat similar). Heart regular. Lungs clear. No edema.\n\nA/P: HTN above goal on 3 agents. Adding hydralazine 25 mg TID. BMP today. Recheck BP in 4 weeks with log. Will message if any side effects."
+            }
+          ],
+          "state": {
+            "bp": [
+              150,
+              93
+            ]
+          }
+        },
+        {
+          "id": "2026-04-05a",
+          "kind": "hospital_admission",
+          "start": "2026-04-05T11:50",
+          "end": "2026-04-09T13:00",
+          "service": "Emergency Medicine",
+          "reason": "Weakness, dark urine, petechial rash",
+          "vitals": [
+            {
+              "time": "2026-04-05T11:55",
+              "temp_c": 37.8,
+              "bp": [
+                150,
+                90
+              ],
+              "hr": 110,
+              "rr": 20,
+              "spo2": 97
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 8.0,
+              "Platelets": 40,
+              "Bilirubin, Total": 3.2,
+              "Bilirubin, Direct": 0.8,
+              "Creatinine": 0.9
+            }
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-04-05T12:15",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 40
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-05T12:15",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-04-05T12:15",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 3.2
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-05T12:15",
+              "results": [
+                {
+                  "test": "Lactate Dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 700
+                },
+                {
+                  "test": "Haptoglobin",
+                  "loinc": "4542-7",
+                  "unit": "mg/dL",
+                  "text": "<10"
+                },
+                {
+                  "test": "Schistocytes",
+                  "loinc": "800-3",
+                  "text": "Present"
+                },
+                {
+                  "test": "Direct antiglobulin test",
+                  "loinc": "1007-4",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-05T13:00",
+              "resulted": "2026-04-06T15:30",
+              "results": [
+                {
+                  "test": "ADAMTS13 activity",
+                  "loinc": "53622-7",
+                  "unit": "%",
+                  "value": 64
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-09T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 96
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-04-09T05:30",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-09T05:30",
+              "results": [
+                {
+                  "test": "Lactate Dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 430
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-05T12:20",
+              "resulted": "2026-04-10T09:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Hydralazine",
+              "reaction": "Drug-induced hemolysis",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Drug-induced hemolytic anemia",
+              "icd10": "D59.2",
+              "action": "diagnosed",
+              "onset": "2026-04-02",
+              "note": "attributed to hydralazine"
+            },
+            {
+              "label": "Thrombocytopenia",
+              "action": "diagnosed",
+              "onset": "2026-04-02"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "hydralazine hydrochloride 25 MG Oral Tablet",
+              "action": "stop",
+              "reason": "drug-induced hemolysis"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-04-05T11:50"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-04-05T18:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-04-09T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department physician note",
+              "author": "emergency medicine",
+              "date": "2026-04-10T08:30",
+              "body": "Hospital ED, seen Sunday 04/05/2026 11:50.\n\nCC: weak, dark urine, spots on legs.\n\nHPI: 49F with SLE (hydroxychloroquine, prednisone 10 mg), asplenia since 2023, primary CNS lymphoma in remission. Three days of generalized weakness, urine the color of tea, and a new rash of tiny red-purple dots on both lower legs. Started on hydralazine about three weeks ago for blood pressure.\n\nMeds: hydralazine 25 mg TID (new), lisinopril 20, amlodipine 5, HCTZ 25, KCl 20 mEq, hydroxychloroquine 200 bid, prednisone 10, cholecalciferol, calcium carbonate.\nAllergy: sulfonamides.\n\nVitals: T 37.8 C, BP 150/90, HR 110, RR 20.\nExam: tired, jaundiced, scleral icterus. Petechiae over both lower legs. Abdomen soft, healed LUQ scar. Heart tachycardic, regular. Lungs clear. Neuro nonfocal.\n\nLabs: Hgb 8.0, platelets 40, LDH 700, total bilirubin 3.2 (direct 0.8), haptoglobin <10. Smear: schistocytes present. Creatinine 0.9. DAT negative.\n\nMDM: hemolysis with schistocytes and thrombocytopenia, low-grade temperature, tachycardia. TTP must be excluded; recent hydralazine is a candidate drug cause. Hydralazine held. ADAMTS13 sent. Hematology consulted from the ED. Asplenic with temperature 37.8: cultures drawn, observed closely.\n\nDisposition: admitted to medicine, telemetry."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary",
+              "author": "hospital medicine",
+              "date": "2026-04-10T08:35",
+              "body": "Admitted 04/05/2026. Discharged 04/09/2026.\n\nDiagnoses: drug-induced hemolytic anemia with thrombocytopenia, attributed to hydralazine. SLE, hypertension, asplenia, history of primary CNS lymphoma.\n\nCourse: presented with weakness, dark urine and lower-leg petechiae three weeks after starting hydralazine. Hgb 8.0, platelets 40, LDH 700, indirect hyperbilirubinemia, haptoglobin undetectable, schistocytes on smear. DAT negative. Creatinine normal throughout. Hematology saw her on arrival; with a rapid ADAMTS13 activity of 64% resulting on day 2, TTP was excluded and plasma exchange was not started. Hydralazine was stopped on admission and not restarted. Blood cultures no growth. No transfusion required. Hemolysis markers and platelets improved daily: at discharge Hgb 8.7, platelets 96, LDH 430, total bilirubin 1.7. Prednisone continued at her usual 10 mg.\n\nNEW ALLERGY: hydralazine (drug-induced hemolysis). Do not rechallenge.\n\nDischarge medications: STOP hydralazine. Continue lisinopril 20, amlodipine 5, hydrochlorothiazide 25, potassium chloride 20 mEq, hydroxychloroquine 200 mg bid, prednisone 10 mg, cholecalciferol, calcium carbonate.\n\nFollow-up: PCP within one week with CBC, LDH and bilirubin. Hematology as needed. Blood pressure regimen to be adjusted by PCP.\n\nHospital Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-10a",
+          "kind": "telephone",
+          "start": "2026-04-10T14:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2026-04-10T14:00",
+              "body": "Spoke with pt day after discharge. Tired, urine lighter, legs still spotty. No fever. Has stopped hydralazine and threw the bottle out. Hydralazine added to allergy list in our chart. Appt Monday 4/13 with labs."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-13a",
+          "kind": "office_visit",
+          "start": "2026-04-13T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "vitals": {
+            "bp": [
+              146,
+              92
+            ]
+          },
+          "measure": [
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 10.4,
+              "Platelets": 168,
+              "Bilirubin, Total": 1.1,
+              "Bilirubin, Direct": 0.3
+            }
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-04-13T09:30",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 168
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-04-13T09:30",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.1
+                },
+                {
+                  "test": "Bilirubin, Direct"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-13T09:30",
+              "results": [
+                {
+                  "test": "Lactate Dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 300
+                }
+              ]
+            }
+          ],
+          "medications": [
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "dose increased"
+            },
+            {
+              "drug": "amlodipine 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-04-13T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-13T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital Visit",
+              "author": "PCP",
+              "date": "2026-04-13T09:45",
+              "body": "Admission 4/5-4/9 reviewed: hemolytic anemia with schistocytes and plt 40 three weeks after I started hydralazine; ADAMTS13 64%, DAT neg, attributed to hydralazine, which is stopped and now on her allergy list.\n\nFeels better each day, energy coming back. Urine normal color. Leg spots fading. No fever, no bleeding.\n\nExam: BP 146/92. Mild residual scleral icterus. Scattered fading purpuric spots on both shins. Heart regular. Lungs clear.\n\nLabs today: Hgb 10.4, platelets 168, LDH 300, bilirubin 1.1 - all moving the right way.\n\nA/P:\n1. Drug-induced hemolytic anemia + thrombocytopenia - resolving off hydralazine. Repeat labs 4 wks.\n2. HTN still above goal without hydralazine - increase amlodipine to 10 mg. Continue lisinopril, HCTZ, KCl. Home log.\n3. SLE - stable on HCQ + pred 10.\nRTC 4 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-28a",
+          "kind": "portal_message",
+          "start": "2026-04-28T20:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Home BP",
+              "author": "patient",
+              "date": "2026-04-28T20:30",
+              "body": "BPs since the amlodipine went up: 134/84, 130/82, 136/86, 128/80, 132/84. Is that ok?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Home BP",
+              "author": "PCP",
+              "date": "2026-04-29T08:15",
+              "body": "Those numbers are right where they should be. Keep the same dose. See you on the 11th."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-11a",
+          "kind": "office_visit",
+          "start": "2026-05-11T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up hemolysis and blood pressure",
+          "state": {
+            "bp": [
+              126,
+              78
+            ],
+            "labs": {
+              "Hemoglobin": 12.1,
+              "Platelets": 230,
+              "Bilirubin, Total": 0.6,
+              "Bilirubin, Direct": 0.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-05-11T14:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 230
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-05-11T14:50",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-05-11T14:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-11T14:50",
+              "results": [
+                {
+                  "test": "Lactate Dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 196
+                },
+                {
+                  "test": "Haptoglobin",
+                  "loinc": "4542-7",
+                  "unit": "mg/dL",
+                  "value": 92
+                }
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Drug-induced hemolytic anemia",
+              "icd10": "D59.2",
+              "action": "resolved"
+            },
+            {
+              "label": "Thrombocytopenia",
+              "action": "resolved"
+            },
+            {
+              "label": "Senile purpura",
+              "icd10": "D69.2",
+              "action": "diagnosed",
+              "onset": "2026-05-11",
+              "note": "nonpalpable purpura of the shins with normal platelets, long-term prednisone"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-11T14:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-05-11T14:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2026-05-11T15:20",
+              "body": "S: Back to normal energy. No dark urine. Some purple marks on her shins haven't gone away and new ones show up after she bumps her legs on the desk at work. Home BP 128-136/80-86 on amlodipine 10.\n\nO: BP as charted. No icterus. Shins: several flat, nonpalpable purple patches of varying age on thin, shiny skin; no petechiae. No edema.\n\nLabs today: Hgb 12.1, platelets 230, LDH 196, haptoglobin 92, bilirubin 0.6. BMP normal.\n\nA/P:\n1. Hydralazine-induced hemolytic anemia and thrombocytopenia - resolved. Allergy listed.\n2. Purple patches on shins with normal platelets now, fragile skin after 15 years of prednisone - senile (steroid) purpura. Benign. Protect shins, no treatment needed.\n3. HTN - at goal on amlodipine 10, lisinopril 20, HCTZ 25. Continue KCl.\n4. SLE quiet. History of PCNSL - MRI July.\nPhysical in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-22a",
+          "kind": "portal_message",
+          "start": "2026-06-22T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill",
+              "author": "patient",
+              "date": "2026-06-22T07:55",
+              "body": "Can you send a refill for the potassium pills and the new amlodipine dose to my pharmacy? Mail order didn't pick up the change."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill",
+              "author": "MA",
+              "date": "2026-06-22T11:20",
+              "body": "Done - KCl 20 mEq and amlodipine 10 mg sent for 90 days with refills. The old 5 mg prescription was cancelled at the pharmacy."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-13a",
+          "kind": "specialist_visit",
+          "start": "2026-07-13T10:15",
+          "service": "Oncology",
+          "reason": "Surveillance MRI review",
+          "reports": [
+            {
+              "study": "MRI brain with and without contrast",
+              "loinc": "24587-8",
+              "performed": "2026-07-09T18:30",
+              "text": "Comparison 1/8/2026. No enhancing lesion. No new abnormality. Brain parenchyma otherwise normal for age.",
+              "conclusion": "No evidence of recurrence."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neuro-oncology surveillance letter",
+              "author": "oncology",
+              "date": "2026-07-15T09:40",
+              "body": "Outside oncology center. Visit 07/13/2026.\n\nDear Doctor,\n\nThe 7/9 MRI shows no recurrence. Ms. Diallo told us about her April admission for hydralazine-related hemolysis; she has recovered fully. Neurologic exam is normal. We will continue MRIs every six months; next in January 2027.\n\nNeuro-Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-10a",
+          "kind": "portal_message",
+          "start": "2026-08-10T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Scheduling physical",
+              "author": "patient",
+              "date": "2026-08-10T12:30",
+              "body": "Hi, I need to book my yearly physical. Mondays are easiest. Also can I get my flu shot the same day?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Scheduling physical",
+              "author": "front desk",
+              "date": "2026-08-10T15:05",
+              "body": "You're booked Monday 9/21 at 8:30 am with fasting labs first. We'll have the flu vaccine that day if the new season's supply has arrived."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-21a",
+          "kind": "annual_physical",
+          "start": "2026-09-21T08:30",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

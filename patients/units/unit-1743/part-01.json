@@ -1,0 +1,150 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001743",
+      "given": "Ava",
+      "family": "Paquette",
+      "birth_date": "1995-09-22",
+      "address_line": "112 Hillside Lane",
+      "phone": "+1-413-555-0133",
+      "email": "ava.paquette@example.test",
+      "summary": "Thirty-year-old administrative assistant with gestational hypertension in a first pregnancy, severe preeclampsia with preterm delivery at 32 weeks in 2024, and a third pregnancy in 2025 with a pregnancy epulis and then placental abruption with recurrent severe preeclampsia and delivery at 31 weeks. Joined the practice postpartum in October 2024; blood pressure normal between pregnancies.",
+      "events": [
+        {
+          "id": "2024-09-07a",
+          "kind": "hospital_admission",
+          "start": "2024-09-07T14:10",
+          "end": "2024-09-12T11:30",
+          "service": "Obstetrics — Labor and Delivery (outside hospital)",
+          "reason": "Headache and visual disturbance at 32 weeks",
+          "conditions": [
+            {"label": "Severe pre-eclampsia, third trimester", "icd10": "O14.13", "action": "diagnosed", "onset": "2024-09-05", "note": "without HELLP features"},
+            {"label": "32 weeks gestation of pregnancy", "icd10": "Z3A.32", "action": "diagnosed", "onset": "2024-09-07"},
+            {"label": "History of gestational hypertension", "icd10": "Z87.59", "action": "history", "note": "first pregnancy, resolved after delivery"}
+          ],
+          "medications": [
+            {"drug_text": "prenatal multivitamin with folic acid Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "pregnancy"},
+            {"drug": "ferrous sulfate 325 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 325, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "iron supplementation in pregnancy"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "vitals": [
+            {"time": "2024-09-07T14:25", "bp": [158, 102]},
+            {"time": "2024-09-07T18:25", "bp": [158, 102]}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-07T14:40", "results": [{"test": "Hemoglobin", "value": 11.2}, {"test": "Platelets", "value": 110}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-09-07T14:40", "results": [{"test": "Creatinine", "value": 1.1}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2024-09-07T14:40", "results": [{"test": "Aspartate Aminotransferase", "text": "Elevated"}, {"test": "Alanine Aminotransferase", "text": "Elevated"}]},
+            {"panel": null, "collected": "2024-09-07T15:05", "results": [{"test": "Protein/Creatinine ratio, urine", "loinc": "2890-2", "unit": "mg/mg", "value": 0.4}]},
+            {"panel": null, "collected": "2024-09-08T15:30", "results": [{"test": "Protein, 24 hour urine", "loinc": "2889-4", "unit": "mg/(24.h)", "value": 350}]}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record (outside hospital)",
+              "author": "emergency medicine",
+              "date": "2024-12-10T09:40",
+              "body": "Regional hospital — Emergency Department\nVisit: 2024-09-07, arrived 14:10\nReceived by the practice 2024-12-10 in response to records request.\n\nCC: headache and seeing spots, 32 weeks pregnant.\n\nHPI: 28-year-old, second pregnancy, 32 weeks by early dating. Two days of headache that has not let up with rest or acetaminophen, plus visual disturbance she describes as flickering and blurred patches. On and off pain in the upper abdomen under the breastbone. Gestational hypertension in her first pregnancy that went away after that delivery. No bleeding, no leakage of fluid, baby moving.\n\nMeds: prenatal vitamin daily, ferrous sulfate 325 mg daily.\nAllergies: NKDA.\nPSH: none.\nFH: mother had preeclampsia; father has chronic hypertension.\nSH: never smoker. No alcohol in pregnancy, social drinker before. Works as an administrative assistant.\n\nVitals: BP 158/102 at 14:25, repeat 158/102 at 18:25.\n\nExam: uncomfortable but alert and oriented. Legs with 2+ pitting edema bilaterally. Reflexes brisk. Abdomen gravid, mildly tender in the right upper quadrant, no guarding. Fetal monitoring reactive.\n\nLabs: Hgb 11.2 g/dL, platelets 110,000/uL, creatinine 1.1 mg/dL, AST and ALT elevated. Urine protein/creatinine 0.4.\n\nImpression: preeclampsia with severe features (severe-range pressures, headache, visual symptoms, RUQ pain) at 32 weeks; no HELLP.\n\nDisposition: OB at bedside, admitted to labor and delivery."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary (outside hospital)",
+              "author": "obstetrics",
+              "date": "2024-12-10T09:42",
+              "body": "Regional hospital — Labor and Delivery\nAdmitted 2024-09-07, discharged 2024-09-12\nReceived by the practice 2024-12-10.\n\nAdmitting diagnosis: severe preeclampsia without HELLP features, intrauterine pregnancy at 32 weeks.\nDischarge diagnoses: same, delivered; status post preterm vaginal delivery at 32 weeks 2 days.\n\nHospital course: Admitted from the ED with severe-range pressures and neurologic symptoms. Started on magnesium sulfate for seizure prophylaxis and given IV labetalol for pressures in the severe range, with good response. Betamethasone given in two doses 24 hours apart. 24-hour urine protein 350 mg. Labs stayed stable and platelets never fell below 100,000. After completing the steroid course, labor was induced on 9/8 and she had an uncomplicated vaginal delivery on 9/9 at 21:40. Liveborn infant admitted to the NICU for prematurity. Magnesium continued 24 hours postpartum. Headache and visual symptoms resolved after delivery. Pressures below 140/90 from postpartum day 2 without oral medication.\n\nDischarge medications: prenatal vitamin daily, ferrous sulfate 325 mg daily. No antihypertensive.\nAllergies: NKDA.\n\nFollow-up: OB blood pressure check within one week; postpartum visit at six weeks. Strongly encouraged to establish with a primary care physician given preeclampsia history and long-term cardiovascular risk.\n\nWarning signs reviewed: severe headache, vision change, chest pain, shortness of breath or very high home readings."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-29a",
+          "kind": "establish_care",
+          "start": "2024-10-29T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care after delivery; preeclampsia history",
+          "conditions": [
+            {"label": "Severe pre-eclampsia, third trimester", "icd10": "O14.13", "action": "resolved"},
+            {"label": "32 weeks gestation of pregnancy", "icd10": "Z3A.32", "action": "resolved"},
+            {"label": "History of preeclampsia", "action": "history", "onset": "2024-09-07"}
+          ],
+          "state": {"weight_kg": 74.2, "height_cm": 165.0, "labs": {"Total Cholesterol": 176, "Hemoglobin A1c": 5.2, "Thyroid Stimulating Hormone": 1.7}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm", "temp_c"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-10-29T10:05", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "White Blood Cells"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-10-29T10:05", "results": [{"test": "Creatinine"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2024-10-29T10:05", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2024-10-29T10:05", "results": [{"test": "Hemoglobin A1c"}, {"test": "Thyroid Stimulating Hormone"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None during pregnancy; occasional social use before"},
+            {"item": "Occupation", "value": "Administrative assistant"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-29T10:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-29T10:17"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2024-10-29T09:20"},
+            {"procedure": "Venipuncture", "performed": "2024-10-29T10:05"},
+            {"procedure": "Immunization administration", "performed": "2024-10-29T10:15"}
+          ],
+          "orders": [
+            {"id": "rec-req-2024", "action": "placed", "order": "Outside records request: September 2024 hospital admission", "category": "procedure", "to": "Regional hospital health information management", "reason": "preeclampsia admission and delivery"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2024-10-29T11:10",
+              "body": "29-year-old here to set up primary care; her OB pushed her to after this last delivery.\n\nHistory per patient (hospital records requested):\n- Second pregnancy ended early: came to the ED at 32 weeks on 9/7 with two days of headache and visual spots, pressures in the 150s/100s. Told it was severe preeclampsia. Got magnesium and steroid shots, induced, delivered vaginally 9/9. Baby spent time in the NICU and is home now. She went home 9/12 without BP meds.\n- First pregnancy: gestational hypertension, went away after delivery.\n- No other medical problems, no surgeries.\n\nSince discharge: headaches gone, vision normal. OB checked BP at one week and at her postpartum visit, both fine per her. Cervical screening up to date with OB, normal.\n\nMeds: prenatal vitamin daily, ferrous sulfate 325 mg daily, both from OB. She plans to keep taking them for now.\nAllergies: NKDA.\nFH: mother had preeclampsia; father with chronic hypertension.\nSH: administrative assistant, back to work part time next month. Never smoker. No alcohol while pregnant; a drink socially before. No drugs.\n\nROS: no headache, vision change, chest pain, dyspnea, swelling. Mood okay, tired with a newborn. PHQ-9 3.\n\nExam: well appearing. BP and vitals as recorded. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no hepatomegaly. No leg edema. Reflexes 2+ and symmetric. Fundi not examined.\n\nA/P\n1. History of severe preeclampsia (2024) and gestational hypertension (first pregnancy). BP normal today off meds. Talked about what two hypertensive pregnancies mean down the road: higher lifetime risk of chronic hypertension and heart disease, so we will check BP, lipids and A1c every year. Home cuff reasonable; call for readings of 140/90 or higher.\n2. Postpartum. Baseline CBC, CMP (recheck creatinine and liver enzymes), lipids, A1c, TSH. One-time HIV and hepatitis C screens today.\n3. Health maintenance: flu and COVID shots given today.\n4. Records release signed for the September admission.\n\nBP nurse check in about three months, physical in the spring."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Records Request Sent",
+              "author": "front desk",
+              "date": "2024-10-29T11:30",
+              "body": "Signed release faxed to the regional hospital HIM department for the 9/7-9/12/2024 admission: ED record, discharge summary, labs. Will scan on receipt."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-31a",
+          "kind": "portal_message",
+          "start": "2024-10-31T16:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent labs",
+              "author": "PCP",
+              "date": "2024-10-31T16:20",
+              "body": "Hi Ava, your labs from Tuesday are back and look good. Blood count is normal. Kidney function and liver tests are back to normal after the preeclampsia, cholesterol and A1c are in a healthy range, thyroid is normal, and the HIV and hepatitis C screens were negative. Nothing to change. We'll see you for a BP check in January."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "outside_records",
+          "start": "2024-12-10T09:40",
+          "reason": "Hospital records received: September 2024 admission",
+          "orders": [
+            {"id": "rec-req-2024", "action": "done", "date": "2024-12-10T09:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "author": "PCP",
+              "date": "2024-12-11T07:50",
+              "body": "Reviewed the ED record and L&D discharge summary from the 9/2024 admission, received yesterday after our October request. Matches her account: severe preeclampsia at 32 weeks without HELLP (platelets 110K, creatinine 1.1, transaminases elevated, UPCR 0.4, 24-h protein 350 mg), magnesium, IV labetalol, betamethasone, induction and vaginal delivery 9/9. Discharged on no antihypertensive. October labs here show the creatinine and liver tests normalized. Problem list updated. No change in plan."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,813 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002226",
+      "events": [
+        {
+          "id": "2025-01-07a",
+          "kind": "hospital_admission",
+          "start": "2025-01-07T07:40",
+          "end": "2025-01-09T15:00",
+          "service": "Gastroenterology",
+          "reason": "Recurrent bright red blood per rectum on warfarin",
+          "conditions": [
+            {
+              "label": "Angiodysplasia of colon with hemorrhage",
+              "icd10": "K55.21",
+              "action": "diagnosed",
+              "onset": "2024-10-20",
+              "note": "Cecal angiodysplasia, treated with argon plasma coagulation 1/8/2025"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, diagnostic",
+              "performed": "2025-01-08T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary - Lower GI Bleeding",
+              "author": "hospital medicine",
+              "date": "2025-01-13T09:00",
+              "body": "REGIONAL HOSPITAL - DISCHARGE SUMMARY\nAdmit 01/07/2025  Discharge 01/09/2025\n\nReason for admission: recurrent painless bright red blood per rectum, onset the night before admission, in a 74-year-old man with a mechanical mitral valve on warfarin and aspirin. Colonoscopy 12/10/2024 during a quiet period found no source.\n\nAllergies: NKDA.\n\nCourse:\n- Hemodynamically stable on arrival. Hemoglobin followed every 8 hours, stayed close to his recent baseline; no transfusion required.\n- Warfarin held on admission; heparin infusion started once INR fell below goal, paused for procedures.\n- Nuclear medicine tagged red blood cell scan 01/07: radiotracer activity localizing to the cecum, suggesting a cecal bleeding source.\n- Colonoscopy 01/08, while still passing blood: several small, flat, bright cherry-red spots in the cecum made up of dilated ectatic vessels - angiodysplasia; treated with argon plasma coagulation with good effect. No other source.\n- Bleeding stopped after treatment. Warfarin resumed 01/08 evening with heparin overlap; discharged on enoxaparin bridge until INR >= 2.5 per PCP.\n\nDischarge diagnoses: Bleeding cecal angiodysplasia, treated with APC. Mechanical mitral valve on anticoagulation. Severe aortic stenosis.\nDischarge meds: home medications unchanged (warfarin 5 mg, aspirin 81, lisinopril 20, metformin 1000 BID, atorvastatin 40, amlodipine 5). Enoxaparin 80 mg SC q12h until INR >= 2.5.\nFollow-up: PCP within 1 week with CBC and INR; GI clinic as needed for recurrence."
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "enoxaparin sodium 100 MG/ML Prefilled Syringe",
+              "action": "historical",
+              "sig": "Inject 80 mg (0.8 mL) under the skin every 12 hours until INR at least 2.5, per PCP",
+              "dose": {
+                "value": 80,
+                "unit": "mg"
+              },
+              "frequency": "Q12H",
+              "route": "Subcutaneous",
+              "course": "short",
+              "reason": "Warfarin bridge, mechanical mitral valve"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "office_visit",
+          "start": "2025-01-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up, cecal angiodysplasia bleed",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 10.3,
+              "Prothrombin Time-International Normalized Ratio": 2.2,
+              "Prothrombin Time": 25.4,
+              "Mean Corpuscular Volume": 80
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-01-14T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-01-14T10:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-01-14T10:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-01-14T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital Follow-up",
+              "author": "PCP",
+              "date": "2025-01-14T10:50",
+              "body": "Seen 5 days after discharge, with daughter. Admitted 1/7-1/9 for rectal bleeding; tagged RBC scan pointed to the cecum and colonoscopy found angiodysplasia there, treated with APC. No bleeding since. Tired but no worse than before. No dizziness or fainting. Doing the enoxaparin shots.\n\nDischarge summary reviewed. Meds reconciled - unchanged, plus the bridge.\n\nExam: vitals as charted. A bit pale. Harsh systolic murmur RUSB, mechanical click. Abd soft, NT.\n\nA/P:\n1. Cecal angiodysplasia with bleeding, s/p APC - CBC today. Call/ED for recurrence.\n2. Mechanical MVR - INR today; stop enoxaparin once >= 2.5. Continue warfarin 5 mg and aspirin.\n3. Severe AS - unchanged.\n4. DM2/HTN/CKD - BMP, routine visit next month.\nRecheck CBC at next visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "lab_only",
+          "start": "2025-01-21T09:00",
+          "reason": "INR on bridge",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-01-21T09:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "INR - Stop Bridge",
+              "author": "RN",
+              "date": "2025-01-21T13:15",
+              "body": "INR in goal. Per PCP stop enoxaparin. Warfarin 5 mg nightly. Pt reports no further bleeding."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.8,
+              "Prothrombin Time": 32.1
+            }
+          }
+        },
+        {
+          "id": "2025-02-27a",
+          "kind": "office_visit",
+          "start": "2025-02-27T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes, hypertension and CKD follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-02-27T14:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-02-27T14:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-02-27T14:50",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-27T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-02-27T15:10",
+              "body": "Routine f/u. No bleeding since January. Walking ok with cane outdoors, no falls. Breathing on exertion about the same. Bowels slow as always.\n\nExam: vitals as charted. Murmur and click as before. Lungs clear. No edema. Feet normal sensation, no lesions.\n\nA/P: DM2 - A1c today. HTN at goal. CKD 3a - BMP. Mechanical MVR - INR today, no change. Angiodysplasia - quiet. RTC 3 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 3.1,
+              "Prothrombin Time": 35.5
+            }
+          }
+        },
+        {
+          "id": "2025-04-10a",
+          "kind": "lab_only",
+          "start": "2025-04-10T09:15",
+          "reason": "INR monitoring",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-04-10T09:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.2,
+              "Prothrombin Time": 25.0
+            }
+          },
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "INR Low",
+              "author": "RN",
+              "date": "2025-04-10T14:05",
+              "body": "INR a little under goal today. Pt thinks he missed Sunday's dose - weekly pill box was refilled late. No other changes, no bleeding. Per PCP: take 7.5 mg (1 1/2 tablets) tonight only, then back to 5 mg nightly. Recheck in 1 week. Daughter will refill the pill box Saturdays from now on."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-17a",
+          "kind": "lab_only",
+          "start": "2025-04-17T09:10",
+          "reason": "INR recheck",
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.9,
+              "Prothrombin Time": 33.3
+            }
+          },
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-04-17T09:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2025-05-28a",
+          "kind": "office_visit",
+          "start": "2025-05-28T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Progressive fatigue and shortness of breath on exertion",
+          "vitals": {
+            "bp": [
+              130,
+              80
+            ],
+            "hr": 88
+          },
+          "measure": [
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Iron deficiency anemia",
+              "action": "diagnosed",
+              "onset": "2025-03-01"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 9.2,
+              "Ferritin": 15,
+              "Iron": 30,
+              "Total Iron-Binding Capacity": 450,
+              "Prothrombin Time-International Normalized Ratio": 2.9,
+              "Prothrombin Time": 33.3
+            }
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-05-28T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 72
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2025-05-28T09:50",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 15
+                },
+                {
+                  "test": "Iron",
+                  "value": 30
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 450
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-05-28T09:50",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-28T09:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Iron deficiency anemia"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-05-28T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Fatigue and Dyspnea",
+              "author": "PCP",
+              "date": "2025-05-28T12:40",
+              "body": "S: 74 y/o, here because he's been running down for about 3 months - more tired through the day, more winded with ordinary exertion (yard, stairs). No chest pain, no palpitations, no fainting. No visible blood in stool since January that he's noticed. Still on stool softener here and there for his chronic constipation. Meds unchanged - warfarin 5, ASA 81, lisinopril 20, amlodipine 5, metformin 1000 BID, atorvastatin 40. NKDA.\n\nO: BP 130/80, HR 88. Looks pale. Known harsh AS murmur and mechanical click, otherwise heart exam unchanged. Lungs clear. Abdomen soft, no liver or spleen enlargement. Rectal: no mass; stool brown, guaiac negative.\n\nLabs (resulted this morning): Hgb 9.2, MCV 72, ferritin 15, iron 30, TIBC 450.\n\nA/P:\n1. Iron deficiency anemia, from the cecal angiodysplasia blood loss on warfarin + aspirin. Start ferrous sulfate 325 mg daily, take it apart from other meds; it can darken stools and worsen constipation - use the stool softener more regularly if so. Message to GI with today's numbers. CBC in about 3 months.\n2. Exertional dyspnea/fatigue - likely anemia on top of his severe AS.\n3. Mechanical MVR - INR today, continue warfarin 5 mg.\n4. Return sooner for visible bleeding, black stools, dizziness or fainting."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-29a",
+          "kind": "portal_message",
+          "start": "2025-05-29T08:30",
+          "reason": "Iron plan",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your iron and blood count",
+              "author": "PCP",
+              "date": "2025-05-29T08:30",
+              "body": "Hi Robert - to recap yesterday: your blood count is low and your iron stores are very low, which explains the tiredness and breathlessness. The iron tablet (ferrous sulfate 325 mg, once a day) is at your pharmacy. It can turn stools dark green or black - that is expected with iron, but if you see red or maroon blood, or feel faint, call us right away. I've sent your results to your GI doctor. We'll recheck the blood count with your August wellness visit."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your iron and blood count",
+              "author": "patient",
+              "date": "2025-05-29T19:05",
+              "body": "Thank you. Picked them up this afternoon. Do I take it with the warfarin at night or in the morning? - Bob"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your iron and blood count",
+              "author": "RN",
+              "date": "2025-05-30T09:10",
+              "body": "Morning is best, with a little food if it upsets your stomach, and keep the warfarin at night as usual. Iron doesn't change your INR."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-26a",
+          "kind": "lab_only",
+          "start": "2025-06-26T09:00",
+          "reason": "INR monitoring",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-06-26T09:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 3.2,
+              "Prothrombin Time": 36.7
+            }
+          }
+        },
+        {
+          "id": "2025-07-01a",
+          "kind": "telephone",
+          "start": "2025-07-01T11:15",
+          "reason": "Constipation on iron",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Iron - Constipation",
+              "author": "RN",
+              "date": "2025-07-01T11:30",
+              "body": "Pt calling - since starting iron his bowels are slower and stools very dark. No red or maroon blood, no abdominal pain, no dizziness. Reviewed with PCP: dark stools expected on iron. Use docusate daily rather than as needed, fluids, keep walking. Continue iron. Call if no BM in 3 days, pain, or any red/maroon blood. Pt agrees."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "annual_physical",
+          "start": "2025-08-20T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit; anemia recheck",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 12.6,
+              "Prothrombin Time-International Normalized Ratio": 2.8,
+              "Prothrombin Time": 32.1,
+              "Mean Corpuscular Volume": 86
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-20T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-20T09:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-08-20T09:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-20T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-08-20T09:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2025-08-20T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2025-08-20T13:30",
+              "body": "AWV, daughter along. Feels better than in the spring - more energy, still winded on hills. Taking iron every morning, bowels managed with daily docusate. No red or maroon blood. No falls this year; walking well since the shunt. PHQ-9 2.\n\nFunction: independent ADLs; daughter helps with finances and the weekly pill box. Health care proxy: daughter.\n\nReviewed meds (warfarin 5, ASA 81, lisinopril 20, amlodipine 5, metformin 1000 BID, atorvastatin 40, ferrous sulfate 325 daily, docusate), NKDA, histories.\n\nExam: vitals as charted. Color better. AS murmur and mechanical click unchanged. Lungs clear. No edema. Feet intact.\n\nLabs back this afternoon: hemoglobin 12.6 - good response to iron.\n\nPrevention: flu/COVID in October. Pneumococcal, Shingrix, RSV, Tdap (2017) done. Eye exam next month. No further colon cancer screening - GI following.\n\nPlan: continue iron. Lipids, A1c, UACR, CMP, INR pending today. RTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-24a",
+          "kind": "outside_records",
+          "start": "2025-09-24T10:00",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Optometry - Diabetic Eye Examination",
+              "author": "optometry",
+              "date": "2025-09-24T10:00",
+              "body": "OUTSIDE OPTOMETRY - DIABETIC EYE EXAM\nExam date: 09/22/2025\nPatient: Robert Graves. Allergies: NKDA.\nVA 20/25 OD, 20/30 OS with correction. Normal pressures. Dilated fundus exam: no diabetic retinopathy either eye, no macular edema.\nImpression: no diabetic retinopathy. Return in 1 year."
+            }
+          ],
+          "service": "Optometry"
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T10:30",
+          "reason": "Fall vaccines; INR",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-10-07T10:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-10-07T10:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T10:47"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T10:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunizations and INR",
+              "author": "RN",
+              "date": "2025-10-07T11:00",
+              "body": "High-dose flu R deltoid, 2025-26 COVID L deltoid. Pressure held, no bruising. Tolerated well. INR reviewed with PCP, continue warfarin 5 mg nightly."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 3.0,
+              "Prothrombin Time": 34.4
+            }
+          }
+        },
+        {
+          "id": "2025-11-11a",
+          "kind": "specialist_visit",
+          "start": "2025-11-11T09:30",
+          "service": "Gastroenterology",
+          "reason": "Bright red blood per rectum over the past week",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c"
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 9.3
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-11T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.3
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Clinic Note",
+              "author": "gastroenterology",
+              "date": "2025-11-11T13:00",
+              "body": "OUTSIDE GASTROENTEROLOGY - CLINIC NOTE\nDate of service: 11/11/2025\n\nHPI: 75-year-old man with a mechanical mitral valve on warfarin, severe aortic stenosis, and cecal angiodysplasia treated with APC in 01/2025, with iron deficiency anemia on oral iron since 05/2025. He returns with a week of intermittent, painless bright red blood per rectum. No abdominal pain, no nausea, no change in bowel habit beyond his usual constipation. No dizziness or fainting. His daughter feels he has been more tired lately.\n\nPrior colonoscopies: 01/2024 normal surveillance; 12/2024 no source while not bleeding; 01/2025 cecal angiodysplasia, treated.\nMeds: warfarin, aspirin 81, lisinopril, metformin, atorvastatin, amlodipine, ferrous sulfate.\nAllergies: NKDA.\nFamily: no colorectal cancer.\n\nExam: vital signs stable. Pale. Grade 3/6 systolic murmur, loudest at the right upper sternal border, with a diminished carotid upstroke. Abdomen benign. Rectal: bright red blood, no hemorrhoids, no mass.\n\nLabs: hemoglobin 9.3 g/dL, down from 12.6 in August.\n\nAssessment: Recurrent lower GI bleeding, likely recurrent angiodysplasia, with a drop in hemoglobin on anticoagulation.\n\nPlan: Admit for observation today - CT angiography of the abdomen and repeat colonoscopy, serial hemoglobin. Hospital team to manage anticoagulation with PCP input.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-11b",
+          "kind": "hospital_admission",
+          "start": "2025-11-11T12:00",
+          "end": "2025-11-13T14:00",
+          "service": "Hospital Medicine (observation)",
+          "reason": "Observation for recurrent lower GI bleeding",
+          "conditions": [
+            {
+              "label": "Acute posthemorrhagic anemia",
+              "icd10": "D62",
+              "action": "diagnosed",
+              "onset": "2025-11-04"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, diagnostic",
+              "performed": "2025-11-12T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary - Observation, Lower GI Bleeding",
+              "author": "hospital medicine",
+              "date": "2025-11-17T09:00",
+              "body": "REGIONAL HOSPITAL - OBSERVATION DISCHARGE SUMMARY\nObservation 11/11/2025 - 11/13/2025\n\nReason: recurrent painless hematochezia, hemoglobin 9.3 (12.6 in 08/2025), known cecal angiodysplasia s/p APC 01/2025; mechanical mitral valve on warfarin; severe aortic stenosis.\n\nAllergies: NKDA.\n\nCourse:\n- Hemodynamically stable throughout. Hemoglobin held steady on serial checks; no transfusion.\n- INR in therapeutic range on arrival. After discussion with GI and his PCP, warfarin and aspirin were continued given the mechanical mitral valve and stable counts.\n- CT angiography of the abdomen 11/11: no active contrast extravasation; no vascular abnormality; otherwise unremarkable.\n- Repeat colonoscopy 11/12: no active bleeding site; prior APC sites in the cecum well healed; no new lesion requiring treatment.\n- No further visible bleeding after the first night.\n\nDischarge diagnoses: Lower GI bleeding, presumed recurrent angiodysplasia, no active source found. Acute blood loss anemia superimposed on iron deficiency.\nDischarge meds: unchanged (warfarin 5 mg, aspirin 81, lisinopril 20, metformin 1000 BID, atorvastatin 40, amlodipine 5, ferrous sulfate 325 daily).\nFollow-up: PCP within 1 week with CBC; GI as needed for recurrence."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "office_visit",
+          "start": "2025-11-18T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-observation follow-up, GI bleeding and anemia",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 10.1,
+              "Prothrombin Time-International Normalized Ratio": 2.7,
+              "Prothrombin Time": 31.0
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-18T11:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-11-18T11:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-11-18T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital Follow-up",
+              "author": "PCP",
+              "date": "2025-11-18T11:45",
+              "body": "Seen after 2-night observation stay for recurrent rectal bleeding (Hgb 9.3 from 12.6 in August). CTA and colonoscopy found no active source; old APC sites healed. No further bleeding at home. More tired than in the fall, no dizziness or fainting. Daughter with him.\n\nObservation summary reviewed, meds reconciled - unchanged.\n\nExam: vitals as charted. Pale. AS murmur and mechanical click. Abd soft, NT.\n\nA/P:\n1. Recurrent GI bleeding from angiodysplasia, acute blood loss on top of iron deficiency - CBC today. Continue ferrous sulfate daily.\n2. Mechanical MVR - INR today, warfarin 5 mg.\n3. Bleeding precautions reviewed again; ED for red or maroon stool, dizziness, fainting.\nRTC 3 months, CBC sooner if symptoms."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-16a",
+          "kind": "lab_only",
+          "start": "2025-12-16T09:00",
+          "reason": "INR monitoring",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-12-16T09:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "INR today",
+              "author": "RN",
+              "date": "2025-12-16T14:00",
+              "body": "Hi Robert, your INR today was fine. No change - 5 mg every evening. Next check mid-January. Happy holidays."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 3.1,
+              "Prothrombin Time": 35.5
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

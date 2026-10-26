@@ -1,0 +1,226 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002788",
+      "events": [
+        {
+          "id": "2025-01-06a",
+          "kind": "outside_records",
+          "start": "2025-01-06T10:25",
+          "reason": "Pulmonology lab results",
+          "labs": [
+            {"panel": null, "collected": "2024-12-04T11:10", "results": [
+              {"test": "Alpha-1 antitrypsin", "loinc": "6771-0", "unit": "mg/dL", "value": 21, "resulted": "2024-12-11T15:00"},
+              {"test": "Alpha-1 antitrypsin phenotype", "loinc": "32769-2", "text": "PiZZ", "resulted": "2024-12-19T10:30"}
+            ]}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Outside Lab Results", "author": "front desk", "date": "2025-01-06T10:25", "body": "Fax from pulmonology office, 2 pages: serum alpha-1 antitrypsin 21 mg/dL (ref 100-190), collected 12/04/2024; alpha-1 antitrypsin phenotype PiZZ, reported 12/19/2024. Scanned and routed to PCP.\n\nPCP: reviewed. Consistent with what pt reported. Visit set for 1/8."}
+          ]
+        },
+        {
+          "id": "2025-01-08a",
+          "kind": "office_visit",
+          "start": "2025-01-08T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New diagnosis of alpha-1 antitrypsin deficiency",
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "orders": [
+            {"id": "liver-us", "action": "placed", "order": "Abdominal ultrasound", "category": "imaging", "reason": "Alpha-1 antitrypsin deficiency, PiZZ, baseline liver imaging"},
+            {"id": "liver-panel", "action": "placed", "order": "Hepatic Panel (LFT)", "category": "lab", "reason": "Alpha-1 antitrypsin deficiency, PiZZ"}
+          ],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2025-01-08T14:05"},
+            {"vaccine": "Hepatitis A, adult", "date": "2025-01-08T14:06"},
+            {"vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)", "date": "2025-01-08T14:07"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-08T13:20"},
+            {"procedure": "Immunization administration", "performed": "2025-01-08T14:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-01-08T13:20", "body": "S: Here to talk through the new alpha-1 diagnosis. Pulmonology saw her 12/4 for the dyspnea: basilar emphysema on CXR, obstruction on spirometry with little bronchodilator response. AAT level came back 21 mg/dL, phenotype PiZZ (fax 1/6). She has pulm follow-up 1/22 for full PFTs. Breathing about the same as the fall, cough with clear sputum most mornings. Still on fluticasone BID and albuterol a few times a week. Has been reading online and is worried about her liver and about what this means for work and the long term. She thinks her father's emphysema was probably the same thing; he was never tested that she knows of.\n\nO: comfortable, no accessory muscle use.\nLungs: diminished at the bases, prolonged expiration, no wheeze.\nCV regular. Abd soft, liver not palpable below the costal margin, no splenomegaly. No jaundice. No clubbing or edema.\n\nA/P\n1. Alpha-1 antitrypsin deficiency, PiZZ, with emphysema. Explained the lung and liver sides of this in plain terms. Pulmonology will discuss augmentation therapy at her next visit. From our side: vaccines to protect lungs and liver, a baseline liver panel and abdominal ultrasound, and absolute smoke avoidance, which she already does. Gave her the patient foundation's information sheet. Mentioned that blood relatives can be tested if they want to be, through their own doctors.\n2. Vaccines today: PCV20, hepatitis A #1, Heplisav-B #1. Heplisav #2 in one month, hep A #2 in six months.\n3. Asthma: no change to inhalers pending pulmonology.\n\nRTC in spring or after pulm, sooner if worse."}
+          ]
+        },
+        {
+          "id": "2025-02-05a",
+          "kind": "outside_records",
+          "start": "2025-02-05T09:10",
+          "reason": "Pulmonology follow-up note",
+          "labs": [
+            {"panel": null, "collected": "2025-01-22T09:40", "results": [{"test": "Immunoglobulin A", "loinc": "2458-8", "unit": "mg/dL", "value": 210}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology Follow-up", "author": "pulmonology", "date": "2025-02-05T09:10", "body": "PULMONOLOGY FOLLOW-UP\nDate of visit: 01/22/2025\n\nMs. Larkin returns after her alpha-1 testing: serum level 21 mg/dL, PiZZ.\n\nComplete PFTs: post-bronchodilator FEV1 58% predicted, FEV1/FVC 0.65; DLCO 63% predicted.\nCT chest: panlobular emphysema with lower-lobe predominance. No pulmonary nodules. No bronchiectasis.\nSerum IgA 210 mg/dL, normal.\n\nAssessment: severe alpha-1 antitrypsin deficiency (ZZ) with emphysema and moderate airflow obstruction.\n\nPlan:\n- Start weekly intravenous alpha-1 proteinase inhibitor 60 mg/kg through a home-infusion service; benefits investigation and authorization under way.\n- Continue fluticasone and albuterol as prescribed.\n- Hepatitis A and B and pneumococcal vaccination through primary care.\n- Liver tests yearly and a baseline liver ultrasound, also through primary care.\n- No exposure to tobacco smoke.\n- Return in about six months.\n\nPulmonology"}
+          ]
+        },
+        {
+          "id": "2025-02-05b",
+          "kind": "nurse_visit",
+          "start": "2025-02-05T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis B vaccine dose 2",
+          "immunizations": [{"vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)", "date": "2025-02-05T16:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-02-05T16:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization", "author": "RN", "date": "2025-02-05T16:35", "body": "Heplisav-B dose 2 of 2, 0.5 mL IM L deltoid. Tolerated dose 1 without issue. Reminded about hep A #2 in July and her ultrasound on 2/19 (nothing to eat after midnight)."}
+          ]
+        },
+        {
+          "id": "2025-02-19a",
+          "kind": "imaging",
+          "start": "2025-02-19T07:45",
+          "reason": "Baseline liver imaging, alpha-1 antitrypsin deficiency",
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2025-02-19T07:30", "results": [{"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}, {"test": "Bilirubin, Direct", "value": 0.1}, {"test": "Albumin"}]}
+          ],
+          "reports": [
+            {"study": "Abdominal ultrasound", "performed": "2025-02-19T07:45", "text": "Indication: alpha-1 antitrypsin deficiency, PiZZ; baseline. Technique: grayscale and color Doppler of the upper abdomen. Liver: normal in size, measuring 14.1 cm in the midclavicular line, with smooth contour and normal homogeneous echotexture. No focal hepatic lesion. Hepatic and portal veins patent with normal flow direction. Gallbladder without stones or wall thickening. Common bile duct 3 mm. Pancreas partly obscured by bowel gas, visualized portions normal. Spleen normal at 9.8 cm. Both kidneys normal in size without hydronephrosis. No ascites.", "conclusion": "Normal abdominal ultrasound. No sonographic evidence of liver disease."}
+          ],
+          "orders": [
+            {"id": "liver-us", "action": "done", "date": "2025-02-19T07:45"},
+            {"id": "liver-panel", "action": "done", "date": "2025-02-19T07:30"}
+          ]
+        },
+        {
+          "id": "2025-02-21a",
+          "kind": "portal_message",
+          "start": "2025-02-21T11:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Liver results", "author": "PCP", "date": "2025-02-21T11:15", "body": "Hi Megan, good news: your liver blood tests are all normal and the ultrasound shows a normal-sized, healthy-looking liver with no masses. We'll repeat the liver tests once a year. Pulmonology's note came through too, so I know they're arranging the weekly infusions."}
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "telephone",
+          "start": "2025-03-04T14:50",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Home Infusion Pharmacy", "author": "RN", "date": "2025-03-04T14:50", "body": "Call from home-infusion specialty pharmacy coordinating weekly alpha-1 augmentation ordered by pulmonology. Insurance approval received. Requested PCP contact info, current med list, allergy status and recent weight. Gave NKDA, weight 61 kg at 1/8 visit, med list as on file. First nurse home visit planned for 3/11. They will fax a start-of-care notice."}
+          ]
+        },
+        {
+          "id": "2025-03-12a",
+          "kind": "pharmacy",
+          "start": "2025-03-12T10:05",
+          "medications": [
+            {"drug_text": "alpha 1-proteinase inhibitor, human 1000 MG Injection", "action": "historical", "sig": "60 mg/kg IV once weekly by home infusion", "dose": {"value": 60, "unit": "mg/kg"}, "frequency": "WEEKLY", "route": "Intravenous", "course": "chronic", "reason": "Alpha-1 antitrypsin deficiency with emphysema"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Home Infusion Start of Care", "author": "home infusion pharmacy", "date": "2025-03-12T10:05", "body": "START OF CARE NOTICE\nPatient: Megan Larkin\nTherapy: alpha-1 proteinase inhibitor (human), 60 mg/kg IV weekly; ordering provider pulmonology.\nFirst infusion given at home 03/11/2025 by infusion RN via peripheral IV, completed without reaction. Vital signs stable before and after. Patient taught signs of infusion reaction. Weekly visits scheduled.\nThis notice is for the primary care record."}
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "annual_physical",
+          "start": "2025-06-10T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "medications": [
+            {"drug_text": "ibuprofen 200 MG Oral Tablet", "action": "historical", "sig": "Take 1 to 2 tablets by mouth every 6 to 8 hours as needed for joint pain, no more than 1200 mg per day", "dose": {"value": 200, "unit": "mg"}, "frequency": "PRN", "route": "Oral", "course": "chronic", "reason": "Hand aches"}
+          ],
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-06-10T08:55", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-06-10T08:55", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-06-10T08:20"},
+            {"procedure": "Venipuncture", "performed": "2025-06-10T08:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-06-10T08:20", "body": "ANNUAL PHYSICAL\n\nS: 38F. Alpha-1 (PiZZ) with emphysema, on weekly home augmentation since March, no reactions; the infusion nurse comes Tuesday evenings. Feels her breathing is a bit better than in the winter, back to short walks, still a morning cough. Fluticasone BID, albuterol a couple of times a week. Eczema quiet.\n\nNew: for about a month her hands ache and feel stiff when she gets up, loosens up after she gets going. Thinks it's from long days on the tablet and mouse. Taking OTC ibuprofen 200 mg, 1-2 tabs every 6-8 h on the bad days, never more than 6 a day.\n\nMeds: fluticasone HFA 110 2 puffs BID; albuterol prn; triamcinolone cream prn; alpha-1 proteinase inhibitor 60 mg/kg IV weekly (pulm); ibuprofen OTC prn.\nAllergies: NKDA.\nSH: never smoker, no alcohol.\nPHQ-2: 1.\n\nExam: well appearing.\nLungs: diminished at bases, prolonged expiration, no wheeze.\nHeart regular, no murmur.\nAbd soft, no hepatosplenomegaly.\nHands: full range of motion, grip intact.\nSkin clear.\nExt: no edema.\n\nA/P\n1. Alpha-1 antitrypsin deficiency with emphysema: on augmentation, followed by pulm. CMP today for yearly liver check.\n2. Asthma: unchanged regimen.\n3. Hand aches/stiffness, about a month: likely overuse from work. OK to use ibuprofen as she is, with food, within the daily max. Ergonomics. Let me know if it lasts or spreads.\n4. Health maintenance: hep A #2 due July, booked. Pap/HPV due 2027. CBC, CMP.\n\nRTC 1 year, sooner prn."}
+          ]
+        },
+        {
+          "id": "2025-06-12a",
+          "kind": "portal_message",
+          "start": "2025-06-12T17:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Labs from your physical", "author": "PCP", "date": "2025-06-12T17:05", "body": "Megan, blood counts, kidney function and liver tests are all normal again. Nothing to change."}
+          ]
+        },
+        {
+          "id": "2025-07-15a",
+          "kind": "nurse_visit",
+          "start": "2025-07-15T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis A vaccine dose 2",
+          "immunizations": [{"vaccine": "Hepatitis A, adult", "date": "2025-07-15T12:15"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-07-15T12:15"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization", "author": "RN", "date": "2025-07-15T12:15", "body": "Hepatitis A adult dose 2 of 2, 1 mL IM R deltoid. Hep A and B series now complete. No reaction after 15 minutes."}
+          ]
+        },
+        {
+          "id": "2025-08-25a",
+          "kind": "portal_message",
+          "start": "2025-08-25T19:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Pulmonology update", "author": "patient", "date": "2025-08-25T19:40", "body": "FYI I saw pulmonology last Wednesday. They said things look stable and to keep doing the weekly infusions and inhalers the same. They want to see me again in about six months. I don't think they send you notes so wanted you to know."},
+            {"type": "Patient Message", "title": "RE: Pulmonology update", "author": "PCP", "date": "2025-08-26T08:12", "body": "Thanks Megan, that's helpful and good to hear. I'll note it in your chart."}
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "office_visit",
+          "start": "2025-10-14T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fingers changing color in the cold, joint pain",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "orders": [
+            {"id": "rheum-referral", "action": "placed", "order": "Rheumatology referral", "category": "referral", "to": "Rheumatology", "reason": "Episodic digital color change with cold, hand and knee joint pain with morning stiffness"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-14T09:40"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-14T09:42"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-10-14T09:00"},
+            {"procedure": "Immunization administration", "performed": "2025-10-14T09:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-10-14T09:00", "body": "S: Two things since spring that are not going away. (1) Her fingers go white, then blue, when she's out in the cold or stressed (first noticed it at the grocery freezer aisle in May, now most mornings at the bus stop). Painful while it lasts, sometimes tingles, color comes back over several minutes. (2) The hand aching from June has not settled, and now her knees ache too; stiff in the morning, takes a while to get moving. Ibuprofen takes the edge off. No rash, no mouth ulcers, no dysphagia, no skin thickening she has noticed. Breathing stable on the infusions.\n\nMeds reviewed, unchanged from June. NKDA.\nFHx: maternal aunt with RA.\n\nO: fingers normal color in the warm room, capillary refill brisk, no digital ulcers or pitting. Lungs: diminished at bases, prolonged expiration, as before.\n\nA/P\n1. Episodic cold-triggered digital color change with joint pain and morning stiffness in hands and knees, ~5 months, family history of RA. Concerned for an inflammatory or connective tissue process. Referral to rheumatology; they prefer to order their own serologies, so not drawing today. Keep hands and core warm, gloves before going out. Continue ibuprofen prn within the max.\n2. Flu and COVID vaccines today.\n\nFollow up after rheumatology."}
+          ]
+        },
+        {
+          "id": "2025-12-03a",
+          "kind": "portal_message",
+          "start": "2025-12-03T07:55",
+          "conditions": [
+            {"label": "Rheumatoid arthritis", "action": "diagnosed", "onset": "2025-05-01", "note": "Seropositive, per rheumatology; diagnosed 2025-12-02"}
+          ],
+          "medications": [
+            {"drug": "hydroxychloroquine sulfate 200 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 200, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Rheumatoid arthritis"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Rheumatology results", "author": "patient", "date": "2025-12-03T07:55", "body": "Hi, rheumatology called yesterday with my blood work. They said it's rheumatoid arthritis, the antibody tests were positive and my inflammation numbers are up, and the finger color thing is Raynaud's. They started me on hydroxychloroquine 200 mg twice a day and want me to get an eye exam. Do you have an eye doctor you like?"},
+            {"type": "Patient Message", "title": "RE: Rheumatology results", "author": "PCP", "date": "2025-12-03T12:30", "body": "Thanks for the update, Megan. I'm glad they got to an answer. Hydroxychloroquine is a gentle first medicine for RA and usually takes a couple of months to show its full effect; take it with food if it upsets your stomach. Our front desk will send you two local eye offices that do the baseline retina testing. I've also asked rheumatology for their consult note."}
+          ]
+        },
+        {
+          "id": "2025-12-17a",
+          "kind": "outside_records",
+          "start": "2025-12-17T13:40",
+          "reason": "Rheumatology consult letter",
+          "conditions": [
+            {"label": "Raynaud phenomenon", "action": "diagnosed", "onset": "2025-05-01"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-11-24T11:30", "results": [
+              {"test": "Erythrocyte Sedimentation Rate", "value": 50},
+              {"test": "C Reactive Protein", "value": 24},
+              {"test": "Antinuclear Antibodies", "text": "Positive"},
+              {"test": "Rheumatoid Factor", "text": "Positive"},
+              {"test": "Cyclic Citrullinated Peptide Antibody", "text": "Positive"}
+            ]}
+          ],
+          "orders": [{"id": "rheum-referral", "action": "done", "date": "2025-12-17T13:40"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Rheumatology Consultation", "author": "rheumatology", "date": "2025-12-17T13:40", "body": "RHEUMATOLOGY CONSULTATION\nDate of visit: 11/24/2025\n\nReason for referral: cold-induced finger color change and joint symptoms.\n\nHistory: 38-year-old woman with mild persistent asthma, atopic dermatitis and alpha-1 antitrypsin deficiency on augmentation. For roughly half a year her fingers blanch and then turn blue on cold exposure or under stress; the attacks hurt and sometimes tingle. Intermittent pain and morning stiffness in the hands and knees over the same period. Family history: father with emphysema at 44, a maternal aunt with RA, mother with eczema. No tobacco, alcohol or drug use.\n\nMedications: fluticasone, albuterol prn, triamcinolone cream, ibuprofen prn, weekly alpha-1 proteinase inhibitor. Allergies: NKDA.\n\nExam: vitals normal. Both hands show fingertip pallor; no digital ulcers, no gangrene; capillary refill under 2 seconds. Remainder of the examination unremarkable.\n\nLaboratory (drawn at visit): CBC normal. ESR 50 mm/hr (0-20). CRP 24 mg/L (<10). ANA positive. Anti-centromere negative. Anti-Scl-70 negative. RF positive. Anti-CCP positive.\n\nAssessment:\n1. Rheumatoid arthritis, seropositive (RF and anti-CCP), with elevated inflammatory markers.\n2. Raynaud phenomenon. Negative scleroderma-associated antibodies and no features of systemic sclerosis on exam.\n\nPlan (discussed by phone 12/02/2025):\n- Hydroxychloroquine 200 mg twice daily. Chosen as initial therapy in view of her lung disease and PiZZ status.\n- Baseline eye examination within the first year.\n- Raynaud: warm gloves, layered clothing, avoid cold exposure; no medication at this time.\n- Ibuprofen as needed may continue.\n- Return in about 4 months.\n\nRheumatology"}
+          ]
+        }
+      ]
+    }
+  ]
+}

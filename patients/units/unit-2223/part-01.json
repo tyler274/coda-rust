@@ -1,0 +1,942 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002223",
+   "given": "Herbert",
+   "family": "Clark",
+   "birth_date": "1952-06-14",
+   "address_line": "14 Brickyard Lane, Southampton, MA 01073",
+   "phone": "+1-201-555-0115",
+   "email": "herbert.clark@example.test",
+   "marital_status": "married",
+   "summary": "Retired accountant with hypertension, type 2 diabetes, LAD-stented coronary disease, HFrEF, CKD 3b and a 2017 stroke who joins in 2019. Lumbar stenosis, then systemic AL amyloidosis treated with Dara-CyBorD, oropharyngeal dysphagia, a hydrochlorothiazide reaction, polymyositis on prednisone and azathioprine, ischemic hepatitis in 2023 and heart failure admissions in 2024 and 2025.",
+   "events": [
+    {
+     "id": "2019-09-10a",
+     "kind": "establish_care",
+     "start": "2019-09-10T09:00",
+     "end": "2019-09-10T10:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient, establish care",
+     "conditions": [
+      {
+       "label": "Essential hypertension",
+       "action": "diagnosed",
+       "onset": "2005-06-01"
+      },
+      {
+       "label": "Type 2 diabetes mellitus with diabetic chronic kidney disease",
+       "action": "diagnosed",
+       "onset": "2008-03-01"
+      },
+      {
+       "label": "Coronary artery disease",
+       "action": "diagnosed",
+       "onset": "2015-04-01"
+      },
+      {
+       "label": "Presence of coronary artery stent",
+       "action": "diagnosed",
+       "onset": "2015-04-20"
+      },
+      {
+       "label": "Heart failure with reduced ejection fraction",
+       "action": "diagnosed",
+       "onset": "2016-01-01"
+      },
+      {
+       "label": "Chronic kidney disease, stage 3b",
+       "action": "diagnosed",
+       "onset": "2017-01-01"
+      },
+      {
+       "label": "History of ischemic stroke with mild residual left-sided weakness",
+       "icd10": "I69.398",
+       "action": "diagnosed",
+       "onset": "2017-05-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "action": "historical"
+      },
+      {
+       "drug": "amlodipine 5 MG Oral Tablet",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "action": "historical"
+      },
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "sig": "Take 1 tablet by mouth twice daily with meals",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "action": "historical"
+      },
+      {
+       "drug": "furosemide 40 MG Oral Tablet",
+       "sig": "Take 1 tablet by mouth every morning",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "action": "historical"
+      },
+      {
+       "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 81,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "action": "historical"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "state": {
+      "bp": [
+       134,
+       80
+      ],
+      "weight_kg": 84.0,
+      "height_cm": 176.0,
+      "labs": {
+       "Creatinine": 1.85,
+       "Blood Urea Nitrogen": 32,
+       "Glucose": 142,
+       "Albumin": 3.8,
+       "Total Protein": 7.9,
+       "Hemoglobin A1c": 7.3,
+       "Low Density Lipoprotein": 104,
+       "High Density Lipoprotein": 42,
+       "Triglycerides": 160,
+       "Microalbumin/Creatinine Ratio": 170
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2019-09-10T10:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Total Protein"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2019-09-10T10:00",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2019-09-10T10:00",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-09-10T10:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        },
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "Former occasional drinker; abstinent"
+      },
+      {
+       "item": "Occupation",
+       "value": "Retired accountant"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, high MDM",
+       "performed": "2019-09-10T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2019-09-10T12:30",
+       "body": "NEW PATIENT VISIT\n\n67-year-old man, retired accountant, moving his care here from another primary care office. Wanted a doctor he can reach by phone between visits. Records release signed today.\n\nHPI / history as he tells it:\n- Blood pressure for many years, on lisinopril and amlodipine. Home cuff usually low 130s.\n- Type 2 diabetes for about a decade, metformin only. No lows. Checks sugar a few times a week, fasting 130s-150s.\n- Coronary disease. Had a heart cath in 2015 and a drug-eluting stent placed in the LAD the same admission. No chest pain since. Aspirin daily.\n- Heart failure with a weak pump; was told at his last echo (2018) the squeeze was \"about 40 percent.\" On furosemide 40 every morning. Sleeps on one pillow, no swelling most days.\n- Kidneys: told he is stage 3b, followed with blood work by his old office.\n- Stroke 2017. Left him with mild weakness of the left arm and hand. Slow with buttons and jar lids, otherwise fully independent. Drives.\n\nMeds: lisinopril 20 mg daily, amlodipine 5 mg daily, metformin 1000 mg BID, furosemide 40 mg qAM, aspirin 81 mg daily.\nAllergies: NKDA.\nPSH: cardiac cath with LAD DES, 2015.\nFH: Father - MI at 62, also hypertension. Mother - type 2 diabetes, stroke at 70. Nobody in the family with amyloidosis or autoimmune disease that he knows of.\nSH: Retired accountant. Never smoked. Used to have an occasional drink; none for years. No drugs. Walks most days.\n\nROS: No chest pain, palpitations, syncope. No orthopnea or PND. No change in bowel habits. No urinary symptoms beyond nocturia x1. Remainder negative.\n\nExam: Vitals as recorded. Pleasant, NAD.\nHEENT unremarkable. Neck supple, JVP not elevated, no carotid bruits.\nHeart regular, normal S1/S2, no murmur or gallop.\nLungs clear bilaterally.\nAbdomen soft, nontender.\nExt: no edema. DP/PT pulses 2+ bilaterally.\nNeuro: alert, fluent speech. Mild weakness of left grip and finger extension; strength otherwise full including both legs. Gait steady without device.\nFeet: skin intact, no calluses or ulcers, monofilament intact both feet.\n\nA/P:\n1. Essential hypertension - at goal today. Continue lisinopril 20, amlodipine 5.\n2. T2DM with CKD - A1c and urine albumin/creatinine today. Continue metformin 1000 BID.\n3. CAD s/p LAD stent (2015) - asymptomatic. Continue aspirin 81.\n4. HFrEF - euvolemic on exam. Continue furosemide 40. Will review his old echo when records arrive.\n5. CKD 3b - CMP today to set his baseline here.\n6. Prior ischemic stroke (2017), mild residual weakness of the left arm and hand - stable.\n7. Health maintenance: colonoscopy 2016 per patient, normal. Tdap 2016. HD flu shot when it arrives next month. Hep C and HIV screening today. Shingrix series this winter. PSA discussed; he does not want screening.\n\nReturn 3 months, sooner as needed. Portal set up today."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-12a",
+     "kind": "portal_message",
+     "start": "2019-09-12T16:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2019-09-12T16:40",
+       "body": "Mr. Clark,\n\nYour blood work from Tuesday is back. Kidney function is in the same range your previous office has been seeing, so nothing new there. Your A1c is a little over 7, which is a good level for you. Blood counts are normal. Hepatitis C and HIV screens are negative.\n\nThe urine test shows a modest amount of protein leaking through the kidneys. That is common with diabetes and blood pressure, and the lisinopril you already take is the right medicine for it. We will repeat it once a year.\n\nSee you in December."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-24a",
+     "kind": "outside_records",
+     "start": "2019-09-24T11:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior Primary Care Records Received",
+       "author": "PCP",
+       "date": "2019-09-24T15:15",
+       "body": "Outside records reviewed (prior primary care office, ~180 pages, scanned to Media).\n\nPertinent items:\n- Cardiac catheterization, 2015, outside hospital: diagnostic study followed by drug-eluting stent to the LAD the same sitting. Aspirin continued.\n- Hospital discharge summary, 2017: acute ischemic stroke; discharged home with mild residual weakness of the left arm and hand.\n- Transthoracic echo, 2018: LVEF 40%.\n- Problem list matches what he reported: HTN, T2DM, CAD, HFrEF, CKD stage 3b, prior stroke.\n- Medication list matches current five medications.\n- Colonoscopy 2016: no polyps, repeat in 10 years.\n- Tdap 2016. No Shingrix on file. Pneumococcal records not found.\n- Creatinine over the last two years in the 1.8-1.9 range.\n\nProblem list here updated. Nothing to act on."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-08a",
+     "kind": "nurse_visit",
+     "start": "2019-10-08T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2019-10-08T10:25"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-10-08T10:25"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Immunization",
+       "author": "RN",
+       "date": "2019-10-08T10:35",
+       "body": "Here for flu vaccine. No fever today, no prior reactions. High-dose quadrivalent influenza 0.7 mL IM left deltoid, lot/expiration in the immunization record. VIS reviewed. Waited 15 minutes, no issues."
+      }
+     ]
+    },
+    {
+     "id": "2019-11-14a",
+     "kind": "outside_records",
+     "start": "2019-11-14T09:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic Eye Exam Report",
+       "author": "optometry",
+       "date": "2019-11-18T09:00",
+       "body": "DIABETIC EYE EXAMINATION\nDate of exam: 11/14/2019\nPatient: Herbert Clark, DOB 06/14/1952\n\nHistory: Type 2 diabetes. No visual complaints. Allergies: none known.\nVisual acuity with correction: 20/25 OD, 20/25 OS.\nIOP 15 / 16 mmHg.\nDilated fundus exam: no diabetic retinopathy either eye. No macular edema. Optic nerves healthy.\n\nAssessment: Type 2 diabetes without diabetic retinopathy.\nPlan: Repeat dilated exam in 12 months. Copy to primary care."
+      }
+     ]
+    },
+    {
+     "id": "2019-12-10a",
+     "kind": "office_visit",
+     "start": "2019-12-10T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2019-12-10T14:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-12-10T14:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2019-12-10T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2019-12-10T16:05",
+       "body": "S: 3-month follow-up. Feels well. Walking 20-30 minutes most days, slower in the cold. No chest pain, no breathlessness beyond his usual, no ankle swelling. Home BPs 128-136/74-82. Fasting sugars 130s.\nReviewed prior records with him (2018 echo EF 40%, 2015 stent).\n\nMeds: lisinopril 20, amlodipine 5, metformin 1000 BID, furosemide 40, ASA 81. NKDA.\n\nO: Vitals reviewed. Lungs clear. Heart regular, no murmur. No edema. Left grip mildly weak, unchanged.\n\nA/P:\n- HTN: controlled. No change.\n- T2DM with CKD: A1c today. Eye exam 11/2019 without retinopathy.\n- HFrEF: euvolemic, weight stable.\n- CKD 3b: BMP today.\n- Shingrix #1 in January (nurse visit booked).\nRTC March."
+      },
+      {
+       "type": "Result Note",
+       "title": "Lab Results",
+       "author": "PCP",
+       "date": "2019-12-11T08:20",
+       "body": "BMP and A1c reviewed. Creatinine stable at his baseline, potassium normal. A1c essentially unchanged from September. No changes. Message sent to patient."
+      }
+     ]
+    },
+    {
+     "id": "2020-01-14a",
+     "kind": "nurse_visit",
+     "start": "2020-01-14T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Shingrix dose 1",
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2020-01-14T11:05"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-01-14T11:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Immunization",
+       "author": "RN",
+       "date": "2020-01-14T11:20",
+       "body": "Shingrix dose 1 of 2, 0.5 mL IM right deltoid. Counseled on sore arm, fatigue, low-grade fever for a day or two. Dose 2 due in 2-6 months; will give at his March visit."
+      }
+     ]
+    },
+    {
+     "id": "2020-03-10a",
+     "kind": "office_visit",
+     "start": "2020-03-10T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2020-03-10T10:20"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-03-10T09:40"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-03-10T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2020-03-10T11:30",
+       "body": "Routine follow-up. He is well. Had a tired arm for a day after the first Shingrix, nothing more. No chest pain, no dyspnea, no edema. Sugars fasting 130-145. Home BP 130s/70s.\nAsked about the new coronavirus. Reviewed hand hygiene and avoiding crowds; we will move routine visits to video if the state closes things down. He has 2 months of medications on hand.\n\nMeds unchanged: lisinopril 20, amlodipine 5, metformin 1000 BID, furosemide 40, ASA 81. NKDA.\n\nExam: lungs clear, heart regular, no edema, no JVD.\n\nA/P: HTN, T2DM, HFrEF, CKD 3b all stable. Shingrix #2 today. Will set up 90-day mail-order fills. RTC June (likely video)."
+      }
+     ]
+    },
+    {
+     "id": "2020-04-02a",
+     "kind": "pharmacy",
+     "start": "2020-04-02T13:10",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Mail-Order Refills",
+       "author": "MA",
+       "date": "2020-04-02T13:10",
+       "body": "Patient called asking to switch to 90-day mail order so he does not have to go to the pharmacy. 90-day supplies with 3 refills sent per PCP for lisinopril 20, amlodipine 5, metformin 1000, furosemide 40. Aspirin is OTC. Mail-order pharmacy confirmed receipt."
+      }
+     ]
+    },
+    {
+     "id": "2020-06-16a",
+     "kind": "telehealth_visit",
+     "start": "2020-06-16T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up (video)",
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, moderate MDM",
+       "performed": "2020-06-16T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Visit",
+       "author": "PCP",
+       "date": "2020-06-16T11:10",
+       "body": "Video visit, patient at home in Southampton, identity confirmed, consents to telehealth.\n\nHas been staying home except for groceries early in the morning. Feels fine. Walks the road in front of his house. Home BP log (read to me): 124-138 / 72-84. Weights steady 184-186 lb at home. Fasting sugars 128-150. No chest pain, no orthopnea, no swelling. Mail-order meds arriving fine.\n\nObserved: comfortable, speaking full sentences, no visible distress.\n\nA/P:\n- HTN, HFrEF, T2DM, CKD 3b: stable by history and home data. No changes.\n- Labs at the draw station this week: BMP, A1c, urine albumin/creatinine.\n- Wellness visit in August, in person."
+      }
+     ]
+    },
+    {
+     "id": "2020-06-18a",
+     "kind": "lab_only",
+     "start": "2020-06-18T08:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lab draw",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-06-18T08:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-06-18T08:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2020-06-18T08:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lab Results",
+       "author": "PCP",
+       "date": "2020-06-19T12:00",
+       "body": "Kidney function steady at baseline. Potassium fine. A1c about the same as last fall. Urine albumin/creatinine in the same range as 2019. No changes; portal note to patient."
+      }
+     ]
+    },
+    {
+     "id": "2020-08-11a",
+     "kind": "annual_physical",
+     "start": "2020-08-11T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2020-08-11T09:45",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2020-08-11T09:45",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Total Protein"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-08-11T09:45",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, initial",
+       "performed": "2020-08-11T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Medicare Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2020-08-11T11:00",
+       "body": "MEDICARE ANNUAL WELLNESS VISIT (initial)\n\nHealth risk assessment reviewed. Lives in Southampton, independent in ADLs and IADLs, still drives, manages his own finances and medications (pill organizer). No falls in the past year. Hearing adequate in conversation. Vision corrected, eye exam yearly. PHQ-2 0.\nDiet: trying to limit sweets and salt. Activity: walks most days.\n\nCurrent problems: HTN, T2DM with CKD, CAD s/p LAD stent, HFrEF, CKD 3b, prior stroke with mild left arm/hand weakness.\nMeds: lisinopril 20, amlodipine 5, metformin 1000 BID, furosemide 40, ASA 81. NKDA.\n\nExam: weight stable. Lungs clear. Heart regular, no murmur. No edema. Get-up-and-go normal.\n\nPrevention:\n- Colon: colonoscopy 2016 normal, next 2026.\n- Shingrix complete (1/2020, 3/2020).\n- Tdap 2016.\n- Flu shot this fall.\n- Pneumococcal: no record; will give when supply allows.\n- Hep C / HIV screened 2019.\n- PSA: declines, reviewed again.\n\nLabs today: lipids, CMP, CBC.\nPersonalized prevention plan given in writing."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-22a",
+     "kind": "office_visit",
+     "start": "2020-09-22T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Low back pain into both thighs",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "Pain severity (0-10)",
+       "value": 5
+      }
+     ],
+     "orders": [
+      {
+       "id": "mri-lumbar",
+       "action": "placed",
+       "order": "MRI lumbar spine without contrast",
+       "category": "imaging",
+       "reason": "back and posterior thigh pain with walking"
+      },
+      {
+       "id": "neuro-referral",
+       "action": "placed",
+       "order": "Neurology referral",
+       "category": "referral",
+       "to": "Neurology",
+       "reason": "possible lumbar stenosis"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-09-22T15:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - Back Pain",
+       "author": "PCP",
+       "date": "2020-09-22T16:40",
+       "body": "CC: back pain going into both legs.\n\nHPI: Since about March, aching in the low back that travels into the backs of both thighs. Comes on after he has been walking or standing for a while, e.g. 15-20 minutes in line or walking the road. Sitting down settles it within minutes. Notices he can do the whole grocery store if he leans on the cart. No numbness, no tingling below the knees, no bowel or bladder change, no saddle numbness. No fever, no weight loss. No injury. Has avoided ibuprofen because of his kidneys; tried a heating pad.\n\nMeds: lisinopril 20, amlodipine 5, metformin 1000 BID, furosemide 40, ASA 81. NKDA.\n\nExam: walks without antalgia. Lumbar spine without point tenderness. Lumbar range of motion comfortable. Straight leg raise negative both sides. Hip range of motion full and painless. Leg strength 5/5 bilaterally, reflexes 2+ and symmetric, sensation intact. DP/PT pulses palpable bilaterally.\n\nA/P: Back and posterior thigh pain with standing and walking, relieved by sitting and forward flexion, normal pulses - sounds neurogenic rather than vascular claudication; suspect lumbar spinal stenosis.\n- MRI lumbar spine without contrast.\n- Neurology referral.\n- No NSAIDs given CKD. Activity as tolerated."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-06a",
+     "kind": "nurse_visit",
+     "start": "2020-10-06T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2020-10-06T09:45"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-10-06T09:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Immunization",
+       "author": "RN",
+       "date": "2020-10-06T09:55",
+       "body": "High-dose quadrivalent flu vaccine 0.7 mL IM right deltoid. Masked visit, screening questions negative. Tolerated well. Reminded of MRI next week."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-13a",
+     "kind": "imaging",
+     "start": "2020-10-13T07:30",
+     "service": "Radiology",
+     "reports": [
+      {
+       "study": "MRI lumbar spine without contrast",
+       "performed": "2020-10-13T07:30",
+       "text": "MRI LUMBAR SPINE WITHOUT CONTRAST\nIndication: Low back pain radiating to both posterior thighs with walking and standing.\nTechnique: Sagittal T1, T2 and STIR; axial T2 images through the lumbar spine.\nFindings: Lumbar alignment is maintained. Vertebral body heights are preserved and marrow signal is normal. The conus terminates normally. The lumbar spinal canal is narrowed, with degenerative change of the facet joints and thickening of the ligamentum flavum contributing. Paraspinal soft tissues are unremarkable.",
+       "conclusion": "Lumbar spinal canal narrowing with facet degenerative change and ligamentum flavum hypertrophy."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mri-lumbar",
+       "action": "done",
+       "date": "2020-10-13T07:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "MRI Result",
+       "author": "PCP",
+       "date": "2020-10-14T09:10",
+       "body": "MRI lumbar spine shows a narrowed spinal canal from facet arthritis and a thickened ligamentum flavum, consistent with his symptoms. Neurology appointment 10/29 - copy of report sent. Called patient and explained."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-29a",
+     "kind": "specialist_visit",
+     "start": "2020-10-29T13:00",
+     "service": "Neurology",
+     "reason": "Back and posterior thigh pain with walking",
+     "conditions": [
+      {
+       "label": "Lumbar spinal stenosis",
+       "action": "diagnosed",
+       "onset": "2020-03-15",
+       "note": "with neurogenic claudication"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "acetaminophen 500 MG Oral Tablet",
+       "sig": "Take 1 to 2 tablets by mouth up to three times daily as needed for back pain",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "action": "start",
+       "reason": "lumbar spinal stenosis"
+      }
+     ],
+     "orders": [
+      {
+       "id": "neuro-referral",
+       "action": "done",
+       "date": "2020-10-29T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology Consultation",
+       "author": "neurology",
+       "date": "2020-11-02T08:30",
+       "body": "OUTPATIENT NEUROLOGY CONSULTATION\nDate of service: 10/29/2020\nReferred by: primary care\n\nReason for referral: low back pain into both legs with walking.\n\nHistory: Mr. Clark is a 68-year-old man who for roughly six months has had low back pain spreading into the posterior thighs on both sides. Prolonged standing or walking brings it on; sitting, or bending forward over a shopping cart, relieves it. No sensory symptoms in the feet, no sphincter change.\n\nPast history: hypertension, type 2 diabetes, coronary artery disease with LAD stent, heart failure with reduced ejection fraction, CKD stage 3b, ischemic stroke 2017 with mild residual left arm and hand weakness.\nMedications: lisinopril 20 mg daily, amlodipine 5 mg daily, metformin 1000 mg twice daily, furosemide 40 mg daily, aspirin 81 mg daily.\nAllergies: none known.\nFamily history: father MI at 62 and hypertension; mother type 2 diabetes and stroke at 70; no amyloidosis or autoimmune disease.\nSocial: retired accountant, never smoker, no alcohol now.\n\nExamination: Lower extremity strength is full throughout. Peripheral pulses present and symmetric. Straight leg raise negative on both sides. Reflexes symmetric. Sensation preserved to light touch and vibration in both feet. Mild left hand weakness consistent with his old stroke. Gait narrow-based and steady.\n\nImaging: MRI lumbar spine (10/13/2020) reviewed - narrowed canal with facet degenerative change and ligamentum flavum hypertrophy.\n\nImpression: Lumbar spinal stenosis with neurogenic claudication. No deficit to suggest a need for surgical referral at this point.\n\nRecommendations:\n1. Physical therapy for a flexion-based program.\n2. Acetaminophen 500-1000 mg up to three times a day as needed. Avoid NSAIDs given his kidney function.\n3. Return as needed; spine surgery opinion if symptoms progress or a deficit develops.\n\nThank you for this referral.\nNeurology"
+      }
+     ]
+    },
+    {
+     "id": "2020-11-02a",
+     "kind": "telephone",
+     "start": "2020-11-02T12:15",
+     "orders": [
+      {
+       "id": "pt-referral",
+       "action": "placed",
+       "order": "Physical therapy referral",
+       "category": "referral",
+       "to": "Physical Therapy",
+       "reason": "lumbar spinal stenosis, flexion-based program"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Neurology Follow-up Call",
+       "author": "PCP",
+       "date": "2020-11-02T12:15",
+       "body": "Neurology letter received and reviewed: lumbar spinal stenosis with neurogenic claudication, conservative care. Called patient. PT referral sent to the outpatient PT clinic he prefers. Acetaminophen as neurology suggested; no NSAIDs. He is relieved it is \"not my heart.\" Problem list updated."
+      }
+     ]
+    },
+    {
+     "id": "2020-11-12a",
+     "kind": "specialist_visit",
+     "start": "2020-11-12T10:00",
+     "service": "Physical Therapy",
+     "reason": "Lumbar spinal stenosis",
+     "orders": [
+      {
+       "id": "pt-referral",
+       "action": "done",
+       "date": "2020-11-12T10:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Physical therapy evaluation, moderate complexity",
+       "performed": "2020-11-12T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Physical Therapy Initial Evaluation",
+       "author": "physical therapy",
+       "date": "2020-11-16T14:00",
+       "body": "PHYSICAL THERAPY INITIAL EVALUATION\nDate of service: 11/12/2020\nDiagnosis: lumbar spinal stenosis with neurogenic claudication (referral from primary care, neurology recommendation).\n\nSubjective: Back and posterior thigh pain after 15-20 minutes on his feet, eased by sitting or leaning forward. Goal: walk the length of the grocery store and his road without stopping.\nRelevant history: CAD with stent, heart failure, CKD, prior stroke with mild left hand weakness. Allergies: none known.\n\nObjective: Lumbar extension provokes back pain; flexion relieves. Lower extremity strength grossly 5/5. Neuro screen intact. Walked 6 minutes on treadmill before symptoms; tolerated longer with slight incline.\n\nAssessment: Presentation consistent with lumbar stenosis. Good rehab potential.\n\nPlan: 2x/week for 6 weeks - flexion-biased exercises, hip flexor stretching, core strengthening, stationary bike for conditioning, home program. Monitor for exertional symptoms given cardiac history."
+      }
+     ]
+    },
+    {
+     "id": "2020-11-19a",
+     "kind": "outside_records",
+     "start": "2020-11-19T09:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic Eye Exam Report",
+       "author": "optometry",
+       "date": "2020-11-23T10:00",
+       "body": "DIABETIC EYE EXAMINATION\nDate of exam: 11/19/2020\nHistory: type 2 diabetes; no visual complaints. Allergies: none known.\nVA cc 20/25 OD, 20/25 OS. IOP 16/15.\nDilated fundus: no diabetic retinopathy OU, no macular edema.\nLens clear OU.\nImpression: no diabetic retinopathy. Return 1 year."
+      }
+     ]
+    },
+    {
+     "id": "2020-12-15a",
+     "kind": "office_visit",
+     "start": "2020-12-15T13:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "state": {
+      "labs": {
+       "Microalbumin/Creatinine Ratio": 210
+      }
+     },
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2020-12-15T14:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Total Protein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-12-15T14:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-12-15T13:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2020-12-15T15:00",
+       "body": "S: Back much better with PT; does his home exercises and walks his road without stopping now, uses acetaminophen a couple of times a week. Finished PT last week. Otherwise well. No chest pain, no dyspnea, no edema. Home BPs 130s/80s.\n\nMeds: lisinopril 20, amlodipine 5, metformin 1000 BID, furosemide 40, ASA 81, acetaminophen PRN. NKDA.\n\nO: Lungs clear. Heart regular. No edema. Gait normal.\n\nA/P:\n- Lumbar spinal stenosis: improved with PT. Continue home program.\n- HTN, T2DM, HFrEF, CKD 3b: stable. CMP, A1c, urine albumin today.\n- COVID vaccine: eligible soon as an over-65; will sign up when the pharmacy opens appointments.\nRTC 3 months."
+      },
+      {
+       "type": "Result Note",
+       "title": "Lab Results",
+       "author": "PCP",
+       "date": "2020-12-16T17:30",
+       "body": "Creatinine at baseline. A1c stable. Urine albumin/creatinine somewhat higher than last year; continue lisinopril, recheck next year. Patient notified via portal."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

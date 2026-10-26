@@ -1,0 +1,1252 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002778",
+   "events": [
+    {
+     "id": "2020-03-23a",
+     "kind": "portal_message",
+     "start": "2020-03-23T10:40",
+     "reason": "Refill and scheduling",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Sumatriptan refill / June labs",
+       "author": "patient",
+       "date": "2020-03-23T10:40",
+       "body": "Hi, could you send a 90 day supply of the sumatriptan if insurance allows? Trying to go to the pharmacy less\nright now. Also should I still come in for my June labs and physical with everything going on?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Sumatriptan refill / June labs",
+       "author": "PCP",
+       "date": "2020-03-23T15:05",
+       "body": "Sent the refill; the plan may still only cover 12 a month but the pharmacy can fill 3 months at once. Please\nkeep the June lithium draw, it's quick and we have a separate entrance for lab patients. We'll likely push the\nphysical itself to later in the summer. Front desk will call."
+      }
+     ]
+    },
+    {
+     "id": "2020-06-16a",
+     "kind": "lab_only",
+     "start": "2020-06-16T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lithium monitoring",
+     "state": {
+      "labs": {
+       "Thyroid Stimulating Hormone": 3.8
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-06-16T07:35",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-06-16T07:35",
+       "results": [
+        {
+         "test": "Lithium",
+         "loinc": "14334-7",
+         "unit": "mmol/L"
+        },
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2020-06-16T07:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lithium monitoring labs",
+       "author": "PCP",
+       "date": "2020-06-16T17:00",
+       "body": "Lithium level and BMP fine. TSH higher end of normal, still in range. Copied to psychiatry."
+      }
+     ]
+    },
+    {
+     "id": "2020-08-10a",
+     "kind": "annual_physical",
+     "start": "2020-08-10T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical (rescheduled)",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 4
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2020-08-10T09:40",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Neutrophils %"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2020-08-10T09:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2020-08-10T09:40"
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2020",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "Routine screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2020-08-10T09:50",
+       "body": "Physical, pushed from June. Masked visit.\n\nWorking from home since March; she likes it more than she expected. Psychiatry by video, lithium unchanged,\nmood stable. Migraines about the same, 2-3/month. Raynaud not an issue in summer.\n\nMeds: lithium carbonate 300 mg BID; sumatriptan 100 mg PRN.\nNKDA. Never smoker, no alcohol.\n\nExam: well. Thyroid without enlargement or nodule. Cardiac regular, no murmur. Lungs clear. Breasts normal.\nAbdomen nontender. Extremities without edema. Mood euthymic.\n\nPHQ-9 4.\n\nJune lithium labs reviewed, in range; TSH 3.8, upper half of normal - will keep watching on lithium.\nCBC today.\n\nHM: mammogram due, ordered. Pap 2021. Flu shot in October."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-19a",
+     "kind": "outside_records",
+     "start": "2020-10-19T11:30",
+     "reason": "Psychiatry letter received",
+     "conditions": [
+      {
+       "label": "Drug-induced hypothyroidism",
+       "icd10": "E03.2",
+       "action": "diagnosed",
+       "onset": "2020-10-07",
+       "note": "Lithium-related, subclinical; monitoring per psychiatry"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Lithium": 1.0
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-10-07T10:30",
+       "results": [
+        {
+         "test": "Sodium",
+         "value": 142
+        },
+        {
+         "test": "Potassium",
+         "value": 4.1
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.0
+        },
+        {
+         "test": "Calcium",
+         "value": 10.2
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-10-07T10:30",
+       "results": [
+        {
+         "test": "Lithium",
+         "loinc": "14334-7",
+         "unit": "mmol/L",
+         "value": 1.2
+        },
+        {
+         "test": "Thyroid Stimulating Hormone",
+         "value": 5.5
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Psychiatry progress letter",
+       "author": "psychiatry",
+       "date": "2020-10-19T11:30",
+       "body": "OUTPATIENT PSYCHIATRY — LETTER TO PRIMARY CARE\nDate of visit: 10/07/2020\n\nDear colleague,\n\nI saw Ms. Brooks, 42, for her scheduled follow-up of bipolar disorder. She has remained stable on lithium\nthroughout the past two years, takes it reliably, and reports no manic or depressive episodes. She had no\nconcerns of her own today, though on questioning she mentioned that she has been thirstier and urinating more\nthan usual over the last few weeks. Mental status and a brief physical examination were unremarkable.\n\nLabs drawn here today:\n  Sodium 142 mEq/L | Potassium 4.1 mEq/L | Creatinine 1.0 mg/dL | Calcium 10.2 mg/dL\n  Lithium 1.2 mEq/L (therapeutic 0.6-1.2)\n  TSH 5.5 uIU/mL (ref 0.4-4.0)\n\nImpression: bipolar disorder, stable. Lithium-associated (drug-induced) hypothyroidism, mild, with a TSH just\nabove range.\n\nPlan: continue lithium carbonate 300 mg twice daily. No thyroid replacement at this level; I would ask that you\nrepeat a TSH with free T4 in 6 to 8 weeks along with her usual lithium level and renal panel. I will see her\nagain in 3 months.\n\nCurrent medications: lithium carbonate 300 mg BID; sumatriptan 100 mg PRN. Allergies: NKDA.\n\nOutpatient psychiatry"
+      }
+     ]
+    },
+    {
+     "id": "2020-10-21a",
+     "kind": "portal_message",
+     "start": "2020-10-21T13:15",
+     "reason": "Thyroid result from psychiatry",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Thyroid test from your psychiatry visit",
+       "author": "PCP",
+       "date": "2020-10-21T13:15",
+       "body": "Hi Erin, I got the letter from your psychiatrist. Your thyroid level (TSH) was a little above the normal range,\nwhich lithium can do. Nothing to start now. We'll recheck it with your usual lithium labs in early December\nand add a free T4. I scheduled you for Monday 12/7 at 7:30. Flu shot whenever you can come by."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Thyroid test from your psychiatry visit",
+       "author": "patient",
+       "date": "2020-10-21T19:02",
+       "body": "Ok thanks. She mentioned it. I'll come Monday for the flu shot."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-26a",
+     "kind": "nurse_visit",
+     "start": "2020-10-26T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2020-10-26T08:05"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-10-26T08:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Influenza vaccine",
+       "author": "RN",
+       "date": "2020-10-26T08:15",
+       "body": "Flu vaccine IM R deltoid, masked, screening negative for COVID symptoms. Tolerated."
+      }
+     ]
+    },
+    {
+     "id": "2020-11-16a",
+     "kind": "imaging",
+     "start": "2020-11-16T13:00",
+     "reason": "Screening mammogram",
+     "orders": [
+      {
+       "id": "mammo-2020",
+       "action": "done",
+       "date": "2020-11-16T13:00"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2020-11-16T13:00",
+       "text": "Bilateral screening mammogram with tomosynthesis, compared with 08/2018. Scattered fibroglandular density. No new mass, suspicious calcification or distortion.",
+       "conclusion": "Negative. BI-RADS 1."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Mammogram",
+       "author": "PCP",
+       "date": "2020-11-17T08:30",
+       "body": "Screening mammogram negative, BI-RADS 1. Next in 2022."
+      }
+     ]
+    },
+    {
+     "id": "2020-12-07a",
+     "kind": "lab_only",
+     "start": "2020-12-07T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "TSH recheck, lithium monitoring",
+     "state": {
+      "labs": {
+       "Thyroid Stimulating Hormone": 5.1,
+       "Free Thyroxine": 1.1
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-12-07T07:35",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-12-07T07:35",
+       "results": [
+        {
+         "test": "Lithium",
+         "loinc": "14334-7",
+         "unit": "mmol/L"
+        },
+        {
+         "test": "Thyroid Stimulating Hormone"
+        },
+        {
+         "test": "Free Thyroxine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2020-12-07T07:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "TSH recheck",
+       "author": "PCP",
+       "date": "2020-12-07T16:40",
+       "body": "TSH remains mildly elevated with a normal free T4: subclinical, lithium-related. Psychiatry and I agree on\nmonitoring without levothyroxine for now. Lithium level and BMP in range. Faxed to psychiatry. Pt messaged.\nRecheck TSH/FT4 with June labs."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Thyroid recheck",
+       "author": "patient",
+       "date": "2020-12-08T07:30",
+       "body": "Thanks for explaining. So no thyroid pill for now? Just want to be sure I understood."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Thyroid recheck",
+       "author": "PCP",
+       "date": "2020-12-08T12:10",
+       "body": "Correct - no thyroid pill for now. The level is only mildly off and your free T4 (the actual hormone) is\nnormal. We'll recheck in June."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-12a",
+     "kind": "portal_message",
+     "start": "2021-04-12T08:50",
+     "reason": "New medication side effects",
+     "medications": [
+      {
+       "drug": "amlodipine 5 MG Oral Tablet",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Raynaud phenomenon (prescribed by outside rheumatology)",
+       "action": "historical"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "New medicine from rheumatology",
+       "author": "patient",
+       "date": "2021-04-12T08:50",
+       "body": "Hi, my fingers were going white a lot more this winter so I called my rheumatologist last week and she started\nme on amlodipine 5 mg on Friday. The finger attacks already seem better but I keep noticing my heartbeat when\nI'm sitting at my desk and my face gets flushed. No chest pain, not dizzy. Is this normal? I see rheum on\nWednesday."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: New medicine from rheumatology",
+       "author": "PCP",
+       "date": "2021-04-12T11:30",
+       "body": "Thanks for letting me know - I've added amlodipine to your list here. Flushing and being more aware of your\nheartbeat are common in the first couple of weeks on amlodipine and often settle. Keep the Wednesday\nappointment and ask them to send us a note. If you get chest pain, feel faint or lightheaded, or your heart\nraces and doesn't settle, call us right away or go to the ER."
+      }
+     ]
+    },
+    {
+     "id": "2021-05-24a",
+     "kind": "telephone",
+     "start": "2021-05-24T14:10",
+     "reason": "Records request",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Rheumatology records request",
+       "author": "front desk",
+       "date": "2021-05-24T14:10",
+       "body": "No consult note received from rheumatology for pt's 4/14 visit. Called their office, request faxed with\nrelease. They will send."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-07a",
+     "kind": "outside_records",
+     "start": "2021-06-07T10:15",
+     "reason": "Rheumatology letter received",
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2021-04-14T09:30",
+       "text": "Sinus rhythm, rate 78. Normal axis. PR, QRS and QT intervals normal. No ST or T wave abnormality.",
+       "conclusion": "Normal ECG."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Rheumatology follow-up letter",
+       "author": "rheumatology",
+       "date": "2021-06-07T10:15",
+       "body": "RHEUMATOLOGY — FOLLOW-UP NOTE (received by fax 06/07/2021)\nDate of service: 04/14/2021\n\nPatient: Erin Brooks, 42-year-old woman with bipolar disorder on lithium and long-standing Raynaud\nphenomenon, seen in continuing follow-up.\n\nInterval: After a winter of more frequent vasospastic attacks she called us, and amlodipine 5 mg daily was\nstarted by phone on 04/09. Five days in, she already has fewer attacks. She has noticed her heartbeat even at\nrest and occasional facial flushing. No chest pain, dizziness or leg swelling. Migraine history noted; no recent\nattack.\n\nMedications: lithium carbonate 300 mg BID, sumatriptan 100 mg PRN (max 200 mg/day), amlodipine 5 mg daily.\nAllergies: NKDA.\n\nExam: Vital signs stable. Heart without murmur, rub or gallop. Lungs clear without crackles or wheeze.\nExtremities warm, peripheral pulses good, capillary refill brisk, no edema.\n\nECG (baseline, today): normal.\n\nAssessment: Chronic vasospastic disorder — her Raynaud phenomenon — improving on a dihydropyridine calcium\nchannel blocker. Palpitations and flushing are expected effects of this class and do not warrant stopping.\n\nPlan: continue amlodipine 5 mg daily. Cold protection as before. Return in 12 months or sooner if attacks\nworsen or digital ulcers appear.\n\nRheumatology"
+      },
+      {
+       "type": "Result Note",
+       "title": "Rheumatology letter reviewed",
+       "author": "PCP",
+       "date": "2021-06-07T16:00",
+       "body": "Rheum note from 4/14 reviewed: amlodipine 5 mg confirmed, palpitations/flushing felt to be expected class\neffects, baseline ECG normal. Med list matches. Will review at physical next week."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-14a",
+     "kind": "annual_physical",
+     "start": "2021-06-14T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "labs": {
+       "Thyroid Stimulating Hormone": 4.6
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 2
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-06-14T09:20",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2021-06-14T09:20",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Neutrophils %"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-06-14T09:20",
+       "results": [
+        {
+         "test": "Lithium",
+         "loinc": "14334-7",
+         "unit": "mmol/L"
+        },
+        {
+         "test": "Thyroid Stimulating Hormone"
+        },
+        {
+         "test": "Free Thyroxine"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-04-23T15:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-05-14T15:00"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Cervical cytology (Pap) with HPV",
+       "performed": "2021-06-14T08:55",
+       "issued": "2021-06-16T14:00",
+       "text": "Liquid-based cervical cytology. Specimen satisfactory for evaluation; endocervical/transformation zone component present.",
+       "conclusion": "Negative for intraepithelial lesion or malignancy. High-risk HPV not detected."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2021-06-14T08:30"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2021-06-14T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2021-06-14T09:45",
+       "body": "Annual physical, 42F.\n\nSince last year: rheumatology started amlodipine 5 mg in April for a rough Raynaud winter. Their note came in\nlast week. Fingers much better; the flushing and heartbeat awareness wore off after about two weeks. TSH was\nmildly high last fall on lithium (psychiatry letter, 5.5); December recheck still mildly high with normal free\nT4, being watched. Psychiatry every 3 months, mood steady. Migraines 2/month. COVID vaccines done at a pharmacy\nin April and May.\n\nMeds: lithium carbonate 300 mg BID (psychiatry); amlodipine 5 mg daily (rheumatology); sumatriptan 100 mg PRN.\nNKDA.\n\nExam: comfortable. Thyroid normal size, no nodules, nontender. RRR without murmur. Lungs clear. Breast exam\nnormal bilaterally. Abdomen benign. Pelvic: normal external genitalia, cervix normal; Pap/HPV collected.\nHands warm, pink, no ulcers. No edema.\n\nPHQ-9 2.\n\nPlan\n1. Bipolar d/o: lithium level, BMP today, to psychiatry.\n2. Subclinical hypothyroidism on lithium: TSH + FT4 today.\n3. Raynaud: improved on amlodipine, rheum following.\n4. Migraine: unchanged, refilled.\n5. HM: Pap/HPV today. CBC. COVID series entered from state registry. Mammogram 2022. Flu in fall."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-17a",
+     "kind": "portal_message",
+     "start": "2021-06-17T12:20",
+     "reason": "Results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Results from your physical",
+       "author": "PCP",
+       "date": "2021-06-17T12:20",
+       "body": "Pap and HPV test are normal - next one in 5 years. Lithium level, kidney function and blood count are fine.\nTSH is still a touch high but coming down (normal free T4), so we keep watching. Sent to psychiatry."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-18a",
+     "kind": "nurse_visit",
+     "start": "2021-10-18T08:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-18T08:15"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-18T08:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Flu shot",
+       "author": "MA",
+       "date": "2021-10-18T08:20",
+       "body": "Flu vaccine given L deltoid. Pt plans COVID booster next month at our clinic. No reactions."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-19a",
+     "kind": "nurse_visit",
+     "start": "2021-11-19T13:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "COVID-19 booster",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-11-19T13:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-11-19T13:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "COVID-19 booster",
+       "author": "RN",
+       "date": "2021-11-19T13:55",
+       "body": "Pfizer booster 0.3 mL IM L deltoid. Primary series 4/2021 and 5/2021. Observed 15 min, no reaction. Card\nupdated."
+      }
+     ]
+    },
+    {
+     "id": "2021-12-13a",
+     "kind": "lab_only",
+     "start": "2021-12-13T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lithium monitoring, TSH",
+     "state": {
+      "labs": {
+       "Thyroid Stimulating Hormone": 4.3
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-12-13T07:35",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-12-13T07:35",
+       "results": [
+        {
+         "test": "Lithium",
+         "loinc": "14334-7",
+         "unit": "mmol/L"
+        },
+        {
+         "test": "Thyroid Stimulating Hormone"
+        },
+        {
+         "test": "Free Thyroxine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2021-12-13T07:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lithium monitoring labs",
+       "author": "PCP",
+       "date": "2021-12-13T15:50",
+       "body": "Lithium level and BMP fine. TSH borderline, FT4 normal. No change. Faxed to psychiatry."
+      }
+     ]
+    },
+    {
+     "id": "2022-01-24a",
+     "kind": "portal_message",
+     "start": "2022-01-24T09:30",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Refill",
+       "author": "patient",
+       "date": "2022-01-24T09:30",
+       "body": "Can I get my sumatriptan refilled? Pharmacy said no refills left."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Refill",
+       "author": "MA",
+       "date": "2022-01-24T13:10",
+       "body": "Sent per Dr. to your pharmacy, 12 tablets with 5 refills."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-13a",
+     "kind": "telehealth_visit",
+     "start": "2022-04-13T12:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diarrhea",
+     "state": {
+      "labs": {
+       "Thyroid Stimulating Hormone": 3.4
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-04-13T15:30",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-04-13T15:30",
+       "results": [
+        {
+         "test": "Lithium",
+         "loinc": "14334-7",
+         "unit": "mmol/L"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, moderate MDM",
+       "performed": "2022-04-13T12:15"
+      }
+     ],
+     "orders": [
+      {
+       "id": "gi-referral",
+       "action": "placed",
+       "order": "Gastroenterology referral",
+       "category": "referral",
+       "to": "Gastroenterology",
+       "reason": "Persistent watery diarrhea"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Visit",
+       "author": "PCP",
+       "date": "2022-04-13T12:45",
+       "body": "Video visit, pt at her desk at work, identity confirmed.\n\nCC: loose stools.\n\nHPI: About 9 days of watery stools, 4-5 a day. No blood, no mucus. No belly pain to speak of, no fever, no\nvomiting. Eating normally. Hasn't traveled; nobody at home or work sick. Drinking plenty. Hasn't changed what\nshe eats. No antibiotics.\n\nOn lithium, so my main concern is volume and her level.\n\nMeds: lithium carbonate 300 mg BID, amlodipine 5 mg daily, sumatriptan PRN. NKDA.\n\nExam (video): well-appearing, not ill, mucous membranes look moist, speaking full sentences.\n\nA/P: Persistent watery diarrhea, 9 days, no red flags.\n- Lithium level and BMP this afternoon at our lab.\n- She would like to be seen by GI since it is going on this long; referral placed, GI has an opening Monday.\n- Fluids; call if fever, blood, lightheadedness, tremor, confusion, or unsteady walking (signs of a high\n  lithium level)."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-14a",
+     "kind": "portal_message",
+     "start": "2022-04-14T09:10",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Yesterday's labs",
+       "author": "PCP",
+       "date": "2022-04-14T09:10",
+       "body": "Your lithium level and electrolytes/kidney function from yesterday are normal. Good - keep up the fluids and\nkeep the GI appointment Monday."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-27a",
+     "kind": "outside_records",
+     "start": "2022-04-27T10:00",
+     "reason": "Gastroenterology letter received",
+     "conditions": [
+      {
+       "label": "Magnesium-induced diarrhea",
+       "icd10": "K52.1",
+       "action": "diagnosed",
+       "onset": "2022-04-04"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "magnesium oxide 400 MG Oral Capsule",
+       "sig": "1 capsule by mouth at bedtime (self-started supplement)",
+       "dose": {
+        "value": 400,
+        "unit": "mg"
+       },
+       "frequency": "QHS",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Self-started for migraine; GI advised stopping",
+       "action": "historical"
+      }
+     ],
+     "orders": [
+      {
+       "id": "gi-referral",
+       "action": "done",
+       "date": "2022-04-27T10:00"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2022-04-18T11:00",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Neutrophils %"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-04-18T11:00",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-04-18T11:00",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-04-18T11:00",
+       "results": [
+        {
+         "test": "Stool culture",
+         "loinc": "625-4",
+         "text": "No Salmonella, Shigella, Campylobacter or Shiga toxin-producing E. coli isolated"
+        },
+        {
+         "test": "Ova and parasites, stool",
+         "loinc": "10704-5",
+         "text": "No ova or parasites seen"
+        },
+        {
+         "test": "Fecal leukocytes",
+         "loinc": "13655-6",
+         "text": "None seen"
+        }
+       ],
+       "resulted": "2022-04-21T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Gastroenterology consultation",
+       "author": "gastroenterology",
+       "date": "2022-04-27T10:00",
+       "body": "GASTROENTEROLOGY CONSULTATION\nDate of service: 04/18/2022\nReferred by: primary care\n\nReason: two weeks of loose stools.\n\nHistory: Ms. Brooks is a 43-year-old woman with bipolar disorder, migraine and Raynaud phenomenon. She reports\ntwo weeks of 4 to 5 watery bowel movements a day, without blood or mucus. No abdominal pain, weight loss,\ntravel, sick contacts, known food allergies or change in diet. When asked specifically about supplements, she\ntold us that about three weeks ago, after reading about natural treatments for migraine, she started a\nmagnesium oxide 400 mg capsule each night at bedtime.\n\nMedications: lithium carbonate 300 mg BID; sumatriptan 100 mg PRN (max 200 mg/day); amlodipine 5 mg daily.\nSupplement: magnesium oxide 400 mg at bedtime (self-started).\nAllergies: NKDA.\nSocial: never smoker, no alcohol, administrative assistant.\n\nExam: vital signs within normal limits. Abdomen soft and nontender, bowel sounds increased. No masses.\n\nStudies: CBC, electrolytes and TSH normal. Stool culture, ova and parasites and fecal leukocytes negative.\n\nImpression: osmotic diarrhea from magnesium oxide.\n\nPlan: stop the magnesium oxide; stools should normalize within days. Colonoscopy is not indicated at her age\nwithout red flags. Please contact us if diarrhea persists beyond two weeks off magnesium.\n\nGastroenterology"
+      },
+      {
+       "type": "Result Note",
+       "title": "GI consult reviewed",
+       "author": "PCP",
+       "date": "2022-04-27T15:20",
+       "body": "GI letter reviewed. Diarrhea attributed to self-started magnesium oxide, advised to stop; stool studies\nnegative. I didn't ask about supplements at the video visit. Added to list as stopped supplement; will\nmessage pt to confirm she's better."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-02a",
+     "kind": "portal_message",
+     "start": "2022-05-02T10:25",
+     "reason": "Follow-up after GI",
+     "conditions": [
+      {
+       "label": "Magnesium-induced diarrhea",
+       "icd10": "K52.1",
+       "action": "resolved"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "magnesium oxide 400 MG Oral Capsule",
+       "action": "stop",
+       "reason": "Caused diarrhea"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "GI letter",
+       "author": "PCP",
+       "date": "2022-05-02T08:40",
+       "body": "Hi Erin, the GI note came in. They think the magnesium was the cause. How are things since you stopped it?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: GI letter",
+       "author": "patient",
+       "date": "2022-05-02T10:25",
+       "body": "I stopped it the night of the appointment and was back to normal in like 3 days. Lesson learned on internet\nremedies! Thank you."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-13a",
+     "kind": "annual_physical",
+     "start": "2022-06-13T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "labs": {
+       "Thyroid Stimulating Hormone": 3.1
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 3
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-06-13T09:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2022-06-13T09:15",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Neutrophils %"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-06-13T09:15",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-06-13T09:15",
+       "results": [
+        {
+         "test": "Lithium",
+         "loinc": "14334-7",
+         "unit": "mmol/L"
+        },
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2022-06-13T08:30"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-06-13T09:15"
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2022",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "Routine screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2022-06-13T09:50",
+       "body": "PREVENTIVE VISIT\n\nErin is here for her yearly. Diarrhea in April turned out to be the magnesium she had started on her own for\nmigraine; resolved within days of stopping. GI did not want a colonoscopy at 43. Mood stable, psych every 3\nmonths. Raynaud much better on amlodipine this past winter. Migraines 1-3/month on sumatriptan.\n\nMeds: lithium carbonate 300 mg BID; amlodipine 5 mg daily; sumatriptan 100 mg PRN. No supplements now.\nNKDA.\n\nExam: no distress. Thyroid normal. Heart regular. Lungs clear. Breast exam normal. Abdomen soft, nontender,\nnormal bowel sounds. No edema. Fingers warm.\n\nPHQ-9 3.\n\nAssessment/plan\n- Bipolar disorder on lithium: level, CMP, TSH today; copy to psychiatry.\n- TSH: back in range at GI in April. Recheck today; if normal again, will take lithium-related\n  hypothyroidism off the active list. Either way it stays on the 6-month lithium panel.\n- Raynaud: continue amlodipine.\n- Migraine: stable. Advised to run supplements by us first.\n- HM: lipids, CBC. Mammogram this fall (ordered). Colon cancer screening starts at 45 — next year. Flu and\n  COVID booster in the fall."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-14a",
+     "kind": "portal_message",
+     "start": "2022-06-14T16:00",
+     "reason": "Results",
+     "conditions": [
+      {
+       "label": "Drug-induced hypothyroidism",
+       "icd10": "E03.2",
+       "action": "resolved",
+       "note": "TSH in range on two draws without treatment"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2022-06-14T16:00",
+       "body": "All normal - lithium, kidney and liver tests, blood count and cholesterol. Your thyroid test is normal\nfor the second time in a row, so I've marked the lithium-related underactive thyroid as resolved. We'll keep\nchecking it with your lithium labs. Have a good summer."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-12a",
+     "kind": "imaging",
+     "start": "2022-09-12T11:15",
+     "reason": "Screening mammogram",
+     "orders": [
+      {
+       "id": "mammo-2022",
+       "action": "done",
+       "date": "2022-09-12T11:15"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2022-09-12T11:15",
+       "text": "Bilateral screening mammogram with tomosynthesis, compared with 2018 and 2020. Scattered fibroglandular density. No suspicious findings.",
+       "conclusion": "Negative. BI-RADS 1."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Mammogram",
+       "author": "PCP",
+       "date": "2022-09-13T08:05",
+       "body": "Negative screening mammogram, BI-RADS 1."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-14a",
+     "kind": "nurse_visit",
+     "start": "2022-10-14T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2022-10-14T15:35"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-14T15:37"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-14T15:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccines",
+       "author": "RN",
+       "date": "2022-10-14T15:55",
+       "body": "Flu vaccine L deltoid, Pfizer bivalent booster R deltoid. Screening questions negative. Tolerated both, 15 min\nobservation uneventful."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-12a",
+     "kind": "lab_only",
+     "start": "2022-12-12T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lithium monitoring",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-12-12T07:35",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-12-12T07:35",
+       "results": [
+        {
+         "test": "Lithium",
+         "loinc": "14334-7",
+         "unit": "mmol/L"
+        },
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-12-12T07:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lithium monitoring labs",
+       "author": "RN",
+       "date": "2022-12-12T15:20",
+       "body": "Per Dr.: labs in range, faxed to psychiatry, pt notified via portal."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

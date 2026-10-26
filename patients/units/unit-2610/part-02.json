@@ -1,0 +1,786 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002610",
+      "events": [
+        {
+          "id": "2024-05-07a",
+          "kind": "office_visit",
+          "start": "2024-05-07T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Smoking cessation follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "annual_physical",
+          "start": "2024-09-26T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "resolved",
+              "onset": "2022-09-13"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "diagnosed",
+              "onset": "2024-06-01",
+              "note": "Quit cigarettes June 2024, unaided"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-26T08:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-26T07:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-26T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-26T08:25",
+              "body": "Physical, 32M. Early slot before work.\n\nBig news: he stopped smoking in June. Cold turkey, no patch or meds. Some cravings the first month, fine now. (He cancelled the May visit we'd set up for this, then just did it.) Congratulated him.\n\nOtherwise well. No meds, NKDA. Alcohol same, 2-3 drinks a week. Still at the body shop.\n\nROS negative.\n\nExam: vitals ok. Well appearing. HEENT normal. Neck without adenopathy. Regular rhythm, no murmur. Good air movement, clear. Abdomen soft. No edema. Skin unremarkable.\n\nPHQ-2 0, AUDIT-C 3.\n\nA/P\n1. Former smoker, quit 06/2024. Updated problem list. Relapse plan discussed, he can message if he wants help.\n2. Prevention: flu shot today. Lipids due again next year. Tdap 2022.\n\nNext physical in about a year."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-11a",
+          "kind": "ed_visit",
+          "start": "2024-12-11T12:20",
+          "end": "2024-12-11T16:10",
+          "service": "Emergency Medicine",
+          "reason": "Left lower leg pain after motorcycle crash",
+          "conditions": [
+            {
+              "label": "Traumatic arterial injury of left lower leg",
+              "icd10": "S85.902A",
+              "action": "diagnosed",
+              "onset": "2024-12-11"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-11T12:35",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 5.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                }
+              ],
+              "resulted": "2024-12-11T13:25"
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-11T12:35",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 2500
+                }
+              ],
+              "resulted": "2024-12-11T13:25"
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-11T12:35",
+              "results": [
+                {
+                  "test": "Myoglobin",
+                  "loinc": "2639-2",
+                  "unit": "ng/mL",
+                  "value": 150
+                }
+              ],
+              "resulted": "2024-12-11T13:25"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Lower extremity arterial duplex ultrasound",
+              "loinc": "37461-0",
+              "performed": "2024-12-11T12:40",
+              "text": "ARTERIAL DUPLEX, LEFT LOWER EXTREMITY\nIndication: motorcycle crash, pale painful left leg with weak distal pulses.\nTechnique: grayscale, color and spectral Doppler of the left lower extremity arteries.\nFindings: Normal arterial flow in the left femoral arteries. In the left lower leg there is an abrupt loss of arterial flow consistent with acute occlusion, with diminished flow beyond it.",
+              "conclusion": "Acute arterial occlusion of the left lower leg.",
+              "issued": "2024-12-11T13:05"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-12-11T12:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Outside ED Physician Record",
+              "author": "emergency medicine",
+              "date": "2024-12-19T10:30",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN NOTE (outside hospital)\nVisit: 12/11/2024, arrived 12:20 by ambulance; note 13:40\n\nCC: Severe L lower leg pain, motorcycle crash.\n\nHPI: 32 yo male, motorcycle crash roughly 4 hours ago. He was pinned and extrication took a long time per EMS. Main complaint is severe pain in the left lower leg. Also says his right hand got crushed under the bike. Arterial duplex of the left leg done on arrival, about an hour before this note, shows acute arterial occlusion.\n\nPMH: none. PSH: none. Meds: none. Allergies: NKDA.\nFH: father HTN, mother hypothyroidism.\nSH: Former smoker, quit about 6 months ago. Social drinker, 2-3/week. Works as an automotive spray painter.\n\nVitals: stable, see flowsheet.\n\nExam:\nL lower leg: swollen and pale. Pulses weak beyond the injury. Passive dorsiflexion of the foot causes severe pain. Sensation reduced over the top of the foot. Cannot move his toes.\nR hand: swollen, tender, deferred to hand surgery.\nOtherwise alert, airway intact, no other injury found on survey.\n\nLabs: K 5.2. Cr 1.1. Myoglobin 150 (H). CK 2500 (H).\n\nImaging: L LE arterial duplex - acute arterial occlusion.\n\nMDM: Acute limb ischemia of the left leg from traumatic arterial injury after crush and long extrication. Muscle injury with CK and myoglobin up, K mildly high, creatinine ok. IV fluids running. Vascular surgery at bedside, taking him to the OR for embolectomy. Hand surgery asked to see the right hand.\n\nImpression: Traumatic arterial injury L lower leg with acute occlusion. Elevated CK/myoglobin.\nDisposition: OR, then admit."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-11b",
+          "kind": "hospital_admission",
+          "start": "2024-12-11T16:10",
+          "end": "2024-12-17T11:30",
+          "service": "Vascular Surgery",
+          "reason": "Left leg acute arterial occlusion, right hand crush injury",
+          "conditions": [
+            {
+              "label": "Compartment syndrome of hand",
+              "icd10": "T79.A11A",
+              "action": "diagnosed",
+              "onset": "2024-12-11",
+              "note": "Right hand, crush injury; fasciotomy 12/11/2024"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-16T05:30",
+              "results": [
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-16T05:30",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 610
+                }
+              ]
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain. Dispense 15.",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "post-operative pain"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-12-11T16:10"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2024-12-17T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Outside Operative Report - Vascular Surgery",
+              "author": "vascular surgery",
+              "date": "2024-12-19T10:30",
+              "body": "OPERATIVE REPORT\nDate of surgery: 12/11/2024\nPreop dx: Acute arterial occlusion, left lower leg, after blunt trauma.\nPostop dx: Same.\nProcedure: Left lower leg embolectomy.\nAnesthesia: General.\n\nIndications: 32M after motorcycle crash with prolonged entrapment; pale, swollen left leg, weak distal pulses, motor and sensory loss in the foot; duplex with acute occlusion.\n\nDescription: Supine, prepped and draped. Exposure through a medial left leg incision. Arteriotomy made, balloon embolectomy catheter passed distally and proximally with retrieval of fresh clot. Good inflow and back-bleeding afterward. Arteriotomy closed. Completion imaging showed restored flow to the foot. Doppler signals strong in the foot at the end of the case. Wound closed in layers.\n\nEBL: minimal. Complications: none. To recovery stable."
+            },
+            {
+              "type": "Operative Note",
+              "title": "Outside Operative Report - Hand Surgery",
+              "author": "hand surgery",
+              "date": "2024-12-19T10:30",
+              "body": "OPERATIVE REPORT - HAND\nDate: 12/11/2024 (fasciotomy); 12/14/2024 (closure)\n\nDx: Compartment syndrome, right hand, following crush injury in a motorcycle crash.\n\n12/11: Right hand tense and swollen with pain on passive stretch of the fingers after his leg case, clinical compartment syndrome. Taken back for right hand fasciotomy: two dorsal incisions for the interosseous compartments, plus thenar and hypothenar releases. Muscle pink and contractile. Wounds left open with moist dressings, hand splinted and elevated.\n\n12/14: Swelling down. Delayed primary closure of all incisions without tension. Splint reapplied.\n\nNo complications. Hand therapy to start after discharge."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Outside Hospital Discharge Summary",
+              "author": "vascular surgery",
+              "date": "2024-12-19T10:30",
+              "body": "DISCHARGE SUMMARY\nAdmitted 12/11/2024, discharged 12/17/2024\n\nDiagnoses:\n- Traumatic arterial injury of left lower leg with acute occlusion, s/p embolectomy 12/11\n- Compartment syndrome of right hand from crush injury, s/p fasciotomy 12/11, delayed primary closure 12/14\n- CK and myoglobin elevation from muscle injury\n\nCourse: 32M brought in after a motorcycle crash with long extrication. Left leg ischemic on arrival, duplex with acute occlusion, to the OR for embolectomy the same afternoon with flow restored. Right hand developed compartment syndrome and was released that evening by hand surgery, closed on 12/14. Aggressive IV fluids for CK 2500 and myoglobin elevation; urine output good throughout. CK 610 and creatinine 0.9 on 12/16, potassium normal. By discharge, left pedal pulses palpable, foot strength and sensation normal, walking independently. Right hand incisions closed and dry, splint for comfort.\n\nAllergies: NKDA.\nDischarge meds: oxycodone/acetaminophen 5/325 mg 1 tab q6h prn pain, #15. No other medications.\n\nFollow-up: hand surgery clinic in about 3 weeks for suture removal and hand therapy plan. PCP within one week. Off work until cleared by hand surgery.\n\nCondition at discharge: good."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-18a",
+          "kind": "telephone",
+          "start": "2024-12-18T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Phone Call",
+              "author": "RN",
+              "date": "2024-12-18T10:30",
+              "body": "Called pt day after discharge from the hospital (motorcycle crash, L leg embolectomy, R hand fasciotomy). He's home, a coworker picked him up.\n\nPain: taking the oxycodone about twice a day, manageable. Leg: walking around the apartment fine, no new numbness, foot warm. Hand: in the splint, dressings dry, no fever. Understands to call or go to ED for a cold or numb foot, rising hand pain, fever, wound drainage.\n\nMed list reviewed: oxycodone/APAP only. Has hand surgery appt in early Jan. Booked with PCP Monday 12/23. Hospital records requested."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Hospital Records Received",
+              "author": "front desk",
+              "date": "2024-12-19T10:30",
+              "body": "Records received by fax from the hospital for the 12/11-12/17 admission: ED physician note, vascular and hand operative reports, discharge summary, arterial duplex and lab results. 22 pages scanned. Routed to PCP ahead of Monday's visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-23a",
+          "kind": "office_visit",
+          "start": "2024-12-23T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-23T11:35",
+              "results": [
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-23T11:35",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 172
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2024-12-23T11:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-12-23T11:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-Up",
+              "author": "PCP",
+              "date": "2024-12-23T11:50",
+              "body": "Post-hospital visit.\n\n32M seen for the first time since his crash on 12/11. Hospital records reviewed (ED note, both op notes, d/c summary, received 12/19). In short: L lower leg arterial occlusion after a long extrication, embolectomy same day; R hand compartment syndrome, fasciotomy 12/11, closed 12/14; CK peaked 2500 and was 610 by 12/16 with fluids, creatinine stayed normal.\n\nToday: leg feels close to normal, a little sore at the incision. Hand stiff and sore in the splint. Using oxycodone once a day or less. Sleeping ok. No fevers.\n\nMeds: oxycodone/APAP 5/325 prn (hospital Rx, short). NKDA.\n\nExam: vitals fine. Afebrile. L leg: medial incision healing, staples in, no redness or drainage. Calf soft. DP and PT pulses palpable. Foot warm, moves toes, sensation intact. R hand: splint off for exam, dorsal and palmar incisions closed, mild swelling, no drainage, fingers pink with good refill, limited flexion from swelling and pain.\n\nA/P\n1. S/p L lower leg embolectomy for traumatic arterial injury - perfusion good. Repeat BMP and CK today.\n2. R hand compartment syndrome s/p fasciotomy and closure - healing. Hand surgery f/u is set for early January, they'll start therapy.\n3. Pain - winding down, fine to stop the oxycodone when he's ready. No driving on it.\n4. Off work until hand surgery clears him; work note given.\n\nWill message with labs. RTC 6-8 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-26a",
+          "kind": "portal_message",
+          "start": "2024-12-26T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from Monday",
+              "author": "PCP",
+              "date": "2024-12-26T09:20",
+              "body": "Victor, your muscle enzyme (CK) is back to normal and your kidney function and potassium are normal too. Nothing more to check on that front. Hope you got some rest over the holiday."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-09a",
+          "kind": "specialist_visit",
+          "start": "2025-01-09T14:00",
+          "service": "Hand Surgery",
+          "reason": "Post-op follow-up, right hand fasciotomy",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hand Surgery Follow-Up Letter",
+              "author": "hand surgery",
+              "date": "2025-01-13T08:40",
+              "body": "Dear Doctor,\n\nI saw your patient Victor Morales today, about four weeks out from his right hand fasciotomies (12/11/2024) and delayed primary closure (12/14/2024) for compartment syndrome after a crush injury.\n\nHe is doing nicely. Incisions are fully healed, sutures out today. Swelling is minimal. He makes a near-full fist and full extension, intrinsic function is good and sensation is normal throughout. He started hand therapy last week and is working on grip and stiffness.\n\nPlan: continue therapy twice a week. I anticipate return to full duty around mid-February; he will need to tolerate prolonged spray-gun use. I'll see him back as needed.\n\nAllergies: NKDA. Medications: none.\n\nSincerely,\nHand Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-27a",
+          "kind": "portal_message",
+          "start": "2025-01-27T19:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Work note",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "work note",
+              "author": "patient",
+              "date": "2025-01-27T19:45",
+              "body": "Hi, my boss needs something saying when im allowed back. hand doctor said mid feb. can you guys write it or does it have to be them?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: work note",
+              "author": "PCP",
+              "date": "2025-01-28T12:10",
+              "body": "Since it's the hand holding you out, the clearance should come from hand surgery. Let's see you in a couple of weeks anyway to check the leg, and if they've cleared you by then I can put it in writing for your employer too."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "office_visit",
+          "start": "2025-02-11T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up leg and hand",
+          "conditions": [
+            {
+              "label": "Traumatic arterial injury of left lower leg",
+              "icd10": "S85.902A",
+              "action": "resolved",
+              "onset": "2024-12-11",
+              "note": "s/p embolectomy 12/2024"
+            },
+            {
+              "label": "Compartment syndrome of hand",
+              "icd10": "T79.A11A",
+              "action": "resolved",
+              "onset": "2024-12-11",
+              "note": "Right hand, s/p fasciotomy 12/2024"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-02-11T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-02-11T15:45",
+              "body": "f/u after Dec crash.\n\nLeg: no pain walking, no cramping, no numbness. Hand: therapy going well, grip feels about back. Hand surgery cleared him for full duty starting 2/17, he brought the note. Off the oxycodone since right after Christmas. Still not smoking.\n\nExam: BP and pulse normal. L leg incision healed. DP/PT pulses 2+ bilaterally, symmetric. Normal strength and sensation in both feet. R hand: healed scars, full fist, full extension, grip strong.\n\nA/P\n- Traumatic L leg arterial injury s/p embolectomy: recovered, resolved on problem list (surgical history updated).\n- R hand compartment syndrome s/p fasciotomy: recovered, resolved.\n- Return to work 2/17 full duty, letter given.\n\nSee him for his physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-08a",
+          "kind": "ed_visit",
+          "start": "2025-06-08T15:10",
+          "end": "2025-06-08T17:20",
+          "service": "Emergency Medicine",
+          "reason": "Left palm puncture wound from paint gun",
+          "conditions": [
+            {
+              "label": "High-pressure injection injury of hand",
+              "icd10": "S61.442A",
+              "action": "diagnosed",
+              "onset": "2025-06-08",
+              "note": "Left palm, high-pressure paint gun"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-08T15:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ],
+              "resulted": "2025-06-08T16:10"
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-08T15:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                }
+              ],
+              "resulted": "2025-06-08T16:10"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Hand X-ray",
+              "performed": "2025-06-08T15:45",
+              "text": "LEFT HAND, 3 VIEWS\nHistory: puncture wound to palm from paint gun.\nFindings: Bones are intact with normal alignment. Joint spaces preserved. No radiopaque foreign body identified.",
+              "conclusion": "No bony abnormality of the left hand.",
+              "issued": "2025-06-08T16:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-06-08T15:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Outside ED Physician Record",
+              "author": "emergency medicine",
+              "date": "2025-06-12T09:15",
+              "body": "ED PROVIDER NOTE (outside hospital), 06/08/2025 15:10\n\nChief complaint: L palm puncture, pain.\n\nHPI: 33M auto body painter. About 2 hrs ago he was cleaning a high-pressure paint gun at work and it went off into his left palm. Thought it was nothing at first. Now severe hand pain, much worse than the small wound would suggest. No other injury. Last December he had a motorcycle crash with right hand compartment syndrome and fasciotomy, and a left leg embolectomy.\n\nPMH/PSH: as above. Meds: none. NKDA.\nFH: father HTN, mother hypothyroid.\nSH: former smoker, quit summer 2024. Social EtOH, 2-3/week. Automotive spray painter.\nTetanus: Tdap 09/2022, up to date.\n\nVitals stable.\n\nExam: L palm with a 0.5 cm entry wound, very little redness around it, not bleeding. Hand is swollen. Passive extension of the fingers makes the pain worse. Sensation intact. Range of motion limited by pain. No crepitus.\n\nLabs: WBC 12.0, Hgb 14, plt 250. Na 140, K 4.2, Cr 1.0.\nXR L hand: no bony abnormality.\n\nMDM: High-pressure injection injury of the left hand. Benign-looking entry wound but this needs surgical exploration; hand surgery consulted and agrees, taking him to the OR tonight. Cefazolin started. Pain meds given.\n\nDx: High-pressure injection injury, L hand.\nDispo: Admit to hand surgery."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-08b",
+          "kind": "hospital_admission",
+          "start": "2025-06-08T17:20",
+          "end": "2025-06-10T12:00",
+          "service": "Hand Surgery",
+          "reason": "High-pressure injection injury, left hand",
+          "medications": [
+            {
+              "drug": "cephalexin 500 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth four times daily for 7 days",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "QID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "post-debridement, left hand injection injury"
+            },
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain. Dispense 10.",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "post-operative pain"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-06-08T17:20"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-06-10T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Outside Operative Report - Hand Surgery",
+              "author": "hand surgery",
+              "date": "2025-06-12T09:15",
+              "body": "OPERATIVE NOTE\n06/08/2025\nDx: High-pressure paint injection injury, left palm.\nProcedure: Irrigation and debridement, left palm.\nAnesthesia: General, upper arm tourniquet.\n\nThe entry wound was extended along the palm. Paint-stained tissue was found along the injection tract and excised until clean tissue remained. Flexor tendons and digital nerves were inspected and intact. Copious irrigation. Loose closure over the wound, bulky dressing and volar splint.\n\nNo complications. Continue IV cefazolin, elevate, early motion as pain allows."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Outside Hospital Discharge Summary",
+              "author": "hand surgery",
+              "date": "2025-06-12T09:15",
+              "body": "DISCHARGE SUMMARY\nAdmit 06/08/2025 - discharge 06/10/2025\n\nDx: High-pressure injection injury of the left hand, s/p irrigation and debridement 06/08.\n\nCourse: Taken to the OR the evening of arrival. Paint-contaminated tract debrided, tendons and nerves intact. IV cefazolin for 48 hours. Swelling and pain improved, finger motion improving, wound clean at dressing change. Afebrile throughout.\n\nAllergies: NKDA.\nDischarge meds: cephalexin 500 mg QID x 7 days. Oxycodone/acetaminophen 5/325 1 tab q6h prn, #10.\n\nFollow-up: hand surgery clinic in 4 weeks, hand therapy to begin this week. Off work until seen. PCP within 1 week."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-16a",
+          "kind": "office_visit",
+          "start": "2025-06-16T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED and hospital follow-up, left hand",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-06-16T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-Up",
+              "author": "PCP",
+              "date": "2025-06-16T14:05",
+              "body": "Hospital f/u, L hand.\n\nSame body shop. On 6/8 a high-pressure paint gun discharged into his left palm while he was cleaning it. Went to the ED, high-pressure injection injury, hand surgery took him to the OR that night for debridement, 2 nights inpatient on IV cefazolin, home 6/10 on cephalexin. Outside records in.\n\nNow: pain much better, using oxycodone at night only. Last cephalexin dose Tuesday. Doing therapy exercises. No fever, no streaking.\n\nNKDA. Meds: cephalexin, oxycodone/APAP prn.\n\nExam: afebrile, vitals normal. L palm incision closed loosely, clean edges, no pus, no redness spreading. Mild swelling. Fingers pink, sensation intact all digits. Flexion stiff, about two-thirds of a fist.\n\nA/P: High-pressure injection injury L hand s/p I&D, healing as expected. Finish antibiotic. Keep up therapy. Hand surgery in early July. Off work until they clear him. Employer's work-injury form filled out today and faxed.\n\nCall for fever, worsening pain or redness."
+            },
+            {
+              "type": "Forms",
+              "title": "Employer Work-Injury Form",
+              "author": "MA",
+              "date": "2025-06-16T15:10",
+              "body": "Employer work-injury report completed by PCP at today's visit for the 06/08/2025 left hand paint-gun injury. Work status: no work until cleared by hand surgery; hand surgery follow-up early July. Faxed to the employer's claims contact, copy given to patient and scanned."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-10a",
+          "kind": "specialist_visit",
+          "start": "2025-07-10T10:20",
+          "service": "Hand Surgery",
+          "reason": "Post-op follow-up, left hand",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hand Surgery Follow-Up Letter",
+              "author": "hand surgery",
+              "date": "2025-07-14T08:30",
+              "body": "Dear Doctor,\n\nFollow-up today on Mr. Morales, 4 weeks after irrigation and debridement of a high-pressure paint injection injury to the left palm (06/08/2025).\n\nThe wound has healed. Finger range of motion is nearly full, with slight stiffness at the end of flexion that therapy is addressing. Sensation intact in all digits, no signs of infection.\n\nHe may return to work on 07/14/2025. We talked about never wiping or testing the gun tip with a hand, keeping the guard on and wearing gloves. Therapy for another few weeks, then home program. Follow up with me as needed.\n\nNKDA. No medications.\n\nRegards,\nHand Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "annual_physical",
+          "start": "2025-10-07T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "High-pressure injection injury of hand",
+              "icd10": "S61.442A",
+              "action": "resolved",
+              "onset": "2025-06-08",
+              "note": "Left palm, healed after I&D"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-07T08:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-07T08:30",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T08:35"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-10-07T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-07T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-10-07T08:50",
+              "body": "Annual. 33M.\n\nInterval: L palm high-pressure paint injection in June, I&D, healed, back at work since mid-July. Grip fine, no numbness. The right hand and left leg from last December remain fine. No meds. NKDA.\n\nStill off cigarettes, 15 months now. Alcohol 2-3 a week. Still riding the motorcycle; we talked about that after last year, his call.\n\nROS negative.\n\nExam: vitals normal. Well. HEENT unremarkable. No adenopathy. Cardiac exam normal. Lungs clear. Abdomen soft, non-tender. Healed scars R hand dorsum/palm, L palm, L medial leg. Pedal pulses present. Full hand function both sides.\n\nPHQ-2 0. AUDIT-C 3.\n\nA/P\n1. Prevention: lipids and CMP today. Flu shot given. Tdap good until 2032. Covid vaccine at pharmacy is fine.\n2. L hand injection injury: healed, off the problem list.\n3. Former smoker: keep it up.\n\nOne year."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "portal_message",
+          "start": "2025-10-09T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs",
+              "author": "PCP",
+              "date": "2025-10-09T12:30",
+              "body": "Hi Victor - cholesterol panel and the chemistry panel from Tuesday all came back normal. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "pharmacy",
+          "start": "2025-11-04T17:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Outside immunization",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-11-04T17:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy Immunization Report",
+              "author": "MA",
+              "date": "2025-11-06T10:10",
+              "body": "Outside vaccine entered from state registry query: COVID-19 mRNA (Moderna), 2025-2026 formula, given 11/04/2025 at a community pharmacy."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1850 @@
+{
+  "unit": "unit-2568",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): lab \"Ethanol [Mass/volume] in Serum or Plasma\" LOINC 5643-8 not found; closest real codes: 5643-2 Ethanol [Mass/volume] in Serum or Plasma; 35240-1 Ethanol [Mass or Moles/volume] in Serum or Plasma; 114065-6 Ethanol [Mass/volume] in Serum or Plasma by Mass Spectrometry; 114066-4 Ethanol [Mass/volume] in Serum or Plasma by Immunoassay; 14336-2 Ethanol [Mass/volume] in Serum or Plasma by Gas chromatography",
+    "left text-only (not verified): lab \"pH of Venous blood\" LOINC 2746-2 not found; closest real codes: 2746-6 pH of Venous blood; 19213-8 pH of Mixed venous blood; 28647-6 pH of Venous cord blood; 97536-7 pH of Central venous blood; 39486-6 pH of Venous blood adjusted to patient's actual temperature"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002568",
+      "given": "Graham",
+      "family": "Medeiros",
+      "birth_date": "1996-12-06",
+      "address_line": "41 Kellogg Avenue, Apt 3",
+      "phone": "+1-201-555-0150",
+      "email": "graham.medeiros@example.test",
+      "marital_status": "single",
+      "summary": "Healthy software developer and recreational runner who joined the practice in 2024. In January 2025 he had an outside ED stay for an unintentional opioid overdose complicated by saline-induced hyperchloremic acidosis; in July 2026 he was admitted to an outside ICU for exertional heat stroke during a summer marathon and has since recovered.",
+      "events": [
+        {
+          "id": "2024-09-10a",
+          "kind": "establish_care",
+          "start": "2024-09-10T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care and physical",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              77
+            ],
+            "hr": 72,
+            "rr": 15,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 70.4,
+            "height_cm": 178.9
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-09-10T09:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 294
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.95
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 33
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-10T09:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-10T09:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 178
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 112
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 118
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T09:20",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T09:20",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Software developer"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2024-09-10T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-10T09:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-10T09:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2024-09-10T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and physical note",
+              "title": "New Patient Visit — Establish Care",
+              "date": "2024-09-10T08:30",
+              "author": "PCP",
+              "body": "27 y/o man joining the practice. Works from home most days writing software for a logistics company; was overdue for a checkup and wanted a doctor he could actually reach. No complaints today.\n\nPMH: none. No chronic conditions, no hospitalizations.\nPSH: tonsils out as a child, around age 8.\nMeds: none. No supplements.\nAllergies: NKDA.\nFamily: father has high blood pressure. Mother on thyroid replacement for an underactive thyroid. No one in the family died suddenly or young of a heart problem; no anesthesia reactions in the family that he knows of.\nSocial: never smoked, no vaping. Drinks a beer or a glass of wine maybe once or twice a month. Lives alone in an apartment in town. Runs most mornings, 25-35 miles a week, has done several half marathons and is working up to a full.\n\nROS: negative except as above. Sleeps fine. Mood good.\n\nExam: well-appearing, lean, athletic. HEENT normal, tonsillar fossae empty. Neck supple, no thyroid enlargement. Heart regular, slow normal rate, no murmur, no gallop. Lungs clear. Abdomen soft, no organomegaly. Skin unremarkable. Extremities without edema. Neuro grossly intact.\n\nPHQ-2 0.\n\nAssessment / plan:\n- Adult preventive visit, healthy. Baseline CBC, CMP, lipids. Offered once-in-a-lifetime HIV and hep C screening, he agreed.\n- Tdap today, he couldn't remember his last tetanus shot. Requested records from his prior primary care office.\n- Flu and COVID shots when the fall supply arrives; nurse visit.\n- Talked about the marathon plan: fuel and fluids on long runs, don't push through dizziness.\n- Annual visit next September."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.5,
+            "height_cm": 179.0,
+            "labs": {
+              "High Density Lipoprotein": 60,
+              "Low Density Lipoprotein": 92,
+              "Total Cholesterol": 168
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-09-11a",
+          "kind": "portal_message",
+          "start": "2024-09-11T16:40",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Your lab results",
+              "date": "2024-09-11T16:40",
+              "author": "PCP",
+              "body": "Hi Graham, everything from Tuesday came back normal: blood counts, kidney and liver tests, cholesterol, and the HIV and hepatitis C screens were both negative. Nothing to do. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "outside_records",
+          "start": "2024-09-24T11:05",
+          "documents": [
+            {
+              "type": "Outside records",
+              "title": "Records from prior primary care office",
+              "date": "2024-09-24T11:05",
+              "author": "front desk",
+              "body": "Received by fax, 14 pages, from his previous primary care office (last seen 2021). Contents: two well visits with normal exams, routine childhood immunization record, note of tonsillectomy at age 8, no problem list, no medications. Scanned to chart and routed to PCP for review.\n\nPCP review: nothing new. Tdap given here 9/10 since the old record doesn't show a recent one."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T17:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T17:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T17:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T17:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing note",
+              "title": "Nurse Visit — Immunizations",
+              "date": "2024-10-08T17:15",
+              "author": "RN",
+              "body": "In after work for vaccines. Afebrile, feels well. Screening questions negative. Flu vaccine 0.5 mL IM left deltoid; COVID-19 updated vaccine 0.3 mL IM right deltoid. VIS given. Waited 15 min in the lobby without issue. Asked if he can still run tomorrow, told him yes but expect a sore arm."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-26a",
+          "kind": "ed_visit",
+          "start": "2025-01-26T21:40",
+          "end": "2025-01-27T14:10",
+          "service": "Emergency Medicine",
+          "reason": "Found unresponsive after narcotic ingestion",
+          "conditions": [
+            {
+              "label": "Poisoning by unspecified narcotics, accidental (unintentional), initial encounter",
+              "action": "diagnosed",
+              "onset": "2025-01-26",
+              "icd10": "T40.601A"
+            },
+            {
+              "label": "Hypotension, unspecified",
+              "action": "diagnosed",
+              "onset": "2025-01-26",
+              "icd10": "I95.9"
+            },
+            {
+              "label": "Hyperchloremic metabolic acidosis due to excess normal saline infusion",
+              "action": "diagnosed",
+              "onset": "2025-01-26",
+              "icd10": "E87.29"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-01-26T21:40",
+              "bp": [
+                88,
+                56
+              ],
+              "hr": 118,
+              "rr": 6
+            },
+            {
+              "time": "2025-01-26T21:58",
+              "bp": [
+                90,
+                58
+              ],
+              "hr": 104,
+              "rr": 14
+            },
+            {
+              "time": "2025-01-27T03:10",
+              "bp": [
+                106,
+                64
+              ]
+            },
+            {
+              "time": "2025-01-27T09:00",
+              "bp": [
+                118,
+                72
+              ]
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-01-26T21:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 23
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-01-26T21:50",
+              "results": [
+                {
+                  "test": "Ethanol [Mass/volume] in Serum or Plasma",
+                  "loinc": "5643-8",
+                  "unit": "mg/dL",
+                  "text": "Undetectable"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-01-26T21:50",
+              "results": [
+                {
+                  "test": "Acetaminophen [Mass/volume] in Serum or Plasma",
+                  "loinc": "3298-7",
+                  "unit": "ug/mL",
+                  "text": "Undetectable"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-01-26T21:50",
+              "results": [
+                {
+                  "test": "Salicylates [Mass/volume] in Serum or Plasma",
+                  "loinc": "4024-6",
+                  "unit": "mg/dL",
+                  "text": "Undetectable"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-01-26T22:30",
+              "results": [
+                {
+                  "test": "Opiates [Presence] in Urine by Screen method",
+                  "loinc": "19295-5",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-01-27T03:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Chloride",
+                  "value": 117
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 16
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-01-27T03:15",
+              "results": [
+                {
+                  "test": "pH of Venous blood",
+                  "loinc": "2746-2",
+                  "unit": "[pH]",
+                  "value": 7.29
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-01-27T08:45",
+              "results": [
+                {
+                  "test": "Chloride",
+                  "value": 110
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.7
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.03
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Physician Record",
+              "date": "2025-01-28T09:15",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Date of service 01/26/2025, observation through 01/27/2025.\n\nCC: unresponsive.\n\nHPI: 28M brought by EMS from his apartment after friends found him unresponsive. Per the friends, who had been with him earlier in the evening, he took a large amount of opioid pills, type unknown. He was giddy at first, then got sleepier and sleepier until they could not wake him. No known co-ingestants.\n\nPMH none. PSH tonsillectomy as a child. Meds none. Allergies: NKDA. FHx father HTN, mother hypothyroid; no sudden cardiac death or malignant hyperthermia in family. SHx never smoker, rare alcohol, software developer.\n\nArrival: RR 6, BP 88/56, HR 118. Responds to pain only. Respirations shallow and irregular. Pupils pinpoint and barely reactive. No signs of trauma.\n\nED course: bag-valve-mask support. Naloxone 0.4 mg IV, repeated once at 2 min. After the second dose RR 14, HR 104, BP 90/58; eyes open, answering questions, oriented. Remained hypotensive, SBP 86-92, despite improved mental status; given 0.9% NaCl boluses, 5 L total over about 5 h, with BP up to 106/64 by 03:10.\n\nLabs: arrival Na 140, Cl 104, HCO3 23. Serum ethanol, acetaminophen and salicylate undetectable. Urine drug screen positive for opiates, all other classes negative. Repeat at 03:15 after the saline: Na 142, Cl 117, HCO3 16, anion gap 9, venous pH 7.29 — non-gap hyperchloremic metabolic acidosis from the saline load. Switched to lactated Ringer's. 08:45: Cl 110, HCO3 21. BP 118/72 at 09:00.\n\nObserved overnight with no recurrent sedation after the last naloxone dose. Patient states this was recreational, a one-time thing, and he did not intend to hurt himself; denies SI. Social work saw him and provided outpatient resources.\n\nDiagnoses: 1) opioid overdose, unintentional; 2) hypotension, resolved with fluids; 3) hyperchloremic metabolic acidosis due to normal saline, improving.\n\nDisposition: discharged home 01/27 14:10 with a friend. Follow up with PCP within 2-3 days for repeat chemistry. Return for any confusion, trouble breathing, or fainting."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-28a",
+          "kind": "telephone",
+          "start": "2025-01-28T10:20",
+          "documents": [
+            {
+              "type": "Telephone encounter",
+              "title": "Post-ED call",
+              "date": "2025-01-28T10:20",
+              "author": "RN",
+              "body": "ED record from the weekend received this morning. Called pt. Says he feels \"basically fine, a little wiped out.\" Eating and drinking. No trouble breathing, no lightheadedness. Booked with PCP Thursday 1/30 at 4:00 for follow-up and repeat bloodwork. He sounded embarrassed; reassured him the visit is just to check in."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-30a",
+          "kind": "office_visit",
+          "start": "2025-01-30T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up",
+          "conditions": [
+            {
+              "label": "Poisoning by unspecified narcotics, accidental (unintentional), initial encounter",
+              "action": "resolved",
+              "onset": "2025-01-26",
+              "icd10": "T40.601A"
+            },
+            {
+              "label": "Hypotension, unspecified",
+              "action": "resolved",
+              "onset": "2025-01-26",
+              "icd10": "I95.9"
+            },
+            {
+              "label": "Hyperchloremic metabolic acidosis due to excess normal saline infusion",
+              "action": "resolved",
+              "onset": "2025-01-26",
+              "icd10": "E87.29"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "naloxone hydrochloride 40 MG/ML Nasal Spray",
+              "action": "start",
+              "sig": "For suspected opioid overdose: spray 1 dose (4 mg) into one nostril. Call 911. May repeat in the other nostril after 2-3 minutes if no response.",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Nasal",
+              "course": "chronic",
+              "reason": "Opioid overdose rescue"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              81
+            ],
+            "hr": 64,
+            "rr": 15,
+            "temp_c": 36.9,
+            "spo2": 99,
+            "weight_kg": 71.6
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-01-30T16:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-30T16:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-01-30T16:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2025-01-30T16:00",
+              "author": "PCP",
+              "body": "Seen after an ED stay 1/26-1/27 for an opioid overdose. Record reviewed. Briefly: found unresponsive, RR 6, BP 88/56, needed two doses of naloxone, then a lot of saline for low pressure, which left him with a non-gap acidosis (Cl 117, bicarb 16) that was improving on LR at discharge.\n\nHis account: a few friends were over at his apartment Sunday evening, someone had pills, he took several. Doesn't know what they were. Says he has never done this before and has no interest in doing it again. Not an attempt to harm himself; no thoughts of self-harm now or before. Doesn't use other drugs. Alcohol unchanged, rare.\n\nFeels back to normal since yesterday. Ran 3 easy miles this morning. No dizziness, breathing fine, eating and drinking normally.\n\nExam: alert, appropriate, a little sheepish. Heart regular, lungs clear. No IV site redness. Neuro nonfocal.\nPHQ-9 3.\n\nA/P:\n1. Opioid overdose, unintentional, recovered. Talked through harm reduction plainly: pills from friends are often fentanyl now, never use alone, naloxone in the apartment. Prescribed naloxone nasal spray and showed him how to use it; asked him to tell the friends where it is. Offered a referral to our behavioral health counselor, he'd rather not right now; door stays open.\n2. Hyperchloremic acidosis from saline. Repeat BMP today; expect normal.\n3. Hypotension resolved, BP fine today.\nCheck in by video in about 5 weeks."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-31a",
+          "kind": "portal_message",
+          "start": "2025-01-31T08:05",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Bloodwork from yesterday",
+              "date": "2025-01-31T08:05",
+              "author": "PCP",
+              "body": "Graham, your chemistry panel is back to normal — chloride and bicarbonate are right where they should be, kidneys normal. The acid-base problem from the ED fluids is gone. See you on video in March."
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Bloodwork from yesterday",
+              "date": "2025-01-31T12:30",
+              "author": "patient",
+              "body": "Great, thanks. Picked up the Narcan."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "telehealth_visit",
+          "start": "2025-03-04T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up check-in",
+          "documents": [
+            {
+              "type": "Telephone encounter",
+              "title": "Missed video visit",
+              "date": "2025-03-04T12:50",
+              "author": "front desk",
+              "body": "Pt did not join 12:30 video visit. Called x1, voicemail. Texted link to reschedule. Pt replied at 12:48 that he was stuck in a work meeting; rebooked for 3/11 at 12:30."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "telehealth_visit",
+          "start": "2025-03-11T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up check-in",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-03-11T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2025-03-11T12:30",
+              "author": "PCP",
+              "body": "Video, patient at home, ID confirmed by DOB.\n\nChecking in six weeks after the overdose. No use of any opioids or other drugs since. Mood good, sleeping well, work busy. Running again, building mileage back up.\n\nNaloxone is in his kitchen drawer; the friends who were there that night know where it is.\n\nA/P: doing well, no further use. Nothing new. Physical in September; message anytime."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "annual_physical",
+          "start": "2025-09-16T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              114,
+              68
+            ],
+            "hr": 65,
+            "rr": 15,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 70.7
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-16T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 178
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 110
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 118
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-16T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-16T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-16T08:00",
+              "author": "PCP",
+              "body": "Annual. Feels great. Ran a half in June, trained through the summer, signed up for a full marathon next July. No drug use since January; still has the naloxone, unopened. Alcohol rare, a couple of drinks a month at most.\n\nMeds: naloxone nasal spray PRN (not used). NKDA.\nFH and SH unchanged.\n\nExam: fit, well. BP and pulse normal. HEENT, neck, heart, lungs, abdomen normal. Skin no lesions of note. No edema.\nPHQ-2 0, AUDIT-C 1.\n\nA/P: healthy 28 y/o.\n- Lipids today.\n- Flu and COVID at the October nurse clinic.\n- Training talk for the July race: heat is the main hazard in a summer marathon. Acclimatize, start slower than he thinks, drink to thirst with electrolytes, and stop if he feels confused or stops sweating.\n- Return in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-17a",
+          "kind": "portal_message",
+          "start": "2025-09-17T14:10",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Cholesterol results",
+              "date": "2025-09-17T14:10",
+              "author": "PCP",
+              "body": "Lipid panel from yesterday is normal, Graham. Next check in a few years."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T17:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T17:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T17:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T17:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing note",
+              "title": "Nurse Visit — Immunizations",
+              "date": "2025-10-07T17:30",
+              "author": "RN",
+              "body": "Seasonal vaccines. No fever or illness. Screening negative. Influenza 0.5 mL IM L deltoid, COVID-19 0.3 mL IM R deltoid. Tolerated well. Last year: sore arm only."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "portal_message",
+          "start": "2026-05-19T09:12",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Vaccine record",
+              "date": "2026-05-19T09:12",
+              "author": "patient",
+              "body": "Hi, the marathon I'm running in July wants proof of a tetanus shot within 10 years for the medical waiver. Can you send me my immunization record? Thanks, Graham"
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Vaccine record",
+              "date": "2026-05-19T13:40",
+              "author": "MA",
+              "body": "Hi Graham, your immunization record is attached as a PDF. It shows your Tdap from 9/10/2024. Good luck in July!"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-12a",
+          "kind": "hospital_admission",
+          "start": "2026-07-12T10:50",
+          "end": "2026-07-16T13:30",
+          "service": "Critical Care",
+          "reason": "Collapse during marathon, hyperthermia",
+          "conditions": [
+            {
+              "label": "Exertional heatstroke, initial encounter",
+              "action": "diagnosed",
+              "onset": "2026-07-12",
+              "icd10": "T67.02XA"
+            },
+            {
+              "label": "Hypotension, unspecified",
+              "action": "diagnosed",
+              "onset": "2026-07-12",
+              "icd10": "I95.9"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-07-12T10:50",
+              "bp": [
+                88,
+                60
+              ],
+              "hr": 118,
+              "temp_c": 41.3
+            },
+            {
+              "time": "2026-07-12T11:20",
+              "temp_c": 38.9
+            },
+            {
+              "time": "2026-07-12T13:00",
+              "bp": [
+                112,
+                70
+              ]
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-12T11:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 160
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.52
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-12T11:00",
+              "results": [
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 42
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 2.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 720
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 640
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 43
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-12T11:00",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 2350
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-07-12T11:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-13T05:00",
+              "results": [
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 28
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.6
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 940
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 810
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 59
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 95
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-13T05:00",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 3100
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-16T05:30",
+              "results": [
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 164
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 298
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-16T05:30",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 640
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-16T05:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 171
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.45
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Physician Record",
+              "date": "2026-07-17T08:30",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department, date of service 07/12/2026.\n\n29M, marathon runner, brought in by race EMS after collapsing near mile 22 on a hot, humid morning. Bystanders say he was drenched in sweat, then started weaving and talking nonsense, then went down and did not get up.\n\nPrior: ED visit here January of last year for an opioid overdose; that stay was complicated by a hyperchloremic acidosis after large-volume normal saline, since resolved. No other history. Tonsillectomy as a child. No meds. NKDA. FHx: father HTN, mother hypothyroid; no sudden cardiac death or malignant hyperthermia. Never smoker, rare alcohol. Works as a software developer.\n\nArrival: T 41.3 °C (106.3 °F) rectal, HR 118, BP 88/60. Lethargic and confused, not following commands, withdraws to pain. Skin hot and dry. No head or other trauma. No rash, no neck stiffness, nothing to suggest infection.\n\nED course: immediate ice-water immersion; core temperature 38.9 °C at 25 minutes, then out of the tub. Lactated Ringer's, 3 L. BP 112/70 by 13:00.\n\nLabs on arrival: Hgb 13.9, WBC 13.4, plt 160; BUN 42, Cr 2.1; AST 720, ALT 640; CK 2,350. INR normal.\n\nImpression: exertional heat stroke with acute kidney and liver injury; hypotension. Admitted to ICU."
+            },
+            {
+              "type": "Discharge summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2026-07-17T08:30",
+              "author": "critical care",
+              "body": "Admitted 07/12/2026, discharged 07/16/2026. Medical ICU, then step-down.\n\nPrincipal diagnosis: exertional heat stroke.\nSecondary: hypotension, resolved; acute kidney injury and hepatocellular injury from heat stroke, both improving.\n\nCourse: arrived from the ED after cold-water immersion and 3 L LR, temperature 38.9 °C and falling. Mentation back to baseline within about 6 hours of arrival; oriented, no focal deficits. Normothermic for the rest of the stay. Pressure normal after fluids, no pressors. Balanced crystalloid used throughout given his prior saline-related acidosis.\n\nLabs:\n- Arrival 7/12: Cr 2.1, BUN 42, AST 720, ALT 640, CK 2,350, WBC 13.4, Hgb 13.9, plt 160.\n- 7/13: BUN 28, Cr 1.6, AST 940, ALT 810, CK 3,100 (peak transaminases and CK).\n- 7/16: Cr 1.1, BUN 16, AST 164, ALT 298, CK 640, WBC 8.2, Hgb 13.5, plt 171.\nUrine output good throughout. Moved to the step-down unit 7/14, walking the halls 7/15.\n\nDischarge meds: none new. Home naloxone nasal spray PRN unchanged.\nAllergies: NKDA.\n\nInstructions: no running or strenuous exercise until cleared by PCP. Avoid heat. Drink normally. No acetaminophen or alcohol until liver tests are normal. PCP visit within 1 week with CMP and CK."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-17a",
+          "kind": "telephone",
+          "start": "2026-07-17T10:05",
+          "documents": [
+            {
+              "type": "Telephone encounter",
+              "title": "Transition of care call",
+              "date": "2026-07-17T10:05",
+              "author": "RN",
+              "body": "Hospital records arrived this morning (ED and discharge summary, admitted 7/12-7/16 for heat stroke at the marathon). Called pt within 1 business day of discharge. Home, tired, legs sore, otherwise ok. Peeing normally, eating. No confusion, no fever. Understands no running for now. Not taking anything for the soreness; reminded no Tylenol or alcohol per discharge instructions. Booked TCM visit with PCP Tue 7/21 at 9:00, labs same day."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "office_visit",
+          "start": "2026-07-21T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, heat stroke",
+          "conditions": [
+            {
+              "label": "Hypotension, unspecified",
+              "action": "resolved",
+              "onset": "2026-07-12",
+              "icd10": "I95.9"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              131,
+              62
+            ],
+            "hr": 64,
+            "rr": 16,
+            "temp_c": 36.9,
+            "spo2": 99,
+            "weight_kg": 71.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-21T09:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 46
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 118
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 119
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-21T09:40",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 210
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-21T09:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 256
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-07-21T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-07-21T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2026-07-21T09:00",
+              "author": "PCP",
+              "body": "TCM visit, 5 days after discharge. Hospital records reviewed in full.\n\nRan the July marathon in the heat on 7/12 and collapsed late in the race. Core temp 41.3 on arrival, BP 88/60, confused. Ice-water immersion and fluids in the ED, then ICU. Cr peaked 2.1 on arrival, transaminases peaked 7/13 (AST 940 / ALT 810), CK 3,100. All improving by discharge 7/16 (Cr 1.1, AST 164, ALT 298, CK 640).\n\nNow: tired in the afternoons, legs much less sore. No confusion, headaches, or memory trouble that he notices. Urinating normally, no dark urine. Appetite fine. Has been working from home, half days. Not running. No Tylenol, no alcohol.\n\nMeds: naloxone nasal spray PRN, unchanged. NKDA.\n\nExam: well-appearing, a little tired. Afebrile, BP and HR normal. Heart regular, lungs clear. Abdomen soft, no RUQ tenderness, no hepatomegaly. No jaundice. Muscles not tender. Neuro: oriented, normal speech, gait steady, finger-nose normal.\n\nA/P:\n1. Exertional heat stroke, recovering. Kidney and liver injury resolving. CMP, CK, CBC today.\n2. Hypotension resolved.\n3. Activity: walking is fine. No running, gym or heat exposure until labs are normal and he feels back to himself; then a slow, graded return over several weeks, cool parts of the day first. Work note for reduced hours this week.\nFollow-up 3 weeks with labs."
+            },
+            {
+              "type": "Letter",
+              "title": "Work note",
+              "date": "2026-07-21T09:45",
+              "author": "PCP",
+              "body": "To whom it may concern: Graham Medeiros was hospitalized 07/12/2026 through 07/16/2026 and is under my care. He may work from home at reduced hours through 07/26/2026 and return to full duties on 07/27/2026. Please contact the office with questions."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-22a",
+          "kind": "portal_message",
+          "start": "2026-07-22T07:55",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Labs from yesterday",
+              "date": "2026-07-22T07:55",
+              "author": "PCP",
+              "body": "Graham — good news. Kidney function is back to normal (creatinine 0.9). The muscle enzyme CK is down to 210, nearly normal. Liver numbers are much better: AST 46 (almost normal), ALT 118 (still up but falling fast). Blood counts normal. Keep resting, still no running or Tylenol. We'll repeat in three weeks."
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Labs from yesterday",
+              "date": "2026-07-22T08:31",
+              "author": "patient",
+              "body": "Thanks. Is a stationary bike ok in the AC? Going a bit stir crazy."
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Labs from yesterday",
+              "date": "2026-07-22T12:10",
+              "author": "PCP",
+              "body": "Easy spinning, 20-30 minutes, indoors, conversational pace — fine. Stop if you feel off."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "office_visit",
+          "start": "2026-08-11T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Heat stroke follow-up, labs",
+          "conditions": [
+            {
+              "label": "Exertional heatstroke, initial encounter",
+              "action": "resolved",
+              "onset": "2026-07-12",
+              "icd10": "T67.02XA"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              72
+            ],
+            "hr": 62,
+            "rr": 14,
+            "temp_c": 36.3,
+            "spo2": 98,
+            "weight_kg": 70.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-08-11T08:20",
+              "resulted": "2026-08-11T14:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 36
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 119
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-11T08:20",
+              "resulted": "2026-08-11T14:30",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 142
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-08-11T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-11T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2026-08-11T09:00",
+              "author": "PCP",
+              "body": "F/u heat stroke, a month out. Labs drawn this morning before the visit, not back yet.\n\nEnergy back to normal over the last week or so. Full days at work since 7/27. Has done the bike a few times a week, 30 min, no symptoms. Wants to start running. No headaches, no confusion, sleeping fine. Last labs 7/21: Cr 0.9, CK 210, AST 46, ALT 118.\n\nExam: looks like himself. Vitals normal. Heart regular, lungs clear, abdomen benign, no jaundice. Neuro normal.\n\nA/P: exertional heat stroke, clinically recovered. If today's liver tests and CK are normal, ok to start running:\n- Week 1-2: 20-30 min easy, every other day, early morning or evening, cool weather or indoors.\n- Build by no more than about 10% a week; no races, speed work or hot-weather long runs for the rest of the summer.\n- Weigh before and after runs; drink to replace. Stop and cool off for dizziness, confusion, chills, or stopping sweating.\n- Any future summer race: acclimatize over 2 weeks first and talk with me before signing up.\nWill message results this afternoon."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-11b",
+          "kind": "portal_message",
+          "start": "2026-08-11T16:20",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Today's labs",
+              "date": "2026-08-11T16:20",
+              "author": "PCP",
+              "body": "All normal now: creatinine 0.9, AST 24, ALT 36, CK 142. You're cleared to start the easy running plan we talked about. Tylenol and the occasional drink are fine again."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-20a",
+          "kind": "portal_message",
+          "start": "2026-08-20T19:02",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "First runs",
+              "date": "2026-08-20T19:02",
+              "author": "patient",
+              "body": "Done four runs now, 20-25 minutes each at 6am, felt totally normal. Heart rate a little higher than usual for the pace. Is that expected? Ok to go to 35 min next week?"
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: First runs",
+              "date": "2026-08-20T21:15",
+              "author": "PCP",
+              "body": "Expected — you lost some fitness in a month off. Yes to 35 minutes if it still feels easy, keep the early start. See you at your physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T08:00",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Exertional heatstroke, initial encounter|T67.02XA": {
+        "code": "T67.02XA",
+        "display": "Exertional heatstroke, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hyperchloremic metabolic acidosis due to excess normal saline infusion|E87.29": {
+        "code": "E87.29",
+        "display": "Other acidosis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hypotension, unspecified|I95.9": {
+        "code": "I95.9",
+        "display": "Hypotension, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Poisoning by unspecified narcotics, accidental (unintentional), initial encounter|T40.601A": {
+        "code": "T40.601A",
+        "display": "Poisoning by unspecified narcotics, accidental (unintentional), initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "Acetaminophen [Mass/volume] in Serum or Plasma": {
+        "code": "3298-7",
+        "display": "Acetaminophen [Mass/volume] in Serum or Plasma",
+        "unit": "ug/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Opiates [Presence] in Urine by Screen method": {
+        "code": "19295-5",
+        "display": "Opiates [Presence] in Urine by Screen method",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Salicylates [Mass/volume] in Serum or Plasma": {
+        "code": "4024-6",
+        "display": "Salicylates [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "lab \"Ethanol [Mass/volume] in Serum or Plasma\" LOINC 5643-8 not found; closest real codes: 5643-2 Ethanol [Mass/volume] in Serum or Plasma; 35240-1 Ethanol [Mass or Moles/volume] in Serum or Plasma; 114065-6 Ethanol [Mass/volume] in Serum or Plasma by Mass Spectrometry; 114066-4 Ethanol [Mass/volume] in Serum or Plasma by Immunoassay; 14336-2 Ethanol [Mass/volume] in Serum or Plasma by Gas chromatography",
+      "lab \"pH of Venous blood\" LOINC 2746-2 not found; closest real codes: 2746-6 pH of Venous blood; 19213-8 pH of Mixed venous blood; 28647-6 pH of Venous cord blood; 97536-7 pH of Central venous blood; 39486-6 pH of Venous blood adjusted to patient's actual temperature"
+    ]
+  }
+}

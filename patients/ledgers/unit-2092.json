@@ -1,0 +1,3716 @@
+{
+  "unit": "unit-2092",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00002092/2024-12-02a: procedure \"Open reduction and internal fixation of right femoral shaft fracture\" not in catalog (text only, no CPT)",
+    "MRN00002092/2024-12-19a: allergen \"Succinylcholine\" not in catalog (text only)",
+    "MRN00002092/2024-12-19a: reaction \"Prolonged paralysis and apnea after anesthesia\" not in catalog (text only)"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002092",
+      "given": "Brett",
+      "family": "Coughlin",
+      "birth_date": "1979-05-24",
+      "address_line": "27 Shays Street, Amherst, MA 01002",
+      "phone": "+1-860-555-0117",
+      "email": "brett.coughlin@example.test",
+      "marital_status": "single",
+      "summary": "47-year-old construction site supervisor with obesity, chronic gallstone pancreatitis on enzymes and mitral valve prolapse who joined in 2024. Within two years: femoral shaft ORIF complicated by prolonged succinylcholine paralysis (pseudocholinesterase deficiency), viridans streptococcal mitral endocarditis after a dental extraction, and ARDS after elective cholecystectomy. Recovering at today with low albumin.",
+      "events": [
+        {
+          "id": "2024-08-27a",
+          "kind": "telephone",
+          "start": "2024-08-27T10:40",
+          "reason": "New patient registration",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient registration call",
+              "date": "2024-08-27T10:40",
+              "author": "front desk",
+              "body": "Caller wants to join the practice. Says his old doctor's office went to a big hospital system and he could never get a call back. Works construction, days are long, wants to be able to text. Membership info emailed. Insurance card photo received. Signed release faxed to prior PCP office for records. New patient visit booked 9/10 at 7:30am, his request (early, before site opens)."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-05a",
+          "kind": "outside_records",
+          "start": "2024-09-05T14:10",
+          "reason": "Prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records received from prior primary care office",
+              "date": "2024-09-05T14:10",
+              "author": "front desk",
+              "body": "Records scanned to chart from prior PCP office (covers roughly 2016-2024).\n\nSummary sheet from that office:\nProblems: obesity; chronic pancreatitis, gallstone related, on enzyme replacement, followed by an outside GI group in the past; mitral valve prolapse with mild mitral regurgitation on prior echo.\nMeds: pancrelipase 36,000 lipase units with meals and snacks; aspirin 81 mg daily; omeprazole 20 mg daily.\nAllergies: NKDA.\nSocial: former smoker.\nPrior screening noted: lipids and A1c normal on their last draw. No colon screening on file.\n\nFiled for PCP review."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "establish_care",
+          "start": "2024-09-10T07:30",
+          "end": "2024-09-10T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Obesity, unspecified",
+              "action": "history",
+              "onset": "2015-01-01",
+              "note": "BMI 34"
+            },
+            {
+              "label": "Chronic pancreatitis",
+              "action": "history",
+              "onset": "2018-01-01",
+              "note": "Gallstone related, gallbladder in place, on pancreatic enzymes"
+            },
+            {
+              "label": "Mitral valve prolapse",
+              "action": "history",
+              "onset": "2012-01-01",
+              "note": "Mild mitral regurgitation"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "history",
+              "onset": "2021-06-01",
+              "note": "Quit at 42, 12 pack-years"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "amylase 180000 UNT / lipase 36000 UNT / protease 114000 UNT Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth with each meal and with snacks",
+              "dose": {
+                "value": 36000,
+                "unit": "[USP'U]"
+              },
+              "frequency": "WITH MEALS AND SNACKS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Chronic pancreatitis"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Mitral valve prolapse"
+            },
+            {
+              "drug": "omeprazole 20 MG Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily before breakfast",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              77
+            ],
+            "hr": 61,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 96,
+            "weight_kg": 110.0,
+            "height_cm": 180.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-10T08:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 237
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.24
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-10T08:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.5
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-10T08:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 187
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 98
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 119
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 139
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T08:20",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T08:20",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction site supervisor"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "3-4 beers per week"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-09-10T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-10T08:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-10T08:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-10T08:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2024-09-10T07:30",
+              "author": "PCP",
+              "body": "45M here to set himself up with us; prior office records in chart.\n\nCC: establish care, no acute issues.\n\nHPI: Long history of gallstone pancreatitis that turned chronic. Takes Creon 36,000 with every meal and snack, says when he skips it he knows within an hour (greasy stools, cramping). Has not had a flare needing the hospital in a couple of years. Gallbladder is still in. Not sure why nobody took it out, says it came up once and he was busy. Omeprazole every morning. Told years ago he has a floppy mitral valve, knows his father has the same thing. Takes baby aspirin because a prior doctor told him to. No chest pain, palpitations, syncope. Climbs ladders and walks job sites all day without trouble.\n\nPMH: as above. No surgeries.\nMeds: pancrelipase 36,000 units lipase with meals/snacks, ASA 81 daily, omeprazole 20 daily.\nAllergies: NKDA.\nFH: father MVP. Mother had gallstones. Uncle on mom's side has chronic pancreatitis.\nSH: site supervisor for a commercial builder. Smoked about 12 pack-years, stopped at 42. 3-4 beers a week, no binge. Lives alone in Amherst. Rides a motorcycle in season.\n\nROS: weight stable, no abdominal pain currently, no steatorrhea on enzymes, no dyspnea, no edema.\n\nExam: vitals as charted, BMI 34. Pleasant, well appearing. Oropharynx clear, teeth in decent repair. Neck supple. Heart regular, mid-systolic click with a soft late systolic murmur at the apex, no gallop. Lungs clear. Abdomen obese, soft, nontender, no masses. No edema. Skin without rash.\n\nA/P:\n1. Chronic gallstone pancreatitis, on enzymes - stable. Continue Creon, omeprazole. CMP today. Will revisit whether surgery should look at the gallbladder once I know him better.\n2. MVP with mild MR - exam matches. Continue aspirin as he has been.\n3. Obesity, BMI 34 - talked briefly about food and activity, he is not interested in medication now.\n4. Former smoker - 12 pk-yr, does not meet lung screening.\n5. Health maintenance: flu shot today. Hep C and HIV screening today. Lipids, A1c. Colon screening due - we will set up a FIT at his physical in the spring, he prefers that to colonoscopy.\n\nRTC spring for physical, sooner prn. Gave him my cell."
+            }
+          ],
+          "state": {
+            "weight_kg": 110.5,
+            "height_cm": 180.3,
+            "labs": {
+              "Albumin": 3.6,
+              "Hemoglobin A1c": 5.4,
+              "Total Cholesterol": 184
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "portal_message",
+          "start": "2024-09-12T17:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2024-09-12T17:05",
+              "author": "PCP",
+              "body": "Brett, everything from Tuesday came back fine. Blood counts, kidney and liver numbers, sugar and cholesterol all where they should be, and the hepatitis C and HIV screens are negative. Nothing to change. See you in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-07a",
+          "kind": "pharmacy",
+          "start": "2024-10-07T11:20",
+          "reason": "Prior authorization",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Pancrelipase prior authorization",
+              "date": "2024-10-07T11:20",
+              "author": "MA",
+              "body": "Pharmacy says new plan year requires PA for Creon 36,000. Submitted with dx chronic pancreatitis, dose with meals and snacks, long-standing use per prior records. Approved same day for 12 months. Pharmacy notified, patient texted."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-21a",
+          "kind": "portal_message",
+          "start": "2024-10-21T19:30",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-19T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Covid shot",
+              "date": "2024-10-21T19:30",
+              "author": "patient",
+              "body": "FYI got the new covid shot at the drugstore Saturday. Arm sore, otherwise fine."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Covid shot",
+              "date": "2024-10-22T08:15",
+              "author": "MA",
+              "body": "Thanks Brett, added to your record."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-02a",
+          "kind": "hospital_admission",
+          "start": "2024-12-02T16:40",
+          "end": "2024-12-07T12:30",
+          "service": "Orthopedic Surgery",
+          "reason": "Right femoral shaft fracture after motorcycle collision",
+          "conditions": [
+            {
+              "label": "Fracture of shaft of right femur, closed",
+              "action": "diagnosed",
+              "onset": "2024-12-02",
+              "icd10": "S72.301A"
+            },
+            {
+              "label": "Hypoalbuminemia",
+              "action": "diagnosed",
+              "onset": "2024-12-02",
+              "icd10": "E88.09"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1-2 tablets by mouth every 6 hours as needed for severe pain",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Postoperative pain"
+            },
+            {
+              "drug_text": "0.4 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
+              "action": "historical",
+              "sig": "Inject 40 mg under the skin once daily for 28 days",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Subcutaneous",
+              "course": "short",
+              "reason": "VTE prophylaxis after femur fixation"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-02T17:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 207
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.14
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.6
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-02T17:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-12-03T05:30",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 2.9
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.06
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 88
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Open reduction and internal fixation of right femoral shaft fracture",
+              "performed": "2024-12-02T19:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary - Orthopedic Surgery",
+              "date": "2024-12-09T09:45",
+              "author": "orthopedic surgery",
+              "body": "Regional hospital, orthopaedic trauma service\nAdmitted 12/02/2024, discharged 12/07/2024\n\nDiagnosis: closed right femoral shaft fracture, motorcycle collision.\nProcedure 12/02/2024: open reduction and internal fixation, right femoral shaft.\n\nPresentation: 45-year-old man brought in after a motorcycle collision with severe right thigh pain, obvious deformity, unable to stand. Alert and oriented, hemodynamically stable, in considerable pain. Imaging confirmed a right femoral shaft fracture. No other injuries identified on trauma survey. Taken to the OR the same evening.\n\nAnesthesia event: rapid sequence intubation with propofol and succinylcholine. Fasciculations of the face and chest were seen within seconds, followed by complete paralysis as expected. Fixation proceeded uneventfully. However, more than an hour after anesthetic agents were stopped, the patient had no spontaneous respiratory effort and no movement. Vital signs remained stable throughout. Repeat neurologic examination showed flaccid paralysis that was not explained by residual sedation. The anesthesia team felt this pointed to an underlying metabolic or genetic cause and suspected plasma (pseudo)cholinesterase deficiency. He was kept intubated, sedated and ventilated in recovery until neuromuscular function returned, and was extubated that night without difficulty. Plasma cholinesterase activity and dibucaine number were sent 12/04; results will be forwarded by the anesthesia department.\n\nHospital course: pain controlled on oral regimen. Albumin 2.9 on 12/03, noted as hypoalbuminemia; diet advanced, enzymes resumed with meals. Mobilized with PT, walker, weight bearing as tolerated on the right. Enoxaparin for VTE prophylaxis.\n\nHome medications continued: pancrelipase with meals and snacks, aspirin 81 mg, omeprazole 20 mg.\nNew: oxycodone-acetaminophen 5/325, 1-2 tabs q6h prn; enoxaparin 40 mg subcut daily x 28 days.\nAllergies: NKDA on admission. Anesthesia alert: prolonged paralysis after succinylcholine - avoid pending results.\n\nFollow-up: orthopaedics clinic 2 weeks, outpatient PT, primary care within 1-2 weeks."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Albumin": 2.9
+            }
+          }
+        },
+        {
+          "id": "2024-12-09a",
+          "kind": "telephone",
+          "start": "2024-12-09T13:20",
+          "reason": "Post-discharge outreach",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2024-12-09T13:20",
+              "author": "RN",
+              "body": "Called pt 2 days after discharge from regional hospital (R femur ORIF 12/2). Home, getting around with walker. Pain moderate, taking oxycodone-APAP about 3x/day. Doing his own enoxaparin shots, no bleeding. Eating, taking Creon. Bowels slow, suggested OTC senna. No fever, no calf pain, no SOB. TCM visit booked Thu 12/12 - he has a ride."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-12a",
+          "kind": "office_visit",
+          "start": "2024-12-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after femur fixation",
+          "vitals": {
+            "bp": [
+              116,
+              78
+            ],
+            "hr": 65,
+            "rr": 14,
+            "temp_c": 36.9,
+            "spo2": 97
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-12T10:35",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 232
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.02
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-12-12T10:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2024-12-12T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-12-12T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "date": "2024-12-12T10:00",
+              "author": "PCP",
+              "body": "Seen 10 days after a motorcycle crash: closed R femoral shaft fracture, ORIF 12/2 at the regional hospital, home 12/7. Discharge summary reviewed.\n\nThe anesthesia part is the bigger issue long term. He got succinylcholine for RSI and stayed paralyzed well over an hour after the case, kept on the vent until it wore off, extubated that night. Anesthesia suspects pseudocholinesterase deficiency and sent levels; not back yet. He remembers nothing of it, was told about it the next morning. Also albumin 2.9 inpatient.\n\nNow: walking with walker, WBAT. Pain improving, oxycodone-APAP 2-3 a day. Enoxaparin daily, no bruising beyond injection sites. Eating ok, Creon with meals. Constipated, senna helping.\n\nMeds: pancrelipase w/ meals and snacks, ASA 81, omeprazole 20, oxycodone-APAP 5/325 prn, enoxaparin 40 daily through ~12/30.\nAllergies: NKDA; succinylcholine reaction pending workup.\n\nExam: vitals as charted, afebrile. Uncomfortable getting onto the table but ok. Heart regular with his usual click/soft apical murmur. Lungs clear. R lateral thigh incision clean, dry, staples in, no erythema. Calves soft, nontender. Distal pulses intact, sensation intact.\n\nA/P:\n1. R femoral shaft fracture s/p ORIF - healing course per ortho, f/u 12/23. PT started. Taper oxycodone as able; no refill planned.\n2. VTE prophylaxis - finish 28 days enoxaparin.\n3. Prolonged paralysis after succinylcholine - await cholinesterase results. Flagged in chart now as an anesthesia alert.\n4. Hypoalbuminemia - recheck today. Push protein, keep enzymes with every meal and snack.\n5. Work - off duty until cleared by ortho; note given."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Albumin": 3.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2024-12-13a",
+          "kind": "portal_message",
+          "start": "2024-12-13T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-12-13T16:40",
+              "author": "PCP",
+              "body": "Hi Brett - your blood counts are fine and kidneys are fine. Albumin (a protein made by the liver that drops when you're sick or not absorbing food well) is 3.1, a little better than in the hospital but still low. Keep the Creon with every meal and snack and aim for protein at each meal - eggs, chicken, Greek yogurt, a shake if you're not hungry. We'll recheck it in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-19a",
+          "kind": "outside_records",
+          "start": "2024-12-19T09:10",
+          "reason": "Anesthesia letter with cholinesterase results",
+          "conditions": [
+            {
+              "label": "Pseudocholinesterase deficiency",
+              "action": "diagnosed",
+              "onset": "2024-12-02",
+              "icd10": "E88.09"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Succinylcholine",
+              "reaction": "Prolonged paralysis and apnea after anesthesia",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "intolerance"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Letter from Department of Anesthesiology",
+              "date": "2024-12-19T09:10",
+              "author": "anesthesiology",
+              "body": "Re: Brett Coughlin, DOB 05/24/1979\n\nDear Doctor,\n\nYour patient had prolonged neuromuscular blockade after succinylcholine during emergency fixation of a right femoral shaft fracture on 12/02/2024, requiring postoperative ventilation for several hours. Plasma cholinesterase testing drawn 12/04/2024 has resulted:\n\nPlasma cholinesterase activity: 1,850 U/L (reference 5,320-12,920)\nDibucaine number: 21 (reference 79-87)\n\nThe low activity with a markedly reduced dibucaine number is the pattern of the homozygous atypical variant, i.e. inherited pseudocholinesterase deficiency. He should not receive succinylcholine or mivacurium; other neuromuscular blockers and ester local anesthetics in usual doses are generally acceptable, with the anesthesia team informed. We recommend he carry a medical alert card or bracelet and tell every future anesthesia team. Blood relatives may wish to be tested.\n\nWe have spoken with Mr. Coughlin by phone and mailed him a letter and alert card.\n\nAllergies/alerts updated in our record: succinylcholine (prolonged apnea).\n\nSincerely,\nDepartment of Anesthesiology, regional hospital"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-20a",
+          "kind": "portal_message",
+          "start": "2024-12-20T07:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Anesthesia results",
+              "date": "2024-12-20T07:50",
+              "author": "PCP",
+              "body": "Brett, I got the anesthesia letter. The tests confirm what they suspected: you have an inherited form of pseudocholinesterase deficiency. Your body can't break down one specific paralytic drug (succinylcholine) normally, which is why you stayed paralyzed after surgery. It doesn't affect your day to day health at all. It matters only if you ever need anesthesia: anyone putting you to sleep needs to know so they use a different drug. I've put it at the top of your chart as a high-priority alert. Please wear a medical alert bracelet, and since it runs in families, your parents or any siblings could ask their doctors about testing."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Anesthesia results",
+              "date": "2024-12-20T12:31",
+              "author": "patient",
+              "body": "Thanks doc. They called me too. Ordered a bracelet. Will tell my folks."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-23a",
+          "kind": "specialist_visit",
+          "start": "2024-12-23T13:00",
+          "service": "Orthopedic Surgery",
+          "reason": "2-week postoperative visit",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopaedic Trauma Clinic - Postoperative Visit",
+              "date": "2024-12-26T15:20",
+              "author": "orthopedic surgery",
+              "body": "Orthopaedic trauma clinic, regional hospital. Visit 12/23/2024.\n\n45M, 3 weeks s/p ORIF R femoral shaft fracture (12/02/2024). Doing well. Pain controlled, using oxycodone rarely. Ambulating with walker.\n\nExam: incision healed, staples removed, steri-strips applied. No erythema or drainage. Thigh soft. Knee flexion coming along. NVI distally.\nX-rays R femur 2 views: hardware intact, alignment maintained, fracture line still visible as expected.\n\nPlan: WBAT, progress to cane as tolerated. Continue PT. Finish enoxaparin course. Return 4-5 weeks with X-rays. Off work for now.\n\nAllergies: succinylcholine (prolonged apnea)."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-06a",
+          "kind": "telephone",
+          "start": "2025-01-06T09:15",
+          "reason": "Medication check",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Medication check-in",
+              "date": "2025-01-06T09:15",
+              "author": "RN",
+              "body": "Called pt. Finished enoxaparin 12/30, no problems. Stopped oxycodone-APAP about a week ago, using plain Tylenol after PT. Has leftover tabs - gave him drop-off info for the police station kiosk. Walking with a cane in the house now. PT 2x/week. Ortho f/u 1/27."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-27a",
+          "kind": "specialist_visit",
+          "start": "2025-01-27T14:20",
+          "service": "Orthopedic Surgery",
+          "reason": "6-week postoperative visit",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopaedic Trauma Clinic - Follow-up",
+              "date": "2025-01-30T11:05",
+              "author": "orthopedic surgery",
+              "body": "Orthopaedic trauma clinic, regional hospital. Visit 01/27/2025.\n\nSeen ~8 weeks after fixation of R femoral shaft fracture. Off narcotics. Walking with a cane outdoors, none at home.\n\nExam: incision well healed. Hip and knee motion functional. NVI.\nX-rays: bridging callus forming, hardware unchanged in position.\n\nPlan: full weight bearing, wean cane, continue PT with strengthening. May return to desk/site-office duties; no ladders, no scaffolding, no lifting heavier than light loads until next visit. Return 8 weeks.\n\nAllergies/alerts: succinylcholine - prolonged apnea (pseudocholinesterase deficiency)."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-18a",
+          "kind": "portal_message",
+          "start": "2025-02-18T20:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "date": "2025-02-18T20:12",
+              "author": "patient",
+              "body": "Running low on Creon and the omeprazole. Same pharmacy. Thanks"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "date": "2025-02-19T08:40",
+              "author": "MA",
+              "body": "Both sent, 90 days with refills. Creon PA is good through October."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-24a",
+          "kind": "specialist_visit",
+          "start": "2025-03-24T10:40",
+          "service": "Orthopedic Surgery",
+          "reason": "Fracture follow-up",
+          "conditions": [
+            {
+              "label": "Fracture of shaft of right femur, closed",
+              "action": "resolved",
+              "onset": "2024-12-02",
+              "icd10": "S72.301A"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopaedic Trauma Clinic - Final Visit",
+              "date": "2025-03-27T16:00",
+              "author": "orthopedic surgery",
+              "body": "Orthopaedic trauma clinic, regional hospital. Visit 03/24/2025.\n\n16 weeks out from R femoral shaft ORIF. No pain with walking, no limp. Back at work full time, says he has been careful on ladders.\n\nExam: full hip and knee range, quad strength now symmetric. Incision healed.\nX-rays: fracture united, hardware intact, no loosening.\n\nAssessment: healed right femoral shaft fracture.\nPlan: discharged from PT. No restrictions. Hardware stays unless it bothers him. Follow up with us as needed.\n\nCc: primary care."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-14a",
+          "kind": "annual_physical",
+          "start": "2025-04-14T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              118,
+              75
+            ],
+            "hr": 55,
+            "rr": 15,
+            "temp_c": 36.1,
+            "spo2": 97,
+            "weight_kg": 111.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-14T08:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 276
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.22
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-04-14T08:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-04-14T08:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 186
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 92
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 117
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 135
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-14T08:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-04-14T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-04-14T08:15"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-04-14T08:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-04-14T08:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "Colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-04-14T07:30",
+              "author": "PCP",
+              "body": "Annual exam. Brett is back at full duty since late March, ortho released him. Leg feels normal.\n\nInterval: R femur ORIF 12/2024, healed. Pseudocholinesterase deficiency confirmed (homozygous atypical) after the succinylcholine event - wears the bracelet, showed me. Albumin 3.1 in Dec.\n\nGI: taking enzymes faithfully, stools formed, no abdominal pain, no flares. Eating more protein, mostly shakes at lunch.\nCV: no chest pain, no palpitations, no dyspnea on stairs or ladders.\n\nMeds: Creon 36,000 w/ meals + snacks, ASA 81, omeprazole 20.\nAllergies/alerts: succinylcholine - prolonged paralysis (pseudocholinesterase deficiency).\nSH: unchanged. Former smoker. Beers on weekends. Back on the motorcycle - we talked about gear.\n\nExam: vitals as charted, weight unchanged. Well appearing. HEENT normal, dentition fine. Neck no nodes, thyroid normal. Heart regular, apical click and soft late systolic murmur same as before. Lungs clear. Abd obese, soft, nontender. R thigh scar well healed, full strength. No edema. Skin ok.\n\nA/P:\n1. Health maintenance - Tdap today. FIT kit given, he will mail it back this week. Labs: CBC, CMP, lipids, A1c. PHQ-9 2.\n2. Hypoalbuminemia - recheck today.\n3. Chronic gallstone pancreatitis - stable on enzymes. Gallbladder still in situ; he wants to get through the building season before thinking about surgery. Revisit in the fall.\n4. MVP, mild MR - unchanged exam.\n5. Pseudocholinesterase deficiency - documented as high-priority alert.\n6. Obesity - stable.\n\nRTC 2 months for a check on albumin and weight."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Albumin": 3.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-15a",
+          "kind": "portal_message",
+          "start": "2025-04-15T18:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2025-04-15T18:20",
+              "author": "PCP",
+              "body": "Labs look good. Albumin up to 3.4 - still just under normal but heading the right way. Cholesterol and sugar normal, blood counts and liver tests normal. Keep doing what you're doing with the protein."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-28a",
+          "kind": "lab_only",
+          "start": "2025-04-28T11:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-04-24T06:30",
+              "resulted": "2025-04-28T11:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "done",
+              "date": "2025-04-28T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "date": "2025-04-28T14:05",
+              "author": "PCP",
+              "body": "FIT negative. Repeat in one year. Message sent to patient."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-16a",
+          "kind": "office_visit",
+          "start": "2025-06-16T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up albumin and weight",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2025-06-13T16:45",
+              "author": "front desk",
+              "body": "Pt texted to cancel Monday 7:30. Concrete pour moved up, has to be on site. Will reschedule for the fall, says he feels fine. PCP aware."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-07-30a",
+          "kind": "portal_message",
+          "start": "2025-07-30T21:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Fevers",
+              "date": "2025-07-30T21:48",
+              "author": "patient",
+              "body": "Doc, been running fevers on and off for about 2 weeks, chills and soaking the sheets some nights. Wiped out by mid afternoon which isn't me. No cough no burning when I pee. Thought it was a summer bug but it's not going away. Had a tooth pulled a few weeks ago if that matters."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Fevers",
+              "date": "2025-07-30T22:05",
+              "author": "PCP",
+              "body": "It matters, given your valve. I want to see you Friday first thing, 7:30. If you get a fever over 102, shaking chills, chest pain or short of breath before then, go to the ED and text me."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-01a",
+          "kind": "office_visit",
+          "start": "2025-08-01T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fevers and night sweats",
+          "vitals": {
+            "bp": [
+              128,
+              70
+            ],
+            "hr": 100,
+            "rr": 14,
+            "temp_c": 38.3,
+            "spo2": 98,
+            "weight_kg": 111.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2025-08-01T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-day Visit - Fever",
+              "date": "2025-08-01T07:30",
+              "author": "PCP",
+              "body": "46M with MVP/mild MR here for ~2 wk of intermittent fevers, night sweats and fatigue. Dental extraction about 3 weeks ago. No cough, dysuria, diarrhea, rash, joint pain, travel. No IV drug use.\n\nExam: T 38.3, HR 100, otherwise vitals as charted. Tired, not toxic. Mouth: extraction site healed. Heart: there is a new holosystolic blowing murmur at the apex radiating into the axilla, clearly louder and longer than the soft late systolic murmur I have documented before. No rub. Lungs clear. Abd soft. No splinter hemorrhages or conjunctival petechiae that I can see. No edema.\n\nA/P: Fever with a new regurgitant murmur after a dental extraction in a patient with MVP - endocarditis until proven otherwise. He needs blood cultures before any antibiotic and an echo today. Sent directly to the regional hospital ED, called ahead and spoke with the ED physician. No antibiotics given here. He is driving himself - discussed, he insists, it is 10 minutes."
+            }
+          ],
+          "measure": [
+            "bp",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-01b",
+          "kind": "ed_visit",
+          "start": "2025-08-01T08:20",
+          "end": "2025-08-01T14:10",
+          "service": "Emergency Medicine",
+          "reason": "Fever and new heart murmur",
+          "conditions": [
+            {
+              "label": "Infective endocarditis of mitral valve",
+              "action": "diagnosed",
+              "onset": "2025-07-15",
+              "icd10": "I33.0"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-08-01T08:30",
+              "bp": [
+                130,
+                85
+              ],
+              "hr": 102,
+              "temp_c": 38.5
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-01T08:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.18
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-01T08:45",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 45
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-01T08:50",
+              "resulted": "2025-08-02T06:10",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "Positive, 3 of 3 sets: viridans group streptococci. Penicillin MIC 0.06 mcg/mL (susceptible); ceftriaxone susceptible."
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-08-01T11:30",
+              "text": "Indication: fever, new murmur. Normal left ventricular size and systolic function. Mitral valve prolapse. A mobile echodensity consistent with vegetation is attached to the mitral valve. Mild mitral regurgitation. Aortic valve trileaflet, opens normally, no vegetation. Right heart normal. No pericardial effusion.",
+              "conclusion": "Vegetation on the mitral valve consistent with infective endocarditis in the setting of mitral valve prolapse."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-08-01T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-08-04T10:30",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Date of service 08/01/2025.\n\nCC: fevers x2 weeks, new murmur, sent in by PCP.\n\nHPI: 46-year-old man with chronic pancreatitis from gallstones and a prolapsing mitral valve with mild MR, prior right femur ORIF, referred by his primary care physician after two weeks of on-and-off fevers, night sweats and fatigue, with a newly heard murmur. Had a tooth extracted about three weeks ago. No recent travel. Denies intravenous drug use.\n\nPMH: as above; hypoalbuminemia; pseudocholinesterase deficiency.\nMeds: pancrelipase with meals and snacks, aspirin 81 mg, omeprazole 20 mg.\nAllergies: succinylcholine (prolonged apnea).\n\nVitals: T 38.5 C, HR 102, BP 130/85.\nExam: dentition in good repair, no dental abscess or gum infection. Cardiac: high-pitched blowing systolic murmur loudest at the apex, radiating to the left axilla. Lungs clear. No peripheral stigmata noted.\n\nLabs: WBC 12.0, Hgb 13.2, Plt 250. ESR 45. Blood cultures x3 drawn before antibiotics.\nFormal TTE: vegetation on the mitral valve.\n\nMDM: presumed native mitral valve endocarditis after dental extraction. Cardiology and ID notified. Ceftriaxone 2 g IV given after cultures.\nDisposition: admitted to medicine."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-01c",
+          "kind": "hospital_admission",
+          "start": "2025-08-01T14:10",
+          "end": "2025-08-07T13:00",
+          "service": "Internal Medicine",
+          "reason": "Infective endocarditis",
+          "medications": [
+            {
+              "drug_text": "ceftriaxone 2000 MG Injection",
+              "action": "historical",
+              "sig": "2 g IV every 24 hours through 08/28/2025",
+              "dose": {
+                "value": 2,
+                "unit": "g"
+              },
+              "frequency": "Q24H",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "Viridans streptococcal mitral valve endocarditis"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-02T05:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Albumin",
+                  "value": 2.8
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 83
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-03T06:00",
+              "resulted": "2025-08-08T06:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary - Medicine",
+              "date": "2025-08-11T09:20",
+              "author": "hospital medicine",
+              "body": "Regional hospital, medicine service\nAdmitted 08/01/2025, discharged 08/07/2025\n\nPrincipal diagnosis: native mitral valve infective endocarditis, viridans group streptococci, following dental extraction.\nOther: mitral valve prolapse with mild MR; chronic gallstone pancreatitis on enzymes; hypoalbuminemia; obesity; pseudocholinesterase deficiency.\n\nCourse: Admitted from ED with fever and a new apical murmur; TTE showed a mitral valve vegetation. All three admission blood culture sets grew viridans group streptococci, penicillin MIC 0.06. Ceftriaxone 2 g IV q24h continued from the ED. Defervesced on hospital day 2. Surveillance cultures 08/03 no growth. Infectious disease and cardiology consulted; TEE not pursued given a diagnostic TTE and no clinical sign of perivalvular extension; no surgical indication identified. Dental evaluation found good oral hygiene with no ongoing source. Albumin 2.8 on 08/02. PICC placed 08/05 (right basilic) without complication.\n\nDischarge plan: ceftriaxone 2 g IV every 24 hours through 08/28/2025 via home infusion; weekly CBC and BMP to ID clinic; ID clinic visit in about 2 weeks; repeat TTE at end of therapy with cardiology; PCP within one week.\nHome medications unchanged: pancrelipase, aspirin 81 mg, omeprazole 20 mg.\nAllergies/alerts: succinylcholine (pseudocholinesterase deficiency)."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Albumin": 2.8
+            }
+          }
+        },
+        {
+          "id": "2025-08-08a",
+          "kind": "telephone",
+          "start": "2025-08-08T15:30",
+          "reason": "Post-discharge outreach",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2025-08-08T15:30",
+              "author": "RN",
+              "body": "Home since yesterday. Home infusion nurse came this morning, ceftriaxone running fine through PICC, he's been taught to flush. No fever since the hospital. Tired. PICC site clean, no arm swelling. Labs will be drawn Mondays by the infusion nurse. TCM visit Tue 8/12 confirmed. Work note requested - off through the end of antibiotics, PCP to sign."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-11a",
+          "kind": "lab_only",
+          "start": "2025-08-11T08:00",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-11T08:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 276
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.82
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-08-11T08:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 13.6
+            }
+          }
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "office_visit",
+          "start": "2025-08-12T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, endocarditis",
+          "vitals": {
+            "bp": [
+              121,
+              74
+            ],
+            "hr": 68,
+            "rr": 15,
+            "temp_c": 37.0,
+            "spo2": 97,
+            "weight_kg": 106.8
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-08-12T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "date": "2025-08-12T08:00",
+              "author": "PCP",
+              "body": "TCM visit after admission 8/1-8/7 for viridans strep mitral valve endocarditis (3/3 cultures, PCN MIC 0.06), sent in from here the day he presented. Repeat cultures 8/3 no growth. On ceftriaxone 2 g IV daily via R arm PICC through 8/28. ID following; echo again at end of therapy.\n\nFeels better each day, sleeping through without sweats. Appetite coming back. Down about 3.5 kg from his usual. No fevers at home. No chest pain or breathlessness.\n\nMeds: ceftriaxone 2 g IV q24h (home infusion), Creon w/ meals and snacks, ASA 81, omeprazole 20.\nAllergies/alerts: succinylcholine.\n\nExam: afebrile, vitals as charted. Looks less washed out. Heart regular, holosystolic apical murmur radiating to axilla, unchanged from 8/1. Lungs clear. PICC R upper arm clean, no tenderness, no arm swelling. No edema.\n\nLabs 8/11 from home infusion: WBC now normal, renal function and potassium normal.\n\nA/P:\n1. Mitral valve IE on ceftriaxone - responding. Complete course 8/28. Weekly labs. ID f/u.\n2. Hypoalbuminemia - 2.8 inpatient; will recheck after antibiotics are done.\n3. Weight loss from the illness - expect it to come back.\n4. Work - off through end of therapy, note signed.\n5. Will talk about dental prophylaxis going forward once he is off IV antibiotics."
+            }
+          ],
+          "state": {
+            "weight_kg": 107.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-18a",
+          "kind": "lab_only",
+          "start": "2025-08-18T08:10",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-18T08:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 280
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-08-18T08:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.03
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 14.0
+            }
+          }
+        },
+        {
+          "id": "2025-08-21a",
+          "kind": "specialist_visit",
+          "start": "2025-08-21T13:40",
+          "service": "Infectious Disease",
+          "reason": "Endocarditis follow-up on IV antibiotics",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Clinic Note",
+              "date": "2025-08-22T10:15",
+              "author": "infectious disease",
+              "body": "Infectious disease clinic, regional hospital. Visit 08/21/2025.\n\nDear Doctor,\n\nThank you for following Mr. Coughlin with us. He is on day 21 of ceftriaxone for native mitral valve endocarditis due to viridans group streptococci (PCN MIC 0.06), after a dental extraction. Cultures cleared by 08/03.\n\nHe is afebrile and feels close to normal. No rash, no diarrhea. PICC site clean. Weekly labs reviewed and unremarkable.\n\nExam: well appearing. Apical systolic murmur radiating to the axilla. No embolic phenomena. No PICC site erythema.\n\nPlan: complete ceftriaxone 2 g daily through 08/28/2025, then home infusion will pull the PICC after the final dose. End-of-therapy TTE with cardiology. He now meets criteria for antibiotic prophylaxis before dental procedures that manipulate gingiva, given prior endocarditis; we would suggest amoxicillin 2 g orally 30-60 minutes beforehand. No routine follow-up needed with us unless fever recurs.\n\nAllergies/alerts: succinylcholine (pseudocholinesterase deficiency)."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-25a",
+          "kind": "lab_only",
+          "start": "2025-08-25T08:05",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-25T08:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 251
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.68
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-08-25T08:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 14.3
+            }
+          }
+        },
+        {
+          "id": "2025-09-03a",
+          "kind": "portal_message",
+          "start": "2025-09-03T07:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Line out",
+              "date": "2025-09-03T07:10",
+              "author": "patient",
+              "body": "Last bag was the 28th, nurse pulled the PICC yesterday. Arm's fine. Can I go back to work Monday? Need a note for the company."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Line out",
+              "date": "2025-09-03T12:30",
+              "author": "PCP",
+              "body": "Great news. Yes, back Monday, full duty. Note attached. Take it a little easy the first week - your stamina will lag behind how you feel. Echo with cardiology is coming up in October."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-08a",
+          "kind": "portal_message",
+          "start": "2025-09-08T18:45",
+          "medications": [
+            {
+              "drug": "amoxicillin 500 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 4 capsules (2 g) by mouth 30-60 minutes before dental procedures",
+              "dose": {
+                "value": 2000,
+                "unit": "mg"
+              },
+              "frequency": "ONCE PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Endocarditis prophylaxis before dental procedures"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Dentist",
+              "date": "2025-09-08T18:45",
+              "author": "patient",
+              "body": "Dentist wants to see me for a cleaning and says I need antibiotics first now? Is that right"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Dentist",
+              "date": "2025-09-08T19:20",
+              "author": "PCP",
+              "body": "Yes, that's right now that you've had endocarditis. Before any dental work, including cleanings, take 4 amoxicillin capsules (2 grams total) 30 to 60 minutes before the appointment. I've sent a prescription to your pharmacy with refills so you always have a dose at home. Let the dentist know about the bracelet too, in case they ever sedate you."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-29a",
+          "kind": "office_visit",
+          "start": "2025-09-29T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after endocarditis",
+          "vitals": {
+            "bp": [
+              121,
+              83
+            ],
+            "hr": 64,
+            "rr": 15,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 106.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-29T08:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 259
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.77
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-29T08:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-09-29T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-29T08:05"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-29T08:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-29T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-09-29T07:30",
+              "author": "PCP",
+              "body": "F/u. Finished 4 wk ceftriaxone 8/28 for mitral valve IE, PICC out 9/2. Back to full duty 9/8. Energy most of the way back. No fevers, no sweats. Had his dental cleaning with amoxicillin beforehand, no issues.\n\nGI: enzymes with meals, no pain, stools ok.\n\nMeds: Creon 36,000 w/ meals + snacks, ASA 81, omeprazole 20, amoxicillin 2 g before dental work.\nAllergies/alerts: succinylcholine.\n\nExam: vitals as charted. Well. Heart regular, apical systolic murmur radiating to the axilla, same as August. Lungs clear. Abd soft, nontender. Old PICC site healed. No edema.\n\nA/P:\n1. Mitral valve IE, treated - TTE with cardiology 10/20.\n2. Hypoalbuminemia - recheck today.\n3. Chronic gallstone pancreatitis - stable. Raised cholecystectomy again; he would rather do it in winter when work slows. Will plan referral in January.\n4. Flu shot today.\n5. Covid booster - will get at pharmacy.\n\nRTC January."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Albumin": 3.1,
+              "Hemoglobin": 15.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "portal_message",
+          "start": "2025-09-30T17:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2025-09-30T17:10",
+              "author": "PCP",
+              "body": "Counts normal, kidney and liver normal. Albumin 3.1 - dipped with the infection, as expected. We'll keep an eye on it in January."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "pharmacy",
+          "start": "2025-10-14T10:05",
+          "reason": "Prior authorization renewal",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Pancrelipase prior authorization renewal",
+              "date": "2025-10-14T10:05",
+              "author": "MA",
+              "body": "Creon 36,000 PA expiring. Renewal submitted with last office note and dx. Approved through 10/2026. Pharmacy notified."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "specialist_visit",
+          "start": "2025-10-20T09:00",
+          "service": "Cardiology",
+          "reason": "End-of-therapy echo after endocarditis",
+          "conditions": [
+            {
+              "label": "Infective endocarditis of mitral valve",
+              "action": "resolved",
+              "onset": "2025-07-15",
+              "icd10": "I33.0"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-10-20T09:00",
+              "text": "Indication: completed therapy for mitral valve endocarditis. Normal left ventricular size and systolic function. Mitral valve prolapse; no residual vegetation. Mild mitral regurgitation. Aortic valve normal. Normal right ventricle. No pericardial effusion.",
+              "conclusion": "No residual vegetation. Mitral valve prolapse with mild mitral regurgitation. Normal LV size and function."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Consultation",
+              "date": "2025-10-23T14:40",
+              "author": "cardiology",
+              "body": "Outside cardiology group. Visit 10/20/2025.\n\nDear Doctor,\n\nI saw Mr. Coughlin, 46, after treatment of native mitral valve endocarditis (viridans streptococci, 4 weeks ceftriaxone ending 08/28/2025), on a background of mitral valve prolapse with mild regurgitation. His father has MVP as well.\n\nHe feels well. No dyspnea, orthopnea, palpitations or exertional limitation; back to supervising job sites.\n\nExam: BP and HR normal. Mid-systolic click with an apical systolic murmur radiating to the axilla. Lungs clear. No edema.\n\nEcho today: no residual vegetation; prolapse with mild MR; normal LV size and function.\n\nImpression: endocarditis resolved. MVP with mild MR.\nRecommendations: continue amoxicillin prophylaxis before dental procedures for life. Repeat echo in 2-3 years or sooner with symptoms. No restrictions. Return as needed.\n\nMedications reviewed: pancrelipase, aspirin 81 mg, omeprazole 20 mg, amoxicillin pre-dental.\nAllergies/alerts: succinylcholine."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-03a",
+          "kind": "portal_message",
+          "start": "2025-11-03T20:02",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-11-01T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Covid booster",
+              "date": "2025-11-03T20:02",
+              "author": "patient",
+              "body": "Got the covid booster at the pharmacy Saturday."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Covid booster",
+              "date": "2025-11-04T08:30",
+              "author": "MA",
+              "body": "Thank you, it's in your chart."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-12a",
+          "kind": "office_visit",
+          "start": "2026-01-12T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up; discuss gallbladder surgery",
+          "vitals": {
+            "bp": [
+              124,
+              80
+            ],
+            "hr": 63,
+            "rr": 15,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 109.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-12T08:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 255
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-01-12T08:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-12T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-01-12T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gensurg-referral",
+              "action": "placed",
+              "order": "General surgery referral",
+              "category": "referral",
+              "to": "General Surgery",
+              "reason": "Elective cholecystectomy for chronic gallstone pancreatitis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-01-12T07:30",
+              "author": "PCP",
+              "body": "Winter check-in, slow season at work. Feels fully back to himself after the endocarditis. Weight back to baseline. Cardiology echo 10/20 clean: no residual vegetation, MVP with mild MR, normal LV.\n\nGI: on Creon with every meal/snack, omeprazole daily. No abdominal pain episodes. Stools fine.\n\nMeds: Creon 36,000 w/ meals + snacks, ASA 81, omeprazole 20, amoxicillin 2 g pre-dental.\nAllergies/alerts: succinylcholine - pseudocholinesterase deficiency (homozygous atypical).\n\nExam: vitals as charted. Well. Heart regular, apical systolic murmur unchanged. Lungs clear. Abd obese, soft, nontender, no Murphy sign. No edema.\n\nA/P:\n1. Chronic gallstone pancreatitis, gallbladder in situ - the stones are what started this, and leaving the gallbladder in keeps the door open for more attacks. He is ready now. Referral to general surgery for elective lap chole. Will make sure anesthesia knows about the cholinesterase deficiency.\n2. Hypoalbuminemia - recheck today.\n3. MVP/mild MR, s/p mitral IE - stable, prophylaxis before dental work.\n4. Obesity - weight back to baseline.\n\nRTC April physical."
+            }
+          ],
+          "state": {
+            "weight_kg": 110.0,
+            "labs": {
+              "Albumin": 3.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "portal_message",
+          "start": "2026-01-13T17:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2026-01-13T17:45",
+              "author": "PCP",
+              "body": "Albumin back to 3.4, other labs normal. Surgery referral is in - their office should call you within a couple of weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-09a",
+          "kind": "imaging",
+          "start": "2026-02-09T10:30",
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2026-02-09T10:30",
+              "text": "Regional hospital imaging. Ordered by general surgery. Liver normal in size and echotexture, no focal lesion. Gallbladder contains multiple mobile shadowing gallstones. Gallbladder wall is not thickened; no pericholecystic fluid; sonographic Murphy sign negative. Common bile duct normal in caliber. Pancreas partly obscured by bowel gas; visualized portions unremarkable. Right kidney normal.",
+              "conclusion": "Cholelithiasis without sonographic evidence of acute cholecystitis. Normal common bile duct caliber."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-16a",
+          "kind": "specialist_visit",
+          "start": "2026-02-16T11:15",
+          "service": "General Surgery",
+          "reason": "Elective cholecystectomy consultation",
+          "orders": [
+            {
+              "id": "gensurg-referral",
+              "action": "done",
+              "date": "2026-02-16T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "General Surgery Consultation",
+              "date": "2026-02-18T09:30",
+              "author": "general surgery",
+              "body": "Outside general surgery practice. Visit 02/16/2026.\n\nDear Doctor,\n\nThank you for referring Mr. Coughlin, 46, with chronic pancreatitis attributed to gallstones, gallbladder still in place, on pancreatic enzyme replacement. Currently asymptomatic. Ultrasound 02/09 shows multiple gallstones with a normal wall and a normal-caliber duct.\n\nHistory reviewed including mitral valve endocarditis in 2025 (treated, resolved), MVP with mild MR, and pseudocholinesterase deficiency with prolonged paralysis after succinylcholine in 2024.\n\nExam: obese abdomen, soft, nontender, no hernia. Healed right thigh incision.\n\nImpression: cholelithiasis with gallstone-related chronic pancreatitis.\nPlan: elective laparoscopic cholecystectomy, booked 06/08/2026 at his request (around his work schedule). Preoperative evaluation with PCP within 30 days of surgery. Anesthesia preoperative clinic aware of the cholinesterase deficiency; succinylcholine will be avoided.\n\nAllergies/alerts: succinylcholine (prolonged apnea)."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "portal_message",
+          "start": "2026-03-09T06:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill",
+              "date": "2026-03-09T06:55",
+              "author": "patient",
+              "body": "Omeprazole refill please. Also surgery is June 8, they said I need to see you before."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill",
+              "date": "2026-03-09T09:10",
+              "author": "front desk",
+              "body": "Refill sent. Pre-op visit booked Tue 5/26 at 7:30. Physical is still on for 4/20."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-20a",
+          "kind": "annual_physical",
+          "start": "2026-04-20T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              128,
+              81
+            ],
+            "hr": 66,
+            "rr": 14,
+            "temp_c": 36.7,
+            "spo2": 95,
+            "weight_kg": 110.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-20T08:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 290
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.99
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-04-20T08:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.6
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-04-20T08:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 180
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 90
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 113
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 131
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-20T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2026-04-20T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-20T08:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2026",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "Colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-04-20T07:30",
+              "author": "PCP",
+              "body": "Yearly visit. Busy season starting at work, feels well. Surgery consult done: lap chole set for 6/8. Pre-op with me 5/26.\n\nROS negative: no fevers, sweats, chest pain, dyspnea, abdominal pain, change in stools, urinary complaints, mood problems.\n\nMeds: Creon 36,000 w/ meals + snacks, ASA 81, omeprazole 20, amoxicillin 2 g pre-dental (used once for a cleaning in March).\nAllergies/alerts: succinylcholine (pseudocholinesterase deficiency).\nSH: still not smoking. A few beers on weekends. Riding again this spring.\n\nExam: vitals as charted, weight stable. HEENT normal. Neck no nodes or thyromegaly. Heart regular, apical systolic murmur unchanged. Lungs clear. Abd obese, soft, nontender. Skin fine. No edema.\n\nA/P:\n1. Health maintenance - FIT kit given (last year negative). Lipids, A1c, CBC, CMP. PHQ-9 1. Tdap 2025, flu and covid done in the fall. Shingles vaccine at 50.\n2. Chronic gallstone pancreatitis - surgery booked.\n3. Hypoalbuminemia - recheck.\n4. MVP/mild MR, prior IE - stable.\n5. Obesity - stable."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-04a",
+          "kind": "lab_only",
+          "start": "2026-05-04T10:20",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-04-29T06:15",
+              "resulted": "2026-05-04T10:20",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2026",
+              "action": "done",
+              "date": "2026-05-04T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT and physical labs",
+              "date": "2026-05-04T13:30",
+              "author": "PCP",
+              "body": "FIT negative. April labs normal, albumin 3.4 unchanged. Pt notified by portal. Next FIT spring 2027."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-26a",
+          "kind": "office_visit",
+          "start": "2026-05-26T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Preoperative evaluation for cholecystectomy",
+          "vitals": {
+            "bp": [
+              118,
+              81
+            ],
+            "hr": 71,
+            "rr": 14,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 109.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-26T08:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 240
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.89
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-05-26T08:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-05-26T07:50",
+              "text": "Normal sinus rhythm. Normal axis. Normal intervals. No ST or T wave abnormality.",
+              "conclusion": "Normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-26T07:30"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2026-05-26T07:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-05-26T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Preoperative Evaluation",
+              "date": "2026-05-26T07:30",
+              "author": "PCP",
+              "body": "Pre-op for elective laparoscopic cholecystectomy 6/8/2026, outside general surgery.\n\nFunctional capacity good: walks job sites and climbs ladders all day, more than 4 METs without symptoms. No chest pain, dyspnea, syncope, palpitations. No bleeding history. Only prior anesthetic was 12/2024 (femur fixation) complicated by prolonged paralysis after succinylcholine; workup showed homozygous atypical pseudocholinesterase deficiency.\n\nPMH: chronic gallstone pancreatitis on enzymes, MVP with mild MR, mitral valve endocarditis 2025 (viridans strep, treated, resolved on 10/2025 echo), hypoalbuminemia, obesity, R femur ORIF 2024. Former smoker.\nMeds: Creon 36,000 w/ meals + snacks, ASA 81, omeprazole 20, amoxicillin 2 g pre-dental.\nAllergies/alerts: SUCCINYLCHOLINE - prolonged apnea (pseudocholinesterase deficiency). Also avoid mivacurium.\n\nExam: vitals as charted. Airway: normal mouth opening, full neck range. Heart regular, apical systolic murmur unchanged. Lungs clear. Abd obese, soft, nontender. No edema.\nECG: normal sinus rhythm, normal.\nLabs: CBC, BMP today.\n\nAssessment: low-to-intermediate risk procedure, good functional capacity, no active cardiac condition. Acceptable to proceed.\nRecommendations:\n- Anesthesia: no succinylcholine or mivacurium. Letter to anesthesia and surgery sent with the 12/2024 cholinesterase report.\n- Endocarditis prophylaxis is not indicated for this GI procedure.\n- Aspirin: per surgeon.\n- Continue Creon with meals once eating.\n\nCopy to general surgery and anesthesia preoperative clinic."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-08a",
+          "kind": "hospital_admission",
+          "start": "2026-06-08T06:30",
+          "end": "2026-06-17T14:00",
+          "service": "General Surgery",
+          "reason": "Elective laparoscopic cholecystectomy",
+          "conditions": [
+            {
+              "label": "Acquired absence of gallbladder",
+              "action": "diagnosed",
+              "onset": "2026-06-08"
+            },
+            {
+              "label": "Acute respiratory distress syndrome",
+              "action": "diagnosed",
+              "onset": "2026-06-08",
+              "icd10": "J80"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-06-09T09:40",
+              "rr": 28,
+              "spo2": 92
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-09T05:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-06-09T05:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-09T05:30",
+              "results": [
+                {
+                  "test": "B-type natriuretic peptide",
+                  "loinc": "30934-4",
+                  "unit": "pg/mL",
+                  "value": 50
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-09T09:50",
+              "results": [
+                {
+                  "test": "pH of arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.48
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 32
+                },
+                {
+                  "test": "Oxygen partial pressure in arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 70
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-09T12:00",
+              "resulted": "2026-06-14T12:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-09T21:30",
+              "resulted": "2026-06-12T09:00",
+              "results": [
+                {
+                  "test": "Respiratory culture",
+                  "loinc": "624-7",
+                  "text": "Normal respiratory flora; no pathogens isolated"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2026-06-09T09:15",
+              "text": "Portable AP view, postoperative day 1, increasing dyspnea and hypoxia. Bilateral pulmonary infiltrates. Heart size normal. No pneumothorax. No large pleural effusion.",
+              "conclusion": "Bilateral pulmonary infiltrates."
+            },
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-06-08T09:40",
+              "text": "Specimen: gallbladder, laparoscopic cholecystectomy. Gross: opened gallbladder containing multiple gallstones. Microscopic: gallbladder wall with chronic inflammation. No dysplasia or malignancy.",
+              "conclusion": "Cholelithiasis; gallbladder with chronic inflammation; negative for dysplasia and malignancy.",
+              "issued": "2026-06-11T15:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Laparoscopic cholecystectomy",
+              "performed": "2026-06-08T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary - General Surgery / Critical Care",
+              "date": "2026-06-19T10:10",
+              "author": "general surgery",
+              "body": "Regional hospital. Admitted 06/08/2026, discharged 06/17/2026.\n\nProcedure 06/08/2026: elective laparoscopic cholecystectomy for cholelithiasis with gallstone-related chronic pancreatitis. Completed without immediate complication. Anesthesia: known homozygous atypical pseudocholinesterase deficiency; succinylcholine avoided, a non-depolarizing relaxant used and fully reversed before extubation.\n\nPostoperative course: tachypnea and hypoxia developed after surgery; transferred to the ICU on postoperative day 1 (06/09). On ICU arrival afebrile, respiratory rate 28, SpO2 92% on room air, with crackles throughout both lung fields. POD 1 labs: WBC 12.0, Hgb 13.5, platelets 250, creatinine 1.0, BNP 50. ABG pH 7.48, PaCO2 32, PaO2 70. Portable chest film: bilateral infiltrates. With normal BNP and normal LV function on prior echo, a cardiogenic cause was felt unlikely; diagnosis acute respiratory distress syndrome.\n\nOxygenation worsened over the day despite high-flow nasal oxygen and he was intubated the evening of 06/09. Lung-protective ventilation; worst PaO2/FiO2 108 on PEEP 14. Prone positioning was used. Cisatracurium infusion for 48 hours for ventilator synchrony (not dependent on plasma cholinesterase). Conservative fluid strategy. Blood and respiratory cultures negative. No clear precipitant was identified. Oxygenation improved steadily; extubated 06/13, transferred out of the ICU 06/14, weaned to room air, discharged home 06/17.\n\nPathology: cholelithiasis, chronic inflammation of the gallbladder wall, no dysplasia or malignancy.\n\nDischarge diagnoses: ARDS after laparoscopic cholecystectomy, resolving; status post cholecystectomy; chronic pancreatitis; MVP with mild MR; history of mitral valve endocarditis (2025); pseudocholinesterase deficiency; hypoalbuminemia; obesity.\nDischarge medications: pancrelipase with meals and snacks, aspirin 81 mg daily, omeprazole 20 mg daily; amoxicillin before dental work as before.\nAllergies/alerts: succinylcholine.\n\nFollow-up: PCP within 1 week; chest imaging in 4-6 weeks; pulmonology clinic. Surgery clinic 2 weeks for wound check.\n\nNote: hospital course details from the critical care team are summarized above."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-19a",
+          "kind": "telephone",
+          "start": "2026-06-19T11:40",
+          "reason": "Post-discharge outreach",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2026-06-19T11:40",
+              "author": "RN",
+              "body": "Called pt 2 days after discharge. Home, short of breath on the stairs but better each day, fine at rest. Port sites healing, no drainage, no fever. Eating small meals, taking Creon. Bought a pulse oximeter, readings ok at rest. Told him to go to the ED if breathing gets worse, chest pain, or oximeter in the 80s. TCM visit Mon 6/22 8am."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-22a",
+          "kind": "office_visit",
+          "start": "2026-06-22T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after cholecystectomy and ARDS",
+          "vitals": {
+            "bp": [
+              123,
+              83
+            ],
+            "hr": 74,
+            "rr": 15,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 106.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-22T08:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 262
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.86
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-22T08:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.0
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-06-22T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-22T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cxr-followup",
+              "action": "placed",
+              "order": "Chest X-ray, 2 views",
+              "category": "imaging",
+              "reason": "Follow-up of bilateral infiltrates after ARDS"
+            },
+            {
+              "id": "pulm-referral",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "ARDS follow-up"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "date": "2026-06-22T08:00",
+              "author": "PCP",
+              "body": "TCM visit. Elective lap chole 6/8, then ARDS starting POD 1: ICU, intubated 6/9-6/13, proned, no cause found, home on room air 6/17. Discharge summary reviewed in full. Succinylcholine was avoided as planned.\n\nNow: breathing better daily, winded on a flight of stairs, fine walking on level ground. No cough to speak of, no fever, no chest pain, no leg swelling. Port sites sore but fine. Appetite low, eating small meals with Creon. Down 4 kg from pre-op.\n\nMeds: Creon 36,000 w/ meals + snacks, ASA 81, omeprazole 20, amoxicillin 2 g pre-dental.\nAllergies/alerts: succinylcholine.\n\nExam: vitals as charted, sat ok on room air at rest. Tired appearing. Lungs: clear today, no crackles. Heart regular, apical systolic murmur unchanged. Abd soft, port sites clean and dry, no erythema. Calves soft, nontender. No edema.\n\nA/P:\n1. ARDS after lap chole, recovering - CXR in about 3 weeks; referral to pulmonology for follow-up. Walk daily, build up slowly. Return precautions reviewed.\n2. S/p cholecystectomy - surgery wound check next week.\n3. Hypoalbuminemia - expected dip after ICU; recheck today and again in 2 months. Protein shakes again.\n4. Work - off; FMLA paperwork to front desk. Target return decided after pulm visit.\n5. Chronic pancreatitis - continue enzymes."
+            }
+          ],
+          "state": {
+            "weight_kg": 106.0,
+            "labs": {
+              "Albumin": 3.0,
+              "Hemoglobin": 14.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-24a",
+          "kind": "telephone",
+          "start": "2026-06-24T14:15",
+          "reason": "FMLA paperwork",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "FMLA forms",
+              "date": "2026-06-24T14:15",
+              "author": "front desk",
+              "body": "FMLA certification from employer HR received by fax. Completed by PCP: continuous leave from 6/8/2026, reassess after pulmonology visit. Faxed back to HR, copy scanned, pt notified."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-13a",
+          "kind": "imaging",
+          "start": "2026-07-13T09:20",
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2026-07-13T09:20",
+              "text": "PA and lateral. Comparison portable chest 06/09/2026. Near-complete clearing of the previously seen bilateral opacities. No new consolidation. Heart size normal. No pleural effusion or pneumothorax. Cholecystectomy clips in the right upper quadrant.",
+              "conclusion": "Near-complete clearing of bilateral opacities."
+            }
+          ],
+          "orders": [
+            {
+              "id": "cxr-followup",
+              "action": "done",
+              "date": "2026-07-13T09:20"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "portal_message",
+          "start": "2026-07-14T12:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Chest X-ray",
+              "date": "2026-07-14T12:20",
+              "author": "PCP",
+              "body": "Brett, your chest X-ray yesterday looks much better - the haziness from the ARDS has almost completely cleared. That fits with how you're feeling. Keep the pulmonology appointment on the 27th."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Chest X-ray",
+              "date": "2026-07-14T18:02",
+              "author": "patient",
+              "body": "Good. Walking 2 miles now. Stairs still get me a little."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-27a",
+          "kind": "specialist_visit",
+          "start": "2026-07-27T13:30",
+          "service": "Pulmonology",
+          "reason": "Follow-up after ARDS",
+          "conditions": [
+            {
+              "label": "Acute respiratory distress syndrome",
+              "action": "resolved",
+              "onset": "2026-06-08",
+              "icd10": "J80"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "done",
+              "date": "2026-07-27T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary Clinic Consultation",
+              "date": "2026-07-29T16:45",
+              "author": "pulmonology",
+              "body": "Outside pulmonary group. Visit 07/27/2026.\n\nDear Doctor,\n\nI saw Mr. Coughlin, 47, about seven weeks after ARDS that began the day after an elective laparoscopic cholecystectomy (intubated 06/09-06/13, prone positioning, no precipitant found, cultures negative). Former smoker, quit at 42.\n\nHe is improving steadily: walking two miles, still breathless on more than a flight of stairs, no cough, no chest pain, no orthopnea.\n\nExam: comfortable, room air saturation normal, lungs clear, no clubbing, no edema.\nChest X-ray 07/13: near-complete clearing.\n\nImpression: ARDS, resolved, with expected recovery of exercise tolerance still under way.\nPlan: graded return to activity; may return to work on light duty now, full duty in about a month if he keeps improving. Return to clinic in 3 months; sooner with any setback.\n\nAllergies/alerts: succinylcholine."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-24a",
+          "kind": "office_visit",
+          "start": "2026-08-24T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after ARDS; albumin",
+          "vitals": {
+            "bp": [
+              112,
+              77
+            ],
+            "hr": 61,
+            "rr": 14,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 107.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-08-24T08:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 64
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-24T08:00",
+              "pending": true,
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-08-24T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-24T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-08-24T07:30",
+              "author": "PCP",
+              "body": "F/u. Back on light duty (site office, no ladders) since pulmonology visit 7/27. Pulm called the ARDS resolved; CXR 7/13 nearly clear. Stairs better, still the last thing to come back. No cough, no fever. Eating normally, weight coming back up. Surgery released him at the wound check.\n\nGI: Creon with meals, stools ok, no pain since surgery.\n\nMeds: Creon 36,000 w/ meals + snacks, ASA 81, omeprazole 20, amoxicillin 2 g pre-dental.\nAllergies/alerts: succinylcholine (pseudocholinesterase deficiency).\n\nExam: vitals as charted. Looks like himself. Lungs clear. Heart regular, apical systolic murmur unchanged. Abd soft, port scars healed. No edema.\n\nA/P:\n1. ARDS, resolved - full duty per pulm in a few weeks if stairs keep improving; pulm f/u in the fall.\n2. Hypoalbuminemia - CMP today. Has been low on and off for two years; with chronic pancreatitis on enzymes, checking vitamin D too.\n3. S/p cholecystectomy, chronic pancreatitis - continue Creon, omeprazole.\n4. MVP/mild MR, prior IE - stable.\n5. Flu shot next visit when the new vaccine is in.\n\nRTC 4 weeks."
+            }
+          ],
+          "state": {
+            "weight_kg": 107.5,
+            "labs": {
+              "Albumin": 3.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-25a",
+          "kind": "portal_message",
+          "start": "2026-08-25T16:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2026-08-25T16:50",
+              "author": "PCP",
+              "body": "Kidney and liver tests normal. Albumin 3.3, back up from 3.0 in June. Vitamin D is a send-out and will take a few more days; I'll let you know."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-21a",
+          "kind": "office_visit",
+          "start": "2026-09-21T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up and influenza vaccine",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute respiratory distress syndrome|J80": {
+        "code": "J80",
+        "display": "Acute respiratory distress syndrome",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Fracture of shaft of right femur, closed|S72.301A": {
+        "code": "S72.301A",
+        "display": "Unspecified fracture of shaft of right femur, initial encounter for closed fracture",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hypoalbuminemia|E88.09": {
+        "code": "E88.09",
+        "display": "Other disorders of plasma-protein metabolism, not elsewhere classified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Infective endocarditis of mitral valve|I33.0": {
+        "code": "I33.0",
+        "display": "Acute and subacute infective endocarditis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pseudocholinesterase deficiency|E88.09": {
+        "code": "E88.09",
+        "display": "Other disorders of plasma-protein metabolism, not elsewhere classified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "0.4 ML enoxaparin sodium 100 MG/ML Prefilled Syringe": {
+        "code": "854235",
+        "display": "0.4 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
+        "ingredient": "ml",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "amylase 180000 UNT / lipase 36000 UNT / protease 114000 UNT Delayed Release Oral Capsule": {
+        "code": "1373325",
+        "display": "amylase 180000 UNT / lipase 36000 UNT / protease 114000 UNT Delayed Release Oral Capsule",
+        "ingredient": "amylase",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "ceftriaxone 2000 MG Injection": {
+        "code": "1665046",
+        "display": "ceftriaxone 2000 MG Injection",
+        "ingredient": "ceftriaxone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "B-type natriuretic peptide": {
+        "code": "30934-4",
+        "display": "Natriuretic peptide B [Mass/volume] in Serum or Plasma",
+        "unit": "pg/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Carbon dioxide partial pressure in arterial blood": {
+        "code": "2019-8",
+        "display": "Carbon dioxide [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Oxygen partial pressure in arterial blood": {
+        "code": "2703-7",
+        "display": "Oxygen [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Respiratory culture": {
+        "code": "624-7",
+        "display": "Bacteria identified in Sputum by Respiratory culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH of arterial blood": {
+        "code": "2744-1",
+        "display": "pH of Arterial blood",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

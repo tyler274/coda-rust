@@ -1,0 +1,569 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001101",
+      "given": "Gary",
+      "family": "Kowalczyk",
+      "birth_date": "1961-05-11",
+      "address_line": "112 Chapin Street",
+      "phone": "+1-413-555-0161",
+      "email": "gary.kowalczyk@example.test",
+      "summary": "Office administrator with long-standing type 2 diabetes on metformin and atorvastatin who joins the practice in 2019. Blood pressure, albuminuria, an ACE-inhibitor cough, neuropathy, PAD, erectile dysfunction and stable angina accrue across 2019-2024 through practice visits and outside letters; the chart ends with LDL still 130 on atorvastatin 20.",
+      "events": [
+        {
+          "id": "2019-02-25a",
+          "kind": "telephone",
+          "start": "2019-02-25T11:42",
+          "reason": "New patient intake call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake",
+              "author": "front desk",
+              "date": "2019-02-25T11:42",
+              "body": "Caller: patient. Wants to establish primary care with the practice. Commercial PPO, card info entered. Membership agreement emailed to gary.kowalczyk@example.test.\n\nHas diabetes, takes \"metformin and a cholesterol pill.\" Gave him the records release form for his previous primary care office; he will drop it off this week and we will fax the request.\n\nNew patient visit booked 3/12 at 9:20. Asked him to bring all pill bottles and to come fasting if he can."
+            }
+          ]
+        },
+        {
+          "id": "2019-03-07a",
+          "kind": "outside_records",
+          "start": "2019-03-07T14:05",
+          "reason": "Prior primary care records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records (fax, 22 pages)",
+              "author": "front desk",
+              "date": "2019-03-07T14:05",
+              "body": "Records received by fax from prior primary care office, 22 pages. Scanned to chart and flagged for PCP before the 3/12 new patient visit.\n\nContents per cover sheet: problem list, medication list, visit notes 2016-2018, lab printouts.\n\nPCP review 3/8: Type 2 diabetes listed since about 2005, on metformin 1000 mg twice daily; hyperlipidemia on atorvastatin 20 mg daily. No colonoscopy report in the packet. Immunization page is blank apart from pharmacy flu shots. Nothing else active. Will reconcile at the visit."
+            }
+          ]
+        },
+        {
+          "id": "2019-03-12a",
+          "kind": "establish_care",
+          "start": "2019-03-12T09:20",
+          "end": "2019-03-12T10:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care; type 2 diabetes",
+          "conditions": [
+            {
+              "label": "Type 2 diabetes mellitus without complications",
+              "action": "diagnosed",
+              "onset": "2005-06-01",
+              "note": "about 14 years per patient and prior records"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "diagnosed",
+              "onset": "2012-01-01",
+              "note": "on atorvastatin 20 mg from prior PCP"
+            },
+            {
+              "label": "Obesity, unspecified",
+              "action": "diagnosed",
+              "onset": "2019-03-12"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Type 2 diabetes"
+            },
+            {
+              "drug": "atorvastatin 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hyperlipidemia"
+            }
+          ],
+          "state": {
+            "bp": [
+              150,
+              94
+            ],
+            "weight_kg": 103.0,
+            "height_cm": 178.0,
+            "labs": {
+              "Hemoglobin A1c": 7.4,
+              "Glucose": 152,
+              "Microalbumin/Creatinine Ratio": 44,
+              "Creatinine": 0.84,
+              "Low Density Lipoprotein": 106,
+              "High Density Lipoprotein": 41,
+              "Triglycerides": 238,
+              "Total Cholesterol": 195
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-03-12T10:10",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-03-12T10:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-03-12T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-03-12T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Office administrator"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-03-12T10:15"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2019-03-12T09:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-03-12T10:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-03-12T10:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "colo-2019",
+              "action": "placed",
+              "order": "Gastroenterology referral for screening colonoscopy",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "average-risk colorectal cancer screening, none on record"
+            },
+            {
+              "id": "eye-2019",
+              "action": "placed",
+              "order": "Diabetic eye exam",
+              "category": "referral",
+              "to": "Optometry",
+              "reason": "annual dilated exam, type 2 diabetes"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2019-03-12T12:40",
+              "body": "NEW PATIENT VISIT\n\nCC: Establishing care. Diabetes.\n\nHPI: 57 y/o man here to set up primary care. Type 2 diabetes for roughly 14 years, diagnosed by his old PCP on routine labs. Has only ever been on metformin, now 1000 mg twice a day with meals, no GI trouble with it. Checks sugars rarely, \"once a week if that.\" No lows. No polyuria/polydipsia. Atorvastatin 20 for cholesterol, takes it at night. Has never been on a blood pressure medicine and does not remember being told his pressure was high. Denies chest pain, dyspnea on exertion, calf pain with walking, foot numbness, blurry vision. Last eye exam he thinks was 3-4 years ago.\n\nPMH: T2DM (~2005). Hyperlipidemia.\nPSH: none.\nMeds: metformin 1000 mg BID, atorvastatin 20 mg qhs. No OTCs or supplements.\nAllergies: none known.\nFH: Father had an MI at 65. Mother has type 2 diabetes. One sibling with high blood pressure.\nSH: Office administrator, desk job. Never smoked. Does not drink. Walks some on weekends.\n\nROS: otherwise negative as above. PHQ-2 0.\n\nExam:\nBP 159/99 (repeat by me after 5 min seated, similar). HR 63. Wt 104.2 kg, BMI 32.6.\nWell-appearing, conversational.\nFundi: no AV nicking or hemorrhages on undilated look.\nNeck: no JVD, no thyromegaly.\nChest clear to auscultation. Cardiac: regular, normal S1/S2, no gallop or murmur.\nAbdomen: obese, soft, nontender.\nExtremities: no ankle swelling.\nFeet: skin intact, no calluses of note, nails ok. 10-g monofilament felt at all sites both feet. DP and PT pulses 2+ bilaterally.\n\nA/P:\n1. Type 2 diabetes - long duration, on metformin alone. A1c, CMP, urine albumin/creatinine today. Diabetic eye exam referral to optometry. Foot exam normal today.\n2. Elevated blood pressure, no prior diagnosis - one office reading is not enough. Nurse BP check in about 3 weeks; asked him to bring a home cuff if he buys one.\n3. Hyperlipidemia - continue atorvastatin 20. Lipid panel today.\n4. Obesity - BMI over 30. Talked about portions and walking more on weekdays. He is interested.\n5. Health maintenance - no colonoscopy on record, referred to GI for screening. Tdap today (no record of a tetanus shot). HCV and HIV screening once, ordered. Flu, pneumococcal and shingles vaccines in the fall.\n\nRTC 3 months, sooner for the BP check."
+            }
+          ]
+        },
+        {
+          "id": "2019-03-14a",
+          "kind": "portal_message",
+          "start": "2019-03-14T16:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results from 3/12",
+              "author": "PCP",
+              "date": "2019-03-14T16:20",
+              "body": "Hi Gary,\n\nYour labs from Tuesday are back.\n\n- A1c 7.6%. That is a reasonable number after this many years of diabetes; our goal is to keep it at or under 7 to 7.5 for you.\n- Kidney function (creatinine/eGFR) normal. Potassium and liver tests normal.\n- Cholesterol: LDL 98, triglycerides 240. Keep the atorvastatin going.\n- Urine albumin 47. This is a bit above normal (under 30). One reading can be high for ordinary reasons, so I'd like to repeat it at your June visit before we call it anything.\n- Blood count normal. Hepatitis C and HIV screens negative.\n\nSee you for the blood pressure check in a few weeks.\n\nYour primary care team"
+            }
+          ]
+        },
+        {
+          "id": "2019-04-04a",
+          "kind": "nurse_visit",
+          "start": "2019-04-04T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure recheck",
+          "state": {
+            "bp": [
+              148,
+              94
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, straightforward MDM",
+              "performed": "2019-04-04T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse visit: BP check",
+              "author": "RN",
+              "date": "2019-04-04T08:40",
+              "body": "BP check per PCP. Seated 5 min, L arm, large adult cuff.\nReading 1: 146/98, HR 68.\nReading 2 after 3 min: similar.\nNo headache, chest pain or vision change. Has not bought a home cuff yet; gave him a list of validated models.\nRouted to PCP. Pt keeps his June visit.\n\nPCP addendum: Still elevated. Will decide at the June visit with another reading; start a home log if he gets the cuff."
+            }
+          ]
+        },
+        {
+          "id": "2019-05-08a",
+          "kind": "telephone",
+          "start": "2019-05-08T13:10",
+          "reason": "Colonoscopy prep questions",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Colonoscopy prep / metformin",
+              "author": "RN",
+              "date": "2019-05-08T13:10",
+              "body": "Pt called. Colonoscopy with GI on 5/21, prep instructions from their office say to ask PCP about diabetes medicine.\nAdvised: clear liquids day before as GI instructs; hold metformin the evening before and the morning of the procedure, restart with his first real meal after. Check a sugar the morning of if he can. He has a meter at home.\nHe repeated back. No other questions."
+            }
+          ]
+        },
+        {
+          "id": "2019-05-24a",
+          "kind": "outside_records",
+          "start": "2019-05-24T10:30",
+          "reason": "Colonoscopy report received",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2019-05-21T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "colo-2019",
+              "action": "done",
+              "date": "2019-05-24T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Outside colonoscopy report (procedure 05/21/2019)",
+              "author": "gastroenterology",
+              "date": "2019-05-24T10:30",
+              "body": "ENDOSCOPY CENTER - COLONOSCOPY REPORT\nDate of procedure: 05/21/2019\nIndication: Average-risk screening, age 57, no prior colonoscopy.\nSedation: Monitored anesthesia care, propofol.\nPrep: Split-dose PEG. Boston Bowel Prep Scale 3/3/2 (total 8).\n\nThe scope was advanced without difficulty to the cecum, identified by the appendiceal orifice and ileocecal valve. Terminal ileum not intubated. Careful inspection on withdrawal, retroflexion in the rectum performed.\n\nFindings:\n- No polyps or masses.\n- Normal mucosa throughout, including on retroflexion.\n\nImpression: Normal screening colonoscopy.\nRecommendation: Repeat screening colonoscopy in 10 years (2029). Resume usual diet and medications.\n\nReport faxed to referring primary care office."
+            }
+          ]
+        },
+        {
+          "id": "2019-06-19a",
+          "kind": "office_visit",
+          "start": "2019-06-19T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2019-03-12"
+            },
+            {
+              "label": "Chronic kidney disease, stage 1",
+              "icd10": "N18.1",
+              "action": "diagnosed",
+              "onset": "2019-03-12",
+              "note": "persistent albuminuria, eGFR >90"
+            },
+            {
+              "label": "Type 2 diabetes mellitus without complications",
+              "action": "resolved",
+              "note": "recoded as diabetic CKD"
+            },
+            {
+              "label": "Type 2 diabetes mellitus with diabetic chronic kidney disease",
+              "action": "diagnosed",
+              "onset": "2005-06-01"
+            }
+          ],
+          "state": {
+            "bp": [
+              140,
+              86
+            ],
+            "weight_kg": 102.4,
+            "labs": {
+              "Hemoglobin A1c": 7.3,
+              "Microalbumin/Creatinine Ratio": 49
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2019-06-19T15:40",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-06-19T15:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2019-06-19T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up: diabetes, BP",
+              "author": "PCP",
+              "date": "2019-06-19T17:05",
+              "body": "S: 3-mo f/u. Feels fine. Bought a cuff two weeks ago, readings at home \"about the same as here.\" Walking at lunch 2-3 days/wk. Taking metformin and atorvastatin daily. No headaches, CP, SOB. Colonoscopy in May was normal.\n\nO: BP 155/95, HR 73, wt 102.4 kg.\nComfortable. Lungs clear. Heart: regular, no murmur or gallop. No pedal edema.\n\nLabs today: A1c and repeat urine albumin/creatinine drawn, results to follow.\n\nA/P:\n# Hypertension, stage 2 - third elevated office set plus similar home numbers. Diagnosing essential hypertension. Discussed starting a medication today. He would rather try diet and walking first and \"not add another pill yet.\" Reasonable for a short trial: less salt, more walking, home log. Recheck at next visit; if still up we start a drug.\n# Albuminuria - March UACR 47; repeat pending today. If still >30 with normal eGFR, this meets CKD stage 1 from diabetes.\n# T2DM - A1c pending. Continue metformin. Eye exam not yet scheduled, number given again.\n# Hyperlipidemia - continue atorvastatin 20.\n\nRTC 3-4 months. Flu/pneumonia/shingles shots in the fall.\n\nAddendum 6/21: Repeat UACR 47 with eGFR 103. Two values over 30 three months apart. Adding CKD stage 1 (diabetic kidney disease) to problem list; diabetes recoded."
+            }
+          ]
+        },
+        {
+          "id": "2019-06-21a",
+          "kind": "portal_message",
+          "start": "2019-06-21T09:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "June labs",
+              "author": "PCP",
+              "date": "2019-06-21T09:05",
+              "body": "Gary - A1c 7.6%, steady. Kidney filtration is normal, but the urine protein (albumin) test was high again at 47. Two high readings three months apart means the diabetes is starting to affect the kidneys at an early stage, what we call stage 1 kidney disease. Blood pressure and sugar control are what protect the kidneys, so the home BP log matters. We'll go over it in the fall. Call with questions."
+            }
+          ]
+        },
+        {
+          "id": "2019-08-09a",
+          "kind": "outside_records",
+          "start": "2019-08-09T11:15",
+          "reason": "Diabetic eye exam report",
+          "orders": [
+            {
+              "id": "eye-2019",
+              "action": "done",
+              "date": "2019-08-09T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Optometry diabetic eye exam (exam 08/06/2019)",
+              "author": "optometry",
+              "date": "2019-08-09T11:15",
+              "body": "Dear Doctor,\n\nThank you for referring Mr. Kowalczyk for his diabetic eye examination, seen 08/06/2019.\n\nVisual acuity 20/20 OD, 20/25 OS with current glasses. IOP 15/16. Dilated fundus exam: clear media, cup-to-disc 0.3 OU, no microaneurysms, hemorrhages, exudates or neovascularization either eye. Macula flat and dry OU.\n\nImpression: No diabetic retinopathy. Glasses prescription unchanged.\n\nPlan: Repeat dilated exam in 12 months.\n\nSincerely,\nOptometry"
+            }
+          ]
+        },
+        {
+          "id": "2019-09-13a",
+          "kind": "pharmacy",
+          "start": "2019-09-13T10:02",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Pharmacy refill request: metformin, atorvastatin",
+              "author": "MA",
+              "date": "2019-09-13T10:02",
+              "body": "Electronic refill request from patient's pharmacy for metformin 1000 mg tab #60 and atorvastatin 20 mg tab #30, last filled under prior PCP. Pt prefers 90-day supply.\nPended for PCP.\n\nPCP: Sent metformin 1000 mg BID #180 and atorvastatin 20 mg daily #90, 1 refill each."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-17a",
+          "kind": "nurse_visit",
+          "start": "2019-10-17T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "state": {
+            "bp": [
+              150,
+              92
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-17T16:40"
+            },
+            {
+              "vaccine": "Pneumococcal polysaccharide PPSV23",
+              "date": "2019-10-17T16:41"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2019-10-17T16:42"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-17T16:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse visit: vaccines",
+              "author": "RN",
+              "date": "2019-10-17T16:55",
+              "body": "Here for fall vaccines per PCP. VIS given for each, consent verbal.\n- Flu (quadrivalent) L deltoid\n- PPSV23 R deltoid (diabetes indication)\n- Shingrix dose 1 R deltoid, lower site. Told him arm soreness and a day of feeling run down is common. Dose 2 due in 2-6 months, scheduled 2/2020.\nWaited 15 min, no reaction.\nBP while here 152/98 (asked PCP - he has his January visit, home log to bring)."
+            }
+          ]
+        },
+        {
+          "id": "2019-12-04a",
+          "kind": "portal_message",
+          "start": "2019-12-04T19:48",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Appointment in January",
+              "author": "patient",
+              "date": "2019-12-04T19:48",
+              "body": "Hi, I got the reminder card for my follow-up. Can I move it to a Monday morning in January? Work is crazy in December. Thanks, Gary"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Appointment in January",
+              "author": "front desk",
+              "date": "2019-12-05T09:12",
+              "body": "Hi Gary, you're moved to Monday 1/13 at 8:40. Please come fasting for labs. Thank you!"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

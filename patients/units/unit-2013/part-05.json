@@ -1,0 +1,350 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001101",
+      "events": [
+        {
+          "id": "2023-02-08a",
+          "kind": "pharmacy",
+          "start": "2023-02-08T09:15",
+          "reason": "Prescription renewals",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Mail-order renewals",
+              "author": "MA",
+              "date": "2023-02-08T09:15",
+              "body": "Mail-order pharmacy renewal requests (prior scripts out of refills): metformin 1000 mg #180, amlodipine 5 mg #90, atorvastatin 20 mg #90. Last visit 11/16/22. Pended.\nPCP approved x 3 refills. Pt reminded via portal to book spring follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-18a",
+          "kind": "office_visit",
+          "start": "2023-04-18T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up; chest tightness with exertion",
+          "state": {
+            "weight_kg": 87.0,
+            "labs": {
+              "Hemoglobin A1c": 7.1,
+              "Glucose": 144
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-04-18T12:10",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-04-18T12:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2023-04-18T11:45",
+              "text": "Resting 12-lead ECG, in office.\nSinus rhythm. Normal PR, QRS and QT intervals. Normal axis. No ST-segment elevation or depression. No T-wave inversion. No pathologic Q waves. No prior tracing in this office for comparison.",
+              "conclusion": "Normal ECG.",
+              "issued": "2023-04-18T11:55"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cardio-2023",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "exertional chest tightness x 1 month; diabetes, PAD, family history of MI"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-04-18T11:20"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2023-04-18T11:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up DM; new exertional chest tightness",
+              "author": "PCP",
+              "date": "2023-04-18T13:05",
+              "body": "CC: diabetes f/u. Also mentions chest tightness.\n\nHPI: Routine visit, but on review of systems he describes about a month of chest tightness when climbing the two flights at work or walking up the hill on his usual route. Center of chest, \"like a band,\" no radiation he has noticed. Comes on after a minute or two of the climb and goes away within a few minutes of stopping. Never at rest, never woken him at night, no syncope, palpitations or sweating with it. No change in frequency over the month. Not related to meals. He had chalked it up to being out of shape.\nDiabetes otherwise steady; still walking (on flat ground mostly now), weight 87.8 kg. Feet numb, no wounds.\nMeds: metformin 1000 BID, amlodipine 5, atorvastatin 20, aspirin 81, sildenafil 50 prn.\nRisk: T2DM ~18 yrs, HTN, hyperlipidemia, PAD, CKD 1, father with MI at 65. Never smoker.\n\nExam: BP 141/79, HR 71, SpO2 98%. Comfortable at rest. No JVD. Clear breath sounds bilaterally. Regular rhythm; no murmur, rub or gallop. Chest wall nontender. No edema. Pedal pulses diminished (known).\nResting ECG today: normal, no ischemic changes.\n\nA/P:\n1. Exertional chest tightness - typical pattern for angina in a diabetic with vascular disease until proven otherwise. Stable over a month, no rest symptoms, normal resting ECG. Referred to cardiology for evaluation and stress testing. Continue aspirin and statin. Told him plainly: chest pain at rest, lasting more than 15 minutes, or with sweating, nausea or shortness of breath = call 911, do not drive himself. No sildenafil if he has any chest symptoms that day; avoid exertion that brings it on until cardiology sees him.\n2. T2DM - A1c, BMP today.\n3. HTN - amlodipine 5; home readings at goal per pt.\n4. PAD, neuropathy - foot exam stable.\n\nRTC after cardiology."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-20a",
+          "kind": "telephone",
+          "start": "2023-04-20T14:30",
+          "reason": "Cardiology referral scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cardiology appointment",
+              "author": "front desk",
+              "date": "2023-04-20T14:30",
+              "body": "Cardiology scheduled pt for new consult 7/26 (first available). Asked them to add him to the cancellation list; PCP aware of wait. Called pt with date and reminded him of the 911 instructions from his visit. He says no change in the chest tightness. Also left message with A1c result per PCP: 7.4%, no change in diabetes plan."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-28a",
+          "kind": "outside_records",
+          "start": "2023-06-28T13:45",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Optometry diabetic eye exam (exam 06/23/2023)",
+              "author": "optometry",
+              "date": "2023-06-28T13:45",
+              "body": "Patient: Gary Kowalczyk. Exam date 06/23/2023.\nDilated fundus examination both eyes: no evidence of diabetic retinopathy; macula normal.\nAcuity stable with current correction. IOP within normal limits.\nNext diabetic eye exam: 1 year.\nOptometry"
+            }
+          ]
+        },
+        {
+          "id": "2023-08-01a",
+          "kind": "outside_records",
+          "start": "2023-08-01T10:50",
+          "reason": "Cardiology consultation and stress test",
+          "conditions": [
+            {
+              "label": "Angina pectoris",
+              "action": "diagnosed",
+              "onset": "2023-03-15",
+              "note": "stable angina, medical management per cardiology 07/26/2023"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cardio-2023",
+              "action": "done",
+              "date": "2023-08-01T10:50"
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2023-07-26T09:05",
+              "text": "Cardiology clinic resting ECG. Sinus rhythm. Normal intervals and axis. No ST or T-wave abnormality.",
+              "conclusion": "Normal resting ECG."
+            },
+            {
+              "study": "Exercise stress test",
+              "performed": "2023-07-26T10:00",
+              "text": "Treadmill exercise ECG, Bruce protocol.\nIndication: exertional chest pressure.\nBaseline ECG normal. Exercise stopped for fatigue after reaching target heart rate.\nECG: ST-segment depression developing with exercise, resolving in recovery. No ST elevation. No arrhythmia. Blood pressure response appropriate.",
+              "conclusion": "Positive exercise ECG for ischemia: exercise-induced ST depression with typical symptoms. No arrhythmia."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology consultation (visit 07/26/2023)",
+              "author": "cardiology",
+              "date": "2023-08-01T10:50",
+              "body": "CARDIOVASCULAR ASSOCIATES - CONSULTATION\nDate: 07/26/2023\nPatient: Gary Kowalczyk, 62-year-old man\nReferring: primary care\nReason: exertional chest discomfort\n\nHistory of present illness: Four months of central chest pressure, tight in quality, brought on by climbing stairs or walking uphill and relieved by rest within minutes. No rest pain, palpitations or syncope. Background of type 2 diabetes with neuropathy, hypertension, hyperlipidemia and peripheral arterial disease, all treated.\n\nMedications (patient-provided list): metformin 1000 mg twice daily, lisinopril 20 mg daily, atorvastatin 20 mg daily, aspirin 81 mg daily.\nAllergies: ACE inhibitors (cough).\nSocial: does not smoke or drink alcohol.\nFamily history: father with myocardial infarction at 65.\n\nExamination: BP 132/78, pulse 72/min, BMI 27. Comfortable. JVP not raised. Heart sounds normal, no murmur. Lungs clear. No peripheral edema.\n\nInvestigations today:\n- Resting 12-lead ECG: normal.\n- High-sensitivity troponin: within normal limits.\n- Treadmill exercise test: positive for exercise-induced ST depression; no arrhythmia.\n\nImpression: Stable angina pectoris. Symptoms are predictable, exertional and unchanged in pattern; no features of an acute coronary syndrome.\n\nPlan:\n- Medical management. Continue aspirin 81 mg and atorvastatin; continue current blood pressure treatment.\n- Risk factor control with primary care: blood pressure, diabetes, lipids, activity within symptom limits.\n- Return to clinic in 12 months, sooner for any change in pattern, rest pain or prolonged episodes; call 911 for pain lasting over 15 minutes.\n\nThank you for this referral.\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2023-08-02a",
+          "kind": "portal_message",
+          "start": "2023-08-02T12:15",
+          "reason": "Cardiology results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your cardiology visit",
+              "author": "PCP",
+              "date": "2023-08-02T12:15",
+              "body": "Hi Gary,\nI have the cardiologist's letter and your stress test. The stress test showed changes on the EKG during exercise that fit with narrowing in the heart arteries causing the chest tightness. That is called stable angina. Cardiology's plan is medicines and risk factors rather than a procedure for now, and they'll see you yearly.\nTheir medication list still had lisinopril on it - I sent them a corrected list (amlodipine, not lisinopril).\nPlease book a visit with me for September so we can go over everything. Until then the rules don't change: chest pain at rest or lasting more than 15 minutes is a 911 call.\n"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-27a",
+          "kind": "office_visit",
+          "start": "2023-09-27T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after cardiology; diabetes; annual labs",
+          "state": {
+            "weight_kg": 85.6,
+            "labs": {
+              "Hemoglobin A1c": 7.6,
+              "Glucose": 142,
+              "Low Density Lipoprotein": 131,
+              "Total Cholesterol": 212,
+              "Triglycerides": 252,
+              "High Density Lipoprotein": 43,
+              "Microalbumin/Creatinine Ratio": 46
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-27T08:55",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-27T08:55",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-27T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-27T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-27T09:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-09-27T09:01"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-09-27T08:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-27T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-27T08:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "F/u after cardiology consult",
+              "author": "PCP",
+              "date": "2023-09-27T10:15",
+              "body": "Seen by cardiology 7/26: stable angina, positive exercise test, medical management, yearly f/u.\n\nS: Chest pressure still comes with stairs or a hill, same as spring, stops within a few minutes of resting. No rest pain, no nighttime episodes, no syncope. He paces himself on the hill and takes the elevator at work most days. Diabetes plan unchanged, walking on level ground. Feet numb, no sores. Using sildenafil rarely; knows no nitrates with it.\n\nMeds: metformin 1000 BID, amlodipine 5, atorvastatin 20, aspirin 81, sildenafil 50 prn.\n\nO: BP 132/79, HR 75, SpO2 96%, wt 85.8 kg (BMI 27.1).\nNo distress. Heart regular, normal S1/S2. Lungs clear. No edema. Feet: intact skin, calluses, reduced monofilament, diminished pulses - unchanged.\n\nA/P:\n1. Stable angina - per cardiology, medical management. Continue aspirin, atorvastatin, amlodipine. Reviewed warning signs again.\n2. T2DM with CKD 1 and neuropathy - annual labs today.\n3. HTN - amlodipine 5.\n4. PAD - stable.\n5. HM - flu and updated COVID vaccine today. Colonoscopy due 2029.\n\nRTC 4-6 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-29a",
+          "kind": "portal_message",
+          "start": "2023-09-29T16:45",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "RN",
+              "date": "2023-09-29T16:45",
+              "body": "Hello Gary, PCP reviewed your bloodwork from Wednesday:\nA1c 7.0%\nKidney function normal (eGFR 99), urine albumin 43\nLiver tests and blood count normal\nLDL 133, HDL 42, triglycerides 245\nNo changes to your medicines. Please call with any questions."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-13a",
+          "kind": "telephone",
+          "start": "2023-12-13T11:05",
+          "reason": "Insurance update",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Insurance card update",
+              "author": "front desk",
+              "date": "2023-12-13T11:05",
+              "body": "Pt called: employer renewed the same PPO for 2024, new member ID on the card starting 1/1. Pt will upload a photo through the portal. Updated registration once received (12/14)."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

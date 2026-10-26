@@ -1,0 +1,1230 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002283",
+   "events": [
+    {
+     "id": "2023-01-03a",
+     "kind": "hospital_admission",
+     "start": "2023-01-03T06:30",
+     "reason": "completion pancreatectomy",
+     "end": "2023-01-13T13:00",
+     "service": "General Surgery (outside)",
+     "conditions": [
+      {
+       "label": "Obstruction of bile duct",
+       "action": "resolved",
+       "icd10": "K83.1"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Completion total pancreatectomy",
+       "performed": "2023-01-03T08:00"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+       "action": "stop",
+       "route": "Oral"
+      },
+      {
+       "drug_text": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+       "action": "historical",
+       "sig": "Inject 24 units under the skin at bedtime",
+       "dose": {
+        "value": 24,
+        "unit": "U"
+       },
+       "frequency": "QHS",
+       "route": "Subcutaneous",
+       "course": "chronic",
+       "reason": "diabetes after pancreatectomy"
+      },
+      {
+       "drug_text": "3 ML insulin lispro 100 UNT/ML Pen Injector",
+       "action": "historical",
+       "sig": "Inject under the skin with meals per sliding scale",
+       "frequency": "TID WITH MEALS",
+       "route": "Subcutaneous",
+       "course": "chronic",
+       "reason": "diabetes after pancreatectomy"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Hospital discharge summary",
+       "author": "general surgery",
+       "date": "2023-01-17T10:30",
+       "body": "Outside hospital - surgical oncology discharge summary\nAdmitted 01/03/2023, discharged 01/13/2023\nPatient: Vernon Simard, DOB 01/19/1956\n\nDiagnosis: adenocarcinoma of the pancreatic head (remnant pancreas) after neoadjuvant chemotherapy; prior distal pancreatectomy and splenectomy (2013).\nProcedure 01/03/2023: completion total pancreatectomy with biliary and enteric reconstruction, through a midline incision.\nCourse: uneventful recovery. Diet advanced. Biliary stent removed with the specimen. Insulin requirements established with endocrine input.\nDischarge medications: insulin glargine 24 units at bedtime; insulin lispro with meals per the attached sliding scale; pancrelipase 36,000 lipase units with meals; tamsulosin 0.4 mg daily; aspirin 81 mg daily; atorvastatin 40 mg daily; multivitamin daily; lactulose 15 mL twice daily as needed.\nFollow-up: surgical clinic 2 weeks; oncology; endocrinology in about 6 weeks; PCP within 1 week.\nFinal pathology to be reviewed with oncology."
+      }
+     ]
+    },
+    {
+     "id": "2023-01-19a",
+     "kind": "office_visit",
+     "start": "2023-01-19T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "post-hospital follow-up",
+     "state": {
+      "weight_kg": 60.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-01-19T11:40",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Sodium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, moderate complexity",
+       "performed": "2023-01-19T11:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-01-19T11:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Transitional Care Visit",
+       "author": "PCP",
+       "date": "2023-01-19T12:20",
+       "body": "TCM visit, 6 days after discharge (completion total pancreatectomy 1/3).\nFeels weak but walking the house a few times a day. Eating small meals, taking enzymes with each. Incision sore, no drainage. Stools soft, no grease.\nInsulin: glargine 24 at bedtime and lispro by the hospital scale with meals - wife doing the math with him. Readings 90s-250s, scattered.\nNot yellow. No fever.\nExam: weight 60 kg. Anicteric. Lungs clear. RRR. Midline incision healing, staples out, no erythema. Abdomen soft, appropriately tender near the wound, no ascites. No edema.\nMed rec done against the discharge list; glargine 10 entry replaced by the new regimen.\nA/P: s/p completion total pancreatectomy, now fully insulin- and enzyme-dependent. BMP today. Reviewed lows again; glucagon to be discussed with endocrinology (appt 2/13). Surgery f/u next week."
+      }
+     ]
+    },
+    {
+     "id": "2023-01-30a",
+     "kind": "telephone",
+     "start": "2023-01-30T16:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "low blood sugars",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Low sugars",
+       "author": "RN",
+       "date": "2023-01-30T16:20",
+       "body": "Wife calling. For about 2 weeks he has had spells a couple of hours after lunch or dinner: shaky, sweaty, heart racing, irritable, once a little confused. Meter 52 and 61 during two of them. Each time juice or crackers fixed it within minutes. No passing out, no seizures. Hungry between meals.\nAdvised: check before driving, carry glucose tabs, treat <70 with 15 g and recheck. Routed to PCP and faxed log to endocrinology."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "RE: Low sugars",
+       "author": "PCP",
+       "date": "2023-01-30T17:45",
+       "body": "Reviewed. Spoke with endocrinology nurse; they will keep the 2/13 visit and call him this week about the lispro scale. Wife knows to call 911 if he can't swallow juice."
+      }
+     ]
+    },
+    {
+     "id": "2023-02-13a",
+     "kind": "specialist_visit",
+     "start": "2023-02-13T10:00",
+     "reason": "endocrinology",
+     "service": "Endocrinology (outside)",
+     "conditions": [
+      {
+       "label": "Post-pancreatectomy hypoglycemia due to glucagon deficiency",
+       "action": "diagnosed",
+       "icd10": "E16.8",
+       "onset": "2023-01-15"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "glucagon 3 MG Nasal Powder",
+       "action": "historical",
+       "sig": "Spray 3 mg into one nostril once for severe low blood sugar; may repeat in 15 minutes",
+       "dose": {
+        "value": 3,
+        "unit": "mg"
+       },
+       "frequency": "PRN",
+       "route": "Nasal",
+       "course": "chronic",
+       "reason": "severe hypoglycemia"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Endocrinology letter",
+       "author": "endocrinology",
+       "date": "2023-02-21T09:15",
+       "body": "Outside endocrinology - consultation\nSeen 02/13/2023\nPatient: Vernon Simard, 67 M\n\nReason: low blood sugars after total pancreatectomy.\nSix weeks ago he had a completion total pancreatectomy for a pancreatic head adenocarcinoma, after a 2013 distal pancreatectomy and splenectomy. Diabetes was diagnosed last August and he has used insulin injections since.\nFor the past month he has had episodes several times a week, a few hours after meals, of shakiness, anxiety and palpitations that settle quickly with juice or a snack. His wife sees him sweaty, irritable and briefly confused during them. He is hungrier between meals and has lost another 5 lb. Good adherence; keeps all appointments. No fever, chest pain or recent illness.\nHistory: alcohol-related cirrhosis and chronic pancreatitis, CAD with stent, BPH. Former smoker (about 40 pack-years), quit in May 2022. No alcohol since early 2021. Retired truck driver.\nFamily: mother with type 2 diabetes.\nMedications: insulin glargine 24 units at bedtime; insulin lispro sliding scale with meals; tamsulosin 0.4 mg; aspirin 81 mg; atorvastatin 40 mg; pancrelipase 36,000 units with meals; multivitamin; lactulose 15 mL BID prn. NKDA.\nExam: well-healing midline scar. Neuro nonfocal. Heart, lungs and abdomen normal.\n\nAssessment: post-pancreatectomy hypoglycemia with loss of glucagon counter-regulation, in insulin-requiring diabetes after total pancreatectomy.\nPlan:\n- Lower the lispro correction scale (new scale given); skip lispro if he eats less than half a meal.\n- Smaller, more frequent meals with protein; bedtime snack.\n- Glucose tablets on him at all times; glucagon nasal powder 3 mg prescribed for severe lows, wife taught.\n- Continue glargine 24 units for now.\n- Return in 3 months with meter download.\nEndocrinology"
+      }
+     ]
+    },
+    {
+     "id": "2023-03-14a",
+     "kind": "office_visit",
+     "start": "2023-03-14T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up",
+     "conditions": [
+      {
+       "label": "Disseminated intravascular coagulation",
+       "action": "resolved",
+       "icd10": "D65"
+      }
+     ],
+     "state": {
+      "weight_kg": 58.5,
+      "labs": {
+       "Platelets": 230,
+       "Prothrombin Time-International Normalized Ratio": 1.2,
+       "Alkaline Phosphatase": 130,
+       "Bilirubin, Total": 1.1,
+       "Albumin": 3.4,
+       "Hemoglobin A1c": 7.3,
+       "Aspartate Aminotransferase": 40,
+       "Alanine Aminotransferase": 30
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-03-14T09:30",
+       "results": [
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-03-14T09:30",
+       "results": [
+        {
+         "test": "Platelets",
+         "value": 230
+        },
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2023-03-14T09:30",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio",
+         "value": 1.2
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-03-14T09:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.3
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-03-14T09:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-03-14T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2023-03-14T10:10",
+       "body": "10 weeks post completion pancreatectomy. Endocrinology letter reviewed: glucagon-deficiency lows, lispro scale lowered, glucagon nasal spray at home.\nLows now about once a week and mild, all after a big lunch with full lispro - he's learning. Snacks between meals. Weight 58.5, up a little from the endo visit. Surgery cleared him. Oncology plan is surveillance scans.\nExam: anicteric. Lungs clear. RRR. Incision well healed. Abdomen soft, no ascites. No edema. No bruising.\nLabs today: CBC, CMP, INR, A1c."
+      },
+      {
+       "type": "Result Note",
+       "title": "Lab review",
+       "author": "PCP",
+       "date": "2023-03-15T07:45",
+       "body": "Platelets 230, INR 1.2, bili and alk phos back near normal. The coagulation problem oncology called chronic DIC has resolved with the tumor out - removing from active list. A1c 7.3. Sent to pt."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-11a",
+     "kind": "pharmacy",
+     "start": "2023-04-11T10:00",
+     "reason": "prior authorization",
+     "documents": [
+      {
+       "type": "Pharmacy Note",
+       "title": "PA - glucagon nasal",
+       "author": "MA",
+       "date": "2023-04-11T10:20",
+       "body": "Pharmacy needed PA for glucagon 3 mg nasal powder (prescribed by endocrinology). Submitted with dx insulin-treated diabetes with recurrent hypoglycemia after total pancreatectomy. Approved. Endo office aware."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-20a",
+     "kind": "annual_physical",
+     "start": "2023-06-20T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "state": {
+      "weight_kg": 59.5,
+      "labs": {
+       "Microalbumin/Creatinine Ratio": 12
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-06-20T08:40",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-06-20T08:40",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        },
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.4
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-06-20T08:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2023-06-20T08:30"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-06-20T08:40"
+      },
+      {
+       "procedure": "Advance care planning, first 30 minutes",
+       "performed": "2023-06-20T09:10"
+      }
+     ],
+     "orders": [
+      {
+       "id": "eye-2023",
+       "action": "placed",
+       "order": "Diabetic eye examination",
+       "category": "referral",
+       "to": "Optometry",
+       "reason": "insulin-treated diabetes"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2023-06-20T09:55",
+       "body": "AWV. Wife present.\nYear in review: pancreatic head cancer treated with chemo and completion total pancreatectomy (1/3/23), now on oncology surveillance. Diabetes on glargine 24 + lispro scale; lows after pancreatectomy managed by endocrinology. Sober since Feb 2021, off cigarettes since May 2022. PHQ-2 1, AUDIT-C 0.\nFunctional: independent ADLs, wife handles meds and pharmacy. No falls. Not driving long distances.\nAdvance care planning (25 min): reviewed goals. He wants full treatment including ICU if there is a good chance of getting back home; does not want to be kept on machines long term if he won't recover. Wife remains HCP. MOLST not completed today; will consider.\nExam: weight 59.5. Anicteric. Lungs clear. RRR. Abdomen soft, midline scar healed, no ascites. Feet: intact sensation to monofilament, pulses palpable, skin intact.\nPlan: lipids, urine microalbumin, A1c, BMP. Diabetic eye exam referral. Vaccines in the fall."
+      }
+     ]
+    },
+    {
+     "id": "2023-07-25a",
+     "kind": "outside_records",
+     "start": "2023-07-25T14:00",
+     "reason": "eye exam report",
+     "orders": [
+      {
+       "id": "eye-2023",
+       "action": "done",
+       "date": "2023-07-25T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye exam report",
+       "author": "optometry",
+       "date": "2023-07-25T14:00",
+       "body": "Optometry - diabetic eye examination\nDate of exam: 07/18/2023\nDilated fundus exam both eyes: no diabetic retinopathy. No macular edema. VA 20/25 OD, 20/25 OS with correction.\nRecommend dilated exam in 12 months."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-26a",
+     "kind": "office_visit",
+     "start": "2023-09-26T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up",
+     "conditions": [
+      {
+       "label": "Unintentional weight loss",
+       "action": "resolved"
+      }
+     ],
+     "state": {
+      "weight_kg": 61.0,
+      "labs": {
+       "Hemoglobin A1c": 7.5
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2023-09-26T14:40"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2023-09-26T14:41"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-09-26T14:35",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.5
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-09-26T14:35",
+       "results": [
+        {
+         "test": "Bilirubin, Total"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-09-26T14:35",
+       "results": [
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-09-26T14:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-09-26T14:35"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-09-26T14:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2023-09-26T15:10",
+       "body": "Doing well. Weight 61 kg, up from 58 in the spring - eating 5 small meals, enzymes with each. Lows down to 1-2 a month, mild, no glucagon needed. Endocrinology adjusted nothing further at the June visit per pt. Oncology scan in August clear per pt.\nExam: anicteric. Lungs clear. RRR. Abdomen soft, no ascites. No edema.\nA/P: weight loss has turned around - off the problem list. Diabetes: A1c today; continue glargine 24 + lispro scale. Cirrhosis: CMP/CBC. Flu and updated COVID today."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-12a",
+     "kind": "telehealth_visit",
+     "start": "2023-12-12T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "video check-in",
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2023-12-12T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Visit",
+       "author": "PCP",
+       "date": "2023-12-12T10:55",
+       "body": "Video, pt at home with wife, identity confirmed.\nWinter check-in. Feels steady. Oncology surveillance CT last week reviewed with him there - no sign of recurrence, next in 6 months. Sugars mostly 110-220; one low last month, treated with tabs. Still sober, still not smoking.\nNo jaundice, no swelling, no confusion per wife.\nPlan: refills sent (glargine, lispro, pen needles, pancrelipase). In-person visit in March with labs."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-12a",
+     "kind": "portal_message",
+     "start": "2024-02-12T21:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "bruising",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Bruises",
+       "author": "patient",
+       "date": "2024-02-12T21:10",
+       "body": "Denise writing. Vernon has been more tired the last few weeks and is getting bruises on his arms and legs from nothing. His belly looks bigger too. He has his GI liver appointment on the 20th already. Should he wait for that or come in?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Bruises",
+       "author": "PCP",
+       "date": "2024-02-13T07:30",
+       "body": "Thanks for letting me know. If there is no bleeding (black stools, vomiting blood, nosebleeds that won't stop), no fever and no confusion, it's reasonable to keep the GI visit on the 20th. If any of those happen, go to the ED. I'll see him after GI - the front desk will call to book."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-20a",
+     "kind": "specialist_visit",
+     "start": "2024-02-20T15:00",
+     "reason": "hepatology follow-up",
+     "service": "Gastroenterology (outside)",
+     "reports": [
+      {
+       "study": "Abdominal ultrasound",
+       "performed": "2024-02-23T09:00",
+       "text": "Liver small and nodular with coarse echotexture. No focal hepatic lesion. Portal vein patent. No intrahepatic or extrahepatic biliary dilation. Postsurgical absence of the pancreas and spleen. Ascites present in the abdomen. Kidneys normal without hydronephrosis.",
+       "conclusion": "Cirrhotic liver without focal lesion. Ascites. No biliary dilation."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gastroenterology letter",
+       "author": "gastroenterology",
+       "date": "2024-03-01T11:00",
+       "body": "Outside gastroenterology / hepatology - clinic note\nVisit 02/20/2024\nRe: Vernon Simard, 68 M\n\nSeen for fatigue and increased bruising over several weeks. He takes a multivitamin and aspirin 81 mg; no anticoagulant.\nBackground: alcohol-related cirrhosis (abstinent since early 2021), chronic pancreatitis, two pancreatic adenocarcinomas (2013 distal pancreatectomy/splenectomy; 2023 completion total pancreatectomy, on oncology surveillance), CAD with stent, insulin-treated diabetes, Zenker diverticulum treated 2022.\nMedications: insulin glargine 24 units at bedtime, insulin lispro sliding scale, tamsulosin 0.4 mg, aspirin 81 mg, atorvastatin 40 mg, pancrelipase 36,000 units with meals, lactulose 15 mL BID prn. NKDA.\n\nExam: scleral icterus. Abdomen distended with shifting dullness. Spider angiomata on the chest. Multiple ecchymoses on the arms and legs. Spleen surgically absent. No JVD. Neurologic exam normal; mental status intact.\n\nLabs and ultrasound ordered today. Results: bilirubin about 3, albumin under 3, INR 1.7, platelets in the 130s, mild hyponatremia. Ultrasound: cirrhotic liver, no mass, ascites, no biliary dilation.\n\nImpression: decompensated alcohol-related cirrhosis with new ascites and coagulopathy of liver disease explaining the bruising. No sign of biliary obstruction or a liver mass.\nPlan: 2 g sodium diet; continued abstinence; labs with PCP in 2 weeks; return here in 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-05a",
+     "kind": "office_visit",
+     "start": "2024-03-05T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up after GI",
+     "state": {
+      "weight_kg": 63.0,
+      "labs": {
+       "Bilirubin, Total": 3.1,
+       "Albumin": 2.8,
+       "Prothrombin Time-International Normalized Ratio": 1.7,
+       "Platelets": 132,
+       "Sodium": 133,
+       "Aspartate Aminotransferase": 60,
+       "Alanine Aminotransferase": 35,
+       "Alkaline Phosphatase": 160,
+       "Hemoglobin A1c": 7.2
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-03-05T10:35",
+       "results": [
+        {
+         "test": "Bilirubin, Total",
+         "value": 3.1
+        },
+        {
+         "test": "Albumin",
+         "value": 2.8
+        },
+        {
+         "test": "Sodium",
+         "value": 133
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-03-05T10:35",
+       "results": [
+        {
+         "test": "Platelets",
+         "value": 132
+        },
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2024-03-05T10:35",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio",
+         "value": 1.7
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-03-05T10:35",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.2
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2024-03-05T10:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-03-05T10:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up after GI",
+       "author": "PCP",
+       "date": "2024-03-05T11:20",
+       "body": "GI letter reviewed: decompensated cirrhosis - ascites, jaundice, coagulopathy; US without mass or duct dilation.\nHe feels tired but no worse. Bruises still coming up easily. Belly full, pants tighter; weight 63 (61 in September). Following the low-salt diet - wife reading labels. Still no alcohol. No confusion, no black stools, no vomiting blood.\nExam: mild scleral icterus. Spider angiomata on the upper chest. Several ecchymoses on forearms and shins. Abdomen distended with shifting dullness, nontender. No asterixis. No edema.\nA/P:\n1. Decompensated alcoholic cirrhosis with ascites and coagulopathy. CMP, CBC, INR today for GI. Reinforced 2 g sodium. Bleeding precautions. GI follow-up May.\n2. Diabetes: A1c today. Lows rare.\n3. CAD: continue aspirin and atorvastatin."
+      },
+      {
+       "type": "Result Note",
+       "title": "Lab review",
+       "author": "PCP",
+       "date": "2024-03-06T08:10",
+       "body": "Bili 3.1, albumin 2.8, INR 1.7, plt 132, Na 133, Cr normal. A1c 7.2. Copied to GI."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-09a",
+     "kind": "office_visit",
+     "start": "2024-04-09T11:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "burning with urination",
+     "conditions": [
+      {
+       "label": "Urinary tract infection",
+       "action": "diagnosed"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "medications": [
+      {
+       "drug": "sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth twice daily for 7 days",
+       "dose": {
+        "value": 1,
+        "unit": "{tbl}"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "urinary tract infection"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2024-04-09T11:25",
+       "results": [
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Positive (2+)"
+        },
+        {
+         "test": "Urine Nitrite",
+         "text": "Positive"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2024-04-09T11:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - dysuria",
+       "author": "PCP",
+       "date": "2024-04-09T11:55",
+       "body": "3 days of burning with urination and going more often. Some low back ache. No fever, no chills, no blood in urine, no flank pain. Tamsulosin unchanged.\nExam: afebrile. Abdomen soft, mild distension with shifting dullness unchanged. No CVA tenderness.\nUA dipstick: LE 2+, nitrite positive.\nA/P: UTI in a man with BPH. TMP-SMX DS BID x 7 days. Fluids. Call if fever or worse."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-24a",
+     "kind": "portal_message",
+     "start": "2024-04-24T12:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up",
+     "conditions": [
+      {
+       "label": "Urinary tract infection",
+       "action": "resolved"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Feeling better",
+       "author": "patient",
+       "date": "2024-04-24T12:00",
+       "body": "The antibiotic worked, no burning anymore. Thanks. -Vernon (Denise typing)"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Feeling better",
+       "author": "MA",
+       "date": "2024-04-24T15:30",
+       "body": "Glad to hear it. See you at the wellness visit in June."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-18a",
+     "kind": "annual_physical",
+     "start": "2024-06-18T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-06-18T09:10",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-06-18T09:10",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2024-06-18T09:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-06-18T09:10"
+      }
+     ],
+     "orders": [
+      {
+       "id": "eye-2024",
+       "action": "placed",
+       "order": "Diabetic eye examination",
+       "category": "referral",
+       "to": "Optometry",
+       "reason": "annual diabetic eye exam"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2024-06-18T10:05",
+       "body": "AWV. With wife.\nContinuing GI follow-up; still on the low-salt diet. Oncology surveillance stable per pt. Endocrinology yearly now. Sober 3+ years, smoke-free 2 years.\nIndependent in ADLs; wife does IADLs (meds, finances, driving more). No falls. PHQ-2 1. Hearing and vision OK.\nACP reviewed, unchanged; wife HCP.\nExam: weight as charted. Mild icterus. Abdomen with shifting dullness, unchanged. Feet: sensation intact, no ulcers.\nPlan: lipids, urine microalbumin. Eye exam due. Fall vaccines: flu, COVID, RSV, and MenACWY booster (5 years since 2019)."
+      }
+     ]
+    },
+    {
+     "id": "2024-07-23a",
+     "kind": "telephone",
+     "start": "2024-07-23T09:35",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "urinary symptoms again",
+     "conditions": [
+      {
+       "label": "Urinary tract infection",
+       "action": "diagnosed"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth twice daily for 7 days",
+       "dose": {
+        "value": 1,
+        "unit": "{tbl}"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "urinary tract infection"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Dysuria",
+       "author": "RN",
+       "date": "2024-07-23T09:45",
+       "body": "Pt reports burning and frequency again x2 days, low back ache, no fever or chills. Same as April. Routed to PCP."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "RE: Dysuria",
+       "author": "PCP",
+       "date": "2024-07-23T11:10",
+       "body": "Same picture as April and that course worked. TMP-SMX DS BID x 7 d sent. If it comes back again he needs to be seen and we'll look further."
+      }
+     ]
+    },
+    {
+     "id": "2024-08-06a",
+     "kind": "portal_message",
+     "start": "2024-08-06T18:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up",
+     "conditions": [
+      {
+       "label": "Urinary tract infection",
+       "action": "resolved"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Better again",
+       "author": "patient",
+       "date": "2024-08-06T18:20",
+       "body": "Burning is gone again after the pills. Denise"
+      }
+     ]
+    },
+    {
+     "id": "2024-08-27a",
+     "kind": "outside_records",
+     "start": "2024-08-27T13:00",
+     "reason": "eye exam report",
+     "orders": [
+      {
+       "id": "eye-2024",
+       "action": "done",
+       "date": "2024-08-27T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye exam report",
+       "author": "optometry",
+       "date": "2024-08-27T13:00",
+       "body": "Optometry - diabetic eye exam, date of service 08/20/2024\nDilated exam OU: no diabetic retinopathy, no macular edema. Mild scleral icterus noted. Repeat 1 year."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-24a",
+     "kind": "nurse_visit",
+     "start": "2024-09-24T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "fall vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2024-09-24T10:35"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2024-09-24T10:36"
+      },
+      {
+       "vaccine": "RSV, adjuvanted (Arexvy)",
+       "date": "2024-09-24T10:37"
+      },
+      {
+       "vaccine": "Meningococcal conjugate MenACWY",
+       "date": "2024-09-24T10:38"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-09-24T10:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Nurse Visit - vaccines",
+       "author": "RN",
+       "date": "2024-09-24T10:55",
+       "body": "Flu HD and MenACWY L deltoid; COVID and RSV R deltoid. Pt preferred all today. Pressure held 2 min each site (easy bruising). Tolerated."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-29a",
+     "kind": "office_visit",
+     "start": "2024-10-29T14:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "urinary symptoms, third episode",
+     "conditions": [
+      {
+       "label": "Urinary tract infection",
+       "action": "diagnosed"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "medications": [
+      {
+       "drug": "ciprofloxacin 500 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth twice daily for 7 days",
+       "dose": {
+        "value": 500,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "urinary tract infection"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2024-10-29T14:35",
+       "results": [
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Positive (3+)"
+        },
+        {
+         "test": "Urine Nitrite",
+         "text": "Positive"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-10-29T14:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - dysuria",
+       "author": "PCP",
+       "date": "2024-10-29T15:10",
+       "body": "Third bout this year: dysuria, frequency and low back pain x 4 days. No fever or chills. Each prior course of TMP-SMX helped for a while.\nExam: afebrile. Abdomen mildly distended, minimal shifting dullness. No CVA tenderness.\nDipstick: LE 3+, nitrite positive.\nA/P: recurrent UTI in a man with BPH. Changing class: ciprofloxacin 500 BID x 7 days. If it recurs again, urology referral."
+      }
+     ]
+    },
+    {
+     "id": "2024-12-10a",
+     "kind": "office_visit",
+     "start": "2024-12-10T13:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "recurrent urinary symptoms",
+     "state": {
+      "weight_kg": 62.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-12-10T13:55",
+       "results": [
+        {
+         "test": "Bilirubin, Total"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-12-10T13:55",
+       "results": [
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2024-12-10T13:55",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-12-10T13:55",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.6
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-12-10T13:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-12-10T13:55"
+      }
+     ],
+     "orders": [
+      {
+       "id": "uro-ref-2024",
+       "action": "placed",
+       "order": "Urology referral",
+       "category": "referral",
+       "to": "Urology",
+       "reason": "recurrent lower urinary tract infections with BPH"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2024-12-10T14:15",
+       "body": "Urinary burning, frequency and low back ache came back about 3 weeks after the cipro course, since mid-November, milder but persistent. No fever, no chills.\nLiver: weight 62, belly smaller; following the salt limit closely. Still sober.\nExam: afebrile. Faint scleral icterus. Abdomen soft, flat, no shifting dullness today. No edema.\nA/P:\n1. Recurrent/persistent lower urinary symptoms after three antibiotic courses this year - urology referral (next available February).\n2. Cirrhosis: ascites no longer evident on exam. Labs today.\n3. Diabetes: A1c."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

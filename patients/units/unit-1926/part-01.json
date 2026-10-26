@@ -1,0 +1,465 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001926",
+      "given": "Hannah",
+      "family": "Webster",
+      "birth_date": "1999-09-30",
+      "address_line": "27 Brainerd Street",
+      "phone": "+1-508-555-0122",
+      "email": "hannah.webster@example.test",
+      "marital_status": "single",
+      "summary": "Graduate student with generalized anxiety disorder on sertraline and as-needed alprazolam, and migraine without aura on as-needed sumatriptan, who joins in 2022. IBS-D is diagnosed in June 2024; in December 2025 she is seen in an outside ED for a benzodiazepine overdose of her own alprazolam after a breakup, which the practice learns of from her and whose record arrives late. Alprazolam is stopped and she starts counseling.",
+      "events": [
+        {
+          "id": "2022-09-14a",
+          "kind": "establish_care",
+          "start": "2022-09-14T10:00",
+          "end": "2022-09-14T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Generalized anxiety disorder",
+              "action": "history",
+              "onset": "2019-03-01",
+              "note": "Diagnosed at prior primary care office"
+            },
+            {
+              "label": "Migraine without aura",
+              "action": "history",
+              "onset": "2015-01-01",
+              "note": "Since about age 15"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Generalized anxiety disorder"
+            },
+            {
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth as needed for anxiety. Max 2 tablets per day",
+              "dose": {
+                "value": 0.25,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Generalized anxiety disorder",
+              "drug_text": "alprazolam 0.25 MG Oral Tablet"
+            },
+            {
+              "drug": "sumatriptan 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth at onset of migraine as needed",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Migraine without aura"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 61.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Total Cholesterol": 172,
+              "Thyroid Stimulating Hormone": 1.8,
+              "Low Density Lipoprotein": 88
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-14T11:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-14T11:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-14T11:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-14T11:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Graduate student"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, low MDM",
+              "performed": "2022-09-14T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-14T11:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-09-14T11:05",
+              "body": "NEW PATIENT VISIT\n\n22F, starting a graduate program this fall, transferring care from her prior primary care office. Wants one doctor she can reach. Records release signed today.\n\nANXIETY: dx GAD around 2019 at her old office. Sertraline 50 mg daily since then, says it took the edge off within a couple of months and she has not wanted to change it. Alprazolam 0.25 mg tabs as needed, which she says she uses \"a few times a month,\" mostly before presentations or when she can't settle at night. Never more than 2 in a day. Not in counseling currently, did some in college. No SI, no history of self-harm.\n\nHEADACHES: migraines since about 15. Unilateral throbbing, light and noise bother her, sometimes nauseated, no visual aura or weakness. Maybe 1-3 a month, more around deadlines. Sumatriptan 50 mg works within an hour most times; rarely needs a second dose. Has never taken a daily preventive.\n\nPMH: as above. PSH: wisdom teeth out at 18.\nMEDS: sertraline 50 daily; alprazolam 0.25 prn (max 2/day); sumatriptan 50 prn.\nALLERGIES: NKDA.\nFH: mother with GAD. Father with migraines. Maternal grandmother had IBS.\nSH: grad student, lives off campus. Never smoker. 1-2 drinks a week socially. No drugs.\n\nROS: negative except as above. Bowels regular, no GI complaints.\n\nEXAM: vitals per flowsheet. Well appearing, pleasant, a bit fidgety. HEENT unremarkable, fundi sharp. Neck supple, no thyroid enlargement. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender. Neuro: CN II-XII intact, strength and reflexes symmetric, gait normal. Skin without rash.\n\nGAD-7 6, PHQ-9 3, AUDIT-C 2.\n\nA/P\n1. GAD, stable on sertraline 50. Continue. Discussed that alprazolam is a backup, not a plan; small fills, I will check the state PMP with each refill. She is fine with that.\n2. Migraine without aura, episodic, sumatriptan effective. Reviewed the 2-dose daily max and not more than ~9 days/month. Mentioned serotonin symptoms to watch for with sertraline plus triptan, low risk at these doses.\n3. Health maintenance: CBC, CMP, lipids, TSH, one-time HIV and HCV, GC/CT urine NAAT today. Pap per old records, will confirm when they come. Flu and COVID booster next month.\n\nRTC for a physical in about a year, sooner prn."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-16a",
+          "kind": "portal_message",
+          "start": "2022-09-16T14:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2022-09-16T14:20",
+              "body": "Hi Hannah - all of Wednesday's bloodwork looks fine. Blood counts, kidney and liver tests, thyroid and cholesterol are normal, and the HIV, hepatitis C, chlamydia and gonorrhea tests were all negative. Nothing to follow up on. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-22a",
+          "kind": "outside_records",
+          "start": "2022-09-22T09:40",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "front desk",
+              "date": "2022-09-22T09:40",
+              "body": "Prior primary care records received by fax, 23 pages, scanned to chart.\n\nSummary abstracted by MA:\n- Generalized anxiety disorder, diagnosed spring 2019. Sertraline 50 mg daily started at that time. Alprazolam 0.25 mg as needed added later for breakthrough anxiety, small quantities.\n- Migraine without aura since mid-teens, sumatriptan 50 mg as needed.\n- Wisdom teeth extraction 2018.\n- Cervical cytology 2021: negative for intraepithelial lesion or malignancy.\n- Immunizations: HPV series completed in adolescence. Tdap 2021.\n- Allergies: none known.\n\nNo outstanding items."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "nurse_visit",
+          "start": "2022-10-20T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-20T16:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-20T16:22"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-20T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2022-10-20T16:35",
+              "body": "Here for flu and COVID bivalent booster. No fever today, no prior vaccine reactions. Flu 0.5 mL IM L deltoid, COVID bivalent IM R deltoid. Observed 15 min without issue. VIS given. Left with an ice pack for the next class."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-07a",
+          "kind": "pharmacy",
+          "start": "2022-12-07T11:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request - alprazolam",
+              "author": "RN",
+              "date": "2022-12-07T11:30",
+              "body": "Pharmacy fax for alprazolam 0.25 mg. Last fill per PMP was mid-August from prior office, #20. No other controlled fills. Routed to PCP.\n\nPCP: PMP reviewed. OK #20, no refills. Finals stretch, she says she's using it maybe twice a week right now."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-08a",
+          "kind": "telehealth_visit",
+          "start": "2023-02-08T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Migraine follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2023-02-08T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "author": "PCP",
+              "date": "2023-02-08T12:55",
+              "body": "Video, patient in her apartment, ID confirmed.\n\nS: Migraines picked up in January, maybe 4 in the month, back to 1-2 the last few weeks. Same pattern as always, no aura, no new features. Sumatriptan still works. She thinks it was sleep and too much coffee while writing a paper. No neuro symptoms between headaches.\n\nO: Appears well on video, speech fluent, face symmetric.\n\nA/P: Episodic migraine without aura, transient uptick, below the range where I'd push a preventive. Sleep regularity, caffeine before noon, keep a headache log. Sumatriptan 50 refilled #9 x 2. If she is regularly over 4 a month we will talk about prophylaxis."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-24a",
+          "kind": "office_visit",
+          "start": "2023-05-24T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anxiety follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "author": "front desk",
+              "date": "2023-05-24T15:25",
+              "body": "No-show for 3:00 follow-up. Called, voicemail. Left message to rebook. Patient texted back she lost track of the day with a lab deadline, rebooked as video 6/7."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-07a",
+          "kind": "telehealth_visit",
+          "start": "2023-06-07T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anxiety follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2023-06-07T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "author": "PCP",
+              "date": "2023-06-07T09:40",
+              "body": "Video visit, she is home. Apologized for missing last time.\n\nSemester ended OK. Anxiety \"about normal for me.\" Sleeping 7 hours most nights. Takes sertraline every day, no side effects she notices. Alprazolam maybe 3-4 times a month now, one at a time. Headaches back to baseline. No low mood, no SI.\n\nA/P: GAD stable. Continue sertraline 50 mg. Alprazolam as is, last fill in April per PMP, use remains light. Brought up counseling again as the better long-term tool, she will look at the student counseling list this summer. Physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-27a",
+          "kind": "annual_physical",
+          "start": "2023-09-27T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-09-27T09:15",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 5
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-27T09:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-09-27T09:22"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-27T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-27T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-09-27T09:30",
+              "body": "ANNUAL PHYSICAL\n\nTurning 24 at the end of the month. Second year of her program. No new concerns.\n\nInterval: anxiety steady on sertraline, alprazolam a few times a month. Migraines 1-2/month, sumatriptan effective. Never started counseling, says time. No ED or urgent care visits. Bowels normal.\n\nMeds: sertraline 50 mg daily; alprazolam 0.25 mg prn (max 2/day); sumatriptan 50 mg prn.\nAllergies: NKDA.\nSocial: never smoker, 1-2 drinks/week, no drugs. Exercises by walking to campus.\n\nExam: vitals per flowsheet. Well. HEENT normal, TMs clear. Neck without nodes or thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Extremities without edema. Skin no concerning lesions. Neuro grossly normal. Mood good, affect bright.\n\nGAD-7 5. PHQ-9 2. AUDIT-C 2.\n\nA/P\n- Healthy 23F. GAD and migraine stable on current regimen, no changes.\n- GC/CT urine NAAT today (under 25).\n- Pap next due 2024 (last 2021).\n- Flu and updated COVID vaccine given today.\n- RTC 1 year, sooner prn."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-29a",
+          "kind": "portal_message",
+          "start": "2023-09-29T13:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Test result",
+              "author": "RN",
+              "date": "2023-09-29T13:05",
+              "body": "Hi Hannah, your urine tests from Wednesday's physical were negative. No action needed. - nursing"
+            }
+          ]
+        },
+        {
+          "id": "2023-12-13a",
+          "kind": "portal_message",
+          "start": "2023-12-13T20:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill request",
+              "author": "patient",
+              "date": "2023-12-13T20:40",
+              "body": "Hi, could you send more sumatriptan? I'm down to one and I'm flying home next week. Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill request",
+              "author": "PCP",
+              "date": "2023-12-14T08:10",
+              "body": "Sent #9 with 2 refills to your usual pharmacy. Safe travels, and enjoy the break."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

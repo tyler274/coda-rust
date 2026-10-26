@@ -1,0 +1,754 @@
+{
+  "unit": "unit-1900",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001900",
+      "given": "Angela",
+      "family": "Damon",
+      "birth_date": "1991-05-18",
+      "address_line": "27 Fruit Street, Apt 3",
+      "phone": "+1-617-555-0101",
+      "email": "angela.damon@example.test",
+      "marital_status": "single",
+      "summary": "Healthy 34-year-old elementary school teacher who joined the practice in July 2025 with a post-viral upper airway cough that settled on its own. In April 2026 she developed subacute thyroiditis, confirmed by an outside endocrinologist, which resolved by June without medication.",
+      "events": [
+        {
+          "id": "2025-07-30a",
+          "kind": "establish_care",
+          "start": "2025-07-30T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient; cough for three weeks after a cold",
+          "conditions": [
+            {
+              "label": "Acute upper respiratory infection",
+              "action": "history",
+              "onset": "2025-07-09",
+              "note": "Self-limited cold in early July; resolved without treatment"
+            },
+            {
+              "label": "Acute upper respiratory infection",
+              "action": "resolved",
+              "onset": "2025-07-09"
+            },
+            {
+              "label": "Upper airway cough syndrome (postnasal drip syndrome)",
+              "action": "diagnosed",
+              "onset": "2025-07-09",
+              "icd10": "R09.82"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              75
+            ],
+            "hr": 66,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 61.9,
+            "height_cm": 165.2
+          },
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, low MDM",
+              "performed": "2025-07-30T10:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records",
+              "action": "placed",
+              "order": "Request records from prior primary care practice",
+              "category": "procedure",
+              "reason": "new patient"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2025-07-30T11:05",
+              "author": "PCP",
+              "body": "NEW PATIENT VISIT\n\nAngela is a 34 y/o elementary school teacher establishing care with us. Her old PCP was across the river and she wanted somewhere she could actually reach by text. Main issue today is a cough.\n\nHPI: Caught a cold around the first week of July (stuffy nose, sore throat, a few days of feeling run down). The cold itself cleared without anything but the cough never left, now about 3 weeks. Much worse once she lies down at night. Describes a constant feeling of mucus running down the back of her throat and having to clear it all day, which is not great when she's trying to run summer reading groups. Has been through two different drugstore cough syrups without any benefit. No fever now, no shortness of breath, no wheeze, no chest pain. No heartburn symptoms she can identify.\n\nPMH: Nothing significant. Never had asthma or any lung problem.\nPSH: None.\nMeds: None. No supplements.\nAllergies: NKDA.\nFamily hx: Nothing significant that she knows of.\nSocial: Teaches 2nd grade. Never smoked, no vaping. Drinks socially, a glass of wine or two a week. Lives in Northampton.\n\nExam: Vitals reviewed and normal. Well appearing, clears her throat a few times during the visit. Ears and nose normal. Oropharynx clear. No cervical adenopathy, thyroid not enlarged. Lungs clear throughout, no wheezes, rales or rhonchi. Heart regular, no murmur. Rest of exam unremarkable.\n\nA/P:\n1. Upper airway cough syndrome (postnasal drip) after a viral URI. Clear lungs, no red flags, nonsmoker. Discussed that this usually fades over a few more weeks as the upper airway settles down. Return or message if it is not clearly better in 3-4 weeks, or sooner with fever, shortness of breath or blood in sputum.\n2. Health maintenance: will request records from her prior office to see what screening is up to date. Would like a full physical in the fall once school is back in.\n\nRTC: physical in the fall, sooner prn."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.5,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-08-06a",
+          "kind": "outside_records",
+          "start": "2025-08-06T14:10",
+          "reason": "Records from prior primary care practice",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2021-08-19T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records",
+              "action": "done",
+              "date": "2025-08-06T14:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from Prior Primary Care Practice",
+              "date": "2025-08-06T14:10",
+              "author": "outside primary care",
+              "body": "RECORDS RELEASE - PRIOR PRIMARY CARE\nPatient: Angela Damon  DOB 05/18/1991\nRecords covering 2019 through 2024.\n\nProblem list: No active problems.\nMedications: None.\nAllergies: No known drug allergies.\n\nHealth maintenance:\n- Cervical cytology with high-risk HPV co-testing, 03/2023: NILM, HPV negative. Repeat in 5 years.\n- Tdap given 08/19/2021.\n- Influenza vaccines given most autumns.\n\nVisit summaries: preventive visits 2019, 2021 and 2023, all unremarkable.\n\nEnd of records."
+            },
+            {
+              "type": "Administrative",
+              "title": "Outside Records Scanned",
+              "date": "2025-08-06T14:25",
+              "author": "front desk",
+              "body": "Prior PCP records received by fax (11 pages), scanned to chart. Tdap date entered in immunizations. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-25a",
+          "kind": "portal_message",
+          "start": "2025-08-25T19:42",
+          "reason": "Cough update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cough is gone",
+              "date": "2025-08-25T19:42",
+              "author": "patient",
+              "body": "Hi, just wanted to close the loop. The cough finally faded out about a week ago and I'm sleeping through the night again. Do I still need to come in or can I wait for the fall physical? Thanks, Angela"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Cough is gone",
+              "date": "2025-08-26T07:58",
+              "author": "PCP",
+              "body": "Great to hear, Angela. No need to come in for it. Let's plan on the physical in early October; the front desk will reach out with times."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "annual_physical",
+          "start": "2025-10-08T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Upper airway cough syndrome (postnasal drip syndrome)",
+              "action": "resolved",
+              "onset": "2025-07-09",
+              "icd10": "R09.82"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              84
+            ],
+            "hr": 65,
+            "rr": 13,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 63.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-08T08:15",
+              "resulted": "2025-10-08T15:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 311
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-08T08:15",
+              "resulted": "2025-10-08T15:30",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 107
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-08T08:15",
+              "resulted": "2025-10-08T15:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 118
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 188
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-08T08:15",
+              "resulted": "2025-10-09T11:00",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-10-08T07:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-08T08:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-08T08:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-08T08:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-08T08:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-10-08T08:30",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n\nCame in before school, fasting. Feels well. The summer cough cleared in mid-August and has not come back. No new concerns. Sleep ok, busy start to the school year. Periods regular. \nMeds: none. Allergies: NKDA.\nSocial: never smoker, wine 1-2/wk, no other substances.\nPHQ-2: 0.\n\nROS: negative in full.\n\nExam: vitals reviewed, normal. Pleasant, well appearing. HEENT unremarkable, oropharynx clear. Neck supple, thyroid normal size and nontender, no nodes. Lungs clear. Heart RRR, no murmur. Abdomen soft, nontender. Skin without concerning lesions. Extremities without edema. Neuro nonfocal.\n\nA/P:\n1. Adult health maintenance, age 34.\n - Cervical: co-test 03/2023 normal per outside records, next due 2028.\n - Fasting labs today: CBC, CMP, lipids. One-time HIV and hep C screening, she agrees.\n - Flu and updated COVID vaccines given today. Tdap current (2021).\n - Sunscreen, seat belts, the usual.\n2. Upper airway cough syndrome, resolved. Off the problem list.\n\nFollow up in a year, or sooner prn. Will message results."
+            },
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Administration",
+              "date": "2025-10-08T08:09",
+              "author": "MA",
+              "body": "Screening questions reviewed, no contraindications. Influenza vaccine 0.5 mL IM right deltoid. Pfizer COVID-19 2025-26 formula 0.3 mL IM left deltoid. VIS given for both. Tolerated well, waited 15 min without issue."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "portal_message",
+          "start": "2025-10-09T16:12",
+          "reason": "Physical lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Your Lab Results",
+              "date": "2025-10-09T16:12",
+              "author": "PCP",
+              "body": "Hi Angela - everything from Wednesday came back normal: blood counts, kidney and liver tests, sugar, and cholesterol all look good, and the HIV and hepatitis C screens were negative. Nothing to change. See you next fall."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "office_visit",
+          "start": "2026-01-21T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in visit",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "portal_message",
+          "start": "2026-04-21T06:48",
+          "reason": "Neck pain, fevers, palpitations",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sore neck and racing heart",
+              "date": "2026-04-21T06:48",
+              "author": "patient",
+              "body": "Good morning. For about a week the front of my neck has been sore and it feels full, like something is pressing when I swallow. I've been running low fevers on and off, feel wiped out, and my heart keeps racing and pounding even sitting at my desk. I also keep breaking into sweats. I had a cold a couple of weeks ago that went away on its own. Can I be seen? I can leave school early."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Sore neck and racing heart",
+              "date": "2026-04-21T07:20",
+              "author": "PCP",
+              "body": "Yes, please come in today. I have 3:30 open. If the racing comes with chest pain, fainting or trouble breathing before then, go to the ED."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21b",
+          "kind": "office_visit",
+          "start": "2026-04-21T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anterior neck pain, low-grade fevers, palpitations",
+          "vitals": {
+            "bp": [
+              140,
+              78
+            ],
+            "hr": 78,
+            "rr": 14,
+            "temp_c": 37.9,
+            "spo2": 99,
+            "weight_kg": 64.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-04-21T16:05",
+              "resulted": "2026-04-22T10:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "unit": "mIU/L",
+                  "text": "<0.01"
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 2.5
+                },
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 70
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-21T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-21T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-Day Visit",
+              "date": "2026-04-21T16:20",
+              "author": "PCP",
+              "body": "SAME-DAY VISIT\n\nS: ~1 week of anterior neck pain and a sense of fullness in the throat, worse when she swallows or turns her head. Low-grade fevers at home, malaise, episodes of palpitations at rest, and intermittent sweats. Had a cold roughly two weeks ago that cleared without treatment. No chest pain, no syncope, no dyspnea. No meds, nothing new OTC. NKDA.\n\nO: T 37.9. Other vitals per flowsheet. Looks tired but not toxic. Oropharynx clear. Thyroid enlarged and distinctly tender to palpation, no discrete nodule felt. No cervical lymphadenopathy. Lungs clear. Heart regular, no murmur. No tremor appreciated.\n\nA/P:\nTender, enlarged thyroid with fever and hyperadrenergic symptoms after a viral illness. Concerned for an inflammatory thyroiditis. TSH, free T4, ESR, CRP drawn today. Will call her tomorrow with results and arrange endocrinology. ED precautions reviewed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-22a",
+          "kind": "telephone",
+          "start": "2026-04-22T12:15",
+          "reason": "Thyroid results",
+          "orders": [
+            {
+              "id": "endo-referral",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "suspected subacute thyroiditis, urgent"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results Call",
+              "date": "2026-04-22T12:15",
+              "author": "PCP",
+              "body": "Called pt with results: TSH <0.01, free T4 2.5, ESR 70, CRP 8. Hyperthyroid labs with high inflammatory markers, fits the tender gland. Explained this looks like an inflammatory thyroiditis and I want endocrinology to see her this week or next. Urgent referral placed. She agrees. Call or come in for worse neck pain, high fever, chest pain or fainting."
+            },
+            {
+              "type": "Referral",
+              "title": "Endocrinology Referral",
+              "date": "2026-04-22T12:30",
+              "author": "PCP",
+              "body": "URGENT. 34F, previously healthy, 1 week tender enlarged thyroid, low-grade fever, palpitations, sweats after a recent viral illness. TSH <0.01, FT4 2.5, ESR 70, CRP 8 (4/21). No meds, NKDA. Question subacute thyroiditis. Please see within 1-2 weeks."
+            },
+            {
+              "type": "Administrative",
+              "title": "Referral Scheduled",
+              "date": "2026-04-22T15:50",
+              "author": "front desk",
+              "body": "Endocrinology appointment confirmed for Wed 4/29 at 9:00. Labs and referral faxed. Patient notified by phone."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-29a",
+          "kind": "specialist_visit",
+          "start": "2026-04-29T09:00",
+          "service": "Endocrinology",
+          "reason": "Tender thyroid, suppressed TSH",
+          "conditions": [
+            {
+              "label": "Subacute thyroiditis",
+              "action": "diagnosed",
+              "onset": "2026-04-15",
+              "icd10": "E06.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              85
+            ],
+            "hr": 88
+          },
+          "orders": [
+            {
+              "id": "endo-referral",
+              "action": "done",
+              "date": "2026-04-29T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Consultation",
+              "date": "2026-04-30T10:15",
+              "author": "endocrinology",
+              "body": "ENDOCRINOLOGY CONSULTATION\nDate of service: 04/29/2026\nRe: Angela Damon, DOB 05/18/1991\nReferred by: primary care\n\nThank you for sending Ms. Damon, a 34 year old elementary school teacher, for evaluation of a painful thyroid.\n\nHistory: For two weeks she has had pain at the front of the neck with a sense of throat fullness, along with low-grade fevers and general malaise. She describes palpitations and intermittent sweating. About three weeks ago she had an upper respiratory infection that resolved without any treatment. She was seen in primary care in 2025 for a post-viral cough, since resolved, and has otherwise been healthy.\n\nPast surgical history: none.\nMedications: none.\nAllergies: no known drug allergies.\nFamily history: noncontributory.\nSocial history: never smoker; alcohol socially, 1-2 drinks per week; teaches elementary school.\n\nExamination: HR 88, BP 132/85. Alert, mildly anxious, in no distress. The thyroid is diffusely enlarged and tender to light palpation, without nodularity. No cervical adenopathy. Lungs clear, heart regular. Skin warm.\n\nData (drawn 04/21/2026 by primary care): TSH <0.01 mIU/L, free T4 2.5 ng/dL, ESR 70 mm/hr, CRP 8 mg/L.\n\nAssessment: Subacute (granulomatous) thyroiditis. The painful, tender gland following a viral illness, with thyrotoxic labs and a markedly elevated sedimentation rate, makes this the diagnosis.\n\nPlan:\n1. Reviewed the expected course with her: the thyroid releases stored hormone for several weeks, and most people recover normal function over the following months.\n2. Repeat TSH and free T4 in about 6 weeks; these can be drawn through her primary care office with a copy to us.\n3. She should call for worsening neck pain, high fever, or palpitations that are not settling.\n4. Follow up here as needed depending on the repeat labs.\n\nThank you for involving us in her care.\n\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-04a",
+          "kind": "portal_message",
+          "start": "2026-05-04T20:05",
+          "reason": "Question about endocrinology plan",
+          "orders": [
+            {
+              "id": "thyroid-recheck",
+              "action": "placed",
+              "order": "TSH and free T4",
+              "category": "lab",
+              "reason": "subacute thyroiditis follow-up per endocrinology"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Follow-up labs",
+              "date": "2026-05-04T20:05",
+              "author": "patient",
+              "body": "Hi, the endocrinologist said I need thyroid blood work in about six weeks and that you'd order it. Neck is less sore already. When should I come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Follow-up labs",
+              "date": "2026-05-05T09:30",
+              "author": "RN",
+              "body": "Hi Angela, we have their letter and the order is in. Any morning the week of June 8 works, no need to fast. Glad the neck is easing up."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-10a",
+          "kind": "lab_only",
+          "start": "2026-06-10T07:50",
+          "reason": "Thyroid recheck",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-06-10T07:50",
+              "resulted": "2026-06-10T16:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.4
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-10T07:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "thyroid-recheck",
+              "action": "done",
+              "date": "2026-06-10T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Thyroid Labs Normal",
+              "date": "2026-06-11T08:10",
+              "author": "PCP",
+              "body": "Angela - TSH 2.4 and free T4 1.2, both back in the normal range. Copy sent to endocrinology. Let's do a quick video visit next week to make sure the symptoms have settled too."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-17a",
+          "kind": "telehealth_visit",
+          "start": "2026-06-17T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Subacute thyroiditis follow-up",
+          "conditions": [
+            {
+              "label": "Subacute thyroiditis",
+              "action": "resolved",
+              "onset": "2026-04-15",
+              "icd10": "E06.1"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2026-06-17T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Follow-Up",
+              "date": "2026-06-17T16:18",
+              "author": "PCP",
+              "body": "VIDEO VISIT - follow-up subacute thyroiditis\n\nPatient at home, consented to video.\n\nNeck pain gone since mid-May. No more palpitations or sweats, no fevers, energy back to normal. Finishing up the school year.\n\nLabs 6/10: TSH 2.4, FT4 1.2.\n\nExam limited by video: well appearing, no distress, speaking comfortably.\n\nA/P: Subacute thyroiditis, clinically and biochemically resolved. Endocrinology has the labs. Let us know if neck pain or racing heart come back. Next routine visit is her physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "portal_message",
+          "start": "2026-08-12T13:30",
+          "reason": "Scheduling annual physical",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical before school gets crazy",
+              "date": "2026-08-12T13:30",
+              "author": "patient",
+              "body": "Hi! Can I get my physical booked for early October, ideally a Wednesday morning before school? Thanks."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical before school gets crazy",
+              "date": "2026-08-12T15:02",
+              "author": "front desk",
+              "body": "You're set for Wednesday 10/7 at 7:40 AM. Come fasting if you'd like labs drawn that morning."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-07a",
+          "kind": "annual_physical",
+          "start": "2026-10-07T07:40",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Subacute thyroiditis|E06.1": {
+        "code": "E06.1",
+        "display": "Subacute thyroiditis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Upper airway cough syndrome (postnasal drip syndrome)|R09.82": {
+        "code": "R09.82",
+        "display": "Postnasal drip",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    }
+  }
+}

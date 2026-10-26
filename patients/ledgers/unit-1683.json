@@ -1,0 +1,3735 @@
+{
+  "unit": "unit-1683",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"prenatal vitamin Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001683",
+      "given": "Yuki",
+      "family": "Zhang",
+      "birth_date": "1993-02-16",
+      "address_line": "27 Nonotuck Street",
+      "phone": "+1-978-555-0145",
+      "email": "yuki.zhang@example.test",
+      "marital_status": "married",
+      "summary": "High school PE teacher with chronic hepatitis B and episodic migraine who joined in 2019, developed Graves disease in 2021 and was treated with methimazole, then had a second pregnancy in 2025-26 on propylthiouracil complicated by a fetal aplasia cutis finding and gestational thrombocytopenia. Delivered a healthy boy in March 2026 and is back on methimazole.",
+      "events": [
+        {
+          "id": "2019-08-20a",
+          "kind": "telephone",
+          "start": "2019-08-20T10:12",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2019-08-20T10:12",
+              "author": "front desk",
+              "body": "Caller is a 26 y/o teacher in Florence who moved her care closer to home and wants to join the practice. Previous PCP office in the eastern part of the state. Membership info and fee schedule emailed. Records release form sent by email; she will sign and return so we can request records before her first visit. New patient visit booked 9/11 at 8:00, before the school day starts. Asked to come fasting."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-04a",
+          "kind": "outside_records",
+          "start": "2019-09-04T14:30",
+          "reason": "Records from prior primary care practice",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records (received)",
+              "date": "2019-09-04T14:30",
+              "author": "front desk",
+              "body": "38 pages received by fax from patient's prior primary care office, scanned to chart.\n\nSummary abstracted by MA for PCP review:\n- Problem list at prior office: chronic hepatitis B infection; migraine without aura; history of gallstones (no surgery).\n- Medications: none listed.\n- Allergies: NKDA.\n- OB: G1P1, one term vaginal delivery, uncomplicated.\n- Cervical cytology 2017: negative for intraepithelial lesion or malignancy.\n- Immunizations: childhood series documented; Tdap 2016; influenza most years.\n- Last office visit there was a sick visit, no chronic medications started.\n\nOriginal documents in media tab."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-11a",
+          "kind": "establish_care",
+          "start": "2019-09-11T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care, new patient physical",
+          "conditions": [
+            {
+              "label": "Chronic hepatitis B",
+              "action": "history"
+            },
+            {
+              "label": "Migraine without aura",
+              "action": "history"
+            },
+            {
+              "label": "Personal history of other diseases of the digestive system",
+              "action": "history",
+              "note": "History of cholelithiasis, no cholecystectomy",
+              "icd10": "Z87.19"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              71
+            ],
+            "hr": 59,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 96,
+            "weight_kg": 57.1,
+            "height_cm": 160.0
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2019-09-11T08:40",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 246
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.32
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-09-11T08:40",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Glucose",
+                  "value": 83
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 93
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-09-11T08:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 114
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 199
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 65
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 99
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 134
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-11T08:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "High school physical education teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2019-09-11T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-09-11T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit — Establish Care",
+              "date": "2019-09-11T09:05",
+              "author": "PCP",
+              "body": "26 y/o woman establishing care. Teaches PE at the high school and coaches; starts back with students next week. Prior records reviewed (fax from prior PCP).\n\nPMH\n- Chronic hepatitis B. Knows she has carried it for years; no prior treatment. Has not had any liver symptoms. Not currently followed by a liver specialist.\n- Migraine without aura. Episodic, a handful a year, usually lasts most of a day. Lies down in a dark room, fluids, sleeps it off. Has never needed a prescription for them. Sister has the same pattern.\n- History of gallstones. Told years ago; no attacks since, never had surgery.\n\nPSH: none.\nOB: G1P1, one term vaginal delivery, uncomplicated. Child is well.\nMeds: none. Allergies: NKDA.\nFH: Mother has autoimmune thyroid disease (on thyroid replacement). Father has high blood pressure. Sister with migraines.\nSH: Never smoker. No alcohol. Runs and plays pickup basketball.\n\nROS: Negative except as above. No headaches in the last month. Periods regular.\n\nExam\nWell appearing, fit. Vitals as charted.\nHEENT normal. Neck supple, thyroid normal size, no nodules. No lymphadenopathy.\nHeart RRR, no murmur. Lungs clear.\nAbd soft, non-tender, no hepatosplenomegaly, no RUQ tenderness.\nSkin no jaundice, no spider angiomata. Ext no edema.\nNeuro nonfocal.\n\nPHQ-2: 0.\n\nA/P\n1. Chronic hepatitis B: baseline CMP and CBC today. Will trend liver enzymes yearly here.\n2. Migraine without aura: infrequent, self-managed. Return if pattern changes.\n3. History of cholelithiasis: asymptomatic, no action.\n4. Health maintenance: Pap last 2017, normal; next due 2020. HIV and hep C screening today. Lipids today. Flu shot when this season's supply arrives, nurse visit next month.\n\nRTC 1 year, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 57.2,
+            "height_cm": 160.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2019-09-13a",
+          "kind": "portal_message",
+          "start": "2019-09-13T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2019-09-13T16:40",
+              "author": "PCP",
+              "body": "Hi Yuki, all of your labs from Wednesday look good. Blood counts, kidney function and liver enzymes are normal, which is what we want to see with the hepatitis B. Cholesterol is fine and your thyroid test is normal. HIV and hepatitis C screens are negative. We'll recheck the liver tests next year. Nurse visit for the flu shot is on the calendar for October."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-09a",
+          "kind": "nurse_visit",
+          "start": "2019-10-09T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-09T15:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-09T15:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Influenza Vaccine",
+              "date": "2019-10-09T15:30",
+              "author": "RN",
+              "body": "Here after school for flu vaccine. Feels well, no fever. No egg or vaccine reactions in the past. VIS given. Quadrivalent influenza 0.5 mL IM right deltoid. Tolerated well, waited 15 min, left in good condition."
+            }
+          ]
+        },
+        {
+          "id": "2020-02-11a",
+          "kind": "portal_message",
+          "start": "2020-02-11T07:02",
+          "reason": "Work note request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Note for school",
+              "date": "2020-02-11T07:02",
+              "author": "patient",
+              "body": "Good morning. I woke up with one of my migraines and I'm staying home today. The school asks for a note when it's a sick day before a long weekend. Could you send one? I'll be fine by tomorrow, this is my usual kind."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Note for school",
+              "date": "2020-02-11T09:18",
+              "author": "PCP",
+              "body": "Sorry you're down today. Note is attached to this message. If these start coming more often than your usual few a year, or one feels different from your typical headache, let's talk."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-23a",
+          "kind": "annual_physical",
+          "start": "2020-09-23T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              112,
+              72
+            ],
+            "hr": 67,
+            "rr": 17,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 57.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-09-23T08:15",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.51
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2020-09-23T08:15",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 98
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2020-09-23T08:05",
+              "text": "Specimen: cervical, liquid-based preparation. Satisfactory for evaluation; transformation zone component present.\nInterpretation: Negative for intraepithelial lesion or malignancy.",
+              "conclusion": "NILM."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-09-23T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-09-23T08:15"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-09-23T08:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-09-23T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-09-23T08:35",
+              "author": "PCP",
+              "body": "Annual. Masked visit. School reopened hybrid and she is teaching PE outdoors as long as the weather holds.\n\nInterval: No hospital or ED visits. Migraines unchanged, maybe three since last year, home measures. No abdominal pain. No jaundice.\nMeds none. NKDA.\n\nExam: Vitals as charted, weight stable. Thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen soft, no organomegaly. Pelvic: normal external genitalia, normal cervix, Pap obtained. Skin without lesions of concern.\nPHQ-2 negative.\n\nA/P\n- Chronic hep B: CBC and hepatic panel today.\n- Migraine without aura: stable, no treatment needed.\n- Cervical screening: Pap today.\n- Flu shot given today.\nFollow up in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-09-29a",
+          "kind": "portal_message",
+          "start": "2020-09-29T12:05",
+          "reason": "Pap and lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "date": "2020-09-29T12:05",
+              "author": "PCP",
+              "body": "Your Pap came back normal, so you're set for three years. Liver tests and blood count are normal as well. Have a good fall."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-20a",
+          "kind": "outside_records",
+          "start": "2021-05-20T11:00",
+          "reason": "Immunization registry update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-08T16:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-29T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "State immunization registry reconciliation",
+              "date": "2021-05-20T11:00",
+              "author": "MA",
+              "body": "Registry query run. Two doses of Pfizer-BioNTech COVID-19 vaccine, 4/8/21 and 4/29/21, given at a retail pharmacy (educator eligibility). Added to immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-27a",
+          "kind": "office_visit",
+          "start": "2021-10-27T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Palpitations, weight loss, heat intolerance",
+          "vitals": {
+            "bp": [
+              124,
+              74
+            ],
+            "hr": 110,
+            "rr": 15,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 54.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-10-27T16:30",
+              "resulted": "2021-10-28T10:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "text": "<0.01"
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 3.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-10-27T15:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-10-27T16:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-27T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-27T16:35"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2021",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "Suspected hyperthyroidism"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Palpitations and Weight Loss",
+              "date": "2021-10-27T16:50",
+              "author": "PCP",
+              "body": "Came in after texting that her heart \"won't slow down.\"\n\nS: About three months of a racing heartbeat, worse at night. Always hot, sleeping with the window open in October. Eating more than usual and still losing weight; clothes are loose. Bowel movements several times a day, not bloody, not watery. Trouble falling and staying asleep. Feels wired and a bit anxious. Assumed it was the start of the school year. No chest pain, no syncope, no fever, no neck pain. Not pregnant, periods regular. No new supplements, no biotin.\nWeight today down about 4 kg from last fall.\n\nO: HR 110, regular. BP and temp as charted.\nAnxious appearing. Fine tremor of outstretched hands. Skin warm and moist. Thyroid diffusely enlarged, smooth, non-tender, no discrete nodule felt. No eye findings: no proptosis or lid lag. Heart tachycardic, regular, no murmur. Lungs clear. Reflexes brisk.\n\nA/P\nPicture is hyperthyroidism; diffuse goiter and mom's autoimmune thyroid history make an autoimmune cause most likely, but labs first.\n- TSH, free T4 today.\n- Referral to endocrinology placed now; will ask for an early slot once labs confirm.\n- Discussed the reasons to come in or call same day: chest pain, fainting, shortness of breath, fever.\n- Flu shot given since she's here.\nWill call with results tomorrow."
+            }
+          ],
+          "state": {
+            "hr": 110,
+            "weight_kg": 53.1,
+            "labs": {
+              "Free Thyroxine": 3.0
+            }
+          },
+          "measure": [
+            "bp",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-10-28a",
+          "kind": "telephone",
+          "start": "2021-10-28T12:15",
+          "reason": "Thyroid results",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results call — thyroid",
+              "date": "2021-10-28T12:15",
+              "author": "PCP",
+              "body": "Called pt on her lunch break. TSH undetectable (<0.01), free T4 3.0 (ref 0.9-1.7). Overt hyperthyroidism confirmed. Called endocrinology myself; they can see her 11/10. Pt agrees. Told her to call if palpitations worsen or any chest pain/SOB before then. Referral updated with results attached."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-10a",
+          "kind": "specialist_visit",
+          "start": "2021-11-10T13:30",
+          "service": "Endocrinology & Metabolism",
+          "reason": "Hyperthyroidism",
+          "conditions": [
+            {
+              "label": "Graves disease",
+              "action": "diagnosed",
+              "onset": "2021-08-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "methimazole 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (10 mg) by mouth once daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Graves disease"
+            }
+          ],
+          "vitals": {
+            "hr": 110,
+            "weight_kg": 53.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-11-10T14:20",
+              "resulted": "2021-11-11T15:00",
+              "results": [
+                {
+                  "test": "Triiodothyronine (T3), total",
+                  "loinc": "3053-6",
+                  "unit": "ng/dL",
+                  "value": 300
+                },
+                {
+                  "test": "Thyroid stimulating immunoglobulin",
+                  "loinc": "30567-2",
+                  "text": "Present"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2021-11-10T14:20",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 261
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.38
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.7
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2021-11-10T14:20",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2021",
+              "action": "done",
+              "date": "2021-11-10T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Consultation",
+              "date": "2021-11-12T09:40",
+              "author": "endocrinology",
+              "body": "ENDOCRINOLOGY & METABOLISM — NEW CONSULTATION\nDate of service: 11/10/2021\nReason for referral: hyperthyroidism\n\nDear Doctor,\nThank you for asking us to see Ms. Zhang, a 28-year-old teacher, for thyrotoxicosis.\n\nShe describes roughly three months of palpitations, intolerance of heat, weight loss in spite of a bigger appetite, more frequent stools and poor sleep. No neck pain or recent viral illness. No iodine contrast or supplements. Not pregnant.\n\nOther history: chronic hepatitis B, not on therapy; migraine without aura. No surgeries. No medications. NKDA. Mother with autoimmune hypothyroidism. Never smoker, no alcohol.\n\nExam: Pulse 110. Anxious. Fine tremor of the outstretched hands. Skin warm and moist. Diffuse, non-tender goiter without nodularity. No ophthalmopathy, no pretibial changes.\n\nData: Your labs of 10/27 show TSH <0.01 mIU/L and free T4 3.0 ng/dL. We drew a total T3, 300 ng/dL (80-180), and thyroid-stimulating immunoglobulin, which is present. Baseline CBC with differential and hepatic panel normal.\n\nImpression: Graves disease with overt hyperthyroidism.\n\nPlan:\n1. Methimazole 10 mg daily. Reviewed agranulocytosis (stop and get a CBC for fever or sore throat), rash, and liver injury warning signs. Given the chronic hepatitis B, liver enzymes will be followed on treatment.\n2. Thyroid function tests in about 6 weeks; may be drawn at your office.\n3. Discussed RAI and surgery as alternatives; she prefers medical therapy.\n4. Return in 3 months.\n\nAllergies: NKDA.\nMedications at end of visit: methimazole 10 mg daily.\n\nThank you for the referral.\nEndocrinology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Free Thyroxine": 3.0
+            }
+          },
+          "measure": [
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-11-12a",
+          "kind": "portal_message",
+          "start": "2021-11-12T17:10",
+          "reason": "Endocrinology follow-up",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your thyroid visit",
+              "date": "2021-11-12T17:10",
+              "author": "PCP",
+              "body": "I read the endocrinology note. Graves disease, as we suspected, and you're starting methimazole 10 mg a day. Two things to keep on your radar: if you get a fever or a bad sore throat, stop the pill and get a blood count the same day (call us, we'll get you in). And we'll keep checking your liver tests. I've put in the thyroid labs for mid-December here so you don't have to drive to them. How's the heart rate feeling?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your thyroid visit",
+              "date": "2021-11-12T20:44",
+              "author": "patient",
+              "body": "Thank you. Still fast but only on day 2 of the pills. Booked the lab for December 20 since that's the first day of break."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-20a",
+          "kind": "lab_only",
+          "start": "2021-12-20T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid function on methimazole",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-12-20T09:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 0.03
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-12-20T09:10"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Free Thyroxine": 1.6,
+              "Thyroid Stimulating Hormone": 0.03
+            }
+          }
+        },
+        {
+          "id": "2021-12-21a",
+          "kind": "portal_message",
+          "start": "2021-12-21T11:30",
+          "reason": "Thyroid results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid labs",
+              "date": "2021-12-21T11:30",
+              "author": "PCP",
+              "body": "Good progress. Free T4 is down into the normal range. TSH is still very low, which is expected this early; it lags behind by a couple of months. Copy sent to endocrinology. Keep the same dose until you see them in February."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Thyroid labs",
+              "date": "2021-12-21T13:02",
+              "author": "patient",
+              "body": "That matches how I feel. Sleeping again! Thanks."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-06a",
+          "kind": "outside_records",
+          "start": "2022-01-06T10:20",
+          "reason": "Immunization registry update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-12-22T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Immunization registry — COVID-19 booster",
+              "date": "2022-01-06T10:20",
+              "author": "MA",
+              "body": "Booster dose of Pfizer-BioNTech COVID-19 vaccine 12/22/21 at a pharmacy, pulled from the state registry and added to the record."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-07a",
+          "kind": "specialist_visit",
+          "start": "2022-02-07T10:00",
+          "service": "Endocrinology & Metabolism",
+          "reason": "Graves disease follow-up",
+          "medications": [
+            {
+              "drug": "methimazole 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Dose reduced"
+            },
+            {
+              "drug": "methimazole 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet (5 mg) by mouth once daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Graves disease"
+            }
+          ],
+          "vitals": {
+            "hr": 76,
+            "weight_kg": 55.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-02-07T09:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 0.9
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2022-02-09T08:15",
+              "author": "endocrinology",
+              "body": "ENDOCRINOLOGY FOLLOW-UP — 2/7/2022\n\nMs. Zhang returns three months into methimazole for Graves disease. Palpitations gone, sleeping normally, appetite back to baseline and weight coming back up. No rash, fevers or sore throats. No itching or dark urine.\n\nVitals: HR 76. Exam: no tremor, goiter smaller and soft, no eye signs.\n\nLabs today: TSH 0.9 mIU/L, free T4 1.2 ng/dL. Your 12/20 values reviewed.\n\nAssessment: Graves disease, now euthyroid on methimazole 10 mg.\nPlan: Reduce to methimazole 5 mg daily. TFTs every 3-4 months for the first year, can be done with primary care. We will see her yearly. Continue to watch liver enzymes given chronic hepatitis B.\n\nAllergies: NKDA. Medications: methimazole 5 mg daily.\n\nEndocrinology"
+            }
+          ],
+          "state": {
+            "weight_kg": 55.4,
+            "labs": {
+              "Free Thyroxine": 1.2,
+              "Thyroid Stimulating Hormone": 0.9
+            }
+          },
+          "measure": [
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-02-09a",
+          "kind": "pharmacy",
+          "start": "2022-02-09T14:05",
+          "reason": "Medication reconciliation",
+          "documents": [
+            {
+              "type": "Medication Note",
+              "title": "Medication list updated",
+              "date": "2022-02-09T14:05",
+              "author": "MA",
+              "body": "Per endocrinology note, methimazole now 5 mg (1 tab) daily, down from 10 mg. Med list updated. Pharmacy confirms new Rx from endocrinology filled today."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-18a",
+          "kind": "lab_only",
+          "start": "2022-05-18T07:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid function on methimazole",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-05-18T07:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.4
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-05-18T07:20"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Free Thyroxine": 1.1,
+              "Thyroid Stimulating Hormone": 1.4
+            }
+          }
+        },
+        {
+          "id": "2022-05-19a",
+          "kind": "portal_message",
+          "start": "2022-05-19T12:40",
+          "reason": "Thyroid results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid check",
+              "date": "2022-05-19T12:40",
+              "author": "PCP",
+              "body": "Thyroid numbers are right in the normal range on the 5 mg. No changes. Next check in the fall with your physical."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-21a",
+          "kind": "annual_physical",
+          "start": "2022-09-21T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              121,
+              66
+            ],
+            "hr": 82,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 96,
+            "weight_kg": 56.2
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-09-21T08:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 228
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.22
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 63
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 26
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-21T08:05",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-21T08:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-09-21T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-21T08:05"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-21T08:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-21T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-09-21T08:30",
+              "author": "PCP",
+              "body": "Annual exam.\n\nSince last physical: diagnosed with Graves disease last fall, on methimazole, now 5 mg daily per endocrinology. Feels back to herself. Weight back up close to her old baseline. No sore throats or fevers. No rash.\nMigraines: two or three this year, same pattern, home measures.\nNo GI symptoms. Coaching again this season.\n\nMeds: methimazole 5 mg daily. NKDA.\n\nExam: Vitals as charted. Calm, no tremor. Thyroid mildly full, smooth, non-tender. No proptosis. Heart regular, no murmur. Lungs clear. Abdomen soft, no hepatosplenomegaly. Skin warm and dry, no rash. Ext no edema.\nPHQ-2: 0.\n\nA/P\n1. Graves disease on methimazole 5 mg: TFTs today; CBC with diff given the drug.\n2. Chronic hepatitis B: CMP for liver enzymes.\n3. Migraine without aura: stable.\n4. Prevention: Pap current through 2023. Flu shot today. Bivalent COVID booster at pharmacy when she can.\n\nOne year."
+            }
+          ],
+          "state": {
+            "hr": 68,
+            "weight_kg": 56.4,
+            "labs": {
+              "Free Thyroxine": 1.0,
+              "Thyroid Stimulating Hormone": 1.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-09-23a",
+          "kind": "portal_message",
+          "start": "2022-09-23T15:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from your physical",
+              "date": "2022-09-23T15:15",
+              "author": "PCP",
+              "body": "Everything came back normal: white count fine on the methimazole, liver enzymes normal, thyroid in range. Copy sent to endocrinology."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-03a",
+          "kind": "outside_records",
+          "start": "2022-11-03T09:45",
+          "reason": "Immunization registry update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-14T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Immunization registry — bivalent booster",
+              "date": "2022-11-03T09:45",
+              "author": "MA",
+              "body": "Bivalent Pfizer COVID-19 booster 10/14/22 at retail pharmacy, per state registry. Record updated."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-07a",
+          "kind": "lab_only",
+          "start": "2022-12-07T07:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid function on methimazole",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-12-07T07:15",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-12-07T07:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Result note — TFTs",
+              "date": "2022-12-08T08:20",
+              "author": "PCP",
+              "body": "TSH and free T4 normal on methimazole 5 mg. No change. Released to portal with comment. Endocrinology copied ahead of her January visit."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Free Thyroxine": 1.1,
+              "Thyroid Stimulating Hormone": 1.5
+            }
+          }
+        },
+        {
+          "id": "2023-01-23a",
+          "kind": "specialist_visit",
+          "start": "2023-01-23T14:00",
+          "service": "Endocrinology & Metabolism",
+          "reason": "Graves disease follow-up",
+          "vitals": {
+            "bp": [
+              107,
+              71
+            ],
+            "hr": 71,
+            "weight_kg": 56.6
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2023-01-26T10:05",
+              "author": "endocrinology",
+              "body": "Endocrinology annual follow-up, 1/23/23.\n\nGraves disease, about 14 months on methimazole, on 5 mg daily for nearly a year. Clinically euthyroid. No side effects. Normal TFTs in May and December (drawn at your office), and normal CBC and liver tests in September.\n\nExam: HR regular, no tremor, small smooth goiter, no orbitopathy.\n\nWe talked about how long to continue. With a goiter still present she is willing to stay on low-dose methimazole for now rather than stop and risk relapse; long-term low-dose therapy is a reasonable option. RAI and thyroidectomy remain alternatives if she ever wants definitive treatment.\n\nPlan: continue methimazole 5 mg daily. TFTs every 4-6 months. Return 1 year.\n\nEndocrinology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "pharmacy",
+          "start": "2023-03-14T11:20",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Medication Note",
+              "title": "Refill request — methimazole",
+              "date": "2023-03-14T11:20",
+              "author": "MA",
+              "body": "Pharmacy fax: methimazole 5 mg, endocrinology Rx out of refills; patient asking for a 90-day supply through her plan. Last TFTs 12/2022 normal, seen by endo 1/2023. Pended 90-day supply with 3 refills for PCP."
+            },
+            {
+              "type": "Medication Note",
+              "title": "Refill approved",
+              "date": "2023-03-14T16:45",
+              "author": "PCP",
+              "body": "Sent. Methimazole 5 mg daily, #90, 3 refills. TFTs due in June."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-06a",
+          "kind": "nurse_visit",
+          "start": "2023-06-06T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab draw, thyroid function",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-06-07a",
+          "kind": "telephone",
+          "start": "2023-06-07T09:10",
+          "reason": "Missed lab appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed lab appointment",
+              "date": "2023-06-07T09:10",
+              "author": "MA",
+              "body": "Pt missed 6/6 lab draw. Reached her: field day at school ran long, forgot. Rebooked for 6/13 at 7:30."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "lab_only",
+          "start": "2023-06-13T07:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid function on methimazole",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-06-13T07:35",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.3
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-06-13T07:35"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Free Thyroxine": 1.0,
+              "Thyroid Stimulating Hormone": 2.1
+            }
+          }
+        },
+        {
+          "id": "2023-06-14a",
+          "kind": "portal_message",
+          "start": "2023-06-14T13:00",
+          "reason": "Thyroid results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "June thyroid labs",
+              "date": "2023-06-14T13:00",
+              "author": "PCP",
+              "body": "Normal again. TSH a touch higher than last time but well within range. Same dose. Enjoy the summer."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-27a",
+          "kind": "annual_physical",
+          "start": "2023-09-27T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              126,
+              66
+            ],
+            "hr": 77,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 56.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-27T08:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 197
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.46
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-27T08:10",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 83
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-27T08:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2023-09-27T07:55",
+              "text": "Specimen: cervical, liquid-based preparation. Satisfactory for evaluation; endocervical/transformation zone component present.\nCytology: Negative for intraepithelial lesion or malignancy.\nHigh-risk HPV (including 16/18): Not detected.",
+              "conclusion": "NILM; high-risk HPV negative.",
+              "issued": "2023-10-02T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-27T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-27T08:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-27T08:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-27T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-09-27T08:40",
+              "author": "PCP",
+              "body": "Annual. 30 now.\n\nInterval: Graves stable on methimazole 5 mg; endo in January kept her on it long term. Feels well. One missed lab in June, made up a week later, normal.\nMigraine: a few this year, nothing new about them.\nNo abdominal pain, no jaundice, no dark urine.\nBusy start of the school year, otherwise fine. Mood good.\n\nMeds: methimazole 5 mg daily. Allergies: NKDA.\n\nExam: Vitals as charted. Well, no tremor. Small smooth goiter, unchanged, no nodules. No proptosis. Heart RRR, no murmur. Lungs clear. Abd soft, no HSM. Pelvic: normal; Pap with HPV collected. Skin normal.\nPHQ-2: 1.\n\nA/P\n1. Graves disease: TFTs. CBC.\n2. Chronic hep B: CMP for LFTs.\n3. Migraine without aura: stable.\n4. Cervical screening: co-test today (now 30), then every 5 years if negative.\n5. Flu today. Updated COVID shot at the pharmacy.\n\nRTC 1 yr."
+            }
+          ],
+          "state": {
+            "weight_kg": 56.0,
+            "labs": {
+              "Free Thyroxine": 1.1,
+              "Thyroid Stimulating Hormone": 1.7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "portal_message",
+          "start": "2023-10-03T12:20",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "date": "2023-10-03T12:20",
+              "author": "PCP",
+              "body": "Pap and HPV test are both negative, so the next one isn't due for five years. Blood count, liver tests and thyroid are all normal."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "outside_records",
+          "start": "2023-10-24T10:10",
+          "reason": "Immunization registry update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-12T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Immunization registry — COVID-19 2023-24",
+              "date": "2023-10-24T10:10",
+              "author": "MA",
+              "body": "2023-24 COVID-19 vaccine (Pfizer) given 10/12/23 at pharmacy per registry. Added."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "lab_only",
+          "start": "2024-02-20T07:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid function on methimazole",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-02-20T07:25",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.3
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-02-20T07:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Result note — TFTs",
+              "date": "2024-02-21T07:50",
+              "author": "PCP",
+              "body": "Euthyroid on methimazole 5 mg. Forwarded to endocrinology for her March visit. Pt notified via portal."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Free Thyroxine": 1.2,
+              "Thyroid Stimulating Hormone": 1.3
+            }
+          }
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "specialist_visit",
+          "start": "2024-03-12T15:20",
+          "service": "Endocrinology & Metabolism",
+          "reason": "Graves disease follow-up",
+          "vitals": {
+            "bp": [
+              129,
+              76
+            ],
+            "hr": 67,
+            "weight_kg": 55.7
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2024-03-14T09:30",
+              "author": "endocrinology",
+              "body": "Follow-up, Graves disease (3/12/2024).\n\nDoing well on methimazole 5 mg daily, no adverse effects. Feb TSH and free T4 normal. Last CBC and liver panel (9/2023) normal.\nExam: no tremor, goiter small and soft, eyes quiet.\n\nContinue methimazole 5 mg. TFTs twice a year through primary care. See her in a year.\n\nAllergies NKDA. Meds: methimazole 5 mg daily.\nEndocrinology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-08a",
+          "kind": "portal_message",
+          "start": "2024-05-08T19:35",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Methimazole refill",
+              "date": "2024-05-08T19:35",
+              "author": "patient",
+              "body": "Hi, the pharmacy says my methimazole has no refills left. I have about a week of pills. Same pharmacy as always."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Methimazole refill",
+              "date": "2024-05-09T08:50",
+              "author": "RN",
+              "body": "Sent this morning, 90 days with 3 refills. It should be ready this afternoon."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-25a",
+          "kind": "annual_physical",
+          "start": "2024-09-25T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              113,
+              68
+            ],
+            "hr": 71,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 56.4
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-09-25T08:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 232
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.58
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-25T08:05",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-25T08:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.13
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-25T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-25T08:05"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-25T08:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-25T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-25T08:35",
+              "author": "PCP",
+              "body": "Physical, age 31.\n\nNo interval illnesses. Graves: methimazole 5 mg daily, endo visit in March, stays on it. No palpitations or heat intolerance.\nHep B: no symptoms.\nMigraines: still a few a year, unchanged.\nWorking full time, coaching basketball again this winter.\n\nMeds: methimazole 5 mg daily. NKDA.\n\nExam: Vitals as charted. Well appearing. Neck: small smooth goiter, stable. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, liver and spleen not felt. Skin no jaundice. Ext no edema. Neuro nonfocal.\nPHQ-2: 0.\n\nPlan\n- TFTs, CBC with diff, CMP today.\n- Pap/HPV next due 2028.\n- Flu shot given. COVID at pharmacy.\n- RTC 1 year."
+            }
+          ],
+          "state": {
+            "weight_kg": 56.3,
+            "labs": {
+              "Free Thyroxine": 1.05,
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-27a",
+          "kind": "portal_message",
+          "start": "2024-09-27T11:45",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-09-27T11:45",
+              "author": "PCP",
+              "body": "Hi Yuki, all normal this year, including thyroid and liver tests. See you next fall, or sooner if anything comes up."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-06a",
+          "kind": "outside_records",
+          "start": "2024-11-06T13:30",
+          "reason": "Immunization registry update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-19T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Immunization registry — COVID-19 2024-25",
+              "date": "2024-11-06T13:30",
+              "author": "MA",
+              "body": "2024-25 COVID-19 vaccine (Pfizer) 10/19/24, retail pharmacy, per registry. Immunization record updated."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-29a",
+          "kind": "lab_only",
+          "start": "2025-01-29T07:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid function on methimazole",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-01-29T07:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.4
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-01-29T07:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Result note — TFTs",
+              "date": "2025-01-30T12:10",
+              "author": "PCP",
+              "body": "Normal TSH and FT4 on methimazole 5 mg. No change. Copy to endocrinology for March."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Free Thyroxine": 1.1,
+              "Thyroid Stimulating Hormone": 1.5
+            }
+          }
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "specialist_visit",
+          "start": "2025-03-11T14:40",
+          "service": "Endocrinology & Metabolism",
+          "reason": "Graves disease follow-up",
+          "vitals": {
+            "bp": [
+              130,
+              73
+            ],
+            "hr": 76,
+            "weight_kg": 56.1
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2025-03-13T08:55",
+              "author": "endocrinology",
+              "body": "Graves disease, yearly visit 3/11/25.\n\nThree-plus years on methimazole, 5 mg daily since early 2022. No palpitations, weight stable, no side effects. January TFTs normal. CBC and CMP 9/2024 normal.\nExam: regular pulse, no tremor, small soft goiter unchanged, no eye findings.\n\nPlan: methimazole 5 mg daily; TFTs every 6 months with PCP; return 1 year.\n\nEndocrinology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "pharmacy",
+          "start": "2025-04-22T10:35",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Medication Note",
+              "title": "Refill — methimazole 5 mg",
+              "date": "2025-04-22T10:35",
+              "author": "MA",
+              "body": "Electronic refill request from pharmacy, methimazole 5 mg #90. Labs current (1/2025). Pended."
+            },
+            {
+              "type": "Medication Note",
+              "title": "Refill sent",
+              "date": "2025-04-22T13:05",
+              "author": "PCP",
+              "body": "Approved, 90 days x 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-25a",
+          "kind": "specialist_visit",
+          "start": "2025-08-25T09:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "First prenatal visit",
+          "conditions": [
+            {
+              "label": "Pregnant state, incidental",
+              "action": "diagnosed",
+              "onset": "2025-06-02",
+              "note": "G2P1, LMP 2025-06-02, EDD 2026-03-09",
+              "icd10": "Z33.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "methimazole 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Pregnancy; changed to propylthiouracil"
+            },
+            {
+              "drug_text": "propylthiouracil 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (100 mg) by mouth three times daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Graves disease in pregnancy"
+            },
+            {
+              "drug_text": "prenatal vitamin Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pregnancy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              76
+            ],
+            "hr": 68,
+            "weight_kg": 56.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-25T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 242
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.43
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-25T09:50",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Hepatitis B e antigen",
+                  "loinc": "13954-3",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 0.6
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics — Initial Prenatal Visit",
+              "date": "2025-08-27T14:20",
+              "author": "obstetrics",
+              "body": "OBSTETRICS & GYNECOLOGY — NEW OB VISIT 8/25/2025\n\n32 y/o G2P1001 at 12w0d by LMP (6/2/25), EDD 3/9/26. Positive home test in mid-July. She kept taking methimazole until today.\n\nPrior OB: one term SVD, uncomplicated. That child is healthy.\nMedical: Graves disease on methimazole 5 mg daily since 2022 (on antithyroid drugs since late 2021), taking it every day up to now. Chronic hepatitis B. Migraine without aura.\nSurgical: none. Allergies: NKDA. Never smoker, no alcohol, no drugs.\nFH: mother autoimmune hypothyroidism; father HTN; sister migraine.\n\nExam: well. Thyroid small, smooth. Uterus consistent with dates. FHT present by Doppler.\n\nAssessment/plan\n1. IUP at 12 weeks.\n2. Graves disease: stop methimazole. Start propylthiouracil 100 mg TID; discussed with her endocrinologist by phone today. TFTs every 4 weeks.\n3. Chronic hepatitis B: prenatal panel sent including HBV markers.\n4. Prenatal vitamin daily.\n5. Anatomy scan at 20 weeks, about 10/20.\n\nPrenatal labs (resulted 8/26): HBsAg POSITIVE. HBeAg POSITIVE. HIV nonreactive. RPR nonreactive. CBC normal. TSH and free T4 within range. Remainder of the prenatal panel unremarkable.\n\nOB/GYN"
+            }
+          ],
+          "state": {
+            "weight_kg": 57.4,
+            "labs": {
+              "Free Thyroxine": 1.2,
+              "Thyroid Stimulating Hormone": 0.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "telephone",
+          "start": "2025-08-26T11:05",
+          "reason": "Records request from obstetrics",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2025-08-26T11:05",
+              "author": "front desk",
+              "body": "OB/GYN office called requesting recent notes, med list and labs for a new prenatal patient. Release on file. Last 2 years of notes, labs and endocrinology letters faxed."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-27a",
+          "kind": "portal_message",
+          "start": "2025-08-27T20:15",
+          "reason": "Pregnancy, medication change",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Some news",
+              "date": "2025-08-27T20:15",
+              "author": "patient",
+              "body": "Hi! Wanted you to hear it from me. I'm 12 weeks pregnant, due in March. I saw the OB on Monday. They took me off the methimazole and I'm on PTU now, 100 mg three times a day, plus prenatal vitamins. Does anything change for my physical in September?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Some news",
+              "date": "2025-08-28T07:45",
+              "author": "PCP",
+              "body": "Congratulations! I got the OB note. Your medication list here is updated: PTU 100 mg three times daily and the prenatal vitamin, methimazole stopped. Keep the September physical. We'll check liver tests then, since PTU can affect the liver and you also have hepatitis B, and I'll coordinate thyroid labs with the OB so you aren't stuck twice. Flu shot is safe and recommended in pregnancy."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-24a",
+          "kind": "annual_physical",
+          "start": "2025-09-24T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              124,
+              74
+            ],
+            "hr": 81,
+            "rr": 16,
+            "temp_c": 36.8,
+            "spo2": 96,
+            "weight_kg": 59.8
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-09-24T08:05",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-24T08:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 237
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.34
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-24T08:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 0.4
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-24T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-24T08:05"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-24T08:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-24T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-24T08:40",
+              "author": "PCP",
+              "body": "Annual, 32 y/o, 16 weeks pregnant (G2P1, EDD 3/9/26), prenatal care with OB.\n\nInterval: Graves disease, switched from methimazole to PTU 100 mg TID at her first prenatal visit 8/25. Tolerating it, no rash. No palpitations.\nHep B: prenatal HBsAg and HBeAg positive per OB labs. No abdominal pain, no jaundice, no dark urine.\nMigraine: none this pregnancy so far.\nStill teaching and coaching.\n\nMeds: propylthiouracil 100 mg TID, prenatal vitamin daily. NKDA.\n\nExam: Vitals as charted. Well. Small smooth goiter, unchanged. Heart regular, no murmur. Lungs clear. Abdomen soft, gravid, nontender. Skin warm, no jaundice, no rash. No edema.\nPHQ-2: 0.\n\nA/P\n1. Graves disease in pregnancy on PTU: TSH and FT4 today, results to OB. Liver panel today and periodically on PTU.\n2. Chronic hepatitis B: LFTs as above. CBC.\n3. Migraine without aura: quiet.\n4. Pregnancy: per OB; anatomy scan in October.\n5. Flu shot today. Cervical screening current.\n\nWill see her after delivery; RTC sooner as needed."
+            }
+          ],
+          "state": {
+            "hr": 80,
+            "weight_kg": 59.6,
+            "labs": {
+              "Free Thyroxine": 1.4,
+              "Thyroid Stimulating Hormone": 0.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-26a",
+          "kind": "portal_message",
+          "start": "2025-09-26T12:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your labs",
+              "date": "2025-09-26T12:30",
+              "author": "PCP",
+              "body": "Liver tests are normal on the PTU. Thyroid is where we want it in pregnancy, TSH on the low side of normal with a free T4 in range. Blood count normal. I sent these to your OB."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "imaging",
+          "start": "2025-10-20T10:15",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Fetal anatomy survey, 20 weeks",
+          "conditions": [
+            {
+              "label": "Maternal care for other (suspected) fetal abnormality and damage, not applicable or unspecified",
+              "action": "diagnosed",
+              "note": "Fetal skin defect consistent with aplasia cutis congenita on 20-week anatomy scan",
+              "icd10": "O35.8XX0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              119,
+              70
+            ],
+            "hr": 68
+          },
+          "reports": [
+            {
+              "study": "Obstetric ultrasound, detailed fetal anatomy",
+              "loinc": "11525-3",
+              "performed": "2025-10-20T10:15",
+              "text": "Indication: routine anatomy survey, 20w0d by LMP. Maternal Graves disease; antithyroid drug exposure in the first trimester.\n\nTechnique: transabdominal real-time imaging.\n\nFindings: Single live intrauterine pregnancy. Cardiac activity present, rate normal. Fetal biometry (BPD, HC, AC, FL) concordant with dates; estimated fetal weight appropriate for gestational age. Amniotic fluid volume normal. Placenta posterior, no previa. Cervix long and closed.\nAnatomy: intracranial structures, face, spine, four-chamber heart and outflow tracts, stomach, kidneys, bladder, abdominal wall and extremities visualized and appear normal. A focal defect in the fetal skin is seen, consistent with aplasia cutis congenita.",
+              "conclusion": "Live singleton at 20 weeks with normal growth and normal amniotic fluid. Focal fetal skin defect consistent with aplasia cutis congenita.",
+              "issued": "2025-10-20T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics — Anatomy Scan Visit",
+              "date": "2025-10-22T09:15",
+              "author": "obstetrics",
+              "body": "OB visit with anatomy ultrasound, 10/20/2025, 20w0d.\n\n32 y/o G2P1 with Graves disease (PTU since 12 weeks, methimazole before that) and chronic hepatitis B here for her anatomy survey. Taking only PTU and her prenatal vitamin. Denies any illness or infection this pregnancy, any other medicines, alcohol, tobacco or drugs. First pregnancy went smoothly.\n\nMaternal exam unremarkable.\n\nUltrasound: live singleton, growth and fluid normal. A focal fetal skin defect consistent with aplasia cutis congenita (see report).\n\nShe asked whether the medicine she took early in pregnancy could have caused this. We talked openly: methimazole taken in the first trimester has been associated with aplasia cutis, so an association is possible, though it cannot be proven in any one pregnancy. Reviewed that she is now on PTU, that pediatrics will examine the baby after birth, and that the rest of the anatomy looks normal. She had time for questions and was tearful but appreciative.\n\nPlan: routine prenatal care, next visit 4 weeks. Continue PTU 100 mg TID and prenatal vitamin. TFTs every 4 weeks.\n\nOB/GYN"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2025-10-22a",
+          "kind": "telephone",
+          "start": "2025-10-22T16:20",
+          "reason": "Patient call after anatomy scan",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call with patient",
+              "date": "2025-10-22T16:20",
+              "author": "PCP",
+              "body": "Pt asked to talk after her anatomy scan. She's read the OB note and wanted to go over it with someone who knows her. Main worry is guilt about the methimazole. Listened. Reinforced what OB told her: the rest of the scan is normal, growth is normal, and the switch was made. She has her OB visit in 4 weeks and feels okay about the plan. Offered a visit here anytime; she declined for now. Sounded steadier by the end of the call."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-29a",
+          "kind": "lab_only",
+          "start": "2025-10-29T07:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid function in pregnancy on PTU",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-29T07:15",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 0.4
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-29T07:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Result note — TFTs",
+              "date": "2025-10-29T16:15",
+              "author": "PCP",
+              "body": "TSH and free T4 in the target range for pregnancy on PTU. Results faxed to OB."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Free Thyroxine": 1.4,
+              "Thyroid Stimulating Hormone": 0.4
+            }
+          }
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "specialist_visit",
+          "start": "2025-11-18T08:40",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit, 24 weeks",
+          "vitals": {
+            "bp": [
+              111,
+              71
+            ],
+            "hr": 76,
+            "weight_kg": 66.7
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics — Prenatal Visit",
+              "date": "2025-11-19T10:00",
+              "author": "obstetrics",
+              "body": "Routine prenatal visit, 24w1d.\n\nGraves (on PTU) and anatomy scan showing aplasia cutis congenita. Feeling well. Pre-pregnancy BMI 22. Up 10 kg (22 lb) since the start of the pregnancy. Eats a balanced diet, takes the prenatal vitamin daily. She asked how much more weight she should expect to gain and how much she should be eating.\n\nExam: normal. Fundal height consistent with 24 weeks. FHTs normal.\n\nCounseling: for a normal pre-pregnancy BMI, total gain of about 11.5-16 kg (25-35 lb) is typical, so she has room for roughly another 2-6 kg, about 0.4-0.5 kg a week from here. Calorie needs rise about 340 kcal/day in the second trimester and about 450 kcal/day in the third over pre-pregnancy intake; no need to eat for two. Keep up the prenatal vitamin.\n\nMeds: PTU 100 mg TID. NKDA.\nRTC 3 weeks.\n\nOB/GYN"
+            }
+          ],
+          "state": {
+            "weight_kg": 66.3
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-26a",
+          "kind": "lab_only",
+          "start": "2025-11-26T07:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid function in pregnancy on PTU",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-11-26T07:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 0.5
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.4
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-11-26T07:20",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 95
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-11-26T07:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Result note — TFTs",
+              "date": "2025-11-26T16:20",
+              "author": "PCP",
+              "body": "TFTs stable on PTU 100 mg TID. Liver panel normal. Sent to OB and endocrinology."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Free Thyroxine": 1.4,
+              "Thyroid Stimulating Hormone": 0.5
+            }
+          }
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "specialist_visit",
+          "start": "2025-12-09T15:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit, 27 weeks",
+          "vitals": {
+            "bp": [
+              121,
+              77
+            ],
+            "hr": 76,
+            "rr": 16,
+            "temp_c": 36.6,
+            "weight_kg": 68.2
+          },
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-12-09T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics — Prenatal Visit",
+              "date": "2025-12-10T08:30",
+              "author": "obstetrics",
+              "body": "Prenatal visit 12/9/25, 27w1d.\n\nHistory of Graves disease on PTU, chronic hepatitis B, migraine. Pregnancy has gone without problems so far. She teaches PE and helps run the school's sports program, including coaching basketball this winter, and wants to know whether she can keep doing it.\n\nVitals normal. Exam unremarkable. Fundal height consistent with dates. FHTs normal.\n\nAssessment: no contraindication to exercise from her medical or obstetric history. She may keep coaching and stay active; avoid contact drills and fall risk, stay hydrated, stop for bleeding, fluid leak, contractions, dizziness or chest pain.\n\nTdap given today.\nMeds: PTU 100 mg TID, prenatal vitamin.\n\nOB/GYN"
+            }
+          ],
+          "state": {
+            "weight_kg": 67.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-23a",
+          "kind": "lab_only",
+          "start": "2025-12-23T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid function in pregnancy on PTU",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-12-23T09:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 0.4
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-23T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Result note — TFTs",
+              "date": "2025-12-23T16:30",
+              "author": "PCP",
+              "body": "Free T4 upper normal, TSH low-normal; fine for pregnancy on PTU per OB/endo targets. No change. Copy to OB."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Free Thyroxine": 1.5,
+              "Thyroid Stimulating Hormone": 0.4
+            }
+          }
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "specialist_visit",
+          "start": "2026-01-06T09:20",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit, 31 weeks",
+          "vitals": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 88,
+            "rr": 16,
+            "weight_kg": 69.6
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics — Prenatal Visit",
+              "date": "2026-01-07T11:10",
+              "author": "obstetrics",
+              "body": "Prenatal visit, 31w1d (1/6/2026).\n\nGraves disease on PTU, chronic hep B. Feels well overall. Has noticed she gets more winded going up stairs than before, and her ankles are a little puffy by the end of the day.\n\nBP 120/75, HR 88, RR 16.\nHeart: grade 2/6 systolic ejection murmur at the left sternal border, softer when she sits up from lying down. Lungs clear. Mild pitting edema of both ankles.\nFundal height consistent with dates. FHTs normal.\n\nAssessment: findings are in keeping with the normal changes of the third trimester. Routine follow-up.\n\nOB history: one previous term vaginal delivery, no complications.\nMeds: PTU 100 mg TID, prenatal vitamin. NKDA.\n\nOB/GYN"
+            }
+          ],
+          "state": {
+            "weight_kg": 69.5
+          },
+          "measure": [
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "lab_only",
+          "start": "2026-01-21T07:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid function in pregnancy on PTU",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-01-21T07:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 0.4
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.4
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-01-21T07:10",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-01-21T07:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Result note — TFTs",
+              "date": "2026-01-21T16:10",
+              "author": "PCP",
+              "body": "Stable TFTs on PTU. LFTs normal. Faxed to OB."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Free Thyroxine": 1.4,
+              "Thyroid Stimulating Hormone": 0.4
+            }
+          }
+        },
+        {
+          "id": "2026-01-27a",
+          "kind": "specialist_visit",
+          "start": "2026-01-27T13:10",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Headache, 34 weeks",
+          "medications": [
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (1,000 mg) by mouth every 6 hours as needed for headache",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Migraine without aura"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              78
+            ],
+            "hr": 78,
+            "temp_c": 37.0,
+            "weight_kg": 71.9
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics — Visit for Headache",
+              "date": "2026-01-28T09:00",
+              "author": "obstetrics",
+              "body": "OB follow-up 1/27/26, 34w1d.\n\nGraves disease on PTU. Seen for a headache that started yesterday: throbbing, across both temples, with nausea and light sensitivity, ongoing about 24 hours. Has a history of migraine without aura, and her migraines have been coming more often since she became pregnant; this one feels like her usual kind. No head injury, fever, stiff neck or change in vision.\n\nBP 122/78, HR 78, T 37.0 C (98.6 F).\nExam unremarkable. Neuro: no focal deficits.\n\nAssessment: acute migraine without aura in pregnancy, normal blood pressure, no warning features.\nPlan: acetaminophen 1,000 mg every 6 hours as needed (no more than 4 g a day), rest in a dark room, fluids. Avoid NSAIDs in pregnancy. Return or call L&D for a headache that is different, will not settle, or comes with visual change, swelling or RUQ pain.\n\nOB/GYN"
+            }
+          ],
+          "state": {
+            "weight_kg": 70.4
+          },
+          "measure": [
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "specialist_visit",
+          "start": "2026-02-10T10:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit, 36 weeks",
+          "conditions": [
+            {
+              "label": "Thrombocytopenia",
+              "action": "diagnosed",
+              "note": "Gestational; platelets 115,000 at 36 weeks"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 82,
+            "weight_kg": 70.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-10T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 115
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-02-10T10:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-10T10:30",
+              "results": [
+                {
+                  "test": "Activated partial thromboplastin time",
+                  "loinc": "14979-9",
+                  "unit": "s",
+                  "value": 30
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics — Prenatal Visit",
+              "date": "2026-02-11T15:20",
+              "author": "obstetrics",
+              "body": "Prenatal visit 2/10/26, 36w1d.\n\nGraves disease on PTU; chronic hepatitis B. No complaints; pregnancy otherwise uneventful. No bruising, bleeding or history of anemia.\n\nBP 120/78, HR 82.\nExam normal. No petechiae or purpura. No hepatosplenomegaly. Fundal height consistent with dates, FHTs normal.\n\nLabs today: hemoglobin 12.2 g/dL, WBC 7,800/mm3, platelets 115,000/mm3. PT 12 sec (control 11-13.5), aPTT 30 sec (control 25-35).\n\nAssessment: mild thrombocytopenia in late pregnancy with normal coagulation studies and no bleeding, most consistent with gestational thrombocytopenia. Recheck after delivery.\n\nMeds: PTU 100 mg TID, prenatal vitamin.\nRTC weekly.\n\nOB/GYN"
+            }
+          ],
+          "state": {
+            "weight_kg": 71.6
+          },
+          "measure": [
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "portal_message",
+          "start": "2026-02-12T18:50",
+          "reason": "Question about platelets",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Platelets?",
+              "date": "2026-02-12T18:50",
+              "author": "patient",
+              "body": "The OB said my platelets are a little low and it's probably from the pregnancy. Is that something to worry about with my liver? Just want your take."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Platelets?",
+              "date": "2026-02-13T07:30",
+              "author": "PCP",
+              "body": "Good question. A mild dip like yours late in pregnancy is common and usually comes back to normal after the baby is born. Your platelets were normal in September and your liver tests have always been normal. Your clotting tests were normal too. Let's recheck a blood count at your postpartum visit with me and make sure it has come back up."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-18a",
+          "kind": "lab_only",
+          "start": "2026-02-18T07:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid function in pregnancy on PTU",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-02-18T07:25",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 0.5
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-02-18T07:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Result note — TFTs",
+              "date": "2026-02-18T16:25",
+              "author": "PCP",
+              "body": "TFTs in range at 37 weeks. Copy to OB for delivery planning."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Free Thyroxine": 1.3,
+              "Thyroid Stimulating Hormone": 0.5
+            }
+          }
+        },
+        {
+          "id": "2026-03-02a",
+          "kind": "hospital_admission",
+          "start": "2026-03-02T04:40",
+          "end": "2026-03-04T11:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Active labor at 39 weeks",
+          "conditions": [
+            {
+              "label": "Pregnant state, incidental",
+              "action": "resolved",
+              "icd10": "Z33.1"
+            },
+            {
+              "label": "Maternal care for other (suspected) fetal abnormality and damage, not applicable or unspecified",
+              "action": "resolved",
+              "icd10": "O35.8XX0"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-03-02T04:50",
+              "bp": [
+                124,
+                76
+              ],
+              "hr": 92,
+              "rr": 18,
+              "temp_c": 36.9,
+              "spo2": 99
+            },
+            {
+              "time": "2026-03-02T12:00",
+              "bp": [
+                118,
+                72
+              ],
+              "hr": 86,
+              "rr": 16,
+              "temp_c": 37.0,
+              "spo2": 99
+            },
+            {
+              "time": "2026-03-03T08:00",
+              "bp": [
+                112,
+                70
+              ],
+              "hr": 78,
+              "rr": 16,
+              "temp_c": 36.8,
+              "spo2": 99
+            },
+            {
+              "time": "2026-03-04T08:00",
+              "bp": [
+                114,
+                68
+              ],
+              "hr": 74,
+              "rr": 16,
+              "temp_c": 36.7,
+              "spo2": 99
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Labor & Delivery Discharge Summary",
+              "date": "2026-03-05T10:15",
+              "author": "obstetrics",
+              "body": "DISCHARGE SUMMARY — LABOR AND DELIVERY\nAdmitted: 3/2/2026  Discharged: 3/4/2026\n\n33 y/o G2P1 at 39w0d with Graves disease on PTU and chronic hepatitis B, admitted in active labor. Prenatal care was consistent and the course otherwise uncomplicated; antenatal issues were the fetal aplasia cutis congenita finding and gestational thrombocytopenia. Prenatal labs notable for HBsAg positive and HBeAg positive. Her older child is healthy.\n\nOn admission vital signs stable; fetal heart rate tracing reassuring (category I).\n\nDelivery 3/2/2026: spontaneous vaginal delivery of a liveborn male, 3,400 g, Apgar 8 at 1 minute and 9 at 5 minutes. Placenta delivered intact. EBL within normal limits.\n\nNewborn: healthy; examined by pediatrics for the prenatally noted skin finding, with follow-up through pediatrics. Hepatitis B vaccine and hepatitis B immune globulin given after birth.\n\nPostpartum course: uneventful. Afebrile, vitals normal, ambulating, voiding, pain controlled.\n\nDischarge diagnoses: term spontaneous vaginal delivery; Graves disease; chronic hepatitis B; gestational thrombocytopenia.\nDischarge medications: propylthiouracil 100 mg three times daily; prenatal vitamin daily.\nAllergies: NKDA.\nFollow-up: OB postpartum visit; primary care in 4-6 weeks for blood count and thyroid tests; endocrinology regarding antithyroid therapy postpartum.\n\nOB/GYN — Labor & Delivery"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "telephone",
+          "start": "2026-03-09T10:40",
+          "reason": "Postpartum check-in",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Postpartum check-in",
+              "date": "2026-03-09T10:40",
+              "author": "RN",
+              "body": "Called after receiving the delivery summary. Pt one week postpartum, doing well, baby boy home and feeding, pediatrics appointment done. Taking PTU and prenatal vitamin. No fever, no heavy bleeding, no palpitations. Booked postpartum visit with PCP 4/14 for CBC and thyroid labs per discharge summary. Endocrinology visit already set for late April."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "office_visit",
+          "start": "2026-04-14T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum follow-up, platelets and thyroid",
+          "conditions": [
+            {
+              "label": "Thrombocytopenia",
+              "action": "resolved"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              68
+            ],
+            "hr": 89,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 61.2
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-04-14T13:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 231
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.41
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.0
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-04-14T13:55",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-14T13:55",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 0.8
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-14T13:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-14T13:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Postpartum Follow-up",
+              "date": "2026-04-14T14:20",
+              "author": "PCP",
+              "body": "6 weeks postpartum after SVD 3/2/26 (boy, 3,400 g). Here for the labs the discharge summary asked for.\n\nS: Recovering well. Tired in the way you'd expect with a newborn. No palpitations, heat intolerance or tremor. No headaches since delivery. Bleeding has stopped. No bruising or nosebleeds. Mood okay; good support at home. Baby followed by pediatrics, doing well.\nMeds: propylthiouracil 100 mg TID, prenatal vitamin. NKDA.\n\nO: Vitals as charted, weight down toward baseline. Well appearing. Thyroid small, smooth, unchanged. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. No edema. Skin no petechiae, no jaundice.\nPHQ-9: 3.\n\nA/P\n1. Gestational thrombocytopenia: CBC today; expect recovery.\n2. Graves disease, postpartum on PTU: TSH/FT4 today. Postpartum is a common time for Graves to flare; endocrinology is seeing her 4/27 to decide on going back to methimazole. Results will go to them.\n3. Chronic hepatitis B: hepatic panel.\n4. Mood: screen low, reviewed what to watch for.\nAnnual physical in the fall."
+            }
+          ],
+          "state": {
+            "hr": 74,
+            "weight_kg": 61.0,
+            "labs": {
+              "Free Thyroxine": 1.2,
+              "Platelets": 231,
+              "Thyroid Stimulating Hormone": 0.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-16a",
+          "kind": "portal_message",
+          "start": "2026-04-16T12:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Postpartum labs",
+              "date": "2026-04-16T12:05",
+              "author": "PCP",
+              "body": "Good news on all fronts. Platelets are back to normal at 231, so the low count was from the pregnancy and is resolved. Thyroid tests are normal, and so are your liver tests. Copies sent to endocrinology for your visit on the 27th."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-27a",
+          "kind": "specialist_visit",
+          "start": "2026-04-27T10:20",
+          "service": "Endocrinology & Metabolism",
+          "reason": "Graves disease, postpartum",
+          "medications": [
+            {
+              "drug_text": "propylthiouracil 50 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Postpartum; changed back to methimazole"
+            },
+            {
+              "drug": "methimazole 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet (5 mg) by mouth once daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Graves disease"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              108,
+              77
+            ],
+            "hr": 71,
+            "weight_kg": 62.1
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2026-04-29T09:20",
+              "author": "endocrinology",
+              "body": "Endocrinology follow-up 4/27/2026.\n\nGraves disease, now 8 weeks postpartum after an uncomplicated vaginal delivery 3/2. Methimazole was switched to propylthiouracil 100 mg TID at 12 weeks and continued through delivery. Fetal aplasia cutis congenita was noted on the anatomy scan; baby is followed by pediatrics.\n\nFeels well; no hyperthyroid symptoms. TFTs 4/14 at your office: TSH 0.8, free T4 1.2, both normal. Platelets recovered to 231. Liver tests normal.\n\nExam: HR regular, no tremor, small goiter unchanged, eyes quiet.\n\nAssessment: Graves disease, euthyroid postpartum on PTU.\nPlan: Stop propylthiouracil. Resume methimazole 5 mg daily, her pre-pregnancy dose; methimazole is preferred outside the first trimester and avoids the liver risk of PTU. Reviewed agranulocytosis precautions again. TFTs in 6 weeks with PCP, then every 3-4 months over the postpartum year. Return 6 months. Discussed that any future pregnancy should be planned with us in advance.\n\nEndocrinology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-29a",
+          "kind": "pharmacy",
+          "start": "2026-04-29T15:10",
+          "reason": "Medication reconciliation",
+          "documents": [
+            {
+              "type": "Medication Note",
+              "title": "Medication list updated",
+              "date": "2026-04-29T15:10",
+              "author": "MA",
+              "body": "Endocrinology note received. PTU discontinued; methimazole 5 mg daily resumed (Rx from endocrinology, filled 4/27). Med list reconciled. Lab order for TFTs early June placed per endo."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-08a",
+          "kind": "lab_only",
+          "start": "2026-06-08T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid function after restarting methimazole",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-06-08T07:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.3
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-08T07:40"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Free Thyroxine": 1.1,
+              "Thyroid Stimulating Hormone": 1.3
+            }
+          }
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "portal_message",
+          "start": "2026-06-09T12:45",
+          "reason": "Thyroid results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid labs",
+              "date": "2026-06-09T12:45",
+              "author": "PCP",
+              "body": "Thyroid tests are normal six weeks back on methimazole 5 mg. No change. Forwarded to endocrinology. Next check in about 3 months; we can do it with your physical in September."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Thyroid labs",
+              "date": "2026-06-09T21:10",
+              "author": "patient",
+              "body": "Great, thank you. September works."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "pharmacy",
+          "start": "2026-07-21T09:30",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Medication Note",
+              "title": "Refill — methimazole",
+              "date": "2026-07-21T09:30",
+              "author": "MA",
+              "body": "Pharmacy requesting 90-day supply of methimazole 5 mg (endo Rx was 30 days with 1 refill). TFTs 6/8 normal. Pended for PCP."
+            },
+            {
+              "type": "Medication Note",
+              "title": "Refill sent",
+              "date": "2026-07-21T12:15",
+              "author": "PCP",
+              "body": "Sent 90 days, 1 refill. Labs with physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T20:05",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "date": "2026-08-18T20:05",
+              "author": "patient",
+              "body": "Hi, school starts back next week. Can I get my physical in September, early morning if possible? I'd like my flu shot then too."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "date": "2026-08-19T08:30",
+              "author": "front desk",
+              "body": "You're booked Wednesday 9/16 at 7:30 am. Come fasting for labs. Flu vaccine will be available by then."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-16a",
+          "kind": "annual_physical",
+          "start": "2026-09-16T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Maternal care for other (suspected) fetal abnormality and damage, not applicable or unspecified|O35.8XX0": {
+        "code": "O35.8XX0",
+        "display": "Maternal care for other (suspected) fetal abnormality and damage, not applicable or unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Personal history of other diseases of the digestive system|Z87.19": {
+        "code": "Z87.19",
+        "display": "Personal history of other diseases of the digestive system",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pregnant state, incidental|Z33.1": {
+        "code": "Z33.1",
+        "display": "Pregnant state, incidental",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "propylthiouracil 50 MG Oral Tablet": {
+        "code": "198175",
+        "display": "propylthiouracil 50 MG Oral Tablet",
+        "ingredient": "propylthiouracil",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Activated partial thromboplastin time": {
+        "code": "14979-9",
+        "display": "aPTT in Platelet poor plasma by Coagulation assay",
+        "unit": "s",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hepatitis B e antigen": {
+        "code": "13954-3",
+        "display": "Hepatitis B virus e Ag [Presence] in Serum or Plasma by Immunoassay",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Thyroid stimulating immunoglobulin": {
+        "code": "30567-2",
+        "display": "Thyroid stimulating immunoglobulins [Units/volume] in Serum",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Triiodothyronine (T3), total": {
+        "code": "3053-6",
+        "display": "Triiodothyronine (T3) [Mass/volume] in Serum or Plasma",
+        "unit": "ng/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Obstetric ultrasound, detailed fetal anatomy": {
+        "code": "11525-3",
+        "display": "US for pregnancy",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"prenatal vitamin Oral Tablet\""
+    ]
+  }
+}

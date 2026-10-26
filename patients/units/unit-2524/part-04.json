@@ -1,0 +1,262 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002524",
+      "events": [
+        {
+          "id": "2025-01-14a",
+          "kind": "annual_physical",
+          "start": "2025-01-14T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"weight_kg": 63.0, "labs": {"Hemoglobin": 12.1}},
+          "measure": ["bp", "hr", "temp_c", "rr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-01-14T09:15", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-01-14T09:15", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "orders": [
+            {"id": "pt-referral", "action": "done", "date": "2025-01-14T08:30"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-01-14T08:30"},
+            {"procedure": "Venipuncture", "performed": "2025-01-14T09:15"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-01-14T09:40", "body": "Annual, 38M.\n\nPML: in PT twice weekly since late November. Saw neurology last week — told him the exam is unchanged and to keep going with PT and ART. Left hand still clumsy, gait still unsteady. Memory \"about the same,\" partner agrees.\nHIV: blister packs; thinks adherence is better but \"not perfect.\" HIV clinic every 3 months.\nCrypto: fluconazole 200 daily. No headaches.\nUC: 1-2 formed stools, no blood.\nMood OK. PHQ-9 4.\n\nMeds: Biktarvy, fluconazole 200 mg daily, mesalamine DR 4.8 g daily, multivitamin. NKDA.\n\nExam: vitals per flowsheet; weight 63. HEENT: no thrush. No nodes. Heart regular. Lungs clear. Abdomen soft. Neuro: left arm and leg weaker than right, wide-based unsteady gait, otherwise unchanged from November.\n\nA/P\n- PML, stable deficits — PT ongoing (referral complete), neurology following.\n- HIV/AIDS, crypto maintenance — per HIV clinic.\n- Anemia — CBC.\n- UC — CMP for mesalamine.\n- Prevention: lipids done in July; vaccines current.\nRTC 6 months."}
+          ]
+        },
+        {
+          "id": "2025-01-16a",
+          "kind": "portal_message",
+          "start": "2025-01-16T10:10",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Result Note", "title": "Results", "author": "PCP", "date": "2025-01-16T10:10", "body": "Kidney and liver tests normal. Hemoglobin 12 — still a touch low but the best in over a year."}
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "portal_message",
+          "start": "2025-03-04T19:22",
+          "reason": "refill request",
+          "documents": [
+            {"type": "Patient Message", "title": "refill", "author": "patient", "date": "2025-03-04T19:22", "body": "Pharmacy says the mesalamine needs a new script."},
+            {"type": "Refill Request", "title": "RE: refill", "author": "PCP", "date": "2025-03-05T08:05", "body": "Sent mesalamine DR 1.2 g, 4 daily, 90 days x 3 refills."}
+          ]
+        },
+        {
+          "id": "2025-04-09a",
+          "kind": "office_visit",
+          "start": "2025-04-09T11:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "painful swallowing",
+          "conditions": [
+            {"label": "Candidal stomatitis", "icd10": "B37.0", "action": "diagnosed", "onset": "2025-04-05"}
+          ],
+          "medications": [
+            {"drug_text": "fluconazole 200 MG Oral Tablet", "action": "stop", "reason": "dose increased for presumed Candida esophagitis"},
+            {"drug_text": "fluconazole 200 MG Oral Tablet", "action": "start", "sig": "Take 2 tablets (400 mg) by mouth daily for 14 days, then resume 1 tablet daily", "dose": {"value": 400, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "short", "reason": "presumed Candida esophagitis"}
+          ],
+          "state": {"weight_kg": 60.0},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-04-09T11:15"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-04-09T11:55", "body": "About a week of pain when he swallows, food feeling like it sticks, and a burning ache behind the breastbone with eating. Eating less; down 3 kg since January. No vomiting, no blood. No mouth sores or blisters that he's noticed. On fluconazole 200 daily, says he's been taking it.\n\nExam: vitals per flowsheet; weight 60. White plaques on tongue and buccal mucosa that scrape off — thrush. No vesicles or ulcers in the mouth. Neck: no nodes. Lungs clear. Heart regular. Abdomen soft, nontender.\n\nA/P: odynophagia/dysphagia with oral thrush in advanced HIV — presume Candida esophagitis. Raise fluconazole to 400 mg daily (2 of his 200 mg tabs) x 14 days, then back to 200. If no better within a week, he needs endoscopy — CMV and HSV are the other possibilities. Call sooner for fever, inability to keep fluids down. Messaged HIV clinic."}
+          ]
+        },
+        {
+          "id": "2025-04-16a",
+          "kind": "telephone",
+          "start": "2025-04-16T16:20",
+          "reason": "no better on fluconazole",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Follow-up Call", "author": "PCP", "date": "2025-04-16T16:35", "body": "Called to check in at one week. No better — swallowing still very painful, mostly liquids now, chest pain with every swallow, low-grade temps at home. Failed a week of higher-dose fluconazole. Needs admission for endoscopy and IV support. Called the regional hospital GI service, who will take him; told him to come in through the ED tonight or first thing in the morning. Partner will bring him."}
+          ]
+        },
+        {
+          "id": "2025-04-17a",
+          "kind": "hospital_admission",
+          "start": "2025-04-17T07:40",
+          "end": "2025-04-24T12:30",
+          "service": "Gastroenterology",
+          "reason": "odynophagia, dysphagia, retrosternal pain",
+          "conditions": [
+            {"label": "Cytomegalovirus esophagitis", "icd10": "B25.8", "action": "diagnosed", "onset": "2025-04-03"}
+          ],
+          "state": {"weight_kg": 58.0},
+          "labs": [
+            {"panel": null, "collected": "2025-04-17T09:00", "results": [{"test": "CD4 Count", "value": 50}]}
+          ],
+          "procedures": [{"procedure": "Upper endoscopy with biopsy", "performed": "2025-04-18T10:00"}],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2025-04-18T10:00", "issued": "2025-04-21T15:00", "text": "Specimen: esophagus, mid and distal ulcer biopsies.\nSquamous mucosa with ulceration and granulation tissue. Enlarged endothelial and stromal cells with intranuclear inclusions; CMV immunohistochemistry positive. PAS/GMS negative for fungal organisms. HSV immunostain negative. No dysplasia.", "conclusion": "Ulcerative esophagitis with cytomegalovirus inclusions (CMV IHC positive). Negative for fungi and HSV."}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge Summary — Gastroenterology", "author": "gastroenterology", "date": "2025-04-30T13:20", "body": "Admitted 04/17/2025, discharged 04/24/2025.\nDiagnosis: cytomegalovirus esophagitis. Other: HIV/AIDS with irregular ART, oral thrush, ulcerative colitis, PML, prior cryptococcal meningitis on maintenance fluconazole.\n\n38M with two weeks of odynophagia, dysphagia and retrosternal pain with 5 kg weight loss and low-grade fevers, no better after a week of fluconazole 400 mg for presumed candidiasis. No oropharyngeal vesicles. ART taking has been irregular, he says because of social circumstances. Oral thrush on exam. CD4 50.\n\nEGD 4/18: several well-circumscribed ulcers in the mid and distal esophagus; no plaques. Biopsies: CMV inclusions confirmed by IHC; no fungal organisms, HSV negative.\nTreated with IV ganciclovir, transitioned to oral valganciclovir once swallowing improved.\n\nDischarge meds: valganciclovir 900 mg BID through 5/8 (21 days total); fluconazole back to 200 mg daily; Biktarvy daily; mesalamine DR 4.8 g daily; multivitamin.\nFollow-up: PCP 1 week with CBC (valganciclovir); HIV clinic.\nAllergies: NKDA"}
+          ]
+        },
+        {
+          "id": "2025-05-01a",
+          "kind": "office_visit",
+          "start": "2025-05-01T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-discharge visit, CMV esophagitis",
+          "conditions": [
+            {"label": "Candidal stomatitis", "icd10": "B37.0", "action": "resolved"}
+          ],
+          "medications": [
+            {"drug_text": "fluconazole 200 MG Oral Tablet", "action": "stop", "reason": "400 mg course ended on admission"},
+            {"drug_text": "fluconazole 200 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 200, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "cryptococcal meningitis, maintenance"},
+            {"drug_text": "valganciclovir 450 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets (900 mg) by mouth twice daily with food through 5/8", "dose": {"value": 900, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "CMV esophagitis; hospital prescription"}
+          ],
+          "state": {"weight_kg": 58.0, "labs": {"Hemoglobin": 10.8, "White Blood Cells": 4.7}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-05-01T14:40", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-05-01T14:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2025-05-01T14:00"},
+            {"procedure": "Venipuncture", "performed": "2025-05-01T14:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Discharge Visit", "author": "PCP", "date": "2025-05-01T14:55", "body": "Admitted 4/17-4/24, CMV esophagitis on EGD biopsies. Summary received 4/30.\n\nSwallowing much better — soft solids without pain. No fever. On valganciclovir 900 BID with food through 5/8. Fluconazole back to 200 daily. Biktarvy daily, says the hospital stay \"scared him straight\" again.\n\nExam: vitals per flowsheet; weight 58. Mouth: no thrush now. Lungs clear. Heart regular. Abdomen soft. Neuro: left-sided weakness and gait as before.\n\nA/P\n1. CMV esophagitis on valganciclovir — CBC today for counts; BMP for creatinine (dosing).\n2. Thrush cleared — resolved.\n3. HIV/AIDS, CD4 50 in hospital — HIV clinic 5/7.\n4. Weight 58 — small frequent meals, add shakes.\nRTC July."}
+          ]
+        },
+        {
+          "id": "2025-05-02a",
+          "kind": "portal_message",
+          "start": "2025-05-02T15:45",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Result Note", "title": "Results", "author": "PCP", "date": "2025-05-02T15:45", "body": "White count is a touch low, which valganciclovir can do, but the neutrophils are fine; kidney function normal. Hemoglobin back down near 11 after the hospital. Finish the course through the 8th."}
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "office_visit",
+          "start": "2025-07-08T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "conditions": [
+            {"label": "Cytomegalovirus esophagitis", "icd10": "B25.8", "action": "resolved"}
+          ],
+          "state": {"weight_kg": 60.0, "labs": {"Hemoglobin": 11.6}},
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-07-08T09:30", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-07-08T09:00"},
+            {"procedure": "Venipuncture", "performed": "2025-07-08T09:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2025-07-08T09:25", "body": "Eating normally, no pain swallowing since mid-May. Finished valganciclovir 5/8. Weight 60, up 2. UC quiet. PT finished, doing home program; gait about the same.\nART: blister packs, \"most days.\" HIV clinic in June.\nExam: no thrush. Lungs clear. Abdomen soft. Neuro unchanged.\nA/P: CMV esophagitis resolved. CBC. Physical due January. Flu/COVID in fall."}
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "office_visit",
+          "start": "2025-09-09T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed Appointment", "author": "front desk", "date": "2025-09-09T14:05", "body": "No-show. Called, no answer; voicemail left. Portal message sent to reschedule."}
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T08:15",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-07T08:20"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-10-07T08:22"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-07T08:20"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit — Vaccines", "author": "RN", "date": "2025-10-07T08:30", "body": "Flu L deltoid, 2025-26 COVID R deltoid. Rebooked missed September follow-up for November."}
+          ]
+        },
+        {
+          "id": "2025-10-24a",
+          "kind": "hospital_admission",
+          "start": "2025-10-24T10:20",
+          "end": "2025-10-31T13:00",
+          "service": "Gastroenterology",
+          "reason": "abdominal pain, bloody stools",
+          "conditions": [
+            {"label": "Cytomegalovirus colitis", "icd10": "B25.8", "action": "diagnosed", "onset": "2025-10-10"}
+          ],
+          "state": {"weight_kg": 55.0},
+          "vitals": [{"time": "2025-10-24T10:30", "temp_c": 38.2, "bp": [100, 60], "hr": 110}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-10-24T11:00", "results": [{"test": "Hemoglobin", "value": 10.2}, {"test": "White Blood Cells", "value": 4.5}, {"test": "Platelets", "value": 150}]},
+            {"panel": null, "collected": "2025-10-24T11:00", "resulted": "2025-10-27T09:00", "results": [{"test": "CD4 Count", "value": 40}, {"test": "HIV-1 RNA Viral Load", "value": 120000}]}
+          ],
+          "procedures": [{"procedure": "Colonoscopy with biopsy", "performed": "2025-10-25T09:30"}],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2025-10-25T09:30", "issued": "2025-10-28T14:00", "text": "Specimen: sigmoid colon, ulcer biopsies.\nColonic mucosa with ulceration. Scattered enlarged cells with intranuclear and cytoplasmic inclusions; CMV immunohistochemistry positive. Background chronic colitis with crypt architectural distortion, consistent with the clinical history of ulcerative colitis. No granulomas. No dysplasia.", "conclusion": "Cytomegalovirus colitis (CMV IHC positive) on a background of chronic colitis consistent with ulcerative colitis."}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge Summary — Gastroenterology", "author": "gastroenterology", "date": "2025-11-04T10:40", "body": "Admitted 10/24/2025, discharged 10/31/2025.\nDiagnosis: cytomegalovirus colitis. Other: HIV/AIDS with nonadherence to ART; ulcerative colitis; prior CMV esophagitis (April 2025); PML; prior cryptococcal meningitis on fluconazole; anemia.\n\n38M admitted with two weeks of crampy lower abdominal pain and frequent small-volume bloody stools. T 38.2 C, BP 100/60, HR 110. Cachectic, weight 55 kg. Diffuse abdominal tenderness without rebound or guarding. Hgb 10.2, WBC 4.5, plt 150. CD4 40; HIV RNA 120,000 copies/mL.\n\nColonoscopy 10/25: multiple ulcerations in the sigmoid colon, biopsied. Pathology: CMV inclusions on IHC with background chronic colitis consistent with his UC.\nIV ganciclovir, then oral valganciclovir. Mesalamine continued. Bleeding settled by discharge.\n\nDischarge meds: valganciclovir 900 mg BID through 11/14 (21 days total); Biktarvy; fluconazole 200 mg daily; mesalamine DR 4.8 g daily; multivitamin.\nFollow-up: PCP within 1 week, CBC; HIV clinic; GI clinic.\nAllergies: NKDA"}
+          ]
+        },
+        {
+          "id": "2025-10-27a",
+          "kind": "portal_message",
+          "start": "2025-10-27T13:05",
+          "reason": "hospital admission",
+          "documents": [
+            {"type": "Patient Message", "title": "in the hospital again", "author": "patient", "date": "2025-10-27T13:05", "body": "Hi it's Raul. I'm in the hospital since Friday, bleeding from the colon again. They did a colonoscopy and said it's CMV in the colon this time, not just the UC. On IV meds. Sorry I missed September."},
+            {"type": "Patient Message", "title": "RE: in the hospital again", "author": "PCP", "date": "2025-10-27T15:30", "body": "Thanks for letting me know, Raul — no apology needed. Let's see you the week you get home; the front desk will call to set it up."}
+          ]
+        },
+        {
+          "id": "2025-11-06a",
+          "kind": "office_visit",
+          "start": "2025-11-06T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-discharge visit, CMV colitis",
+          "medications": [
+            {"drug_text": "valganciclovir 450 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets (900 mg) by mouth twice daily with food through 11/14", "dose": {"value": 900, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "CMV colitis; hospital prescription"}
+          ],
+          "state": {"weight_kg": 55.0, "labs": {"Hemoglobin": 10.3}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-11-06T10:40", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-11-06T10:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2025-11-06T10:00"},
+            {"procedure": "Venipuncture", "performed": "2025-11-06T10:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Discharge Visit", "author": "PCP", "date": "2025-11-06T10:50", "body": "Admitted 10/24-10/31, CMV colitis on sigmoid biopsies (background UC). Summary received 11/4, reviewed.\n\nCramping much less. Stools 3-4/day, no blood for the last few days. No fever. Valganciclovir 900 BID through 11/14, mesalamine, fluconazole, Biktarvy.\nCD4 40 and viral load 120k in hospital — second CMV infection in six months. We had a long, direct talk about ART: he wants to do this; what gets in the way is the bad weeks, when everything slides. Partner sets out the blister pack with his coffee now. HIV clinic 11/12.\n\nExam: very thin. Vitals per flowsheet; weight 55. No thrush. Abdomen soft, mildly tender lower, no guarding. Neuro as before.\n\nA/P\n1. CMV colitis on valganciclovir — CBC/BMP today. GI clinic after the course.\n2. HIV/AIDS — as above.\n3. UC — mesalamine continues.\n4. Weight 55-56, BMI about 19 — calorie and protein supplements.\n5. Anemia — CBC.\nRTC January."}
+          ]
+        },
+        {
+          "id": "2025-11-07a",
+          "kind": "portal_message",
+          "start": "2025-11-07T16:20",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Result Note", "title": "Results", "author": "PCP", "date": "2025-11-07T16:20", "body": "Counts are holding on the valganciclovir, kidneys normal. Hemoglobin about 10, as expected after the bleeding. Recheck in January."}
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "pharmacy",
+          "start": "2025-12-09T11:10",
+          "reason": "prior authorization renewal",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Prior Authorization — mesalamine", "author": "MA", "date": "2025-12-09T11:18", "body": "Insurer requires annual PA renewal for mesalamine DR 1.2 g. Submitted with diagnosis (ulcerative colitis), 2022 colonoscopy/pathology and current use. Approved through 12/2026."}
+          ]
+        }
+      ]
+    }
+  ]
+}

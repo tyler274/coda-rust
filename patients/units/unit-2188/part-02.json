@@ -1,0 +1,411 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001102",
+      "events": [
+        {
+          "id": "2019-01-22a",
+          "kind": "hospital_admission",
+          "start": "2019-01-22T05:40",
+          "end": "2019-01-25T13:10",
+          "service": "Cardiology",
+          "reason": "Acute myocardial infarction",
+          "conditions": [
+            {
+              "label": "Acute myocardial infarction, unspecified",
+              "icd10": "I21.9",
+              "action": "diagnosed",
+              "onset": "2019-01-22"
+            },
+            {
+              "label": "Coronary artery disease",
+              "action": "diagnosed",
+              "onset": "2019-01-22"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "CAD s/p MI"
+            }
+          ],
+          "state": {
+            "bp": [
+              128,
+              78
+            ],
+            "hr": 66
+          },
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "cardiology",
+              "date": "2019-01-28T08:50",
+              "body": "REGIONAL MEDICAL CENTER - CARDIOLOGY INPATIENT SERVICE\nDISCHARGE SUMMARY\n\nAdmit: 01/22/2019   Discharge: 01/25/2019\n\nPrincipal diagnosis: Acute myocardial infarction\nSecondary: Coronary artery disease; hypertension; hyperlipidemia; COPD; peripheral arterial disease; abdominal aortic aneurysm (known, followed by vascular surgery); tobacco use.\n\nHospital course:\n65-year-old man, current smoker, brought in early on 1/22 and found to have an acute MI with troponin elevation. He was taken urgently to the cardiac catheterization laboratory, where the culprit lesion was treated with percutaneous coronary intervention. Procedure details are in the separate catheterization report. No post-procedure complications; access site clean at discharge. Telemetry without significant arrhythmia. Started on metoprolol succinate. Ambulating in the hall without symptoms by hospital day 3. Smoking cessation counseling provided at bedside; patient declined nicotine replacement.\n\nDischarge medications:\n- Aspirin 81 mg daily (continue)\n- Metoprolol succinate 50 mg daily (NEW)\n- Atorvastatin 40 mg daily (continue)\n- Lisinopril 20 mg daily (continue)\n- Hydrochlorothiazide 25 mg daily (continue)\n- Olodaterol 5 mcg inhaled daily (continue)\n\nCondition at discharge: stable.\nFollow-up: primary care within 2 weeks.\nInstructions: no heavy lifting for 1 week, call 911 for chest pain not relieved by rest. Stop smoking."
+            }
+          ]
+        },
+        {
+          "id": "2019-01-28a",
+          "kind": "outside_records",
+          "start": "2019-01-28T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Discharge summary received",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2019-01-28T11:30",
+              "body": "Discharge summary from regional medical center received by fax this AM (admit 1/22-1/25, MI, PCI). Called pt for post-discharge check.\nHe is home, feels 'tired but OK'. No chest pain since discharge. Groin site fine. Has the new metoprolol from the hospital pharmacy, taking it daily along with his usual meds. Still smoking, 'less'. Reviewed when to call 911.\nTransitional care visit booked 2/5 with PCP. Cath report not in the fax - requested from hospital."
+            }
+          ]
+        },
+        {
+          "id": "2019-02-05a",
+          "kind": "office_visit",
+          "start": "2019-02-05T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after MI",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c",
+            "rr"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2019-02-05T14:15",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-02-05T14:15",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2019-02-05T13:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-02-05T14:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Rooming Note",
+              "author": "MA",
+              "date": "2019-02-05T13:36",
+              "body": "Rooming: vitals done, seated 5 min before BP. Meds verified verbally. Still smoking. No falls since last visit."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "author": "PCP",
+              "date": "2019-02-05T14:20",
+              "body": "TCM VISIT - s/p MI with PCI, admitted 1/22-1/25 at regional medical center.\n\nDischarge summary reviewed. Cath report still not received.\nSince home: no recurrent chest pain. Energy coming back. Walking inside the house and to the end of the driveway. Mild breathlessness on stairs, same as before the MI he says. No orthopnea, no leg swelling. Tolerating metoprolol, a little tired the first few days.\nMed rec done with bottles in hand: ASA 81, metoprolol succinate 50 (new), atorvastatin 40, lisinopril 20, HCTZ 25, olodaterol daily. All being taken.\nSmoking: down to about half a pack since discharge, he says. Discussed again that this is the single biggest thing for his heart. Offered patch + gum or varenicline. He wants to try on his own first.\n\nExam: NAD. R femoral area without hematoma or bruit. Heart RRR, no murmur. Lungs decreased BS, no crackles. No edema.\n\nA/P\n1. CAD s/p MI with PCI - stable post discharge. Continue ASA, metoprolol, statin, ACEi. Front desk to request the cath report from the hospital.\n2. HTN - fine.\n3. Tobacco - motivated after the MI, cutting down. Readdress next visit.\n4. COPD - stable.\nBMP and CBC today (post-cath, new beta blocker, on ACEi/thiazide).\nRTC 3 mo, sooner prn."
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ]
+        },
+        {
+          "id": "2019-02-07a",
+          "kind": "telephone",
+          "start": "2019-02-07T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Result call",
+              "author": "RN",
+              "date": "2019-02-07T10:05",
+              "body": "Per PCP, BMP and CBC normal - kidneys, potassium and blood count fine. Pt informed."
+            }
+          ]
+        },
+        {
+          "id": "2019-02-11a",
+          "kind": "pharmacy",
+          "start": "2019-02-11T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Metoprolol refill",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "New prescription request",
+              "author": "MA",
+              "date": "2019-02-11T09:25",
+              "body": "Pharmacy faxed request for ongoing metoprolol succinate 50 mg daily - hospital Rx was a 30 day supply. Pended for PCP.\n\nPCP: sent metoprolol succinate ER 50 mg, #90, 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2019-03-05a",
+          "kind": "telephone",
+          "start": "2019-03-05T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Records request, catheterization report",
+          "orders": [
+            {
+              "id": "cath-rec-2019",
+              "action": "placed",
+              "order": "Records request, cardiac catheterization report",
+              "category": "referral",
+              "to": "Regional medical center, health information",
+              "reason": "PCI 1/22/2019 report not received"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "author": "front desk",
+              "date": "2019-03-05T10:35",
+              "body": "Faxed records request to regional medical center HIM for the 1/22/19 cath lab report and any echo. Second request - first one (1/28) not answered."
+            }
+          ]
+        },
+        {
+          "id": "2019-05-07a",
+          "kind": "office_visit",
+          "start": "2019-05-07T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "CAD, HTN follow-up",
+          "conditions": [
+            {
+              "label": "Acute myocardial infarction, unspecified",
+              "icd10": "I21.9",
+              "action": "resolved"
+            },
+            {
+              "label": "Old myocardial infarction",
+              "action": "diagnosed",
+              "onset": "2019-01-22"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c",
+            "rr"
+          ],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-05-07T09:55",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2019-05-07T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-05-07T09:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Rooming Note",
+              "author": "MA",
+              "date": "2019-05-07T09:26",
+              "body": "Roomed for f/u. Med rec complete. Pt reports no ED visits or hospital stays since last visit. Tobacco use: yes, daily."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2019-05-07T10:00",
+              "body": "3 mo after MI/PCI.\n\nFeels well. No angina. Back to doing yard work in small doses. Usual breathlessness on hills. Calves fine. Taking meds.\nCath report never came.\nSmoking back up to most of a pack. He's frank about it. Not willing to set a quit date. Accepted a handout.\n\nBP 113/81, HR 62.\nExam: Heart regular, no murmur. Lungs with prolonged expiration, faint end-expiratory wheeze. Ext no edema.\n\nA/P\n1. CAD s/p MI 1/2019 - no angina. Continue ASA, metoprolol succ 50, atorvastatin 40, lisinopril. Lipids today.\n2. HTN - controlled.\n3. Tobacco - relapsed to near baseline. Counseled. Declines pharmacotherapy.\n4. COPD - stable on olodaterol.\n5. AAA - due for vascular surgery surveillance; he says they will send him a letter.\n\nRTC 3 mo."
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ]
+        },
+        {
+          "id": "2019-05-09a",
+          "kind": "portal_message",
+          "start": "2019-05-09T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lipid result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent results",
+              "author": "PCP",
+              "date": "2019-05-09T16:40",
+              "body": "Mr. Haskins - your cholesterol panel looks good on the atorvastatin. LDL is right where we want it after a heart attack. No changes. See you in August."
+            }
+          ]
+        },
+        {
+          "id": "2019-08-13a",
+          "kind": "office_visit",
+          "start": "2019-08-13T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "3 month follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-show",
+              "author": "front desk",
+              "date": "2019-08-13T11:30",
+              "body": "Pt did not arrive for 10:40 appt. Called, he had it written down for the wrong week. Rebooked 8/27."
+            }
+          ]
+        },
+        {
+          "id": "2019-08-27a",
+          "kind": "office_visit",
+          "start": "2019-08-27T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c",
+            "rr"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2019-08-27T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2019-08-27T08:50",
+              "body": "Rescheduled from no-show.\n\nNo chest pain. Same exertional breathlessness. Coughs in the morning, clears it. No hemoptysis.\nOn all meds. Pharmacy fills confirmed on the 90-day cycle.\nSmoking 1 ppd. Asked about a quit date - 'when it gets cold and I'm stuck inside anyway.' Will hold him to it in the fall.\n\nBP 119/73, HR 68, SpO2 94%.\nExam: lungs diminished, no wheeze today. Heart regular, no murmur. Legs without swelling.\n\nA/P\n- CAD s/p MI: stable, no angina. Same regimen.\n- HTN: controlled.\n- COPD: stable, olodaterol daily.\n- Tobacco: ~45 pk-yr now. Counseled, no date.\n- Flu + pneumococcal in October.\n\nRTC 4-5 mo (January, one year post MI)."
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ]
+        },
+        {
+          "id": "2019-10-22a",
+          "kind": "nurse_visit",
+          "start": "2019-10-22T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and pneumococcal vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-22T14:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2019-10-22T14:00"
+            },
+            {
+              "vaccine": "Pneumococcal polysaccharide PPSV23",
+              "date": "2019-10-22T14:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2019-10-22T14:10",
+              "body": "Per PCP standing order: high-dose influenza IM R deltoid; PPSV23 0.5 mL IM L deltoid. VIS for both. No prior pneumococcal vaccine per pt and old records. Tolerated, no reaction after 15 min. Pt asked about the shingles shot - told him pharmacy can give it, check Part D coverage."
+            }
+          ]
+        },
+        {
+          "id": "2019-12-10a",
+          "kind": "portal_message",
+          "start": "2019-12-10T19:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "inhaler",
+              "author": "patient",
+              "date": "2019-12-10T19:15",
+              "body": "need a refill on the striverdi inhaler the pharmacy says no refills left. thanks Lyle"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: inhaler",
+              "author": "MA",
+              "date": "2019-12-11T09:05",
+              "body": "Hi Mr. Haskins, PCP sent a new prescription for your olodaterol (Striverdi) inhaler with refills for the year to your pharmacy this morning. You are due for your 1-year visit in January - front desk will call to schedule."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

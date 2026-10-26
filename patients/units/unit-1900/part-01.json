@@ -1,0 +1,305 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001900",
+      "given": "Angela",
+      "family": "Damon",
+      "birth_date": "1991-05-18",
+      "address_line": "27 Fruit Street, Apt 3",
+      "phone": "+1-617-555-0101",
+      "email": "angela.damon@example.test",
+      "marital_status": "single",
+      "summary": "Healthy 34-year-old elementary school teacher who joined the practice in July 2025 with a post-viral upper airway cough that settled on its own. In April 2026 she developed subacute thyroiditis, confirmed by an outside endocrinologist, which resolved by June without medication.",
+      "events": [
+        {
+          "id": "2025-07-30a",
+          "kind": "establish_care",
+          "start": "2025-07-30T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient; cough for three weeks after a cold",
+          "conditions": [
+            {
+              "label": "Acute upper respiratory infection",
+              "action": "history",
+              "onset": "2025-07-09",
+              "note": "Self-limited cold in early July; resolved without treatment"
+            },
+            {
+              "label": "Acute upper respiratory infection",
+              "action": "resolved",
+              "onset": "2025-07-09"
+            },
+            {
+              "label": "Upper airway cough syndrome (postnasal drip syndrome)",
+              "icd10": "R09.82",
+              "action": "diagnosed",
+              "onset": "2025-07-09"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 63.5,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, low MDM",
+              "performed": "2025-07-30T10:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records",
+              "action": "placed",
+              "order": "Request records from prior primary care practice",
+              "category": "procedure",
+              "reason": "new patient"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2025-07-30T11:05",
+              "body": "NEW PATIENT VISIT\n\nAngela is a 34 y/o elementary school teacher establishing care with us. Her old PCP was across the river and she wanted somewhere she could actually reach by text. Main issue today is a cough.\n\nHPI: Caught a cold around the first week of July (stuffy nose, sore throat, a few days of feeling run down). The cold itself cleared without anything but the cough never left, now about 3 weeks. Much worse once she lies down at night. Describes a constant feeling of mucus running down the back of her throat and having to clear it all day, which is not great when she's trying to run summer reading groups. Has been through two different drugstore cough syrups without any benefit. No fever now, no shortness of breath, no wheeze, no chest pain. No heartburn symptoms she can identify.\n\nPMH: Nothing significant. Never had asthma or any lung problem.\nPSH: None.\nMeds: None. No supplements.\nAllergies: NKDA.\nFamily hx: Nothing significant that she knows of.\nSocial: Teaches 2nd grade. Never smoked, no vaping. Drinks socially, a glass of wine or two a week. Lives in Northampton.\n\nExam: Vitals reviewed and normal. Well appearing, clears her throat a few times during the visit. Ears and nose normal. Oropharynx clear. No cervical adenopathy, thyroid not enlarged. Lungs clear throughout, no wheezes, rales or rhonchi. Heart regular, no murmur. Rest of exam unremarkable.\n\nA/P:\n1. Upper airway cough syndrome (postnasal drip) after a viral URI. Clear lungs, no red flags, nonsmoker. Discussed that this usually fades over a few more weeks as the upper airway settles down. Return or message if it is not clearly better in 3-4 weeks, or sooner with fever, shortness of breath or blood in sputum.\n2. Health maintenance: will request records from her prior office to see what screening is up to date. Would like a full physical in the fall once school is back in.\n\nRTC: physical in the fall, sooner prn."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-06a",
+          "kind": "outside_records",
+          "start": "2025-08-06T14:10",
+          "reason": "Records from prior primary care practice",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2021-08-19T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records",
+              "action": "done",
+              "date": "2025-08-06T14:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from Prior Primary Care Practice",
+              "author": "outside primary care",
+              "date": "2025-08-06T14:10",
+              "body": "RECORDS RELEASE - PRIOR PRIMARY CARE\nPatient: Angela Damon  DOB 05/18/1991\nRecords covering 2019 through 2024.\n\nProblem list: No active problems.\nMedications: None.\nAllergies: No known drug allergies.\n\nHealth maintenance:\n- Cervical cytology with high-risk HPV co-testing, 03/2023: NILM, HPV negative. Repeat in 5 years.\n- Tdap given 08/19/2021.\n- Influenza vaccines given most autumns.\n\nVisit summaries: preventive visits 2019, 2021 and 2023, all unremarkable.\n\nEnd of records."
+            },
+            {
+              "type": "Administrative",
+              "title": "Outside Records Scanned",
+              "author": "front desk",
+              "date": "2025-08-06T14:25",
+              "body": "Prior PCP records received by fax (11 pages), scanned to chart. Tdap date entered in immunizations. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-25a",
+          "kind": "portal_message",
+          "start": "2025-08-25T19:42",
+          "reason": "Cough update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cough is gone",
+              "author": "patient",
+              "date": "2025-08-25T19:42",
+              "body": "Hi, just wanted to close the loop. The cough finally faded out about a week ago and I'm sleeping through the night again. Do I still need to come in or can I wait for the fall physical? Thanks, Angela"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Cough is gone",
+              "author": "PCP",
+              "date": "2025-08-26T07:58",
+              "body": "Great to hear, Angela. No need to come in for it. Let's plan on the physical in early October; the front desk will reach out with times."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "annual_physical",
+          "start": "2025-10-08T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Upper airway cough syndrome (postnasal drip syndrome)",
+              "icd10": "R09.82",
+              "action": "resolved",
+              "onset": "2025-07-09"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-08T08:15",
+              "resulted": "2025-10-08T15:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-08T08:15",
+              "resulted": "2025-10-08T15:30",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-08T08:15",
+              "resulted": "2025-10-08T15:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-08T08:15",
+              "resulted": "2025-10-09T11:00",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-08T08:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-08T08:07"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-10-08T07:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-08T08:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-08T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-10-08T08:30",
+              "body": "ANNUAL PHYSICAL\n\nCame in before school, fasting. Feels well. The summer cough cleared in mid-August and has not come back. No new concerns. Sleep ok, busy start to the school year. Periods regular. \nMeds: none. Allergies: NKDA.\nSocial: never smoker, wine 1-2/wk, no other substances.\nPHQ-2: 0.\n\nROS: negative in full.\n\nExam: vitals reviewed, normal. Pleasant, well appearing. HEENT unremarkable, oropharynx clear. Neck supple, thyroid normal size and nontender, no nodes. Lungs clear. Heart RRR, no murmur. Abdomen soft, nontender. Skin without concerning lesions. Extremities without edema. Neuro nonfocal.\n\nA/P:\n1. Adult health maintenance, age 34.\n - Cervical: co-test 03/2023 normal per outside records, next due 2028.\n - Fasting labs today: CBC, CMP, lipids. One-time HIV and hep C screening, she agrees.\n - Flu and updated COVID vaccines given today. Tdap current (2021).\n - Sunscreen, seat belts, the usual.\n2. Upper airway cough syndrome, resolved. Off the problem list.\n\nFollow up in a year, or sooner prn. Will message results."
+            },
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Administration",
+              "author": "MA",
+              "date": "2025-10-08T08:09",
+              "body": "Screening questions reviewed, no contraindications. Influenza vaccine 0.5 mL IM right deltoid. Pfizer COVID-19 2025-26 formula 0.3 mL IM left deltoid. VIS given for both. Tolerated well, waited 15 min without issue."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "portal_message",
+          "start": "2025-10-09T16:12",
+          "reason": "Physical lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Your Lab Results",
+              "author": "PCP",
+              "date": "2025-10-09T16:12",
+              "body": "Hi Angela - everything from Wednesday came back normal: blood counts, kidney and liver tests, sugar, and cholesterol all look good, and the HIV and hepatitis C screens were negative. Nothing to change. See you next fall."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

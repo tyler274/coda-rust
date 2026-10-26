@@ -1,0 +1,304 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001688",
+      "events": [
+        {
+          "id": "2026-01-20a",
+          "kind": "telephone",
+          "start": "2026-01-20T14:05",
+          "reason": "Records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request",
+              "author": "front desk",
+              "date": "2026-01-20T14:05",
+              "body": "Maternal-fetal medicine office called for our records ahead of pt's delivery planning (problem list, med list, 2025 TCM note, 2/2025 echo). Release on file from pt dated 7/2025. Faxed 14 pages, confirmation received."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "ed_visit",
+          "start": "2026-03-10T05:38",
+          "end": "2026-03-10T07:30",
+          "service": "Emergency Medicine",
+          "reason": "Dyspnea and seizures after delivery before arrival",
+          "conditions": [
+            {"label": "Pregnant state, incidental", "icd10": "Z33.1", "action": "resolved"},
+            {"label": "Amniotic fluid embolism in childbirth", "icd10": "O88.12", "action": "diagnosed", "onset": "2026-03-10", "note": "recurrent"},
+            {"label": "Disseminated intravascular coagulation", "icd10": "D65", "action": "diagnosed", "onset": "2026-03-10"},
+            {"label": "Hypovolemic shock", "icd10": "R57.1", "action": "diagnosed", "onset": "2026-03-10"}
+          ],
+          "vitals": [
+            {"time": "2026-03-10T05:40", "bp": [70, 40], "hr": 120, "rr": 30, "spo2": 85}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-03-10T05:50", "results": [{"test": "Hemoglobin", "value": 9.0}, {"test": "Platelets", "value": 50}]},
+            {"panel": null, "collected": "2026-03-10T05:50", "results": [
+              {"test": "Prothrombin Time", "value": 18},
+              {"test": "Activated partial thromboplastin time", "loinc": "14979-9", "unit": "s", "value": 40},
+              {"test": "Fibrinogen", "loinc": "3255-7", "unit": "mg/dL", "value": 100},
+              {"test": "D-dimer", "loinc": "48065-7", "text": "Elevated"}
+            ]}
+          ],
+          "reports": [
+            {"study": "Transthoracic echocardiogram", "performed": "2026-03-10T06:05", "text": "Bedside point-of-care study during resuscitation. Left ventricle with normal systolic function. Right ventricle normal in size with normal systolic function; no septal flattening. No pericardial effusion.", "conclusion": "No evidence of right heart strain."}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2026-03-10T05:38"}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2026-03-19T09:10",
+              "body": "EMERGENCY DEPARTMENT RECORD (received 03/19/2026; date of service 03/10/2026)\n\nCC: shortness of breath and seizure after delivery.\n\nHPI: 34 y/o G3, term, brought in by EMS about half an hour after a rapid spontaneous vaginal delivery before arrival (liveborn infant). Shortly after the birth she became acutely dyspneic and had seizures witnessed by EMS. Background of chronic hypertension on labetalol, a placental abruption in 2023, and amniotic fluid embolism after her delivery in 01/2025.\nAllergies: sulfa (rash), latex (contact dermatitis) - latex-free room.\nMeds: labetalol 200 mg BID, prenatal vitamin with DHA, folic acid 1 mg.\n\nExam: BP 70/40, HR 120, RR 30, SpO2 85% on room air. Not protecting her airway. Rales throughout both lung fields. Petechiae across the chest and both arms.\n\nCourse: intubated for airway protection. Labs: Hgb 9.0 g/dL (ref 12-16), platelets 50K (ref 150-400K), PT 18 s (ref 12-15), aPTT 40 s (ref 30-40), fibrinogen 100 mg/dL (ref 200-400), D-dimer elevated. Bedside echo: no right heart strain. Aggressive crystalloid and blood product resuscitation, yet she continued to decline. OB and critical care at bedside.\n\nImpression: recurrent amniotic fluid embolism with disseminated intravascular coagulation and hypovolemic shock.\nDisposition: ICU."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10b",
+          "kind": "hospital_admission",
+          "start": "2026-03-10T07:30",
+          "end": "2026-03-18T14:00",
+          "service": "Critical Care",
+          "reason": "Recurrent amniotic fluid embolism with DIC and shock",
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2026-03-10T07:30"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-03-18T12:00"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "critical care",
+              "date": "2026-03-19T09:15",
+              "body": "DISCHARGE SUMMARY (received 03/19/2026)\nAdmitted 03/10/2026 via the ED. Discharged 03/18/2026.\n\nPrincipal diagnosis: amniotic fluid embolism, recurrent (prior episode 01/2025).\nSecondary: disseminated intravascular coagulation; hypovolemic shock.\nBackground: chronic hypertension; anxiety disorder; placental abruption 10/2023 with emergency cesarean; laparoscopic appendectomy.\nAllergies: sulfonamides - rash; latex - contact dermatitis.\n\nHospital course: Arrived intubated from the ED after a precipitous term delivery before arrival, with hypoxemia, seizures, shock and consumptive coagulopathy. In the ICU, resuscitation with blood products continued until bleeding and coagulation studies corrected; blood pressure recovered over the first day. No further seizure activity. Extubated 03/12 without difficulty. Moved to the postpartum unit 03/14 and progressed well. Hemoglobin stable on the last two checks before discharge.\n\nDischarge medications (unchanged): labetalol 200 mg PO BID; prenatal vitamin with DHA daily; folic acid 1 mg daily.\n\nFollow-up: primary care within 1 week with CBC, CMP and coagulation studies; obstetric postpartum visit at 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-19a",
+          "kind": "telephone",
+          "start": "2026-03-19T11:30",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "author": "RN",
+              "date": "2026-03-19T11:30",
+              "body": "TCM outreach, discharged yesterday after second amniotic fluid embolism (ICU 3/10, extubated 3/12). Spoke with pt. Breathing OK at rest, gets winded on the stairs but improving. Light bleeding, no clots. No bruising or gum bleeding. No seizures since the hospital. Taking labetalol, PNV, folic acid; no new prescriptions. Tearful at times on the call, says it is a lot. Booked TCM with PCP 3/24 with labs. Reviewed ED precautions."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "office_visit",
+          "start": "2026-03-24T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Transitional care visit after ICU admission",
+          "conditions": [
+            {"label": "Amniotic fluid embolism in childbirth", "icd10": "O88.12", "action": "resolved"},
+            {"label": "Disseminated intravascular coagulation", "icd10": "D65", "action": "resolved"},
+            {"label": "Hypovolemic shock", "icd10": "R57.1", "action": "resolved"}
+          ],
+          "state": {"bp": [136, 86], "weight_kg": 72.0, "labs": {"Hemoglobin": 10.2}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-03-24T11:40", "results": [{"test": "Hemoglobin", "value": 10.2}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-03-24T11:40", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2026-03-24T11:40", "results": [{"test": "Prothrombin Time"}, {"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 4},
+            {"survey": "GAD-7 total score", "value": 9}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2026-03-24T11:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "author": "PCP",
+              "date": "2026-03-24T12:05",
+              "body": "TCM, discharged 3/18. ED record and discharge summary reviewed.\n\nWhat happened: precipitous term delivery 3/10 before reaching the hospital; within minutes dyspnea and seizures, arrived hypotensive 70/40, sat 85%, rales, petechiae. Plt 50K, fibrinogen 100, PT 18, Hgb 9. Bedside echo without RV strain (different from 2025). Recurrent AFE with DIC and hypovolemic shock. Intubated, products, extubated 3/12, home 3/18. Baby born alive.\n\nNow: two weeks postpartum. Stairs easier each day. No chest pain, no bleeding beyond light lochia, no bruising. No more seizures. Tired. She cries when she talks about it and said she thought she wasn't going to wake up this time. Still declines medication; says talking with me and her OB helps.\n\nMeds unchanged: labetalol 200 mg BID, PNV w/ DHA, folic acid 1 mg. Allergies: sulfa (rash), latex (contact dermatitis).\n\nExam: vitals as charted, SpO2 normal RA. Pale-ish, tired, appropriate. No petechiae now. Heart RRR no murmur. Lungs clear, no rales. Abdomen soft, nontender. Calves soft, no edema. Neuro nonfocal.\nPHQ-9 4, GAD-7 9.\n\nA/P\n1. Recurrent amniotic fluid embolism with DIC and hypovolemic shock - recovered; resolved. CBC, CMP, PT/INR today.\n2. Postpartum Hgb - recheck today, then in about 6 weeks.\n3. Chronic HTN - office BP a bit high today, home readings 120s-130s/80s; continue labetalol 200 BID and recheck in May.\n4. Anxiety disorder - worse after this. Supportive visit; will see her in May and sooner by portal if needed.\nMed rec done, no changes."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-25a",
+          "kind": "portal_message",
+          "start": "2026-03-25T13:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your results",
+              "author": "PCP",
+              "date": "2026-03-25T13:20",
+              "body": "Hi Tessa - hemoglobin is 10.2, which is good recovery from 9 in the ED, and your platelets, clotting tests, kidney and liver numbers are all normal now. No iron needed; your blood count should keep coming up. We'll check it again in May."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "portal_message",
+          "start": "2026-04-14T20:30",
+          "reason": "Leave paperwork",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Leave form again",
+              "author": "patient",
+              "date": "2026-04-14T20:30",
+              "body": "Third time doing this form, at least I know the drill. Leave administrator needs the medical portion for the hospitalization, with an expected return in mid-June. Attached. Thank you."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Leave form again",
+              "author": "MA",
+              "date": "2026-04-15T10:40",
+              "body": "Done - PCP filled out the medical portion with an expected return date of 6/15. Faxed this morning and copy saved to your chart."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-28a",
+          "kind": "outside_records",
+          "start": "2026-04-28T09:50",
+          "reason": "Obstetric postpartum letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Postpartum Visit",
+              "author": "obstetrics",
+              "date": "2026-04-28T09:50",
+              "body": "Dear Colleague,\n\nTessa Turcotte was seen on 04/22/2026 for her postpartum visit after delivery on 03/10/2026 complicated by recurrent amniotic fluid embolism with DIC and shock requiring ICU care. She is recovering well. Lochia has resolved and her exam is unremarkable. Blood pressure is controlled on labetalol 200 mg twice daily, which remains under your management.\n\nAllergies: sulfa (rash), latex (contact dermatitis).\n\nThank you for sharing her care.\n\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "office_visit",
+          "start": "2026-05-12T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after hospitalization",
+          "state": {"bp": [132, 84], "weight_kg": 71.0, "labs": {"Hemoglobin": 12.0}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-05-12T15:50", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "surveys": [
+            {"survey": "GAD-7 total score", "value": 7}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-05-12T15:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2026-05-12T16:05",
+              "body": "Two months after the March admission. OB postpartum letter reviewed. Energy is mostly back. Walking most days, no dyspnea. No seizures. Planning to go back to work 6/15.\nHTN: home readings 120s-130s/80s, labetalol 200 BID, still on PNV and folate.\nAnxiety: GAD-7 7, down from 9. Sleeping better as the baby does.\nExam: vitals as charted. Color better. Heart regular, lungs clear, no edema.\nA/P: Postpartum anemia - CBC today, expect near baseline. Chronic HTN controlled, continue. Anxiety disorder improving. Physical and Pap in July."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-13a",
+          "kind": "portal_message",
+          "start": "2026-05-13T08:55",
+          "reason": "CBC result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "author": "PCP",
+              "date": "2026-05-13T08:55",
+              "body": "Your hemoglobin is back to your normal of 12, and platelets are normal. Nothing else needed for this."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "annual_physical",
+          "start": "2026-07-14T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical with Pap",
+          "state": {"weight_kg": 70.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-07-14T08:50", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-07-14T08:50", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Lipid Panel", "collected": "2026-07-14T08:50", "results": [{"test": "Low Density Lipoprotein"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2026-07-14T08:40", "issued": "2026-07-20T10:00", "text": "Specimen: liquid-based cervical cytology. Satisfactory for evaluation; endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.", "conclusion": "NILM. High-risk HPV negative."}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 2},
+            {"survey": "GAD-7 total score", "value": 6}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2026-07-14T08:15"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2026-07-14T09:20",
+              "body": "Annual + Pap. Back at work a month, part of the week from home.\n\nInterval: 3/2026 precipitous term delivery complicated by recurrent amniotic fluid embolism with DIC and hypovolemic shock, ICU, recovered. Hgb back to 12 in May. OB postpartum visit 4/22 fine.\n\nHTN: home 120s-130s/80s, labetalol 200 BID. Still on PNV with DHA and folic acid.\nAnxiety: GAD-7 6, PHQ-9 2. Better than spring; occasional bad nights.\nROS negative.\n\nPMH: chronic HTN; anxiety disorder; placental abruption 2023; amniotic fluid embolism 2025 and 2026 with DIC.\nPSH: lap appendectomy 2015; emergency C/S 10/2023.\nMeds: labetalol 200 mg BID; PNV w/ DHA daily; folic acid 1 mg daily.\nAllergies: sulfa (rash); latex (contact dermatitis).\nSH: HR coordinator. Former smoker, quit 2019. Alcohol 1-2 drinks a month.\nFH: mother preeclampsia and chronic HTN, father HTN, maternal aunt placental abruption.\n\nExam: vitals as charted. Well appearing. HEENT normal, thyroid normal. Heart RRR, no murmur. Lungs clear. Breasts: no masses, no skin changes. Abdomen soft, nontender, transverse scar healed. Pelvic: normal external genitalia, vagina and cervix normal, Pap with HPV collected with latex-free speculum and gloves. No edema. Skin normal.\n\nA/P\n- HM: Pap with HPV sent. CBC, CMP, lipids. Flu and COVID in the fall.\n- Chronic HTN: controlled on labetalol, continue. Recheck in October.\n- Anxiety disorder: stable/improving, no meds.\n- History of abruption and recurrent AFE: on the problem history.\nRTC October for BP."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "portal_message",
+          "start": "2026-07-20T15:40",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and labs",
+              "author": "PCP",
+              "date": "2026-07-20T15:40",
+              "body": "Hi Tessa, your Pap is normal and HPV negative, so the next one isn't due for five years. Blood count, kidney and liver tests, and cholesterol are all normal. See you in October."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "pharmacy",
+          "start": "2026-08-11T09:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Pharmacy Refill Request",
+              "author": "MA",
+              "date": "2026-08-11T09:05",
+              "body": "Mail order request: labetalol 200 mg #180, folic acid 1 mg #90, PNV with DHA #90. Seen 7/14. Pended to PCP; approved, 1 refill each."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-13a",
+          "kind": "office_visit",
+          "start": "2026-10-13T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

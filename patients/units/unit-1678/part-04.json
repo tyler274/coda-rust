@@ -1,0 +1,408 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001678",
+      "events": [
+        {
+          "id": "2025-05-22a",
+          "kind": "portal_message",
+          "start": "2025-05-22T06:35",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test",
+              "author": "patient",
+              "date": "2025-05-22T06:35",
+              "body": "Hi - positive test this morning. LMP April 20. You told me to message right away so here I am. Excited and nervous. Still on the prenatal."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive test",
+              "author": "PCP",
+              "date": "2025-05-22T07:58",
+              "body": "Congratulations, Robin - and thank you for letting me know early. Let's see you next week to confirm, and I'll send the OB and maternal-fetal medicine referrals the same day so the early scans get scheduled. Keep taking the prenatal."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-29a",
+          "kind": "office_visit",
+          "start": "2025-05-29T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pregnancy confirmation",
+          "conditions": [
+            {"label": "Pregnant state, incidental", "icd10": "Z33.1", "action": "diagnosed", "onset": "2025-04-20", "note": "LMP 2025-04-20, EDD 2026-01-25"}
+          ],
+          "state": {"weight_kg": 87.3},
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-05-29T15:55", "results": [{"test": "Pregnancy Test, Urine", "text": "Positive"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-05-29T15:50"}
+          ],
+          "orders": [
+            {"id": "ob-referral-2025", "action": "placed", "order": "Obstetrics referral", "category": "referral", "to": "Obstetrics & Gynecology", "reason": "prenatal care, third pregnancy"},
+            {"id": "mfm-referral-2025", "action": "placed", "order": "Maternal-fetal medicine referral", "category": "referral", "to": "Maternal-Fetal Medicine", "reason": "prior pregnancy with fetal osteogenesis imperfecta (COL1A1), prior short cervix"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Pregnancy Confirmation",
+              "author": "PCP",
+              "date": "2025-05-29T15:50",
+              "body": "34 y/o G3P1101 with positive home test 5/22. LMP 4/20/25 -> 5w4d, EDD ~1/25/26. Planned. Mild fatigue and nausea, no vomiting. No bleeding or cramping.\n\nOB history:\n- G1 2019-20: short cervix (20 mm) at 22 wks, term SVD 2/2020, healthy daughter.\n- G2 2022: fetal OI type II (COL1A1 pathogenic variant on amnio, presumed de novo); induction, stillbirth at 23w6d, 11/2022. Genetics: recurrence <5% (germline mosaicism), early MFM and detailed skeletal imaging in future pregnancies.\n\nMeds: prenatal vitamin with iron daily. NKDA. No tobacco or alcohol.\nPre-pregnancy weight today, BMI 32. FH: maternal grandmother T2DM.\n\nExam: vitals as charted. Well, a bit anxious. Abd soft, nontender.\nUrine hCG positive.\n\nA/P\n1. Early IUP presumed, 5w4d.\n2. Referrals to OB (her prior group) and MFM today, with the genetics letter attached, for early and detailed anatomy scans. Also flagged the 2019 short cervix for cervical length surveillance.\n3. GDM risk (BMI 32, grandmother with DM) - OB will decide on early glucose screening.\n4. Continue prenatal vitamin.\n5. This replaces her physical this year; we'll catch up on preventive care after delivery.\nShe knows to message any time."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-03a",
+          "kind": "telephone",
+          "start": "2025-06-03T10:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referrals and refill",
+              "author": "front desk",
+              "date": "2025-06-03T10:15",
+              "body": "OB intake confirmed for 6/17. MFM office called: they have the genetics letter and will book her detailed anatomy scan around 20 weeks; OB to coordinate the earlier scans. Pt also asked for a prenatal vitamin refill - pended for PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill sent",
+              "author": "PCP",
+              "date": "2025-06-03T12:30",
+              "body": "Prenatal vitamin with iron, 90 days x 3 refills, sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-10a",
+          "kind": "outside_records",
+          "start": "2025-09-10T14:20",
+          "orders": [
+            {"id": "mfm-referral-2025", "action": "done", "date": "2025-09-10T14:20"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Maternal-fetal medicine ultrasound and consult (visit date 09/08/2025)",
+              "author": "maternal-fetal medicine",
+              "date": "2025-09-10T14:20",
+              "body": "MATERNAL-FETAL MEDICINE - DETAILED FETAL ANATOMY ULTRASOUND\nRegional hospital MFM service\nDate of service: 09/08/2025\nPatient: Robin Parsons, 34 y/o G3P1101 at 20w1d (LMP 4/20/2025, consistent with first-trimester ultrasound)\nIndication: Prior pregnancy affected by perinatal lethal osteogenesis imperfecta (heterozygous COL1A1 pathogenic variant, presumed de novo); prior short cervix.\n\nFindings: Single live intrauterine pregnancy, cardiac activity present. Biometry concordant with dates. Detailed survey of fetal anatomy is normal. Long bones (femurs, humeri, tibiae/fibulae, radii/ulnae) are of normal length, contour and echogenicity bilaterally with no fractures, bowing or angulation. Thorax normal in size and shape; ribs normal. Skull normally mineralized. Heart, abdomen, kidneys, spine and face normal. Placenta anterior, no previa. Amniotic fluid normal.\nTransvaginal cervical length: 38 mm, no funneling.\n\nImpression: Normal detailed anatomy survey at 20w1d with a normal-appearing fetal skeleton. Normal cervical length.\nPlan: Reassurance provided; findings reviewed with Ms. Parsons and her husband. Continue routine prenatal care with her OB group, glucose screening per OB. We are glad to see her again if any concern arises.\n\nMaternal-Fetal Medicine\ncc: OB/GYN; PCP"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "MFM report reviewed",
+              "author": "PCP",
+              "date": "2025-09-10T16:55",
+              "body": "Detailed anatomy at 20w1d normal - long bones normal, no fractures, normal chest. CL 38 mm. Sent Robin a short note."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-10b",
+          "kind": "portal_message",
+          "start": "2025-09-10T17:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your MFM scan",
+              "author": "PCP",
+              "date": "2025-09-10T17:02",
+              "body": "Hi Robin, I just read the MFM report from Monday. What a relief to see in writing - normal bones, normal chest, normal cervix length. Thinking of you."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your MFM scan",
+              "author": "patient",
+              "date": "2025-09-10T20:30",
+              "body": "Thank you so much. I cried in the parking lot (good tears). See you for my flu shot."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-07T15:43"}],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2025-10-07T15:43"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "author": "RN",
+              "date": "2025-10-07T15:40",
+              "body": "Flu vaccine, pt ~24 wks pregnant. Screening negative, no prior reactions. Influenza trivalent 0.5 mL IM R deltoid, VIS given. Tolerated without issue. Plans updated COVID at pharmacy; OB to give Tdap and RSV later in pregnancy."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-05a",
+          "kind": "outside_records",
+          "start": "2025-11-05T11:10",
+          "conditions": [
+            {"label": "Gestational diabetes mellitus in pregnancy, diet controlled", "icd10": "O24.410", "action": "diagnosed", "onset": "2025-10-31", "note": "3-hour 100 g OGTT 95/180/155/140 mg/dL; diet and home glucose monitoring"}
+          ],
+          "orders": [
+            {"id": "ob-referral-2025", "action": "done", "date": "2025-11-05T11:10"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics prenatal visit, 27 weeks (visit date 10/27/2025) with OGTT",
+              "author": "obstetrics",
+              "date": "2025-11-05T11:10",
+              "body": "OUTSIDE OB/GYN GROUP - PRENATAL VISIT\nDate of service: 10/27/2025 (addendum 10/31/2025)\nPatient: Robin Parsons, 34 y/o G3P1101 at 27w1d\n\nOB history: term SVD 2020 (short cervix noted at 22 weeks that pregnancy); 2022 pregnancy affected by perinatal lethal osteogenesis imperfecta (COL1A1, presumed de novo), delivered at 23w6d, stillbirth. This pregnancy: normal MFM detailed anatomy at 20 weeks, cervical length 38 mm.\n\nInterval: Here for routine prenatal care. Over the past 2 weeks she has noticed being thirstier than usual and urinating more. Denies vaginal bleeding, contractions, or leakage of fluid. Active fetal movement.\n\nMedications: prenatal vitamin with iron 1 tab daily. Allergies: NKDA.\nPMH: obesity, pre-pregnancy BMI 32. PSH: none.\nFamily history: type 2 diabetes (maternal grandmother).\nSocial: teacher, never smoker, no alcohol.\n\nBP 128/78. FHT normal.\n\nLabs: 1-hour 50 g glucose challenge today: 190 mg/dL. Fasting glucose drawn: 98 mg/dL.\n\nAddendum 10/31/2025: 3-hour 100 g oral glucose tolerance test - fasting 95 mg/dL, 1 hour 180 mg/dL, 2 hours 155 mg/dL, 3 hours 140 mg/dL. All four values meet Carpenter-Coustan criteria. Diagnosis: gestational diabetes mellitus.\n\nPlan: Diagnosis reviewed with patient by phone. Medical nutrition therapy referral with our diabetes educator (seen 11/3); glucose meter, strips and lancets prescribed; check fasting and 1-hour postprandial glucose four times daily and bring logs. Activity after meals encouraged. Follow-up in 1-2 weeks with log review; growth ultrasound later in third trimester.\n\ncc: PCP"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside OB note reviewed",
+              "author": "PCP",
+              "date": "2025-11-05T17:15",
+              "body": "GDM: GCT 190, OGTT 95/180/155/140 (10/31). Diet + home glucose monitoring per OB, no meds. Added to problem list. Postpartum OGTT will be needed - will plan with OB."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-06a",
+          "kind": "portal_message",
+          "start": "2025-11-06T20:48",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-18T10:05"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Gestational diabetes question",
+              "author": "patient",
+              "date": "2025-11-06T20:48",
+              "body": "Hi, I'm sure you saw I have gestational diabetes now. Does this mean I'll get type 2 like my grandma? The finger sticks are fine, just annoying with a classroom of kids. Also I got the updated covid shot 10/18 at the pharmacy, forgot to tell you."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Gestational diabetes question",
+              "author": "PCP",
+              "date": "2025-11-07T07:15",
+              "body": "Hi Robin. I did see it. Gestational diabetes usually goes away after delivery. It does raise the chance of type 2 diabetes later in life, so after the baby comes we'll do a glucose tolerance test at about 6-12 weeks and then check an A1c every year or few years. A lot of what you're doing now - the food changes and the walking - is exactly what lowers that risk long-term. Hang in there with the finger sticks. COVID shot recorded."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-29a",
+          "kind": "outside_records",
+          "start": "2025-12-29T09:40",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2025-11-03T11:15"},
+            {"vaccine": "RSV, bivalent (Abrysvo)", "date": "2025-12-02T10:40"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics prenatal visit, 35 weeks (visit date 12/23/2025)",
+              "author": "obstetrics",
+              "date": "2025-12-29T09:40",
+              "body": "OUTSIDE OB/GYN GROUP - PRENATAL VISIT, GDM FOLLOW-UP\nDate of service: 12/23/2025\nPatient: Robin Parsons, 34 y/o G3P1101 at 35w2d\n\nInterval: Seen for gestational diabetes follow-up. Feels generally well. Over the past few weeks has continued to notice increased thirst and urination. No vaginal bleeding, contractions or leakage of fluid. Good fetal movement.\n\nOB history: term vaginal delivery 2020 (short cervix that pregnancy); 2022 pregnancy affected by perinatal lethal osteogenesis imperfecta, delivered at 23w6d. GDM this pregnancy, diet-controlled.\nMedications: prenatal vitamin with iron daily; glucose testing supplies. Allergies: NKDA.\nFamily history: maternal grandmother with type 2 diabetes.\nSocial: teacher; never smoker; no alcohol.\nImmunizations this pregnancy: Tdap 11/3/2025; RSV (Abrysvo) 12/2/2025 at 32w2d. Influenza 10/2025 at PCP.\n\nBP 120/78. Pre-pregnancy BMI 32.\nUrine dipstick: protein negative, glucose 1+.\n\nGlucose logs reviewed with patient.\n\nAssessment: IUP 35w2d. GDM, diet-controlled (A1).\nPlan: Continue nutrition therapy and glucose logs; bring logs to each visit. GBS swab at next visit. Labor precautions reviewed. Delivery planning at 39 weeks.\n\ncc: PCP"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside OB note reviewed",
+              "author": "PCP",
+              "date": "2025-12-29T16:30",
+              "body": "35-wk OB note: GDM on diet, BP 120/78, dip 1+ glucose, no protein. Tdap 11/3 and RSV 12/2 recorded."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-22a",
+          "kind": "outside_records",
+          "start": "2026-01-22T10:05",
+          "conditions": [
+            {"label": "Prolonged first stage (of labor)", "icd10": "O63.0", "action": "diagnosed", "onset": "2026-01-18", "note": "Arrest of dilation at 6 cm; primary cesarean delivery 2026-01-18"},
+            {"label": "Gestational diabetes mellitus in pregnancy, diet controlled", "icd10": "O24.410", "action": "resolved", "onset": "2025-10-31"},
+            {"label": "Pregnant state, incidental", "icd10": "Z33.1", "action": "resolved", "onset": "2025-04-20"},
+            {"label": "History of gestational diabetes", "action": "diagnosed", "onset": "2026-01-18", "note": "Diet-controlled GDM 2025-2026"},
+            {"label": "History of uterine scar from previous surgery", "icd10": "Z98.891", "action": "diagnosed", "onset": "2026-01-18", "note": "Primary low transverse cesarean 2026-01-18"}
+          ],
+          "medications": [
+            {"drug": "ibuprofen 600 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 6 hours as needed for pain", "dose": {"value": 600, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "short", "reason": "post-cesarean pain"},
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "historical", "sig": "Take 1-2 tablets by mouth every 6 hours as needed for pain", "dose": {"value": 1000, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "short", "reason": "post-cesarean pain"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Labor & delivery discharge summary (admitted 01/18/2026)",
+              "author": "obstetrics",
+              "date": "2026-01-22T10:05",
+              "body": "REGIONAL HOSPITAL - OBSTETRIC DISCHARGE SUMMARY\nAdmit: 01/18/2026  Discharge: 01/21/2026\nPatient: Robin Parsons, 34 y/o G3P1101 -> G3P2102\nAttending: Obstetrics\n\nAdmission: 39w0d, presented to labor and delivery in active labor after about 14 hours of contractions at home and in triage. Cervix 4 cm on admission. Amniotomy performed; two hours later little change. She was uncomfortable and asked for pain relief. Exam at that time: 5 cm, 80% effaced, -2 station, occiput posterior. Fetal heart tracing category I. Tocodynamometry showed irregular contractions of varying strength.\n\nAntepartum history: Gestational diabetes, diet-controlled. Pre-pregnancy BMI 32. Prior term vaginal delivery (2020); 2022 pregnancy affected by perinatal lethal osteogenesis imperfecta, delivered at 23w6d. Normal detailed anatomy this pregnancy. GBS negative.\n\nLabor course: Epidural placed with good relief. Intrauterine pressure catheter placed and oxytocin augmentation started. She progressed to 6 cm and then made no further cervical change over 4 hours despite adequate contractions (greater than 200 MVU). Fetal head remained at -2, occiput posterior. Diagnosis: arrest of dilation in the active phase. Options reviewed; she consented to cesarean delivery.\n\nProcedure 01/18/2026: Primary low transverse cesarean section under epidural anesthesia. Liveborn male at 21:40, 3,520 g, Apgars 8 and 9. Newborn glucose checks normal. EBL 800 mL. No complications.\n\nPostpartum course: Uncomplicated. Ambulating, tolerating diet, incision clean and dry. Glucose checks not required after delivery given diet-controlled GDM. Hgb appropriate.\n\nDischarge diagnoses: Arrest of dilation (prolonged labor), primary low transverse cesarean delivery; gestational diabetes, diet-controlled, resolved with delivery; liveborn male.\nDischarge medications: ibuprofen 600 mg every 6 hours as needed; acetaminophen 500 mg, 1-2 tablets every 6 hours as needed; prenatal vitamin with iron daily.\nAllergies: NKDA.\nFollow-up: OB incision check at 2 weeks and postpartum visit at 6 weeks. 75 g 2-hour OGTT at 4-12 weeks postpartum (PCP or OB).\ncc: PCP"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Discharge summary reviewed",
+              "author": "PCP",
+              "date": "2026-01-22T13:30",
+              "body": "Delivered 1/18 by primary C/S for arrest of dilation at 6 cm after augmentation; healthy boy 3,520 g. GDM resolved - hx GDM added. Postpartum OGTT - we'll order at her visit. RN call tomorrow; PCP visit ~5 wks."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-23a",
+          "kind": "telephone",
+          "start": "2026-01-23T14:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2026-01-23T14:10",
+              "body": "Called pt 2 days after discharge. Congratulated. Pain controlled with ibuprofen and acetaminophen, using less each day. Incision dry, no redness or drainage. Afebrile. Bleeding moderate and decreasing. No calf pain, headache or vision change; BP at L&D was fine. Feeding going OK. Mood: tired, happy. OB incision check booked 2/2. Scheduled PCP visit 2/24. Reviewed reasons to call: fever, wound redness/drainage, heavy bleeding, leg swelling, severe headache, low mood."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "office_visit",
+          "start": "2026-02-24T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum follow-up",
+          "state": {"weight_kg": 93.4},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "conditions": [
+            {"label": "Prolonged first stage (of labor)", "icd10": "O63.0", "action": "resolved", "onset": "2026-01-18"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-02-24T13:30"}
+          ],
+          "orders": [
+            {"id": "ogtt-2026", "action": "placed", "order": "Glucose tolerance test, 2 hour, 75 g", "category": "lab", "reason": "history of gestational diabetes, postpartum screening"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Postpartum Follow-up",
+              "author": "PCP",
+              "date": "2026-02-24T13:30",
+              "body": "Robin, 35, 5 wks after primary C/S (1/18) for arrest of dilation; son doing well. Diet-controlled GDM this pregnancy.\n\nRecovery: incision healing, OB checked it 2/2 and was happy. Off ibuprofen and acetaminophen for about two weeks. Bleeding now just spotting. No fevers. Thirst and frequent urination have resolved since delivery. Breastfeeding. Sleep in chunks; husband and 6-year-old daughter adjusting. On leave until April.\n\nPHQ-9 3. No SI. Feels very different from 2022, she says.\n\nMeds: prenatal vitamin with iron daily. NKDA.\n\nExam: Vitals as charted. Well appearing. Heart regular. Lungs clear. Abdomen soft, Pfannenstiel incision well healed, no erythema or tenderness. Calves soft, nontender. Affect bright.\n\nA/P\n1. Postpartum after cesarean - recovering well.\n2. Hx GDM: 75 g 2-hour OGTT at 7 weeks postpartum, ordered for 3/10 (fasting). If normal, A1c every 1-3 years; lifelong higher risk for T2DM discussed.\n3. Obesity class I: postpartum weight expected to come down with time; revisit at physical.\n4. Mood screen reassuring; reviewed postpartum depression symptoms.\n5. Continue prenatal vitamin while breastfeeding.\n6. Annual physical this fall."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "lab_only",
+          "start": "2026-03-10T07:45",
+          "labs": [
+            {"panel": null, "collected": "2026-03-10T07:50", "resulted": "2026-03-10T11:20", "results": [
+              {"test": "Fasting Glucose", "value": 91},
+              {"test": "Glucose 2 hours post 75 g glucose", "loinc": "1518-0", "unit": "mg/dL", "value": 126}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Venipuncture", "performed": "2026-03-10T07:50"}
+          ],
+          "orders": [
+            {"id": "ogtt-2026", "action": "done", "date": "2026-03-10T11:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Lab visit - 2 hour OGTT",
+              "author": "MA",
+              "date": "2026-03-10T07:45",
+              "body": "Pt in fasting since 9 pm. Fasting draw 7:50, 75 g glucola consumed by 7:55, 2-hour draw 9:55. Pt stayed seated in waiting area, no nausea or vomiting. Tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-11a",
+          "kind": "portal_message",
+          "start": "2026-03-11T08:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Glucose tolerance test result",
+              "author": "PCP",
+              "date": "2026-03-11T08:10",
+              "body": "Hi Robin, good news - your glucose tolerance test was normal: fasting 91 and 2-hour 126 (normal is under 100 fasting and under 140 at 2 hours). The gestational diabetes has gone away. Because it raises the risk of diabetes down the road, we'll check an A1c at least every 1-3 years, starting with your physical."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Glucose tolerance test result",
+              "author": "patient",
+              "date": "2026-03-11T12:55",
+              "body": "Yay!! Thank you. That drink was disgusting."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "outside_records",
+          "start": "2026-03-17T10:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics postpartum visit (visit date 03/02/2026)",
+              "author": "obstetrics",
+              "date": "2026-03-17T10:30",
+              "body": "OUTSIDE OB/GYN GROUP - POSTPARTUM VISIT\nDate of service: 03/02/2026\nPatient: Robin Parsons, 35 y/o G3P2102, 6 weeks after primary low transverse cesarean (01/18/2026) for arrest of dilation.\n\nDoing well. Lochia resolved. Breastfeeding. Pain resolved, off analgesics. Mood good; EPDS low risk.\nHistory of diet-controlled GDM - postpartum OGTT being done through her PCP.\n\nBP normal. Abdomen soft; Pfannenstiel incision well healed. Pelvic exam deferred per patient preference; no concerns.\n\nAssessment: Normal postpartum recovery after cesarean.\nPlan: Resume normal activity. Family planning discussed; she will let us know. Routine gynecologic care; Pap/HPV per PCP schedule (last 2023 normal). Interpregnancy interval counseling given prior cesarean.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "portal_message",
+          "start": "2026-05-12T21:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill",
+              "author": "patient",
+              "date": "2026-05-12T21:05",
+              "body": "Prenatal vitamin refill please when you get a chance. Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill",
+              "author": "MA",
+              "date": "2026-05-13T08:20",
+              "body": "Sent to your pharmacy - 90 days with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T19:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "author": "patient",
+              "date": "2026-08-11T19:40",
+              "body": "Hi, time to book my physical I think? Late September after school starts works best, any day after 3:15."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "author": "front desk",
+              "date": "2026-08-12T09:10",
+              "body": "You're booked Tuesday 9/22 at 3:40 pm for your annual physical. Please come fasting if you can - the doctor will likely check your A1c and cholesterol."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,441 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001678",
+      "events": [
+        {
+          "id": "2022-06-21a",
+          "kind": "portal_message",
+          "start": "2022-06-21T07:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pregnant again",
+              "author": "patient",
+              "date": "2022-06-21T07:10",
+              "body": "Hi! Positive test this morning. LMP was May 19. Still on the prenatal. Can I come in for the confirmation and referral like last time? Same OB group please."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pregnant again",
+              "author": "RN",
+              "date": "2022-06-21T08:52",
+              "body": "Congratulations! Yes - front desk will reach out with a time next week. Keep taking the prenatal."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-28a",
+          "kind": "office_visit",
+          "start": "2022-06-28T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pregnancy confirmation",
+          "conditions": [
+            {"label": "Pregnant state, incidental", "icd10": "Z33.1", "action": "diagnosed", "onset": "2022-05-19", "note": "LMP 2022-05-19, EDD 2023-02-23"}
+          ],
+          "state": {"weight_kg": 87.5},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2022-06-28T09:25", "results": [{"test": "Pregnancy Test, Urine", "text": "Positive"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2022-06-28T09:20"}
+          ],
+          "orders": [
+            {"id": "ob-referral-2022", "action": "placed", "order": "Obstetrics referral", "category": "referral", "to": "Obstetrics & Gynecology", "reason": "prenatal care, second pregnancy"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Pregnancy Confirmation",
+              "author": "PCP",
+              "date": "2022-06-28T09:20",
+              "body": "31 y/o G2P1001, positive home test 6/21. LMP 5/19/22 -> 5w5d, EDD ~2/23/23. Planned. Feels well, a little queasy. No bleeding or pain. On prenatal vitamin with iron daily already.\n\nFirst pregnancy (2019-20): short cervix found at 22 wks, delivered at term vaginally, healthy daughter.\n\nVitals as charted. Well. Abd soft NT.\nUrine hCG positive.\n\nA/P: Early IUP presumed, 5w5d.\n- Continue prenatal vitamin.\n- OB referral back to her prior group; mentioned the short cervix history so they can plan cervical length checks.\n- Summer break - good timing for early visits.\n- Usual precautions."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-01a",
+          "kind": "telephone",
+          "start": "2022-07-01T10:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "OB referral",
+              "author": "front desk",
+              "date": "2022-07-01T10:40",
+              "body": "Referral and note faxed to OB group. They have her as an established patient; intake 7/19. Pt aware."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-26a",
+          "kind": "telephone",
+          "start": "2022-09-26T12:35",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Patient call - anatomy scan",
+              "author": "RN",
+              "date": "2022-09-26T12:35",
+              "body": "Pt called, tearful. Had her 18-week anatomy ultrasound at the OB office last Thursday (9/22). Was told the baby has multiple broken bones in the arms and legs and a small chest, and that the baby is measuring small. OB is sending her to the high-risk (MFM) team and following up at her next visit. She has no pain, bleeding or fluid. She wanted us to know and asked to talk to the PCP. Message to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP returned call",
+              "author": "PCP",
+              "date": "2022-09-26T17:50",
+              "body": "Spoke with Robin for about 15 min. She understands the OB and MFM teams will be the ones to explain what the findings mean, and she has a follow-up at 22 weeks. Mostly needed to talk it through. Denies trauma, falls, fevers or illnesses this pregnancy. No fracture history of her own, no bone problems in the family. Husband with her. Offered to see her anytime; she has our number and the after-hours line. Will watch for the OB/MFM notes."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T15:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-11T15:38"}],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-11T15:38"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "author": "RN",
+              "date": "2022-10-11T15:35",
+              "body": "Flu vaccine, pregnant ~20 wks. Screening negative. Influenza quadrivalent 0.5 mL IM L deltoid, VIS given. Tolerated. Pt quiet today; asked how she was doing, she said she is waiting on more appointments and has support at home."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-21a",
+          "kind": "outside_records",
+          "start": "2022-10-21T14:05",
+          "conditions": [
+            {"label": "Maternal care for other (suspected) fetal abnormality and damage, not applicable or unspecified", "icd10": "O35.8XX0", "action": "diagnosed", "onset": "2022-09-22", "note": "Multiple fetal long-bone fractures, hypoplastic thorax, limb deformities, growth restriction on 18-week anatomy scan; fetal osteogenesis imperfecta suspected"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2022-10-20T10:15", "results": [{"test": "Calcium", "value": 9.2}, {"test": "Phosphorus", "value": 3.5}, {"test": "Alkaline Phosphatase", "value": 90}]}
+          ],
+          "orders": [
+            {"id": "ob-referral-2022", "action": "done", "date": "2022-10-21T14:05"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics prenatal visit, 22 weeks (visit date 10/20/2022)",
+              "author": "obstetrics",
+              "date": "2022-10-21T14:05",
+              "body": "OUTSIDE OB/GYN GROUP - PRENATAL VISIT\nDate of service: 10/20/2022\nPatient: Robin Parsons, DOB 02/17/1991\nG2P1001 at 22w0d by LMP (5/19/22), dated by first-trimester ultrasound.\n\nReason: Routine 22-week visit and follow-up of the abnormal 18-week anatomy ultrasound.\n\nHistory: Her first pregnancy was complicated by a short cervix at 22 weeks but went to term with a vaginal delivery of a healthy daughter (2020). This pregnancy was uneventful until the 18-week anatomy survey (9/22/2022), which showed fractures of multiple long bones including both femurs and both humeri, a hypoplastic thorax, limb deformities and fetal growth restriction. She reports no trauma and no infections or febrile illness this pregnancy. She is understandably worried and asks what this means for the baby and why it happened.\n\nMedications: prenatal vitamin with iron, 1 tab daily.\nAllergies: NKDA.\nPMH: obesity (pre-pregnancy BMI 32). Short cervix in prior pregnancy. PSH: none.\nFamily history: no known genetic disorders or bone disease in either family.\nSocial: teacher; never smoker; no alcohol.\n\nVitals stable, within normal limits.\nFundal height appropriate for gestational age. FHT normal by Doppler.\n\nLabs today (maternal): calcium 9.2 mg/dL (8.6-10.2), phosphate 3.5 mg/dL (2.5-4.5), alkaline phosphatase 90 IU/L (30-120 in pregnancy). Maternal bone chemistry normal.\n\nAssessment: IUP at 22w0d with fetal skeletal findings (multiple long-bone fractures, small thorax, limb deformity, FGR) most suggestive of a fetal skeletal dysplasia, likely osteogenesis imperfecta.\nPlan: Urgent maternal-fetal medicine consultation with detailed ultrasound and genetics counseling - scheduled 10/25. Discussed in general terms that the findings can carry a serious prognosis and that MFM and genetics will go over this in detail, including testing options. Support resources provided.\n\ncc: Primary care physician"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside OB note reviewed",
+              "author": "PCP",
+              "date": "2022-10-21T17:20",
+              "body": "OB 22-wk note: fetal long-bone fractures, small chest, FGR - suspected fetal OI. Maternal Ca/phos/alk phos normal. MFM consult 10/25. Problem list updated. Will call her after MFM."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-27a",
+          "kind": "outside_records",
+          "start": "2022-10-27T11:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Maternal-fetal medicine consultation (visit date 10/25/2022)",
+              "author": "maternal-fetal medicine",
+              "date": "2022-10-27T11:30",
+              "body": "MATERNAL-FETAL MEDICINE CONSULTATION\nRegional hospital MFM service\nDate of service: 10/25/2022\nReferring: outside OB/GYN group. cc: PCP\n\nDear colleagues,\nWe saw Ms. Parsons, a 31-year-old G2P1001 at 22w5d, for evaluation of fetal skeletal abnormalities identified at her 18-week anatomy survey.\n\nDetailed ultrasound today: Single live intrauterine pregnancy. Biometry lags dates, consistent with growth restriction. Long bones are short and angulated, with evidence of multiple fractures involving both femurs and both humeri. The thorax is small with a reduced thoracic-to-abdominal circumference ratio, consistent with a hypoplastic thoracic cavity. Limb deformities are present. Cardiac activity present.\n\nImpression: The constellation is most consistent with perinatal lethal osteogenesis imperfecta (type II). Pulmonary hypoplasia from the small chest is the main determinant of prognosis.\n\nCounseling: We met with Ms. Parsons and her husband for an extended visit together with genetic counseling. We reviewed the likely diagnosis, that the expected outcome is not compatible with long-term survival, and the options of continuing the pregnancy with comfort-focused perinatal care or ending the pregnancy by induction of labor. We reviewed that most cases arise from a new (de novo) dominant change in a collagen gene. After discussion she elected amniocentesis for diagnostic confirmation, performed today under ultrasound guidance without complication. Results are expected in about two weeks.\n\nShe will let us know her decision regarding the pregnancy; we will coordinate with her OB team and labor and delivery.\n\nThank you for involving us in her care.\nMaternal-Fetal Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2022-11-07a",
+          "kind": "outside_records",
+          "start": "2022-11-07T09:50",
+          "conditions": [
+            {"label": "Pregnant state, incidental", "icd10": "Z33.1", "action": "resolved", "onset": "2022-05-19"},
+            {"label": "Maternal care for other (suspected) fetal abnormality and damage, not applicable or unspecified", "icd10": "O35.8XX0", "action": "resolved", "onset": "2022-09-22"},
+            {"label": "Personal history of other complications of pregnancy, childbirth and the puerperium", "icd10": "Z87.59", "action": "diagnosed", "onset": "2022-11-02", "note": "2022 pregnancy affected by fetal osteogenesis imperfecta (suspected type II); induction of labor, stillbirth at 23w6d"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Labor & delivery discharge summary (admitted 11/01/2022)",
+              "author": "obstetrics",
+              "date": "2022-11-07T09:50",
+              "body": "REGIONAL HOSPITAL - LABOR & DELIVERY DISCHARGE SUMMARY\nAdmit: 11/01/2022  Discharge: 11/03/2022\nPatient: Robin Parsons, 31 y/o G2P1001 -> G2P1101\n\nAdmission diagnosis: IUP at 23w5d with fetal skeletal dysplasia, suspected perinatal lethal osteogenesis imperfecta (type II).\n\nHospital course: After counseling with MFM, genetics and her obstetrician, the patient elected induction of labor. Induction began 11/01/2022. She delivered vaginally on 11/02/2022 at 23w6d; stillbirth. Placenta delivered complete. EBL 250 mL. Postpartum course uncomplicated; afebrile, bleeding appropriate, vitals stable. Bereavement team and chaplain met with the family. Lactation suppression reviewed.\n\nDischarge diagnosis: Delivery at 23w6d following induction for lethal fetal anomaly; stillbirth.\nDischarge medications: prenatal vitamin with iron daily.\nAllergies: NKDA.\nFollow-up: OB in 2 weeks; genetics will call with amniocentesis results. Perinatal bereavement support contacts provided.\ncc: PCP"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Discharge summary reviewed",
+              "author": "PCP",
+              "date": "2022-11-07T12:15",
+              "body": "Robin delivered 11/2 at 23w6d after induction; stillborn. Uncomplicated. Problem list updated. Calling her today."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "telephone",
+          "start": "2022-11-08T17:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP call",
+              "author": "PCP",
+              "date": "2022-11-08T17:30",
+              "body": "Reached Robin after leaving a message yesterday. Expressed condolences. Physically she is recovering - bleeding light, no fever, no pain beyond mild cramps. Sleeping poorly. Husband is home with her and their daughter. She is on leave from school through the end of the month. Waiting on the genetics call. No thoughts of self-harm. Offered a visit in 2 weeks to check in - she accepted. Front desk to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-16a",
+          "kind": "outside_records",
+          "start": "2022-11-16T10:25",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Genetics results letter (dated 11/14/2022)",
+              "author": "genetics",
+              "date": "2022-11-16T10:25",
+              "body": "MEDICAL GENETICS - RESULTS LETTER\nDate: 11/14/2022\nRe: Robin Parsons, DOB 02/17/1991 (pregnancy sample)\n\nDear Ms. Parsons and colleagues,\nThis letter summarizes our phone discussion of the amniocentesis results from 10/25/2022.\n\nResult: Sequencing of the collagen genes COL1A1 and COL1A2 identified a heterozygous pathogenic variant in COL1A1 (a glycine substitution within the triple-helical domain). This result confirms osteogenesis imperfecta and, together with the ultrasound findings, is consistent with the perinatal lethal form (type II).\n\nInterpretation and recurrence: Ms. Parsons has no features of osteogenesis imperfecta herself - no history of fractures, white sclerae and normal hearing by her report - and there is no family history of bone disease. The variant is therefore presumed to have arisen de novo in this pregnancy. Because a small proportion of apparently de novo cases are explained by germline mosaicism in a parent, the recurrence risk in a future pregnancy is low, under 5 percent, but higher than the general population risk.\n\nRecommendations for a future pregnancy: early referral to maternal-fetal medicine, with an early and a detailed anatomy ultrasound focused on the fetal skeleton; diagnostic testing for this familial variant is available if desired.\n\nPlease contact us with any questions.\nMedical Genetics\ncc: OB/GYN; PCP"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Genetics letter reviewed",
+              "author": "PCP",
+              "date": "2022-11-16T16:40",
+              "body": "COL1A1 pathogenic variant, OI type II confirmed in the pregnancy. Presumed de novo; recurrence <5% (possible germline mosaicism). Future pregnancy: early MFM referral. Noted in problem list comment - remember when she next calls with a pregnancy."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-22a",
+          "kind": "office_visit",
+          "start": "2022-11-22T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after pregnancy loss",
+          "state": {"weight_kg": 88.6},
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 5}],
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-15T10:30"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-11-22T10:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Follow-up",
+              "author": "PCP",
+              "date": "2022-11-22T10:00",
+              "body": "Robin is here 3 weeks after delivering at 23w6d (induction 11/1, stillborn 11/2) for a pregnancy affected by OI type II - COL1A1 variant confirmed on amnio, presumed de novo per genetics.\n\nPhysically: bleeding has stopped, no fever, breast engorgement resolved. Saw her OB last week - told recovery is on track.\n\nEmotionally: sad, cries most days, but says she is \"functioning\" - caring for her daughter, eating, sleeping 6 hours or so. Not anhedonic about everything; enjoys time with her daughter. Going back to her classroom after Thanksgiving and is nervous about questions from colleagues. She and her husband have been to one session with the hospital's bereavement group and plan to keep going. No SI, no thoughts of self-harm. No alcohol.\n\nPHQ-9 5 (sleep, mood, energy).\nMeds: prenatal vitamin with iron - she asked if she should keep taking it; I said that's fine either way, reasonable to continue if they might try again.\nBivalent COVID booster at pharmacy 10/15 - recorded.\n\nExam: Vitals as charted. Tearful at times, appropriate, good eye contact. Heart regular, lungs clear. Abd soft, nontender.\n\nA/P\n1. Grief after second-trimester loss - this is a normal grief response; no depression diagnosis. Continue bereavement group. Reviewed when to reach out sooner (not sleeping, can't get through work, hopeless, any thoughts of self-harm). Offered counseling referral; she'll think about it and message.\n2. Hx of pregnancy affected by fetal OI - genetics recommends early MFM in any future pregnancy. Noted.\n3. Return-to-work note if the school asks.\n4. Follow up in 6-8 weeks or sooner; physical next fall."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-03a",
+          "kind": "portal_message",
+          "start": "2023-01-03T06:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Note for school",
+              "author": "patient",
+              "date": "2023-01-03T06:20",
+              "body": "Hi, HR is asking for a note saying I'm cleared to be back full time (I've been back since Thanksgiving but apparently it never got filed). Sorry for the hassle. Doing a little better, thank you for checking on me."
+            },
+            {
+              "type": "Letters",
+              "title": "Return to work letter",
+              "author": "PCP",
+              "date": "2023-01-03T12:40",
+              "body": "To whom it may concern: Robin Parsons was under my care for a medical leave in November 2022. She was cleared to return to full duty without restrictions as of 11/28/2022. Please contact the office with any questions."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Note for school",
+              "author": "PCP",
+              "date": "2023-01-03T12:42",
+              "body": "No hassle at all - letter is attached and in your documents. Glad to hear things are a little better. We never got that follow-up booked; I'll have the front desk offer you a time, and you can always just message."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, Pap",
+          "state": {"weight_kg": 88.2},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-19T16:35", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-19T16:35", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-09-19T16:35", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2023-09-19T16:05", "issued": "2023-09-25T15:00", "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV (cobas, including types 16 and 18): not detected.", "conclusion": "NILM; high-risk HPV negative."}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-09-19T16:30"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-09-19T15:40"},
+            {"procedure": "Venipuncture", "performed": "2023-09-19T16:35"},
+            {"procedure": "Immunization administration", "performed": "2023-09-19T16:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical with Pap/HPV",
+              "author": "PCP",
+              "date": "2023-09-19T15:40",
+              "body": "Annual exam.\n\n32 y/o, here for physical. Last seen 11/2022 after her loss; the planned follow-up never got scheduled. She says the spring was hard but things feel steadier now - kept going to the bereavement group through June, back to herself at school. Daughter started preschool. They have not decided about another pregnancy; if they do, she knows to message early so we can get her to MFM. Still taking prenatal vitamin most days.\n\nNo new symptoms. Weight about the same as last year. Swimming at the town pool this summer, 2-3x/wk.\n\nMeds: prenatal vitamin with iron daily. NKDA.\nSH: married, teacher, never smoker, no EtOH.\nPHQ-2 0.\nPap overdue (last 2018).\n\nExam: BMI 33. Well appearing, bright affect. HEENT nl. Neck no LAD or thyromegaly. CV RRR no murmur. Lungs clear. Abd soft NT. Pelvic: normal external genitalia and vagina, parous cervix without lesions, Pap/HPV collected; bimanual normal. Ext no edema.\n\nA/P\n1. Health maintenance: Pap with HPV co-test today. CBC, lipids, A1c. Flu shot today; updated COVID vaccine when available at the pharmacy.\n2. Obesity class I (BMI 33): stable. She likes swimming; encouraged keeping something going through winter. Revisit in 6 months - she agreed to a spring check.\n3. Hx pregnancy affected by fetal OI (COL1A1, presumed de novo): early MFM referral with any pregnancy.\n4. Mood: much improved, screen negative today.\nRTC 6 months (weight), 1 yr physical."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "portal_message",
+          "start": "2023-09-26T08:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "author": "PCP",
+              "date": "2023-09-26T08:05",
+              "body": "Hi Robin - Pap normal and HPV negative, so the next one is in 5 years. Blood counts and cholesterol fine, A1c normal. Front desk will set up the spring check-in."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "portal_message",
+          "start": "2023-10-17T19:30",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-14T09:50"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID shot",
+              "author": "patient",
+              "date": "2023-10-17T19:30",
+              "body": "Got the new COVID shot on 10/14 at the pharmacy (Pfizer). Just letting you know for my records."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: COVID shot",
+              "author": "MA",
+              "date": "2023-10-18T08:15",
+              "body": "Thanks, added to your immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "office_visit",
+          "start": "2024-03-12T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Weight follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-03-13a",
+          "kind": "portal_message",
+          "start": "2024-03-13T08:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed appointment",
+              "author": "front desk",
+              "date": "2024-03-13T08:30",
+              "body": "Hi Robin, we missed you yesterday at 3:45. Would you like to reschedule your check-in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Missed appointment",
+              "author": "patient",
+              "date": "2024-03-13T20:12",
+              "body": "So sorry!! Parent conferences ran late and I completely forgot. Honestly nothing new to report - can we just do it at my physical in September?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Missed appointment",
+              "author": "front desk",
+              "date": "2024-03-14T09:05",
+              "body": "No problem, you're booked for your physical 9/17 at 3:40."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "annual_physical",
+          "start": "2024-09-17T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 89.0, "labs": {"Hemoglobin A1c": 5.3}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-17T16:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-17T16:30", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-09-17T16:30", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2024-09-17T16:25"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-09-17T15:40"},
+            {"procedure": "Venipuncture", "performed": "2024-09-17T16:30"},
+            {"procedure": "Immunization administration", "performed": "2024-09-17T16:25"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-17T15:40",
+              "body": "Annual. 33F.\n\nInterval: well, no illnesses. Skipped the spring check (conferences). Weight unchanged from last year. Kept swimming until October last year then stopped; walks at lunch with another teacher now.\n\nThey are thinking about trying again next year. Reviewed plan: message as soon as she has a positive test, we confirm and send her to OB and MFM together for early and detailed scans per genetics. Continue prenatal vitamin with iron.\n\nMeds: prenatal vitamin with iron daily. NKDA.\nPHQ-2 0. Mood good.\nNever smoker, no alcohol.\n\nExam: BMI 33. Well. HEENT normal. Thyroid not enlarged. CV regular, no murmur. Lungs clear. Abdomen soft. No edema. Skin no acanthosis.\n\nA/P\n1. Obesity class I (BMI 33) - pre-pregnancy counseling: even modest loss before conception lowers GDM risk; she has her grandmother's diabetes in mind. Offered nutrition referral again - declined, wants to try a meal-planning approach with her husband.\n2. Labs: CMP, lipids, A1c.\n3. Flu shot today. Updated COVID at pharmacy.\n4. Pap/HPV next 2028.\nRTC 1 yr or with a positive pregnancy test."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-19a",
+          "kind": "portal_message",
+          "start": "2024-09-19T11:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2024-09-19T11:48",
+              "body": "Hi Robin, labs look fine. A1c normal (under 5.7). Kidney, liver and cholesterol normal."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "portal_message",
+          "start": "2024-10-22T18:40",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-19T10:20"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Covid vaccine",
+              "author": "patient",
+              "date": "2024-10-22T18:40",
+              "body": "Updated covid shot Saturday 10/19, pharmacy. For your records!"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

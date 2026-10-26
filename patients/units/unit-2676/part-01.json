@@ -1,0 +1,208 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002676",
+      "given": "Randall",
+      "family": "McDermott",
+      "birth_date": "1988-11-25",
+      "address_line": "29 Fearing Street",
+      "phone": "+1-508-555-0184",
+      "email": "randall.mcdermott@example.test",
+      "marital_status": "single",
+      "summary": "High school math teacher with systemic mastocytosis, allergic asthma, persistent allergic rhinitis and mild generalized anxiety who joins the practice in August 2021 on a stable mast-cell regimen. Two outside ED visits for anaphylaxis: during a dental procedure in 2023 and after multiple insect stings in July 2026, after which an allergy/immunology referral is still open.",
+      "events": [
+        {
+          "id": "2021-08-10a",
+          "kind": "establish_care",
+          "start": "2021-08-10T09:00",
+          "end": "2021-08-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish primary care",
+          "conditions": [
+            {"label": "Systemic mastocytosis", "icd10": "D47.02", "action": "history"},
+            {"label": "Allergic asthma", "icd10": "J45.909", "action": "history"},
+            {"label": "Allergic rhinitis", "action": "history", "note": "Persistent; dust mite and Timothy grass sensitization"},
+            {"label": "Generalized anxiety disorder", "action": "history"}
+          ],
+          "medications": [
+            {"drug": "NDA019430 0.3 ML epinephrine 1 MG/ML Auto-Injector", "action": "historical", "sig": "Inject 0.3 mg into the outer thigh as needed for anaphylaxis. Carry two at all times.", "dose": {"value": 0.3, "unit": "mg"}, "frequency": "PRN", "route": "Intramuscular", "course": "chronic", "reason": "Anaphylaxis risk (systemic mastocytosis, venom and latex allergy)"},
+            {"drug": "cetirizine hydrochloride 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Systemic mastocytosis; allergic rhinitis"},
+            {"drug": "famotidine 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Systemic mastocytosis"},
+            {"drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler", "action": "historical", "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheezing", "dose": {"value": 180, "unit": "mcg"}, "frequency": "PRN", "route": "Inhalation", "course": "chronic", "reason": "Allergic asthma"},
+            {"drug": "fluticasone propionate 0.05 MG/ACTUAT Metered Dose Nasal Spray", "action": "historical", "sig": "Use 2 sprays in each nostril once daily", "dose": {"value": 200, "unit": "mcg"}, "frequency": "DAILY", "route": "Nasal", "course": "chronic", "reason": "Persistent allergic rhinitis"},
+            {"drug_text": "cromolyn sodium 20 MG/ML Oral Solution", "action": "historical", "sig": "Take 200 mg (10 mL, two 5 mL ampules) by mouth four times daily, 30 minutes before meals and at bedtime", "dose": {"value": 200, "unit": "mg"}, "frequency": "QID", "route": "Oral", "course": "chronic", "reason": "Systemic mastocytosis"}
+          ],
+          "allergies": [
+            {"substance": "Hymenoptera venom (bees, wasps)", "reaction": "Anaphylaxis", "severity": "severe", "criticality": "high", "type": "allergy"},
+            {"substance": "Latex", "reaction": "Anaphylaxis", "severity": "severe", "criticality": "high", "type": "allergy"},
+            {"substance": "Dust mites", "reaction": "Rhinitis", "severity": "mild", "criticality": "low", "type": "allergy"},
+            {"substance": "Timothy grass pollen", "reaction": "Rhinitis", "severity": "mild", "criticality": "low", "type": "allergy"}
+          ],
+          "state": {"weight_kg": 78.0, "height_cm": 180.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-08-10T09:55", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-08-10T09:55", "results": [{"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2021-08-10T09:55", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2021-08-10T09:55", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [
+            {"survey": "GAD-7 total score", "value": 8},
+            {"survey": "PHQ-9 total score", "value": 3},
+            {"survey": "AUDIT-C total score", "value": 1}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Occasional (1-2 drinks per month)"},
+            {"item": "Occupation", "value": "High school mathematics teacher"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2021-08-10T09:00"},
+            {"procedure": "Venipuncture", "performed": "2021-08-10T09:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2021-08-10T10:20", "body": "NEW PATIENT — establishing care\n\n32 y/o M, teaches high school math locally, transferring in after his old PCP retired. Comes in with a typed med list and an allergy wallet card.\n\nSystemic mastocytosis: diagnosed and followed at an outside allergy/immunology clinic, which writes his oral cromolyn. Daily H1 + H2 blockade (cetirizine, famotidine) plus cromolyn QID before meals and at bedtime. Carries two epinephrine auto-injectors. Paternal uncle also has SM. He'll sign a release so we can get the allergist's summary.\n\nAllergic asthma: albuterol only, uses it now and then, mostly around spring pollen or a dusty classroom. No ED visits for asthma, no oral steroids in years. No night symptoms.\n\nPersistent allergic rhinitis: dust mite and Timothy grass. Fluticasone nasal daily keeps it quiet.\n\nGAD: longstanding, mild. Worries more in the run-up to the school year, sleeps OK. Not interested in medication or counseling right now, prefers to keep an eye on it. GAD-7 8, PHQ-9 3.\n\nAllergies: Hymenoptera venom (bees/wasps) — anaphylaxis. Latex — anaphylaxis. Dust mites, Timothy grass — rhinitis.\n\nMeds:\n- epinephrine 0.3 mg auto-injector IM PRN anaphylaxis, carries two\n- cetirizine 10 mg daily\n- famotidine 20 mg BID\n- albuterol HFA 2 puffs q4-6h PRN wheeze\n- fluticasone nasal 2 sprays each nostril daily\n- cromolyn oral solution 200 mg QID (30 min before meals and HS)\n\nPSH: tonsillectomy age 8; wisdom teeth out age 22.\nFH: father — bad bee/wasp allergy, HTN. Mother — asthma, allergic rhinitis. Sister — eczema, food allergies. Paternal uncle — systemic mastocytosis.\nSH: never smoker, a drink or two a month, no drugs. Lives in Amherst. Bikes to school when the weather allows.\n\nROS otherwise negative.\n\nExam: Well-appearing, relaxed. HEENT: TMs clear, nasal mucosa normal, no polyps, oropharynx clear (tonsils surgically absent). Neck supple, no adenopathy. Heart RRR, no murmur. Lungs clear bilaterally, good air movement, no wheeze. Abdomen soft, no hepatosplenomegaly. Skin: no urticaria or dermatographism on exam. Extremities without edema. Neuro grossly normal.\n\nA/P:\n1. Systemic mastocytosis — stable on current regimen. Get outside allergy/immunology records. We'll refill cetirizine, famotidine and the auto-injectors here; cromolyn stays with his allergist. Latex flag added to the chart.\n2. Allergic asthma — controlled on PRN albuterol.\n3. Persistent allergic rhinitis — controlled.\n4. GAD — mild, stable, watchful waiting per his preference. Revisit at each visit.\n5. Health maintenance: CBC, CMP, lipids today; one-time HIV and hep C screening, he agrees. Prior records for immunization history. Flu shot in October.\n\nReturn for a physical next summer, sooner as needed."}
+          ]
+        },
+        {
+          "id": "2021-08-12a",
+          "kind": "portal_message",
+          "start": "2021-08-12T13:40",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2021-08-12T13:40", "body": "Hi Randall,\n\nYour labs from Tuesday are back. Blood counts, kidney and liver tests, and cholesterol all look good. The HIV and hepatitis C screens were negative. No changes needed.\n\nOnce your old allergist's office sends records I'll file them.\n\nBest,\nYour primary care physician"}
+          ]
+        },
+        {
+          "id": "2021-08-26a",
+          "kind": "outside_records",
+          "start": "2021-08-26T11:15",
+          "reason": "Records from prior primary care and allergy/immunology",
+          "documents": [
+            {"type": "Outside Records", "title": "Prior Primary Care Records", "author": "outside primary care", "date": "2021-08-26T11:15", "body": "Records packet from prior primary care office (closed practice), covering 2014-2021. Scanned and indexed.\n\nProblem list: systemic mastocytosis (managed by allergy/immunology), allergic asthma, allergic rhinitis, generalized anxiety disorder.\nAllergies: bee/wasp venom (anaphylaxis), latex (anaphylaxis), dust mite, Timothy grass.\nImmunizations: Tdap 2016. Seasonal influenza most years.\nPreventive: annual exams with routine labs, unremarkable.\nNo hospitalizations recorded.\n\nFiled to chart. — MA"},
+            {"type": "Outside Records", "title": "Allergy/Immunology Clinical Summary", "author": "allergy/immunology", "date": "2021-08-26T11:20", "body": "OUTSIDE ALLERGY/IMMUNOLOGY — CLINICAL SUMMARY (received by fax)\n\nPatient: Randall McDermott, DOB 11/25/1988\n\nDiagnosis: Systemic mastocytosis, followed in our clinic. Original diagnostic pathology report not included with this summary.\nMost recent baseline serum tryptase: 28 ng/mL (2020).\n\nCurrent regimen:\n- cetirizine 10 mg daily\n- famotidine 20 mg twice daily\n- cromolyn sodium oral solution 200 mg four times daily, 30 minutes before meals and at bedtime (prescribed by this clinic)\n- epinephrine 0.3 mg auto-injector, two carried at all times\n\nAlso: allergic asthma on albuterol as needed; allergic rhinitis on fluticasone nasal.\n\nAllergies: Hymenoptera venom — anaphylaxis. Natural rubber latex — anaphylaxis. Dust mite and Timothy grass sensitization.\n\nEmergency plan: epinephrine IM at the first sign of a systemic reaction, then call 911.\n\nWe will continue to see him in follow-up and renew the cromolyn.\n\n— Attending, Allergy and Immunology"}
+          ]
+        },
+        {
+          "id": "2021-10-07a",
+          "kind": "nurse_visit",
+          "start": "2021-10-07T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-07T15:45"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2021-10-07T15:45"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization", "author": "RN", "date": "2021-10-07T16:10", "body": "Came by after school for flu vaccine. Allergy list reviewed with him — latex-free gloves and supplies used. Quadrivalent flu 0.5 mL IM, left deltoid. Waited 15 min in the lobby, no reaction. Has both auto-injectors in his bag."}
+          ]
+        },
+        {
+          "id": "2021-11-18a",
+          "kind": "nurse_visit",
+          "start": "2021-11-18T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID-19 booster",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-11-18T15:55"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2021-11-18T15:55"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization", "author": "RN", "date": "2021-11-18T16:20", "body": "COVID booster (Pfizer) 0.3 mL IM right deltoid. Primary series done this spring through the school district clinic, card seen. Latex-free supplies. Observed 15 minutes, felt fine, left for a parent-teacher conference."}
+          ]
+        },
+        {
+          "id": "2022-01-12a",
+          "kind": "telephone",
+          "start": "2022-01-12T10:05",
+          "reason": "Prior authorization, oral cromolyn",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Pharmacy call — prior auth", "author": "RN", "date": "2022-01-12T10:05", "body": "Retail pharmacy called: cromolyn oral solution rejected, plan wants a new prior auth for 2022. Prescriber on file is his allergist. Called the allergist's office, they're submitting it today. Let pt know by text that it's in process — he has about 5 days of ampules left."},
+            {"type": "Telephone Encounter", "title": "Prior auth follow-up", "author": "RN", "date": "2022-01-14T14:30", "body": "Allergist's office confirms the cromolyn PA was approved through end of year. Pharmacy filled. Pt aware."}
+          ]
+        },
+        {
+          "id": "2022-03-09a",
+          "kind": "office_visit",
+          "start": "2022-03-09T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up asthma, rhinitis, anxiety",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "GAD-7 total score", "value": 7}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2022-03-09T16:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2022-03-09T16:35", "body": "Routine check-in before pollen season.\n\nAsthma: albuterol maybe twice this winter, both after shoveling. No nighttime cough or wheeze.\nRhinitis: on fluticasone daily, nose clear right now.\nSM: no flushing episodes, no GI flares, keeping up with cromolyn. Allergist PA went through in January.\nAnxiety: GAD-7 7. Midyear grading crunch is behind him. Still no interest in meds.\n\nMeds unchanged. Allergies: venom, latex (both anaphylaxis), dust mite, Timothy grass.\n\nExam: comfortable. Nares clear. Lungs clear, no wheeze, normal expiratory phase. Heart regular.\n\nA/P:\n- Allergic asthma — controlled. Albuterol refill sent.\n- Allergic rhinitis — controlled, continue fluticasone; ok to start it a bit early if grass season ramps up.\n- SM — stable on regimen.\n- GAD — mild, steady.\nPhysical in August."}
+          ]
+        },
+        {
+          "id": "2022-05-23a",
+          "kind": "portal_message",
+          "start": "2022-05-23T19:12",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Patient Message", "title": "Nose spray refill", "author": "patient", "date": "2022-05-23T19:12", "body": "Hi — down to the last few days on the fluticasone, and the grass is out in full force. Could you send a refill to my usual pharmacy? Thanks, Randy"},
+            {"type": "Patient Message", "title": "RE: Nose spray refill", "author": "MA", "date": "2022-05-24T08:20", "body": "Refill sent this morning with 3 refills. Should be ready this afternoon."}
+          ]
+        },
+        {
+          "id": "2022-08-16a",
+          "kind": "annual_physical",
+          "start": "2022-08-16T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-08-16T09:10", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-08-16T09:10", "results": [{"test": "Creatinine"}]}
+          ],
+          "surveys": [
+            {"survey": "GAD-7 total score", "value": 6},
+            {"survey": "PHQ-9 total score", "value": 2},
+            {"survey": "AUDIT-C total score", "value": 1}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2022-08-16T08:30"},
+            {"procedure": "Venipuncture", "performed": "2022-08-16T09:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-08-16T09:25", "body": "ANNUAL PREVENTIVE EXAM\n\n33M, two weeks before teachers report back. Good summer, did a lot of biking.\n\nInterval: no reactions, no ED visits. Saw his allergist in the spring, no changes. Albuterol a handful of times since March. Nose controlled.\n\nMeds: cetirizine 10 daily, famotidine 20 BID, cromolyn oral 200 mg QID, fluticasone nasal daily, albuterol PRN, epinephrine auto-injector x2.\nAllergies: Hymenoptera venom — anaphylaxis; latex — anaphylaxis; dust mite; Timothy grass.\nSocial: never smoker, rare alcohol (AUDIT-C 1).\nScreens: GAD-7 6, PHQ-9 2.\n\nExam: NAD. HEENT unremarkable. Neck without nodes, thyroid normal. Heart RRR, no murmur. Lungs clear. Abdomen soft, no organomegaly. Skin: no lesions of concern, no urticaria. Ext no edema. Neuro normal.\n\nA/P:\n- Health maintenance: CBC and CMP today. Tdap good until 2026. Flu and the updated COVID booster this fall.\n- SM, asthma, rhinitis — stable, regimen unchanged.\n- GAD — mild, stable.\nAuto-injectors expire next summer — reminded him to check the dates."}
+          ]
+        },
+        {
+          "id": "2022-08-18a",
+          "kind": "portal_message",
+          "start": "2022-08-18T12:05",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2022-08-18T12:05", "body": "Randall — blood count and chemistry panel from Tuesday are normal. Have a good start to the year."}
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "nurse_visit",
+          "start": "2022-10-20T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-20T15:50"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-20T15:52"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-20T15:50"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunizations", "author": "RN", "date": "2022-10-20T16:15", "body": "Flu (quadrivalent) L deltoid and bivalent COVID booster R deltoid. Latex precautions. No reaction during the 15-minute wait."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,540 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002007",
+      "events": [
+        {
+          "id": "2025-03-11a",
+          "kind": "office_visit",
+          "start": "2025-03-11T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hypertension follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-03-11T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Hypertension",
+              "author": "PCP",
+              "date": "2025-03-11T16:10",
+              "body": "HTN f/u, 3.5 months on lisinopril 10.\nThe lightheadedness on standing that he had in the first couple of weeks went away by around Christmas, nothing since. No cough, no swelling. Home log (brought it): mostly 120s/high 70s-low 80s.\nOffice BP at goal today. Heart RRR, lungs clear, no edema.\nBMP in December normal.\nImp: essential HTN, controlled on lisinopril 10 mg. Continue. Atorvastatin 20 continued. Back fine, keeping up PT exercises.\nRefills sent. See him at the October physical."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-19a",
+          "kind": "pharmacy",
+          "start": "2025-05-19T10:05",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "MA",
+              "date": "2025-05-19T10:05",
+              "body": "Pharmacy request to change lisinopril 10 mg to a 90-day fill for mail order through his plan. Approved, 90 days x 3 refills. Last BP visit 3/11, controlled."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-25a",
+          "kind": "hospital_admission",
+          "start": "2025-07-25T21:40",
+          "end": "2025-08-07T11:30",
+          "service": "Burn Surgery (General Surgery)",
+          "reason": "flame burns of abdominal wall and left flank",
+          "conditions": [
+            {
+              "label": "Burn of third degree of abdominal wall, initial encounter",
+              "icd10": "T21.32XA",
+              "action": "diagnosed",
+              "onset": "2025-07-25",
+              "note": "deep partial- and full-thickness flame burns, anterior abdominal wall and left flank, about 8% TBSA"
+            },
+            {
+              "label": "Sinus tachycardia",
+              "icd10": "R00.0",
+              "action": "diagnosed",
+              "onset": "2025-07-25",
+              "note": "secondary to burns"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-07-25T21:50",
+              "hr": 118
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-08-01T05:30",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 3.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-01T05:30",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 1.6
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-07-25T22:05",
+              "text": "Sinus tachycardia at 118 beats per minute. Normal axis. PR, QRS and QTc within normal limits. No ST-segment elevation or depression. No arrhythmia.",
+              "conclusion": "Sinus tachycardia, otherwise normal ECG."
+            },
+            {
+              "study": "Portable XR Abdomen Supine and Upright",
+              "loinc": "24795-7",
+              "performed": "2025-08-01T08:15",
+              "text": "XR ABDOMEN, SUPINE AND UPRIGHT\nIndication: distension, vomiting, no flatus, postoperative day 3.\nFindings: Gas-distended loops of small bowel and colon throughout the abdomen, with gas extending to the rectum. No discrete transition point. No pneumoperitoneum on the upright view. No pathologic calcification. Skin staples and dressing material project over the lower abdomen and left flank.",
+              "conclusion": "Diffuse small and large bowel dilatation without transition point, consistent with adynamic (paralytic) ileus. No free air."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-07-25T23:10"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-28a",
+          "kind": "telephone",
+          "start": "2025-07-28T11:20",
+          "reason": "patient reports hospital admission",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Patient Call — Hospitalized",
+              "author": "RN",
+              "date": "2025-07-28T11:20",
+              "body": "Pt called from his hospital room to let us know he was admitted Friday night to the burn unit at the regional hospital after a flash fire at home — burns to his belly and left side. Says he is in a lot of discomfort but doing OK, going to the OR tomorrow for skin grafting. Wanted his PCP to know. Asked that they send records. Told him to call when discharged so we can see him within a week. Message to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-08a",
+          "kind": "outside_records",
+          "start": "2025-08-08T09:15",
+          "reason": "burn admission records received",
+          "conditions": [
+            {
+              "label": "Paralytic ileus",
+              "icd10": "K56.0",
+              "action": "diagnosed",
+              "onset": "2025-08-01",
+              "note": "postoperative, after excision and grafting"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Burn Surgery Discharge Summary",
+              "author": "burn surgery",
+              "date": "2025-08-08T09:15",
+              "body": "REGIONAL HOSPITAL — BURN SURGERY SERVICE (GENERAL SURGERY)\nDISCHARGE SUMMARY\nAdmitted: 07/25/2025   Discharged: 08/07/2025\n\nPatient: Chad Whitney, 56 M\nPCP: notified; copy to PCP\nAllergies: NKDA\n\nAdmitting diagnosis: Flame burns, anterior abdominal wall and left flank, approximately 8% TBSA, mixed deep partial and full thickness.\nSecondary: Sinus tachycardia secondary to burns. Postoperative paralytic ileus (resolved).\nChronic: Hypertension, hypercholesterolemia, chronic low back pain.\n\nHistory: Flash flame burn at home on the evening of 07/25. Brought in by ambulance. No inhalation injury: no facial burns, no singed nasal hair, voice normal, no carbonaceous sputum. No other trauma.\n\nHospital course:\n- Burns: Initial cleansing and debridement, silver-based dressings. On admission HR 118, sinus tachycardia on ECG, attributed to burn injury and pain; rate ran 100s-110s through the first week and was in the 90s by discharge. Tetanus: last booster 2014, Tdap given on admission. Fluids by mouth with IV maintenance (burn size below formal resuscitation threshold). Home lisinopril and atorvastatin continued.\n- 07/29: Tangential excision and split-thickness skin grafting, abdominal wall and left flank; donor site right anterior thigh (see operative note).\n- POD 3 (08/01): developed distension, nausea and repeated emesis, no flatus or stool since surgery. Abdominal films: diffuse bowel dilatation without transition point, no free air. K 3.3, Mg 1.6. Diagnosed postoperative paralytic ileus. Managed with NPO, nasogastric decompression, IV fluids, potassium and magnesium repletion, opioid sparing (scheduled acetaminophen), early ambulation. Flatus 08/04, NG removed; BM 08/05; diet advanced without difficulty.\n- Graft take good at first and second dressing takedowns. Donor site epithelializing.\n\nDischarge exam: Afebrile, HR 90s, BP normal. Abdomen soft, nondistended, nontender, normal bowel sounds. Grafts adherent, no infection. Donor site clean.\n\nDischarge medications:\n- Lisinopril 10 mg daily (unchanged)\n- Atorvastatin 20 mg daily (unchanged)\n- Acetaminophen 500 mg tabs, 1-2 tabs every 6 hours as needed for pain (home medication)\n- No opioids prescribed at discharge.\nWound care: dressing supplies and instructions given; teaching done with patient.\n\nFollow-up: Burn clinic 08/14. PCP within 1 week. Return for fever, wound redness or drainage, vomiting, abdominal distension, or no bowel movement for 3 days."
+            },
+            {
+              "type": "Operative Note",
+              "title": "Operative Note — Excision and Grafting",
+              "author": "burn surgery",
+              "date": "2025-08-08T09:15",
+              "body": "OPERATIVE REPORT (date of surgery 07/29/2025)\nPreoperative / postoperative diagnosis: Deep partial- and full-thickness flame burns of anterior abdominal wall and left flank, ~8% TBSA.\nProcedure: Tangential excision of burn wounds, abdominal wall and left flank. Split-thickness skin autograft to excised beds, meshed, secured with staples. Donor site right anterior thigh.\nAnesthesia: General endotracheal.\nFindings: Mixed-depth burn with full-thickness areas centrally on the abdominal wall and along the left flank. Excised to viable, bleeding tissue. No fascial involvement.\nBlood loss minimal. No transfusion.\nComplications: None.\nDressings: Nonadherent layer, bolster, negative-pressure dressing to grafts; donor site with occlusive dressing.\nDisposition: To floor, stable."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "General Surgery Progress Note — POD 3",
+              "author": "general surgery",
+              "date": "2025-08-08T09:15",
+              "body": "SURGERY PROGRESS NOTE 08/01/2025, hospital day 8, POD 3 s/p excision and grafting of abdominal wall and L flank burns.\n\nS: Abdomen has been getting more bloated each day since the OR. Not hungry. Nauseated, vomited several times overnight and this morning. No flatus and no BM since surgery. Denies fever, chills, chest pain, urinary symptoms. On oxycodone for graft and donor site pain.\n\nO: Afebrile. Abdomen distended but soft. Diffuse mild tenderness, no guarding or rebound, no masses. Bowel sounds markedly diminished. Grafts and donor site clean, no erythema or drainage, NPWT seal intact.\nLabs: K 3.3, Mg 1.6, otherwise unremarkable.\nKUB supine/upright: diffuse gaseous distension of small and large bowel to rectum, no transition point, no free air.\n\nA/P: Postoperative paralytic ileus — opioids plus immobility, low K and Mg contributing. No sign of obstruction.\n- NPO, place NG to low intermittent suction\n- IV fluids; replace K and Mg, recheck AM\n- Stop oxycodone; scheduled acetaminophen, minimize opioids\n- Ambulate in hallway TID\n- Serial abdominal exams"
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "office_visit",
+          "start": "2025-08-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up after burn admission",
+          "conditions": [
+            {
+              "label": "Paralytic ileus",
+              "icd10": "K56.0",
+              "action": "resolved",
+              "onset": "2025-08-01"
+            }
+          ],
+          "state": {
+            "weight_kg": 83.0,
+            "labs": {
+              "Magnesium": 2.0
+            }
+          },
+          "vitals": {
+            "hr": 98
+          },
+          "measure": [
+            "bp",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-08-12T10:40",
+              "results": [
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Sodium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-12T10:40",
+              "results": [
+                {
+                  "test": "Magnesium"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-08-12T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-12T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2025-08-12T10:50",
+              "body": "POST-DISCHARGE VISIT (TCM)\nAdmitted 7/25-8/7, regional hospital burn service. Discharge summary, op note and surgical notes reviewed.\n\nCourse in brief: flash flame burn at home 7/25, mixed deep partial/full thickness to anterior abdominal wall and L flank, ~8% TBSA. Sinus tachycardia on arrival, put down to the burn. Tdap given. Excision and STSG 7/29 (donor R thigh). Postop paralytic ileus POD 3 with K 3.3 / Mg 1.6 — NG, NPO, repletion, opioids stopped; resolved 8/4-8/5.\n\nToday: Home 5 days. Eating normally, BMs daily, no nausea or bloating. Pain manageable with acetaminophen, mostly at dressing changes and the donor site. Sleeping OK. No fever. Doing his own dressing changes per instructions.\n\nMeds reconciled: lisinopril 10 daily, atorvastatin 20 daily, acetaminophen 500 mg 1-2 q6h prn. No opioids. Allergies NKDA.\n\nExam: HR 98, regular — still a little quick but well down from the 100s-110s he ran in hospital. Afebrile. Down about 3 kg from spring. Abdomen soft, nondistended, nontender, normal bowel sounds. Grafted areas over the abdominal wall and L flank under dressings — the edge I looked at is pink, adherent, no purulence. R anterior thigh donor site dry and healing. Lungs clear.\n\nA/P:\n# Burns s/p excision and grafting — healing as expected; burn clinic 8/14.\n# Sinus tachycardia from the burn — improving, recheck at burn clinic/next visit.\n# Postoperative ileus — resolved. Off the active list.\n# HTN — BP fine on lisinopril, continue.\n# Electrolytes — BMP and Mg today to make sure K and Mg have stayed up off IV repletion.\nCall for fever, increasing redness or drainage, vomiting or belly swelling."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-13a",
+          "kind": "portal_message",
+          "start": "2025-08-13T09:10",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from yesterday",
+              "author": "PCP",
+              "date": "2025-08-13T09:10",
+              "body": "Potassium and magnesium are both back in the normal range, and kidney function is fine. No supplements needed. Good luck at the burn clinic tomorrow."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-14a",
+          "kind": "specialist_visit",
+          "start": "2025-08-14T13:30",
+          "service": "Burn Clinic",
+          "reason": "post-discharge burn follow-up",
+          "vitals": {
+            "hr": 88
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Burn Clinic Follow-up",
+              "author": "burn surgery",
+              "date": "2025-08-15T08:30",
+              "body": "BURN CLINIC — outpatient follow-up (seen 08/14/2025)\n\n56M, 2.5 weeks from tangential excision and STSG to abdominal wall and left flank flame burns.\nDoing well at home. Eating, bowels normal. Pain controlled with acetaminophen.\n\nHR 88, afebrile.\nWounds: Grafts adherent throughout, interstices closing, no loss, no infection. Mild expected pinkness. Donor site right thigh nearly epithelialized.\n\nPlan: Switch to daily moisturizing and light dressing as interstices close. Begin gentle scar massage once fully closed. Sun protection to grafted skin. Return in 3 weeks.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "portal_message",
+          "start": "2025-08-26T19:45",
+          "reason": "work note request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Back to school",
+              "author": "patient",
+              "date": "2025-08-26T19:45",
+              "body": "Hi, teachers report back next Tuesday. Burn clinic said I'm healing fine. The school nurse wants a note that I can return with no restrictions except I shouldn't be lifting heavy lab equipment boxes for a few weeks. Could you write that? Thanks, Chad"
+            },
+            {
+              "type": "Letter",
+              "title": "Return to Work Letter",
+              "author": "PCP",
+              "date": "2025-08-27T08:15",
+              "body": "To whom it may concern:\nMr. Chad Whitney is under my care and may return to his teaching duties on September 2, 2025. Please excuse him from heavy lifting through the end of September, while surgical sites finish healing. He may otherwise perform all regular duties.\nPlease contact the office with questions.\nPrimary Care Physician"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-04a",
+          "kind": "specialist_visit",
+          "start": "2025-09-04T14:00",
+          "service": "Burn Clinic",
+          "reason": "burn follow-up",
+          "conditions": [
+            {
+              "label": "Burn of third degree of abdominal wall, initial encounter",
+              "icd10": "T21.32XA",
+              "action": "resolved",
+              "onset": "2025-07-25"
+            },
+            {
+              "label": "Sinus tachycardia",
+              "icd10": "R00.0",
+              "action": "resolved",
+              "onset": "2025-07-25"
+            }
+          ],
+          "vitals": {
+            "hr": 76
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Burn Clinic Follow-up",
+              "author": "burn surgery",
+              "date": "2025-09-05T10:20",
+              "body": "BURN CLINIC (seen 09/04/2025)\n\nBack teaching this week, tolerating it. No pain at rest; mild itching of grafted skin.\nHR 76 — the sinus tachycardia seen on admission has resolved.\nGrafted areas of abdominal wall and left flank fully closed, stable, supple, no breakdown. Donor site healed.\n\nAssessment: Healed flame burns after excision and grafting. Sinus tachycardia resolved.\nPlan: Moisturizer and scar massage twice daily; compression garment optional for comfort — declines for now. High-SPF sunscreen to grafts for at least a year. No routine follow-up needed; return as needed for scar tightness, itching not controlled, or open areas.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "annual_physical",
+          "start": "2025-10-21T15:30",
+          "end": "2025-10-21T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {
+            "weight_kg": 84.0,
+            "bp": [
+              124,
+              78
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-21T16:25",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-21T16:25",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-21T16:25",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-21T16:25",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-21T16:25",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-21T16:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-21T16:12"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2025-10-21T16:14"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-10-21T15:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-21T16:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-21T16:25"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "annual screening, former smoker"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-10-21T16:20",
+              "body": "ANNUAL PHYSICAL — 56M\n\nInterval: Burn admission this summer (flash flame burn 7/25, abdominal wall and L flank, excision and grafting 7/29, postop ileus that resolved, sinus tachycardia that settled). Released from burn clinic in September. Back at school full time. Grafted skin itches a bit, otherwise no complaints.\n\nBP: home readings 120s/70s. No lightheadedness. No cough on lisinopril.\nNo chest pain, dyspnea, palpitations or syncope. Back at pickup basketball on Saturdays. Back pain quiet.\n\nMeds: lisinopril 10 mg daily, atorvastatin 20 mg daily, acetaminophen prn.\nAllergies: NKDA.\nSocial: ex-smoker (quit 2019), alcohol a couple drinks a month.\nFHx: father sudden cardiac death at 64, HTN; mother DM2, HLD; sibling HTN.\n\nExam: Well. Office diastolic a little high today; home log at goal, so no change. Weight 84 kg, regaining after the hospital stay. Heart RRR no murmur. Lungs clear. Abdomen soft, nontender; healed meshed grafts over the abdominal wall and L flank, no breakdown. R thigh donor site healed, hypopigmented. No edema. Neuro grossly normal.\nPHQ-2 0. AUDIT-C 1.\n\nA/P:\n# HTN, controlled — continue lisinopril 10.\n# Hypercholesterolemia — lipids today, atorvastatin 20.\n# Healed burns after grafting — moisturizer, sunscreen.\n# Chronic LBP — stable on home program.\n# Lung screening — annual LDCT ordered.\n# HM: flu, COVID and PCV20 today. PSA discussed again, he wants it. CMP, CBC, A1c. Colonoscopy due 2029. Tdap given in hospital 7/2025.\nBP check early February, physical in a year, sooner prn."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-23a",
+          "kind": "portal_message",
+          "start": "2025-10-23T13:30",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "author": "PCP",
+              "date": "2025-10-23T13:30",
+              "body": "Hi Chad, your physical labs are all fine — blood counts, kidney, liver, sugar and A1c normal, PSA normal. Cholesterol numbers are in the same range as the last two years on atorvastatin. Keep everything the same. The lung CT is set for next week."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-28a",
+          "kind": "imaging",
+          "start": "2025-10-28T16:00",
+          "reason": "lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2025-10-28T16:00",
+              "text": "LOW-DOSE CT CHEST — LUNG CANCER SCREENING, ANNUAL\nHistory: Former smoker, 20 pack-years, quit 2019.\nTechnique: Low-dose non-contrast helical CT.\nComparison: 10/29/2024 and 09/19/2023.\nFindings: No pulmonary nodule. Lungs clear. No pleural effusion. No lymphadenopathy. Heart normal in size. Visualized upper abdomen unremarkable apart from postsurgical skin changes of the anterior abdominal wall. Bones unremarkable.",
+              "conclusion": "Lung-RADS 1, negative. Continue annual screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "done",
+              "date": "2025-10-28T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT result",
+              "author": "PCP",
+              "date": "2025-10-29T08:05",
+              "body": "LDCT #3 negative, Lung-RADS 1. Due 10/2026. Pt messaged."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

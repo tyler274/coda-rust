@@ -1,0 +1,2196 @@
+{
+  "unit": "unit-1837",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001837",
+      "given": "Jasmine",
+      "family": "Norris",
+      "birth_date": "1996-10-14",
+      "address_line": "27 Loudville Road",
+      "phone": "+1-413-555-0181",
+      "email": "jasmine.norris@example.test",
+      "marital_status": "married",
+      "summary": "High school math teacher with recurrent UTIs and familial severe hypertriglyceridemia on fenofibrate, joined in 2024. Pyelonephritis in February 2025, pyelonephritis again at 30 weeks of pregnancy, delivered in November, then hypertriglyceridemia-induced necrotizing pancreatitis with infected necrosis and septic shock four weeks postpartum. Recovered by spring 2026, back on fenofibrate.",
+      "events": [
+        {
+          "id": "2024-08-13a",
+          "kind": "establish_care",
+          "start": "2024-08-13T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Recurrent urinary tract infection",
+              "action": "diagnosed",
+              "onset": "2019-06-01",
+              "note": "several cystitis episodes a year at prior practice",
+              "icd10": "N39.0"
+            },
+            {
+              "label": "Hypertriglyceridemia",
+              "action": "diagnosed",
+              "onset": "2018-03-01",
+              "note": "severe, familial pattern (father)"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "fenofibrate 145 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 145,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertriglyceridemia"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              113,
+              69
+            ],
+            "hr": 62,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 62.5,
+            "height_cm": 165.1
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-08-13T09:50",
+              "results": [
+                {
+                  "test": "Triglycerides",
+                  "value": 410
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 34
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 214
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "text": "Not calculated (triglycerides >400 mg/dL)"
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 180
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-13T09:50",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-08-13T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 244
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.49
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-13T09:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Never"
+            },
+            {
+              "item": "Occupation",
+              "value": "High school mathematics teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-08-13T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records",
+              "action": "placed",
+              "order": "Request records from prior primary care office",
+              "category": "procedure",
+              "reason": "establish care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2024-08-13T10:05",
+              "author": "PCP",
+              "body": "New patient. 27 yo F, teaches math at a high school, moving her care here before the school year starts. Prior PCP was in the next county; records requested today.\n\nTwo standing issues:\n\n1. Triglycerides. Told in her early twenties that her triglycerides were very high, has been on fenofibrate 145 mg every day since. Takes it reliably. Never had pancreatitis. Her dad has the same problem, and his father had pancreatitis. Doesn't drink at all. Tries to keep fat and sugar down but admits the school lunchroom doesn't help.\n\n2. UTIs. Has had bladder infections on and off since her early twenties, several a year at the worst stretch. Each one treated with a few days of antibiotic from her old office. Never on daily prophylaxis, never seen urology. None since the spring.\n\nNo surgeries. NKDA. Mother has type 2 diabetes. Never smoked, no alcohol, no drugs. Married. Exercise: walks most evenings.\n\nROS: no abdominal pain, no dysuria now, no fevers, no weight change, mood good.\n\nExam: vitals in flowsheet. Well-appearing. HEENT unremarkable, thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly, no CVA tenderness. Skin: no xanthomas. Ext no edema.\n\nPHQ-9 2.\n\nAssessment / plan\n- Hypertriglyceridemia, severe by history, on fenofibrate. Continue 145 mg daily. Fasting lipids today along with CMP. Talked about keeping simple sugars and fat low.\n- Recurrent UTI: currently well. Call early with symptoms so we can treat promptly.\n- Health maintenance: CBC, TSH, A1c (mom with DM2), one-time HIV and hep C screening today. Pap 2023 per her report, will confirm from records. Flu shot in the fall.\n\nReturn in about 4 months for a lipid recheck."
+            }
+          ],
+          "state": {
+            "bp": [
+              114,
+              72
+            ],
+            "weight_kg": 63.6,
+            "height_cm": 165.0,
+            "labs": {
+              "Hemoglobin A1c": 5.2,
+              "High Density Lipoprotein": 34,
+              "Thyroid Stimulating Hormone": 1.7,
+              "Triglycerides": 410
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-08-15a",
+          "kind": "portal_message",
+          "start": "2024-08-15T16:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2024-08-15T16:20",
+              "author": "PCP",
+              "body": "Hi Jasmine,\n\nYour labs are back. Kidney, liver, blood count, thyroid and A1c all look fine. HIV and hepatitis C screens were negative.\n\nTriglycerides came back at 410 with an HDL of 34. That's high but well below the range where pancreatitis becomes a real worry, so fenofibrate is doing a lot of the work. Because triglycerides are over 400, the lab can't calculate an LDL, which is normal for the report.\n\nKeep the fenofibrate going and we'll recheck in December.\n\nBest,\nyour primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2024-08-26a",
+          "kind": "outside_records",
+          "start": "2024-08-26T11:40",
+          "orders": [
+            {
+              "id": "prior-records",
+              "action": "done",
+              "date": "2024-08-26T11:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2024-08-26T11:40",
+              "author": "front desk",
+              "body": "Records received by fax, 19 pages, from the patient's previous primary care office. Scanned to media.\n\nSummary for the chart (MA abstraction):\n- Problem list: hypertriglyceridemia on fenofibrate 145 mg daily; recurrent cystitis, treated episode by episode with short antibiotic courses, several per year.\n- Pap smear 2023: negative for intraepithelial lesion or malignancy.\n- HPV vaccine series completed as a teenager.\n- Allergies: none listed.\n\nAbstracted by MA. Forwarded to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T15:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-08T15:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T15:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2024-10-08T15:50",
+              "author": "RN",
+              "body": "In after school for vaccines. No fever today, no prior reactions. Influenza vaccine to L deltoid and 2024-25 COVID vaccine to R deltoid, VIS given for both. Waited 15 minutes without problems. Lot numbers in the immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "office_visit",
+          "start": "2024-12-10T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Triglyceride follow-up",
+          "vitals": {
+            "bp": [
+              108,
+              69
+            ],
+            "hr": 66,
+            "spo2": 98,
+            "weight_kg": 64.8
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-12-10T16:20",
+              "results": [
+                {
+                  "test": "Triglycerides",
+                  "value": 438
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 32
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 221
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "text": "Not calculated (triglycerides >400 mg/dL)"
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 189
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-12-10T16:20",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-12-10T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-12-10T16:30",
+              "author": "PCP",
+              "body": "S: Here for the lipid recheck we planned in August. Taking fenofibrate daily, no muscle aches, no abdominal pain. Holiday season at school means a lot of baked goods in the faculty room, she says, and she's been trying to steer clear. No urinary symptoms since joining.\n\nO: Vitals reviewed. Comfortable. Abdomen soft, nontender. No xanthomas.\n\nA/P: Hypertriglyceridemia on fenofibrate. Fasting lipids and CMP today; expect them in the same range as summer. Same dose. Asked her to let us know before trying to conceive, since we will need to plan around the fenofibrate. Recheck in about six months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-12-12a",
+          "kind": "portal_message",
+          "start": "2024-12-12T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lipid results",
+              "date": "2024-12-12T07:55",
+              "author": "PCP",
+              "body": "Jasmine, triglycerides 438 this time, about where they were in August. Liver and kidney tests fine. No change for now; same fenofibrate. Enjoy the break when it comes."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "pharmacy",
+          "start": "2025-01-21T10:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2025-01-21T10:10",
+              "author": "MA",
+              "body": "Electronic refill request from patient's pharmacy for fenofibrate 145 mg, #90. Last filled October. Last lipid visit 12/10. Sent per protocol, 90 days with one refill."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-03a",
+          "kind": "telephone",
+          "start": "2025-02-03T19:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "After-hours call",
+              "date": "2025-02-03T19:55",
+              "author": "PCP",
+              "body": "Patient texted then called. Burning and frequency started late last week, then fevers and shaking chills, and now an ache in the right flank that is getting worse. Has been trying to push through it with fluids. Not pregnant as far as she knows. Can keep fluids down.\n\nSounds like pyelonephritis with several days of fever. Advised she go to the emergency department tonight rather than wait for a morning visit. She agreed; will go to the regional hospital ED. Asked her to message us when she knows the plan."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-04a",
+          "kind": "hospital_admission",
+          "start": "2025-02-04T01:40",
+          "end": "2025-02-08T13:00",
+          "service": "Emergency Medicine",
+          "reason": "Fever, chills and right flank pain",
+          "conditions": [
+            {
+              "label": "Acute pyelonephritis",
+              "action": "diagnosed",
+              "onset": "2025-01-30",
+              "icd10": "N10"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ciprofloxacin 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily to complete 10 days of antibiotics",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Acute pyelonephritis"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-02-04T01:52",
+              "bp": [
+                130,
+                85
+              ],
+              "hr": 110,
+              "temp_c": 38.9
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-02-04T02:20",
+              "resulted": "2025-02-04T03:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 15.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "text": "Pyuria"
+                },
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth to date"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-02-10T09:30",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD (received by fax 2/10/2025)\nArrival 02/04/2025 01:40\n\nCC: fever, chills, R flank pain x 5 days\n\nHPI: 28 yo F, hx recurrent UTIs and hypertriglyceridemia, with five days of fever and rigors and right-sided flank pain along with dysuria and urinary frequency. No nausea, vomiting or diarrhea. Sent in by her PCP.\n\nMeds: fenofibrate 145 mg daily. Allergies: NKDA. PMH: recurrent UTI, hypertriglyceridemia. No surgeries. Never smoker, no EtOH.\n\nVS: T 38.9 C (102.0 F), HR 110, BP 130/85.\nExam: febrile, uncomfortable. Right CVA tenderness. Abdomen soft. \n\nLabs: WBC 15.0, Hgb 13.2, Plt 250. UA with pyuria, LE positive, nitrite positive. Urine hCG negative. Blood cultures x2 drawn, no growth to date. Urine culture sent, pending.\n\nImpression: acute pyelonephritis with fever and tachycardia.\nPlan: IV ceftriaxone started. Admit to medicine.\n\nAddendum (inpatient team, discharge 02/08/2025): fever and right flank pain persisted through 72 hours of ceftriaxone; renal ultrasound without hydronephrosis or collection. Afebrile from day 4. Discharged on ciprofloxacin 500 mg BID to complete 10 days. PCP follow-up within one week."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-10a",
+          "kind": "telephone",
+          "start": "2025-02-10T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Hospital follow-up scheduling",
+              "date": "2025-02-10T10:05",
+              "author": "front desk",
+              "body": "ED record from the regional hospital received by fax this morning and routed to PCP. Called patient, home since Saturday. Scheduled hospital follow-up Wed 2/12 at 4:00."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-12a",
+          "kind": "office_visit",
+          "start": "2025-02-12T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, pyelonephritis",
+          "conditions": [
+            {
+              "label": "Acute pyelonephritis",
+              "action": "resolved",
+              "icd10": "N10"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              82
+            ],
+            "hr": 63,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 64.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-12T16:35",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 256
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.61
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.6
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-02-12T16:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.83
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-02-12T16:35",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.019
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.7
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-12T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2025-02-12T17:00",
+              "author": "PCP",
+              "body": "Seen after her admission for right pyelonephritis, 2/4 to 2/8. The ED record came over Monday; the rest is from her.\n\nShe says the fevers kept going for the first three days on IV antibiotic and the flank pain didn't budge, so they did a kidney ultrasound, which she was told was normal. Turned the corner on day 4. Home Saturday on ciprofloxacin, two days left. No fever since discharge. Flank is just a little sore if she presses on it. Eating normally. Back at school yesterday.\n\nShe never heard what grew in the urine culture. We have no culture report either; called the hospital lab, not available to us by phone. She is improving on cipro regardless.\n\nExam: afebrile, vitals in flowsheet. Looks well. Minimal R CVA tenderness, abdomen soft and nontender.\n\nA/P\n- Acute pyelonephritis, resolving. Finish ciprofloxacin. CBC, BMP and UA today. Call for any fever or return of flank pain.\n- Hypertriglyceridemia: on fenofibrate. Lipids due again in early summer.\n- Recurrent UTI background noted."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-13a",
+          "kind": "portal_message",
+          "start": "2025-02-13T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from yesterday",
+              "date": "2025-02-13T12:30",
+              "author": "PCP",
+              "body": "Your white count is back to normal and kidney function is normal. Urine looks clean now. Nice recovery. Finish the last cipro doses today and tomorrow."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "office_visit",
+          "start": "2025-03-18T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-04-03a",
+          "kind": "portal_message",
+          "start": "2025-04-03T06:45",
+          "conditions": [
+            {
+              "label": "Pregnant state, incidental",
+              "action": "diagnosed",
+              "onset": "2025-02-27",
+              "icd10": "Z33.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "fenofibrate 145 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Pregnancy"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "new pregnancy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test",
+              "date": "2025-04-03T06:45",
+              "author": "patient",
+              "body": "Good morning! I took a test this morning and it's positive. My last period started Feb 27. We're really happy. What do I do about the fenofibrate? I took it last night."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive test",
+              "date": "2025-04-03T07:30",
+              "author": "PCP",
+              "body": "Congratulations, Jasmine! By your dates you're about 5 weeks.\n\nPlease stop the fenofibrate now; we don't use it in pregnancy. One dose last night is nothing to worry about. I've updated your medication list.\n\nI've put in a referral to obstetrics so they can get your first prenatal visit on the calendar. Reach out any time."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "pharmacy",
+          "start": "2025-05-13T09:20",
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "done",
+              "date": "2025-05-13T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request declined",
+              "date": "2025-05-13T09:20",
+              "author": "MA",
+              "body": "Pharmacy auto-refill request for fenofibrate 145 mg. Medication was stopped 4/3 (pregnancy). Declined and pharmacy asked to inactivate the auto-refill. Called pt to let her know; she has been seeing the OB group since late April."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "portal_message",
+          "start": "2025-06-10T14:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Records for OB",
+              "date": "2025-06-10T14:20",
+              "author": "patient",
+              "body": "Hi, my OB's office asked for my immunization history and my last labs. Can you send them over? Their fax number is on the form I'm uploading."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Records for OB",
+              "date": "2025-06-11T09:40",
+              "author": "front desk",
+              "body": "Hi Jasmine, we faxed your immunization record, your August and December 2024 labs and the February hospital follow-up note to the OB office this morning. Confirmation received."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "annual_physical",
+          "start": "2025-08-19T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              114,
+              75
+            ],
+            "hr": 60,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 70.0
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-08-19T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-08-19T09:20",
+              "author": "PCP",
+              "body": "Annual exam. About 24 1/2 weeks pregnant by her LMP, prenatal care with the outside OB group, who tell her everything is on track. Feeling well. Summer off; back in the classroom in two weeks.\n\nNo urinary symptoms since February. Off fenofibrate since April. No abdominal pain.\n\nMeds: none from us. NKDA.\n\nExam: vitals in flowsheet. Gravid abdomen, nontender. Heart regular, no murmur. Lungs clear. No CVA tenderness. Ext: no edema.\n\nPHQ-9 3.\n\nA/P\n- Pregnancy, followed by OB.\n- Recurrent UTI: no episodes since February; call promptly with any symptoms.\n- Hypertriglyceridemia: off fenofibrate for the pregnancy.\n- Health maintenance: Pap due next year. Flu shot when it comes in; fine during pregnancy.\n\nFollow up after delivery."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-25a",
+          "kind": "hospital_admission",
+          "start": "2025-09-25T21:10",
+          "end": "2025-09-27T14:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Fever and right flank pain at 30 weeks",
+          "conditions": [
+            {
+              "label": "Infections of kidney in pregnancy, third trimester",
+              "action": "diagnosed",
+              "onset": "2025-09-23",
+              "icd10": "O23.03"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "cephalexin 500 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth four times daily to complete 14 days of antibiotics",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "QID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Pyelonephritis in pregnancy"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-09-25T21:18",
+              "bp": [
+                120,
+                78
+              ],
+              "hr": 110,
+              "temp_c": 38.6
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-09-25T21:40",
+              "results": [
+                {
+                  "test": "Urine White Blood Cells",
+                  "text": "Pyuria"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "text": "Hematuria"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Obstetric Triage Note",
+              "date": "2025-10-01T14:15",
+              "author": "obstetrics",
+              "body": "OBSTETRIC TRIAGE NOTE (received 10/01/2025)\nDate of service 09/25/2025\n\n28 yo G1 at 30w0d by LMP, followed by our group. Two days of fever and chills with constant right flank pain that radiates into the lower abdomen. Nauseated, no vomiting. Pyelonephritis earlier this year (February). Recurrent UTIs. Hypertriglyceridemia, on fenofibrate per home list. NKDA.\n\nT 38.6 C (101.5 F), BP 120/78, HR 110. FHR 160.\nRight CVA tenderness. Uterus soft, nontender.\nUA: pyuria, bacteriuria, hematuria. CBC with leukocytosis and left shift.\n\nA: acute pyelonephritis in pregnancy, 30 weeks.\nP: admit to antepartum, IV ceftriaxone, continuous monitoring initially. Discharged 9/27 afebrile on cephalexin 500 mg QID to finish 14 days. Follow up in OB clinic next week."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-29a",
+          "kind": "portal_message",
+          "start": "2025-09-29T18:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Kidney infection again",
+              "date": "2025-09-29T18:05",
+              "author": "patient",
+              "body": "Just a heads up that I was admitted Thursday night through Saturday with another kidney infection, right side again. Fever, the whole thing. Baby was fine the whole time. They gave me IV antibiotics and sent me home on cephalexin 4x a day for the rest of two weeks. Feeling much better. Do I need to come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Kidney infection again",
+              "date": "2025-09-29T19:20",
+              "author": "PCP",
+              "body": "Thanks for letting me know, and I'm glad you and the baby are OK. You don't need to come in this week if you're improving. Our nurse will call you Thursday to check on you, and I'll ask the OB office to send their note. Get your flu shot with us next week and we'll recheck your urine then."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-02a",
+          "kind": "telephone",
+          "start": "2025-10-02T16:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Nurse follow-up call",
+              "date": "2025-10-02T16:20",
+              "author": "RN",
+              "body": "Follow-up call after antepartum admission for pyelonephritis. Pt reports no fever since Saturday, flank pain gone, taking cephalexin four times a day with no GI upset. Good fetal movement. OB follow-up done yesterday. Confirmed nurse visit Tuesday for flu vaccine and UA. OB triage note received yesterday and filed."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine, urine recheck",
+          "conditions": [
+            {
+              "label": "Infections of kidney in pregnancy, third trimester",
+              "action": "resolved",
+              "icd10": "O23.03"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              103,
+              73
+            ],
+            "hr": 71,
+            "temp_c": 37.2
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-10-07T15:30",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.022
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.1
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit",
+              "date": "2025-10-07T15:50",
+              "author": "RN",
+              "body": "31 weeks. Finished cephalexin yesterday. Afebrile, no urinary symptoms, no flank pain. Clean-catch UA collected; dipstick negative for leukocytes, nitrite and blood, PCP reviewed. Influenza vaccine (2025-26 trivalent) given L deltoid, VIS reviewed, no prior reactions. Tolerated well."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-12-03a",
+          "kind": "portal_message",
+          "start": "2025-12-03T13:40",
+          "conditions": [
+            {
+              "label": "Pregnant state, incidental",
+              "action": "resolved",
+              "icd10": "Z33.1"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Baby is here",
+              "date": "2025-12-03T13:40",
+              "author": "patient",
+              "body": "Wanted you to know the baby came Saturday the 29th, at 39 weeks, regular vaginal delivery, no complications. Everyone is healthy and we're home and very tired. OB has me coming back at 6 weeks. When should I restart the fenofibrate?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Baby is here",
+              "date": "2025-12-03T16:05",
+              "author": "PCP",
+              "body": "Congratulations to all of you! So glad it went smoothly.\n\nLet's hold the fenofibrate until around your six-week mark. Book a visit with me for early to mid January and we'll check fasting lipids and restart it then. Front desk will reach out to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-30a",
+          "kind": "hospital_admission",
+          "start": "2025-12-30T10:20",
+          "end": "2026-02-12T14:00",
+          "service": "General Surgery",
+          "reason": "Epigastric pain radiating to the back",
+          "conditions": [
+            {
+              "label": "Other acute pancreatitis with infected necrosis",
+              "action": "diagnosed",
+              "onset": "2025-12-29",
+              "note": "hypertriglyceridemia-induced, necrotizing, infected necrosis January 2026",
+              "icd10": "K85.82"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "fenofibrate 145 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 145,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertriglyceridemia"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-12-30T11:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 11.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Amylase",
+                  "loinc": "1798-8",
+                  "unit": "U/L",
+                  "value": 450
+                },
+                {
+                  "test": "Lipase",
+                  "value": 600
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 1200
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-02T05:30",
+              "results": [
+                {
+                  "test": "Triglycerides",
+                  "value": 430
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2026-02-13T10:50",
+              "author": "general surgery",
+              "body": "DISCHARGE SUMMARY, General Surgery (received by fax 02/13/2026)\nAdmitted 12/30/2025. Discharged 02/12/2026.\n\nPrincipal diagnosis: acute necrotizing pancreatitis due to hypertriglyceridemia, complicated by infected pancreatic necrosis.\nSecondary: septic shock (resolved); severe hypertriglyceridemia; recurrent UTI; postpartum, delivered 11/29/2025.\n\nPresentation: 29 yo F, about 4 1/2 weeks postpartum, with 24 h of severe, constant epigastric pain boring through to the back and getting worse. Denied nausea, vomiting and fever. Fenofibrate had been stopped for the pregnancy. Vitals stable on arrival. Abdomen soft with epigastric tenderness, no rebound or guarding, bowel sounds normal; no jaundice or scleral icterus.\nLabs on admission: Hgb 12.5, WBC 11.0, Plt 250, amylase 450, lipase 600, triglycerides 1,200, calcium 9.2; liver tests within normal limits.\nAbdominal ultrasound: no gallstones, no biliary ductal dilatation.\n\nHospital course:\n- Insulin and dextrose infusion for triglycerides; TG 430 on hospital day 3 and infusion stopped. IV fluids, analgesia.\n- CT abdomen/pelvis with contrast 01/03 for persistent pain: necrotizing pancreatitis, roughly 30% of the parenchyma in the pancreatic body non-enhancing, acute necrotic collection in the lesser sac.\n- 01/20: fever and hypotension, septic shock. Transferred to SICU; norepinephrine for 3 days; meropenem started. CT 01/20: 9 cm walled-off necrotic collection containing gas, consistent with infected necrosis.\n- 01/23: EUS-guided transgastric drainage with lumen-apposing metal stent (GI). 01/30: endoscopic necrosectomy x1. Out of the ICU 01/25.\n- Meropenem completed, 3 weeks total, in hospital. Afebrile and tolerating a low-fat diet at discharge.\n\nDischarge medications: fenofibrate 145 mg PO daily (resumed).\nDiet: low fat.\nFollow-up: GI in 3 to 4 weeks with repeat CT for stent removal; PCP within 1 week."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "office_visit",
+          "start": "2026-01-13T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum lipid check, restart fenofibrate",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-02-13a",
+          "kind": "portal_message",
+          "start": "2026-02-13T15:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Home from the hospital",
+              "date": "2026-02-13T15:25",
+              "author": "patient",
+              "body": "I finally got discharged yesterday. Six weeks. I'm sure you got the paperwork. I need to see you this week if possible, and my school needs a medical leave form from you through at least the end of March. Can I drop it off?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Home from the hospital",
+              "date": "2026-02-13T16:40",
+              "author": "PCP",
+              "body": "Welcome home. I have the discharge summary and read it this afternoon. Tuesday at 1:30 is yours. Bring the form or upload it here and I'll fill it out. Our nurse will call you Monday to go over your medicines."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-16a",
+          "kind": "telephone",
+          "start": "2026-02-16T10:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2026-02-16T10:30",
+              "author": "RN",
+              "body": "Transitional care call, within 2 business days of discharge. Pt at home. Pain mild, using no prescription pain medicine. Eating small low-fat meals, no vomiting, no fevers. Taking fenofibrate daily; no other new medicines. Has GI follow-up being scheduled for early March with CT first. PCP appointment confirmed 2/17 1:30. Reviewed when to call: fever, worsening pain, vomiting, jaundice."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "office_visit",
+          "start": "2026-02-17T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, pancreatitis",
+          "conditions": [
+            {
+              "label": "Severe sepsis with septic shock",
+              "action": "history",
+              "onset": "2026-01-20",
+              "note": "ICU January 2026, from infected pancreatic necrosis",
+              "icd10": "R65.21"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              111,
+              74
+            ],
+            "hr": 65,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 57.0
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-02-17T14:10",
+              "results": [
+                {
+                  "test": "Triglycerides",
+                  "value": 690
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 31
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 238
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "text": "Not calculated (triglycerides >400 mg/dL)"
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 207
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-02-17T14:10",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 16
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-02-17T14:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 246
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.49
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 33
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-17T14:10",
+              "results": [
+                {
+                  "test": "Lipase",
+                  "value": 36
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-02-17T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "date": "2026-02-17T14:30",
+              "author": "PCP",
+              "body": "Here five days after a six-week admission. Discharge summary reviewed in full; RN call yesterday.\n\nIn short: hypertriglyceridemia-induced pancreatitis four and a half weeks after delivery, off fenofibrate since the pregnancy, TG 1,200 on arrival. Became necrotizing; the necrosis got infected in week 3 with septic shock and an ICU stay. Endoscopic drainage with a stent through the stomach wall and one necrosectomy. Meropenem finished inside.\n\nToday: worn out but steadier each day. Pain is mild, no medicine for it. Eating five small low-fat meals. No vomiting, no fever. Weight down from where we'd expect after delivery. Stools normal. Taking fenofibrate since discharge. Mood okay. PHQ-9 5.\n\nExam: vitals in flowsheet, afebrile. Thin, tired-appearing. Sclerae anicteric. Heart regular. Lungs clear. Abdomen soft, mild epigastric tenderness, no guarding, no mass. No edema.\n\nA/P\n- Infected necrotizing pancreatitis, recovering, stent in place. GI follow-up with CT in early March for stent removal. Call us for fever, worse pain, vomiting or yellowing.\n- Severe hypertriglyceridemia: back on fenofibrate 145 mg. Lipids, CMP, CBC, lipase and A1c today. Strict low-fat diet, no alcohol (doesn't drink).\n- Septic shock this admission, resolved.\n- Postpartum. Screening okay today; we'll keep asking.\n- School medical leave form completed through 3/31.\n\nRecheck in about 8 weeks."
+            }
+          ],
+          "state": {
+            "weight_kg": 57.0,
+            "labs": {
+              "Lipase": 34,
+              "Triglycerides": 690
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-19a",
+          "kind": "portal_message",
+          "start": "2026-02-19T08:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs and your form",
+              "date": "2026-02-19T08:10",
+              "author": "PCP",
+              "body": "Jasmine, your blood count, kidney and liver tests, lipase and A1c are all normal, which is reassuring after everything. Triglycerides are 690. Expected this soon after restarting fenofibrate and well down from 1,200; we want them to keep coming down, so stay with the low-fat plan. Recheck at your April visit.\n\nYour leave form is done and uploaded to your documents; a copy went to your school's HR fax as you asked."
+            },
+            {
+              "type": "Letter",
+              "title": "Medical Leave Certification",
+              "date": "2026-02-19T08:00",
+              "author": "PCP",
+              "body": "To whom it may concern:\n\nJasmine Norris is under my care and is medically unable to work from 12/30/2025 through 03/31/2026 because of a serious illness requiring hospitalization and recovery. I expect her to be able to return to full duties after that date and will update you if that changes.\n\nPrimary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-12a",
+          "kind": "portal_message",
+          "start": "2026-03-12T17:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Stent is out",
+              "date": "2026-03-12T17:45",
+              "author": "patient",
+              "body": "Update: CT last Wednesday showed the collection almost gone, about 2 cm left. They took the stent out yesterday with the scope. GI says I'm done with them unless something comes up. Feeling pretty good!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Stent is out",
+              "date": "2026-03-12T19:00",
+              "author": "PCP",
+              "body": "That's great news. I'll keep an eye out for their report. See you in April."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-26a",
+          "kind": "portal_message",
+          "start": "2026-03-26T19:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Return to work",
+              "date": "2026-03-26T19:10",
+              "author": "patient",
+              "body": "School wants a note saying I can come back April 1. I'd like to start with a lighter schedule the first week if you think that's okay."
+            },
+            {
+              "type": "Letter",
+              "title": "Return to Work",
+              "date": "2026-03-27T08:30",
+              "author": "PCP",
+              "body": "To whom it may concern:\n\nJasmine Norris may return to work on 04/01/2026. I recommend a reduced teaching load for the first week, then full duties without restriction.\n\nPrimary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "office_visit",
+          "start": "2026-04-14T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pancreatitis and triglyceride follow-up",
+          "conditions": [
+            {
+              "label": "Other acute pancreatitis with infected necrosis",
+              "action": "resolved",
+              "icd10": "K85.82"
+            },
+            {
+              "label": "Severe sepsis with septic shock",
+              "action": "resolved",
+              "icd10": "R65.21"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              71
+            ],
+            "hr": 64,
+            "spo2": 99,
+            "weight_kg": 60.0
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-04-14T16:15",
+              "results": [
+                {
+                  "test": "Triglycerides",
+                  "value": 455
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 33
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 224
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "text": "Not calculated (triglycerides >400 mg/dL)"
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 191
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-04-14T16:15",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-14T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-04-14T16:25",
+              "author": "PCP",
+              "body": "Follow-up. Went back to teaching 4/1, half load the first week. No abdominal pain in a month, eating normally on a low-fat pattern, gaining weight back. GI removed the transgastric stent 3/11 after CT 3/4 showed a 2.1 cm residual; their note still hasn't come, but her account is clear. On fenofibrate daily.\n\nExam: vitals in flowsheet. Looks well. Abdomen soft, nontender.\n\nA/P\n- Infected necrotizing pancreatitis: resolved clinically, off GI follow-up. Moving it to resolved on the problem list.\n- History of septic shock, January 2026.\n- Hypertriglyceridemia: fenofibrate 145 mg, low-fat diet. Lipids today. Talked through the obvious lesson: if there is another pregnancy, we plan the triglycerides with OB from the start.\n\nAnnual in August."
+            }
+          ],
+          "state": {
+            "weight_kg": 59.6,
+            "labs": {
+              "Triglycerides": 455
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-16a",
+          "kind": "portal_message",
+          "start": "2026-04-16T12:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "April labs",
+              "date": "2026-04-16T12:05",
+              "author": "PCP",
+              "body": "Triglycerides 455, down from 690 in February. Liver tests fine. Heading the right way; same plan."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "pharmacy",
+          "start": "2026-05-19T09:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2026-05-19T09:45",
+              "author": "MA",
+              "body": "Pharmacy request: fenofibrate 145 mg, change from 30-day hospital supply refills to 90-day. Approved by PCP, #90 with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "portal_message",
+          "start": "2026-07-28T20:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical in August",
+              "date": "2026-07-28T20:30",
+              "author": "patient",
+              "body": "Hi, I'm booked for my physical on the 11th. Should I fast for the bloodwork? Also I think I'm due for a Pap."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical in August",
+              "date": "2026-07-29T08:15",
+              "author": "MA",
+              "body": "Hi Jasmine, yes please fast after midnight (water and your morning fenofibrate are fine). Your Pap is due this year and the doctor will do it at the visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "annual_physical",
+          "start": "2026-08-11T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              120,
+              82
+            ],
+            "hr": 51,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 61.9
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-08-11T08:40",
+              "results": [
+                {
+                  "test": "Triglycerides",
+                  "value": 372
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 35
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 207
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 98
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 172
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-08-11T08:40",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 67
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-08-11T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.79
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 244
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-11T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.0
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2026-08-11T08:30",
+              "text": "Specimen: cervical, liquid-based. Specimen adequacy: satisfactory for evaluation; endocervical/transformation zone component present.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2026-08-13T11:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-08-11T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "tg-followup",
+              "action": "placed",
+              "order": "Lipid Panel",
+              "category": "lab",
+              "reason": "Hypertriglyceridemia on fenofibrate"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-08-11T09:05",
+              "author": "PCP",
+              "body": "Annual. Feels like herself again. Busy with the baby, sleeping okay, back to walking in the evenings with the stroller. No abdominal pain since March. No urinary infections this year. Gearing up for the new school year.\n\nMeds: fenofibrate 145 mg daily. NKDA.\nFH: father severe hypertriglyceridemia; paternal grandfather pancreatitis; mother type 2 diabetes.\nSocial: never smoker, no alcohol. Teacher.\n\nExam: vitals in flowsheet; weight back near her pre-pregnancy baseline. HEENT normal. Thyroid normal size. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Pelvic: normal external genitalia, normal cervix; Pap collected. Skin clear. No edema.\n\nPHQ-9 2.\n\nA/P\n- Hypertriglyceridemia: fenofibrate, low-fat diet. Fasting lipids, CMP, A1c, TSH, CBC today.\n- Hx necrotizing pancreatitis with infected necrosis and septic shock, Jan 2026, recovered.\n- Recurrent UTI: quiet.\n- Health maintenance: Pap today (cytology only at 29). Flu and COVID vaccines this fall.\n\nTriglyceride recheck in November, visit booked."
+            }
+          ],
+          "state": {
+            "weight_kg": 62.1,
+            "labs": {
+              "Triglycerides": 372
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-13a",
+          "kind": "portal_message",
+          "start": "2026-08-13T15:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical results",
+              "date": "2026-08-13T15:30",
+              "author": "PCP",
+              "body": "Hi Jasmine,\n\nPap is normal; next one in three years.\n\nTriglycerides 372, lowest since you joined us. Blood count, kidney, liver, thyroid and A1c are all normal. Keep doing what you're doing. See you in November for a repeat lipid panel.\n\nHave a good start to the school year."
+            }
+          ]
+        },
+        {
+          "id": "2026-11-10a",
+          "kind": "office_visit",
+          "start": "2026-11-10T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Triglyceride follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute pyelonephritis|N10": {
+        "code": "N10",
+        "display": "Acute pyelonephritis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Infections of kidney in pregnancy, third trimester|O23.03": {
+        "code": "O23.03",
+        "display": "Infections of kidney in pregnancy, third trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Other acute pancreatitis with infected necrosis|K85.82": {
+        "code": "K85.82",
+        "display": "Other acute pancreatitis with infected necrosis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pregnant state, incidental|Z33.1": {
+        "code": "Z33.1",
+        "display": "Pregnant state, incidental",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Recurrent urinary tract infection|N39.0": {
+        "code": "N39.0",
+        "display": "Urinary tract infection, site not specified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Severe sepsis with septic shock|R65.21": {
+        "code": "R65.21",
+        "display": "Severe sepsis with septic shock",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "fenofibrate 145 MG Oral Tablet": {
+        "code": "477560",
+        "display": "fenofibrate 145 MG Oral Tablet",
+        "ingredient": "fenofibrate",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Amylase": {
+        "code": "1798-8",
+        "display": "Amylase [Enzymatic activity/volume] in Serum or Plasma",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

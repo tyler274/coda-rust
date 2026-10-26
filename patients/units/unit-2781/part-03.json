@@ -1,0 +1,423 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002781",
+   "events": [
+    {
+     "id": "2026-01-06a",
+     "kind": "portal_message",
+     "start": "2026-01-06T16:10",
+     "reason": "Work note for thyroid surgery",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Another note for work",
+       "author": "patient",
+       "date": "2026-01-06T16:10",
+       "body": "Hi again - thyroid surgery is Thursday 1/22 and the surgeon expects one night in the hospital. School needs another leave note, starting 1/22. Could you say about two weeks? Thanks so much."
+      },
+      {
+       "type": "Letter",
+       "title": "Medical leave letter",
+       "author": "PCP",
+       "date": "2026-01-07T11:50",
+       "body": "To whom it may concern,\n\nMelissa Friedman is a patient under my care. She is scheduled for surgery on January 22, 2026 and will require medical leave from work beginning that date. Anticipated duration is approximately two weeks, with return to work to be confirmed after her postoperative visit.\n\nPrimary Care Physician"
+      }
+     ]
+    },
+    {
+     "id": "2026-01-22a",
+     "kind": "hospital_admission",
+     "start": "2026-01-22T06:30",
+     "end": "2026-01-23T13:15",
+     "service": "General Surgery",
+     "reason": "Total thyroidectomy with central neck dissection",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2026-01-23T05:30",
+       "resulted": "2026-01-23T06:40",
+       "results": [
+        {
+         "test": "Calcium"
+        }
+       ]
+      }
+     ],
+     "medications": [
+      {
+       "drug": "levothyroxine sodium 0.1 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet (100 mcg) by mouth daily on an empty stomach",
+       "dose": {
+        "value": 100,
+        "unit": "ug"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Status post total thyroidectomy"
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Medullary thyroid carcinoma",
+       "icd10": "C73",
+       "action": "diagnosed",
+       "onset": "2026-01-22",
+       "note": "s/p total thyroidectomy with central neck dissection 1/22/2026; 1.7 cm right lobe, margins negative, 0/9 central nodes"
+      },
+      {
+       "label": "Status post total thyroidectomy",
+       "icd10": "Z90.89",
+       "action": "diagnosed",
+       "onset": "2026-01-22",
+       "note": "On levothyroxine replacement"
+      },
+      {
+       "label": "Thyroid nodule",
+       "action": "resolved",
+       "onset": "2025-04-22"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2026-01-22T09:40",
+       "issued": "2026-01-27T10:20",
+       "text": "SPECIMENS: (A) total thyroidectomy, stitch marks superior right; (B) central (level VI) lymph nodes.\nGROSS: (A) thyroid gland, oriented; a 1.7 cm firm tan-white nodule in the right lobe. Left lobe and isthmus without gross lesion. (B) fibrofatty tissue with nine lymph nodes.\nMICROSCOPIC: (A) medullary thyroid carcinoma composed of nests and sheets of round to spindled cells in a stroma with amyloid. Surgical margins free of carcinoma. Left lobe and isthmus: benign thyroid tissue. No parathyroid tissue in the specimen. (B) nine lymph nodes, all negative for carcinoma.",
+       "conclusion": "Thyroid, total thyroidectomy: MEDULLARY THYROID CARCINOMA, 1.7 cm, right lobe; margins negative. Central neck lymph nodes: 0 of 9 involved."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Operative Note",
+       "title": "Operative Report - Total Thyroidectomy",
+       "author": "general surgery",
+       "date": "2026-01-27T08:50",
+       "body": "OPERATIVE REPORT (received 01/27/2026)\nDate of surgery: 01/22/2026\nPreoperative diagnosis: suspected medullary thyroid carcinoma, right thyroid nodule; MEN 2A (RET p.Cys634Arg); status post right adrenalectomy for pheochromocytoma 11/14/2025.\nPostoperative diagnosis: same.\nProcedure: total thyroidectomy with bilateral central (level VI) neck dissection.\nAnesthesia: general, with recurrent laryngeal nerve monitoring.\n\nDescription: Transverse collar incision in a skin crease. Strap muscles separated in the midline. The right lobe was mobilized; the right recurrent laryngeal nerve was identified and preserved with intact signal. Both right parathyroid glands were identified and preserved on their blood supply. The same was done on the left, with the left recurrent laryngeal nerve and both left parathyroid glands identified and preserved. Total thyroidectomy completed. Central compartment lymph node dissection performed bilaterally. Hemostasis. Layered closure.\nFindings: firm nodule in the right lobe. Nerve signal intact bilaterally at the end of the case.\nEBL: minimal. Complications: none.\nDisposition: overnight observation with calcium check in the morning.\n\nGeneral Surgery"
+      }
+     ]
+    },
+    {
+     "id": "2026-01-27a",
+     "kind": "outside_records",
+     "start": "2026-01-27T09:00",
+     "service": "General Surgery",
+     "reason": "Discharge records after thyroidectomy",
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Discharge Summary",
+       "author": "general surgery",
+       "date": "2026-01-27T09:00",
+       "body": "DISCHARGE SUMMARY (received 01/27/2026)\nAdmitted 01/22/2026 - discharged 01/23/2026.\nProcedure: total thyroidectomy with central neck dissection, 01/22/2026.\n\nCourse: Uncomplicated. Voice normal postoperatively. No numbness, tingling or cramping. Morning calcium on 01/23 normal (9.6 mg/dL); no calcium supplement needed. Tolerating diet, pain controlled. Incision clean and dry.\nPathology pending at discharge.\n\nDischarge medications: NEW levothyroxine 100 mcg by mouth once daily on an empty stomach.\nAllergies: NKDA.\nFollow-up: surgical clinic 2 weeks; primary care within 2 weeks; TSH about 6 weeks after surgery; endocrinology for postoperative calcitonin and CEA in about 3 months.\nReturn precautions: neck swelling, trouble breathing, tingling around the mouth or in the fingers, muscle cramps."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-27b",
+     "kind": "telephone",
+     "start": "2026-01-27T11:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Post-discharge call",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Post-discharge call",
+       "author": "RN",
+       "date": "2026-01-27T11:30",
+       "body": "TCM call - discharged 1/23 after total thyroidectomy; discharge records received this morning. Voice sounds normal to me on the phone. No tingling in lips or fingers, no cramps. Neck incision a little stiff, no swelling. Taking levothyroxine 100 mcg every morning before breakfast - reviewed separating it from coffee and any calcium or iron by 30-60 min. Appt with PCP 2/3 at 11:00."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-03a",
+     "kind": "office_visit",
+     "start": "2026-02-03T11:00",
+     "end": "2026-02-03T11:35",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Post-operative visit after total thyroidectomy",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-02-03T11:40",
+       "resulted": "2026-02-03T15:20",
+       "results": [
+        {
+         "test": "Calcium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, moderate complexity",
+       "performed": "2026-02-03T11:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-02-03T11:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-Hospital Visit (TCM)",
+       "author": "PCP",
+       "date": "2026-02-03T16:30",
+       "body": "Hospital: 1/22-1/23, total thyroidectomy with central neck dissection.\nPath (final 1/27): medullary thyroid carcinoma, 1.7 cm, right lobe, margins negative, 0 of 9 central nodes. Parathyroids identified and preserved at surgery.\nDischarge med: levothyroxine 100 mcg daily (new).\n\nS: Recovering well. Voice normal, no hoarseness. No tingling or cramps. Swallowing fine. Diarrhea is settling - fewer loose stools than before the operation. Taking levothyroxine correctly in the morning. Still no spells since the adrenal surgery. Plans to go back to school next week.\n\nO: BP 120/66, HR 75 /min, RR 17 /min, SpO2 96 %, T 36.7 C, Wt 64.9 kg\nNeck: collar incision healing well, no erythema, swelling or fluid collection. Voice clear.\nHeart regular. Lungs clear. Abdomen: healed port sites.\nChvostek negative.\n\nLabs today (resulted this afternoon): BMP normal, calcium 9.7 mg/dL.\n\nA/P\n1. MTC, s/p total thyroidectomy + CND 1/22/26 - favorable path. Endocrinology to follow calcitonin and CEA; their visit is booked for April.\n2. Post-thyroidectomy on levothyroxine 100 mcg - TSH in early March.\n3. Calcium normal, no supplement needed.\n4. Diarrhea improving.\n5. Pheochromocytoma s/p R adrenalectomy - BP normal off meds.\n6. MEN 2A - surveillance per endocrinology.\nCleared to return to work 2/9. RTC for annual in summer."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-17a",
+     "kind": "pharmacy",
+     "start": "2026-02-17T09:05",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Pharmacy",
+       "title": "Refill request - levothyroxine",
+       "author": "pharmacy",
+       "date": "2026-02-17T09:05",
+       "body": "Electronic refill request: levothyroxine sodium 100 mcg tablet, take 1 tablet by mouth daily. Original prescriber: surgical service at discharge, 30 tablets, no refills. Patient requests transfer of prescribing to primary care."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill approved",
+       "author": "PCP",
+       "date": "2026-02-17T12:15",
+       "body": "Approved levothyroxine 100 mcg daily, #30 with 1 refill - TSH due early March, will adjust supply after that. Pt notified via portal."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-05a",
+     "kind": "lab_only",
+     "start": "2026-03-05T07:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "TSH on levothyroxine",
+     "state": {
+      "labs": {
+       "Thyroid Stimulating Hormone": 1.4
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2026-03-05T07:45",
+       "resulted": "2026-03-05T14:30",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-03-05T07:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "TSH result",
+       "author": "PCP",
+       "date": "2026-03-05T17:20",
+       "body": "TSH 1.5, in range about six weeks after thyroidectomy on levothyroxine 100 mcg. No dose change. Refill sent for 90 days with 3 refills. Recheck TSH at her annual visit.\nPortal: \"Melissa - your thyroid level is right where we want it. Stay on the same dose. I sent a 90-day supply to your pharmacy.\""
+      }
+     ]
+    },
+    {
+     "id": "2026-03-22a",
+     "kind": "portal_message",
+     "start": "2026-03-22T10:14",
+     "reason": "Home blood pressure",
+     "measure": [
+      "bp",
+      "hr"
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Quick BP update",
+       "author": "patient",
+       "date": "2026-03-22T10:14",
+       "body": "Just an update since you said to check occasionally - this morning 122/70, pulse 65. Every reading I've taken since December has been in this range and I haven't had a single spell. Feeling really good."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Quick BP update",
+       "author": "PCP",
+       "date": "2026-03-23T08:05",
+       "body": "Great to hear, and those numbers are normal. Thanks for keeping me posted."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-23a",
+     "kind": "specialist_visit",
+     "start": "2026-04-23T14:00",
+     "end": "2026-04-23T14:40",
+     "service": "Endocrinology",
+     "reason": "Follow-up after thyroidectomy, calcitonin and CEA",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Endocrinology Follow-up",
+       "author": "endocrinology",
+       "date": "2026-04-28T10:30",
+       "body": "ENDOCRINOLOGY FOLLOW-UP\nDate: 04/23/2026\n\nMs. Friedman returns three months after total thyroidectomy with central neck dissection (01/22/2026) for medullary thyroid carcinoma, MEN 2A (RET p.Cys634Arg). Right adrenalectomy for pheochromocytoma 11/14/2025; plasma free metanephrines normal 12/18/2025.\n\nInterval: Feeling well. The diarrhea has resolved completely. No spells. Voice normal. Taking levothyroxine 100 mcg daily; TSH in range at primary care in March.\n\nExam: BP 109/71, HR 79 /min, Wt 63.8 kg. Well-healed collar incision; no palpable neck mass or adenopathy.\n\nPathology reviewed: MTC 1.7 cm, right lobe, margins negative, 0/9 central nodes.\n\nLabs (04/23/2026)\nCalcitonin: undetectable, <2 pg/mL\nCEA: 2.1 ng/mL\n\nAssessment\n1. Medullary thyroid carcinoma, status post total thyroidectomy with central neck dissection: postoperative calcitonin undetectable and CEA normal, an excellent biochemical response.\n2. MEN 2A, pheochromocytoma status post right adrenalectomy.\n3. Post-thyroidectomy, on levothyroxine.\n\nPlan\n- Repeat calcitonin and CEA in six months.\n- First yearly plasma free metanephrines drawn the same day.\n- Continue levothyroxine 100 mcg daily; TSH per primary care.\n- Next visit booked: 10/22/2026.\n\nEndocrinology"
+      }
+     ]
+    },
+    {
+     "id": "2026-06-02a",
+     "kind": "pharmacy",
+     "start": "2026-06-02T08:30",
+     "reason": "Pharmacy notice",
+     "documents": [
+      {
+       "type": "Pharmacy",
+       "title": "Prescription filled",
+       "author": "pharmacy",
+       "date": "2026-06-02T08:30",
+       "body": "Notification: levothyroxine sodium 100 mcg tablet, 90-day supply, filled and picked up 06/02/2026. Refills remaining: 2."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-18a",
+     "kind": "annual_physical",
+     "start": "2026-08-18T09:15",
+     "end": "2026-08-18T09:55",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-08-18T10:00",
+       "resulted": "2026-08-18T15:30",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-08-18T10:00",
+       "resulted": "2026-08-18T15:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2026-08-18T10:00",
+       "resulted": "2026-08-18T15:30",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-08-18T10:00",
+       "resulted": "2026-08-18T15:30",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2026-08-18T09:15"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-08-18T10:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2026",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "Routine breast cancer screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2026-08-18T13:10",
+       "body": "47F, annual physical - first since the surgeries (missed last year's).\n\nPast year in brief: R adrenalectomy 11/2025 for pheochromocytoma; total thyroidectomy with central neck dissection 1/2026 for medullary thyroid carcinoma (1.7 cm, margins negative, 0/9 nodes); MEN 2A, RET codon 634. Endocrinology 4/23: calcitonin undetectable, CEA 2.1.\n\nS: Feels well - \"back to normal.\" No spells, headaches or palpitations since last November. Bowels normal. Energy good, sleeping well. Voice normal. Teaching again in two weeks. Takes levothyroxine 100 mcg daily as directed, no missed doses.\nMeds: levothyroxine 100 mcg daily. Allergies: NKDA.\nSocial: never smoker, 1-2 drinks/week.\n\nO: BP 113/73, HR 71 /min, RR 15 /min, SpO2 97 %, T 36.8 C, Wt 64.0 kg\nWell appearing.\nNeck: well-healed collar scar, no masses or adenopathy.\nHeart: RRR without murmur. Lungs: clear.\nAbdomen: healed right subcostal port scars, soft, nontender.\nExt: no edema. Skin normal. Mood good, PHQ-2 0.\n\nA/P\n1. Health maintenance: CBC, BMP, lipids today. Mammogram due (last 3/2025) - ordered. Pap/HPV next 2028, colonoscopy next 2034. Flu and COVID vaccines this fall.\n2. S/p total thyroidectomy on levothyroxine - TSH today.\n3. MTC and MEN 2A - endocrinology 10/22/2026 for calcitonin, CEA and her first yearly plasma metanephrines. I'll see her 11/12 to go over them.\n4. Pheochromocytoma s/p R adrenalectomy - BP normal off medication, no spells."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-19a",
+     "kind": "portal_message",
+     "start": "2026-08-19T07:50",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Physical lab results",
+       "author": "PCP",
+       "date": "2026-08-19T07:50",
+       "body": "Hi Melissa - everything from your physical came back fine. TSH 1.4, so the levothyroxine dose stays the same. Blood counts, kidney function, electrolytes and calcium are normal, and cholesterol is good (LDL 90 mg/dL). Please call radiology to book your mammogram. See you November 12th."
+      }
+     ]
+    },
+    {
+     "id": "2026-11-12a",
+     "kind": "office_visit",
+     "start": "2026-11-12T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Review endocrinology surveillance labs",
+     "appointment": "booked"
+    }
+   ]
+  }
+ ]
+}

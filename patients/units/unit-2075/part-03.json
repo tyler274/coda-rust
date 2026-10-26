@@ -1,0 +1,592 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002075",
+   "events": [
+    {
+     "id": "2023-01-09a",
+     "kind": "portal_message",
+     "start": "2023-01-09T06:55",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Work note request",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "work letter",
+       "author": "patient",
+       "date": "2023-01-09T06:55",
+       "body": "My company's safety guy needs a new letter with a date on it for how long I'm off the cutting work. They want to know when I can go back. Can you send one?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: work letter",
+       "author": "PCP",
+       "date": "2023-01-09T12:30",
+       "body": "Todd, updated letter attached. I can't give a return date yet - it depends on your level. The restriction stays until your blood lead is back down to a level that is safe for return; next check is February 13. Keep up the respirator and the hand washing."
+      },
+      {
+       "type": "Letter",
+       "title": "Work status note - updated",
+       "author": "PCP",
+       "date": "2023-01-09T12:25",
+       "body": "To whom it may concern:\n\nTodd Rossi remains under our care for an elevated blood lead level. He continues to be restricted from all lead-exposed tasks (cutting, grinding, sanding or abrading painted surfaces, and work in lead-contaminated areas) through at least 02/13/2023, when he will be retested. We will provide an updated note after that result. Other duties are permitted.\n\nPrimary Care Physician"
+      }
+     ]
+    },
+    {
+     "id": "2023-02-13a",
+     "kind": "office_visit",
+     "start": "2023-02-13T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lead poisoning follow-up; COPD, BP",
+     "vitals": [
+      {
+       "time": "2023-02-13T08:05",
+       "bp": [
+        131,
+        84
+       ],
+       "hr": 70,
+       "spo2": 95,
+       "weight_kg": 79.9
+      }
+     ],
+     "state": {
+      "labs": {
+       "Hemoglobin": 13.1,
+       "Mean Corpuscular Volume": 83
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-02-13T08:20",
+       "resulted": "2023-02-13T14:05",
+       "results": [
+        {
+         "test": "Lead",
+         "value": 29
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-02-13T08:20",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 13.1
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current every day smoker"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-02-13T08:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-02-13T08:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up: lead, COPD, HTN",
+       "author": "PCP",
+       "date": "2023-02-13T08:00",
+       "body": "Follow-up.\n\nLead poisoning: BLL 62 (11/13) -> 44 (12/14). Off the cutting work since November, doing debris removal and site cleanup. Belly pain and constipation gone for about three weeks now. Concentration back to normal per him and per his foreman. No headaches, no tingling.\nCOPD: usual. LDCT 12/19/22 again Lung-RADS 1 with emphysema - reviewed today.\nHTN: on HCTZ.\nSmoking: 1 ppd, has stopped smoking on the job site. Not ready to quit fully.\n\nBP 131/84, HR 70, SpO2 95%, Wt 79.9 kg.\nPleasant, sharp in conversation. Abdomen soft, nontender. Lungs: clear, no wheeze. Heart RRR. Grip strength symmetric.\n\nPlan:\n1. Lead poisoning - symptoms resolved. BLL and CBC drawn now; I will message results today. Restriction stays until the level is low enough for return.\n2. COPD/emphysema - stable, continue inhalers. Next LDCT 12/2023.\n3. HTN - fine.\n4. Tobacco - counseled again, still declines a quit date.\nNext: May for physical with repeat lead."
+      }
+     ]
+    },
+    {
+     "id": "2023-02-13b",
+     "kind": "portal_message",
+     "start": "2023-02-13T15:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lead result",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Blood lead 29",
+       "author": "PCP",
+       "date": "2023-02-13T15:10",
+       "body": "Todd - good news. Blood lead is down to 29 (from 44 in December and 62 in November) and your hemoglobin is 13.1, nearly normal. Keep the current work restriction for now; I would like to see it come down further before you go back to cutting. Recheck at your physical in May. Updated letter attached for the safety officer."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-10a",
+     "kind": "annual_physical",
+     "start": "2023-05-10T07:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical; lead recheck",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "state": {
+      "labs": {
+       "Hemoglobin": 14.0,
+       "Mean Corpuscular Volume": 87
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-05-10T08:10",
+       "resulted": "2023-05-10T13:40",
+       "results": [
+        {
+         "test": "Lead",
+         "value": 18
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-05-10T08:10",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 14.0
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-05-10T08:10",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-05-10T08:10",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current every day smoker"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2023-05-10T07:50"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-05-10T08:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2023-05-10T07:50",
+       "body": "Physical + lead follow-up. 56M.\n\nLead poisoning (BLL 62 -> 44 -> 29): no symptoms since January. Still on restricted duty and eager to go back to full duty; the crew has a big job starting in June.\nCOPD: winter was uneventful, no urgent care visits, no antibiotics. Albuterol a few times a week.\nHTN: HCTZ daily.\nSmoking: 1 ppd, ~44 pack-years. Not ready.\nOther ROS negative - no chest pain, hemoptysis, weight change, abdominal pain, numbness or weakness.\nPHQ-2 0.\n\nMeds: fluticasone-salmeterol 250/50 BID, albuterol PRN, HCTZ 25. NKDA.\n\nBP 135/83, HR 73, SpO2 94%, Wt 79.3 kg, BMI 25.3.\nNAD. HEENT normal. Neck supple, no nodes. Lungs: clear, no wheeze, no crackles. CV regular, no murmur. Abd soft, NT. Ext no edema. Neuro: alert, fluent, normal gait, strength symmetric.\n\nA/P\n1. Lead poisoning, improving: BLL + CBC today; if the level is at or below the return-to-work threshold I will clear him and update the state report.\n2. Preventive: BMP, lipids. Immunizations up to date except fall flu/COVID. Colonoscopy 2027. LDCT due 12/2023.\n3. COPD, HTN - stable.\n4. Tobacco - counseled."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-10b",
+     "kind": "telephone",
+     "start": "2023-05-10T16:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lead result, return to work",
+     "conditions": [
+      {
+       "label": "Lead poisoning",
+       "icd10": "T56.0X1A",
+       "action": "resolved"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "BLL 18 - cleared",
+       "author": "PCP",
+       "date": "2023-05-10T16:05",
+       "body": "Results from this morning: blood lead 18 µg/dL, Hgb 14.0. Lead poisoning resolved; anemia corrected. Called pt - cleared to return to full duty as of tomorrow. Reviewed respirator use, hygiene, and that his employer should keep him in their blood lead monitoring program. Return-to-work letter sent to him and his safety officer. State surveillance program notified of the follow-up level."
+      },
+      {
+       "type": "Letter",
+       "title": "Return to work",
+       "author": "PCP",
+       "date": "2023-05-10T16:15",
+       "body": "To whom it may concern:\n\nTodd Rossi's blood lead level has returned to an acceptable range. He is cleared to return to full duty, including lead-exposed tasks, effective 05/11/2023, provided appropriate respiratory protection and hygiene controls are used and he remains in the employer's medical surveillance program.\n\nPrimary Care Physician"
+      }
+     ]
+    },
+    {
+     "id": "2023-08-14a",
+     "kind": "pharmacy",
+     "start": "2023-08-14T09:20",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "HCTZ refill",
+       "author": "MA",
+       "date": "2023-08-14T09:20",
+       "body": "Electronic refill request hydrochlorothiazide 25 mg #90. Last BP check 5/10 at goal, BMP 5/10 normal. Approved per protocol, 90 days x 3 refills. Pt also due for flu shot in the fall - reminder text sent."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-07a",
+     "kind": "telephone",
+     "start": "2023-11-07T17:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Shoulder pain, hand tingling, blood-streaked cough",
+     "orders": [
+      {
+       "id": "pulm-2023",
+       "action": "placed",
+       "order": "Pulmonology referral",
+       "category": "referral",
+       "to": "Pulmonology",
+       "reason": "Expedited: R shoulder pain, R hand tingling/weakness, blood-streaked sputum in a smoker"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Expedited pulmonology",
+       "author": "PCP",
+       "date": "2023-11-07T17:45",
+       "body": "Pt texted asking whether his shoulder could be \"a pinched nerve.\" Called him.\nThree months of right shoulder pain, deep and constant, no injury he can think of. Over the past few weeks tingling into the right hand, and the hand feels weaker - dropping tools. He also mentions his cough has been bringing up streaks of blood on and off.\nIn a 57-year-old with ~44 pack-years, an apical lung process has to be excluded before anything musculoskeletal. His last screening CT was 12/2022 (negative); next is not due until December.\nCalled pulmonology: they moved his routine follow-up up to Monday 11/13 and will get a chest film that day and image further from there. Pt agrees. Told him to go to the ED for heavy bleeding, shortness of breath or new weakness."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-13a",
+     "kind": "specialist_visit",
+     "start": "2023-11-13T09:30",
+     "service": "Pulmonology",
+     "reason": "Pulmonology: shoulder pain, hand weakness, hemoptysis",
+     "vitals": [
+      {
+       "time": "2023-11-13T09:35",
+       "bp": [
+        133,
+        81
+       ],
+       "hr": 69,
+       "spo2": 96,
+       "weight_kg": 79.4
+      }
+     ],
+     "state": {
+      "labs": {
+       "Hemoglobin": 14.2,
+       "Mean Corpuscular Volume": 89
+      }
+     },
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-11-13T09:15",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 14.2
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 7.8
+        },
+        {
+         "test": "Platelets",
+         "value": 250
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-11-13T09:15",
+       "results": [
+        {
+         "test": "Sodium",
+         "value": 140
+        },
+        {
+         "test": "Potassium",
+         "value": 4.2
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.0
+        },
+        {
+         "test": "Calcium",
+         "value": 9.8
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2023-11-13T10:05",
+       "text": "PA and lateral chest. Indication: right shoulder pain, hemoptysis, smoker. Comparison: 11/16/2020. There is a new mass at the right lung apex. The lungs are otherwise hyperinflated without consolidation. No pleural effusion or pneumothorax. Heart size normal.",
+       "conclusion": "Right apical lung mass. CT chest with contrast recommended."
+      }
+     ],
+     "orders": [
+      {
+       "id": "pulm-2023",
+       "action": "done",
+       "date": "2023-11-13T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Pulmonology visit",
+       "author": "pulmonology",
+       "date": "2023-11-14T12:00",
+       "body": "PULMONARY CLINIC NOTE\nDate of visit: 11/13/2023 (moved up at the request of his PCP)\n\nMr. Rossi, 57, with COPD, followed in our lung cancer screening program (last low-dose CT 12/2022, Lung-RADS 1). He describes three months of pain in the right shoulder and, more recently, tingling and weakness in the right hand. There was no trauma. He also has a lingering cough with occasional blood streaking.\n\nSocial: current smoker, 40 pack-years. Demolition laborer.\nMeds: fluticasone/salmeterol 250/50 BID; albuterol PRN; HCTZ 25 mg daily. NKDA.\n\nExam: BP 133/81, HR 69, SpO2 96%, weight 79.4 kg.\nRight upper eyelid droops and the right pupil is smaller than the left. Sweating over the right side of the face is reduced. Right hand grip is weaker than the left.\n\nLabs today: Hgb 14.2, WBC 7,800, platelets 250,000, sodium 140, potassium 4.2, creatinine 1.0, calcium 9.8.\n\nChest radiograph today: mass at the apex of the right lung.\n\nAssessment: Right apical lung mass with an ipsilateral Horner pattern (ptosis, miosis, facial anhidrosis) and right hand symptoms - highly concerning for a superior sulcus lung cancer. This appeared within a year of a negative screening CT.\n\nPlan: CT chest with contrast this week. Depending on the result, PET-CT, brain MRI and tissue sampling, which our office will arrange. I discussed the concern for cancer with him directly. We will keep his primary care physician updated.\n\nPulmonology"
+      }
+     ]
+    },
+    {
+     "id": "2023-11-17a",
+     "kind": "imaging",
+     "start": "2023-11-17T13:20",
+     "service": "Radiology",
+     "reason": "CT chest with contrast",
+     "reports": [
+      {
+       "study": "CT chest",
+       "performed": "2023-11-17T13:20",
+       "text": "CT CHEST WITH IV CONTRAST. Indication: right apical mass on radiograph, Horner syndrome. Comparison: low-dose CT 12/19/2022, chest radiograph 11/13/2023. There is a 4.8 cm mass in the apical right upper lobe at the superior sulcus. A right paratracheal lymph node measures 1.6 cm in short axis. Background emphysema. No other pulmonary mass or nodule. No pleural or pericardial effusion. Heart normal in size. Visualized liver and adrenal glands unremarkable.",
+       "conclusion": "1. 4.8 cm right upper lobe apical (superior sulcus) mass, highly suspicious for primary lung carcinoma. 2. Enlarged right paratracheal lymph node, 1.6 cm short axis. 3. Emphysema."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-28a",
+     "kind": "imaging",
+     "start": "2023-11-28T08:30",
+     "service": "Radiology",
+     "reason": "PET-CT",
+     "documents": [
+      {
+       "type": "Imaging Report",
+       "title": "PET-CT skull base to mid-thigh",
+       "author": "radiology",
+       "date": "2023-11-28T15:45",
+       "body": "FDG PET-CT, SKULL BASE TO MID-THIGH\nDate: 11/28/2023\nIndication: right upper lobe superior sulcus mass, staging.\nComparison: CT chest 11/17/2023.\n\nFindings: The 4.8 cm right upper lobe apical mass is intensely FDG-avid. The 1.6 cm right paratracheal lymph node is FDG-avid. No other hypermetabolic thoracic lymph nodes. No FDG-avid lesion in the liver, adrenal glands or skeleton. Emphysema. No abnormal uptake in the abdomen or pelvis.\n\nImpression: FDG-avid right upper lobe superior sulcus mass and right paratracheal node. No evidence of distant metastatic disease."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-29a",
+     "kind": "imaging",
+     "start": "2023-11-29T18:10",
+     "service": "Radiology",
+     "reason": "MRI brain",
+     "reports": [
+      {
+       "study": "MRI brain without contrast",
+       "performed": "2023-11-29T18:10",
+       "text": "MRI BRAIN. Indication: lung cancer staging. Comparison: none. No intracranial mass, hemorrhage or acute infarct. No edema or mass effect. Ventricles and sulci normal for age. Midline structures normal. Orbits and paranasal sinuses unremarkable.",
+       "conclusion": "Normal MRI of the brain. No evidence of intracranial metastatic disease."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-01a",
+     "kind": "procedure_visit",
+     "start": "2023-12-01T07:30",
+     "service": "Pulmonology",
+     "reason": "EBUS-guided needle aspiration",
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2023-12-01T08:15",
+       "issued": "2023-12-04T12:30",
+       "text": "SPECIMEN: Lymph node, right paratracheal (station 4R), endobronchial ultrasound-guided transbronchial needle aspiration, with cell block. Adequacy: rapid on-site evaluation adequate, lymphoid tissue present. Microscopic: aspirate smears and cell block contain clusters of malignant epithelial cells with enlarged pleomorphic nuclei, set in a lymphoid background.",
+       "conclusion": "Lymph node, station 4R, EBUS-TBNA: POSITIVE for malignant cells, non-small cell carcinoma."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "Bronchoscopy with EBUS-TBNA",
+       "author": "pulmonology",
+       "date": "2023-12-04T09:10",
+       "body": "PROCEDURE: Flexible bronchoscopy with endobronchial ultrasound-guided transbronchial needle aspiration (EBUS-TBNA)\nDate: 12/01/2023\nIndication: 4.8 cm right upper lobe superior sulcus mass with FDG-avid 1.6 cm right paratracheal node; staging and diagnosis.\nSedation: moderate sedation, monitored.\nFindings: Airway inspection normal to the subsegmental level, no endobronchial lesion. EBUS: enlarged right paratracheal (4R) node sampled with 22-gauge needle, multiple passes; rapid on-site evaluation showed malignant cells. Other mediastinal stations not enlarged on ultrasound.\nComplications: none. Discharged home same day with escort.\n\nPathology (final 12/04): station 4R positive for non-small cell carcinoma.\n\nSummary: Non-small cell lung carcinoma of the right upper lobe (superior sulcus) with right paratracheal nodal involvement and no distant disease on PET-CT and brain MRI: clinical stage IIIB, not a surgical candidate. Referred to medical and radiation oncology; consult with medical oncology 12/06. Results discussed with Mr. Rossi today. Copy to PCP.\n\nPulmonology"
+      }
+     ]
+    },
+    {
+     "id": "2023-12-04a",
+     "kind": "telephone",
+     "start": "2023-12-04T17:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Check-in after diagnosis",
+     "conditions": [
+      {
+       "label": "Non-small cell lung cancer, right upper lobe, stage IIIB",
+       "icd10": "C34.11",
+       "action": "diagnosed",
+       "onset": "2023-11-13",
+       "note": "Superior sulcus; R paratracheal nodal disease; no distant metastases on PET-CT and brain MRI"
+      },
+      {
+       "label": "Lung cancer screening candidate (high-risk smoker)",
+       "icd10": "Z12.2",
+       "action": "resolved"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Call after diagnosis",
+       "author": "PCP",
+       "date": "2023-12-04T17:30",
+       "body": "Pulmonology faxed the EBUS pathology this afternoon: NSCLC of the RUL with a positive R paratracheal node, no distant spread on PET or brain MRI - stage IIIB. Pulmonology told him today.\nCalled him this evening. He had expected it, \"with my dad and the smoking.\" Asked good questions about treatment; told him oncology on Wednesday will lay out the plan and that radiation will likely be part of it. Shoulder still aching. Booked him to see me 12/11 after his oncology visit so we can go over things together."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-06a",
+     "kind": "specialist_visit",
+     "start": "2023-12-06T13:00",
+     "service": "Oncology",
+     "reason": "Medical oncology consultation",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Medical oncology consultation",
+       "author": "oncology",
+       "date": "2023-12-07T17:40",
+       "body": "MEDICAL ONCOLOGY - NEW PATIENT CONSULTATION\nDate: 12/06/2023\nReferring: pulmonology. Copy: primary care.\n\nDiagnosis: Non-small cell lung carcinoma, right upper lobe superior sulcus, clinical stage IIIB. 4.8 cm apical mass with FDG-avid 1.6 cm right paratracheal node (EBUS-TBNA 12/01/2023 positive for NSCLC). PET-CT 11/28: no distant metastases. MRI brain 11/29: negative.\n\nHistory: 57-year-old man with COPD, hypertension and ongoing smoking (pack a day, about 44 pack-years). Three months of right shoulder pain with right hand tingling and weakness; blood-streaked sputum. Demolition laborer; occupational lead poisoning 2022, resolved.\nMeds: fluticasone/salmeterol, albuterol, HCTZ. NKDA.\nFamily history: father with lung cancer.\n\nExam: BP 129/83, HR 81, SpO2 95%, weight 80.8 kg. Ambulatory, fully independent. Right ptosis and miosis. Right grip mildly weak. Lungs clear bilaterally. No supraclavicular adenopathy. Heart regular. Abdomen benign. No edema.\n\nAssessment and plan:\nUnresectable stage IIIB superior sulcus NSCLC. Recommend definitive concurrent chemoradiation: weekly carboplatin (AUC 2) and paclitaxel (45 mg/m2) with thoracic radiation to 60 Gy in 30 fractions, followed by consolidation durvalumab for up to a year if there is no progression. Radiation oncology consult arranged. Chemotherapy teaching scheduled. Target start early January.\nI told him plainly that continuing to smoke will work against his treatment, and urged him to stop now; he will think about it.\n\nMedical Oncology"
+      }
+     ]
+    },
+    {
+     "id": "2023-12-11a",
+     "kind": "office_visit",
+     "start": "2023-12-11T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after lung cancer diagnosis",
+     "vitals": [
+      {
+       "time": "2023-12-11T15:35",
+       "bp": [
+        138,
+        86
+       ],
+       "hr": 76,
+       "spo2": 96,
+       "weight_kg": 80.5
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current every day smoker"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2023-12-11T16:10"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-12-11T16:12"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2023-12-11T15:30"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-12-11T16:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Visit after cancer diagnosis",
+       "author": "PCP",
+       "date": "2023-12-11T15:30",
+       "body": "Visit to go over the new diagnosis and plan.\n\nSummary of the last month: R apical mass on CXR 11/13 -> CT 11/17 4.8 cm RUL superior sulcus mass + 1.6 cm R paratracheal node -> PET 11/28 both avid, nothing distant -> brain MRI 11/29 normal -> EBUS 12/1 node + for NSCLC. Stage IIIB. Med onc 12/6: concurrent weekly carboplatin/paclitaxel with 60 Gy/30 fx starting early January, then durvalumab. Rad onc consult tomorrow.\n\nHe is steady but tired of appointments. Shoulder pain persists; right hand still tingles and grip is weak. Occasional blood streaks in the morning sputum, small. No chest pain, no dyspnea beyond baseline. Appetite fine.\nStill smoking a pack a day. Both specialists have pressed him to stop. He is not ready to set a date - \"one thing at a time.\" Talked about how quitting may help treatment go better; offered patch + lozenge and varenicline; he will consider after he starts treatment.\nAdmin: employer's FMLA forms to be completed by oncology.\n\nBP 138/86, HR 76, SpO2 96%, Wt 80.5 kg.\nRight ptosis and miosis. R grip weaker than L. Lungs clear bilaterally. Heart RRR. No supraclavicular nodes palpable. No edema.\n\nA/P\n1. NSCLC RUL stage IIIB, superior sulcus - plan per oncology. I will stay involved for the rest of his care; he knows to text me.\n2. Shoulder pain and hand symptoms - expect relief with radiation.\n3. Tobacco use disorder - still smoking, declines quit date; offered meds again.\n4. COPD - continue inhalers; no change.\n5. HTN - BP at the top of his usual range today; recheck next visit, no change for now.\n6. Flu and updated COVID vaccine given today (missed earlier this fall)."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

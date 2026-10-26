@@ -1,0 +1,3034 @@
+{
+  "unit": "unit-1760",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00001760/2023-06-27a: procedure \"Laparoscopy with excision of endometriosis implants and lysis of pelvic adhesions\" not in catalog (text only, no CPT)",
+    "MRN00001760/2025-10-19b: procedure \"Laparoscopic right salpingectomy for ruptured tubal ectopic pregnancy\" not in catalog (text only, no CPT)",
+    "left text-only (not verified): drug \"prenatal multivitamin with folic acid Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001760",
+      "given": "Melissa",
+      "family": "Pereira",
+      "birth_date": "1989-04-04",
+      "address_line": "28 Orchard Hill Lane",
+      "phone": "+1-917-555-0132",
+      "email": "melissa.pereira@example.test",
+      "marital_status": "married",
+      "summary": "Elementary school teacher with a history of recurrent chlamydia and PID who develops tubal factor infertility, then endometriosis treated with suppression and laparoscopy, and later a ruptured right tubal ectopic pregnancy managed with salpingectomy. Primary care carries preventive care, the referrals and the follow-up around her outside gynecology and reproductive care.",
+      "events": [
+        {
+          "id": "2019-08-20a",
+          "kind": "establish_care",
+          "start": "2019-08-20T08:40",
+          "end": "2019-08-20T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care and physical",
+          "conditions": [
+            {
+              "label": "History of recurrent Chlamydia trachomatis infection",
+              "action": "history",
+              "onset": "2012-06-01",
+              "note": "Two treated episodes in her twenties at prior clinics",
+              "icd10": "Z86.19"
+            },
+            {
+              "label": "History of pelvic inflammatory disease",
+              "action": "history",
+              "onset": "2014-03-01",
+              "note": "One episode treated as an outpatient",
+              "icd10": "Z87.42"
+            },
+            {
+              "label": "History of intravenous drug use",
+              "action": "history",
+              "onset": "2010-01-01",
+              "note": "Remote, early twenties, none since",
+              "icd10": "Z87.898"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              69
+            ],
+            "hr": 83,
+            "rr": 12,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 61.6,
+            "height_cm": 164.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-08-20T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.67
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 222
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-08-20T09:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-08-20T09:35",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 109
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 189
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 100
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 129
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-08-20T09:35",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 glasses of wine per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2019-08-20T09:10",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; endocervical/transformation zone component present. General categorization: negative for intraepithelial lesion or malignancy. High-risk HPV DNA: not detected.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy. HPV negative.",
+              "issued": "2019-08-23T14:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2019-08-20T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-08-20T09:25"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-08-20T09:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-08-20T09:25"
+            }
+          ],
+          "orders": [
+            {
+              "id": "records-prior-pcp",
+              "action": "placed",
+              "order": "Request records from prior primary care office",
+              "category": "procedure",
+              "reason": "establishing care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit and Physical",
+              "date": "2019-08-20T09:30",
+              "author": "PCP",
+              "body": "30 yo woman, elementary school teacher, new to the practice. Was seeing a primary care office closer to her old apartment; she and her husband bought a house in Belchertown this spring. Wants a doctor she can actually reach. Feels well, no complaints today.\n\nPMH: chlamydia twice in her twenties, both treated at the clinic she used then. One episode of PID around 24 or 25, treated with oral antibiotics, never admitted. Periods regular, about monthly, not painful, no bleeding between. Using condoms with husband for now; they talk about kids \"in a year or so.\"\nPSH: none.\nMeds: none. Allergies: NKDA.\nFH: mom had endometriosis and ended up with a hysterectomy at 42. Mom's sister never could get pregnant, no cause ever found. Dad has high blood pressure.\nSH: teaches 2nd grade. Never smoked. Wine once or twice a week, a glass. She told me without being asked that she used IV drugs for a stretch in her early twenties and has not since; no treatment program, no relapses. We talked about screening for HIV and hep C and she was glad to do it.\n\nROS: negative except as above.\nExam: vitals as charted, BP normal. Well appearing, relaxed. HEENT normal, no thyroid enlargement or nodules. Heart regular rate, no murmur. Lungs clear. Abdomen soft, nontender. Pelvic: normal external genitalia, cervix without lesions, Pap/HPV collected, bimanual without tenderness or masses. Skin without lesions. Mood bright.\n\nA/P\n1. Preventive: Pap with HPV co-test today (age 30). Tdap today, last one she can remember was high school. CBC, CMP, lipids.\n2. STI history: GC/chlamydia NAAT today; HIV and hepatitis C screening given her history.\n3. Remote IV drug use: in remission for many years, nothing to do beyond screening.\n4. Records release signed for prior office.\nReturn in a year, sooner if needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 62.0,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2019-08-23a",
+          "kind": "portal_message",
+          "start": "2019-08-23T16:05",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your results",
+              "date": "2019-08-23T16:05",
+              "author": "PCP",
+              "body": "Hi Melissa, everything from Tuesday is back and normal: blood counts, kidney and liver tests, cholesterol, and the HIV, hepatitis C, gonorrhea and chlamydia tests were all negative. Your Pap and HPV test were normal too, so you won't need another one for five years. Nice to have you in the practice."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your results",
+              "date": "2019-08-23T19:42",
+              "author": "patient",
+              "body": "Thank you so much, that's a relief. Have a good weekend!"
+            }
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "outside_records",
+          "start": "2019-09-10T11:20",
+          "reason": "Records from prior primary care office",
+          "orders": [
+            {
+              "id": "records-prior-pcp",
+              "action": "done",
+              "date": "2019-09-10T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "date": "2019-09-10T11:20",
+              "author": "outside primary care",
+              "body": "Records received by fax, 23 pages: office notes 2012 to 2019, lab results, immunization record.\n\nSummary of relevant items:\n- 2012: chlamydia NAAT positive on routine screen; azithromycin given; partner notified.\n- 2014: lower abdominal pain, cervical motion tenderness, treated as PID with IM ceftriaxone and two weeks of oral doxycycline; improved at recheck. Not admitted.\n- 2016: chlamydia NAAT positive; treated with azithromycin; repeat test at 3 months negative.\n- 2016: Pap at age 27 negative for intraepithelial lesion.\n- Allergies: NKDA. No surgeries.\nImmunization record shows childhood series complete; no Tdap on file after adolescence.\n\nScanned to chart. Reviewed by PCP; history already reflected in the problem list."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T15:40",
+          "reason": "Flu shot",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-08T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-08T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit — Influenza Vaccine",
+              "date": "2019-10-08T15:50",
+              "author": "RN",
+              "body": "Came in after school for flu vaccine. No fever today, no prior reaction to flu shots. Quadrivalent given left deltoid, VIS provided. Tolerated well, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2020-04-27a",
+          "kind": "telephone",
+          "start": "2020-04-27T07:15",
+          "reason": "Pelvic pain and fever",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Phone Call — Pelvic Pain, Fever",
+              "date": "2020-04-27T07:25",
+              "author": "RN",
+              "body": "Pt called the on-call line early this morning. Lower belly pain since Saturday, much worse overnight, fever 102 at home, threw up twice and can't keep down water or ibuprofen. Says it feels like the PID she had years ago but worse. Discussed with PCP: needs to be seen in person today and can't take pills, so ED rather than office. Husband driving her to the regional hospital ED now. Told her to call us when she's home."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP addendum",
+              "date": "2020-04-27T07:40",
+              "author": "PCP",
+              "body": "Agree. Likely PID given history, with vomiting and fever; needs IV treatment and imaging to rule out abscess. Will follow."
+            }
+          ]
+        },
+        {
+          "id": "2020-04-30a",
+          "kind": "hospital_admission",
+          "start": "2020-04-27T08:30",
+          "end": "2020-04-30T12:00",
+          "service": "Gynecology — Inpatient (outside)",
+          "reason": "Pelvic inflammatory disease",
+          "conditions": [
+            {
+              "label": "Chlamydial female pelvic inflammatory disease",
+              "action": "diagnosed",
+              "onset": "2020-04-25",
+              "icd10": "A56.11"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "doxycycline hyclate 100 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily to complete 14 days total",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Pelvic inflammatory disease"
+            },
+            {
+              "drug_text": "metronidazole 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily to complete 14 days total; no alcohol",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Pelvic inflammatory disease"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2020-04-27T08:40",
+              "bp": [
+                114,
+                70
+              ],
+              "hr": 108,
+              "rr": 18,
+              "temp_c": 38.6,
+              "spo2": 98
+            },
+            {
+              "time": "2020-04-29T08:00",
+              "bp": [
+                112,
+                68
+              ],
+              "hr": 78,
+              "rr": 16,
+              "temp_c": 37.0,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2020-04-27T09:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 14.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.74
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 257
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-04-27T09:00",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Detected",
+                  "resulted": "2020-04-28T13:00"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected",
+                  "resulted": "2020-04-28T13:00"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2020-04-27T11:10",
+              "text": "Transabdominal and transvaginal technique. Uterus retroverted, normal in size, with a normal endometrial stripe. Right ovary normal in size and appearance. Left ovary normal in size and appearance. No tubo-ovarian abscess, no complex adnexal collection. No hydrosalpinx. No free fluid.",
+              "conclusion": "No tubo-ovarian abscess. Normal pelvic ultrasound."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2020-04-27T13:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2020-04-30T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary — Gynecology",
+              "date": "2020-05-01T10:15",
+              "author": "hospital gynecology",
+              "body": "Regional hospital, Department of Obstetrics and Gynecology\nAdmission 04/27/2020, discharge 04/30/2020\nAllergies: NKDA\n\nAdmitting diagnosis: acute pelvic inflammatory disease.\nDischarge diagnosis: pelvic inflammatory disease, chlamydial.\n\nHistory: 31 yo G0 with prior chlamydia and an outpatient-treated PID episode presented with two days of lower abdominal pain, fever and vomiting, unable to tolerate oral intake. SARS-CoV-2 screening negative on arrival.\n\nCourse: T 38.6 C, HR 108 on arrival. Bilateral lower abdominal tenderness without peritonitis; cervical motion tenderness and bilateral adnexal tenderness on bimanual. WBC 14.2. Urine hCG negative. Pelvic ultrasound without tubo-ovarian abscess. Admitted for parenteral therapy: cefoxitin 2 g IV every 6 hours plus doxycycline 100 mg every 12 hours. Afebrile by 48 hours, tolerating diet, tenderness much improved. Cervical NAAT returned positive for Chlamydia trachomatis, negative for gonorrhea.\n\nDischarge medications: doxycycline 100 mg PO BID and metronidazole 500 mg PO BID to complete a 14-day course.\nInstructions: no intercourse until treatment complete and partner treated; partner referred for treatment. Retest for chlamydia in 3 months. Follow up with PCP within one week.\n\nHospitalist and gynecology teams. Copy to primary care physician."
+            }
+          ]
+        },
+        {
+          "id": "2020-05-04a",
+          "kind": "telehealth_visit",
+          "start": "2020-05-04T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, PID",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-05-04T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit — Post-Hospital Follow-Up",
+              "date": "2020-05-04T16:25",
+              "author": "PCP",
+              "body": "Video visit from home, school is remote so she is home anyway. Discharge summary reviewed: chlamydial PID, no abscess on ultrasound, IV cefoxitin/doxy, home on doxy + metronidazole to finish 14 days.\n\nToday day 8 of antibiotics. No fever since the hospital. Pain down to a dull ache low on both sides, maybe 2/10, using nothing for it. Eating normally. Some nausea with the metronidazole, takes it with food and it's fine. No alcohol on it. Husband was seen and treated last week.\n\nAppears well on video, comfortable, no distress.\n\nA/P: chlamydial PID, improving on oral therapy. Finish the course. Abstain until both done. Recheck chlamydia/gonorrhea at her physical in August (3 months). Call if fever, worsening pain or vomiting.\n\nDiscussed that repeated pelvic infections can affect the tubes and later fertility; she asked, and we left it that if pregnancy is slow to happen we evaluate early."
+            }
+          ]
+        },
+        {
+          "id": "2020-08-18a",
+          "kind": "annual_physical",
+          "start": "2020-08-18T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Chlamydial female pelvic inflammatory disease",
+              "action": "resolved",
+              "icd10": "A56.11"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "prenatal multivitamin with folic acid Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Preconception"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              66
+            ],
+            "hr": 68,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 61.6
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-08-18T10:55",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-08-18T10:55",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-08-18T10:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-08-18T10:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-08-18T10:50",
+              "author": "PCP",
+              "body": "Annual. Masks on, she's nervous about going back into a classroom in a few weeks but the district has a hybrid plan.\n\nInterval: admitted in April with chlamydial PID, finished the 14 days of doxy/metronidazole, no pain since mid-May. Periods regular every 28-30 days, no cramping to speak of.\n\nShe and her husband have decided to stop using condoms and start trying to get pregnant this month. Asked what she should be doing. Already bought a prenatal vitamin with folic acid last week and is taking it daily.\n\nMeds: prenatal vitamin daily. NKDA.\nSH: unchanged, wine maybe once a week now.\n\nExam: vitals as charted. Well. Thyroid normal. Heart RRR, lungs clear. Abdomen soft, nontender, no adnexal tenderness on bimanual, no CMT.\n\nA/P\n1. PID, resolved. Repeat GC/chlamydia NAAT today (3 months post-treatment).\n2. Preconception: continue prenatal vitamin with folic acid. Limit alcohol once trying. If no pregnancy after 12 months, or sooner if cycles change, we'll start an evaluation, earlier than usual given the PID history.\n3. Health maintenance: Pap up to date (2019). BMP today. Flu shot in October.\nReturn 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-08-20a",
+          "kind": "portal_message",
+          "start": "2020-08-20T12:30",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2020-08-20T12:30",
+              "author": "PCP",
+              "body": "Your chlamydia and gonorrhea tests are negative, so the infection is cleared, and your chemistry panel is normal. Good luck to you both."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-13a",
+          "kind": "nurse_visit",
+          "start": "2020-10-13T15:30",
+          "reason": "Flu shot",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-13T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-13T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit — Influenza Vaccine",
+              "date": "2020-10-13T15:40",
+              "author": "MA",
+              "body": "Screened at door, no COVID symptoms. Possibly pregnant? Pt says no, period started last week. Flu vaccine quadrivalent R deltoid. VIS given. No issues."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-06a",
+          "kind": "portal_message",
+          "start": "2021-04-06T20:10",
+          "reason": "COVID vaccine record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-11T16:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-01T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vaccine card",
+              "date": "2021-04-06T20:10",
+              "author": "patient",
+              "body": "Hi, I finally got both Pfizer shots through the teacher clinic at the pharmacy, 3/11 and 4/1. Photo of my card attached so you have it. Second one knocked me out for a day, that's it."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Vaccine card",
+              "date": "2021-04-07T08:20",
+              "author": "MA",
+              "body": "Thanks Melissa, both doses are entered in your chart now."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-17a",
+          "kind": "annual_physical",
+          "start": "2021-08-17T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical; not yet pregnant",
+          "vitals": {
+            "bp": [
+              123,
+              66
+            ],
+            "hr": 73,
+            "temp_c": 36.8,
+            "spo2": 96,
+            "weight_kg": 61.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-08-17T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.69
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 232
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-17T09:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-08-17T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-08-17T09:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-infertility",
+              "action": "placed",
+              "order": "Obstetrics and Gynecology referral",
+              "category": "referral",
+              "to": "Obstetrics & Gynecology",
+              "reason": "infertility evaluation, 12 months trying"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-08-17T09:35",
+              "author": "PCP",
+              "body": "S: Here for her yearly. They've been trying for a year now, since last August, timed with an ovulation app the last few months. No pregnancy, no late periods. Cycles every 28 days like clockwork, 4-5 days of bleeding, light cramps on day one only. No pelvic pain, no pain with sex. Taking the prenatal daily. Husband healthy, has never been checked. Frustrated but not down. Has had both COVID shots.\n\nMeds: prenatal vitamin with folic acid daily. Allergies: NKDA.\nSH: wine is down to almost none. Never smoker.\n\nO: vitals as charted. Well. Neck supple, thyroid not enlarged. Heart regular. Lungs clear. Abdomen soft, nontender. Deferred pelvic today, normal last year.\n\nA/P\n1. Infertility, 12 months trying, age 32, regular ovulatory cycles. Given two prior chlamydia infections and PID with admission last year, tubal disease is the main concern. Referral to gynecology for infertility workup (expect HSG and semen analysis for husband). TSH and CBC today.\n2. Preventive: flu shot this fall. Pap current.\nPHQ-2 1. Return 1 year."
+            },
+            {
+              "type": "Referral",
+              "title": "Referral to Obstetrics & Gynecology",
+              "date": "2021-08-17T09:50",
+              "author": "PCP",
+              "body": "Reason for referral: infertility, 12 months of unprotected intercourse without conception.\n\n32 yo G0, regular 28-day cycles, no dysmenorrhea or pelvic pain. History of chlamydia x2 in her twenties, outpatient PID ~2014, and admission April 2020 for chlamydial PID (no TOA). On prenatal vitamin only. NKDA. Mother had endometriosis with hysterectomy at 42; maternal aunt with unexplained infertility.\nTSH and CBC pending, will forward.\n\nThank you for seeing her."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-08-19a",
+          "kind": "portal_message",
+          "start": "2021-08-19T13:15",
+          "reason": "Results and referral",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs and gyn referral",
+              "date": "2021-08-19T13:15",
+              "author": "PCP",
+              "body": "Your thyroid test and blood count are normal. The gynecology referral went out Tuesday; their office should call you to schedule. If you haven't heard in two weeks let us know."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Labs and gyn referral",
+              "date": "2021-09-07T17:48",
+              "author": "patient",
+              "body": "They called, first appointment is October 21. Long wait but okay."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-27a",
+          "kind": "outside_records",
+          "start": "2021-10-27T10:05",
+          "reason": "Gynecology consult note",
+          "conditions": [
+            {
+              "label": "Female infertility of tubal origin",
+              "action": "diagnosed",
+              "onset": "2021-10-21",
+              "note": "Bilateral tubal occlusion on HSG",
+              "icd10": "N97.1"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-infertility",
+              "action": "done",
+              "date": "2021-10-27T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Consultation — Infertility",
+              "date": "2021-10-27T10:05",
+              "author": "gynecology",
+              "body": "Outside OB/GYN group\nDate of visit: 10/21/2021\nReferring: primary care physician\n\nReason: primary infertility.\n\nMs. Pereira is a 32 year old G0 who has had regular unprotected intercourse with her husband for about 14 months without a pregnancy. Menses every 28 days, normal flow. She denies intermenstrual bleeding, painful periods or pelvic pain. Prior sexually transmitted infections: chlamydia twice and an episode of PID requiring admission in 2020.\n\nSurgical history: none.\nMedications: prenatal vitamin daily.\nAllergies: NKDA.\nFamily history: mother with endometriosis, hysterectomy at 42; maternal aunt with infertility of unknown cause; father hypertensive.\nSocial: second-grade teacher. Never smoker. Occasional wine.\n\nExam: well woman, normal vitals. Abdomen benign. Normal external genitalia and vagina, cervix without lesions, uterus normal size and mobile, no adnexal masses or tenderness.\n\nHysterosalpingogram performed in our office today (cycle day 8): normal uterine cavity. Neither tube fills beyond the proximal segment; no intraperitoneal spill on either side.\n\nImpression: infertility, tubal factor, with bilateral tubal occlusion on HSG, consistent with her history of pelvic infection.\n\nPlan: referral to reproductive endocrinology to discuss options, which with both tubes blocked will center on IVF. Semen analysis for her husband will be ordered by REI. Continue prenatal vitamin.\n\nThank you for this referral."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-29a",
+          "kind": "nurse_visit",
+          "start": "2021-10-29T15:20",
+          "reason": "Flu shot",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-29T15:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-29T15:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit — Influenza Vaccine",
+              "date": "2021-10-29T15:30",
+              "author": "RN",
+              "body": "Flu vaccine given L deltoid. Pt asked whether flu shot is OK if she gets pregnant; told yes, recommended in pregnancy. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-16a",
+          "kind": "pharmacy",
+          "start": "2021-11-16T09:00",
+          "reason": "Outside immunization record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-13T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy Immunization Notice",
+              "date": "2021-11-16T09:00",
+              "author": "pharmacy",
+              "body": "Community pharmacy immunization notification. Patient: Pereira, Melissa, DOB 04/04/1989. Vaccine: COVID-19 mRNA (Pfizer-BioNTech) booster dose, 0.3 mL IM, left deltoid, administered 11/13/2021. Lot on file. No adverse event reported at 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "portal_message",
+          "start": "2022-01-11T21:30",
+          "reason": "REI wait time",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Fertility clinic",
+              "date": "2022-01-11T21:30",
+              "author": "patient",
+              "body": "The fertility clinic can't see me until April 20. Is there anything we should be doing in the meantime or anywhere faster? Kind of discouraged."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Fertility clinic",
+              "date": "2022-01-12T07:55",
+              "author": "PCP",
+              "body": "I'm sorry, the waits for reproductive endocrinology are long everywhere right now. Nothing medical needs to happen before then; keep taking the prenatal vitamin. Ask them to put you on the cancellation list. If you want to talk any of it through before April, book a visit or call."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-28a",
+          "kind": "outside_records",
+          "start": "2022-04-28T14:40",
+          "reason": "Reproductive endocrinology consult",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Reproductive Endocrinology Consultation",
+              "date": "2022-04-28T14:40",
+              "author": "reproductive endocrinology",
+              "body": "Outside reproductive endocrinology and infertility practice\nDate of visit: 04/20/2022\n\nDear colleague,\n\nI met Melissa and her husband today for infertility. She was referred by gynecology after about 14 months of trying; they are now at roughly 20 months. Cycles are regular, every 28 days. Her husband's semen analysis this month is normal in volume, concentration, motility and morphology.\n\nPertinent history: severe pelvic inflammatory disease two years ago that put her in the hospital on IV antibiotics, plus earlier chlamydia. No surgeries. Medications: prenatal vitamin. NKDA. Family history of endometriosis in her mother and infertility in a maternal aunt.\n\nVital signs stable. Pelvic examination unremarkable.\n\nI reviewed the hysterosalpingogram from October: both tubes are occluded proximally with no spill.\n\nAssessment: tubal factor infertility, bilateral, after pelvic infection. Male factor absent; ovulatory.\n\nRecommendation: with both tubes blocked, IVF is the treatment that gives them a real chance. We went over the process, timeline, success rates at her age and her coverage. They would like time to think it over and will call us.\n\nReproductive endocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "portal_message",
+          "start": "2022-05-10T19:05",
+          "reason": "Update after fertility consult",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update",
+              "date": "2022-05-10T19:05",
+              "author": "patient",
+              "body": "Just wanted to let you know we met with the fertility doctor. We've decided to hold off on IVF for now, it's a lot to take on with everything this year. We may come back to it. Thank you for getting us there."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Update",
+              "date": "2022-05-11T08:10",
+              "author": "PCP",
+              "body": "Thanks for telling me. That's a reasonable choice and the door stays open. I'm here if you want to talk it through."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-21a",
+          "kind": "annual_physical",
+          "start": "2022-07-21T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical; pelvic pain",
+          "conditions": [
+            {
+              "label": "Dysmenorrhea, unspecified",
+              "action": "diagnosed",
+              "onset": "2022-04-15",
+              "icd10": "N94.6"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 to 8 hours as needed for pelvic pain or menstrual cramps, with food",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "Q6-8H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pelvic pain, dysmenorrhea"
+            },
+            {
+              "drug_text": "ethinyl estradiol 0.02 MG / norethindrone acetate 1 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 active tablet by mouth daily continuously; skip the placebo week",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pelvic pain, suspected endometriosis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              71
+            ],
+            "hr": 81,
+            "temp_c": 37.1,
+            "spo2": 96,
+            "weight_kg": 62.3
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-07-21T10:50",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-07-21T10:40"
+            },
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-07-21T10:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-pain",
+              "action": "placed",
+              "order": "Obstetrics and Gynecology referral",
+              "category": "referral",
+              "to": "Obstetrics & Gynecology",
+              "reason": "pelvic pain, dysmenorrhea, dyspareunia; suspected endometriosis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical and Pelvic Pain",
+              "date": "2022-07-21T11:30",
+              "author": "PCP",
+              "body": "Physical, and she wants to talk about pain.\n\nSince about April, aching low pelvic pain most days, a 5 out of 10 today, much worse the first 2-3 days of her period when it can keep her in bed. New this year: it hurts deep with intercourse, enough that they've mostly stopped. Around her period her stools go loose, no blood, no black stool, normal between. No fever, no discharge, no urinary symptoms. Has been taking 400 mg ibuprofen OTC with partial help. LMP 7/12, normal.\n\nAfter the REI visit in April they decided to hold off on IVF. She is not trying to prevent pregnancy but with blocked tubes doesn't expect one.\n\nMeds: prenatal vitamin, OTC ibuprofen. NKDA.\nFH reviewed, mother with endometriosis.\n\nExam: vitals as charted. Well, a little tired. Thyroid normal. Heart regular, lungs clear. Abdomen soft, mild suprapubic and bilateral lower quadrant tenderness, no guarding or rebound, no masses. Pelvic deferred to gyn, who she'd rather see for that.\nUrine hCG negative in office.\n\nA/P\n1. Pelvic pain with dysmenorrhea, deep dyspareunia and cyclic loose stools, ~3 months. Pattern and family history point toward endometriosis. Not infectious by history. Start ibuprofen 600 mg q6-8h prn with food. Start a combined pill (ethinyl estradiol 20 mcg / norethindrone acetate 1 mg) taken continuously, skipping placebos, for suppression; reviewed clot warning signs, she's a nonsmoker with no migraine with aura and normal BP. Back to her gynecologist for exam and imaging.\n2. Health maintenance: flu shot and updated COVID booster this fall. Pap due 2024.\nPHQ-2 1."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-08-30a",
+          "kind": "pharmacy",
+          "start": "2022-08-30T11:15",
+          "reason": "Quantity limit on continuous pill",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Pharmacy Request — Early Refill",
+              "date": "2022-08-30T11:15",
+              "author": "pharmacy",
+              "body": "Insurance rejecting refill of ethinyl estradiol/norethindrone acetate 1/20 as too soon (plan allows 1 pack per 28 days). Patient taking continuously, needs 1 pack per 21 days. Please submit quantity override or rewrite sig."
+            },
+            {
+              "type": "Prior Authorization",
+              "title": "Quantity Override Submitted",
+              "date": "2022-08-30T14:05",
+              "author": "MA",
+              "body": "Called PPO pharmacy benefit line. Quantity override requested for continuous use, dx pelvic pain/suspected endometriosis. Approved for 13 packs per year through 08/2023. Pharmacy notified, filling today."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "portal_message",
+          "start": "2022-09-27T20:40",
+          "reason": "Pelvic pain update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pain",
+              "date": "2022-09-27T20:40",
+              "author": "patient",
+              "body": "Quick update: two months on the continuous pill and the 600s. Honestly maybe a little better but not much, still having bad days. Gyn appointment is Oct 24. Should I do anything different before then?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pain",
+              "date": "2022-09-27T21:15",
+              "author": "PCP",
+              "body": "Thanks for the update. Stay the course until gyn sees you; they'll examine you and likely get an ultrasound. Make sure you're taking ibuprofen with food, and not more than 4 doses a day. Fever, vomiting or pain that's suddenly much worse means call us the same day."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-01a",
+          "kind": "outside_records",
+          "start": "2022-11-01T09:30",
+          "reason": "Gynecology note, pelvic pain",
+          "conditions": [
+            {
+              "label": "Dysmenorrhea, unspecified",
+              "action": "resolved",
+              "note": "Recoded after gynecology evaluation",
+              "icd10": "N94.6"
+            },
+            {
+              "label": "Endometriosis",
+              "action": "diagnosed",
+              "onset": "2022-04-15",
+              "note": "Clinical diagnosis by gynecology"
+            },
+            {
+              "label": "Chronic pelvic pain",
+              "action": "diagnosed",
+              "onset": "2022-04-15"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-10-24T11:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.91
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 222
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-24T11:20",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 11
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 1.6
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2022-10-24T10:30",
+              "text": "Transvaginal ultrasound. Uterus retroverted, normal in size and contour, homogeneous myometrium. Endometrium thin and uniform. Right ovary normal in size with normal follicles. Left ovary normal in size with normal follicles. No adnexal mass or cyst. No hydrosalpinx. No free fluid.",
+              "conclusion": "Normal pelvic ultrasound."
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-pain",
+              "action": "done",
+              "date": "2022-11-01T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Follow-Up — Chronic Pelvic Pain",
+              "date": "2022-11-01T09:30",
+              "author": "gynecology",
+              "body": "Outside OB/GYN group\nDate of visit: 10/24/2022\n\nMelissa returns, seen last year for infertility (tubal factor, bilateral occlusion on HSG), now with half a year of pelvic pain that peaks with her periods. She describes deep pain with intercourse and loose, non-bloody stools that come and go with her cycle. For the past three months she has been on ibuprofen and a continuous combined pill started by her PCP, with little benefit.\n\nMeds: ethinyl estradiol/norethindrone acetate 1/20 continuously, ibuprofen 600 mg as needed, prenatal vitamin. NKDA.\n\nVitals normal. Abdomen soft without peritoneal signs. Speculum normal. Bimanual: retroverted uterus; tenderness in the posterior cul-de-sac; no adnexal mass.\n\nCBC and inflammatory markers (ESR, CRP) normal. Transvaginal ultrasound today normal.\n\nAssessment: chronic pelvic pain with dysmenorrhea, deep dyspareunia and cyclic bowel symptoms, consistent with endometriosis (clinical diagnosis; strong family history). Normal imaging does not exclude it.\n\nPlan: continue continuous combined pill and ibuprofen for now; recheck in about six months. If pain persists, diagnostic laparoscopy for diagnosis and excision.\n\nOB/GYN"
+            }
+          ],
+          "state": {
+            "labs": {
+              "C Reactive Protein": 1.6,
+              "Erythrocyte Sedimentation Rate": 11
+            }
+          }
+        },
+        {
+          "id": "2022-11-03a",
+          "kind": "nurse_visit",
+          "start": "2022-11-03T15:30",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-11-03T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-11-03T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-11-03T15:38"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit — Vaccines",
+              "date": "2022-11-03T15:45",
+              "author": "RN",
+              "body": "Influenza (L deltoid) and Pfizer bivalent booster (R deltoid). VIS and EUA fact sheet given. Observed 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-17a",
+          "kind": "telephone",
+          "start": "2023-01-17T12:10",
+          "reason": "Ibuprofen refill",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request — Ibuprofen",
+              "date": "2023-01-17T12:20",
+              "author": "RN",
+              "body": "Pt called on lunch break for ibuprofen 600 refill. Uses it most days of her period plus a few other days a month, always with food. No stomach pain, no black stools. Still on the continuous pill. Refill sent per protocol, #60 with 2 refills. Gyn recheck is in April."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-20a",
+          "kind": "outside_records",
+          "start": "2023-04-20T13:50",
+          "reason": "Gynecology follow-up note",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-04-13T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 244
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-04-13T09:45",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 20
+                },
+                {
+                  "test": "Cancer Antigen 125",
+                  "loinc": "10334-1",
+                  "unit": "U/mL",
+                  "value": 58
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2023-04-13T10:30",
+              "text": "Transvaginal ultrasound. Uterus retroverted, normal in size, homogeneous myometrium. Endometrium thin. Right ovary normal in size containing several small round cysts with homogeneous low-level internal echoes, the largest 1.8 cm, without internal vascularity. Left ovary normal in size with similar small cysts, the largest 1.4 cm, without internal vascularity. No solid component in either ovary. No hydrosalpinx. No free fluid.",
+              "conclusion": "Small bilateral ovarian cysts with the appearance of endometriomas (\"chocolate cysts\"), largest 1.8 cm on the right and 1.4 cm on the left."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Follow-Up — Endometriosis",
+              "date": "2023-04-20T13:50",
+              "author": "gynecology",
+              "body": "Outside OB/GYN group\nDate of visit: 04/13/2023\n\nFollow-up of endometriosis (clinical diagnosis 10/2022) and bilateral tubal factor infertility. Seen by a different physician in the group today.\n\nDespite six months more of the continuous pill and ibuprofen her pain has steadily worsened. Breakthrough bleeding every few weeks brings severe cramping, intercourse remains painful, and she describes missing work days and avoiding activities she used to enjoy. She and her husband still hope to have a child one day.\n\nMeds: ethinyl estradiol/norethindrone acetate 1/20 continuously, ibuprofen 600 mg prn, prenatal vitamin. NKDA.\n\nExam: retroverted uterus; tenderness in the posterior cul-de-sac on bimanual; no palpable adnexal mass.\n\nLabs today: hemoglobin 13.2, WBC 7.5, ESR 20, CA-125 58 (elevated).\nTransvaginal ultrasound: several small cysts in both ovaries with the typical appearance of endometriomas.\n\nAssessment: endometriosis with progressive pelvic pain on first-line suppression, now with small bilateral endometriomas and an elevated CA-125 that fits that picture.\n\nPlan: diagnostic and operative laparoscopy to confirm the diagnosis, excise implants and free adhesions, and assess the tubes with dye. Consent discussed; she wants to schedule it for the end of the school year. Continue current medications until surgery.\n\nOB/GYN"
+            }
+          ]
+        },
+        {
+          "id": "2023-05-09a",
+          "kind": "portal_message",
+          "start": "2023-05-09T18:25",
+          "reason": "Pre-op question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Surgery",
+              "date": "2023-05-09T18:25",
+              "author": "patient",
+              "body": "My laparoscopy is booked for June 27, right after school lets out. Do I need a pre-op visit with you or bloodwork from your office?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Surgery",
+              "date": "2023-05-10T07:40",
+              "author": "PCP",
+              "body": "For a healthy person having an outpatient laparoscopy the surgical center's pre-admission team handles what's needed, and you're up to date with us. If they ask for a clearance letter, send me the form. Hoping this gives you some relief."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-27a",
+          "kind": "procedure_visit",
+          "start": "2023-06-27T07:30",
+          "end": "2023-06-27T15:00",
+          "service": "Gynecology — Outpatient Surgery (outside)",
+          "reason": "Endometriosis, chronic pelvic pain",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-06-27T09:20",
+              "text": "Specimens: (A) peritoneum, posterior cul-de-sac, excision; (B) pelvic peritoneum, right pelvic sidewall, excision.\nGross: A, two tan-red fibrous tissue fragments, 1.6 x 0.8 x 0.3 cm in aggregate. B, one tan fibrous fragment, 1.1 x 0.5 x 0.2 cm. Entirely submitted.\nMicroscopic: both specimens show endometrial-type glands with surrounding endometrial stroma within fibrotic peritoneal tissue, with hemosiderin-laden macrophages. No atypia. No malignancy.",
+              "conclusion": "A and B: endometriosis. Negative for malignancy.",
+              "issued": "2023-06-30T15:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Laparoscopy with excision of endometriosis implants and lysis of pelvic adhesions",
+              "performed": "2023-06-27T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative Report — Laparoscopy",
+              "date": "2023-07-05T10:00",
+              "author": "gynecology",
+              "body": "Outpatient surgery center, gynecology\nDate of surgery: 06/27/2023\nPreoperative diagnosis: endometriosis, chronic pelvic pain, bilateral tubal factor infertility.\nPostoperative diagnosis: same, confirmed; pelvic adhesions.\nProcedure: diagnostic laparoscopy, excision of endometriosis implants, lysis of pelvic adhesions, chromopertubation.\nAnesthesia: general. EBL minimal. Complications: none. Allergies: NKDA.\n\nFindings: retroverted uterus of normal size. Endometriosis implants on the peritoneum of the posterior cul-de-sac and right pelvic sidewall. Both ovaries normal in size, each with small endometriomas, left in place to preserve ovarian reserve. Filmy adhesions around both tubes and adnexa. Upper abdomen normal.\n\nDescription: umbilical entry and two lower ports. Adhesions lysed sharply, freeing both adnexa. Implants excised with margins and sent to pathology. Chromopertubation with dilute indigo carmine after adhesiolysis: the right tube filled and spilled freely; the left tube did not fill. Hemostasis assured, ports closed.\n\nDisposition: discharged home the same day.\nPathology: endometriosis in both specimens.\nFollow-up: office in 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-15a",
+          "kind": "outside_records",
+          "start": "2023-08-15T09:10",
+          "reason": "Gynecology post-op note",
+          "medications": [
+            {
+              "drug_text": "ethinyl estradiol 0.02 MG / norethindrone acetate 1 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Stopped by gynecology after laparoscopy to allow conception"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Post-Operative Visit",
+              "date": "2023-08-15T09:10",
+              "author": "gynecology",
+              "body": "Outside OB/GYN group\nDate of visit: 08/09/2023\n\nSix weeks after laparoscopy with excision of endometriosis and adhesiolysis. Incisions healed. Pain much better than before surgery. Pathology confirmed endometriosis.\n\nWe reviewed that at surgery the right tube opened with dye after the adhesions were freed, while the left remained blocked. She and her husband would like to try to conceive on their own for now. We will stop the continuous pill today. Ibuprofen for period pain. If no pregnancy in 6 to 12 months, return to reproductive endocrinology.\n\nMeds: ibuprofen 600 mg prn, prenatal vitamin. NKDA.\nOB/GYN"
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "annual_physical",
+          "start": "2023-08-22T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              116,
+              63
+            ],
+            "hr": 81,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 62.0
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-08-22T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.86
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 242
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-22T08:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 83
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-08-22T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-22T08:55"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fu-feb-2024",
+              "action": "placed",
+              "order": "Return visit in 6 months, pelvic pain follow-up",
+              "category": "procedure",
+              "reason": "endometriosis after laparoscopy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-08-22T08:50",
+              "author": "PCP",
+              "body": "Yearly visit, few days before teachers go back.\n\nInterval: laparoscopy 6/27, endometriosis confirmed on pathology, implants excised, adhesions freed. Gyn op note says right tube open on dye, left still blocked. Post-op visit 8/9: off the continuous pill now, they're going to try on their own for 6-12 months, then back to REI if needed.\n\nFeels like a different person. Pain 1/10 today, \"the everyday ache is gone.\" First period off the pill came last week, crampy for a day, ibuprofen covered it. Intercourse comfortable again.\n\nMeds: prenatal vitamin, ibuprofen 600 prn. NKDA.\n\nExam: vitals as charted. Well, cheerful. Thyroid normal. Heart regular, lungs clear. Abdomen soft, three small healed port scars, nontender.\n\nA/P\n1. Endometriosis s/p laparoscopic excision and adhesiolysis 6/2023, pain much improved. Off hormonal suppression to try to conceive. Ibuprofen prn. Med list updated.\n2. Tubal factor infertility: per gyn, right tube patent after surgery. Continue prenatal.\n3. Health maintenance: CBC/CMP. Flu and COVID this fall. Pap due next year.\nCheck in around February, sooner if pain returns."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T15:00",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2023-08-24T15:00",
+              "author": "PCP",
+              "body": "Blood count, kidney and liver tests from Tuesday are all normal. Have a good first week back."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T15:45",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T15:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T15:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit — Vaccines",
+              "date": "2023-10-17T16:00",
+              "author": "MA",
+              "body": "Pregnancy screen: LMP 10/3, pt reports no chance she's late. Flu vaccine L arm, 2023-24 Pfizer COVID R arm. VIS sheets given. Waited 15 minutes, fine."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "office_visit",
+          "start": "2024-02-13T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "6-month follow-up, pelvic pain",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "portal_message",
+          "start": "2024-02-20T16:30",
+          "reason": "Missed visit",
+          "orders": [
+            {
+              "id": "fu-feb-2024",
+              "action": "cancelled",
+              "date": "2024-02-20T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed appointment",
+              "date": "2024-02-20T08:45",
+              "author": "front desk",
+              "body": "Hi Melissa, we missed you at your 3:40 appointment last Tuesday. Would you like to reschedule?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Missed appointment",
+              "date": "2024-02-20T16:30",
+              "author": "patient",
+              "body": "So sorry!! Parent conferences ran over and I completely forgot. Honestly I'm doing well, periods are crampy the first day or two and the ibuprofen handles it, no pain otherwise. No pregnancy yet. Could I just see you at my physical instead of rescheduling?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Missed appointment",
+              "date": "2024-02-20T17:05",
+              "author": "PCP",
+              "body": "That's fine, glad things are holding. See you at your physical. If the pain creeps back, or if you want to talk about going back to the fertility clinic, message me anytime."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-04a",
+          "kind": "telephone",
+          "start": "2024-06-04T11:30",
+          "reason": "Ibuprofen refill",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill — Ibuprofen",
+              "date": "2024-06-04T11:35",
+              "author": "MA",
+              "body": "Pharmacy fax for ibuprofen 600 mg refill. Last filled 1/2024, using only around periods. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill approved",
+              "date": "2024-06-04T13:10",
+              "author": "PCP",
+              "body": "Approved #60, 2 refills."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "annual_physical",
+          "start": "2024-10-10T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              120,
+              71
+            ],
+            "hr": 75,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 61.9
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-10T16:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 107
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 188
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 104
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-10T16:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.67
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 242
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-10T16:10",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Detected",
+                  "resulted": "2024-10-12T09:30"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected",
+                  "resulted": "2024-10-12T09:30"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive",
+                  "resulted": "2024-10-11T14:00"
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Nonreactive",
+                  "resulted": "2024-10-11T14:00"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2024-10-10T15:55",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. General categorization: negative for intraepithelial lesion or malignancy. High-risk HPV DNA: not detected.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy. HPV negative.",
+              "issued": "2024-10-15T11:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-10T15:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-10T16:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-10T16:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-10T16:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-10T16:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-10-10T16:15",
+              "author": "PCP",
+              "body": "Physical, after school this year since summer got away from her.\n\nInterval: missed the February check, messaged instead. Endometriosis pain stays controlled after last year's surgery: first day or two of each period, ibuprofen helps, no pain between, intercourse fine. Cycles regular, 28 days. Not pregnant in the 14 months since surgery; they haven't gone back to REI and aren't sure they will. No new symptoms, no discharge, no fever.\n\nMeds: prenatal vitamin, ibuprofen 600 prn. NKDA.\nSH: never smoker, a glass of wine a week or so.\n\nExam: vitals as charted. Well. Thyroid normal size. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, port scars healed. Pelvic: normal external genitalia, cervix without lesions, Pap/HPV collected, bimanual with retroverted uterus, nontender, no masses.\n\nA/P\n1. Endometriosis, quiet on ibuprofen alone.\n2. Infertility: reminded her the REI door is open; she'll think about it.\n3. Preventive: Pap/HPV today (5 years). STI screening today given her history: GC/chlamydia, HIV, RPR. Lipids and CBC. Flu and 2024-25 COVID today.\nPHQ-2 1. Return 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-14a",
+          "kind": "telephone",
+          "start": "2024-10-14T12:15",
+          "reason": "Chlamydia result",
+          "conditions": [
+            {
+              "label": "Chlamydial infection of lower genitourinary tract",
+              "action": "diagnosed",
+              "onset": "2024-10-10",
+              "icd10": "A56.00"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "doxycycline hyclate 100 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily for 7 days",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Chlamydia"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ct-retest",
+              "action": "placed",
+              "order": "Chlamydia and gonorrhea NAAT, retest in 3 months",
+              "category": "lab",
+              "reason": "test of reinfection"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Result Call — Chlamydia",
+              "date": "2024-10-14T12:30",
+              "author": "PCP",
+              "body": "Called pt on her lunch break re: positive chlamydia NAAT from Thursday's screen. Gonorrhea, HIV and syphilis negative. She has no symptoms. Upset but took it calmly.\n\nPlan: doxycycline 100 mg BID x 7 days sent. Expedited partner therapy: second doxycycline prescription for her husband under his name per state EPT guidance. No intercourse until both have finished 7 days of treatment. Retest in 3 months. Call for fever or pelvic pain; with her history I want to hear early.\nPap from 10/10 still pending."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "date": "2024-10-15T17:20",
+              "author": "PCP",
+              "body": "Your Pap and HPV test are normal. Next one in five years. The lab order for your recheck in January is in, just stop by any morning after the 13th."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-16a",
+          "kind": "portal_message",
+          "start": "2024-10-16T07:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Other labs",
+              "date": "2024-10-16T07:05",
+              "author": "patient",
+              "body": "Did my cholesterol come back okay? And we both picked up the doxycycline Monday night."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Other labs",
+              "date": "2024-10-16T12:40",
+              "author": "PCP",
+              "body": "Yes, cholesterol and blood count are normal. Good that you both started. Take the doxycycline with a full glass of water and stay upright for 30 minutes after, and go easy on direct sun this week."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "lab_only",
+          "start": "2025-01-21T07:35",
+          "reason": "Chlamydia retest",
+          "conditions": [
+            {
+              "label": "Chlamydial infection of lower genitourinary tract",
+              "action": "resolved",
+              "icd10": "A56.00"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-01-21T07:40",
+              "resulted": "2025-01-22T15:10",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "ct-retest",
+              "action": "done",
+              "date": "2025-01-21T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Lab Note",
+              "title": "Specimen Collection",
+              "date": "2025-01-21T07:45",
+              "author": "MA",
+              "body": "Pt in before school for 3-month retest. Self-collected vaginal swab for GC/CT NAAT, instructions given. Sent to lab."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Retest result",
+              "date": "2025-01-22T16:30",
+              "author": "PCP",
+              "body": "Your repeat chlamydia and gonorrhea tests are negative, so the infection is cleared. Nothing else to do."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "portal_message",
+          "start": "2025-04-08T21:05",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill",
+              "date": "2025-04-08T21:05",
+              "author": "patient",
+              "body": "Could I get a refill on the ibuprofen 600? Same as always, mostly for the first days of my period."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill",
+              "date": "2025-04-09T09:15",
+              "author": "RN",
+              "body": "Sent to your pharmacy, 60 tablets with 2 refills. Take with food."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "annual_physical",
+          "start": "2025-08-19T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              108,
+              69
+            ],
+            "hr": 81,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 62.7
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-08-19T09:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.94
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 245
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 64
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 26
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-19T09:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 83
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-08-19T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-19T09:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-08-19T09:50",
+              "author": "PCP",
+              "body": "Annual, back to her August slot.\n\nDoing well. Chlamydia treated last fall, January retest negative. Endometriosis: cramps the first day or two of her period, ibuprofen takes care of it, otherwise pain free. Regular 28-day cycles. Not using any contraception; still no pregnancy, still undecided about IVF and not in a hurry to decide.\n\nMeds: prenatal vitamin daily, ibuprofen 600 prn. NKDA.\nSH: teaching 2nd grade again this year. Never smoker. Wine about once a week.\n\nExam: vitals as charted. Well appearing. Neck without thyromegaly. Heart regular rhythm, no murmur. Lungs clear. Abdomen soft, nontender. Skin normal.\n\nA/P\n1. Endometriosis, controlled with prn NSAID.\n2. Tubal factor infertility, not pursuing treatment for now.\n3. Preventive: Pap next due 2029. CBC/CMP today. Flu shot this fall.\nPHQ-2 0, AUDIT-C 1. Return 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-21a",
+          "kind": "portal_message",
+          "start": "2025-08-21T12:05",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs",
+              "date": "2025-08-21T12:05",
+              "author": "PCP",
+              "body": "Hi Melissa, blood counts, kidney, liver and electrolytes are all normal."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-19a",
+          "kind": "ed_visit",
+          "start": "2025-10-19T13:20",
+          "end": "2025-10-19T20:15",
+          "service": "Emergency Medicine (outside)",
+          "reason": "Severe right lower quadrant pain",
+          "conditions": [
+            {
+              "label": "Right tubal pregnancy without intrauterine pregnancy",
+              "action": "diagnosed",
+              "onset": "2025-10-19",
+              "note": "Ruptured",
+              "icd10": "O00.101"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-10-19T13:30",
+              "bp": [
+                110,
+                70
+              ],
+              "hr": 98,
+              "rr": 18,
+              "temp_c": 37.2,
+              "spo2": 99
+            },
+            {
+              "time": "2025-10-19T16:45",
+              "bp": [
+                108,
+                68
+              ],
+              "hr": 94,
+              "rr": 18,
+              "temp_c": 37.1,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-19T13:40",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-19T13:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.13
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 232
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-19T13:55",
+              "results": [
+                {
+                  "test": "hCG, quantitative",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "value": 2850
+                },
+                {
+                  "test": "ABO and Rh group",
+                  "loinc": "882-1",
+                  "text": "A Rh(D) positive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-19T14:20",
+              "resulted": "2025-10-20T16:00",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2025-10-19T15:10",
+              "text": "Transvaginal ultrasound with color Doppler. Uterus retroverted, normal in size. No intrauterine gestational sac, yolk sac or embryo; empty uterine cavity. Right adnexa: 3.0 cm complex mass separate from the right ovary, with no internal flow on color Doppler. Right ovary separately visualized with a small known endometrioma. Left ovary normal in size with small known endometrioma. Small amount of free fluid in the posterior cul-de-sac.",
+              "conclusion": "Positive pregnancy test with no intrauterine pregnancy and a 3 cm complex right adnexal mass with small free fluid, consistent with right ectopic pregnancy."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-10-19T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "date": "2025-10-22T09:40",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department\nDate of service: 10/19/2025, arrived 13:20\nAllergies: NKDA\n\nCC: sudden severe right lower quadrant pain.\n\nHPI: 36 yo G1 with endometriosis (laparoscopic excision 2023), chronic pelvic pain and tubal factor infertility, arrives with abrupt severe right lower abdominal pain starting late this morning. Two days of light intermittent vaginal spotting. LMP about 6 weeks ago; cycles regular every 28 days. Chlamydia treated a year ago. Sexually active with one partner; condoms used inconsistently.\nMeds: ibuprofen 600 mg prn, prenatal vitamin.\n\nExam: BP 110/70, HR 98, T 37.2 C (99.0 F). Uncomfortable, holding still. Abdomen tender in the RLQ with rebound. Pelvic: os closed, no active bleeding in the vault, cervical motion tenderness present; no adnexal mass felt.\n\nED course: urine hCG positive. Quantitative hCG 2,850. Hgb 11.8. Type A positive. Cervical GC/CT NAAT sent. PID entered the differential given cervical motion tenderness and her history; with a positive pregnancy test, the bedside concern shifted to ectopic. Transvaginal US: empty uterus, 3 cm complex right adnexal mass without Doppler flow, small free fluid. IV fluids and analgesia. Gynecology at bedside; taken to the OR for laparoscopy.\n\nImpression: right tubal ectopic pregnancy with peritoneal signs, suspected rupture. Rh positive, no anti-D needed.\nDisposition: OR, then admit to gynecology."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-19b",
+          "kind": "hospital_admission",
+          "start": "2025-10-19T20:15",
+          "end": "2025-10-20T10:30",
+          "service": "Gynecology — Inpatient (outside)",
+          "reason": "Ruptured right tubal ectopic pregnancy",
+          "medications": [
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets by mouth every 6 hours as needed for pain, no more than 6 tablets a day",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Post-operative pain"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-10-19T21:30",
+              "text": "Specimen: right fallopian tube, laparoscopic salpingectomy.\nGross: segment of fallopian tube, 5.8 cm in length, with a 2.9 cm ruptured, hemorrhagic dilatation of the ampulla; blood clot submitted separately.\nMicroscopic: chorionic villi and trophoblast within the tubal lumen and wall with associated hemorrhage. No hydropic change or atypical trophoblastic proliferation.",
+              "conclusion": "Right fallopian tube: chorionic villi with hemorrhage, consistent with tubal ectopic pregnancy.",
+              "issued": "2025-10-22T11:45"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Laparoscopic right salpingectomy for ruptured tubal ectopic pregnancy",
+              "performed": "2025-10-19T20:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative Report — Laparoscopic Right Salpingectomy",
+              "date": "2025-10-22T09:45",
+              "author": "hospital gynecology",
+              "body": "Regional hospital, gynecology\nDate of surgery: 10/19/2025\nPreoperative diagnosis: right ectopic pregnancy, suspected rupture.\nPostoperative diagnosis: ruptured right ampullary tubal ectopic pregnancy; hemoperitoneum.\nProcedure: laparoscopic right salpingectomy, evacuation of hemoperitoneum.\nAnesthesia: general. Allergies: NKDA.\n\nFindings: about 300 mL of blood and clot in the pelvis. Right tube with a ruptured ampullary ectopic, actively oozing. Left tube unchanged from prior description, left in place. Both ovaries with small endometriomas, not disturbed. Scattered endometriosis on the pelvic peritoneum.\n\nDescription: three-port laparoscopy. Hemoperitoneum suctioned. Right mesosalpinx sealed and divided, tube removed in a bag. Irrigation until clear, hemostasis confirmed. No complications. To recovery in stable condition."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary — Gynecology",
+              "date": "2025-10-22T09:50",
+              "author": "hospital gynecology",
+              "body": "Admitted 10/19/2025 from the ED; discharged 10/20/2025.\nDiagnosis: ruptured right tubal ectopic pregnancy.\nProcedure: laparoscopic right salpingectomy 10/19/2025.\n\nCourse: uncomplicated overnight. Pain controlled with oral medicine, tolerating diet, ambulating, voiding. Vital signs normal. Rh positive, no Rh immune globulin given.\n\nDischarge medications: ibuprofen 600 mg every 6-8 hours as needed; acetaminophen 1,000 mg every 6 hours as needed; prenatal vitamin.\nInstructions: no lifting over 15 lb or intercourse for 2 weeks. Serum hCG weekly until negative. Gynecology office visit in 3 weeks. Return for fever, worsening pain, heavy bleeding, fainting.\nPathology pending at discharge.\nCopy to primary care physician."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "portal_message",
+          "start": "2025-10-21T10:15",
+          "reason": "Hospital stay",
+          "orders": [
+            {
+              "id": "records-er-oct25",
+              "action": "placed",
+              "order": "Request ED and hospital records",
+              "category": "procedure",
+              "reason": "ED visit and surgery 10/19"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "In the hospital this weekend",
+              "date": "2025-10-21T10:15",
+              "author": "patient",
+              "body": "Wanted you to know, I went to the ER Sunday with terrible pain on my right side. It was an ectopic pregnancy and they had to take out my right tube. Home since yesterday. I'm okay, mostly sore and sad. They said to follow up with gyn in 3 weeks."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: In the hospital this weekend",
+              "date": "2025-10-21T11:30",
+              "author": "PCP",
+              "body": "Melissa, I'm so sorry. I'm glad you went in right away. We'll get the records from the hospital and our nurse will call you tomorrow to check on you; let's also see you in the office next week."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Records request",
+              "date": "2025-10-21T11:45",
+              "author": "front desk",
+              "body": "Records request faxed to regional hospital HIM for ED visit, operative report and discharge summary 10/19-10/20/2025."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-22a",
+          "kind": "telephone",
+          "start": "2025-10-22T14:30",
+          "reason": "Post-discharge call",
+          "orders": [
+            {
+              "id": "records-er-oct25",
+              "action": "done",
+              "date": "2025-10-22T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "date": "2025-10-22T14:45",
+              "author": "RN",
+              "body": "Records received this morning and reviewed with PCP. Called pt, day 3 after laparoscopic right salpingectomy for ruptured ectopic. Pain 3/10, using ibuprofen and acetaminophen, not needing anything stronger. Afebrile. Light spotting only. Incisions dry, no redness. Eating and walking fine. Husband home with her. Out of school this week. Has hCG draw scheduled with gyn next week and gyn visit 11/12. Office visit here booked 10/30. Reviewed reasons to call."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-30a",
+          "kind": "office_visit",
+          "start": "2025-10-30T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after ectopic pregnancy surgery",
+          "vitals": {
+            "bp": [
+              100,
+              67
+            ],
+            "hr": 74,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 62.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-30T15:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.33
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 228
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-10-30T15:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-30T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Follow-Up",
+              "date": "2025-10-30T15:55",
+              "author": "PCP",
+              "body": "Seen 11 days after ED visit and laparoscopic right salpingectomy for a ruptured right tubal ectopic (10/19). Records reviewed: Hgb 11.8 in the ED, ~300 mL hemoperitoneum, Rh positive. Pathology confirmed tubal ectopic.\n\nFeeling physically much better, sore only when she twists. Spotting stopped. No fever. Using ibuprofen once a day at most, stopped acetaminophen. Back at school Monday.\nEmotionally: she had noticed her period was late but hadn't tested before the pain started. Sad, some crying, sleeping okay, still enjoying her class and her husband. PHQ-9 4. No thoughts of self-harm.\n\nMeds: ibuprofen 600 prn, prenatal vitamin. NKDA.\n\nExam: vitals as charted. Well, a little tearful talking about it. Abdomen soft, three port sites clean, dry and healing.\n\nA/P\n1. Ruptured right tubal ectopic s/p right salpingectomy, recovering well. CBC today to see the hemoglobin recovering. hCG follow-up with gyn.\n2. Grief after pregnancy loss: normal response, she has support; gave resources and invited her to reach out.\n3. Endometriosis, tubal factor infertility: per op note left tube unchanged. Gyn will go over what this means for future fertility at the 11/12 visit.\n4. Flu shot: wants to wait a week, nurse visit booked."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "date": "2025-10-31T08:30",
+              "author": "PCP",
+              "body": "Your hemoglobin is 12.4 today, up from 11.8 in the ER, so your blood count is recovering on its own. No iron needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-06a",
+          "kind": "nurse_visit",
+          "start": "2025-11-06T15:35",
+          "reason": "Flu shot",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-11-06T15:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-11-06T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit — Influenza Vaccine",
+              "date": "2025-11-06T15:45",
+              "author": "MA",
+              "body": "Flu vaccine (trivalent) L deltoid. Declined COVID booster this year for now. VIS given, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "outside_records",
+          "start": "2025-11-18T10:20",
+          "reason": "Gynecology post-op note",
+          "conditions": [
+            {
+              "label": "Right tubal pregnancy without intrauterine pregnancy",
+              "action": "resolved",
+              "note": "hCG negative 11/10/2025 after salpingectomy",
+              "icd10": "O00.101"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-11-10T08:15",
+              "results": [
+                {
+                  "test": "hCG, quantitative",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "text": "<5"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Post-Operative Visit",
+              "date": "2025-11-18T10:20",
+              "author": "gynecology",
+              "body": "Outside OB/GYN group\nDate of visit: 11/12/2025\n\nThree weeks after laparoscopic right salpingectomy for ruptured right ampullary ectopic (performed by the hospital gynecology team). Recovering well. Port sites healed. Serum hCG on 11/10 below 5, so resolved. Pathology: chorionic villi in the right tube, consistent with ectopic.\n\nCounseling: her right tube is gone and the left was blocked at her 2023 laparoscopy and looked the same at this surgery. Pregnancy from here would realistically mean IVF. We offered a referral back to reproductive endocrinology whenever she and her husband want it; they'd like to wait. Period pain to be managed with ibuprofen as before.\n\nMeds: ibuprofen 600 mg prn, prenatal vitamin. NKDA.\nOB/GYN"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "office_visit",
+          "start": "2026-02-24T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, endometriosis and pelvic pain",
+          "vitals": {
+            "bp": [
+              116,
+              74
+            ],
+            "hr": 78,
+            "spo2": 97,
+            "weight_kg": 60.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-02-24T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Follow-Up",
+              "date": "2026-02-24T16:05",
+              "author": "PCP",
+              "body": "Four months out from the ectopic and salpingectomy. Physically fine. Periods every 28 days, first day or two painful, ibuprofen 600 twice on those days works. No pain between, no pain with intercourse, bowels normal.\nShe and her husband have talked about IVF and haven't decided. \"Maybe next year.\" Mood better, getting back to normal.\n\nMeds: ibuprofen prn, prenatal vitamin. NKDA.\n\nExam: vitals as charted. Well. Abdomen soft, nontender, port scars healed.\n\nA/P\n1. Endometriosis with chronic pelvic pain, controlled on prn ibuprofen.\n2. Tubal factor infertility, s/p right salpingectomy; IVF undecided, she knows how to reach REI.\n3. Annual physical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "portal_message",
+          "start": "2026-07-14T10:20",
+          "reason": "Refill and scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill and physical",
+              "date": "2026-07-14T10:20",
+              "author": "patient",
+              "body": "Hi! Could you send another ibuprofen 600 refill? Also I'd like to book my physical, ideally an afternoon in September after 3."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill and physical",
+              "date": "2026-07-14T11:40",
+              "author": "RN",
+              "body": "Refill sent, 60 tablets with 2 refills."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill and physical",
+              "date": "2026-07-14T12:05",
+              "author": "front desk",
+              "body": "You're booked for your physical on Thursday, September 10 at 3:40 pm."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "annual_physical",
+          "start": "2026-09-10T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Chlamydial female pelvic inflammatory disease|A56.11": {
+        "code": "A56.11",
+        "display": "Chlamydial female pelvic inflammatory disease",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Chlamydial infection of lower genitourinary tract|A56.00": {
+        "code": "A56.00",
+        "display": "Chlamydial infection of lower genitourinary tract, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Dysmenorrhea, unspecified|N94.6": {
+        "code": "N94.6",
+        "display": "Dysmenorrhea, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Female infertility of tubal origin|N97.1": {
+        "code": "N97.1",
+        "display": "Female infertility of tubal origin",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of intravenous drug use|Z87.898": {
+        "code": "Z87.898",
+        "display": "Personal history of other specified conditions",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of pelvic inflammatory disease|Z87.42": {
+        "code": "Z87.42",
+        "display": "Personal history of other diseases of the female genital tract",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of recurrent Chlamydia trachomatis infection|Z86.19": {
+        "code": "Z86.19",
+        "display": "Personal history of other infectious and parasitic diseases",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Right tubal pregnancy without intrauterine pregnancy|O00.101": {
+        "code": "O00.101",
+        "display": "Right tubal pregnancy without intrauterine pregnancy",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "ethinyl estradiol 0.02 MG / norethindrone acetate 1 MG Oral Tablet": {
+        "code": "1358762",
+        "display": "ethinyl estradiol 0.02 MG / norethindrone acetate 1 MG Oral Tablet",
+        "ingredient": "ethinyl",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "metronidazole 500 MG Oral Tablet": {
+        "code": "311681",
+        "display": "metronidazole 500 MG Oral Tablet",
+        "ingredient": "metronidazole",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "ABO and Rh group": {
+        "code": "882-1",
+        "display": "ABO and Rh group [Type] in Blood",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Cancer Antigen 125": {
+        "code": "10334-1",
+        "display": "Cancer Ag 125 [Units/volume] in Serum or Plasma",
+        "unit": "U/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "hCG, quantitative": {
+        "code": "21198-7",
+        "display": "Choriogonadotropin.beta subunit [Units/volume] in Serum or Plasma",
+        "unit": "m[IU]/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"prenatal multivitamin with folic acid Oral Tablet\""
+    ]
+  }
+}

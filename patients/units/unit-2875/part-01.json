@@ -1,0 +1,280 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002875",
+      "given": "Carolyn",
+      "family": "Sweeney",
+      "birth_date": "1954-05-22",
+      "address_line": "27 Fairfield Street",
+      "phone": "+1-201-555-0125",
+      "email": "carolyn.sweeney@example.test",
+      "marital_status": "single",
+      "summary": "Healthy, active retired teacher who joins in 2022 with mild osteopenia and no medications. A voluntary lung-aging research study in 2024 and 2025 finds spirometry normal for age; benign age-related cognitive slowing is noted in 2025, and a late-2025 DXA moves her osteopenia to alendronate.",
+      "events": [
+        {
+          "id": "2022-08-17a",
+          "kind": "telephone",
+          "start": "2022-08-17T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "author": "front desk",
+              "date": "2022-08-17T10:20",
+              "body": "Caller is looking for a new primary care doctor. Her longtime physician retired and she would rather move now than be reassigned. Medicare, no secondary. Says she is healthy and takes no prescriptions. Membership terms reviewed and emailed. New patient visit booked Mon 9/12 at 9:00. Release signed by portal for records from her prior primary care office; request faxed today."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-01a",
+          "kind": "outside_records",
+          "start": "2022-09-01T14:05",
+          "reason": "Records from prior primary care practice",
+          "conditions": [
+            {"label": "Osteopenia", "action": "history", "onset": "2021-06-10", "note": "Mild, by DXA June 2021 at prior practice"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "reports": [
+            {
+              "study": "DXA bone density, hip and spine",
+              "performed": "2021-06-10T09:30",
+              "text": "Indication: postmenopausal screening. Scanner: central DXA, hips and lumbar spine. L1-L4 BMD T-score -1.0. Left femoral neck T-score -1.4. Left total hip T-score -1.1. No vertebral levels excluded. No prior study for comparison.",
+              "conclusion": "Low bone mass (osteopenia) by WHO criteria, lowest at the left femoral neck. Suggest repeat in 2 years."
+            }
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2016-04-19T11:00"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2020-02-11T10:30"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2020-06-23T10:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-02-09T13:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-02T13:20"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records Summary",
+              "author": "outside primary care",
+              "date": "2022-09-01T14:05",
+              "body": "Records transfer, prior primary care office. Patient: Carolyn Sweeney, DOB 05/22/1954.\n\nActive problems: Osteopenia, mild (DXA 6/2021).\nMedications: none.\nAllergies: NKDA.\n\nHealth maintenance:\n- Screening colonoscopy 2019, normal exam, no polyps.\n- Screening mammogram 9/2021, BI-RADS 1, negative.\n- Cervical screening discontinued at age 65 after a history of normal Pap results.\n- DXA 6/10/2021: low bone mass, lowest T-score -1.4 left femoral neck. Repeat in 2 years.\n\nImmunizations: Tdap 4/2016. Shingrix 2/2020 and 6/2020. COVID-19 Pfizer 2/2021 and 3/2021.\n\nLast office note 3/2022: well visit, no complaints, exam unremarkable. Counseled on calcium in diet and weight-bearing exercise."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-12a",
+          "kind": "establish_care",
+          "start": "2022-09-12T09:00",
+          "end": "2022-09-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "state": {"weight_kg": 58.8, "height_cm": 163.0, "labs": {"Total Cholesterol": 180, "Low Density Lipoprotein": 98, "Hemoglobin A1c": 5.3, "Thyroid Stimulating Hormone": 2.3, "25-hydroxy Vitamin D": 36}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-12T10:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Albumin"}, {"test": "Alkaline Phosphatase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-09-12T10:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-12T10:05", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-09-12T10:05", "results": [
+              {"test": "Hemoglobin A1c"},
+              {"test": "Thyroid Stimulating Hormone"},
+              {"test": "25-hydroxy Vitamin D"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"},
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}
+            ]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "Retired elementary school teacher"},
+            {"item": "Housing status", "value": "Lives alone in own home"}
+          ],
+          "immunizations": [{"vaccine": "Pneumococcal conjugate PCV20", "date": "2022-09-12T09:55"}],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 65+", "performed": "2022-09-12T09:00"},
+            {"procedure": "Immunization administration", "performed": "2022-09-12T09:55"},
+            {"procedure": "Venipuncture", "performed": "2022-09-12T10:05"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-09-12T09:00",
+              "body": "New patient, 68F, transferring after her physician retired. Records from the prior office reviewed before the visit.\n\nShe feels well and has nothing she wants to bring up beyond getting set up. Retired elementary school teacher (taught second and third grade). Lives alone, still does all her own shopping, cooking and yard work. Walks 2-3 miles most mornings and keeps a large vegetable and flower garden. Never smoked, no alcohol, no secondhand smoke at home or at work.\n\nPMH: osteopenia on DXA 6/2021, lowest T -1.4 at the L femoral neck. No fractures. No surgeries. No hospitalizations.\nMeds: none. No supplements regularly.\nAllergies: NKDA.\nFH: mother had osteoporosis. Father had hypertension. Maternal aunt broke a hip at 78.\nScreening per outside records: colonoscopy 2019 normal; mammogram 9/2021 negative; Paps stopped at 65 with normal history. Shingrix and Tdap done; COVID primary series 2021.\n\nROS: negative in full, including no falls, no bone pain, no height loss she has noticed, no dyspnea or cough.\n\nExam: well, thin, pleasant. HEENT unremarkable. Neck supple, thyroid not enlarged. Heart regular, no murmur. Lungs clear throughout. Abdomen soft, nontender. No spinal tenderness, no kyphosis. Extremities without edema. Gait steady, rises from chair easily. Skin without concerning lesions.\n\nAssessment/plan:\n1. Osteopenia, mild. Good dietary calcium from dairy; encouraged keeping up walking and adding some resistance work. Repeat DXA due 6/2023. Vitamin D level today.\n2. Health maintenance. CMP, CBC, lipids, A1c, TSH baseline today. One-time hepatitis C and HIV screen. PCV20 today (no prior pneumococcal vaccine). Mammogram due 9/2023. Flu and COVID booster when available next month.\n3. PHQ-2 negative.\n\nReturn for wellness visit in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "portal_message",
+          "start": "2022-09-14T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2022-09-14T16:40",
+              "body": "Hi Carolyn, all of your labs from Monday came back normal: blood counts, kidney and liver function, sugar, thyroid, cholesterol and vitamin D. The hepatitis C and HIV screens were negative, and those don't need repeating. Nice start. See you for the flu shot in October."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-12a",
+          "kind": "nurse_visit",
+          "start": "2022-10-12T13:30",
+          "reason": "Vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2022-10-12T13:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-12T13:40"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-12T13:35"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine Administration",
+              "author": "RN",
+              "date": "2022-10-12T13:30",
+              "body": "Here for fall vaccines. Feeling well, no fever. No history of vaccine reactions. High-dose flu 0.7 mL IM right deltoid. Pfizer bivalent COVID 0.3 mL IM left deltoid. VIS given for each. Waited 15 min, no reaction. Reminded her that sore arm the next day is common."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-20a",
+          "kind": "annual_physical",
+          "start": "2023-03-20T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2023-03-20T11:10", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-03-20T11:10", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Potassium"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, initial", "performed": "2023-03-20T10:30"},
+            {"procedure": "Venipuncture", "performed": "2023-03-20T11:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2023-03-20T10:30",
+              "body": "Initial Medicare AWV.\n\nWinter was quiet. Still walking daily, on the treadmill at the senior center when the sidewalks were icy. Starting seedlings for the garden. No concerns.\n\nHealth risk assessment completed in the waiting room and gone over together. Independent in self-care, housework, shopping, finances, medications and driving. No falls in the last year; no fear of falling. Hearing and vision fine for daily life; sees the eye doctor every other year. Home has railings on the stairs, no throw rugs. Seatbelt always.\nPHQ-2: 0.\nMeds: none. Allergies: NKDA.\n\nExam: BP and weight as recorded, unchanged. Heart regular. Lungs clear. No edema. Timed up and go brisk, under 10 seconds.\n\nA/P:\n- Osteopenia: DXA due in June, ordered.\n- Prevention: lipids and CMP today. Mammogram ordered for the fall. Colonoscopy 2019 normal, no further screening planned. Vaccines current; flu and COVID in the fall.\n- Advance directive: information given; she will look it over.\n\nWritten personalized prevention plan given."
+            }
+          ],
+          "orders": [
+            {"id": "dxa-2023", "action": "placed", "order": "DXA bone density, hip and spine", "category": "imaging", "reason": "Osteopenia, 2-year follow-up"},
+            {"id": "mammo-2023", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "Breast cancer screening"}
+          ]
+        },
+        {
+          "id": "2023-03-22a",
+          "kind": "portal_message",
+          "start": "2023-03-22T08:50",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2023-03-22T08:50",
+              "body": "Cholesterol, kidney function, potassium and calcium all normal again. Nothing to change. Radiology will call about the bone density appointment for June."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-14a",
+          "kind": "imaging",
+          "start": "2023-06-14T08:15",
+          "reason": "DXA follow-up of osteopenia",
+          "reports": [
+            {
+              "study": "DXA bone density, hip and spine",
+              "performed": "2023-06-14T08:15",
+              "text": "Indication: osteopenia, follow-up. Comparison: outside DXA 06/10/2021 (different scanner, comparison approximate). L1-L4 BMD T-score -1.2. Left femoral neck T-score -1.6. Left total hip T-score -1.3. No levels excluded. FRAX (femoral neck BMD, no prior fracture, no parental hip fracture, no glucocorticoids, nonsmoker, BMI 22): 10-year probability of major osteoporotic fracture 11%, hip fracture 1.7%.",
+              "conclusion": "Low bone mass (osteopenia). FRAX below treatment thresholds."
+            }
+          ],
+          "orders": [{"id": "dxa-2023", "action": "done", "date": "2023-06-14T08:15"}]
+        },
+        {
+          "id": "2023-06-16a",
+          "kind": "portal_message",
+          "start": "2023-06-16T12:15",
+          "reason": "Bone density result",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Bone Density Result",
+              "author": "PCP",
+              "date": "2023-06-16T12:15",
+              "body": "Carolyn, your bone density still shows osteopenia, a little lower at the hip than the 2021 scan (-1.6 vs -1.4, though it was a different machine). Your 10-year fracture risk score is 11% for any major fracture and 1.7% for the hip, which is below where we'd recommend a medication. Keep up the walking and the calcium in your diet. We'll repeat it in about 2 years."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Bone Density Result",
+              "author": "patient",
+              "date": "2023-06-16T19:02",
+              "body": "Thank you. My mother had osteoporosis so I'd like to stay on top of it. I'll keep walking. Should I take a calcium pill? I eat yogurt every morning and cheese most days."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Bone Density Result",
+              "author": "PCP",
+              "date": "2023-06-19T08:30",
+              "body": "With yogurt every day and cheese most days you are very likely getting enough from food, and your vitamin D level was fine. No pill needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-04a",
+          "kind": "nurse_visit",
+          "start": "2023-10-04T11:00",
+          "reason": "Vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-10-04T11:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-04T11:08"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-04T11:05"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine Administration",
+              "author": "MA",
+              "date": "2023-10-04T11:00",
+              "body": "Flu high dose R deltoid, 2023-24 Pfizer COVID L deltoid. Screening questions neg. Tolerated without issue, observed 15 min. Pt asked that her mammogram reminder be resent - confirmed booked 10/18."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-18a",
+          "kind": "imaging",
+          "start": "2023-10-18T09:40",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-10-18T09:40",
+              "text": "Bilateral screening mammogram with tomosynthesis. Comparison: 09/2021 outside. Breast density: scattered areas of fibroglandular density. No suspicious mass, calcifications or architectural distortion in either breast.",
+              "conclusion": "Negative. BI-RADS 1. Routine screening recommended."
+            }
+          ],
+          "orders": [{"id": "mammo-2023", "action": "done", "date": "2023-10-18T09:40"}],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram Result",
+              "author": "RN",
+              "date": "2023-10-20T10:10",
+              "body": "Portal note sent per PCP: screening mammogram is normal, routine screening going forward."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
