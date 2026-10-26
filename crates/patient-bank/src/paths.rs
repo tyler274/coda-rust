@@ -1,9 +1,8 @@
 //! Every default location the pipeline reads or writes, in one place.
 //!
 //! The tool's inputs (catalog, terminology cache, coda-gym ranges, authoring
-//! guide) live in this crate's `data/`. The patients themselves, their
-//! seeds and accepted ledgers, live apart from the tool in the workspace's
-//! `patients/`. Drafts, the bank and other derived output live under the ignored
+//! guide) live in this crate's `data/`. The patients live apart from the tool in
+//! the workspace's `patients/units/<unit>/`, one folder per unit. Drafts, the bank and other derived output live under the ignored
 //! `target/patient-bank/`. `PATIENT_BANK_DATA`, `PATIENT_BANK_PATIENTS` and
 //! `PATIENT_BANK_ROOT` override the three directories, so a scratch copy can be
 //! checked or authored in without touching the checkout.
@@ -29,7 +28,7 @@ pub fn data_dir() -> PathBuf {
     )
 }
 
-/// The patient set: seeds and accepted ledgers.
+/// The patient set: `units/<unit>/`, one folder per unit.
 pub fn patients_dir() -> PathBuf {
     env::var_os("PATIENT_BANK_PATIENTS")
         .map_or_else(|| workspace_root().join("patients"), PathBuf::from)
@@ -57,20 +56,16 @@ pub fn gym_lab_ranges() -> PathBuf {
     data_dir().join("gym-lab-ranges.json")
 }
 
-/// Who every patient is, designed once and authored against.
-pub fn seeds() -> PathBuf {
-    patients_dir().join("seeds.json")
-}
-
-/// Accepted ledgers, `<unit>.json`, written only by `check`.
-pub fn ledgers() -> PathBuf {
-    patients_dir().join("ledgers")
-}
-
-/// What a unit is written from and what its author wrote: source.md, build-req.md,
-/// story.md and the part files.
+/// Everything of one unit: who it is (seed.json), what it is written from
+/// (source.md, build-req.md), what its author wrote (story.md, the part files) and
+/// its accepted chart (ledger.json).
 pub fn unit_dir(uid: &str) -> PathBuf {
     patients_dir().join("units").join(uid)
+}
+
+/// A unit's accepted chart, written only by `check`.
+pub fn ledger(uid: &str) -> PathBuf {
+    unit_dir(uid).join("ledger.json")
 }
 
 /// What the tool derives for a unit's author to read: chart.txt and taken.md.

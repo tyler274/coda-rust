@@ -1,8 +1,8 @@
 //! The panel's seeds: who each patient is before anyone writes their chart.
 //!
-//! `patients/seeds.json` was designed once (seed 20261024) for all 995 patients and is
-//! kept as data: a chart is authored against its seed, so a seed never changes
-//! under an accepted ledger.
+//! Each unit's `seed.json` in `patients/units/<unit>/` was designed once and is kept
+//! as data: a chart is authored against its seed, so a seed never changes under an
+//! accepted ledger.
 
 use std::path::Path;
 
@@ -11,28 +11,32 @@ use serde::{Deserialize, Serialize};
 use crate::Result;
 use crate::ledger::Day;
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
+/// Every unit of a patient set, in unit order.
+#[derive(Clone, Debug)]
 pub struct Seeds {
-    pub seed: u64,
-    pub as_of: String,
     pub units: Vec<Unit>,
 }
 
 impl Seeds {
-    pub fn read(path: &Path) -> Result<Seeds> {
-        let text = std::fs::read_to_string(path)?;
-        Ok(serde_json::from_str(&text).map_err(|e| format!("{}: {e}", path.display()))?)
-    }
-
-    /// The seeds file as written: one-space indented JSON and a trailing newline, the
-    /// layout the file was first written in, so untouched seeds keep their bytes.
-    pub fn to_text(&self) -> Result<String> {
-        let mut out = Vec::new();
-        let fmt = serde_json::ser::PrettyFormatter::with_indent(b" ");
-        self.serialize(&mut serde_json::Serializer::with_formatter(&mut out, fmt))?;
-        out.push(b'\n');
-        Ok(String::from_utf8(out)?)
+    /// The seed of every unit folder under `patients/units/`.
+    pub fn read(patients: &Path) -> Result<Seeds> {
+        let dir = patients.join("units");
+        let mut units = Vec::new();
+        let entries = std::fs::read_dir(&dir).map_err(|e| format!("{}: {e}", dir.display()))?;
+        for e in entries {
+            let path = e?.path().join("seed.json");
+            if path.is_file() {
+                let text = std::fs::read_to_string(&path)?;
+                let unit: Unit =
+                    serde_json::from_str(&text).map_err(|e| format!("{}: {e}", path.display()))?;
+                units.push(unit);
+            }
+        }
+        if units.is_empty() {
+            return Err(format!("{} has no unit with a seed.json", dir.display()).into());
+        }
+        units.sort_by(|a, b| a.unit.cmp(&b.unit));
+        Ok(Seeds { units })
     }
 
     pub fn unit(&self, id: &str) -> Option<&Unit> {
@@ -53,6 +57,17 @@ pub struct Unit {
     pub unit: String,
     pub kind: String,
     pub members: Vec<Seed>,
+}
+
+impl Unit {
+    /// A seed file as written: one-space indented JSON and a trailing newline.
+    pub fn to_text(&self) -> Result<String> {
+        let mut out = Vec::new();
+        let fmt = serde_json::ser::PrettyFormatter::with_indent(b" ");
+        self.serialize(&mut serde_json::Serializer::with_formatter(&mut out, fmt))?;
+        out.push(b'\n');
+        Ok(String::from_utf8(out)?)
+    }
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Deserialize, Serialize)]

@@ -112,18 +112,15 @@ struct ManifestPatient {
 type Lines = BTreeMap<&'static str, Vec<String>>;
 
 /// Build the bank into `out`, replacing it, and print its summary.
-pub fn run(seeds_path: &Path, ledgers: &Path, out: &Path) -> Result<()> {
-    refuse_overlap(out, &[seeds_path, ledgers])?;
-    if !ledgers.is_dir() {
-        return Err(format!("{} is not a directory of ledgers", ledgers.display()).into());
-    }
+pub fn run(patients: &Path, out: &Path) -> Result<()> {
+    refuse_overlap(out, &[patients])?;
     let catalog = Catalog::load(&paths::catalog())?;
-    let seeds = Seeds::read(seeds_path)?;
+    let seeds = Seeds::read(patients)?;
 
     // Read every input before writing anything.
     let mut accepted: Vec<(&crate::seeds::Unit, Vec<u8>, Ledger)> = Vec::new();
     for unit in &seeds.units {
-        let path = ledgers.join(format!("{}.json", unit.unit));
+        let path = patients.join("units").join(&unit.unit).join("ledger.json");
         let bytes = match fs::read(&path) {
             Ok(b) => b,
             Err(e) if e.kind() == std::io::ErrorKind::NotFound => continue,

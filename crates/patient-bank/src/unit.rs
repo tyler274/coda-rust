@@ -6,11 +6,11 @@
 //! preview <unit>   render at the bank time and write chart.txt for reading
 //! ```
 //!
-//! A unit lives in `patients/units/<unit>/`: source.md and build-req.md, which it is
-//! written from, and the author's story.md and part-NN.json. chart.txt and taken.md
-//! are derived into `<root>/preview/<unit>/`. An accepted
-//! ledger is written to `patients/ledgers/<unit>.json`, the only input the bank build
-//! renders; `check` is its only writer. See `data/authoring-guide.md`.
+//! A unit lives in `patients/units/<unit>/`: seed.json, who it is; source.md and
+//! build-req.md, which it is written from; the author's story.md and part-NN.json;
+//! and ledger.json, the accepted chart, the only input the bank build renders, with
+//! `check` its only writer. chart.txt and taken.md are derived into
+//! `<root>/preview/<unit>/`. See `data/authoring-guide.md`.
 
 use std::collections::BTreeMap;
 use std::fs;
@@ -190,14 +190,10 @@ fn verify(drafts: &Path, patients: &[Patient], catalog: &Catalog) -> Result<Term
 /// Write `taken.md`: what every other accepted unit already uses.
 fn write_taken(unit: &Unit, seeds: &Seeds, out: &Path) -> Result<PathBuf> {
     let mut others = Vec::new();
-    if let Ok(dir) = fs::read_dir(paths::ledgers()) {
-        for e in dir.filter_map(|e| e.ok()) {
-            let path = e.path();
-            if path.extension().is_some_and(|x| x == "json")
-                && path.file_stem().is_some_and(|s| *s != *unit.unit)
-            {
-                others.push(Ledger::read(&path)?);
-            }
+    for other in seeds.units.iter().filter(|u| u.unit != unit.unit) {
+        let path = paths::ledger(&other.unit);
+        if path.is_file() {
+            others.push(Ledger::read(&path)?);
         }
     }
     let taken = out.join("taken.md");
@@ -298,8 +294,7 @@ fn accept(unit: &Unit, drafts: &Path, catalog: &Catalog) -> Result<i32> {
         patients: merged.patients,
         terms,
     };
-    let out = paths::ledgers().join(format!("{}.json", unit.unit));
-    fs::create_dir_all(out.parent().expect("ledgers dir"))?;
+    let out = paths::ledger(&unit.unit);
     write_atomic(&out, &serde_json::to_string_pretty(&ledger)?)?;
     println!("\nACCEPTED -> {}", out.display());
     Ok(0)
@@ -346,7 +341,7 @@ fn preview(unit: &Unit, drafts: &Path, out: &Path, catalog: &Catalog) -> Result<
     Ok(0)
 }
 
-pub fn run(command: &str, uid: &str, seeds: &Path) -> Result<i32> {
+pub fn run(command: &str, uid: &str) -> Result<i32> {
     let catalog = Catalog::load(&paths::catalog())?;
     let vocab = paths::vocabulary();
     let text = vocabulary(&catalog);
@@ -354,7 +349,7 @@ pub fn run(command: &str, uid: &str, seeds: &Path) -> Result<i32> {
         fs::create_dir_all(vocab.parent().expect("root"))?;
         write_atomic(&vocab, &text)?;
     }
-    let seeds = Seeds::read(seeds)?;
+    let seeds = Seeds::read(&paths::patients_dir())?;
     let unit = seeds
         .unit(uid)
         .ok_or_else(|| format!("unknown unit {uid}"))?;

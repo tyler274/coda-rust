@@ -379,7 +379,7 @@ struct Report {
 /// anything failed.
 pub fn run(
     bank: &Path,
-    seeds: &Path,
+    patients: &Path,
     schema: &Path,
     jobs: usize,
     report: Option<&Path>,
@@ -448,7 +448,7 @@ pub fn run(
     let mut calendar_errors = Vec::new();
     let mrns: HashSet<&str> = work.iter().map(|w| w.mrn.as_str()).collect();
     let calendar = check_calendar(bank, &appointment, &mrns, &mut calendar_errors)?;
-    let repeats = repeats::find(ledgers.values(), &repeats::own(&Seeds::read(seeds)?), 2);
+    let repeats = repeats::find(ledgers.values(), &repeats::own(&Seeds::read(patients)?), 2);
     let mut stats: BTreeMap<String, usize> = BTreeMap::new();
     for r in &results {
         for (k, n) in &r.stats {

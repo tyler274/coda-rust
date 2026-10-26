@@ -84,7 +84,7 @@ impl Serialize for Day {
     }
 }
 
-/// An accepted ledger, `ledgers/<unit>.json`, written only by `check`.
+/// An accepted ledger, `units/<unit>/ledger.json`, written only by `check`.
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Ledger {

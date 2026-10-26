@@ -2,13 +2,13 @@
 //!
 //! ```text
 //! cargo run -p patient-bank -- catalog [--offline] [--roger-fixture DIR]
-//! cargo run -p patient-bank -- brief|check|preview UNIT [--seeds PATH]
-//! cargo run -p patient-bank -- build [--seeds PATH] [--ledgers DIR] [--out DIR]
-//! cargo run -p patient-bank -- validate [--bank DIR] [--seeds PATH] [--schema PATH] [--jobs 8] [--report PATH]
+//! cargo run -p patient-bank -- brief|check|preview UNIT
+//! cargo run -p patient-bank -- build [--out DIR]
+//! cargo run -p patient-bank -- validate [--bank DIR] [--schema PATH] [--jobs 8] [--report PATH]
 //! ```
 //!
 //! Defaults come from `patient_bank::paths`: inputs in `crates/patient-bank/data/`,
-//! seeds, units and ledgers in `patients/`, previews and the bank under `target/patient-bank/`.
+//! one folder per unit in `patients/units/`, previews and the bank under `target/patient-bank/`.
 
 use std::collections::HashMap;
 use std::env;
@@ -43,33 +43,27 @@ fn dispatch(args: &[String]) -> Result<u8, Failure> {
             catalog::build(&roger, o.on("--offline"))?
         }
         "brief" | "check" | "preview" => {
-            let o = Opts::parse(rest, &["--seeds"], &[])?;
+            let o = Opts::parse(rest, &[], &[])?;
             let [uid] = o.positional.as_slice() else {
                 return Err(format!("{command} takes one unit id").into());
             };
-            let seeds = o.path("--seeds").unwrap_or_else(paths::seeds);
-            unit::run(command, uid, &seeds)?
+            unit::run(command, uid)?
         }
         "build" => {
-            let o = Opts::parse(rest, &["--seeds", "--ledgers", "--out"], &[])?;
+            let o = Opts::parse(rest, &["--out"], &[])?;
             bank::run(
-                &o.path("--seeds").unwrap_or_else(paths::seeds),
-                &o.path("--ledgers").unwrap_or_else(paths::ledgers),
+                &paths::patients_dir(),
                 &o.path("--out")
                     .unwrap_or_else(|| paths::root().join("bank")),
             )?;
             0
         }
         "validate" => {
-            let o = Opts::parse(
-                rest,
-                &["--bank", "--seeds", "--schema", "--jobs", "--report"],
-                &[],
-            )?;
+            let o = Opts::parse(rest, &["--bank", "--schema", "--jobs", "--report"], &[])?;
             validate::run(
                 &o.path("--bank")
                     .unwrap_or_else(|| paths::root().join("bank")),
-                &o.path("--seeds").unwrap_or_else(paths::seeds),
+                &paths::patients_dir(),
                 &o.path("--schema").unwrap_or_else(paths::schema),
                 o.number("--jobs")?.unwrap_or(8),
                 o.path("--report").as_deref(),
@@ -141,10 +135,11 @@ fn usage() -> Failure {
 patient-bank runs the synthetic patient bank pipeline.
 
   patient-bank catalog [--offline] [--roger-fixture DIR]
-  patient-bank brief|check|preview UNIT [--seeds PATH]
-  patient-bank build [--seeds PATH] [--ledgers DIR] [--out DIR]
-  patient-bank validate [--bank DIR] [--seeds PATH] [--schema PATH] [--jobs 8] [--report PATH]
+  patient-bank brief|check|preview UNIT
+  patient-bank build [--out DIR]
+  patient-bank validate [--bank DIR] [--schema PATH] [--jobs 8] [--report PATH]
 
-PATIENT_BANK_DATA and PATIENT_BANK_ROOT override crates/patient-bank/data and target/patient-bank."
+PATIENT_BANK_DATA, PATIENT_BANK_PATIENTS and PATIENT_BANK_ROOT override
+crates/patient-bank/data, patients and target/patient-bank."
         .into()
 }

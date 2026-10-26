@@ -27,28 +27,27 @@ fn seed() -> Seed {
 }
 
 /// A two-unit seeds file in `dir`, so no test reads the real patient set.
-fn seeds_file(dir: &std::path::Path) -> std::path::PathBuf {
+/// A patient set of two units, each folder with its seed.json and no ledger.
+fn patient_set(dir: &std::path::Path) -> std::path::PathBuf {
     let member = |mrn: &str| Seed {
         mrn: mrn.into(),
         ..seed()
     };
-    let units = ["unit-0001", "unit-0002"]
+    for (unit, mrn) in ["unit-0001", "unit-0002"]
         .iter()
         .zip(["MRN99999998", "MRN99999999"])
-        .map(|(unit, mrn)| Unit {
+    {
+        let unit = Unit {
             unit: (*unit).into(),
             kind: "individual".into(),
             members: vec![member(mrn)],
-        })
-        .collect();
-    let seeds = Seeds {
-        seed: 1,
-        as_of: "2026-08-27".into(),
-        units,
-    };
-    let path = dir.join("seeds.json");
-    std::fs::write(&path, seeds.to_text().expect("text")).expect("write seeds");
-    path
+        };
+        let folder = dir.join("units").join(&unit.unit);
+        std::fs::create_dir_all(&folder).expect("unit dir");
+        std::fs::write(folder.join("seed.json"), unit.to_text().expect("text"))
+            .expect("write seed");
+    }
+    dir.to_path_buf()
 }
 
 fn patient(events: serde_json::Value) -> Patient {
@@ -323,24 +322,36 @@ fn an_accepted_ledger_round_trips() {
 }
 
 #[test]
-fn the_build_refuses_a_missing_ledger_directory() {
+fn the_build_refuses_a_patient_set_with_no_seeds() {
     let dir = std::env::temp_dir().join(format!("patient-bank-missing-{}", std::process::id()));
-    std::fs::create_dir_all(&dir).expect("dir");
-    let err = bank::run(&seeds_file(&dir), &dir.join("ledgres"), &dir.join("bank"))
-        .expect_err("missing ledgers");
-    assert!(err.to_string().contains("not a directory of ledgers"));
+    std::fs::create_dir_all(dir.join("patinets/units")).expect("dir");
+    let err = bank::run(&dir.join("patinets"), &dir.join("bank")).expect_err("no seeds");
+    assert!(err.to_string().contains("no unit with a seed.json"));
     assert!(!dir.join("bank").exists(), "nothing written");
+    std::fs::remove_dir_all(&dir).expect("cleanup");
+}
+
+#[test]
+fn a_patient_set_is_the_seed_of_every_unit_folder() {
+    let dir = std::env::temp_dir().join(format!("patient-bank-set-{}", std::process::id()));
+    let seeds = Seeds::read(&patient_set(&dir)).expect("seeds");
+    let units: Vec<&str> = seeds.units.iter().map(|u| u.unit.as_str()).collect();
+    assert_eq!(units, ["unit-0001", "unit-0002"]);
+    assert_eq!(
+        seeds.member("MRN99999999").expect("member").0.unit,
+        "unit-0002"
+    );
     std::fs::remove_dir_all(&dir).expect("cleanup");
 }
 
 #[test]
 fn the_build_refuses_an_output_that_overlaps_its_inputs() {
     let dir = std::env::temp_dir().join(format!("patient-bank-overlap-{}", std::process::id()));
-    let ledgers = dir.join("bank/ledgers");
-    std::fs::create_dir_all(&ledgers).expect("dirs");
-    assert!(bank::refuse_overlap(&dir.join("bank"), &[&ledgers]).is_err());
-    assert!(bank::refuse_overlap(&ledgers, &[&dir.join("bank")]).is_err());
-    assert!(bank::refuse_overlap(&dir.join("out"), &[&ledgers]).is_ok());
+    let patients = dir.join("bank/patients");
+    std::fs::create_dir_all(&patients).expect("dirs");
+    assert!(bank::refuse_overlap(&dir.join("bank"), &[&patients]).is_err());
+    assert!(bank::refuse_overlap(&patients, &[&dir.join("bank")]).is_err());
+    assert!(bank::refuse_overlap(&dir.join("out"), &[&patients]).is_ok());
     std::fs::remove_dir_all(&dir).expect("cleanup");
 }
 

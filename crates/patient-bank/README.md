@@ -10,12 +10,13 @@ here is real patient data, and nothing is physician reviewed.
 ## Pipeline
 
 ```text
-patients/units/<unit>/source.md   the synthetic_hospital patient the unit is made from
-patients/seeds.json            who each patient is in the practice
+patients/units/<unit>/
+  seed.json                    who the patient is in the practice
+  source.md                    the synthetic_hospital patient the unit is made from
   -> data/author-workflow.js   one agent per unit: build-req.md (what the chart may
                                hold, traced to the source), then story.md and ledger
                                parts, `check` until ACCEPTED, `preview` and a reread
-  -> patients/ledgers/<unit>.json   the clinical source of truth, written only by `check`
+  -> ledger.json               the clinical source of truth, written only by `check`
   -> build                     bank/patients/<MRN>/<Family>.ndjson, bank/calendar/
                                Appointment.ndjson (visits from today on), manifest.json
   -> validate                  HL7 schema, ids, references, codes, times, and what the
@@ -32,7 +33,7 @@ cargo run -q -p patient-bank -- catalog [--offline]
 Authoring runs `data/author-workflow.js` through Claude Code's Workflow tool with
 `{repo, units}` as args; each agent follows `data/authoring-guide.md`, which sends
 it to `data/build-req-guide.md` first. The patients live apart from the tool in the
-workspace's `patients/`. Previews (chart.txt, taken.md), the bank and the schema live
+workspace's `patients/units/`, one folder per unit. Previews (chart.txt, taken.md), the bank and the schema live
 under the ignored `target/patient-bank/`. `PATIENT_BANK_DATA`,
 `PATIENT_BANK_PATIENTS` and `PATIENT_BANK_ROOT` move the three.
 
