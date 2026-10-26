@@ -170,6 +170,8 @@ fn live_router_on(live: std::sync::Arc<live::Live>) -> Router {
             get(live::snapshot),
         )
         .route("/patient-workspaces/events", get(live::events))
+        // The shared workspace route lists this server's chats through it.
+        .layer(axum::Extension(std::sync::Arc::clone(&live)))
         .with_state(live)
 }
 
@@ -780,8 +782,29 @@ async fn workspace(
     let Some(body) = workspace_body(&id) else {
         return StatusCode::NOT_FOUND.into_response();
     };
-    let enriched = care::enrich_workspace(body, &id, request.extensions()).await;
+    let mut enriched = care::enrich_workspace(body, &id, request.extensions()).await;
+    // A live server lists the signed-in physician's chats ahead of the
+    // recording's (which are empty today). The recorded router has no `Live`.
+    if let Some(live) = request.extensions().get::<std::sync::Arc<live::Live>>() {
+        let ctx = request.extensions().get::<auth::AuthContext>();
+        let Ok(chats) = live.chats(ctx, &id).await else {
+            return StatusCode::SERVICE_UNAVAILABLE.into_response();
+        };
+        merge_chats(&mut enriched, chats);
+    }
     Json(enriched).into_response()
+}
+
+/// Puts runtime chats first and keeps recorded chats the runtime doesn't have.
+fn merge_chats(workspace: &mut Value, runtime: Vec<Value>) {
+    let recorded = workspace["chats"].as_array().cloned().unwrap_or_default();
+    let mut chats = runtime;
+    for chat in recorded {
+        if !chats.iter().any(|c| c["chat_id"] == chat["chat_id"]) {
+            chats.push(chat);
+        }
+    }
+    workspace["chats"] = Value::Array(chats);
 }
 
 async fn roster(Query(query): Query<RosterQuery>, request: Request<Body>) -> Response {

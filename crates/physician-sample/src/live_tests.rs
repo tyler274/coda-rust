@@ -190,3 +190,102 @@ async fn reply_http_reads_exact_source_commits_and_survives_owner_restart() {
     std::fs::remove_file(&path).unwrap();
     std::fs::remove_file(path.with_extension("lock")).unwrap();
 }
+
+#[tokio::test]
+async fn inline_workspace_lists_the_chat_a_physician_started() {
+    let store = Arc::new(MemoryAuthStore::new());
+    store.seed_account(
+        auth::STAGING_PRACTICE_ID,
+        "staging-physician",
+        "physician@codahealth.test",
+        "Physician",
+        true,
+    );
+    let auth = auth::Auth::on(
+        store.clone(),
+        Arc::new(front_door::MemoryFrontDoorStore::new()),
+    )
+    .await;
+    let sign = store
+        .begin_sign_in("physician@codahealth.test", auth::now())
+        .await
+        .unwrap();
+    let (_, token) = store
+        .complete_sign_in("physician@codahealth.test", &sign, auth::now())
+        .await
+        .unwrap();
+    let live = live::Live::on(
+        live::ChatModel::Fixed("Noted.".into()),
+        PhysicianSession::memory(),
+        vec![],
+    )
+    .unwrap();
+    let app = auth::required_router(live_router_on(live), auth);
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let base = format!("http://{}", listener.local_addr().unwrap());
+    let task = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    let client = reqwest::Client::new();
+    let workspace = WORKSPACE_IDS[0];
+    let read = || async {
+        client
+            .get(format!("{base}/patient-workspaces/{workspace}"))
+            .bearer_auth(&token)
+            .send()
+            .await
+            .unwrap()
+            .json::<Value>()
+            .await
+            .unwrap()
+    };
+    assert_eq!(read().await["chats"], json!([]));
+    let long =
+        "Please review the potassium trend and tell me whether the latest result changes the plan";
+    let sent = client
+        .post(format!("{base}/commands"))
+        .bearer_auth(&token)
+        .json(
+            &json!({"type":"message.submit","idempotency_key":"inline-chat-list","payload":{
+                "patient_workspace_id": workspace,
+                "chat_id": "chat-inline",
+                "text": long,
+                "physician_time_zone": "UTC"
+            }}),
+        )
+        .send()
+        .await
+        .unwrap()
+        .json::<Value>()
+        .await
+        .unwrap();
+    assert_eq!(sent["outcome"], "accepted", "{sent}");
+    let listed = read().await["chats"].clone();
+    let chats = listed.as_array().expect("chats");
+    assert_eq!(chats.len(), 1, "{listed}");
+    assert_eq!(chats[0]["chat_id"], "chat-inline");
+    assert_eq!(chats[0]["title"], live::chat_title(long));
+    assert!(
+        chats[0]["created_at"]
+            .as_str()
+            .is_some_and(|at| !at.starts_with("1970")),
+        "{listed}"
+    );
+    task.abort();
+}
+
+#[test]
+fn chat_titles_are_one_line_and_cut_at_a_word() {
+    assert_eq!(live::chat_title("  About\n the   labs "), "About the labs");
+    let title = live::chat_title(
+        "Please review the potassium trend and tell me whether the latest result changes the plan",
+    );
+    assert_eq!(
+        title,
+        "Please review the potassium trend and tell me whether the…"
+    );
+    assert!(title.chars().count() <= live::CHAT_TITLE_CHARS + 1);
+    let unbroken = "x".repeat(80);
+    assert_eq!(
+        live::chat_title(&unbroken).chars().count(),
+        live::CHAT_TITLE_CHARS + 1
+    );
+}
