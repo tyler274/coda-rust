@@ -153,14 +153,19 @@ Linear wins.
   (backend-architecture.md, Accepted follow-through: the person's edit, pause
   or cancel "remains permanent for the old assignment"; ENG-34). In conversation, Duet's AI changes, pauses, cancels or deletes only
   as your message asked, and never resumes or starts anything; only you do.
-- A Reminder delivers your agreed words with no new AI; a Check-in uses Duet's
-  AI. Both need your consent, the AI switch and current Terms, and pause with
-  proactive work; both continue through inactivity (D10; north-star.md).
-- A time that comes while AI permission is withdrawn, AI is off, newer Terms
-  wait or proactive work is paused passes undelivered: on resume the next
-  scheduled time delivers, and nothing stale arrives (Dev 2026-10-25). A time
-  already due or running when AI work pauses continues afterwards (D7);
-  withdrawing permission ends it (F3).
+- A Reminder leads with your agreed words, unchanged; with AI on, Duet may add
+  what it judges useful (Dev 2026-10-26, replacing "no new AI" from D10). A
+  Check-in uses Duet's AI. Both need your consent and pause with proactive
+  work; a Check-in also needs the AI switch and current Terms. Both continue
+  through inactivity (D10; north-star.md).
+- A Reminder needs no AI, so a time that comes while AI is off, newer Terms
+  wait or a newer AI permission waits still posts your words (Dev 2026-10-26).
+  Any other time that comes while AI permission is withdrawn, while a newer AI
+  permission, AI off or newer Terms wait (for a Check-in), or while proactive
+  work is paused passes undelivered: on
+  resume the next scheduled time delivers, and nothing stale arrives (Dev
+  2026-10-25). A time already due or running when AI work pauses continues
+  afterwards (D7); withdrawing permission ends it (F3).
 - A Check-in that can't finish shows unfinished with Try again, never silence
   (D1). It stays scheduled: its next time replaces it, delivered or passed
   undelivered, and pause, change or cancel work on it as on any other.
@@ -377,9 +382,10 @@ map; Page and state inventory), with later decisions winning.
   the conversation, and Today pins what matters from it. Only Today's own
   status (Still building context, Quiet, Couldn't check) is not a message
   (Dev 2026-10-26, replacing north-star.md's Today-first insights).
-- A review's findings post as one Duet message, and Today pins them. A quiet
-  day and a review that couldn't finish show on Today only, never in the
-  thread (Dev 2026-10-26).
+- What a review noticed goes out together in one Duet message, and Today pins
+  it. A quiet day and a review that couldn't finish owe you no message: Today
+  shows them, and Duet may still mention them when it judges that worth
+  saying (Dev 2026-10-26).
 - Today's Couldn't check has Retry, which runs the daily look again under the
   same consent, AI switch and Terms as any run (Dev 2026-10-26).
 - Duet's own messages wait while it is replying to you and post right after
@@ -402,6 +408,27 @@ map; Page and state inventory), with later decisions winning.
   switch, which follows your account. A shared phone alerts for whoever is
   signed in. Lock-screen text is generic (north-star.md, Notifications;
   Dev 2026-10-26).
+
+- A Check-in that can't finish posts in the thread with Try again and alerts
+  like any message, since you asked for it; the Check-in on Today shows it
+  too (Dev 2026-10-26).
+- After failing three times in a row, a Check-in pauses itself and Duet says
+  so in the thread; you resume it (Dev 2026-10-26).
+- Duet may propose an update to For my doctor as a message with Save and
+  Dismiss. Tapping Save, or replying in words that ask for it, saves it, since
+  Duet already does what you ask in conversation; For my doctor shows the same
+  proposal (Dev 2026-10-26).
+- Duet keeps no quiet hours of its own: its messages alert as they post, and
+  your phone's Focus or Do Not Disturb decides whether they sound
+  (Dev 2026-10-26).
+- Duet may take something on whenever it judges it worth doing for you, beyond
+  its three routine reviews, as Coda may for the physician (Dev 2026-10-26).
+  It runs under your consent, the AI switch, current Terms and proactive work,
+  and reaches you only as a message.
+- The graph enables Duet's intelligence and never restricts it: it adds
+  guidance, capability and structure, and bounds only access, communication
+  standards, data and consent. Duet's own choices are written as "may"
+  (Dev 2026-10-26; Dev 2026-10-23 for Coda).
 
 ## Open, to add later
 
