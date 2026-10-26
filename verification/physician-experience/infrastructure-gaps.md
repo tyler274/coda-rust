@@ -44,9 +44,10 @@ the answer, or the answer restarts with it. Typed input is never lost (N3).
 
 **Assumed away.** How often the runtime re-reads records while work runs.
 
-**Must guarantee.** Initial understanding, patient review and visit preparation
-reflect every record that arrived before they finish. Answers and asked replies
-that finish on older records say so and offer Update (decision 7).
+**Must guarantee.** Every kind of Coda's work reflects every record that
+arrived before it finishes: the product host refuses a finish while something
+that arrived is not yet taken in. A given chat answer is marked when newer
+records arrive and offers Update (decision 7).
 
 ## Records currency
 

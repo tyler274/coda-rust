@@ -67,7 +67,13 @@ Linear, then the settled docs, then mockups.
    what it read and offers one tap to update. Changes from that answer wait for
    the update. *Revised 2026-10-24:* any change in records counts (not only a
    second one), and understanding, review and visit preparation look again on
-   their own before finishing.
+   their own before finishing. *Revised 2026-10-26:* whatever Coda is working
+   on takes in what arrives meanwhile before it finishes, so nothing it
+   publishes rests on an older reading; the patient review still owns
+   responding to news. A chat answer already given is what was said: it keeps
+   the records it used, marked when newer ones arrive, with Update. This
+   replaces finishing on older records and RP:1430-1432's publishing a
+   reassessment as it is.
 8. One receipt rule for every physician command: a command changes its item only
    when accepted; a lost receipt shows as pending and never sends twice; only
    if it still can't be confirmed does the item say so, with Check again.

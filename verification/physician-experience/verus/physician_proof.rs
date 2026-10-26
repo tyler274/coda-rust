@@ -39,10 +39,6 @@ pub open spec fn fact_ask_needs_linked_message(s: State) -> bool {
 pub open spec fn fact_held_ask_needs_linked_message(s: State) -> bool {
     (s.region_coda_s_work_asked_reply_asked_reply_held_by_you == RegionCodaSWorkAskedReplyAskedReplyHeldByYou::StateHeldWithResume) ==> (s.region_patient_message_match == RegionPatientMessageMatch::StateNoCorrectionWaitingOnUndoLinkedToThePatient || s.region_patient_message_match == RegionPatientMessageMatch::StateMovedToAnotherPatientUndoShown || s.region_patient_message_match == RegionPatientMessageMatch::StateMarkedNotAPatientUndoShown)
 }
-// An asked reply offering Update exists only for a message linked to this patient.
-pub open spec fn fact_stale_ask_needs_linked_message(s: State) -> bool {
-    (s.region_coda_s_work_asked_reply_asked_reply_lifecycle == RegionCodaSWorkAskedReplyAskedReplyLifecycle::StateAskedReplyNotInHandAskedReplyFinishedOnOlderRecordsWithUpdate) ==> (s.region_patient_message_match == RegionPatientMessageMatch::StateNoCorrectionWaitingOnUndoLinkedToThePatient || s.region_patient_message_match == RegionPatientMessageMatch::StateMovedToAnotherPatientUndoShown || s.region_patient_message_match == RegionPatientMessageMatch::StateMarkedNotAPatientUndoShown)
-}
 // A stopped visit preparation never belongs to a cancelled visit.
 pub open spec fn fact_held_prep_needs_live_visit(s: State) -> bool {
     (s.region_coda_s_work_visit_preparation_visit_preparation_held_by_you == RegionCodaSWorkVisitPreparationVisitPreparationHeldByYou::StateHeldWithResume) ==> !(s.region_visit == RegionVisit::StateVisitCancelledCancelledItsTimeNotYetPassed || s.region_visit == RegionVisit::StateVisitCancelledCancelledItsTimeHasPassed)
@@ -60,7 +56,6 @@ pub open spec fn inductive(s: State) -> bool {
     && fact_held_revision_needs_editable_reply(s)
     && fact_ask_needs_linked_message(s)
     && fact_held_ask_needs_linked_message(s)
-    && fact_stale_ask_needs_linked_message(s)
     && fact_held_prep_needs_live_visit(s)
     && fact_archived_has_no_steer_or_queue_in_flight(s)
 }

@@ -48,7 +48,7 @@ stateDiagram-v2
 %% event Coda decides to take something on | by Coda | Coda judges something worth doing for the patient and takes it on (charter: Coda may).
 %% event Coda starts the {work} | by Coda | needs WOwed@{key} | reason: only the work's own state makes its events possible | Coda begins the {work} from the latest evidence it may read.
 %% event the {work} fails | by Coda's runtime | needs WRun@{key} | reason: only the work's own state makes its events possible | The {work} couldn't finish after whatever recovery the runtime does on its own; it shows Couldn't finish with Try again, and machinery never alerts you (CT:95).
-%% event Coda finishes the {work} | by Coda | needs WRun@{key}, {normal}@{key}, MLFree | reason: only the work's own state makes its events possible, a {fresh} kind whose records changed finishes on older records instead (decision 7), and work waits out a correction's Undo (PM:552-559) | The {work} ends from current records; every effect is a may: quiet in Updates, a concern, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.
+%% event Coda finishes the {work} | by Coda | needs WRun@{key}, NwNone@{key}, MLFree | reason: only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559) | The {work} ends from current records; every effect is a may: quiet in Updates, a concern, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.
 %% event Coda waits on the {work} for missing information | by Coda | needs WRun@{key} | reason: only the work's own state makes its events possible | Coda keeps the {work} for information that will arrive anyway; the patient page shows Waiting with the reason and Try again, never Today.
 %% event Coda can't restart the {work} | by Coda's runtime | needs WOwed@{key}, WFail@{key} | reason: only the work's own state makes its events possible | The {work} can't run again; anything left goes to Today with Done, otherwise Updates logs it. It never blocks later work.
 %% event try the {work} again | by you | command on the {work}: Try again, clicked while SIn | needs AClin, WFail@{key}, WWait@{key} | reason: only stalled work offers Try again | You retry the {work}; it reads the latest records and stays in its episode.
@@ -56,11 +56,11 @@ stateDiagram-v2
 %% event stop and discuss the {held} | by you | command on the {held}: Stop and discuss, clicked while SIn | needs AClin, WHand@{key} | reason: only work in hand can be stopped | You stop the {held} and open a conversation that can change what it carried.
 %% event resume the {held} | by you | command on the {held}: Resume, clicked while SIn | needs AClin, HYes@{key} | reason: only held work resumes | The held {held} runs again from a fresh read (N8).
 %% event mark the {left} done | by you | command on the {left}: Done on what's left, clicked while SIn | needs AClin, LShown@{key} | reason: only a row on Today can be marked done | You clear what the {left} left for you.
-%% event update the {fresh} with the newer records | by you | command on the {fresh}: Update, clicked while SIn | needs AClin, WDoneStale@{key} | reason: only work finished on older records offers Update | One tap reruns the {fresh} on the records that arrived after it read (decision 7).
+%% event Coda takes in what arrived in the {work} | by Coda | needs WRun@{key}, NwSeen@{key} | reason: only running work takes in what arrived while it ran | Coda notices what arrived while it worked and takes it in before it finishes, so nothing it publishes rests on an older reading; the patient review still owns responding to news (Dev 2026-10-26).
+%% event update the {fresh} with the newer records | by you | command on the {fresh}: Update, clicked while SIn | needs AClin, WDoneStale@{key} | reason: only an answer with newer records since offers Update | One tap answers again on the newer records (Dev 2026-10-26).
 %%
 %% Outcomes. Every kind of work ends with one event; what it produces is each owner's "may".
 %% events Coda finishes any work = Coda finishes the {work}
-%% event Coda finishes the {fresh} on older records | by Coda | needs WRun@{key}, NwSeen@{key}, MLFree | reason: only the work's own state makes its events possible, and work waits out a correction's Undo (PM:552-559) | Records changed under the {fresh}; Coda finishes from what it read, notes the newer records with one tap to update, and changes nothing from stale reading (decision 7). Background work instead publishes its reassessment as it is (RP:1430-1432).
 %% event open the concern | by you | needs SIn, AClin | reason: commands need an active session and clinical access | You read the concern; opening is yours alone and never clears it.
 %% event another physician opens the concern | by another physician | Someone else read it; it stays new to you.
 %% event mark the concern done | by you | command on the concern: Done, clicked while SIn | needs AClin, CNeeds | reason: Done needs clinical access and a concern that needs attention | Done clears this exact concern for every physician (Dev 2026-10-22).
@@ -849,18 +849,17 @@ stateDiagram-v2
       %% template
       %% Instance values say what each kind allows: {held} kinds can be stopped (initial
       %% understanding cannot, CT-014), {left} kinds leave a Today row when Coda can't restart them,
-      %% and {fresh} kinds offer one tap to update on newer records. {row} kinds have a row on Today when Coda can't restart them.
-%% {normal} is what an ordinary finish needs beyond running: {fresh} kinds need nothing new since
-%% they started (otherwise they finish on older records); other kinds finish from what they read.
-      %% instance understanding: work = initial understanding, normal = WRun
-      %% instance review: work = patient review, held = patient review, left = patient review, row = patient review, normal = WRun
-      %% instance followup: work = follow-up review, row = follow-up review, normal = WRun
-      %% instance weekly: work = weekly review, held = weekly review, normal = WRun
-      %% instance prep: work = visit preparation, held = visit preparation, left = visit preparation, row = visit preparation, normal = WRun
-      %% instance asked: work = asked reply, held = asked reply, left = asked reply, fresh = asked reply, row = asked reply, normal = NwNone
-      %% instance proactive: work = proactive work, held = proactive work, normal = WRun
-      %% instance answer: work = answer, held = answer, fresh = answer, normal = NwNone
-      %% instance revision: work = reply revision, held = reply revision, normal = WRun
+      %% and the {fresh} (a given chat answer) offers one tap to update when newer records arrive.
+      %% {row} kinds have a row on Today when Coda can't restart them.
+      %% instance understanding: work = initial understanding
+      %% instance review: work = patient review, held = patient review, left = patient review, row = patient review
+      %% instance followup: work = follow-up review, row = follow-up review
+      %% instance weekly: work = weekly review, held = weekly review
+      %% instance prep: work = visit preparation, held = visit preparation, left = visit preparation, row = visit preparation
+      %% instance asked: work = asked reply, held = asked reply, left = asked reply, row = asked reply
+      %% instance proactive: work = proactive work, held = proactive work
+      %% instance answer: work = answer, held = answer, fresh = answer
+      %% instance revision: work = reply revision, held = reply revision
       %% Idle, or in hand. Work in hand is active (owed or running) or stalled (waiting
       %% for an opportunity, or failed with Try again; a question for you is a finish, never a wait, CT:671). Stop, and anything that
       %% ends the work's occasion, takes work in hand back to idle wherever it is.
@@ -869,8 +868,14 @@ stateDiagram-v2
         state "{work} not in hand" as WIdle {
           [*] --> WNone
           state "No {work} owed" as WNone
-          state "{work} finished on older records, with Update" as WDoneStale
-          %% only asked, answer
+          %% A given answer is what was said: it keeps the records it used, marked when newer ones
+          %% arrive (Dev 2026-10-26, live where you work; history as it was).
+          state "{work} given" as WGiven
+          %% only answer
+          state "{work} given, newer records since, with Update" as WDoneStale
+          %% only answer
+          WGiven --> WDoneStale : news for the patient
+          %% only answer
         }
         state "{work} in hand" as WHand {
           [*] --> WActive
@@ -945,18 +950,12 @@ stateDiagram-v2
         WWait --> WOwed : try the {work} again
         WOwed --> WIdle : Coda can't restart the {work}
         WFail --> WIdle : Coda can't restart the {work}
-        WRun --> WIdle : Coda finishes the {work} [nothing new arrived]
-        %% when NwNone | reason: work that read everything there was is done
-        %% only understanding, review, prep, asked, answer
         WRun --> WIdle : Coda finishes the {work}
-        %% except understanding, review, prep, asked, answer
-        WRun --> WOwed : Coda finishes the {work} [something new arrived]
-        %% when NwSeen | reason: work that finished from what it read looks again at what arrived meanwhile (RP:1430-1432)
-        %% only understanding, review, prep
+        %% except answer
+        WRun --> WGiven : Coda finishes the {work}
+        %% only answer
         WRun --> WOwed : the correction's Undo ends
         %% except asked, revision
-        WRun --> WDoneStale : Coda finishes the {fresh} on older records
-        %% only asked, answer
         WHand --> WIdle : you stop the {held}
         %% except understanding, followup
         WHand --> WIdle : you stop the follow-up
@@ -971,7 +970,7 @@ stateDiagram-v2
         %% when FHeld | reason: only a held follow-up resumes its review
         %% only followup
         WDoneStale --> WOwed : update the {fresh} with the newer records
-        %% only asked, answer
+        %% only answer
         WHand --> WIdle : cancel the follow-up
         %% only followup
         WHand --> WIdle : complete the follow-up
@@ -988,18 +987,12 @@ stateDiagram-v2
         %% only revision
         WHand --> WIdle : the correction's Undo ends
         %% only asked, revision
-        WDoneStale --> WNone : the correction's Undo ends
-        %% only asked
         WHand --> WIdle : the disconnect completes
         %% only asked, revision
-        WDoneStale --> WNone : the disconnect completes
-        %% only asked
         WHand --> WIdle : mark no reply needed
         %% only asked, revision
         WHand --> WIdle : Coda finishes the patient review [a linked message, no reply open] / may propose a reply
         %% when MLLinked, MRNone | reason: a reply the review proposes first answers the ask (px.md:167)
-        %% only asked
-        WDoneStale --> WNone : mark no reply needed
         %% only asked
         WHand --> WIdle : Coda finishes the patient review [the practice replied] / may close the reply as answered
         %% when PrShown, MRReady, MRNewMsg | reason: the reply closes as answered only while open and after the practice replied
@@ -1036,20 +1029,18 @@ stateDiagram-v2
         %% only prep
       }
       --
-      %% Coda works from what it read. Something new arriving meanwhile never stops it. News is the
-      %% patient review's to take up (or the initial understanding's, before one exists), so those two
-      %% look again once they finish, and so does visit preparation, so a briefing reflects what
-      %% arrived before the visit; a {fresh} kind finishes with Update (decision 7); other work leaves
-      %% news to the review. How often the runtime retries or re-reads is not the graph's
-      %% (Dev 2026-10-24). Each start reads afresh, so starting clears the flag.
+      %% Whatever Coda is working on, it takes in what arrives meanwhile before it finishes, so nothing
+      %% it publishes rests on an older reading (Dev 2026-10-26). Responding to news stays the patient
+      %% review's (or the initial understanding's, before one exists). How the runtime notices and
+      %% re-reads is not the graph's (Dev 2026-10-24). Each start reads afresh, so starting clears it.
       state "{work}: news while working" as News {
-        %% only understanding, review, prep, asked, answer
         [*] --> NwNone
         state "Nothing new since it started" as NwNone
         state "Something new arrived since it started" as NwSeen
         NwNone --> NwSeen : news for the patient [working]
         %% when WRun | reason: only news that arrives while the work runs is news it missed
         NwSeen --> NwNone : Coda starts the {work}
+        NwSeen --> NwNone : Coda takes in what arrived in the {work}
       }
       --
       %% Stop holds the work with Resume where it was stopped. New causes still make new work owed;

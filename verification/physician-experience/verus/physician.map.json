@@ -1,9 +1,9 @@
 {
   "format": 1,
   "module": "physician",
-  "chart_sha256": "353b681271d21a02fcfcb982ad66e480d01c2605a1b5cd8d4a5ad0ad7b5b9388",
-  "generated_sha256": "7b9a68d4c1afe4ba4b259f7e692c30942b6c0eaa308a37d1f95f94948dbdacba",
-  "steps_sha256": "2b9046ea391e3db9b388f375cee228abc332c19f5fc8e3dc8826b78634a2bce2",
+  "chart_sha256": "b34bf920b298838d7dd532bd127e289f2e99a46a616b7f3fb16a71aa53b2c820",
+  "generated_sha256": "8caade65ef9ce23fb9689f972cdbfeb887eae65832d423c5c75f5663dbb3ea13",
+  "steps_sha256": "4dfdf98870c5909940c110107efbd77845ed99ba538294a36939431dacd9fbd1",
   "semantics": "pstack broadcast events; pre-state guards; nondeterministic choices; stuttering allowed; parallel parts follow their parent's post-state, and exit wins",
   "regions": [
     {
@@ -1065,16 +1065,6 @@
         {
           "caption": "Couldn't confirm Done on what's left on the asked reply, with Check again",
           "variant": "RegionPhysicianSessionSignedInYourCommandOnTheAskedReply::StateCouldnTConfirmDoneOnWhatSLeftOnTheAskedReplyWithCheckAgain",
-          "initial": false
-        },
-        {
-          "caption": "Update on the asked reply: sending; other commands on it wait",
-          "variant": "RegionPhysicianSessionSignedInYourCommandOnTheAskedReply::StateUpdateOnTheAskedReplySendingOtherCommandsOnItWait",
-          "initial": false
-        },
-        {
-          "caption": "Couldn't confirm Update on the asked reply, with Check again",
-          "variant": "RegionPhysicianSessionSignedInYourCommandOnTheAskedReply::StateCouldnTConfirmUpdateOnTheAskedReplyWithCheckAgain",
           "initial": false
         }
       ]
@@ -2329,6 +2319,27 @@
       ]
     },
     {
+      "caption": "Coda's work: follow-up review/follow-up review: news while working",
+      "field": "region_coda_s_work_follow_up_review_follow_up_review_news_while_working",
+      "type": "RegionCodaSWorkFollowUpReviewFollowUpReviewNewsWhileWorking",
+      "instance": {
+        "template": "Work",
+        "key": "followup"
+      },
+      "states": [
+        {
+          "caption": "Nothing new since it started",
+          "variant": "RegionCodaSWorkFollowUpReviewFollowUpReviewNewsWhileWorking::StateNothingNewSinceItStarted",
+          "initial": true
+        },
+        {
+          "caption": "Something new arrived since it started",
+          "variant": "RegionCodaSWorkFollowUpReviewFollowUpReviewNewsWhileWorking::StateSomethingNewArrivedSinceItStarted",
+          "initial": false
+        }
+      ]
+    },
+    {
       "caption": "Coda's work: follow-up review/follow-up review: left for you",
       "field": "region_coda_s_work_follow_up_review_follow_up_review_left_for_you",
       "type": "RegionCodaSWorkFollowUpReviewFollowUpReviewLeftForYou",
@@ -2386,6 +2397,27 @@
         {
           "caption": "weekly review in hand.weekly review stalled.weekly review couldn't finish, with Try again",
           "variant": "RegionCodaSWorkWeeklyReviewWeeklyReviewLifecycle::StateWeeklyReviewInHandWeeklyReviewStalledWeeklyReviewCouldnTFinishWithTryAgain",
+          "initial": false
+        }
+      ]
+    },
+    {
+      "caption": "Coda's work: weekly review/weekly review: news while working",
+      "field": "region_coda_s_work_weekly_review_weekly_review_news_while_working",
+      "type": "RegionCodaSWorkWeeklyReviewWeeklyReviewNewsWhileWorking",
+      "instance": {
+        "template": "Work",
+        "key": "weekly"
+      },
+      "states": [
+        {
+          "caption": "Nothing new since it started",
+          "variant": "RegionCodaSWorkWeeklyReviewWeeklyReviewNewsWhileWorking::StateNothingNewSinceItStarted",
+          "initial": true
+        },
+        {
+          "caption": "Something new arrived since it started",
+          "variant": "RegionCodaSWorkWeeklyReviewWeeklyReviewNewsWhileWorking::StateSomethingNewArrivedSinceItStarted",
           "initial": false
         }
       ]
@@ -2530,11 +2562,6 @@
           "initial": true
         },
         {
-          "caption": "asked reply not in hand.asked reply finished on older records, with Update",
-          "variant": "RegionCodaSWorkAskedReplyAskedReplyLifecycle::StateAskedReplyNotInHandAskedReplyFinishedOnOlderRecordsWithUpdate",
-          "initial": false
-        },
-        {
           "caption": "asked reply in hand.asked reply active.asked reply owed, waiting to start",
           "variant": "RegionCodaSWorkAskedReplyAskedReplyLifecycle::StateAskedReplyInHandAskedReplyActiveAskedReplyOwedWaitingToStart",
           "initial": false
@@ -2661,6 +2688,27 @@
       ]
     },
     {
+      "caption": "Coda's work: proactive work/proactive work: news while working",
+      "field": "region_coda_s_work_proactive_work_proactive_work_news_while_working",
+      "type": "RegionCodaSWorkProactiveWorkProactiveWorkNewsWhileWorking",
+      "instance": {
+        "template": "Work",
+        "key": "proactive"
+      },
+      "states": [
+        {
+          "caption": "Nothing new since it started",
+          "variant": "RegionCodaSWorkProactiveWorkProactiveWorkNewsWhileWorking::StateNothingNewSinceItStarted",
+          "initial": true
+        },
+        {
+          "caption": "Something new arrived since it started",
+          "variant": "RegionCodaSWorkProactiveWorkProactiveWorkNewsWhileWorking::StateSomethingNewArrivedSinceItStarted",
+          "initial": false
+        }
+      ]
+    },
+    {
       "caption": "Coda's work: proactive work/proactive work: held by you",
       "field": "region_coda_s_work_proactive_work_proactive_work_held_by_you",
       "type": "RegionCodaSWorkProactiveWorkProactiveWorkHeldByYou",
@@ -2696,8 +2744,13 @@
           "initial": true
         },
         {
-          "caption": "answer not in hand.answer finished on older records, with Update",
-          "variant": "RegionCodaSWorkAnswerAnswerLifecycle::StateAnswerNotInHandAnswerFinishedOnOlderRecordsWithUpdate",
+          "caption": "answer not in hand.answer given",
+          "variant": "RegionCodaSWorkAnswerAnswerLifecycle::StateAnswerNotInHandAnswerGiven",
+          "initial": false
+        },
+        {
+          "caption": "answer not in hand.answer given, newer records since, with Update",
+          "variant": "RegionCodaSWorkAnswerAnswerLifecycle::StateAnswerNotInHandAnswerGivenNewerRecordsSinceWithUpdate",
           "initial": false
         },
         {
@@ -2796,6 +2849,27 @@
         {
           "caption": "reply revision in hand.reply revision stalled.reply revision couldn't finish, with Try again",
           "variant": "RegionCodaSWorkReplyRevisionReplyRevisionLifecycle::StateReplyRevisionInHandReplyRevisionStalledReplyRevisionCouldnTFinishWithTryAgain",
+          "initial": false
+        }
+      ]
+    },
+    {
+      "caption": "Coda's work: reply revision/reply revision: news while working",
+      "field": "region_coda_s_work_reply_revision_reply_revision_news_while_working",
+      "type": "RegionCodaSWorkReplyRevisionReplyRevisionNewsWhileWorking",
+      "instance": {
+        "template": "Work",
+        "key": "revision"
+      },
+      "states": [
+        {
+          "caption": "Nothing new since it started",
+          "variant": "RegionCodaSWorkReplyRevisionReplyRevisionNewsWhileWorking::StateNothingNewSinceItStarted",
+          "initial": true
+        },
+        {
+          "caption": "Something new arrived since it started",
+          "variant": "RegionCodaSWorkReplyRevisionReplyRevisionNewsWhileWorking::StateSomethingNewArrivedSinceItStarted",
           "initial": false
         }
       ]
@@ -7608,7 +7682,8 @@
             "answer in hand.answer stalled.answer couldn't finish, with Try again",
             "answer in hand.answer stalled.answer waiting for the next opportunity, with Try again",
             "answer not in hand.No answer owed",
-            "answer not in hand.answer finished on older records, with Update"
+            "answer not in hand.answer given",
+            "answer not in hand.answer given, newer records since, with Update"
           ]
         },
         "reason": "a message needs clinical access, and while Coda answers it steers or waits as Send next instead; only written text sends; and an answer comes only for a command in flight"
@@ -7725,7 +7800,13 @@
         },
         {
           "region": "Coda's work: answer/answer: lifecycle",
-          "from": "answer not in hand.answer finished on older records, with Update",
+          "from": "answer not in hand.answer given",
+          "to": "answer in hand.answer active.answer owed, waiting to start",
+          "guard": null
+        },
+        {
+          "region": "Coda's work: answer/answer: lifecycle",
+          "from": "answer not in hand.answer given, newer records since, with Update",
           "to": "answer in hand.answer active.answer owed, waiting to start",
           "guard": null
         },
@@ -14277,20 +14358,6 @@
           }
         },
         {
-          "region": "Coda's work: asked reply/asked reply: lifecycle",
-          "from": "asked reply not in hand.asked reply finished on older records, with Update",
-          "to": "asked reply in hand.asked reply active.asked reply owed, waiting to start",
-          "guard": {
-            "not": false,
-            "states": {
-              "Coda's work: asked reply/asked reply: held by you": [
-                "Held with Resume"
-              ]
-            },
-            "reason": "only held work resumes"
-          }
-        },
-        {
           "region": "Coda's work: asked reply/asked reply: held by you",
           "from": "Held with Resume",
           "to": "Not held",
@@ -14544,162 +14611,6 @@
           "region": "Physician session/Signed in/Your command on the asked reply",
           "from": "Couldn't confirm Done on what's left on the asked reply, with Check again",
           "to": "Done on what's left on the asked reply: sending; other commands on it wait",
-          "guard": null
-        }
-      ]
-    },
-    {
-      "label": "update the asked reply with the newer records",
-      "function": "event_update_the_asked_reply_with_the_newer_records",
-      "cause": "you",
-      "intent": "One tap reruns the asked reply on the records that arrived after it read (decision 7).",
-      "needs": {
-        "not": false,
-        "states": {
-          "Access to the patient": [
-            "Clinical access"
-          ],
-          "Coda's work: asked reply/asked reply: lifecycle": [
-            "asked reply not in hand.asked reply finished on older records, with Update"
-          ]
-        },
-        "reason": "only work finished on older records offers Update"
-      },
-      "family": "update the {fresh} with the newer records",
-      "transitions": [
-        {
-          "region": "Physician session/Signed in/Your command on the asked reply",
-          "from": "No command on the asked reply in flight",
-          "to": "Update on the asked reply: sending; other commands on it wait",
-          "guard": {
-            "not": false,
-            "states": {
-              "Physician session/Signed in/Sign-in state": [
-                "Signed in to the practice"
-              ]
-            },
-            "reason": "the control shows only while the client's own state allows it"
-          }
-        }
-      ]
-    },
-    {
-      "label": "your Update on the asked reply goes through",
-      "function": "event_your_update_on_the_asked_reply_goes_through",
-      "cause": "the system",
-      "intent": "Accepted while the command is still allowed, directly or after the same request is resent; only now does the asked reply change.",
-      "needs": {
-        "not": false,
-        "states": {
-          "Physician session/Signed in/Your command on the asked reply": [
-            "Update on the asked reply: sending; other commands on it wait"
-          ],
-          "Access to the patient": [
-            "Clinical access"
-          ],
-          "Coda's work: asked reply/asked reply: lifecycle": [
-            "asked reply not in hand.asked reply finished on older records, with Update"
-          ]
-        },
-        "reason": "only work finished on older records offers Update; and an answer comes only for a command in flight"
-      },
-      "accepts": "update the asked reply with the newer records",
-      "transitions": [
-        {
-          "region": "Physician session/Signed in/Your command on the asked reply",
-          "from": "Update on the asked reply: sending; other commands on it wait",
-          "to": "No command on the asked reply in flight",
-          "guard": null
-        },
-        {
-          "region": "Coda's work: asked reply/asked reply: lifecycle",
-          "from": "asked reply not in hand.asked reply finished on older records, with Update",
-          "to": "asked reply in hand.asked reply active.asked reply owed, waiting to start",
-          "guard": null
-        }
-      ]
-    },
-    {
-      "label": "your Update on the asked reply is refused",
-      "function": "event_your_update_on_the_asked_reply_is_refused",
-      "cause": "the system",
-      "intent": "The asked reply no longer allows it when it arrives; nothing changes, and the view refreshes and says why.",
-      "needs": {
-        "not": false,
-        "states": {
-          "Physician session/Signed in/Your command on the asked reply": [
-            "Update on the asked reply: sending; other commands on it wait"
-          ]
-        },
-        "reason": "an answer comes only for a command in flight"
-      },
-      "transitions": [
-        {
-          "region": "Physician session/Signed in/Your command on the asked reply",
-          "from": "Update on the asked reply: sending; other commands on it wait",
-          "to": "No command on the asked reply in flight",
-          "guard": null,
-          "unless": [
-            [
-              {
-                "not": false,
-                "states": {
-                  "Access to the patient": [
-                    "Clinical access"
-                  ],
-                  "Coda's work: asked reply/asked reply: lifecycle": [
-                    "asked reply not in hand.asked reply finished on older records, with Update"
-                  ]
-                },
-                "reason": "only work finished on older records offers Update"
-              }
-            ]
-          ]
-        }
-      ]
-    },
-    {
-      "label": "your Update on the asked reply can't be confirmed",
-      "function": "event_your_update_on_the_asked_reply_can_t_be_confirmed",
-      "cause": "the client",
-      "intent": "The same request was resent and still has no answer; you are asked, with Check again.",
-      "needs": {
-        "not": false,
-        "states": {
-          "Physician session/Signed in/Your command on the asked reply": [
-            "Update on the asked reply: sending; other commands on it wait"
-          ]
-        },
-        "reason": "an answer comes only for a command in flight"
-      },
-      "transitions": [
-        {
-          "region": "Physician session/Signed in/Your command on the asked reply",
-          "from": "Update on the asked reply: sending; other commands on it wait",
-          "to": "Couldn't confirm Update on the asked reply, with Check again",
-          "guard": null
-        }
-      ]
-    },
-    {
-      "label": "check your Update on the asked reply again",
-      "function": "event_check_your_update_on_the_asked_reply_again",
-      "cause": "you",
-      "intent": "The same request is resent; it can never be applied twice.",
-      "needs": {
-        "not": false,
-        "states": {
-          "Physician session/Signed in/Your command on the asked reply": [
-            "Couldn't confirm Update on the asked reply, with Check again"
-          ]
-        },
-        "reason": "Check again shows only when an answer couldn't be confirmed"
-      },
-      "transitions": [
-        {
-          "region": "Physician session/Signed in/Your command on the asked reply",
-          "from": "Couldn't confirm Update on the asked reply, with Check again",
-          "to": "Update on the asked reply: sending; other commands on it wait",
           "guard": null
         }
       ]
@@ -15997,7 +15908,21 @@
         },
         {
           "region": "Coda's work: answer/answer: lifecycle",
-          "from": "answer not in hand.answer finished on older records, with Update",
+          "from": "answer not in hand.answer given",
+          "to": "answer in hand.answer active.answer owed, waiting to start",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: answer/answer: held by you": [
+                "Held with Resume"
+              ]
+            },
+            "reason": "only held work resumes"
+          }
+        },
+        {
+          "region": "Coda's work: answer/answer: lifecycle",
+          "from": "answer not in hand.answer given, newer records since, with Update",
           "to": "answer in hand.answer active.answer owed, waiting to start",
           "guard": {
             "not": false,
@@ -16112,7 +16037,7 @@
       "label": "update the answer with the newer records",
       "function": "event_update_the_answer_with_the_newer_records",
       "cause": "you",
-      "intent": "One tap reruns the answer on the records that arrived after it read (decision 7).",
+      "intent": "One tap answers again on the newer records (Dev 2026-10-26).",
       "needs": {
         "not": false,
         "states": {
@@ -16120,10 +16045,10 @@
             "Clinical access"
           ],
           "Coda's work: answer/answer: lifecycle": [
-            "answer not in hand.answer finished on older records, with Update"
+            "answer not in hand.answer given, newer records since, with Update"
           ]
         },
-        "reason": "only work finished on older records offers Update"
+        "reason": "only an answer with newer records since offers Update"
       },
       "family": "update the {fresh} with the newer records",
       "transitions": [
@@ -16158,10 +16083,10 @@
             "Clinical access"
           ],
           "Coda's work: answer/answer: lifecycle": [
-            "answer not in hand.answer finished on older records, with Update"
+            "answer not in hand.answer given, newer records since, with Update"
           ]
         },
-        "reason": "only work finished on older records offers Update; and an answer comes only for a command in flight"
+        "reason": "only an answer with newer records since offers Update; and an answer comes only for a command in flight"
       },
       "accepts": "update the answer with the newer records",
       "transitions": [
@@ -16173,7 +16098,7 @@
         },
         {
           "region": "Coda's work: answer/answer: lifecycle",
-          "from": "answer not in hand.answer finished on older records, with Update",
+          "from": "answer not in hand.answer given, newer records since, with Update",
           "to": "answer in hand.answer active.answer owed, waiting to start",
           "guard": null
         },
@@ -16214,10 +16139,10 @@
                     "Clinical access"
                   ],
                   "Coda's work: answer/answer: lifecycle": [
-                    "answer not in hand.answer finished on older records, with Update"
+                    "answer not in hand.answer given, newer records since, with Update"
                   ]
                 },
-                "reason": "only work finished on older records offers Update"
+                "reason": "only an answer with newer records since offers Update"
               }
             ]
           ]
@@ -18801,7 +18726,8 @@
             "answer in hand.answer stalled.answer couldn't finish, with Try again",
             "answer in hand.answer stalled.answer waiting for the next opportunity, with Try again",
             "answer not in hand.No answer owed",
-            "answer not in hand.answer finished on older records, with Update"
+            "answer not in hand.answer given",
+            "answer not in hand.answer given, newer records since, with Update"
           ]
         },
         "reason": "a message needs clinical access, and while Coda answers it steers or waits as Send next instead; only written text sends"
@@ -18865,7 +18791,8 @@
                     "answer in hand.answer stalled.answer couldn't finish, with Try again",
                     "answer in hand.answer stalled.answer waiting for the next opportunity, with Try again",
                     "answer not in hand.No answer owed",
-                    "answer not in hand.answer finished on older records, with Update"
+                    "answer not in hand.answer given",
+                    "answer not in hand.answer given, newer records since, with Update"
                   ]
                 },
                 "reason": "a message needs clinical access, and while Coda answers it steers or waits as Send next instead; only written text sends"
@@ -19058,7 +18985,13 @@
         },
         {
           "region": "Coda's work: answer/answer: lifecycle",
-          "from": "answer not in hand.answer finished on older records, with Update",
+          "from": "answer not in hand.answer given",
+          "to": "answer in hand.answer active.answer owed, waiting to start",
+          "guard": null
+        },
+        {
+          "region": "Coda's work: answer/answer: lifecycle",
+          "from": "answer not in hand.answer given, newer records since, with Update",
           "to": "answer in hand.answer active.answer owed, waiting to start",
           "guard": null
         },
@@ -19308,7 +19241,13 @@
         },
         {
           "region": "Coda's work: answer/answer: lifecycle",
-          "from": "answer not in hand.answer finished on older records, with Update",
+          "from": "answer not in hand.answer given",
+          "to": "answer in hand.answer active.answer owed, waiting to start",
+          "guard": null
+        },
+        {
+          "region": "Coda's work: answer/answer: lifecycle",
+          "from": "answer not in hand.answer given, newer records since, with Update",
           "to": "answer in hand.answer active.answer owed, waiting to start",
           "guard": null
         },
@@ -19467,7 +19406,8 @@
           "Coda's work: answer/answer: lifecycle": [
             "answer in hand.answer stalled.answer couldn't finish, with Try again",
             "answer not in hand.No answer owed",
-            "answer not in hand.answer finished on older records, with Update"
+            "answer not in hand.answer given",
+            "answer not in hand.answer given, newer records since, with Update"
           ],
           "Queued messages": [
             "Nothing queued"
@@ -19512,7 +19452,8 @@
           "Coda's work: answer/answer: lifecycle": [
             "answer in hand.answer stalled.answer couldn't finish, with Try again",
             "answer not in hand.No answer owed",
-            "answer not in hand.answer finished on older records, with Update"
+            "answer not in hand.answer given",
+            "answer not in hand.answer given, newer records since, with Update"
           ],
           "Queued messages": [
             "Nothing queued"
@@ -19582,7 +19523,8 @@
                   "Coda's work: answer/answer: lifecycle": [
                     "answer in hand.answer stalled.answer couldn't finish, with Try again",
                     "answer not in hand.No answer owed",
-                    "answer not in hand.answer finished on older records, with Update"
+                    "answer not in hand.answer given",
+                    "answer not in hand.answer given, newer records since, with Update"
                   ],
                   "Queued messages": [
                     "Nothing queued"
@@ -20939,7 +20881,8 @@
             "answer in hand.answer stalled.answer couldn't finish, with Try again",
             "answer in hand.answer stalled.answer waiting for the next opportunity, with Try again",
             "answer not in hand.No answer owed",
-            "answer not in hand.answer finished on older records, with Update"
+            "answer not in hand.answer given",
+            "answer not in hand.answer given, newer records since, with Update"
           ]
         },
         "reason": "a queued message is sent at once only while no answer is in progress, as after Stop; during an answer it waits its turn (A1 revised; runtime-protocol.md:1515)"
@@ -20982,7 +20925,8 @@
             "answer in hand.answer stalled.answer couldn't finish, with Try again",
             "answer in hand.answer stalled.answer waiting for the next opportunity, with Try again",
             "answer not in hand.No answer owed",
-            "answer not in hand.answer finished on older records, with Update"
+            "answer not in hand.answer given",
+            "answer not in hand.answer given, newer records since, with Update"
           ]
         },
         "reason": "a queued message is sent at once only while no answer is in progress, as after Stop; during an answer it waits its turn (A1 revised; runtime-protocol.md:1515); and an answer comes only for a command in flight"
@@ -21063,7 +21007,13 @@
         },
         {
           "region": "Coda's work: answer/answer: lifecycle",
-          "from": "answer not in hand.answer finished on older records, with Update",
+          "from": "answer not in hand.answer given",
+          "to": "answer in hand.answer active.answer owed, waiting to start",
+          "guard": null
+        },
+        {
+          "region": "Coda's work: answer/answer: lifecycle",
+          "from": "answer not in hand.answer given, newer records since, with Update",
           "to": "answer in hand.answer active.answer owed, waiting to start",
           "guard": null
         },
@@ -21124,7 +21074,8 @@
                     "answer in hand.answer stalled.answer couldn't finish, with Try again",
                     "answer in hand.answer stalled.answer waiting for the next opportunity, with Try again",
                     "answer not in hand.No answer owed",
-                    "answer not in hand.answer finished on older records, with Update"
+                    "answer not in hand.answer given",
+                    "answer not in hand.answer given, newer records since, with Update"
                   ]
                 },
                 "reason": "a queued message is sent at once only while no answer is in progress, as after Stop; during an answer it waits its turn (A1 revised; runtime-protocol.md:1515)"
@@ -22025,6 +21976,34 @@
           }
         },
         {
+          "region": "Coda's work: follow-up review/follow-up review: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: follow-up review/follow-up review: lifecycle": [
+                "follow-up review in hand.follow-up review active.Coda is working on the follow-up review"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: weekly review/weekly review: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: weekly review/weekly review: lifecycle": [
+                "weekly review in hand.weekly review active.Coda is working on the weekly review"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
           "region": "Coda's work: visit preparation/visit preparation: news while working",
           "from": "Nothing new since it started",
           "to": "Something new arrived since it started",
@@ -22053,6 +22032,26 @@
           }
         },
         {
+          "region": "Coda's work: proactive work/proactive work: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: proactive work/proactive work: lifecycle": [
+                "proactive work in hand.proactive work active.Coda is working on the proactive work"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: answer/answer: lifecycle",
+          "from": "answer not in hand.answer given",
+          "to": "answer not in hand.answer given, newer records since, with Update",
+          "guard": null
+        },
+        {
           "region": "Coda's work: answer/answer: news while working",
           "from": "Nothing new since it started",
           "to": "Something new arrived since it started",
@@ -22061,6 +22060,20 @@
             "states": {
               "Coda's work: answer/answer: lifecycle": [
                 "answer in hand.answer active.Coda is working on the answer"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: reply revision/reply revision: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: reply revision/reply revision: lifecycle": [
+                "reply revision in hand.reply revision active.Coda is working on the reply revision"
               ]
             },
             "reason": "only news that arrives while the work runs is news it missed"
@@ -22668,6 +22681,34 @@
           }
         },
         {
+          "region": "Coda's work: follow-up review/follow-up review: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: follow-up review/follow-up review: lifecycle": [
+                "follow-up review in hand.follow-up review active.Coda is working on the follow-up review"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: weekly review/weekly review: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: weekly review/weekly review: lifecycle": [
+                "weekly review in hand.weekly review active.Coda is working on the weekly review"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
           "region": "Coda's work: visit preparation/visit preparation: news while working",
           "from": "Nothing new since it started",
           "to": "Something new arrived since it started",
@@ -22696,6 +22737,26 @@
           }
         },
         {
+          "region": "Coda's work: proactive work/proactive work: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: proactive work/proactive work: lifecycle": [
+                "proactive work in hand.proactive work active.Coda is working on the proactive work"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: answer/answer: lifecycle",
+          "from": "answer not in hand.answer given",
+          "to": "answer not in hand.answer given, newer records since, with Update",
+          "guard": null
+        },
+        {
           "region": "Coda's work: answer/answer: news while working",
           "from": "Nothing new since it started",
           "to": "Something new arrived since it started",
@@ -22704,6 +22765,20 @@
             "states": {
               "Coda's work: answer/answer: lifecycle": [
                 "answer in hand.answer active.Coda is working on the answer"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: reply revision/reply revision: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: reply revision/reply revision: lifecycle": [
+                "reply revision in hand.reply revision active.Coda is working on the reply revision"
               ]
             },
             "reason": "only news that arrives while the work runs is news it missed"
@@ -23520,12 +23595,6 @@
           "from": "asked reply not in hand.No asked reply owed",
           "to": "asked reply in hand.asked reply active.asked reply owed, waiting to start",
           "guard": null
-        },
-        {
-          "region": "Coda's work: asked reply/asked reply: lifecycle",
-          "from": "asked reply not in hand.asked reply finished on older records, with Update",
-          "to": "asked reply in hand.asked reply active.asked reply owed, waiting to start",
-          "guard": null
         }
       ]
     },
@@ -23693,12 +23762,6 @@
           "region": "Physician session/Signed in/Your command on the reply",
           "from": "No reply needed on the reply: sending; other commands on it wait",
           "to": "No command on the reply in flight",
-          "guard": null
-        },
-        {
-          "region": "Coda's work: asked reply/asked reply: lifecycle",
-          "from": "asked reply not in hand.asked reply finished on older records, with Update",
-          "to": "asked reply not in hand.No asked reply owed",
           "guard": null
         },
         {
@@ -24906,6 +24969,34 @@
           }
         },
         {
+          "region": "Coda's work: follow-up review/follow-up review: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: follow-up review/follow-up review: lifecycle": [
+                "follow-up review in hand.follow-up review active.Coda is working on the follow-up review"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: weekly review/weekly review: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: weekly review/weekly review: lifecycle": [
+                "weekly review in hand.weekly review active.Coda is working on the weekly review"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
           "region": "Coda's work: visit preparation/visit preparation: news while working",
           "from": "Nothing new since it started",
           "to": "Something new arrived since it started",
@@ -24934,6 +25025,26 @@
           }
         },
         {
+          "region": "Coda's work: proactive work/proactive work: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: proactive work/proactive work: lifecycle": [
+                "proactive work in hand.proactive work active.Coda is working on the proactive work"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: answer/answer: lifecycle",
+          "from": "answer not in hand.answer given",
+          "to": "answer not in hand.answer given, newer records since, with Update",
+          "guard": null
+        },
+        {
           "region": "Coda's work: answer/answer: news while working",
           "from": "Nothing new since it started",
           "to": "Something new arrived since it started",
@@ -24942,6 +25053,20 @@
             "states": {
               "Coda's work: answer/answer: lifecycle": [
                 "answer in hand.answer active.Coda is working on the answer"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: reply revision/reply revision: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: reply revision/reply revision: lifecycle": [
+                "reply revision in hand.reply revision active.Coda is working on the reply revision"
               ]
             },
             "reason": "only news that arrives while the work runs is news it missed"
@@ -25322,6 +25447,34 @@
           }
         },
         {
+          "region": "Coda's work: follow-up review/follow-up review: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: follow-up review/follow-up review: lifecycle": [
+                "follow-up review in hand.follow-up review active.Coda is working on the follow-up review"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: weekly review/weekly review: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: weekly review/weekly review: lifecycle": [
+                "weekly review in hand.weekly review active.Coda is working on the weekly review"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
           "region": "Coda's work: visit preparation/visit preparation: news while working",
           "from": "Nothing new since it started",
           "to": "Something new arrived since it started",
@@ -25350,6 +25503,26 @@
           }
         },
         {
+          "region": "Coda's work: proactive work/proactive work: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: proactive work/proactive work: lifecycle": [
+                "proactive work in hand.proactive work active.Coda is working on the proactive work"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: answer/answer: lifecycle",
+          "from": "answer not in hand.answer given",
+          "to": "answer not in hand.answer given, newer records since, with Update",
+          "guard": null
+        },
+        {
           "region": "Coda's work: answer/answer: news while working",
           "from": "Nothing new since it started",
           "to": "Something new arrived since it started",
@@ -25358,6 +25531,20 @@
             "states": {
               "Coda's work: answer/answer: lifecycle": [
                 "answer in hand.answer active.Coda is working on the answer"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: reply revision/reply revision: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: reply revision/reply revision: lifecycle": [
+                "reply revision in hand.reply revision active.Coda is working on the reply revision"
               ]
             },
             "reason": "only news that arrives while the work runs is news it missed"
@@ -25567,6 +25754,34 @@
           }
         },
         {
+          "region": "Coda's work: follow-up review/follow-up review: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: follow-up review/follow-up review: lifecycle": [
+                "follow-up review in hand.follow-up review active.Coda is working on the follow-up review"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: weekly review/weekly review: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: weekly review/weekly review: lifecycle": [
+                "weekly review in hand.weekly review active.Coda is working on the weekly review"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
           "region": "Coda's work: visit preparation/visit preparation: news while working",
           "from": "Nothing new since it started",
           "to": "Something new arrived since it started",
@@ -25595,6 +25810,26 @@
           }
         },
         {
+          "region": "Coda's work: proactive work/proactive work: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: proactive work/proactive work: lifecycle": [
+                "proactive work in hand.proactive work active.Coda is working on the proactive work"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: answer/answer: lifecycle",
+          "from": "answer not in hand.answer given",
+          "to": "answer not in hand.answer given, newer records since, with Update",
+          "guard": null
+        },
+        {
           "region": "Coda's work: answer/answer: news while working",
           "from": "Nothing new since it started",
           "to": "Something new arrived since it started",
@@ -25603,6 +25838,20 @@
             "states": {
               "Coda's work: answer/answer: lifecycle": [
                 "answer in hand.answer active.Coda is working on the answer"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: reply revision/reply revision: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: reply revision/reply revision: lifecycle": [
+                "reply revision in hand.reply revision active.Coda is working on the reply revision"
               ]
             },
             "reason": "only news that arrives while the work runs is news it missed"
@@ -25768,6 +26017,34 @@
           }
         },
         {
+          "region": "Coda's work: follow-up review/follow-up review: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: follow-up review/follow-up review: lifecycle": [
+                "follow-up review in hand.follow-up review active.Coda is working on the follow-up review"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: weekly review/weekly review: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: weekly review/weekly review: lifecycle": [
+                "weekly review in hand.weekly review active.Coda is working on the weekly review"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
           "region": "Coda's work: visit preparation/visit preparation: news while working",
           "from": "Nothing new since it started",
           "to": "Something new arrived since it started",
@@ -25796,6 +26073,26 @@
           }
         },
         {
+          "region": "Coda's work: proactive work/proactive work: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: proactive work/proactive work: lifecycle": [
+                "proactive work in hand.proactive work active.Coda is working on the proactive work"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: answer/answer: lifecycle",
+          "from": "answer not in hand.answer given",
+          "to": "answer not in hand.answer given, newer records since, with Update",
+          "guard": null
+        },
+        {
           "region": "Coda's work: answer/answer: news while working",
           "from": "Nothing new since it started",
           "to": "Something new arrived since it started",
@@ -25804,6 +26101,20 @@
             "states": {
               "Coda's work: answer/answer: lifecycle": [
                 "answer in hand.answer active.Coda is working on the answer"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: reply revision/reply revision: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: reply revision/reply revision: lifecycle": [
+                "reply revision in hand.reply revision active.Coda is working on the reply revision"
               ]
             },
             "reason": "only news that arrives while the work runs is news it missed"
@@ -25855,6 +26166,9 @@
           "Coda's work: initial understanding/initial understanding: lifecycle": [
             "initial understanding in hand.initial understanding active.Coda is working on the initial understanding"
           ],
+          "Coda's work: initial understanding/initial understanding: news while working": [
+            "Nothing new since it started"
+          ],
           "Patient message: match": [
             "No correction waiting on Undo.Another patient's message",
             "No correction waiting on Undo.Coda is matching the message",
@@ -25865,7 +26179,7 @@
             "No correction waiting on Undo.Not a patient, until the sender writes again"
           ]
         },
-        "reason": "only the work's own state makes its events possible, a {fresh} kind whose records changed finishes on older records instead (decision 7), and work waits out a correction's Undo (PM:552-559)"
+        "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
       },
       "family": "Coda finishes the {work}",
       "shared_effects": [
@@ -25882,29 +26196,7 @@
           "region": "Coda's work: initial understanding/initial understanding: lifecycle",
           "from": "initial understanding in hand.initial understanding active.Coda is working on the initial understanding",
           "to": "initial understanding not in hand.No initial understanding owed",
-          "guard": {
-            "not": false,
-            "states": {
-              "Coda's work: initial understanding/initial understanding: news while working": [
-                "Nothing new since it started"
-              ]
-            },
-            "reason": "work that read everything there was is done"
-          }
-        },
-        {
-          "region": "Coda's work: initial understanding/initial understanding: lifecycle",
-          "from": "initial understanding in hand.initial understanding active.Coda is working on the initial understanding",
-          "to": "initial understanding in hand.initial understanding active.initial understanding owed, waiting to start",
-          "guard": {
-            "not": false,
-            "states": {
-              "Coda's work: initial understanding/initial understanding: news while working": [
-                "Something new arrived since it started"
-              ]
-            },
-            "reason": "work that finished from what it read looks again at what arrived meanwhile (RP:1430-1432)"
-          }
+          "guard": null
         },
         {
           "region": "Concern",
@@ -26484,12 +26776,6 @@
         },
         {
           "region": "Coda's work: asked reply/asked reply: lifecycle",
-          "from": "asked reply not in hand.asked reply finished on older records, with Update",
-          "to": "asked reply not in hand.No asked reply owed",
-          "guard": null
-        },
-        {
-          "region": "Coda's work: asked reply/asked reply: lifecycle",
           "from": "asked reply in hand.asked reply active.asked reply owed, waiting to start",
           "to": "asked reply not in hand.No asked reply owed",
           "guard": null
@@ -26765,6 +27051,34 @@
           }
         },
         {
+          "region": "Coda's work: follow-up review/follow-up review: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: follow-up review/follow-up review: lifecycle": [
+                "follow-up review in hand.follow-up review active.Coda is working on the follow-up review"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: weekly review/weekly review: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: weekly review/weekly review: lifecycle": [
+                "weekly review in hand.weekly review active.Coda is working on the weekly review"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
           "region": "Coda's work: visit preparation/visit preparation: news while working",
           "from": "Nothing new since it started",
           "to": "Something new arrived since it started",
@@ -26793,6 +27107,26 @@
           }
         },
         {
+          "region": "Coda's work: proactive work/proactive work: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: proactive work/proactive work: lifecycle": [
+                "proactive work in hand.proactive work active.Coda is working on the proactive work"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: answer/answer: lifecycle",
+          "from": "answer not in hand.answer given",
+          "to": "answer not in hand.answer given, newer records since, with Update",
+          "guard": null
+        },
+        {
           "region": "Coda's work: answer/answer: news while working",
           "from": "Nothing new since it started",
           "to": "Something new arrived since it started",
@@ -26801,6 +27135,20 @@
             "states": {
               "Coda's work: answer/answer: lifecycle": [
                 "answer in hand.answer active.Coda is working on the answer"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: reply revision/reply revision: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: reply revision/reply revision: lifecycle": [
+                "reply revision in hand.reply revision active.Coda is working on the reply revision"
               ]
             },
             "reason": "only news that arrives while the work runs is news it missed"
@@ -26969,6 +27317,34 @@
           }
         },
         {
+          "region": "Coda's work: follow-up review/follow-up review: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: follow-up review/follow-up review: lifecycle": [
+                "follow-up review in hand.follow-up review active.Coda is working on the follow-up review"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: weekly review/weekly review: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: weekly review/weekly review: lifecycle": [
+                "weekly review in hand.weekly review active.Coda is working on the weekly review"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
           "region": "Coda's work: visit preparation/visit preparation: news while working",
           "from": "Nothing new since it started",
           "to": "Something new arrived since it started",
@@ -26997,6 +27373,26 @@
           }
         },
         {
+          "region": "Coda's work: proactive work/proactive work: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: proactive work/proactive work: lifecycle": [
+                "proactive work in hand.proactive work active.Coda is working on the proactive work"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: answer/answer: lifecycle",
+          "from": "answer not in hand.answer given",
+          "to": "answer not in hand.answer given, newer records since, with Update",
+          "guard": null
+        },
+        {
           "region": "Coda's work: answer/answer: news while working",
           "from": "Nothing new since it started",
           "to": "Something new arrived since it started",
@@ -27005,6 +27401,20 @@
             "states": {
               "Coda's work: answer/answer: lifecycle": [
                 "answer in hand.answer active.Coda is working on the answer"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: reply revision/reply revision: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: reply revision/reply revision: lifecycle": [
+                "reply revision in hand.reply revision active.Coda is working on the reply revision"
               ]
             },
             "reason": "only news that arrives while the work runs is news it missed"
@@ -27227,6 +27637,34 @@
           }
         },
         {
+          "region": "Coda's work: follow-up review/follow-up review: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: follow-up review/follow-up review: lifecycle": [
+                "follow-up review in hand.follow-up review active.Coda is working on the follow-up review"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: weekly review/weekly review: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: weekly review/weekly review: lifecycle": [
+                "weekly review in hand.weekly review active.Coda is working on the weekly review"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
           "region": "Coda's work: visit preparation/visit preparation: news while working",
           "from": "Nothing new since it started",
           "to": "Something new arrived since it started",
@@ -27255,6 +27693,26 @@
           }
         },
         {
+          "region": "Coda's work: proactive work/proactive work: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: proactive work/proactive work: lifecycle": [
+                "proactive work in hand.proactive work active.Coda is working on the proactive work"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: answer/answer: lifecycle",
+          "from": "answer not in hand.answer given",
+          "to": "answer not in hand.answer given, newer records since, with Update",
+          "guard": null
+        },
+        {
           "region": "Coda's work: answer/answer: news while working",
           "from": "Nothing new since it started",
           "to": "Something new arrived since it started",
@@ -27263,6 +27721,20 @@
             "states": {
               "Coda's work: answer/answer: lifecycle": [
                 "answer in hand.answer active.Coda is working on the answer"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: reply revision/reply revision: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: reply revision/reply revision: lifecycle": [
+                "reply revision in hand.reply revision active.Coda is working on the reply revision"
               ]
             },
             "reason": "only news that arrives while the work runs is news it missed"
@@ -27278,6 +27750,33 @@
           "region": "Practice reply in the channel",
           "from": "No practice reply since the patient wrote",
           "to": "The practice replied in the channel",
+          "guard": null
+        }
+      ]
+    },
+    {
+      "label": "Coda takes in what arrived in the initial understanding",
+      "function": "event_coda_takes_in_what_arrived_in_the_initial_understanding",
+      "cause": "Coda",
+      "intent": "Coda notices what arrived while it worked and takes it in before it finishes, so nothing it publishes rests on an older reading; the patient review still owns responding to news (Dev 2026-10-26).",
+      "needs": {
+        "not": false,
+        "states": {
+          "Coda's work: initial understanding/initial understanding: lifecycle": [
+            "initial understanding in hand.initial understanding active.Coda is working on the initial understanding"
+          ],
+          "Coda's work: initial understanding/initial understanding: news while working": [
+            "Something new arrived since it started"
+          ]
+        },
+        "reason": "only running work takes in what arrived while it ran"
+      },
+      "family": "Coda takes in what arrived in the {work}",
+      "transitions": [
+        {
+          "region": "Coda's work: initial understanding/initial understanding: news while working",
+          "from": "Something new arrived since it started",
+          "to": "Nothing new since it started",
           "guard": null
         }
       ]
@@ -27422,6 +27921,9 @@
           "Coda's work: patient review/patient review: lifecycle": [
             "patient review in hand.patient review active.Coda is working on the patient review"
           ],
+          "Coda's work: patient review/patient review: news while working": [
+            "Nothing new since it started"
+          ],
           "Patient message: match": [
             "No correction waiting on Undo.Another patient's message",
             "No correction waiting on Undo.Coda is matching the message",
@@ -27432,7 +27934,7 @@
             "No correction waiting on Undo.Not a patient, until the sender writes again"
           ]
         },
-        "reason": "only the work's own state makes its events possible, a {fresh} kind whose records changed finishes on older records instead (decision 7), and work waits out a correction's Undo (PM:552-559)"
+        "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
       },
       "family": "Coda finishes the {work}",
       "shared_effects": [
@@ -27446,29 +27948,7 @@
           "region": "Coda's work: patient review/patient review: lifecycle",
           "from": "patient review in hand.patient review active.Coda is working on the patient review",
           "to": "patient review not in hand.No patient review owed",
-          "guard": {
-            "not": false,
-            "states": {
-              "Coda's work: patient review/patient review: news while working": [
-                "Nothing new since it started"
-              ]
-            },
-            "reason": "work that read everything there was is done"
-          }
-        },
-        {
-          "region": "Coda's work: patient review/patient review: lifecycle",
-          "from": "patient review in hand.patient review active.Coda is working on the patient review",
-          "to": "patient review in hand.patient review active.patient review owed, waiting to start",
-          "guard": {
-            "not": false,
-            "states": {
-              "Coda's work: patient review/patient review: news while working": [
-                "Something new arrived since it started"
-              ]
-            },
-            "reason": "work that finished from what it read looks again at what arrived meanwhile (RP:1430-1432)"
-          }
+          "guard": null
         },
         {
           "region": "Coda's work: patient review/patient review: left for you",
@@ -28267,6 +28747,33 @@
       ]
     },
     {
+      "label": "Coda takes in what arrived in the patient review",
+      "function": "event_coda_takes_in_what_arrived_in_the_patient_review",
+      "cause": "Coda",
+      "intent": "Coda notices what arrived while it worked and takes it in before it finishes, so nothing it publishes rests on an older reading; the patient review still owns responding to news (Dev 2026-10-26).",
+      "needs": {
+        "not": false,
+        "states": {
+          "Coda's work: patient review/patient review: lifecycle": [
+            "patient review in hand.patient review active.Coda is working on the patient review"
+          ],
+          "Coda's work: patient review/patient review: news while working": [
+            "Something new arrived since it started"
+          ]
+        },
+        "reason": "only running work takes in what arrived while it ran"
+      },
+      "family": "Coda takes in what arrived in the {work}",
+      "transitions": [
+        {
+          "region": "Coda's work: patient review/patient review: news while working",
+          "from": "Something new arrived since it started",
+          "to": "Nothing new since it started",
+          "guard": null
+        }
+      ]
+    },
+    {
       "label": "open the patient review that couldn't restart",
       "function": "event_open_the_patient_review_that_couldn_t_restart",
       "cause": "you",
@@ -28326,6 +28833,12 @@
             },
             "reason": "later work builds on the initial understanding (N13, RP:810-811); work for one patient otherwise runs side by side (Dev 2026-10-24)"
           }
+        },
+        {
+          "region": "Coda's work: follow-up review/follow-up review: news while working",
+          "from": "Something new arrived since it started",
+          "to": "Nothing new since it started",
+          "guard": null
         }
       ]
     },
@@ -28431,6 +28944,9 @@
           "Coda's work: follow-up review/follow-up review: lifecycle": [
             "follow-up review in hand.follow-up review active.Coda is working on the follow-up review"
           ],
+          "Coda's work: follow-up review/follow-up review: news while working": [
+            "Nothing new since it started"
+          ],
           "Patient message: match": [
             "No correction waiting on Undo.Another patient's message",
             "No correction waiting on Undo.Coda is matching the message",
@@ -28441,7 +28957,7 @@
             "No correction waiting on Undo.Not a patient, until the sender writes again"
           ]
         },
-        "reason": "only the work's own state makes its events possible, a {fresh} kind whose records changed finishes on older records instead (decision 7), and work waits out a correction's Undo (PM:552-559)"
+        "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
       },
       "family": "Coda finishes the {work}",
       "shared_effects": [
@@ -28887,6 +29403,33 @@
       ]
     },
     {
+      "label": "Coda takes in what arrived in the follow-up review",
+      "function": "event_coda_takes_in_what_arrived_in_the_follow_up_review",
+      "cause": "Coda",
+      "intent": "Coda notices what arrived while it worked and takes it in before it finishes, so nothing it publishes rests on an older reading; the patient review still owns responding to news (Dev 2026-10-26).",
+      "needs": {
+        "not": false,
+        "states": {
+          "Coda's work: follow-up review/follow-up review: lifecycle": [
+            "follow-up review in hand.follow-up review active.Coda is working on the follow-up review"
+          ],
+          "Coda's work: follow-up review/follow-up review: news while working": [
+            "Something new arrived since it started"
+          ]
+        },
+        "reason": "only running work takes in what arrived while it ran"
+      },
+      "family": "Coda takes in what arrived in the {work}",
+      "transitions": [
+        {
+          "region": "Coda's work: follow-up review/follow-up review: news while working",
+          "from": "Something new arrived since it started",
+          "to": "Nothing new since it started",
+          "guard": null
+        }
+      ]
+    },
+    {
       "label": "open the follow-up review that couldn't restart",
       "function": "event_open_the_follow_up_review_that_couldn_t_restart",
       "cause": "you",
@@ -28946,6 +29489,12 @@
             },
             "reason": "later work builds on the initial understanding (N13, RP:810-811); work for one patient otherwise runs side by side (Dev 2026-10-24)"
           }
+        },
+        {
+          "region": "Coda's work: weekly review/weekly review: news while working",
+          "from": "Something new arrived since it started",
+          "to": "Nothing new since it started",
+          "guard": null
         }
       ]
     },
@@ -29039,6 +29588,9 @@
           "Coda's work: weekly review/weekly review: lifecycle": [
             "weekly review in hand.weekly review active.Coda is working on the weekly review"
           ],
+          "Coda's work: weekly review/weekly review: news while working": [
+            "Nothing new since it started"
+          ],
           "Patient message: match": [
             "No correction waiting on Undo.Another patient's message",
             "No correction waiting on Undo.Coda is matching the message",
@@ -29049,7 +29601,7 @@
             "No correction waiting on Undo.Not a patient, until the sender writes again"
           ]
         },
-        "reason": "only the work's own state makes its events possible, a {fresh} kind whose records changed finishes on older records instead (decision 7), and work waits out a correction's Undo (PM:552-559)"
+        "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
       },
       "family": "Coda finishes the {work}",
       "shared_effects": [
@@ -29490,6 +30042,33 @@
       ]
     },
     {
+      "label": "Coda takes in what arrived in the weekly review",
+      "function": "event_coda_takes_in_what_arrived_in_the_weekly_review",
+      "cause": "Coda",
+      "intent": "Coda notices what arrived while it worked and takes it in before it finishes, so nothing it publishes rests on an older reading; the patient review still owns responding to news (Dev 2026-10-26).",
+      "needs": {
+        "not": false,
+        "states": {
+          "Coda's work: weekly review/weekly review: lifecycle": [
+            "weekly review in hand.weekly review active.Coda is working on the weekly review"
+          ],
+          "Coda's work: weekly review/weekly review: news while working": [
+            "Something new arrived since it started"
+          ]
+        },
+        "reason": "only running work takes in what arrived while it ran"
+      },
+      "family": "Coda takes in what arrived in the {work}",
+      "transitions": [
+        {
+          "region": "Coda's work: weekly review/weekly review: news while working",
+          "from": "Something new arrived since it started",
+          "to": "Nothing new since it started",
+          "guard": null
+        }
+      ]
+    },
+    {
       "label": "Coda starts the visit preparation",
       "function": "event_coda_starts_the_visit_preparation",
       "cause": "Coda",
@@ -29629,6 +30208,9 @@
           "Coda's work: visit preparation/visit preparation: lifecycle": [
             "visit preparation in hand.visit preparation active.Coda is working on the visit preparation"
           ],
+          "Coda's work: visit preparation/visit preparation: news while working": [
+            "Nothing new since it started"
+          ],
           "Patient message: match": [
             "No correction waiting on Undo.Another patient's message",
             "No correction waiting on Undo.Coda is matching the message",
@@ -29639,7 +30221,7 @@
             "No correction waiting on Undo.Not a patient, until the sender writes again"
           ]
         },
-        "reason": "only the work's own state makes its events possible, a {fresh} kind whose records changed finishes on older records instead (decision 7), and work waits out a correction's Undo (PM:552-559)"
+        "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
       },
       "family": "Coda finishes the {work}",
       "shared_effects": [
@@ -29650,29 +30232,7 @@
           "region": "Coda's work: visit preparation/visit preparation: lifecycle",
           "from": "visit preparation in hand.visit preparation active.Coda is working on the visit preparation",
           "to": "visit preparation not in hand.No visit preparation owed",
-          "guard": {
-            "not": false,
-            "states": {
-              "Coda's work: visit preparation/visit preparation: news while working": [
-                "Nothing new since it started"
-              ]
-            },
-            "reason": "work that read everything there was is done"
-          }
-        },
-        {
-          "region": "Coda's work: visit preparation/visit preparation: lifecycle",
-          "from": "visit preparation in hand.visit preparation active.Coda is working on the visit preparation",
-          "to": "visit preparation in hand.visit preparation active.visit preparation owed, waiting to start",
-          "guard": {
-            "not": false,
-            "states": {
-              "Coda's work: visit preparation/visit preparation: news while working": [
-                "Something new arrived since it started"
-              ]
-            },
-            "reason": "work that finished from what it read looks again at what arrived meanwhile (RP:1430-1432)"
-          }
+          "guard": null
         },
         {
           "region": "Coda's work: visit preparation/visit preparation: left for you",
@@ -30545,6 +31105,33 @@
       ]
     },
     {
+      "label": "Coda takes in what arrived in the visit preparation",
+      "function": "event_coda_takes_in_what_arrived_in_the_visit_preparation",
+      "cause": "Coda",
+      "intent": "Coda notices what arrived while it worked and takes it in before it finishes, so nothing it publishes rests on an older reading; the patient review still owns responding to news (Dev 2026-10-26).",
+      "needs": {
+        "not": false,
+        "states": {
+          "Coda's work: visit preparation/visit preparation: lifecycle": [
+            "visit preparation in hand.visit preparation active.Coda is working on the visit preparation"
+          ],
+          "Coda's work: visit preparation/visit preparation: news while working": [
+            "Something new arrived since it started"
+          ]
+        },
+        "reason": "only running work takes in what arrived while it ran"
+      },
+      "family": "Coda takes in what arrived in the {work}",
+      "transitions": [
+        {
+          "region": "Coda's work: visit preparation/visit preparation: news while working",
+          "from": "Something new arrived since it started",
+          "to": "Nothing new since it started",
+          "guard": null
+        }
+      ]
+    },
+    {
       "label": "open the visit preparation that couldn't restart",
       "function": "event_open_the_visit_preparation_that_couldn_t_restart",
       "cause": "you",
@@ -30731,7 +31318,7 @@
             "No correction waiting on Undo.Not a patient, until the sender writes again"
           ]
         },
-        "reason": "only the work's own state makes its events possible, a asked reply kind whose records changed finishes on older records instead (decision 7), and work waits out a correction's Undo (PM:552-559)"
+        "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
       },
       "family": "Coda finishes the {work}",
       "shared_effects": [
@@ -30742,15 +31329,7 @@
           "region": "Coda's work: asked reply/asked reply: lifecycle",
           "from": "asked reply in hand.asked reply active.Coda is working on the asked reply",
           "to": "asked reply not in hand.No asked reply owed",
-          "guard": {
-            "not": false,
-            "states": {
-              "Coda's work: asked reply/asked reply: news while working": [
-                "Nothing new since it started"
-              ]
-            },
-            "reason": "work that read everything there was is done"
-          }
+          "guard": null
         },
         {
           "region": "Coda's work: asked reply/asked reply: left for you",
@@ -31304,42 +31883,6 @@
       ]
     },
     {
-      "label": "Coda finishes the asked reply on older records",
-      "function": "event_coda_finishes_the_asked_reply_on_older_records",
-      "cause": "Coda",
-      "intent": "Records changed under the asked reply; Coda finishes from what it read, notes the newer records with one tap to update, and changes nothing from stale reading (decision 7). Background work instead publishes its reassessment as it is (RP:1430-1432).",
-      "needs": {
-        "not": false,
-        "states": {
-          "Coda's work: asked reply/asked reply: lifecycle": [
-            "asked reply in hand.asked reply active.Coda is working on the asked reply"
-          ],
-          "Coda's work: asked reply/asked reply: news while working": [
-            "Something new arrived since it started"
-          ],
-          "Patient message: match": [
-            "No correction waiting on Undo.Another patient's message",
-            "No correction waiting on Undo.Coda is matching the message",
-            "No correction waiting on Undo.Linked to the patient",
-            "No correction waiting on Undo.Message to match.Waiting to be matched",
-            "No correction waiting on Undo.Message to match.Waiting to be matched, looks urgent; leads Today as Now",
-            "No correction waiting on Undo.No message yet",
-            "No correction waiting on Undo.Not a patient, until the sender writes again"
-          ]
-        },
-        "reason": "only the work's own state makes its events possible, and work waits out a correction's Undo (PM:552-559)"
-      },
-      "family": "Coda finishes the {fresh} on older records",
-      "transitions": [
-        {
-          "region": "Coda's work: asked reply/asked reply: lifecycle",
-          "from": "asked reply in hand.asked reply active.Coda is working on the asked reply",
-          "to": "asked reply not in hand.asked reply finished on older records, with Update",
-          "guard": null
-        }
-      ]
-    },
-    {
       "label": "the disconnect completes",
       "function": "event_the_disconnect_completes",
       "cause": "the messaging provider",
@@ -31363,12 +31906,6 @@
         "reason": "only a disconnecting channel completes, and it waits out a correction's Undo like everything else touching the conversation (PM:552-559)"
       },
       "transitions": [
-        {
-          "region": "Coda's work: asked reply/asked reply: lifecycle",
-          "from": "asked reply not in hand.asked reply finished on older records, with Update",
-          "to": "asked reply not in hand.No asked reply owed",
-          "guard": null
-        },
         {
           "region": "Coda's work: asked reply/asked reply: lifecycle",
           "from": "asked reply in hand.asked reply active.asked reply owed, waiting to start",
@@ -31496,6 +32033,33 @@
       ]
     },
     {
+      "label": "Coda takes in what arrived in the asked reply",
+      "function": "event_coda_takes_in_what_arrived_in_the_asked_reply",
+      "cause": "Coda",
+      "intent": "Coda notices what arrived while it worked and takes it in before it finishes, so nothing it publishes rests on an older reading; the patient review still owns responding to news (Dev 2026-10-26).",
+      "needs": {
+        "not": false,
+        "states": {
+          "Coda's work: asked reply/asked reply: lifecycle": [
+            "asked reply in hand.asked reply active.Coda is working on the asked reply"
+          ],
+          "Coda's work: asked reply/asked reply: news while working": [
+            "Something new arrived since it started"
+          ]
+        },
+        "reason": "only running work takes in what arrived while it ran"
+      },
+      "family": "Coda takes in what arrived in the {work}",
+      "transitions": [
+        {
+          "region": "Coda's work: asked reply/asked reply: news while working",
+          "from": "Something new arrived since it started",
+          "to": "Nothing new since it started",
+          "guard": null
+        }
+      ]
+    },
+    {
       "label": "open the asked reply that couldn't restart",
       "function": "event_open_the_asked_reply_that_couldn_t_restart",
       "cause": "you",
@@ -31555,6 +32119,12 @@
             },
             "reason": "later work builds on the initial understanding (N13, RP:810-811); work for one patient otherwise runs side by side (Dev 2026-10-24)"
           }
+        },
+        {
+          "region": "Coda's work: proactive work/proactive work: news while working",
+          "from": "Something new arrived since it started",
+          "to": "Nothing new since it started",
+          "guard": null
         }
       ]
     },
@@ -31648,6 +32218,9 @@
           "Coda's work: proactive work/proactive work: lifecycle": [
             "proactive work in hand.proactive work active.Coda is working on the proactive work"
           ],
+          "Coda's work: proactive work/proactive work: news while working": [
+            "Nothing new since it started"
+          ],
           "Patient message: match": [
             "No correction waiting on Undo.Another patient's message",
             "No correction waiting on Undo.Coda is matching the message",
@@ -31658,7 +32231,7 @@
             "No correction waiting on Undo.Not a patient, until the sender writes again"
           ]
         },
-        "reason": "only the work's own state makes its events possible, a {fresh} kind whose records changed finishes on older records instead (decision 7), and work waits out a correction's Undo (PM:552-559)"
+        "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
       },
       "family": "Coda finishes the {work}",
       "shared_effects": [
@@ -32075,6 +32648,33 @@
       ]
     },
     {
+      "label": "Coda takes in what arrived in the proactive work",
+      "function": "event_coda_takes_in_what_arrived_in_the_proactive_work",
+      "cause": "Coda",
+      "intent": "Coda notices what arrived while it worked and takes it in before it finishes, so nothing it publishes rests on an older reading; the patient review still owns responding to news (Dev 2026-10-26).",
+      "needs": {
+        "not": false,
+        "states": {
+          "Coda's work: proactive work/proactive work: lifecycle": [
+            "proactive work in hand.proactive work active.Coda is working on the proactive work"
+          ],
+          "Coda's work: proactive work/proactive work: news while working": [
+            "Something new arrived since it started"
+          ]
+        },
+        "reason": "only running work takes in what arrived while it ran"
+      },
+      "family": "Coda takes in what arrived in the {work}",
+      "transitions": [
+        {
+          "region": "Coda's work: proactive work/proactive work: news while working",
+          "from": "Something new arrived since it started",
+          "to": "Nothing new since it started",
+          "guard": null
+        }
+      ]
+    },
+    {
       "label": "Coda starts the answer",
       "function": "event_coda_starts_the_answer",
       "cause": "Coda",
@@ -32207,7 +32807,7 @@
             "No correction waiting on Undo.Not a patient, until the sender writes again"
           ]
         },
-        "reason": "only the work's own state makes its events possible, a answer kind whose records changed finishes on older records instead (decision 7), and work waits out a correction's Undo (PM:552-559)"
+        "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
       },
       "family": "Coda finishes the {work}",
       "shared_effects": [
@@ -32217,16 +32817,8 @@
         {
           "region": "Coda's work: answer/answer: lifecycle",
           "from": "answer in hand.answer active.Coda is working on the answer",
-          "to": "answer not in hand.No answer owed",
-          "guard": {
-            "not": false,
-            "states": {
-              "Coda's work: answer/answer: news while working": [
-                "Nothing new since it started"
-              ]
-            },
-            "reason": "work that read everything there was is done"
-          }
+          "to": "answer not in hand.answer given",
+          "guard": null
         },
         {
           "region": "Concern",
@@ -32605,42 +33197,6 @@
       ]
     },
     {
-      "label": "Coda finishes the answer on older records",
-      "function": "event_coda_finishes_the_answer_on_older_records",
-      "cause": "Coda",
-      "intent": "Records changed under the answer; Coda finishes from what it read, notes the newer records with one tap to update, and changes nothing from stale reading (decision 7). Background work instead publishes its reassessment as it is (RP:1430-1432).",
-      "needs": {
-        "not": false,
-        "states": {
-          "Coda's work: answer/answer: lifecycle": [
-            "answer in hand.answer active.Coda is working on the answer"
-          ],
-          "Coda's work: answer/answer: news while working": [
-            "Something new arrived since it started"
-          ],
-          "Patient message: match": [
-            "No correction waiting on Undo.Another patient's message",
-            "No correction waiting on Undo.Coda is matching the message",
-            "No correction waiting on Undo.Linked to the patient",
-            "No correction waiting on Undo.Message to match.Waiting to be matched",
-            "No correction waiting on Undo.Message to match.Waiting to be matched, looks urgent; leads Today as Now",
-            "No correction waiting on Undo.No message yet",
-            "No correction waiting on Undo.Not a patient, until the sender writes again"
-          ]
-        },
-        "reason": "only the work's own state makes its events possible, and work waits out a correction's Undo (PM:552-559)"
-      },
-      "family": "Coda finishes the {fresh} on older records",
-      "transitions": [
-        {
-          "region": "Coda's work: answer/answer: lifecycle",
-          "from": "answer in hand.answer active.Coda is working on the answer",
-          "to": "answer not in hand.answer finished on older records, with Update",
-          "guard": null
-        }
-      ]
-    },
-    {
       "label": "the queued message starts",
       "function": "event_the_queued_message_starts",
       "cause": "the app",
@@ -32655,7 +33211,8 @@
             "answer in hand.answer stalled.answer couldn't finish, with Try again",
             "answer in hand.answer stalled.answer waiting for the next opportunity, with Try again",
             "answer not in hand.No answer owed",
-            "answer not in hand.answer finished on older records, with Update"
+            "answer not in hand.answer given",
+            "answer not in hand.answer given, newer records since, with Update"
           ],
           "Coda's work: answer/answer: held by you": [
             "Not held"
@@ -32684,7 +33241,13 @@
         },
         {
           "region": "Coda's work: answer/answer: lifecycle",
-          "from": "answer not in hand.answer finished on older records, with Update",
+          "from": "answer not in hand.answer given",
+          "to": "answer in hand.answer active.answer owed, waiting to start",
+          "guard": null
+        },
+        {
+          "region": "Coda's work: answer/answer: lifecycle",
+          "from": "answer not in hand.answer given, newer records since, with Update",
           "to": "answer in hand.answer active.answer owed, waiting to start",
           "guard": null
         },
@@ -32692,6 +33255,33 @@
           "region": "Queued messages",
           "from": "Messages queued for the next answer, each editable",
           "to": "Nothing queued",
+          "guard": null
+        }
+      ]
+    },
+    {
+      "label": "Coda takes in what arrived in the answer",
+      "function": "event_coda_takes_in_what_arrived_in_the_answer",
+      "cause": "Coda",
+      "intent": "Coda notices what arrived while it worked and takes it in before it finishes, so nothing it publishes rests on an older reading; the patient review still owns responding to news (Dev 2026-10-26).",
+      "needs": {
+        "not": false,
+        "states": {
+          "Coda's work: answer/answer: lifecycle": [
+            "answer in hand.answer active.Coda is working on the answer"
+          ],
+          "Coda's work: answer/answer: news while working": [
+            "Something new arrived since it started"
+          ]
+        },
+        "reason": "only running work takes in what arrived while it ran"
+      },
+      "family": "Coda takes in what arrived in the {work}",
+      "transitions": [
+        {
+          "region": "Coda's work: answer/answer: news while working",
+          "from": "Something new arrived since it started",
+          "to": "Nothing new since it started",
           "guard": null
         }
       ]
@@ -32716,6 +33306,12 @@
           "region": "Coda's work: reply revision/reply revision: lifecycle",
           "from": "reply revision in hand.reply revision active.reply revision owed, waiting to start",
           "to": "reply revision in hand.reply revision active.Coda is working on the reply revision",
+          "guard": null
+        },
+        {
+          "region": "Coda's work: reply revision/reply revision: news while working",
+          "from": "Something new arrived since it started",
+          "to": "Nothing new since it started",
           "guard": null
         }
       ]
@@ -32810,6 +33406,9 @@
           "Coda's work: reply revision/reply revision: lifecycle": [
             "reply revision in hand.reply revision active.Coda is working on the reply revision"
           ],
+          "Coda's work: reply revision/reply revision: news while working": [
+            "Nothing new since it started"
+          ],
           "Patient message: match": [
             "No correction waiting on Undo.Another patient's message",
             "No correction waiting on Undo.Coda is matching the message",
@@ -32820,7 +33419,7 @@
             "No correction waiting on Undo.Not a patient, until the sender writes again"
           ]
         },
-        "reason": "only the work's own state makes its events possible, a {fresh} kind whose records changed finishes on older records instead (decision 7), and work waits out a correction's Undo (PM:552-559)"
+        "reason": "only the work's own state makes its events possible, work takes in what arrived while it ran before it finishes (Dev 2026-10-26), and work waits out a correction's Undo (PM:552-559)"
       },
       "family": "Coda finishes the {work}",
       "shared_effects": [
@@ -33235,6 +33834,33 @@
           "region": "Patient message: reply/Reply work open/Who has opened the reply",
           "from": "Opened by you, unchanged since",
           "to": "New to you",
+          "guard": null
+        }
+      ]
+    },
+    {
+      "label": "Coda takes in what arrived in the reply revision",
+      "function": "event_coda_takes_in_what_arrived_in_the_reply_revision",
+      "cause": "Coda",
+      "intent": "Coda notices what arrived while it worked and takes it in before it finishes, so nothing it publishes rests on an older reading; the patient review still owns responding to news (Dev 2026-10-26).",
+      "needs": {
+        "not": false,
+        "states": {
+          "Coda's work: reply revision/reply revision: lifecycle": [
+            "reply revision in hand.reply revision active.Coda is working on the reply revision"
+          ],
+          "Coda's work: reply revision/reply revision: news while working": [
+            "Something new arrived since it started"
+          ]
+        },
+        "reason": "only running work takes in what arrived while it ran"
+      },
+      "family": "Coda takes in what arrived in the {work}",
+      "transitions": [
+        {
+          "region": "Coda's work: reply revision/reply revision: news while working",
+          "from": "Something new arrived since it started",
+          "to": "Nothing new since it started",
           "guard": null
         }
       ]
