@@ -1,3 +1,7 @@
+// Without `web` or `desktop` the binary only explains how to build it, so the
+// address helpers below have no caller.
+#![cfg_attr(not(any(feature = "web", feature = "desktop")), allow(dead_code))]
+
 #[cfg(any(feature = "web", feature = "desktop"))]
 use dioxus::prelude::*;
 
@@ -21,30 +25,29 @@ fn App() -> Element {
     rsx! { physician_app::PhysicianRoot { base_url: base, open_patient, open_chat, sign_in } }
 }
 
+#[cfg(all(any(feature = "web", feature = "desktop"), target_arch = "wasm32"))]
 fn sign_in_link() -> Option<physician_app::SignInLink> {
-    #[cfg(target_arch = "wasm32")]
+    let email = query_value("email")?;
+    let code = query_value("code")?;
+    // Keep the secret in component state, not the address bar or a later reload.
+    // The sign-in screen redeems it automatically after the URL is cleared.
+    if let Some(window) = web_sys::window()
+        && let Ok(href) = window.location().href()
+        && let Ok(url) = web_sys::Url::new(&href)
     {
-        let email = query_value("email")?;
-        let code = query_value("code")?;
-        // Keep the secret in component state, not the address bar or a later reload.
-        // The sign-in screen redeems it automatically after the URL is cleared.
-        if let Some(window) = web_sys::window()
-            && let Ok(href) = window.location().href()
-            && let Ok(url) = web_sys::Url::new(&href)
-        {
-            url.search_params().delete("email");
-            url.search_params().delete("code");
-            if let Ok(history) = window.history() {
-                let _ = history.replace_state_with_url(
-                    &wasm_bindgen::JsValue::NULL,
-                    "",
-                    Some(&url.href()),
-                );
-            }
+        url.search_params().delete("email");
+        url.search_params().delete("code");
+        if let Ok(history) = window.history() {
+            let _ =
+                history.replace_state_with_url(&wasm_bindgen::JsValue::NULL, "", Some(&url.href()));
         }
-        return Some(physician_app::SignInLink { email, code });
     }
-    #[cfg(not(target_arch = "wasm32"))]
+    Some(physician_app::SignInLink { email, code })
+}
+
+/// Sign-in links arrive in the page address, so only the browser build reads one.
+#[cfg(all(any(feature = "web", feature = "desktop"), not(target_arch = "wasm32")))]
+fn sign_in_link() -> Option<physician_app::SignInLink> {
     None
 }
 
@@ -113,6 +116,95 @@ fn resolve_api_base(
         return format!("{origin}{prefix}");
     }
     "http://127.0.0.1:8790".to_owned()
+}
+
+/// `http` or `https` whose host is `localhost` or `127.0.0.1`, with no userinfo.
+fn is_loopback_api_url(value: &str) -> bool {
+    let value = value.trim();
+    let Some((scheme, rest)) = value.split_once("://") else {
+        return false;
+    };
+    if !scheme.eq_ignore_ascii_case("http") && !scheme.eq_ignore_ascii_case("https") {
+        return false;
+    }
+    let authority = rest.split(['/', '?', '#']).next().unwrap_or("");
+    if authority.is_empty()
+        || authority.contains('@')
+        || authority.contains('\\')
+        || authority.chars().any(|c| c.is_control() || c == ' ')
+    {
+        return false;
+    }
+    let host = match authority.rsplit_once(':') {
+        Some((host, port))
+            if !host.is_empty() && !port.is_empty() && port.chars().all(|c| c.is_ascii_digit()) =>
+        {
+            if port.parse::<u16>().is_err() {
+                return false;
+            }
+            host
+        }
+        Some(_) => return false,
+        None => authority,
+    };
+    if host.contains(':') || host.contains('[') {
+        return false;
+    }
+    host.eq_ignore_ascii_case("localhost") || host == "127.0.0.1"
+}
+
+#[cfg(target_arch = "wasm32")]
+fn page_origin() -> Option<String> {
+    let origin = web_sys::window()?.location().origin().ok()?;
+    if origin.is_empty() || origin == "null" {
+        None
+    } else {
+        Some(origin)
+    }
+}
+
+#[cfg(target_arch = "wasm32")]
+fn query_api() -> Option<String> {
+    query_value("api")
+}
+
+#[cfg(target_arch = "wasm32")]
+fn query_value(name: &str) -> Option<String> {
+    let search = web_sys::window()?.location().search().ok()?;
+    for pair in search.trim_start_matches('?').split('&') {
+        let (key, value) = pair.split_once('=')?;
+        if key == name && !value.is_empty() {
+            return Some(percent_decode(value));
+        }
+    }
+    None
+}
+
+#[cfg(target_arch = "wasm32")]
+fn percent_decode(value: &str) -> String {
+    let bytes = value.as_bytes();
+    let mut out = Vec::with_capacity(bytes.len());
+    let mut index = 0;
+    while index < bytes.len() {
+        if bytes[index] == b'%'
+            && index + 2 < bytes.len()
+            && let Ok(byte) = u8::from_str_radix(
+                std::str::from_utf8(&bytes[index + 1..index + 3]).unwrap_or(""),
+                16,
+            )
+        {
+            out.push(byte);
+            index += 3;
+            continue;
+        }
+        if bytes[index] == b'+' {
+            out.push(b' ');
+        } else {
+            out.push(bytes[index]);
+        }
+        index += 1;
+    }
+    String::from_utf8(out).unwrap_or_else(|_| value.to_owned())
 }
 
 #[cfg(test)]
@@ -192,92 +284,4 @@ mod tests {
             );
         }
     }
-}
-
-/// `http` or `https` whose host is `localhost` or `127.0.0.1`, with no userinfo.
-fn is_loopback_api_url(value: &str) -> bool {
-    let value = value.trim();
-    let Some((scheme, rest)) = value.split_once("://") else {
-        return false;
-    };
-    if !scheme.eq_ignore_ascii_case("http") && !scheme.eq_ignore_ascii_case("https") {
-        return false;
-    }
-    let authority = rest.split(['/', '?', '#']).next().unwrap_or("");
-    if authority.is_empty()
-        || authority.contains('@')
-        || authority.contains('\\')
-        || authority.chars().any(|c| c.is_control() || c == ' ')
-    {
-        return false;
-    }
-    let host = match authority.rsplit_once(':') {
-        Some((host, port))
-            if !host.is_empty() && !port.is_empty() && port.chars().all(|c| c.is_ascii_digit()) =>
-        {
-            if port.parse::<u16>().is_err() {
-                return false;
-            }
-            host
-        }
-        Some(_) => return false,
-        None => authority,
-    };
-    if host.contains(':') || host.contains('[') {
-        return false;
-    }
-    host.eq_ignore_ascii_case("localhost") || host == "127.0.0.1"
-}
-
-#[cfg(target_arch = "wasm32")]
-fn page_origin() -> Option<String> {
-    let origin = web_sys::window()?.location().origin().ok()?;
-    if origin.is_empty() || origin == "null" {
-        None
-    } else {
-        Some(origin)
-    }
-}
-
-#[cfg(target_arch = "wasm32")]
-fn query_api() -> Option<String> {
-    query_value("api")
-}
-
-#[cfg(target_arch = "wasm32")]
-fn query_value(name: &str) -> Option<String> {
-    let search = web_sys::window()?.location().search().ok()?;
-    for pair in search.trim_start_matches('?').split('&') {
-        let (key, value) = pair.split_once('=')?;
-        if key == name && !value.is_empty() {
-            return Some(percent_decode(value));
-        }
-    }
-    None
-}
-
-#[cfg(target_arch = "wasm32")]
-fn percent_decode(value: &str) -> String {
-    let bytes = value.as_bytes();
-    let mut out = Vec::with_capacity(bytes.len());
-    let mut index = 0;
-    while index < bytes.len() {
-        if bytes[index] == b'%' && index + 2 < bytes.len() {
-            if let Ok(byte) = u8::from_str_radix(
-                std::str::from_utf8(&bytes[index + 1..index + 3]).unwrap_or(""),
-                16,
-            ) {
-                out.push(byte);
-                index += 3;
-                continue;
-            }
-        }
-        if bytes[index] == b'+' {
-            out.push(b' ');
-        } else {
-            out.push(bytes[index]);
-        }
-        index += 1;
-    }
-    String::from_utf8(out).unwrap_or_else(|_| value.to_owned())
 }
