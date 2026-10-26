@@ -71,7 +71,7 @@ Memorystore Basic 1 GB is about $35/month and the site's minimum instance about 
 
 The bus proofs in [`tests/redis.rs`](/crates/physician-bus/tests/redis.rs) do not race production timing. `RedisBus::connect_with` takes a test `Timing` (heartbeat, command timeout, reconnect backoff and jitter); `connect` keeps the production values. The fast-restart proof routes the bus through a TCP proxy that the test closes and reopens, with a 60 s heartbeat and no jitter, so only the reconnect path can resync. Each test waits for the bus to be live and quiet instead of sleeping a fixed time.
 
-The local worker can fail chosen messages. With `PHYSICIAN_WORKER_FIXED_TEXT` set, `PHYSICIAN_WORKER_FIXED_FAIL_MARKER=1` makes a message containing `[fail:K]` fail its first K attempts, counted per `input_id` in worker memory. Try again keeps the `input_id`, so `[fail:5]` dead-letters and its Try again answers. Hosted execution refuses the variable, like the other fixed-provider variables.
+The local worker can fail chosen messages. With `PHYSICIAN_WORKER_FIXED_TEXT` set, `PHYSICIAN_WORKER_FIXED_FAIL_MARKER=1` makes a message containing `[fail:K]` fail its first K attempts, counted from the attempts Postgres saved on that message, so a worker restart or a second instance keeps the count. Try again keeps the message, so `[fail:5]` dead-letters and its Try again answers. Hosted execution refuses the variable, like the other fixed-provider variables.
 
 - <a href="/submodules/coda-agents/docs/architecture%2Emd#system-boundary">Architecture: the system boundary and model roles</a>
 - <a href="/submodules/coda-agents/docs/architecture%2Emd#external-clinical-evidence">Architecture: external clinical evidence</a>

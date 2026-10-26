@@ -36,7 +36,7 @@ active, prefix with `nix develop --command`.
    ```
 
    One stack serves every feature. `--worker-fail-marker` makes a message containing
-   `[fail:K]` fail its first K attempts, counted per `input_id` (Retry `[fail:1]`, Try
+   `[fail:K]` fail its first K attempts, counted from the attempts saved on that message (Retry `[fail:1]`, Try
    again `[fail:5]`). Unmarked messages answer at once. `--worker-failures N` (the first N
    provider calls of the process fail, whatever the message) is still available.
 

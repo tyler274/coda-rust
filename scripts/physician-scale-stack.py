@@ -509,7 +509,7 @@ def main():
                              "fail; 5 dead-letters the first turn")
     parser.add_argument("--worker-fail-marker", action="store_true",
                         help="PHYSICIAN_WORKER_FIXED_FAIL_MARKER: a message containing [fail:K] "
-                             "fails its first K attempts, counted per input id; unmarked turns "
+                             "fails its first K attempts, counted from its saved attempts; unmarked turns "
                              "answer, so one stack drives retry, Try again and the happy paths")
     parser.add_argument("--load-numbers", action="store_true",
                         help="after readiness, record Postgres transactions (idle, two streams, one "

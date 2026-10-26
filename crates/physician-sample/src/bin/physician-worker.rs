@@ -17,7 +17,7 @@ use base64::Engine;
 use harness::engine::{Cancellation, Item, Limits, Provider, Request as ModelRequest, Turn};
 use local_product::runtime::async_trait;
 use local_product::runtime::delivery::{Delivery, DeliveryState};
-use local_product::runtime::{PhysicianHost, Scope, Store};
+use local_product::runtime::{Claim, Conversation, PhysicianHost, Scope, Store};
 use physician_auth::PostgresAuthStore;
 use physician_bus::{Bus, Event};
 use physician_sample::durable::RuntimeAuthority;
@@ -113,7 +113,15 @@ async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> Statu
     };
     let workspace_id = claim.scope.workspace.clone();
     let session_id = claim.scope.chat.clone();
-    let input_text = message_text(&worker.store, &claim.scope, "user").await;
+    let conversation = worker.store.read(&claim.scope).await.ok().flatten();
+    let input_text = conversation
+        .as_ref()
+        .map(|state| last_text(state, "user"))
+        .unwrap_or_default();
+    let earlier_attempts = conversation
+        .as_ref()
+        .map_or(0, |state| earlier_attempts(state, &claim));
+    drop(conversation);
     let span = genai::generation_span(
         &RunContext {
             run_id: format!("physician-worker-{message_id}"),
@@ -128,7 +136,7 @@ async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> Statu
         worker.adapter,
     );
     genai::record_input(&span, &input_text);
-    let provider = worker.model.provider(&delivery, &input_text);
+    let provider = worker.model.provider(earlier_attempts, &input_text);
     drop(input_text);
     let mut host = PhysicianHost {
         store: worker.store.clone(),
@@ -174,11 +182,7 @@ async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> Statu
 /// model call failed. Records it (the fifth ends the turn as failed), tells
 /// open pages to refetch, and refuses the push so the broker redelivers or
 /// dead-letters it.
-async fn failed_attempt(
-    worker: &Worker,
-    claim: &local_product::runtime::Claim,
-    workspace_id: String,
-) -> StatusCode {
+async fn failed_attempt(worker: &Worker, claim: &Claim, workspace_id: String) -> StatusCode {
     if worker.store.retry_delivery(claim).await.is_err() {
         tracing::warn!("physician chat delivery was not returned to pending");
     }
@@ -233,15 +237,30 @@ async fn message_text(store: &Store, scope: &Scope, role: &str) -> String {
         .await
         .ok()
         .flatten()
-        .and_then(|conversation| {
-            conversation
-                .messages
-                .into_iter()
-                .rev()
-                .find(|message| message.role == role)
-                .map(|message| message.text)
-        })
+        .map(|conversation| last_text(&conversation, role))
         .unwrap_or_default()
+}
+
+fn last_text(conversation: &Conversation, role: &str) -> String {
+    conversation
+        .messages
+        .iter()
+        .rev()
+        .find(|message| message.role == role)
+        .map(|message| message.text.clone())
+        .unwrap_or_default()
+}
+
+/// Attempts saved before this claim on the same input. Try again keeps the
+/// input revision, so the count spans redeliveries, the dead letter, Try again
+/// and worker restarts; a new message starts a new revision at zero.
+fn earlier_attempts(conversation: &Conversation, claim: &Claim) -> u32 {
+    let count = conversation
+        .attempts
+        .iter()
+        .filter(|attempt| attempt.revision == claim.revision && attempt.id != claim.attempt)
+        .count();
+    u32::try_from(count).unwrap_or(u32::MAX)
 }
 
 fn decode_push(bytes: &[u8]) -> Result<(Delivery, String), ()> {
@@ -318,18 +337,18 @@ impl Worker {
             );
         }
         // Non-hosted proof only: a message containing `[fail:K]` fails its
-        // first K attempts, counted per input id, so one stack can drive a
+        // first K attempts, counted from the attempts saved on that message, so one stack can drive a
         // retry, a dead letter and Try again alongside ordinary turns.
         let marker = configured(&get, "PHYSICIAN_WORKER_FIXED_FAIL_MARKER");
         if hosted && marker.is_some() {
             return Err("PHYSICIAN_WORKER_FIXED_FAIL_MARKER is refused in hosted execution".into());
         }
         let marker = match marker.as_deref() {
-            None | Some("0") => None,
-            Some("1") => Some(FailMarker::default()),
+            None | Some("0") => false,
+            Some("1") => true,
             Some(_) => return Err("PHYSICIAN_WORKER_FIXED_FAIL_MARKER must be 0 or 1".into()),
         };
-        if marker.is_some() && fixed.is_none() {
+        if marker && fixed.is_none() {
             return Err(
                 "PHYSICIAN_WORKER_FIXED_FAIL_MARKER requires PHYSICIAN_WORKER_FIXED_TEXT".into(),
             );
@@ -349,7 +368,7 @@ impl Worker {
             } else {
                 tracing::info!("physician worker model execution: fixed text");
             }
-            if marker.is_some() {
+            if marker {
                 tracing::info!("physician worker fixed provider honors [fail:K] markers");
             }
             (
@@ -543,14 +562,15 @@ enum ModelSource {
         text: String,
         failures_remaining: Arc<std::sync::atomic::AtomicU32>,
         delay: Duration,
-        marker: Option<FailMarker>,
+        marker: bool,
     },
 }
 
 impl ModelSource {
-    /// One provider for one attempt at `delivery`, whose physician message is
-    /// `input`. Only the fixed provider reads either, for its fail marker.
-    fn provider(&self, delivery: &Delivery, input: &str) -> Result<Model, String> {
+    /// One provider for one attempt on a physician message `input`, after
+    /// `earlier_attempts` saved attempts on that input. Only the fixed
+    /// provider reads either, for its fail marker.
+    fn provider(&self, earlier_attempts: u32, input: &str) -> Result<Model, String> {
         match self {
             Self::Api { key, model } => Ok(Model::Api(harness::responses::Responses::new(
                 key.clone(),
@@ -565,37 +585,19 @@ impl ModelSource {
                 text: text.clone(),
                 failures_remaining: failures_remaining.clone(),
                 delay: *delay,
-                marked_failure: marker
-                    .as_ref()
-                    .is_some_and(|marker| marker.attempt_fails(&delivery.input_id, input)),
+                marked_failure: *marker && marked_attempt_fails(earlier_attempts, input),
             }),
         }
     }
 }
 
-/// Counts attempts per input id for messages marked `[fail:K]`. Try again
-/// keeps the input id, so a message marked `[fail:5]` dead-letters on its
-/// fifth failure and its Try again then succeeds. Process memory only: a
-/// worker restart starts every count again.
-#[derive(Default)]
-struct FailMarker {
-    attempts: std::sync::Mutex<std::collections::HashMap<String, u32>>,
-}
-
-impl FailMarker {
-    /// Whether this attempt fails, counting it when the message is marked.
-    fn attempt_fails(&self, input_id: &str, input: &str) -> bool {
-        let Some(failures) = marked_failures(input) else {
-            return false;
-        };
-        let mut attempts = self
-            .attempts
-            .lock()
-            .unwrap_or_else(std::sync::PoisonError::into_inner);
-        let count = attempts.entry(input_id.to_owned()).or_default();
-        *count = count.saturating_add(1);
-        *count <= failures
-    }
+/// Whether the attempt after `earlier_attempts` fails for a message marked
+/// `[fail:K]`: the first K attempts fail. The count is the conversation's
+/// saved attempts on this input, so it survives a worker restart and every
+/// worker instance agrees. Try again keeps the input, so `[fail:5]`
+/// dead-letters on its fifth failure and its Try again then succeeds.
+fn marked_attempt_fails(earlier_attempts: u32, input: &str) -> bool {
+    marked_failures(input).is_some_and(|failures| earlier_attempts < failures)
 }
 
 /// Takes one from `count` unless it is zero; true when it took one. An
@@ -800,19 +802,58 @@ mod tests {
     }
 
     #[test]
-    fn fail_marker_counts_attempts_per_input_id() {
-        let marker = FailMarker::default();
+    fn fail_marker_fails_the_first_k_saved_attempts() {
         // `[fail:2]` fails its first two attempts, then succeeds for good.
-        assert!(marker.attempt_fails("input-a", "Retry [fail:2]"));
-        assert!(marker.attempt_fails("input-a", "Retry [fail:2]"));
-        assert!(!marker.attempt_fails("input-a", "Retry [fail:2]"));
-        assert!(!marker.attempt_fails("input-a", "Retry [fail:2]"));
-        // Another input id has its own count; an unmarked turn never fails.
-        assert!(marker.attempt_fails("input-b", "Again [fail:1]"));
-        assert!(!marker.attempt_fails("input-b", "Again [fail:1]"));
-        assert!(!marker.attempt_fails("input-c", "Plain turn"));
-        assert!(!marker.attempt_fails("input-c", "Plain turn"));
-        assert!(!marker.attempt_fails("input-d", "[fail:0]"));
+        assert!(marked_attempt_fails(0, "Retry [fail:2]"));
+        assert!(marked_attempt_fails(1, "Retry [fail:2]"));
+        assert!(!marked_attempt_fails(2, "Retry [fail:2]"));
+        assert!(!marked_attempt_fails(3, "Retry [fail:2]"));
+        // An unmarked turn never fails, whatever its history.
+        assert!(!marked_attempt_fails(0, "Plain turn"));
+        assert!(!marked_attempt_fails(4, "Plain turn"));
+        assert!(!marked_attempt_fails(0, "[fail:0]"));
+    }
+
+    fn attempt(id: &str, revision: u64) -> local_product::runtime::Attempt {
+        local_product::runtime::Attempt {
+            id: id.into(),
+            predecessor: None,
+            work: "work".into(),
+            revision,
+            status: "failed".into(),
+            expires: 0,
+            events: vec![],
+        }
+    }
+
+    #[test]
+    fn earlier_attempts_count_only_this_input_and_never_this_claim() {
+        let scope = Scope {
+            practice: "p".into(),
+            physician: "d".into(),
+            workspace: "w".into(),
+            chat: "c".into(),
+        };
+        let mut conversation = Conversation {
+            revision: 2,
+            ..Conversation::default()
+        };
+        // One attempt on the previous message, two failed ones on this one,
+        // then this claim's own attempt.
+        conversation.attempts = vec![
+            attempt("old", 1),
+            attempt("a1", 2),
+            attempt("a2", 2),
+            attempt("now", 2),
+        ];
+        let claim = Claim {
+            scope,
+            attempt: "now".into(),
+            revision: 2,
+        };
+        assert_eq!(earlier_attempts(&conversation, &claim), 2);
+        conversation.attempts.truncate(1);
+        assert_eq!(earlier_attempts(&conversation, &claim), 0);
     }
 
     #[test]
