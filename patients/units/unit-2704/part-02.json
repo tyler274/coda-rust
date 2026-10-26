@@ -1,0 +1,237 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002704",
+      "events": [
+        {
+          "id": "2024-03-19a",
+          "kind": "office_visit",
+          "start": "2024-03-19T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-03-20a",
+          "kind": "telephone",
+          "start": "2024-03-20T09:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed appointment", "author": "front desk", "date": "2024-03-20T09:05", "body": "LM re: missed BP visit yesterday. Pt called back - ran late with a patient at work and forgot to call. Rebooked 4/3 at 7:50 am."}
+          ]
+        },
+        {
+          "id": "2024-04-03a",
+          "kind": "office_visit",
+          "start": "2024-04-03T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2024-04-03T07:50"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Hypertension Follow-up", "author": "PCP", "date": "2024-04-03T08:12", "body": "Early slot before work. Sorry about missing last month. BP fine on both meds; no side effects. Exam: heart regular, lungs clear, no edema. Plan: same regimen. Annual labs with the fall physical. Pap due this year - can do at physical or with a gynecologist, she'll decide."}
+          ]
+        },
+        {
+          "id": "2024-06-03a",
+          "kind": "portal_message",
+          "start": "2024-06-03T21:14",
+          "documents": [
+            {"type": "Patient Message", "title": "Breast lump", "author": "patient", "date": "2024-06-03T21:14", "body": "Hi, I've had a lump in my right breast for maybe 6 weeks. I thought it was my cycle but it hasn't gone away and tonight I noticed the skin over it pulls in a little when I lift my arm. It doesn't hurt. Can I be seen this week?"},
+            {"type": "Patient Message", "title": "RE: Breast lump", "author": "RN", "date": "2024-06-04T08:20", "body": "Thank you for writing. The doctor wants to see you tomorrow, Wednesday at 11:20. Please reply if that doesn't work and we'll find another time."}
+          ]
+        },
+        {
+          "id": "2024-06-05a",
+          "kind": "office_visit",
+          "start": "2024-06-05T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "right breast lump",
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-06-05T11:20"}],
+          "orders": [
+            {"id": "diag-mammo-2024", "action": "placed", "order": "Diagnostic mammogram, right, with ultrasound", "category": "imaging", "reason": "palpable right breast mass with skin retraction"},
+            {"id": "breast-surg-ref", "action": "placed", "order": "Breast surgery referral", "category": "referral", "to": "Breast Surgery", "reason": "palpable right breast mass"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - Breast Mass", "author": "PCP", "date": "2024-06-05T11:58", "body": "CC: R breast lump.\n\nHPI: Noticed ~6 wks ago in the shower. Painless. Not changed with her cycle. Over the weekend saw slight puckering of the skin when raising the arm. No nipple discharge, no fever, no weight change.\nLast screening mammogram 10/2023 negative.\nFH maternal aunt breast ca at 52. Hodgkin treatment 2014.\n\nExam (chaperone present): R breast upper outer quadrant firm mass ~3 cm, non-tender, somewhat fixed to overlying tissue, subtle skin retraction over it with arm raised. No nipple discharge. L breast without mass. No axillary or supraclavicular nodes palpable either side.\n\nA/P: Palpable R breast mass with skin changes in a 46 y/o - needs prompt workup despite negative mammogram last fall. Urgent diagnostic mammogram + ultrasound ordered; breast surgery referral placed at the same time so she isn't waiting on one to get the other. Talked through what the imaging can and can't tell us. She'll message with any questions. I'll call when the report is in."}
+          ]
+        },
+        {
+          "id": "2024-06-10a",
+          "kind": "imaging",
+          "start": "2024-06-10T09:30",
+          "orders": [{"id": "diag-mammo-2024", "action": "done", "date": "2024-06-10T09:30"}],
+          "reports": [
+            {"study": "Diagnostic mammogram", "performed": "2024-06-10T09:30", "text": "Outside breast imaging center. Indication: palpable right breast mass, skin retraction. Right diagnostic mammogram with tomosynthesis and spot compression views, compared with screening study of 10/2023. At the site of the palpable marker in the upper outer quadrant of the right breast there is an irregular high-density mass measuring 2.8 cm with associated fine pleomorphic microcalcifications, new from the prior study. Mild overlying skin thickening and retraction. Targeted ultrasound: irregular hypoechoic mass with indistinct margins at the 10 o'clock position corresponding to the mammographic finding. Right axilla: lymph nodes with normal morphology.", "conclusion": "BI-RADS 5: highly suggestive of malignancy, right breast upper outer quadrant. Tissue sampling recommended; patient has a breast surgery appointment 6/18."}
+          ]
+        },
+        {
+          "id": "2024-06-10b",
+          "kind": "telephone",
+          "start": "2024-06-10T17:25",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Imaging result call", "author": "PCP", "date": "2024-06-10T17:25", "body": "Called pt with the mammogram/US result. Explained the finding is very suspicious and needs a biopsy, which the breast surgeon can do at her visit next week. She was quiet, asked good questions. Offered to talk again anytime this week."}
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "specialist_visit",
+          "start": "2024-06-18T13:00",
+          "service": "Breast Surgery",
+          "reason": "right breast mass",
+          "conditions": [
+            {"label": "Malignant neoplasm of upper-outer quadrant of right female breast", "icd10": "C50.411", "action": "diagnosed", "onset": "2024-04-20", "note": "invasive ductal carcinoma, grade 2, ER+/PR+, HER2 3+"}
+          ],
+          "orders": [{"id": "breast-surg-ref", "action": "done", "date": "2024-06-18T13:00"}],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2024-06-18T13:40", "issued": "2024-06-21T10:15", "text": "Specimen: right breast, 10 o'clock, ultrasound-guided core needle biopsy (4 cores). Gross: four tan-white cores, 1.2 to 1.6 cm. Microscopic: invasive ductal carcinoma, no special type, Nottingham grade 2 (tubules 3, nuclear pleomorphism 2, mitoses 1). Microcalcifications present in association with tumor. Ancillary studies: estrogen receptor positive (90%, strong); progesterone receptor positive (60%, moderate); HER2 by immunohistochemistry 3+ (positive).", "conclusion": "Right breast, 10 o'clock, core biopsy: invasive ductal carcinoma, grade 2. ER positive, PR positive, HER2 positive (3+)."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Breast Surgery Consultation", "author": "breast surgery", "date": "2024-06-24T08:30", "body": "Outside surgical breast clinic - consultation letter.\n\nThank you for referring Ms. Lindqvist, 46, who has had a right breast lump for about two months, painless, with dimpling of the skin over it. She has no nipple discharge.\n\nPMH: hypertension; Hodgkin lymphoma 2014, treated with chemotherapy and radiation, in remission. Meds: hydrochlorothiazide 25 mg, lisinopril 10 mg. Allergies: NKDA. Never smoker, no alcohol. Works as a dental hygienist.\n\nExam: right breast upper outer quadrant, 3 cm firm mass, not tender; the skin above it is slightly drawn in. No nipple discharge. Left breast and both axillae without palpable abnormality.\n\nImaging from 6/10 reviewed: 2.8 cm irregular density with microcalcifications, BI-RADS 5.\n\nProcedure today: ultrasound-guided core needle biopsy of the right breast mass, 14-gauge, four cores, clip placed. Tolerated well.\n\nPathology (6/21): invasive ductal carcinoma, grade 2, ER+, PR+, HER2 3+.\n\nPlan: discussed with patient by phone 6/21. She is a candidate for breast conservation: right lumpectomy with sentinel lymph node biopsy, scheduled 7/18. Referral to medical oncology for systemic therapy given HER2-positive disease. She will need adjuvant radiation; radiation oncology after systemic therapy."}
+          ]
+        },
+        {
+          "id": "2024-06-24a",
+          "kind": "telephone",
+          "start": "2024-06-24T12:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Check-in after diagnosis", "author": "PCP", "date": "2024-06-24T12:30", "body": "Called after the surgeon's letter came in. She knows the pathology; surgery 7/18. Coping, taking some time off work around the surgery. Reviewed that her BP meds are fine to continue up to surgery unless anesthesia says otherwise. Will see her after the operation and once oncology has a plan. Told her to message anytime."}
+          ]
+        },
+        {
+          "id": "2024-07-18a",
+          "kind": "procedure_visit",
+          "start": "2024-07-18T07:30",
+          "end": "2024-07-18T13:00",
+          "service": "Breast Surgery",
+          "reason": "right lumpectomy with sentinel lymph node biopsy",
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2024-07-18T09:10", "issued": "2024-07-24T14:00", "text": "Specimens: (A) right breast lumpectomy, wire/clip localized, oriented; (B) right axillary sentinel lymph node #1; (C) right axillary sentinel lymph node #2. (A) Invasive ductal carcinoma, Nottingham grade 2, greatest dimension 2.9 cm. Biopsy clip and biopsy site changes identified. Margins negative for invasive carcinoma; closest margin superior, 4 mm. No lymphovascular invasion identified. (B), (C) two lymph nodes, negative for metastatic carcinoma (0/2), including on cytokeratin immunostain.", "conclusion": "Right breast lumpectomy: invasive ductal carcinoma, grade 2, 2.9 cm, margins negative. Sentinel lymph nodes 0/2. Prior receptor status ER+, PR+, HER2 3+. pT2 pN0(sn)."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Pathology received - lumpectomy", "author": "MA", "date": "2024-07-26T10:40", "body": "Surgical pathology report from outside hospital received by fax for 7/18 right lumpectomy with sentinel node biopsy. Operative note not included; requested. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2024-07-29a",
+          "kind": "portal_message",
+          "start": "2024-07-29T19:02",
+          "documents": [
+            {"type": "Patient Message", "title": "After surgery", "author": "patient", "date": "2024-07-29T19:02", "body": "Just an update - surgery went fine, the incisions are healing, the surgeon says the nodes were clear. I'm seeing oncology at the end of August. Do I still need my appointment with you on the 13th?"},
+            {"type": "Patient Message", "title": "RE: After surgery", "author": "PCP", "date": "2024-07-30T07:45", "body": "So glad the nodes were clear. Yes, please keep the 13th. We'll check your blood pressure and fasting labs that we skipped, and I want to go over your Hodgkin history with everything else that's going on. Please come fasting."}
+          ]
+        },
+        {
+          "id": "2024-08-13a",
+          "kind": "office_visit",
+          "start": "2024-08-13T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after breast surgery; lipids; long-term effects of lymphoma treatment",
+          "conditions": [
+            {"label": "Hyperlipidemia", "action": "diagnosed", "onset": "2024-08-13"}
+          ],
+          "state": {"labs": {"Low Density Lipoprotein": 160, "High Density Lipoprotein": 35, "Triglycerides": 125}},
+          "vitals": {"bp": [138, 85], "hr": 78},
+          "measure": ["spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-08-13T08:35", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2024-08-13T08:35", "results": [{"test": "Total Cholesterol", "value": 220}, {"test": "High Density Lipoprotein", "value": 35}, {"test": "Low Density Lipoprotein", "value": 160}, {"test": "Triglycerides", "value": 125}]},
+            {"panel": null, "collected": "2024-08-13T08:35", "results": [{"test": "Fasting Glucose", "value": 98}]},
+            {"panel": null, "collected": "2024-08-13T08:35", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-08-13T08:20"},
+            {"procedure": "Venipuncture", "performed": "2024-08-13T08:35"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2024-08-13T09:10", "body": "S: Follow-up about 4 weeks after R lumpectomy + SLNB for IDC (grade 2, ER/PR+, HER2 3+, 2.9 cm, 0/2 nodes). Healing well, some tightness at the axillary incision. Oncology consult 8/29. Feels physically fine, no symptoms. What's on her mind today is the lymphoma treatment from 2014 - she's read that chemo and radiation from back then can catch up with people years later and wants to know what she should be watching for, especially now with more treatment coming.\nNo chest pain, dyspnea, palpitations, edema. No neck swelling, no fatigue beyond the surgery.\nMeds: HCTZ 25, lisinopril 10. NKDA.\n\nO: BP 138/85, HR 78. BMI 26. Incisions R breast and axilla healed, no erythema or fluid. Heart: regular rhythm, no murmurs, rubs or gallops. Lungs clear. Thyroid not enlarged. No adenopathy.\nFasting labs today (resulted same day): CBC normal. Total cholesterol 220, HDL 35, LDL 160, TG 125. Fasting glucose 98. TSH normal.\n\nA/P\n1. Late effects of Hodgkin treatment - we talked through the main ones: heart (some chemo drugs and chest radiation raise long-term heart risk), thyroid underactivity if radiation fields reached the neck, and second cancers, which is part of why her breast exam got prompt attention. Oncology will check heart function before HER2-directed treatment. Thyroid normal today; recheck yearly.\n2. Hyperlipidemia - LDL 160 and HDL 35, higher than the borderline numbers of the last 2 years. With dad's early heart disease this matters. She's facing chemo in the next weeks and doesn't want another new pill on top of that; reasonable to revisit once active treatment is done. Diet discussed.\n3. HTN - a little above goal today, post-op and stressed; continue current meds, recheck at next visit.\n4. Breast ca - per surgery/oncology. Will follow along."}
+          ]
+        },
+        {
+          "id": "2024-08-29a",
+          "kind": "specialist_visit",
+          "start": "2024-08-29T10:00",
+          "service": "Medical Oncology",
+          "reason": "adjuvant therapy for right breast cancer",
+          "documents": [
+            {"type": "Consult Note", "title": "Medical Oncology Consultation", "author": "oncology", "date": "2024-09-05T15:20", "body": "Outside medical oncology - consult summary.\n\nDiagnosis: right breast invasive ductal carcinoma, pT2 pN0(sn), grade 2, ER+/PR+, HER2 3+, s/p lumpectomy and sentinel node biopsy 7/18/2024 with negative margins.\nRelevant history: Hodgkin lymphoma 2014 treated with chemotherapy and radiation; hypertension on hydrochlorothiazide and lisinopril. NKDA.\n\nRecommendation: adjuvant docetaxel and carboplatin with trastuzumab every 3 weeks for 6 cycles, followed by trastuzumab alone to complete one year. Adjuvant radiation to the right breast and axilla after chemotherapy. Endocrine therapy with tamoxifen after radiation, planned for at least 5 years. Baseline echocardiogram before cycle 1. Her prior lymphoma therapy was considered in choosing a non-anthracycline regimen. Target start early October.\n\nWe will keep you updated."}
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "office_visit",
+          "start": "2024-09-26T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "neck pain with left arm tingling",
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "immunizations": [{"vaccine": "Pneumococcal conjugate PCV20", "date": "2024-09-26T15:15"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-09-26T14:40"},
+            {"procedure": "Immunization administration", "performed": "2024-09-26T15:15"}
+          ],
+          "orders": [
+            {"id": "neuro-ref", "action": "placed", "order": "Neurology referral", "category": "referral", "to": "Neurology", "reason": "neck pain with left arm paresthesias"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - Neck Pain", "author": "PCP", "date": "2024-09-26T15:20", "body": "S: About 2 weeks of left-sided neck pain with a pins-and-needles feeling running down the left arm into the hand, comes and goes. Sharper when she turns her head to the left. No injury. Back at work part time before chemo; she's bent over the chair most of the day. No weakness she's noticed, no bowel/bladder change, no fevers.\nChemo starts 10/3 (TCH). Baseline echo done last week.\n\nO: Vitals as charted. Neck: tender left paraspinal muscles, rotation to the left limited by pain. Upper extremity strength grossly symmetric. Will defer detailed neuro exam to neurology.\n\nA/P\n1. Neck pain with left arm paresthesias, likely a pinched cervical nerve root from posture. Given cancer history and that it isn't settling, referral to neurology for a full exam. Heat, gentle stretching, acetaminophen as needed; avoid NSAIDs with chemo starting.\n2. PCV20 today before chemo (will be immunosuppressed). Flu/COVID in October between cycles - she'll check timing with oncology.\n3. HTN - BP fine today."}
+          ]
+        },
+        {
+          "id": "2024-10-04a",
+          "kind": "portal_message",
+          "start": "2024-10-04T18:30",
+          "medications": [
+            {"drug_text": "docetaxel 20 MG/ML Injectable Solution", "action": "historical", "sig": "IV every 3 weeks for 6 cycles per oncology", "route": "Intravenous", "course": "short", "reason": "breast cancer"},
+            {"drug_text": "carboplatin 10 MG/ML Injectable Solution", "action": "historical", "sig": "IV every 3 weeks for 6 cycles per oncology", "route": "Intravenous", "course": "short", "reason": "breast cancer"},
+            {"drug_text": "trastuzumab 150 MG Injection", "action": "historical", "sig": "6 mg/kg IV every 3 weeks per oncology (after loading dose)", "dose": {"value": 6, "unit": "mg/kg"}, "route": "Intravenous", "course": "chronic", "reason": "HER2-positive breast cancer"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "First infusion done", "author": "patient", "date": "2024-10-04T18:30", "body": "First chemo was yesterday. Tired today but OK. Infusion nurse said I should still get my flu shot but between rounds - is next Friday ok?"},
+            {"type": "Patient Message", "title": "RE: First infusion done", "author": "RN", "date": "2024-10-07T09:10", "body": "Next Friday 10/11 is fine and matches what oncology recommended. Booked you at 3:30 for flu and COVID. Doctor added your chemo medicines to your list here so it stays current."}
+          ]
+        },
+        {
+          "id": "2024-10-11a",
+          "kind": "nurse_visit",
+          "start": "2024-10-11T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-10-11T15:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-11T15:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-11T15:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Vaccine visit", "author": "RN", "date": "2024-10-11T15:55", "body": "On chemotherapy, cycle 1 given 10/3; oncology OK'd vaccines today. Afebrile. Inactivated flu IM left deltoid, updated COVID IM left deltoid separate site. VIS given. Observed 15 min, no reaction."}
+          ]
+        },
+        {
+          "id": "2024-10-23a",
+          "kind": "specialist_visit",
+          "start": "2024-10-23T09:40",
+          "service": "Neurology",
+          "reason": "neck pain with left arm tingling",
+          "conditions": [
+            {"label": "Cervical radiculopathy", "action": "diagnosed", "onset": "2024-09-11"}
+          ],
+          "orders": [{"id": "neuro-ref", "action": "done", "date": "2024-10-23T09:40"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology Consultation", "author": "neurology", "date": "2024-12-02T11:00", "body": "Outpatient neurology - visit of 10/23/2024.\n\nReason: neck pain and left arm tingling, referred by her primary care physician.\n\nShe is 47 and currently receiving adjuvant chemotherapy with trastuzumab for right breast cancer; Hodgkin lymphoma in 2014, in remission. For six weeks she has had off-and-on neck pain with tingling that travels down the left arm. The pain is sharp and is brought on by turning her head to the left or tipping it back. No trauma. Her work keeps her neck bent and turned in one position for long stretches.\n\nMeds: hydrochlorothiazide, lisinopril; chemotherapy with trastuzumab per oncology. NKDA. Never smoker, no alcohol.\n\nExam: Light touch reduced over the left thumb and index finger. Left triceps reflex diminished compared with the right; other reflexes symmetric. Strength 5/5 throughout both arms. No muscle wasting or fasciculations. Neck movement painful on left rotation and on extension. Foraminal compression with the head turned left reproduces her arm symptoms. Gait normal.\n\nImpression: left cervical radiculopathy.\n\nPlan: physical therapy for cervical traction and posture work, workstation and posture adjustments at work, acetaminophen as needed. Follow up as needed if symptoms worsen or weakness develops."}
+          ]
+        },
+        {
+          "id": "2024-12-11a",
+          "kind": "telehealth_visit",
+          "start": "2024-12-11T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "check-in during chemotherapy",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2024-12-11T12:15"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2024-12-11T12:40", "body": "Video, pt at home, ID verified.\n\nCheck-in mid-chemo: cycle 4 last week. Fatigue for a few days after each round, appetite ok, no fevers or infections so far. Home BP 118-126/74-80, a bit lower than usual; no lightheadedness.\nNeck/arm: much better with PT, 5 sessions so far, tingling now rare.\nNew: hot flashes and night sweats over the last few weeks, and no period since October. Oncology told her chemo can stop periods. Sleep broken by the sweats.\nNeurology letter not yet received - she says they called it a pinched nerve and sent her to PT.\n\nA/P\n1. On TCH - tolerating; per oncology.\n2. Cervical radiculopathy improving with PT. Continue home exercises.\n3. Hot flashes/amenorrhea since chemo - expected with treatment; she'll raise it with oncology; revisit if it persists.\n4. HTN - home readings fine, continue both meds; hold HCTZ on any day she's vomiting or not drinking.\nF/u in office after chemo ends."}
+          ]
+        }
+      ]
+    }
+  ]
+}

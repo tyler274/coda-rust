@@ -1,0 +1,902 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002695",
+   "events": [
+    {
+     "id": "2021-03-20a",
+     "kind": "pharmacy",
+     "start": "2021-03-20T10:00",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-03-20T10:00"
+      }
+     ]
+    },
+    {
+     "id": "2021-03-30a",
+     "kind": "lab_only",
+     "start": "2021-03-30T08:05",
+     "reason": "Labs before diabetes visit",
+     "state": {
+      "weight_kg": 88.5,
+      "labs": {
+       "Hemoglobin": 12.3,
+       "Glucose": 258
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-03-30T08:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 11.7
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-03-30T08:05",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio",
+         "value": 64
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-03-30T08:05",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-03-30T08:05",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 12.3
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "2021-04-06a",
+     "kind": "office_visit",
+     "start": "2021-04-06T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up, blurred vision",
+     "vitals": {
+      "bp": [
+       134,
+       82
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "medications": [
+      {
+       "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+       "action": "start",
+       "sig": "Inject 10 units under the skin at bedtime",
+       "dose": {
+        "value": 10,
+        "unit": "[IU]"
+       },
+       "frequency": "QHS",
+       "route": "Subcutaneous",
+       "course": "chronic",
+       "reason": "Type 2 diabetes, A1c 11.7"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ophtho-referral",
+       "action": "placed",
+       "order": "Ophthalmology referral",
+       "category": "referral",
+       "to": "Ophthalmology",
+       "reason": "Diabetic eye exam; gradual blurred vision both eyes"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2021-04-06T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes follow-up",
+       "author": "PCP",
+       "date": "2021-04-06T11:05",
+       "body": "Last seen 9/2020; missed the December visit.\n\nS: Vision in both eyes has been slowly getting blurrier for about a year and a half - harder to read the TV guide and street signs. No pain, no flashes or floaters, no double vision. Hasn't been to an eye doctor in more than 10 years. More thirsty than usual over the winter; says she let the diet go. Got her first COVID shot at the pharmacy, second one coming up.\n\nO: BP 134/82. Weight down a bit. Alert, no focal neuro deficits. Fundi poorly seen undilated. Feet: monofilament intact.\nLabs 3/30: A1c 11.7 (8.4 in Sept). Urine albumin/creatinine 64 - new microalbuminuria. Creatinine and sodium normal. Hgb 12.3.\n\nA/P\n1. T2DM, uncontrolled. Already on max metformin. Starting basal insulin: glargine 10 units at bedtime, raise 2 units every 3 days until fasting under 130, max 30 units without calling us. Pen teaching done by RN today, glucometer and supplies sent. Hypoglycemia rules reviewed.\n2. Blurred vision, long-standing diabetes, no eye care in a decade - ophthalmology referral for dilated exam. Some of the blur may be glucose-related.\n3. Microalbuminuria - recheck after sugars improve; will discuss kidney protection next visit.\n4. HTN - acceptable today on HCTZ.\nRN call in 2 weeks for doses. RTC 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-10a",
+     "kind": "pharmacy",
+     "start": "2021-04-10T11:30",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-04-10T11:30"
+      }
+     ]
+    },
+    {
+     "id": "2021-04-20a",
+     "kind": "telephone",
+     "start": "2021-04-20T14:00",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Insulin titration call",
+       "author": "RN",
+       "date": "2021-04-20T14:00",
+       "body": "Called pt for glargine check. Now at 16 units, raising per the schedule. Fasting readings this week 168, 151, 159, 144. No lows, no shakiness. Injection sites fine. Told her to keep going up 2 units every 3 days to fasting under 130. Eye appointment is next Monday."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-26a",
+     "kind": "specialist_visit",
+     "start": "2021-04-26T09:15",
+     "service": "Ophthalmology",
+     "reason": "Diabetic eye exam, decreased vision",
+     "vitals": {
+      "bp": [
+       134,
+       82
+      ]
+     },
+     "orders": [
+      {
+       "id": "ophtho-referral",
+       "action": "done",
+       "date": "2021-04-26T09:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Ophthalmology consultation",
+       "author": "ophthalmology",
+       "date": "2021-05-11T08:30",
+       "body": "OUTSIDE OPHTHALMOLOGY - consult letter\nExam date: 04/26/2021\nPatient: Donna Fairbanks, 57\n\nReason for referral: slow loss of clarity in both eyes over roughly 18 months; type 2 diabetes; no eye examination in over ten years.\n\nMedications: metformin 1000 mg twice daily, insulin glargine at bedtime (recently started), hydrochlorothiazide 25 mg, desmopressin 0.1 mg twice daily. Allergy: sulfa drugs (rash).\nRecent labs per referring office: A1c 11.7%; urine positive for microalbumin.\nBP 134/82.\n\nVisual acuity (distance, current glasses): OD 20/40, OS 20/50.\nPupils equal and reactive, no APD. Motility full. Confrontation fields full. No focal neurologic deficit noted.\nIntraocular pressures normal both eyes.\nAnterior segment: clear corneas, deep quiet chambers, lenses clear.\nDilated fundus: scattered microaneurysms and a few dot-blot hemorrhages in both eyes; no venous beading, IRMA or neovascularization. Maculae flat without thickening or exudate on exam and OCT. Discs pink and sharp with healthy rims.\n\nAssessment: mild nonproliferative diabetic retinopathy in both eyes without macular edema. Reduced acuity is largely refractive; new spectacle prescription given.\nPlan: improve glucose control gradually; repeat dilated exam in 12 months, sooner for any sudden change."
+      }
+     ]
+    },
+    {
+     "id": "2021-05-11a",
+     "kind": "outside_records",
+     "start": "2021-05-11T08:45",
+     "conditions": [
+      {
+       "label": "Type 2 diabetes mellitus with mild nonproliferative retinopathy without macular edema",
+       "action": "diagnosed",
+       "onset": "2021-04-26",
+       "note": "Both eyes, per ophthalmology"
+      },
+      {
+       "label": "Type 2 diabetes mellitus without complications",
+       "action": "resolved",
+       "note": "Recoded with retinopathy"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Eye consult received",
+       "author": "MA",
+       "date": "2021-05-11T08:45",
+       "body": "Ophthalmology consult letter from 4/26 received by fax. Mild NPDR both eyes, no macular edema; f/u 1 yr. Problem list updated per PCP. Diabetic eye exam marked done for 2021."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-29a",
+     "kind": "specialist_visit",
+     "start": "2021-06-29T10:40",
+     "service": "Gynecologic Oncology",
+     "reason": "Endometrial cancer surveillance",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Gynecologic oncology surveillance visit",
+       "author": "gynecologic oncology",
+       "date": "2021-07-08T09:00",
+       "body": "OUTSIDE GYNECOLOGIC ONCOLOGY - follow-up letter\nVisit: 06/29/2021\n\nMs. Fairbanks returns one year after surgery for stage IA grade 1 endometrioid endometrial cancer. She has had no vaginal bleeding or discharge, no pelvic pain, no change in bowel or bladder habits, appetite and weight stable.\nExam: abdomen soft, port sites well healed, no masses. Speculum: vaginal cuff intact and healing well, no lesions. Bimanual and rectovaginal: no masses or nodularity. No inguinal adenopathy.\nImpression: no clinical evidence of recurrence.\nPlan: return in 6 months, then yearly. Call for any bleeding.\nAllergies: sulfa (rash)."
+      }
+     ]
+    },
+    {
+     "id": "2021-07-13a",
+     "kind": "office_visit",
+     "start": "2021-07-13T15:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "bp": [
+       136,
+       84
+      ],
+      "labs": {
+       "Hemoglobin A1c": 9.0,
+       "Glucose": 166
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-07-13T15:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 9.0
+        }
+       ],
+       "resulted": "2021-07-13T15:38"
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-07-13T15:30",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-07-13T15:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes follow-up",
+       "author": "PCP",
+       "date": "2021-07-13T15:40",
+       "body": "Glargine now 24 units nightly. Fasting 110s-130s in her log, a couple of 98s. No lows. Thirst better. New glasses help a lot. Eye doctor said mild retinopathy both eyes, no swelling.\nBP see vitals. Feet: skin intact, sensation normal.\nA1c today 9.0 (from 11.7) - moving the right way; it lags behind her logs.\nPlan: same glargine dose; continue metformin. Recheck A1c in 3 months. Gyn onc visit in June was clear per patient - letter received. Fully vaccinated for COVID now."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-21a",
+     "kind": "specialist_visit",
+     "start": "2021-09-21T13:00",
+     "service": "Endocrinology",
+     "reason": "Central diabetes insipidus follow-up",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-09-21T13:30",
+       "results": [
+        {
+         "test": "Sodium",
+         "loinc": "2951-2",
+         "unit": "mmol/L",
+         "value": 140
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Endocrinology follow-up letter",
+       "author": "endocrinology",
+       "date": "2021-09-28T10:15",
+       "body": "OUTSIDE ENDOCRINOLOGY\nSeen 09/21/2021 for central diabetes insipidus.\n\nShe reports good control of thirst and urine output on desmopressin 0.1 mg twice daily; nocturia once a night. No headaches or nausea. Now on basal insulin from her PCP for type 2 diabetes.\nSodium today 140.\nPlan: continue desmopressin 0.1 mg twice daily. Sodium with her routine PCP labs. Return in 2 years or sooner if polyuria recurs."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-19a",
+     "kind": "office_visit",
+     "start": "2021-10-19T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up, flu shot",
+     "state": {
+      "weight_kg": 87.0,
+      "labs": {
+       "Hemoglobin A1c": 7.9,
+       "Glucose": 146
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-10-19T10:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.9
+        }
+       ],
+       "resulted": "2021-10-19T10:12"
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-10-19T10:05",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-19T10:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-10-19T09:40"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-19T10:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2021",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "Breast cancer screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes follow-up",
+       "author": "PCP",
+       "date": "2021-10-19T10:15",
+       "body": "Feeling well. Glargine 24 units. Fasting mostly 100-125. Walking most mornings with a neighbor, down about 5 lb since spring. No lows.\nExam: heart RRR, lungs clear, feet intact.\nA1c 7.9 today.\nPlan: continue glargine and metformin. Flu shot given. Mammogram ordered. Recheck A1c and urine microalbumin in spring. Endo letter (9/21) reviewed - DI stable, sodium 140."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-06a",
+     "kind": "pharmacy",
+     "start": "2021-11-06T12:10",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-11-06T12:10"
+      }
+     ]
+    },
+    {
+     "id": "2021-11-16a",
+     "kind": "imaging",
+     "start": "2021-11-16T07:50",
+     "service": "Breast Imaging",
+     "reason": "Screening mammogram",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2021-11-16T07:50",
+       "issued": "2021-11-17T10:30",
+       "text": "Standard screening views of both breasts with tomosynthesis, compared with 11/2020 and 02/2019. Scattered fibroglandular densities. No mass, suspicious calcifications or distortion. Stable exam.",
+       "conclusion": "BI-RADS 1, negative. Return in 1 year."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2021",
+       "action": "done",
+       "date": "2021-11-16T07:50"
+      }
+     ]
+    },
+    {
+     "id": "2022-01-25a",
+     "kind": "pharmacy",
+     "start": "2022-01-25T11:00",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Glargine pens and pen needles",
+       "author": "MA",
+       "date": "2022-01-25T11:00",
+       "body": "Pharmacy request: insulin glargine pens 15 mL and pen needles 32G 4 mm #100. Insurance wanted a new PA for the pens this year - submitted on the plan portal, approved same day. Rx sent."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-05a",
+     "kind": "lab_only",
+     "start": "2022-04-05T07:55",
+     "reason": "Labs before follow-up",
+     "state": {
+      "weight_kg": 84.0,
+      "labs": {
+       "Glucose": 118
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-04-05T07:55",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 6.8
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-04-05T07:55",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio",
+         "value": 58
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-04-05T07:55",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "2022-04-12a",
+     "kind": "office_visit",
+     "start": "2022-04-12T13:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up; knee pain",
+     "vitals": {
+      "bp": [
+       138,
+       84
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "medications": [
+      {
+       "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+       "action": "stop",
+       "reason": "A1c 6.8, fasting sugars low-normal, weight down"
+      },
+      {
+       "drug": "lisinopril 10 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 10,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Persistent microalbuminuria with diabetes"
+      }
+     ],
+     "orders": [
+      {
+       "id": "rheum-referral",
+       "action": "placed",
+       "order": "Rheumatology referral",
+       "category": "referral",
+       "to": "Rheumatology",
+       "reason": "Bilateral knee pain with morning stiffness"
+      },
+      {
+       "id": "bmp-lisinopril",
+       "action": "placed",
+       "order": "Basic metabolic panel in 2 weeks",
+       "category": "lab",
+       "reason": "Potassium and creatinine after starting lisinopril"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-04-12T13:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up: diabetes, albuminuria, knees",
+       "author": "PCP",
+       "date": "2022-04-12T14:25",
+       "body": "S: Doing great with sugars. Glargine was down to 14 units because mornings were running 80s-90s. Has lost about 8 lb since fall. Wants to know if she can come off insulin.\nNew issue: both knees hurt for about 6 months - worse with stairs and long walks, better resting. Stiff for about 20 minutes on getting up. No swelling, redness, fever or injury.\n\nO: BP 138/84. BMI 32. Knees: crepitus both, no effusion or warmth, full motion with end-range discomfort.\nLabs 4/5: A1c 6.8. Urine albumin/creatinine 58 (64 last year) - persistent. Creatinine, potassium normal.\n\nA/P\n1. T2DM - stop glargine; metformin alone; recheck A1c in 5-6 months. Keep checking fasting a few times a week.\n2. Microalbuminuria, persistent - start lisinopril 10 mg daily for kidney protection; BMP in 2 weeks. Continue HCTZ.\n3. Bilateral knee pain with morning stiffness - most likely osteoarthritis, but given the stiffness she would like a rheumatology opinion; referral placed. Tylenol in the meantime.\n4. Eye f/u due next month - she has it scheduled."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-22a",
+     "kind": "specialist_visit",
+     "start": "2022-04-22T11:00",
+     "service": "Rheumatology",
+     "reason": "Bilateral knee pain",
+     "reports": [
+      {
+       "study": "Knee X-ray",
+       "performed": "2022-04-22T11:50",
+       "issued": "2022-04-22T15:00",
+       "text": "Bilateral standing AP, lateral and sunrise views of both knees. Medial and patellofemoral joint space narrowing bilaterally with subchondral sclerosis and marginal osteophytes. No fracture, erosion or chondrocalcinosis. No joint effusion. Soft tissues unremarkable.",
+       "conclusion": "Degenerative changes of both knees consistent with osteoarthritis."
+      }
+     ],
+     "orders": [
+      {
+       "id": "rheum-referral",
+       "action": "done",
+       "date": "2022-04-22T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology consultation",
+       "author": "rheumatology",
+       "date": "2022-05-03T09:20",
+       "body": "OUTSIDE RHEUMATOLOGY - consultation\nVisit date: 04/22/2022\n\n58-year-old woman referred for knee pain. Background: type 2 diabetes, hypertension, central diabetes insipidus, endometrial cancer treated surgically in 2020, diabetic retinopathy followed by ophthalmology.\n\nShe describes half a year of pain in both knees brought on by activity and eased by rest, with roughly 20 minutes of stiffness after waking. No other joints involved, no rash, no constitutional symptoms.\n\nMedications: hydrochlorothiazide (her pressure is well controlled on it), metformin, lisinopril 10 mg recently added, desmopressin. Allergy: sulfa drugs (rash).\n\nExam: BMI 32. Knees without erythema or warmth. Bony enlargement of both knees with joint-line tenderness. No effusion. Range of motion preserved but uncomfortable at the extremes. Hands, wrists, shoulders and ankles normal.\n\nImaging today: joint space narrowing, subchondral sclerosis and osteophytes in both knees.\n\nImpression: primary osteoarthritis of both knees. No features of inflammatory arthritis; no further serologic workup needed.\n\nRecommendations: acetaminophen up to 1 g three times daily as needed; physical therapy for quadriceps strengthening; weight loss will help. Follow up here as needed."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-27a",
+     "kind": "lab_only",
+     "start": "2022-04-27T08:10",
+     "reason": "BMP after lisinopril start",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-04-27T08:10",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "bmp-lisinopril",
+       "action": "done",
+       "date": "2022-04-27T08:10"
+      }
+     ]
+    },
+    {
+     "id": "2022-05-04a",
+     "kind": "portal_message",
+     "start": "2022-05-04T12:30",
+     "conditions": [
+      {
+       "label": "Bilateral primary osteoarthritis of knee",
+       "action": "diagnosed",
+       "onset": "2021-10-01",
+       "note": "Per rheumatology 4/2022"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "acetaminophen 500 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 to 2 tablets by mouth up to three times daily as needed for knee pain",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "TID PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Knee osteoarthritis"
+      }
+     ],
+     "orders": [
+      {
+       "id": "pt-knees",
+       "action": "placed",
+       "order": "Physical therapy referral",
+       "category": "referral",
+       "to": "Physical Therapy",
+       "reason": "Bilateral knee osteoarthritis, quadriceps strengthening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Rheumatology letter and next steps",
+       "author": "PCP",
+       "date": "2022-05-04T12:30",
+       "body": "Hi Donna, the rheumatologist's letter came in. It is osteoarthritis in both knees, not an inflammatory arthritis, which is good news. I've sent a physical therapy referral and added Tylenol to your list (up to 2 tablets three times a day as needed). Your kidney labs after starting lisinopril were fine - potassium and creatinine normal."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Rheumatology letter and next steps",
+       "author": "patient",
+       "date": "2022-05-04T18:02",
+       "body": "Thank you! PT place near me called already, I start next week."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-17a",
+     "kind": "specialist_visit",
+     "start": "2022-05-17T14:00",
+     "service": "Ophthalmology",
+     "reason": "Diabetic retinopathy follow-up",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Ophthalmology follow-up",
+       "author": "ophthalmology",
+       "date": "2022-05-24T09:00",
+       "body": "OUTSIDE OPHTHALMOLOGY - follow-up\nExam 05/17/2022\nCorrected acuity better than last year in both eyes with the new glasses. Pressures normal. Lenses clear.\nDilated exam: a few scattered microaneurysms both eyes, fewer hemorrhages than last year. No neovascularization. No macular edema on OCT.\nAssessment: mild nonproliferative diabetic retinopathy OU, stable to slightly improved with better glucose control.\nPlan: annual dilated exam."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-19a",
+     "kind": "outside_records",
+     "start": "2022-07-19T10:00",
+     "orders": [
+      {
+       "id": "pt-knees",
+       "action": "done",
+       "date": "2022-07-19T10:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Physical therapy evaluation, low complexity",
+       "performed": "2022-05-10T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Physical therapy discharge summary",
+       "author": "physical therapy",
+       "date": "2022-07-19T10:00",
+       "body": "OUTSIDE PHYSICAL THERAPY - discharge summary\nDiagnosis: bilateral knee osteoarthritis. Evaluated 05/10/2022; 10 visits through 07/12/2022.\nProgram: quadriceps and hip strengthening, stationary bike, home exercise program.\nOutcome: pain on stairs much reduced; sit-to-stand and step-up tolerance improved. Independent with home program. Discharged."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-20a",
+     "kind": "office_visit",
+     "start": "2022-09-20T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "state": {
+      "bp": [
+       128,
+       80
+      ],
+      "labs": {
+       "Hemoglobin A1c": 7.2,
+       "Microalbumin/Creatinine Ratio": 45,
+       "Glucose": 138
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-09-20T11:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.2
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-09-20T11:00",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio",
+         "value": 45
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-09-20T11:00",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-09-20T11:00",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2022-09-20T11:05"
+      },
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2022-09-20T11:06"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-09-20T10:30"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-09-20T11:05"
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2022",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "Breast cancer screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes / HTN follow-up",
+       "author": "PCP",
+       "date": "2022-09-20T11:20",
+       "body": "Off insulin since April. Home fasting 120s-140s. Finished PT in July; knees much better, uses Tylenol a couple times a week. Eye exam in May stable. No cough or dizziness on lisinopril.\nExam: BP at goal today. Heart RRR, lungs clear. Knees no effusion. Feet: sensation intact, pulses 2+.\nA/P: T2DM on metformin - A1c pending. HTN - better on lisinopril + HCTZ. Albuminuria - recheck today. Flu and PCV20 today (diabetes). Mammogram ordered. Bivalent COVID booster at pharmacy. RTC 6 months for physical."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-01a",
+     "kind": "pharmacy",
+     "start": "2022-10-01T10:20",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-01T10:20"
+      }
+     ]
+    },
+    {
+     "id": "2022-11-08a",
+     "kind": "imaging",
+     "start": "2022-11-08T09:10",
+     "service": "Breast Imaging",
+     "reason": "Screening mammogram",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2022-11-08T09:10",
+       "issued": "2022-11-09T13:00",
+       "text": "Bilateral screening mammogram with tomosynthesis. Compared with 11/2021 and 11/2020. Scattered fibroglandular tissue. No suspicious findings in either breast.",
+       "conclusion": "BI-RADS 1. Negative."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2022",
+       "action": "done",
+       "date": "2022-11-08T09:10"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

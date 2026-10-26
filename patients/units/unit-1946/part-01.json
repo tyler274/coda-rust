@@ -1,0 +1,151 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001946",
+      "given": "Madison",
+      "family": "Ouellette",
+      "birth_date": "1996-03-04",
+      "address_line": "27 Lamplighter Lane",
+      "phone": "+1-347-555-0150",
+      "email": "madison.ouellette@example.test",
+      "marital_status": "single",
+      "summary": "Healthy marketing coordinator who joined the practice at 26. In her late twenties she develops cold- and stress-triggered three-color finger episodes, sees rheumatology (ANA and RF negative, primary Raynaud phenomenon) and a year later cardiology, and is managed conservatively without medication.",
+      "events": [
+        {
+          "id": "2022-03-08a",
+          "kind": "telephone",
+          "start": "2022-03-08T10:14",
+          "reason": "new patient scheduling",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New Patient Scheduling", "author": "front desk", "date": "2022-03-08T10:14",
+             "body": "Caller is 26 and looking for a primary care doctor closer to home; her previous office is a long drive now. Explained the membership model and that insurance still covers labs, imaging and specialists. Employer PPO card info taken. Booked new-patient physical 3/22 at 8:40. Will send records release by email.\n\nNo current health concerns per caller."}
+          ]
+        },
+        {
+          "id": "2022-03-15a",
+          "kind": "telephone",
+          "start": "2022-03-15T14:02",
+          "reason": "records request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Outside Records Request", "author": "front desk", "date": "2022-03-15T14:02",
+             "body": "Signed release returned through portal. Request sent to prior primary care office for last 3 yrs of notes, labs, immunizations and any GYN screening. They quoted 2-3 weeks."}
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "establish_care",
+          "start": "2022-03-22T08:40",
+          "end": "2022-03-22T09:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 61.8, "height_cm": 165.1},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2022-03-22T09:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Platelets"}, {"test": "Neutrophils %"}, {"test": "Lymphocytes %"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-03-22T09:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-03-22T09:40", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-03-22T09:40", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per week"},
+            {"item": "Occupation", "value": "Marketing coordinator"}
+          ],
+          "procedures": [{"procedure": "Preventive visit, new patient, 18-39", "performed": "2022-03-22T08:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Preventive Visit", "author": "PCP", "date": "2022-03-22T09:35",
+             "body": "NEW PATIENT – PREVENTIVE\n\n26 y/o woman establishing care. Moving primary care closer to home. Feels well, no complaints today. Last physical about a year ago at her prior office; she recalls a normal Pap there. Records requested, not yet in.\n\nPMH: none. No hospitalizations.\nPSH: none.\nMeds: none, no supplements.\nAllergies: NKDA.\nFamily hx: mother has Raynaud's. Maternal aunt has lupus. Father healthy as far as she knows. No early heart disease, no cancers she is aware of.\nSocial: marketing coordinator, mostly desk and client work. Never smoker. Alcohol socially, one or two drinks most weeks. No drug use. Exercises a few times a week (spin classes, walking).\n\nROS: negative across systems, including no rashes, joint pain, or hand/finger complaints.\n\nExam: well appearing. Vitals reviewed and normal. HEENT normal, thyroid not enlarged. Heart RRR without murmur. Lungs clear bilaterally. Abdomen soft, nontender, no organomegaly. Skin without rash. Extremities warm, good capillary refill, no edema. Neuro grossly intact. Mood bright. PHQ-2: 0.\n\nAssessment/Plan:\n1. Adult wellness exam. Fasting draw this morning: CBC, CMP, lipids. One-time HIV and hepatitis C screens offered and accepted.\n2. Cervical screening: will confirm date and result of last Pap from records; due every 3 yrs at her age.\n3. Immunizations: confirm Tdap and HPV series from records. Flu shot in the fall.\n4. Healthy habits discussed, keep up the exercise.\n\nReturn in 1 yr for a physical, sooner prn."}
+          ]
+        },
+        {
+          "id": "2022-03-24a",
+          "kind": "portal_message",
+          "start": "2022-03-24T16:48",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab Results", "author": "PCP", "date": "2022-03-24T16:48",
+             "body": "Hi Madison, everything from Tuesday came back fine. Blood counts, kidney and liver tests, sugar and cholesterol are all in the normal range, and the HIV and hepatitis C screens were negative. Nothing to change. Nice to have a baseline on file."}
+          ]
+        },
+        {
+          "id": "2022-04-05a",
+          "kind": "outside_records",
+          "start": "2022-04-05T11:20",
+          "immunizations": [
+            {"vaccine": "HPV, quadrivalent", "date": "2008-09-10T10:00"},
+            {"vaccine": "HPV, quadrivalent", "date": "2008-11-12T10:00"},
+            {"vaccine": "HPV, quadrivalent", "date": "2009-03-11T10:00"},
+            {"vaccine": "Tdap", "date": "2019-06-04T09:30"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-09T13:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-30T13:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-12-17T15:00"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Records from Prior Primary Care Office", "author": "front desk", "date": "2022-04-05T11:20",
+             "body": "38 pages arrived from previous primary care office, covering 2019 to early 2022. Indexed under outside records.\n\nSummary for PCP:\n- Annual visits 2019, 2020 (video), 2021: well visits, no chronic problems, no meds.\n- Pap 03/2021: negative for intraepithelial lesion or malignancy.\n- Immunizations: HPV x3 (2008-2009), Tdap 06/2019, COVID Pfizer x2 spring 2021 plus booster 12/2021. Childhood series noted as complete.\n- Allergies: none listed.\n\nImmunization history updated. Routed to PCP."},
+            {"type": "Progress Notes", "title": "Outside Records Review", "author": "PCP", "date": "2022-04-06T07:55",
+             "body": "Prior records reviewed. Nothing new. Pap 2021 normal, next due 2024. Tdap current to 2029. HPV complete. Health maintenance updated."}
+          ]
+        },
+        {
+          "id": "2022-10-19a",
+          "kind": "nurse_visit",
+          "start": "2022-10-19T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "measure": ["temp_c"],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-19T16:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-19T16:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Influenza Vaccine", "author": "RN", "date": "2022-10-19T16:40",
+             "body": "Afebrile, feels well. Screening questions negative, no prior vaccine reactions. Quadrivalent flu 0.5 mL IM left deltoid. VIS reviewed. Observed briefly, no reaction. Pt declined COVID booster today, will think about it."}
+          ]
+        },
+        {
+          "id": "2023-04-12a",
+          "kind": "annual_physical",
+          "start": "2023-04-12T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [{"item": "Tobacco smoking status", "value": "Never smoker"}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-04-12T08:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-04-12T09:05",
+             "body": "ANNUAL EXAM\n\n27 y/o here for yearly visit. Busy stretch at work with a spring product launch but sleeping ok. No new symptoms. No meds. NKDA. Still spinning 2-3x/wk. Alcohol unchanged, social. Never smoker.\n\nROS: negative.\n\nExam: Vitals normal. Well appearing. HEENT clear. Neck supple. Heart regular, no murmur. Lungs clear. Abdomen benign. Skin and nails normal. Extremities warm, no edema. Affect appropriate. PHQ-2 0.\n\nA/P:\n- Wellness: labs last spring were all normal, no need to repeat this year.\n- Pap next spring (2024).\n- Tdap up to date. Flu in the fall; updated COVID when the new formula is out.\n- Sunscreen, seat belt, alcohol in moderation.\n\nRTC 1 yr."}
+          ]
+        },
+        {
+          "id": "2023-04-14a",
+          "kind": "portal_message",
+          "start": "2023-04-14T12:31",
+          "documents": [
+            {"type": "Patient Message", "title": "Vaccine Record", "author": "patient", "date": "2023-04-14T12:31",
+             "body": "Hi, could I get a printout of my vaccine history? I'd like a copy for my own files. Thanks!"},
+            {"type": "Patient Message", "title": "RE: Vaccine Record", "author": "MA", "date": "2023-04-14T15:10",
+             "body": "Hi Madison, your immunization record is attached as a PDF. You can also download it anytime under Health Summary in the portal."}
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "nurse_visit",
+          "start": "2023-10-11T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-11T12:20"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-11T12:22"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-11T12:20"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Influenza and COVID-19 Vaccines", "author": "RN", "date": "2023-10-11T12:35",
+             "body": "Came on her lunch break. No illness, no prior reactions. Flu quadrivalent IM left arm and 2023-24 Pfizer COVID IM right arm. VIS/EUA fact sheets given. Waited 15 min, tolerated well."}
+          ]
+        }
+      ]
+    }
+  ]
+}

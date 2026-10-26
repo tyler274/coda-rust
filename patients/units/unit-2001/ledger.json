@@ -1,0 +1,3278 @@
+{
+  "unit": "unit-2001",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00002001/2024-05-07a: allergen \"Blood products\" not in catalog (text only)",
+    "MRN00002001/2024-05-07a: reaction \"Acute hemolytic transfusion reaction\" not in catalog (text only)"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002001",
+      "given": "Kevin",
+      "family": "Allard",
+      "birth_date": "1969-11-15",
+      "address_line": "27 Cottage Lane",
+      "phone": "+1-413-555-0109",
+      "email": "kevin.allard@example.test",
+      "marital_status": "married",
+      "summary": "Landscaping supervisor and daily smoker with hypertension, hyperlipidemia and nonobstructive coronary disease who joined in 2022. In 2024 a bleeding gastric ulcer needed operative repair and a transfusion caused an acute hemolytic reaction; in 2025 he had two inferior STEMIs, each stented, and he still smokes.",
+      "events": [
+        {
+          "id": "2022-09-13a",
+          "kind": "establish_care",
+          "start": "2022-09-13T09:00",
+          "end": "2022-09-13T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2015-06-01"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "history",
+              "onset": "2016-04-01"
+            },
+            {
+              "label": "Coronary artery disease",
+              "action": "history",
+              "onset": "2021-03-01",
+              "note": "Nonobstructive RCA plaque on 2021 CT coronary angiography at prior practice"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "history",
+              "onset": "1993-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hyperlipidemia"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              150,
+              88
+            ],
+            "hr": 62,
+            "spo2": 96,
+            "weight_kg": 94.5,
+            "height_cm": 180.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-13T09:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-13T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 307
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.87
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-13T09:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 103
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 165
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T09:50",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T09:50",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Landscaping supervisor"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-09-13T09:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-13T09:55"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2022",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "to": "Radiology",
+              "reason": "Current smoker, 30 pack-years"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-09-13T10:00",
+              "author": "PCP",
+              "body": "NEW PATIENT. 52M, runs a landscaping crew, here to set up primary care; his last office closed its internal medicine side over the summer and he has been coasting on refills.\n\nKnown problems per pt: high blood pressure for years, cholesterol, and a heart scan last year that showed some plaque in one artery. Saw cardiology once for that, told to keep the statin and the BP pill, no stents, nothing further. Denies exertional chest discomfort, dyspnea, palpitations, leg swelling. Gets winded hauling mulch bags up a slope at the end of a long day but no different from the rest of the crew.\n\nMeds: lisinopril 20 daily, atorvastatin 40 daily. Takes both, rarely misses.\nAllergies: none to medicines.\nPSH: none.\nFH: dad had a heart attack at 62. Mom has blood pressure. One brother on a cholesterol pill.\nSH: smokes a pack a day, started in his early 20s, so roughly 30 pack-years. A drink or two a month at a cookout. No other substances. Outdoors all season, plows in winter.\n\nExam: well-appearing, weathered. BP above, recheck similar. Heart RRR, no murmur. Lungs clear, no wheeze. Abd benign. No peripheral edema, DP pulses 2+.\n\nA/P\n1. HTN on lisinopril 20: a bit above goal today. Home cuff readings requested before changing anything.\n2. Hyperlipidemia / CAD (nonobstructive on 2021 CT angio per pt): continue atorvastatin 40. Lipids today. Records request to prior office for the CT report.\n3. Tobacco: talked through what quitting would mean for the plaque already there. He is not ready, says the job and the smoking go together. Will keep asking.\n4. Lung cancer screening: qualifies by age and pack-years. Low-dose CT ordered.\n5. Health maintenance: colonoscopy around 2019 at old office, normal per pt. Hep C and HIV once, A1c screen, CMP, CBC today. Flu shot given.\n\nRTC 6 months or sooner with home BP numbers."
+            }
+          ],
+          "state": {
+            "bp": [
+              138,
+              86
+            ],
+            "weight_kg": 94.2,
+            "height_cm": 180.0,
+            "labs": {
+              "Hemoglobin A1c": 5.6,
+              "Low Density Lipoprotein": 98
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "portal_message",
+          "start": "2022-09-20T13:12",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2022-09-20T13:12",
+              "author": "PCP",
+              "body": "Hi Kevin, your bloodwork from last week is back. Kidney function, liver tests, blood count and sugar (A1c) are all fine. The hepatitis C and HIV screens were negative, so those are done for good. LDL cholesterol on the atorvastatin is acceptable for now; we will recheck next year. The radiology department will call you to schedule the lung CT. Thanks."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "outside_records",
+          "start": "2022-09-27T11:30",
+          "reason": "Prior practice records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2022-09-27T11:30",
+              "author": "MA",
+              "body": "Prior PCP records, 38 pages, filed under media.\n\nPCP abstract of the relevant items:\n- CT coronary angiography, 03/2021: nonobstructive plaque in the right coronary artery, roughly 40% narrowing; no other significant stenosis. Cardiology consult after it recommended continuing statin and BP therapy, risk factor control, no further testing.\n- Screening colonoscopy, 2019: no polyps; repeat in 10 years.\n- Tdap 2018.\n- Med list matches ours (lisinopril 20, atorvastatin 40). No drug allergies listed.\n- BP log in the old chart mostly 130s-140s systolic.\n\nProblem list updated; no changes to plan."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "imaging",
+          "start": "2022-10-11T14:20",
+          "service": "Radiology",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2022-10-11T14:20",
+              "text": "Indication: lung cancer screening, current smoker, 30 pack-years. Technique: low-dose helical CT of the chest without contrast. Findings: no pulmonary nodules. Airways patent. No consolidation or effusion. Heart size normal. No mediastinal or hilar adenopathy. Visualized upper abdomen unremarkable. Osseous structures intact.",
+              "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2022",
+              "action": "done",
+              "date": "2022-10-11T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Result note",
+              "date": "2022-10-13T09:40",
+              "author": "RN",
+              "body": "Called pt with lung CT result per PCP: negative, repeat next fall. He asked if that means the smoking is not hurting him. Explained the scan only looks for cancer and not the damage to the heart or lungs. He laughed and said he figured."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "office_visit",
+          "start": "2023-03-14T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure and cholesterol follow-up",
+          "vitals": {
+            "bp": [
+              133,
+              82
+            ],
+            "hr": 57,
+            "spo2": 97,
+            "weight_kg": 93.9
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-03-14T07:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-03-14T08:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-03-14T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2023-03-14T08:15",
+              "author": "PCP",
+              "body": "S: Early slot before the season starts. Home BP cuff readings on his phone, mostly 132-140 over low 80s, one or two in the 140s after a night of bad sleep. No headaches, CP or SOB. Taking lisinopril and atorvastatin. Still a pack a day; tried cutting down over the winter, back to baseline by February.\n\nO: Vitals as charted. Alert, comfortable. RRR, lungs clear. No edema.\n\nA/P:\n- HTN: home average a little over goal for someone with coronary plaque. Discussed adding a second agent vs. lifestyle; he wants to see whether the busy season (more walking, less sitting) helps first. Recheck at physical.\n- CAD/lipids: on atorvastatin 40, LDL last fall acceptable. No change.\n- Tobacco: asked again. Not ready. Handed him the state quitline card.\n- Shingrix #1 today; #2 in 2 months, nurse visit."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "nurse_visit",
+          "start": "2023-05-16T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix second dose",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-05-16T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-05-16T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "date": "2023-05-16T16:45",
+              "author": "RN",
+              "body": "Shingrix dose 2 of 2, 0.5 mL IM, left deltoid. Came straight from a job site. Reports first dose gave him a sore arm and chills that night, nothing else. Advised similar is possible. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T08:00",
+          "end": "2023-09-19T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              139,
+              85
+            ],
+            "hr": 64,
+            "spo2": 99,
+            "weight_kg": 94.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-19T08:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 15
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 90
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-19T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.91
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 299
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-19T08:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 104
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 109
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 172
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 46
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 126
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-09-19T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-19T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-19T08:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-09-19T08:46"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-09-19T08:47"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2023",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "to": "Radiology",
+              "reason": "Annual screening, current smoker"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-09-19T09:05",
+              "author": "PCP",
+              "body": "Annual exam. 53M.\n\nInterval: nothing new. Busy summer, crew of six. No chest pressure with work, no breathlessness beyond his usual, no claudication. Sleeping ok. Home BP still mostly 130s/80s.\n\nMeds: lisinopril 20 mg daily, atorvastatin 40 mg daily. NKDA.\nHabits: 1 ppd, unchanged. Alcohol rare. PHQ-2 0, AUDIT-C 1.\n\nExam: Vitals reviewed. HEENT unremarkable. Neck supple, no bruits. Cardiac: regular, S1 S2, no murmur. Chest clear bilaterally. Abdomen soft, nontender, no organomegaly. Skin: sun damage on forearms and neck, no suspicious lesions. Extremities warm, pulses intact, no swelling. Neuro grossly intact.\n\nAssessment/plan\n- HTN: borderline control at home; he again prefers not to add a drug. Revisit in winter.\n- CAD and lipids: atorvastatin 40. Fasting panel today.\n- Tobacco use disorder: counseled; declines meds and NRT for now.\n- Lung screening: due next month, ordered.\n- Vaccines: flu, updated COVID, and PCV20 (smoker under 65) today. Shingrix done. Tdap 2018.\n- Colon: 2019 colonoscopy, next 2029.\n\nFollow up in about 4 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Low Density Lipoprotein": 104
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "imaging",
+          "start": "2023-10-10T15:05",
+          "service": "Radiology",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2023-10-10T15:05",
+              "text": "Comparison: 10/2022. Technique: low-dose noncontrast helical chest CT. Lungs: no nodules or masses. No consolidation. No pleural effusion. Cardiomediastinal contours within normal limits. No adenopathy. Upper abdomen and bones unremarkable.",
+              "conclusion": "Lung-RADS 1. Negative screen; next annual low-dose CT in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2023",
+              "action": "done",
+              "date": "2023-10-10T15:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "CT result",
+              "date": "2023-10-11T12:20",
+              "author": "PCP",
+              "body": "Kevin, this year's screening CT is clear again. Same plan for next October. The best thing you could do for your lungs and heart is still the cigarettes, whenever you are ready I'm here."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "office_visit",
+          "start": "2024-01-23T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2024-01-23T11:05",
+              "author": "front desk",
+              "body": "No-show for 10:20. Reached pt on cell, he was out on a plowing call after the overnight snow and forgot. Rebooked 2/6 at 7:40."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "office_visit",
+          "start": "2024-02-06T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              138,
+              94
+            ],
+            "hr": 60,
+            "spo2": 99,
+            "weight_kg": 94.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-02-06T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-02-06T08:05",
+              "author": "PCP",
+              "body": "Rebooked from the snow day. Winter is quieter for him, mostly plowing and equipment repair.\n\nNo CP, DOE, palpitations. Home BPs 130s-140s/80s. Adherent to lisinopril 20 and atorvastatin 40. Smoking unchanged.\n\nExam: NAD. Regular rhythm. Lungs clear. No LE swelling.\n\nA/P: HTN slightly above target, CAD with plaque, LDL not at goal on atorva 40. Offered to intensify either the statin or the BP regimen; he would rather not change in the middle of winter and wants to talk again at the physical. Documented. Smoking cessation discussed, declines.\n\nRTC September for physical, sooner prn."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-09a",
+          "kind": "pharmacy",
+          "start": "2024-04-09T10:15",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Pharmacy refill request",
+              "date": "2024-04-09T10:15",
+              "author": "MA",
+              "body": "E-request from pharmacy: lisinopril 20 mg #90 and atorvastatin 40 mg #90. Last visit 2/6, on active list. Sent per protocol, 1 refill each."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "hospital_admission",
+          "start": "2024-05-07T03:40",
+          "end": "2024-05-13T13:30",
+          "service": "General Surgery",
+          "reason": "Hematemesis with hypotension",
+          "conditions": [
+            {
+              "label": "Peptic ulcer disease",
+              "action": "diagnosed",
+              "onset": "2024-05-07",
+              "note": "Bleeding gastric ulcer, operative repair 05/2024"
+            },
+            {
+              "label": "Acute hemolytic transfusion reaction",
+              "action": "diagnosed",
+              "onset": "2024-05-07",
+              "icd10": "T80.910A"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "pantoprazole 40 MG Delayed Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily before breakfast and dinner",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Gastric ulcer"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Blood products",
+              "reaction": "Acute hemolytic transfusion reaction",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-05-07T03:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 7.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.45
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 21.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 290
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-05-07T03:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.08
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 82
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-05-08T05:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 2.36
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 106
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 32
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-05-08T05:30",
+              "results": [
+                {
+                  "test": "Bilirubin, indirect",
+                  "loinc": "1971-1",
+                  "unit": "mg/dL",
+                  "value": 3.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-05-08T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin, free (plasma)",
+                  "loinc": "721-1",
+                  "unit": "mg/dL",
+                  "value": 85
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-05-08T05:30",
+              "results": [
+                {
+                  "test": "Direct antiglobulin test, polyspecific",
+                  "loinc": "1007-4",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-05-13T05:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.08
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 27.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 270
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-05-13T05:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.42
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 106
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 19
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 59
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 6
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-05-07T08:40",
+              "text": "Specimen: stomach, ulcer edge, excised at operative repair. Gross: tan-pink tissue fragments, aggregate 1.4 cm. Microscopic: ulcer base with fibrinopurulent exudate, granulation tissue and reactive epithelial changes at the margin. No dysplasia or malignancy. Immunostain for Helicobacter pylori negative.",
+              "conclusion": "Benign gastric ulcer. Negative for malignancy. H. pylori not identified.",
+              "issued": "2024-05-10T16:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Upper endoscopy with biopsy",
+              "performed": "2024-05-07T05:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary — General Surgery",
+              "date": "2024-05-13T15:10",
+              "author": "general surgery",
+              "body": "REGIONAL HOSPITAL — GENERAL SURGERY DISCHARGE SUMMARY\nAdmitted 05/07/2024, discharged 05/13/2024.\n\nPrincipal diagnosis: bleeding gastric ulcer, status post operative repair.\nSecondary: acute hemolytic transfusion reaction.\n\nCourse: 54-year-old man with hypertension, hyperlipidemia, coronary artery disease and ongoing cigarette use brought in overnight after vomiting blood at home. In the ED he was pallid, sweaty and hypotensive; two large-bore lines were placed and crystalloid resuscitation begun. Hemoglobin on arrival 7.4. Urgent upper endoscopy found an actively bleeding gastric ulcer and he was taken to the OR for operative repair of the ulcer, with biopsy of its edge.\n\nIntraoperatively he was given packed red cells. Shortly after the second unit was hung he developed rigors, dyspnea and flank pain, his pressure fell further and he became agitated and tachycardic. The transfusion was stopped at once and the reaction protocol followed. The bag returned to the blood bank for investigation. Over the following hours the urinary catheter drained dark, red-brown urine and his sclerae turned yellow. Labs on 05/08: creatinine up from 1.08 on arrival to 2.36, indirect bilirubin 3.4, plasma free hemoglobin 85, direct antiglobulin test positive, schistocytes on the peripheral smear. Diagnosis: acute hemolytic transfusion reaction.\n\nHe was monitored in the surgical ICU with fluids and supportive care, urine output followed hourly. No further transfusion. Pressures stabilized, urine cleared over 48 hours, creatinine trended down (1.42 on the day of discharge). Hemoglobin 9.1 at discharge without further products. Lisinopril held through the hypotension and the kidney injury, resumed on 05/12. Tolerating a regular diet, incision clean.\n\nPathology: benign gastric ulcer, no malignancy, H. pylori negative.\n\nALLERGY ADDED: BLOOD PRODUCTS — acute hemolytic transfusion reaction. Any future transfusion only after blood bank consultation.\n\nDischarge medications: pantoprazole 40 mg twice daily (new); lisinopril 20 mg daily; atorvastatin 40 mg daily. Avoid NSAIDs.\n\nFollow-up: PCP within 1 week with CBC and BMP; general surgery clinic in 2 weeks; GI for repeat endoscopy in 8 to 10 weeks to confirm healing.\n\nTobacco: strongly advised to stop; impairs ulcer healing.\n\nSigned: general surgery attending."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Hospital records received",
+              "date": "2024-05-14T08:50",
+              "author": "MA",
+              "body": "Discharge summary and path report received from the hospital, filed. Flagged to PCP: new allergy to blood products. Allergy list updated. TCM call to RN pool."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "telephone",
+          "start": "2024-05-14T14:00",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Transitional care call",
+              "date": "2024-05-14T14:00",
+              "author": "RN",
+              "body": "Post-discharge outreach, day 1 home. Pt says he is tired, sore at the incision, eating small meals. No vomiting, no black stools, urine looks normal color now. Has pantoprazole and is taking it twice a day. Reviewed: no ibuprofen or naproxen, acetaminophen ok for pain. Reminded him his allergy list now includes blood products and to say so at any hospital. Visit booked 5/21 with labs that morning."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "office_visit",
+          "start": "2024-05-21T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "conditions": [
+            {
+              "label": "Acute hemolytic transfusion reaction",
+              "action": "resolved",
+              "icd10": "T80.910A"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              145,
+              82
+            ],
+            "hr": 63,
+            "spo2": 97,
+            "weight_kg": 93.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-05-21T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.44
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 276
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-05-21T08:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 7
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-05-21T08:30",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 105
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2024-05-21T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2024-05-21T10:00",
+              "author": "PCP",
+              "body": "Seen 8 days after discharge from the surgical service (admitted 5/7 to 5/13). Discharge summary reviewed in full.\n\nWhat happened: vomited blood, bleeding gastric ulcer found on scope, operated on the same morning. Got a transfusion in the OR and had an acute hemolytic reaction: hypotension, dark urine, jaundice, a bump in creatinine to 2.36, DAT positive. ICU, then the floor. Path benign, H. pylori negative.\n\nNow: energy coming back slowly. Walking the yard. Incision sore but closed. Eating normally. Stools brown. No lightheadedness. Urine normal color. Taking pantoprazole twice daily, lisinopril, atorvastatin. Not back at work yet. Smoking again since he got home, less than before, he says.\n\nExam: pale-ish but better. No scleral icterus. Midline upper abdominal incision healing well, no drainage. Heart regular, lungs clear.\n\nLabs today: Hgb 10.6 (9.1 at discharge). Cr 1.02, back to his usual. T bili 0.9.\n\nA/P\n1. Bleeding gastric ulcer s/p repair: PPI twice daily until GI rescope. Surgery clinic next week. No NSAIDs, ever, is the simple rule.\n2. Acute hemolytic transfusion reaction: resolved. Kidney function and bilirubin normal. Allergy to blood products on our list with the details; he knows to bring it up.\n3. Anemia from the bleed: recovering without iron need for now; CBC at physical.\n4. Tobacco: smoking again. Told him the ulcer and the heart both argue for stopping now. Declines a patch or pills; says he will try on his own.\n5. HTN: a little high today, sore and a long week; lisinopril back on since 5/12. Recheck at physical.\n\nRTC at physical in Sept."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-28a",
+          "kind": "specialist_visit",
+          "start": "2024-05-28T13:00",
+          "service": "General Surgery",
+          "reason": "Postoperative check",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "General Surgery Clinic Letter",
+              "date": "2024-05-29T09:00",
+              "author": "general surgery",
+              "body": "Dear colleague,\n\nI saw Mr. Allard in clinic on 05/28/2024, three weeks after operative repair of a bleeding gastric ulcer. He is eating well and his pain is minimal. The incision is healing cleanly with no sign of infection or hernia. He may return to light duties now and full lifting after six weeks from surgery. He has a GI appointment for repeat endoscopy. Please note his allergy to blood products (acute hemolytic transfusion reaction). No further surgical follow-up is needed unless problems arise.\n\nRegards,\nGeneral surgery"
+            }
+          ]
+        },
+        {
+          "id": "2024-07-16a",
+          "kind": "procedure_visit",
+          "start": "2024-07-16T08:30",
+          "service": "Gastroenterology",
+          "reason": "Repeat endoscopy after gastric ulcer",
+          "medications": [
+            {
+              "drug": "pantoprazole 40 MG Delayed Release Oral Tablet",
+              "action": "stop",
+              "reason": "Ulcer healed; step down to daily"
+            },
+            {
+              "drug": "pantoprazole 40 MG Delayed Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily before breakfast",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "History of gastric ulcer"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-07-16T08:45",
+              "text": "Specimen: stomach, biopsies at site of prior ulcer. Microscopic: gastric mucosa with mild regenerative change and scar. No dysplasia, no malignancy. H. pylori not seen on immunostain.",
+              "conclusion": "Healed ulcer site, benign. No H. pylori.",
+              "issued": "2024-07-19T11:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Upper endoscopy with biopsy",
+              "performed": "2024-07-16T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Upper Endoscopy Report",
+              "date": "2024-07-16T09:20",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY — ESOPHAGOGASTRODUODENOSCOPY\nIndication: follow-up of bleeding gastric ulcer repaired surgically 05/2024; confirm healing.\nAllergies: blood products (acute hemolytic transfusion reaction).\nSedation: monitored anesthesia care.\nFindings: normal esophagus and GE junction. Stomach: healed ulcer scar with surrounding postsurgical change; no active ulceration, no visible vessel. Biopsies taken from the scar. Duodenum normal to the second portion.\nImpression: healed gastric ulcer.\nPlan: reduce pantoprazole to 40 mg once daily and continue long term given the history. Avoid NSAIDs. Smoking cessation advised. Will forward biopsy results.\n\nAddendum 07/19: biopsies benign, no H. pylori."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "annual_physical",
+          "start": "2024-09-17T08:00",
+          "end": "2024-09-17T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              135,
+              86
+            ],
+            "hr": 68,
+            "spo2": 99,
+            "weight_kg": 94.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-17T08:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 305
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.15
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-17T08:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-17T08:35",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 98
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 164
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 106
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 119
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-09-17T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-17T08:42"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-17T08:42"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-17T08:43"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2024",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "to": "Radiology",
+              "reason": "Annual screening, current smoker"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-17T09:10",
+              "author": "PCP",
+              "body": "Physical, 54M.\n\nSince last year: May admission, bleeding gastric ulcer with operative repair, complicated by an acute hemolytic transfusion reaction. GI rescope in July: healed, benign biopsies, pantoprazole cut to once a day.\n\nFeels back to normal, full duty since late June. No abdominal pain, no melena, no hematemesis. No chest discomfort or exertional breathlessness.\n\nSmoking: back to a pack a day. He is frustrated with himself about it.\n\nMeds: lisinopril 20 daily, atorvastatin 40 daily, pantoprazole 40 daily.\nAllergies: BLOOD PRODUCTS (acute hemolytic transfusion reaction).\nPSH: operative repair of bleeding gastric ulcer, 05/2024.\nFH: father MI at 62, mother HTN, brother high cholesterol.\nPHQ-2 0. AUDIT-C 1.\n\nExam: Vitals reviewed. Color good, no icterus. Neck: no bruit, no thyromegaly. CV: regular, normal heart sounds. Resp: clear. Abd: healed upper midline scar, soft, nontender, no hernia felt. Ext: no edema, pulses full. Skin: chronic sun change only.\n\nA/P\n- Gastric ulcer, healed: pantoprazole daily long term per GI; no NSAIDs.\n- Hx transfusion reaction: allergy documented, CBC today to confirm recovery.\n- HTN: acceptable today.\n- CAD / hyperlipidemia: atorvastatin 40, lipids today. Raised again going to 80 mg given the plaque; he will think about it after the results.\n- Tobacco: 1 ppd. Counseled. Declines varenicline and patches for now. Will revisit.\n- LDCT due next month, ordered. Flu and updated COVID given.\n\nFollow up in 4 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Low Density Lipoprotein": 101
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "imaging",
+          "start": "2024-10-08T14:40",
+          "service": "Radiology",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2024-10-08T14:40",
+              "text": "Comparison: 10/2023 and 10/2022. Technique: low-dose CT chest without IV contrast. No pulmonary nodule. Lungs clear without consolidation. No effusion or pneumothorax. Heart normal in size. Mediastinum unremarkable. Postsurgical change in the upper abdominal wall. Bones intact.",
+              "conclusion": "Lung-RADS 1, negative. Annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2024",
+              "action": "done",
+              "date": "2024-10-08T14:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "CT result",
+              "date": "2024-10-09T17:30",
+              "author": "PCP",
+              "body": "Hi Kevin, screening CT clear again this year. Your blood count from the physical is fully back to normal too. Next scan October 2025."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-28a",
+          "kind": "office_visit",
+          "start": "2025-01-28T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "vitals": {
+            "bp": [
+              146,
+              94
+            ],
+            "hr": 75,
+            "spo2": 96,
+            "weight_kg": 94.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-28T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-01-28T08:55",
+              "author": "PCP",
+              "body": "Routine 4-month check.\n\nNo GI symptoms on daily pantoprazole. No chest pressure, no exertional dyspnea, though winter work is lighter. Home BP when he remembers, 130s/80s. Pack a day.\n\nMeds reconciled: lisinopril 20, atorvastatin 40, pantoprazole 40. Allergy: blood products.\n\nExam: comfortable. Regular rate and rhythm, no murmur. Chest clear. Abdomen soft, scar well healed. Ankles without swelling.\n\nA/P\n- HTN: above goal here today and a bit high at home. Offered a second agent; he would rather tighten up on salt and bring a home log in spring. Documented.\n- CAD/lipids: LDL still above where I'd like in September. He is still not keen on the higher statin dose. Left as is for now, his call, documented.\n- Gastric ulcer hx: stable on PPI.\n- Tobacco: precontemplative. Counseled briefly.\n\nRTC at physical, call with any chest symptoms."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "ed_visit",
+          "start": "2025-04-22T06:50",
+          "end": "2025-04-22T07:40",
+          "service": "Emergency Medicine",
+          "reason": "Crushing chest pain radiating to left arm",
+          "conditions": [
+            {
+              "label": "ST-segment elevation myocardial infarction, inferior wall",
+              "action": "diagnosed",
+              "onset": "2025-04-22",
+              "icd10": "I21.19"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-04-22T06:55",
+              "bp": [
+                150,
+                90
+              ],
+              "hr": 98,
+              "rr": 22,
+              "spo2": 94
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-04-22T07:00",
+              "results": [
+                {
+                  "test": "Troponin I",
+                  "loinc": "10839-9",
+                  "unit": "ng/mL",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-22T07:00",
+              "results": [
+                {
+                  "test": "Creatine kinase MB",
+                  "loinc": "32673-6",
+                  "unit": "U/L",
+                  "value": 25
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-22T07:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 251
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.96
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.4
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-04-22T07:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-04-22T06:54",
+              "text": "Sinus rhythm, rate 98. ST-segment elevation in leads II, III and aVF.",
+              "conclusion": "Inferior ST-elevation myocardial infarction. Cath lab activated."
+            },
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-04-22T07:10",
+              "text": "Portable AP chest. Lungs clear. No pleural effusion or pneumothorax. Cardiomediastinal silhouette within normal limits.",
+              "conclusion": "No acute cardiopulmonary process."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-04-22T06:50"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2025-04-22T06:54"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-04-22T07:45",
+              "author": "emergency medicine",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nArrival 06:50 by private vehicle (driven by a coworker).\n\nCC: chest pain.\n\nHPI: 55M, coronary disease, admitted last year for an upper GI bleed. Woke around 04:45 with a severe crushing pain mid-chest going down the left arm, now 2 hours. Short of breath, nauseated, drenched in sweat. Took nothing for it.\n\nPMH (per our system): HTN, hyperlipidemia, CAD, peptic ulcer disease, tobacco use disorder, acute hemolytic transfusion reaction 2024.\nPSH: operative repair of bleeding gastric ulcer.\nMeds: lisinopril, atorvastatin.\nAllergies: BLOOD PRODUCTS (acute hemolytic transfusion reaction).\nFH: CAD.\nSH: smokes 1 pack per day.\n\nVS: BP 150/90, HR 98, RR 22, SpO2 94% RA.\nExam: diaphoretic, uncomfortable. Heart regular, no murmurs, rubs or gallops. Lungs clear. No JVD. Extremities warm.\n\nECG at 06:54: ST elevation II, III, aVF. STEMI alert called, interventional cardiology paged.\nTroponin I 0.5 ng/mL (ref <0.04). CK-MB 25 U/L (ref 0-24). CBC and BMP within normal limits.\nPortable CXR: unremarkable.\n\nAssessment: inferior STEMI.\nED course: STEMI pathway, prior GI bleed flagged to the interventional team; to cath lab 07:40.\nDisposition: admitted to cardiology."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22b",
+          "kind": "hospital_admission",
+          "start": "2025-04-22T07:40",
+          "end": "2025-04-25T11:30",
+          "service": "Cardiology",
+          "reason": "Inferior STEMI, primary PCI",
+          "medications": [
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Coronary stent"
+            },
+            {
+              "drug": "clopidogrel 75 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 75,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Coronary stent"
+            },
+            {
+              "drug": "24 HR metoprolol succinate 25 MG Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Post myocardial infarction"
+            },
+            {
+              "drug_text": "nitroglycerin 0.4 MG Sublingual Tablet",
+              "action": "start",
+              "sig": "Dissolve 1 tablet under the tongue every 5 minutes as needed for chest pain, up to 3; call 911 if pain persists",
+              "dose": {
+                "value": 0.4,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Sublingual",
+              "course": "chronic",
+              "reason": "Angina"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Increased to 80 mg after MI"
+            },
+            {
+              "drug": "atorvastatin 80 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 80,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Coronary artery disease"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-04-23T10:30",
+              "text": "Left ventricle normal in size with normal wall thickness. LVEF 55% by biplane method. Hypokinesis of the inferior wall. Right ventricle normal in size and function. No significant valvular disease. No pericardial effusion.",
+              "conclusion": "LVEF 55% with inferior wall hypokinesis. No significant valve disease."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Coronary stent placement, single vessel",
+              "performed": "2025-04-22T08:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cardiac-rehab",
+              "action": "placed",
+              "order": "Cardiac rehabilitation referral",
+              "category": "referral",
+              "to": "Cardiac Rehabilitation",
+              "reason": "STEMI with PCI"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary — Cardiology",
+              "date": "2025-04-25T14:00",
+              "author": "cardiology",
+              "body": "REGIONAL HOSPITAL — CARDIOLOGY DISCHARGE SUMMARY\nAdmitted 04/22/2025, discharged 04/25/2025.\n\nDiagnosis: acute inferior ST-elevation myocardial infarction.\nProcedure: emergent coronary angiography and PCI. Culprit: total occlusion of the right coronary artery, treated with one drug-eluting stent with TIMI 3 flow restored. Right radial access.\n\nCourse: uncomplicated after PCI. No recurrent pain, no arrhythmia on telemetry. Echo 04/23: LVEF 55%, inferior hypokinesis, no significant valve disease. Given his 2024 bleeding gastric ulcer, clopidogrel chosen as the P2Y12 agent and pantoprazole continued.\n\nAllergies: blood products (acute hemolytic transfusion reaction).\n\nDischarge medications:\n- aspirin 81 mg daily (new)\n- clopidogrel 75 mg daily (new), do not stop without talking to cardiology; planned 12 months\n- metoprolol succinate 25 mg daily (new)\n- atorvastatin 80 mg daily (increased from 40)\n- nitroglycerin 0.4 mg SL as needed (new)\n- lisinopril 20 mg daily (continued)\n- pantoprazole 40 mg daily (continued)\n\nSmoking: counseled at length; declined pharmacotherapy.\nFollow-up: PCP within 1 week; cardiology clinic 4 weeks; cardiac rehab referral sent. No driving for 1 week, no heavy lifting for 1 week from the radial site."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Hospital records received",
+              "date": "2025-04-25T16:20",
+              "author": "MA",
+              "body": "Discharge summary, ED record, ECG and echo received and filed. Med list updated per discharge. PCP visit 4/29 booked."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-29a",
+          "kind": "office_visit",
+          "start": "2025-04-29T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after MI",
+          "conditions": [
+            {
+              "label": "Presence of coronary artery stent",
+              "action": "diagnosed",
+              "onset": "2025-04-22"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              83
+            ],
+            "hr": 69,
+            "spo2": 98,
+            "weight_kg": 94.2
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-04-29T10:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-04-29T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-04-29T11:30",
+              "author": "PCP",
+              "body": "One week out from an inferior STEMI (4/22), RCA occlusion stented, home 4/25. Discharge summary and echo reviewed: EF 55%, inferior hypokinesis.\n\nHe is shaken. No chest pain since the cath. Wrist site a little bruised. Walking the driveway and back without trouble. No black stools on aspirin plus clopidogrel. Mild fatigue, he thinks from the metoprolol. Has not used the nitro.\n\nMed rec done with bottles: aspirin 81, clopidogrel 75, metoprolol succinate 25, atorvastatin 80, lisinopril 20, pantoprazole 40, nitro SL prn. All filled.\n\nSmoking: says he has cut way back, then admits to about a pack a day again by the weekend.\n\nPHQ-9: 3.\n\nExam: BP and HR as charted. R radial site with small ecchymosis, good pulse, no hematoma. Heart regular, no murmur. Lungs clear. No edema.\n\nA/P\n1. Inferior STEMI s/p DES to RCA: DAPT x 12 months, keep the PPI with it given the ulcer. Reviewed bleeding signs to call about. Reviewed nitro use and when to call 911.\n2. CAD: high-intensity statin now. Lipids in 3 months.\n3. HTN: better on the added metoprolol.\n4. Tobacco: the single most important thing now. Offered varenicline again; he declines, wants to try cold turkey. Quitline info.\n5. Cardiac rehab: referral in; he is calling them this week.\n6. BMP today on the new regimen.\n\nRTC 3 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              128,
+              80
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "specialist_visit",
+          "start": "2025-05-20T14:00",
+          "service": "Cardiology",
+          "reason": "Post-MI follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Clinic Letter",
+              "date": "2025-05-21T10:15",
+              "author": "cardiology",
+              "body": "Dear Doctor,\n\nThank you for sharing the care of Kevin Allard, seen today 4 weeks after an inferior STEMI treated with a drug-eluting stent to the right coronary artery.\n\nHe has had no angina and has not needed nitroglycerin. He started cardiac rehabilitation last week. No bleeding on dual antiplatelet therapy. He continues to smoke.\n\nBlood pressure and heart rate at goal. Regular rhythm, clear lungs, radial site healed.\n\nImpression: CAD s/p PCI to RCA, LVEF 55%, clinically stable.\nPlan: continue aspirin 81, clopidogrel 75 for 12 months, metoprolol succinate 25, atorvastatin 80, lisinopril 20, pantoprazole 40. Smoking cessation urged. Return in 6 months.\n\nAllergies: blood products.\n\nSincerely,\nOutside cardiology"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "office_visit",
+          "start": "2025-07-22T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after MI, lipids",
+          "conditions": [
+            {
+              "label": "ST-segment elevation myocardial infarction, inferior wall",
+              "action": "resolved",
+              "icd10": "I21.19"
+            },
+            {
+              "label": "Old myocardial infarction",
+              "action": "diagnosed",
+              "onset": "2025-04-22"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              79
+            ],
+            "hr": 74,
+            "spo2": 99,
+            "weight_kg": 94.4
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-07-22T07:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 63
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 132
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 108
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 85
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-07-22T07:30",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 87
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-07-22T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-07-22T08:10",
+              "author": "PCP",
+              "body": "3 months post inferior MI.\n\nGoing to rehab twice a week, says the staff push harder than his foreman ever did. Back at work on a supervisory basis, not lifting. No angina, no nitro use. No bleeding, no dark stools. Muscle aches none on atorvastatin 80.\n\nStill smoking, fewer on rehab days.\n\nExam: regular, no murmur, clear lungs, no edema.\n\nLabs today: LDL down substantially on atorvastatin 80 compared with last year on 40. LFTs normal.\n\nA/P\n- CAD s/p RCA stent / old inferior MI: problem list updated, acute entry closed. Continue DAPT through April 2026, metoprolol, high-intensity statin, lisinopril, PPI.\n- LDL now close to goal; recheck in 6 months.\n- Tobacco: counseled again.\n\nPhysical in September."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Low Density Lipoprotein": 66
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "outside_records",
+          "start": "2025-08-19T09:30",
+          "reason": "Cardiac rehabilitation completion",
+          "orders": [
+            {
+              "id": "cardiac-rehab",
+              "action": "done",
+              "date": "2025-08-19T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Cardiac Rehabilitation Discharge Letter",
+              "date": "2025-08-19T09:30",
+              "author": "cardiac rehabilitation",
+              "body": "OUTPATIENT CARDIAC REHABILITATION — PROGRAM COMPLETION\nDiagnosis: inferior STEMI s/p PCI to RCA, 04/2025.\nProgram: 12 weeks, 24 of 24 monitored sessions, 05/2025 to 08/2025.\nNo angina or arrhythmia during sessions. Exercise tolerance improved steadily over the program. Education completed on medications, diet and activity.\nOngoing concern: continues to smoke; cessation resources given.\nRecommend: continue home walking program 30 minutes most days.\n\nAllergies on file: blood products."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "annual_physical",
+          "start": "2025-09-16T08:00",
+          "end": "2025-09-16T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              130,
+              74
+            ],
+            "hr": 75,
+            "spo2": 98,
+            "weight_kg": 93.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-16T08:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-16T08:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 263
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.01
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-09-16T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-16T08:42"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-16T08:42"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-09-16T08:43"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "to": "Radiology",
+              "reason": "Annual screening, current smoker"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-16T09:15",
+              "author": "PCP",
+              "body": "Physical, 55M.\n\nYear in brief: inferior STEMI in April with a stent to the RCA; finished cardiac rehab in August, all 24 sessions. Ulcer history quiet on daily PPI.\n\nNow: walking most evenings, working full days again. No chest pain or pressure, no breathlessness on hills, no palpitations, no syncope. No bleeding or bruising beyond the usual on two antiplatelets. Bowels normal color.\n\nMeds: aspirin 81, clopidogrel 75, metoprolol succinate 25, atorvastatin 80, lisinopril 20, pantoprazole 40, NTG SL prn (unused).\nAllergies: blood products (acute hemolytic transfusion reaction).\nTobacco: 1 ppd. AUDIT-C 1. PHQ-2 0.\n\nExam: Vitals reviewed. No pallor. Neck veins flat, no carotid bruit. Heart: regular, no murmur or gallop. Lungs: clear throughout. Abdomen: soft, healed scar. Legs: no swelling, good pulses. Skin: weathered, nothing concerning.\n\nA/P\n- CAD s/p PCI, old inferior MI: stable. Meds as above; DAPT to April 2026 then cardiology to decide.\n- HTN: at goal.\n- Lipids: much improved on the higher statin in July.\n- Gastric ulcer hx: continue PPI while on DAPT and beyond.\n- Tobacco: counseled; declines medication.\n- LDCT next month ordered. Flu and COVID today.\n- Colon screening next due 2029.\n\nRTC 4 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "imaging",
+          "start": "2025-10-07T15:30",
+          "service": "Radiology",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2025-10-07T15:30",
+              "text": "Comparison: 10/2024. Technique: low-dose CT of the chest without contrast. Lungs: no nodules. No airspace disease. No effusion. Heart size normal; coronary stent noted. Mediastinum and hila unremarkable. Upper abdomen and bones without acute finding.",
+              "conclusion": "Lung-RADS 1, negative. Continue annual screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "done",
+              "date": "2025-10-07T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "CT result",
+              "date": "2025-10-08T12:40",
+              "author": "PCP",
+              "body": "Kevin, this year's lung screening CT is negative. Same again next fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-23a",
+          "kind": "ed_visit",
+          "start": "2025-10-23T15:20",
+          "end": "2025-10-23T16:05",
+          "service": "Emergency Medicine",
+          "reason": "Chest pain while mowing, radiating to left arm and jaw",
+          "conditions": [
+            {
+              "label": "ST-segment elevation myocardial infarction, inferior wall",
+              "action": "diagnosed",
+              "onset": "2025-10-23",
+              "icd10": "I21.19"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-10-23T15:24",
+              "bp": [
+                150,
+                90
+              ],
+              "hr": 98,
+              "rr": 22,
+              "spo2": 94
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-23T15:30",
+              "results": [
+                {
+                  "test": "Troponin I",
+                  "loinc": "10839-9",
+                  "unit": "ng/mL",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-23T15:30",
+              "results": [
+                {
+                  "test": "Creatine kinase MB",
+                  "loinc": "32673-6",
+                  "unit": "U/L",
+                  "value": 25
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-23T15:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 303
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.89
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.6
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-23T15:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-10-23T15:23",
+              "text": "Sinus rhythm at 98. ST elevation in II, III and aVF.",
+              "conclusion": "Acute inferior ST elevation. STEMI activation."
+            },
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-10-23T15:40",
+              "text": "Single portable view. Clear lungs. No effusion. Normal heart size and mediastinal contour. Coronary stent projects over the heart.",
+              "conclusion": "No acute abnormality."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-10-23T15:20"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2025-10-23T15:23"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-10-23T16:10",
+              "author": "emergency medicine",
+              "body": "REGIONAL HOSPITAL ED\nArrival 15:20, EMS.\n\nCC: chest pain.\n\nHPI: 55M with CAD and an inferior MI in April this year, on the mower at a client's property when a heavy pressure came on in the center of his chest about 45 min before arrival, spreading to the left arm and jaw. Sweating, visibly anxious. Crew called 911.\n\nPMH: HTN, HLD, CAD, inferior STEMI 04/2025, PUD, tobacco use disorder, acute hemolytic transfusion reaction 2024.\nPSH: gastric ulcer repair.\nHome meds (per pt in the moment): lisinopril, atorvastatin.\nAllergies: BLOOD PRODUCTS.\nFH: father MI at 62, mother HTN, brother hyperlipidemia.\nSH: 30 pack-year smoker.\n\nVS: BP 150/90, HR 98, RR 22, SpO2 94% on room air.\nExam: diaphoretic, anxious. Cardiac regular, no murmur, rub or gallop. Lungs clear to auscultation.\n\nECG: ST elevation II, III, aVF.\nLabs: troponin I 0.5 ng/mL (ref <0.04); CK-MB 25 U/L (ref 0-24); CBC and electrolytes normal.\nCXR: unremarkable.\n\nImpression: recurrent inferior STEMI.\nPlan: STEMI activation; to cath lab 16:05; cardiology admitting."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-23b",
+          "kind": "hospital_admission",
+          "start": "2025-10-23T16:05",
+          "end": "2025-10-25T12:00",
+          "service": "Cardiology",
+          "reason": "Recurrent inferior STEMI, PCI",
+          "procedures": [
+            {
+              "procedure": "Coronary stent placement, single vessel",
+              "performed": "2025-10-23T16:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary — Cardiology",
+              "date": "2025-10-25T15:30",
+              "author": "cardiology",
+              "body": "REGIONAL HOSPITAL — CARDIOLOGY DISCHARGE SUMMARY\nAdmitted 10/23/2025, discharged 10/25/2025.\n\nDiagnosis: recurrent acute inferior STEMI.\nProcedure: emergent coronary angiography: new severe stenosis of the proximal right coronary artery; the April 2025 RCA stent widely patent. One drug-eluting stent to the proximal RCA, TIMI 3 flow. Right radial access.\n\nCourse: pain-free after PCI, telemetry without arrhythmia, radial site clean. Patient confirms taking aspirin and clopidogrel daily.\n\nAllergies: blood products (acute hemolytic transfusion reaction).\n\nDischarge medications (unchanged from admission):\n- aspirin 81 mg daily\n- clopidogrel 75 mg daily; dual antiplatelet therapy now planned through 10/2026\n- metoprolol succinate 25 mg daily\n- atorvastatin 80 mg daily\n- lisinopril 20 mg daily\n- pantoprazole 40 mg daily\n- nitroglycerin 0.4 mg SL prn\n\nSmoking cessation counseling repeated; declined medication.\nFollow-up: PCP within 1 week; cardiology 6 weeks."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Hospital records received",
+              "date": "2025-10-27T09:10",
+              "author": "MA",
+              "body": "ED record and cardiology discharge summary received, filed. No med changes. Post-hospital visit booked 10/30."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-30a",
+          "kind": "office_visit",
+          "start": "2025-10-30T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after second MI",
+          "vitals": {
+            "bp": [
+              124,
+              78
+            ],
+            "hr": 66,
+            "spo2": 97,
+            "weight_kg": 94.6
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-10-30T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-10-30T09:50",
+              "author": "PCP",
+              "body": "Second inferior STEMI on 10/23, six months after the first. Cath: new tight lesion in the proximal RCA, the April stent open. Another DES. Home 10/25, no med changes, DAPT clock reset to October 2026.\n\nHe is quieter than usual today. Says the crew saw the whole thing. No chest pain since, no nitro, no bleeding. Taking everything, showed me the weekly pill box.\n\nPHQ-9 4, not depressed, worried.\n\nExam: right wrist healing. Regular rhythm, clear lungs, no edema.\n\nA/P\n1. Recurrent inferior STEMI s/p second RCA stent. Meds unchanged per cardiology: aspirin, clopidogrel through 10/2026, metoprolol succinate 25, atorvastatin 80, lisinopril 20, pantoprazole 40, NTG prn.\n2. Tobacco: told him plainly that the cigarettes are the one risk still fully in his hands. Offered varenicline or patch plus gum. Declines; says he will cut down for the winter.\n3. Return to work: cardiology's call; he will ask at the 6-week visit.\n\nRTC January."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "specialist_visit",
+          "start": "2025-12-09T11:00",
+          "service": "Cardiology",
+          "reason": "Follow-up after second PCI",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Clinic Letter",
+              "date": "2025-12-10T14:30",
+              "author": "cardiology",
+              "body": "Dear Doctor,\n\nKevin Allard returns 6 weeks after a second inferior STEMI with a drug-eluting stent to the proximal right coronary artery. He has been free of angina and has not taken nitroglycerin. No bleeding on dual antiplatelet therapy. Still smoking, somewhat less.\n\nBlood pressure and heart rate at goal, rhythm regular. Lungs clear. No edema.\n\nPlan: no changes. Aspirin 81 mg and clopidogrel 75 mg through October 2026, then reassess. Metoprolol succinate 25 mg, atorvastatin 80 mg, lisinopril 20 mg, pantoprazole 40 mg. May return to full work duties. Smoking cessation strongly advised. Return in 5 to 6 months.\n\nSincerely,\nOutside cardiology"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-27a",
+          "kind": "office_visit",
+          "start": "2026-01-27T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "conditions": [
+            {
+              "label": "ST-segment elevation myocardial infarction, inferior wall",
+              "action": "resolved",
+              "icd10": "I21.19"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              129,
+              81
+            ],
+            "hr": 60,
+            "spo2": 97,
+            "weight_kg": 94.2
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-01-27T07:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 98
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 131
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 84
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-01-27T07:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 89
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-27T07:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.12
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 303
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-27T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-01-27T08:35",
+              "author": "PCP",
+              "body": "3 months after the second MI.\n\nBack to full duty per cardiology, which in January means the plow truck and the shop. No angina. No nitro. Some easy bruising on the forearms from the two antiplatelets, no other bleeding. Stools normal.\n\nSmoking: says about half a pack on work days, more on weekends. Honest that it has crept back up.\n\nMeds unchanged: ASA 81, clopidogrel 75, metoprolol succinate 25, atorvastatin 80, lisinopril 20, pantoprazole 40, NTG prn.\nAllergy: blood products (AHTR 2024).\n\nExam: well. Regular, no murmur. Lungs clear. Forearm bruises, scattered, small. No edema.\n\nA/P\n- CAD, old inferior MI x2, RCA stents x2: stable. Closed the acute STEMI entry; old MI and stent status remain. DAPT through October.\n- Lipids/LFT/CBC today.\n- HTN: at goal.\n- Tobacco: counseled again; he will not take a medication. Left the door open.\n\nRTC 3 months, can be video."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Low Density Lipoprotein": 62
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "portal_message",
+          "start": "2026-03-10T19:42",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "date": "2026-03-10T19:42",
+              "author": "patient",
+              "body": "Hi, I need the pantoprazole and the metoprolol sent again, the pharmacy says no refills left. Same pharmacy. Thanks, Kevin"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "date": "2026-03-11T09:05",
+              "author": "MA",
+              "body": "Hi Kevin, both sent this morning with refills through the year. They should be ready this afternoon."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "telehealth_visit",
+          "start": "2026-04-21T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2026-04-21T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2026-04-21T12:40",
+              "author": "PCP",
+              "body": "Video, he is in his truck on his lunch break, parked. Consent and identity confirmed.\n\nSpring cleanups started. No chest pressure on the job, no shortness of breath beyond baseline, no lightheadedness. No bleeding. Taking all meds, the pill box is in the glovebox. Home BP readings he reads off his phone are in a good range.\n\nSmoking about the same.\n\nA/P: CAD s/p 2 RCA stents, stable. HTN controlled at home. No changes. Cardiology visit next month. In-person visit with labs in July.\nTobacco: brief counseling."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "specialist_visit",
+          "start": "2026-05-19T10:30",
+          "service": "Cardiology",
+          "reason": "Routine follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Clinic Letter",
+              "date": "2026-05-20T08:45",
+              "author": "cardiology",
+              "body": "Dear Doctor,\n\nRoutine follow-up for Kevin Allard: CAD with drug-eluting stents to the RCA in April and October 2025 after inferior STEMIs, LVEF 55%.\n\nNo angina, no nitroglycerin use, working full duty as a landscaping supervisor. Minor bruising only on dual antiplatelet therapy. Continues to smoke.\n\nExamination unremarkable; blood pressure and heart rate at goal.\n\nPlan: continue aspirin and clopidogrel through October 2026, then we will decide on single antiplatelet therapy. Continue metoprolol succinate 25 mg, atorvastatin 80 mg, lisinopril 20 mg, pantoprazole 40 mg. Smoking cessation again urged. Return in 6 months.\n\nAllergies: blood products (acute hemolytic transfusion reaction).\n\nSincerely,\nOutside cardiology"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-22a",
+          "kind": "office_visit",
+          "start": "2026-07-22T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up with labs",
+          "vitals": {
+            "bp": [
+              131,
+              78
+            ],
+            "hr": 65,
+            "spo2": 96,
+            "weight_kg": 94.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-22T07:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-22T07:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 296
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.85
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-07-22T07:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 55
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 124
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 104
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 76
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-07-22T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-07-22T08:20",
+              "author": "PCP",
+              "body": "Mid-summer check, labs drawn before the visit.\n\nHeat has been rough on the crews; he is keeping himself to supervising and running the mower less. No chest discomfort with exertion, no nitro since he got the bottle. No palpitations, no syncope. Bruises easily, no other bleeding. Stomach quiet.\n\nStill smoking. Asked him what would make the difference; he says maybe when the DAPT ends and he 'feels like a normal person again,' which I pointed out is backwards. He laughed.\n\nMeds reviewed, unchanged. Allergy: blood products.\n\nExam: tan, comfortable. Heart regular, no murmur. Lungs clear. Abdomen soft. Legs without edema, pedal pulses present.\n\nA/P\n1. CAD with old inferior MIs and RCA stents x2: stable on aspirin, clopidogrel, metoprolol succinate, atorvastatin 80, lisinopril, NTG prn. Clopidogrel end date is cardiology's call in October.\n2. HTN: controlled.\n3. Hyperlipidemia: lipids today.\n4. Gastric ulcer hx: pantoprazole daily.\n5. Tobacco use disorder: counseled; declines pharmacotherapy.\n6. Health maintenance: LDCT due October, flu and COVID in the fall.\n\nRTC October."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-24a",
+          "kind": "portal_message",
+          "start": "2026-07-24T16:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2026-07-24T16:05",
+              "author": "PCP",
+              "body": "Kevin, labs from Wednesday look good: kidney and liver tests normal on the atorvastatin, blood count normal on the two blood thinners, and your LDL is holding where we want it. No changes. See you in October."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "pharmacy",
+          "start": "2026-08-11T09:30",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Pharmacy refill request",
+              "date": "2026-08-11T09:30",
+              "author": "MA",
+              "body": "Pharmacy request: clopidogrel 75 mg #90. On active list, seen 7/22. Sent with no additional refills since cardiology will decide on continuing past October; note to pt via pharmacy."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-21a",
+          "kind": "office_visit",
+          "start": "2026-10-21T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute hemolytic transfusion reaction|T80.910A": {
+        "code": "T80.910A",
+        "display": "Acute hemolytic transfusion reaction, unspecified incompatibility, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "ST-segment elevation myocardial infarction, inferior wall|I21.19": {
+        "code": "I21.19",
+        "display": "ST elevation (STEMI) myocardial infarction involving other coronary artery of inferior wall",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "nitroglycerin 0.4 MG Sublingual Tablet": {
+        "code": "198039",
+        "display": "nitroglycerin 0.4 MG Sublingual Tablet",
+        "ingredient": "nitroglycerin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Bilirubin, indirect": {
+        "code": "1971-1",
+        "display": "Bilirubin.indirect [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Creatine kinase MB": {
+        "code": "32673-6",
+        "display": "Creatine kinase.MB [Enzymatic activity/volume] in Serum or Plasma",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Direct antiglobulin test, polyspecific": {
+        "code": "1007-4",
+        "display": "Direct antiglobulin test.polyspecific reagent [Presence] on Red Blood Cells",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hemoglobin, free (plasma)": {
+        "code": "721-1",
+        "display": "Free Hemoglobin [Mass/volume] in Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Troponin I": {
+        "code": "10839-9",
+        "display": "Troponin I.cardiac [Mass/volume] in Serum or Plasma",
+        "unit": "ng/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

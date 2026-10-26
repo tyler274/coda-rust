@@ -1,0 +1,163 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002682",
+      "events": [
+        {
+          "id": "2025-03-04a",
+          "kind": "pharmacy",
+          "start": "2025-03-04T09:15",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "author": "MA",
+              "date": "2025-03-04T09:15",
+              "body": "eRx refill request from pharmacy: penicillin VK 250 mg BID and folic acid 1 mg daily. Seen 12/2024. Sent 90 days x 1 refill each per PCP standing protocol."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-23a",
+          "kind": "portal_message",
+          "start": "2025-06-23T10:40",
+          "reason": "Physical reminder",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Time to book your physical",
+              "author": "front desk",
+              "date": "2025-06-23T10:40",
+              "body": "Hi Rodney, our records show your yearly physical is coming due in December. You're welcome to book any time; summer has plenty of morning openings. Reply here or call us."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Time to book your physical",
+              "author": "patient",
+              "date": "2025-06-24T21:02",
+              "body": "Thanks, I'm coaching the summer math camp through July. I'll call once that wraps up."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-08a",
+          "kind": "pharmacy",
+          "start": "2025-09-08T08:50",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "author": "MA",
+              "date": "2025-09-08T08:50",
+              "body": "Pharmacy requesting penicillin VK 250 mg and folic acid 1 mg refills. Approved by PCP, 90 days x 1. Note on the Rx and a portal message to patient: due for a physical, please schedule before the next refill."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "outside_records",
+          "start": "2025-10-14T13:30",
+          "reason": "Pharmacy immunization report",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-04T11:20"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy vaccine notification",
+              "author": "MA",
+              "date": "2025-10-14T13:30",
+              "body": "Notice from a community pharmacy: seasonal flu vaccine (trivalent, IM) given 10/04/2025. Entered into immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "pharmacy",
+          "start": "2026-03-10T09:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "author": "MA",
+              "date": "2026-03-10T09:05",
+              "body": "Refill request penicillin VK 250 mg BID and folic acid 1 mg daily. Last visit 12/19/2024. PCP ok'd 90 days given asplenia, not to lapse. Left voicemail asking him to book a physical."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-12a",
+          "kind": "ed_visit",
+          "start": "2026-06-12T19:20",
+          "end": "2026-06-13T00:45",
+          "service": "Emergency Medicine",
+          "reason": "Fever and sore throat",
+          "vitals": [
+            {"time": "2026-06-12T19:30", "temp_c": 39.0, "bp": [130, 80], "hr": 88, "rr": 16}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-06-12T19:55", "results": [{"test": "White Blood Cells", "value": 12.0}, {"test": "Hemoglobin", "value": 13.2}, {"test": "Platelets", "value": 250}]}
+          ],
+          "medications": [
+            {"drug_text": "ceftriaxone 2000 MG Injection", "action": "start", "sig": "2 g IV once", "dose": {"value": 2, "unit": "g"}, "frequency": "ONCE", "route": "Intravenous", "course": "short", "reason": "Fever in asplenic patient"}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2026-06-12T19:20"}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2026-06-16T10:15",
+              "body": "EMERGENCY DEPARTMENT - PHYSICIAN RECORD\nArrival: 06/12/2026 19:20\n\nCC: fever, sore throat.\n\nHPI: 35-year-old man without a spleen (laparoscopic splenectomy July 2024 for hereditary spherocytosis) with two days of sore throat and fever, 101.5 F (38.6 C) on his home thermometer. Took his usual penicillin. Came in because his doctors told him fever without a spleen means the ED.\n\nPMH: hereditary spherocytosis; asplenia after splenectomy.\nPSH: splenectomy, 2024.\nMeds: folic acid 1 mg PO daily; penicillin V potassium 250 mg PO BID.\nAllergies: no known drug allergies.\nFH: hereditary spherocytosis in father and paternal grandfather.\nSH: high school math teacher. Never smoker. Drinks socially, 1-2 per month.\n\nTriage vitals: T 39 C (102.2 F), BP 130/80, P 88, RR 16.\n\nExam: Alert, nontoxic. Posterior pharynx red, no exudate, tonsils not enlarged. No cervical lymphadenopathy. Lungs clear. Heart regular. Abdomen soft, nontender, healed port scars. No rash. Remainder normal.\n\nLabs: WBC 12,000/uL, hemoglobin 13.2 g/dL, platelets 250,000/uL. Blood cultures x2 drawn before antibiotics, pending.\n\nED course: Febrile asplenic patient. Ceftriaxone 2 g IV given after cultures. On reassessment comfortable and drinking without difficulty. Discussed with patient; discharged with strict return precautions for rigors, confusion, rash, or worsening.\n\nImpression: fever and sore throat in an asplenic patient.\nDisposition: home. Continue penicillin prophylaxis. Follow up with PCP. ED will call with culture results.\n\nEmergency medicine"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-13a",
+          "kind": "portal_message",
+          "start": "2026-06-13T11:25",
+          "reason": "ED visit update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Went to the ER last night",
+              "author": "patient",
+              "date": "2026-06-13T11:25",
+              "body": "Hi Doc, just letting you know I had a fever of 101.5 and a bad sore throat so I went to the ER like you told me. They gave me an IV antibiotic and sent me home around midnight. Throat still hurts but the fever is gone this morning. They said they'd call about blood cultures."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Went to the ER last night",
+              "author": "PCP",
+              "date": "2026-06-13T13:40",
+              "body": "Rodney, that was exactly the right call. Glad the fever broke. Keep up the penicillin, fluids and rest. If the fever comes back, or you get chills, a rash or feel confused, go straight back in. I'll watch for the culture results, and it's been a while since your last physical, so let's get you in this summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-18a",
+          "kind": "outside_records",
+          "start": "2026-06-18T09:30",
+          "reason": "ED blood culture result",
+          "labs": [
+            {"panel": null, "collected": "2026-06-12T19:55", "resulted": "2026-06-17T19:55", "results": [{"test": "Blood Culture", "text": "No growth at 5 days"}]}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "ED blood culture final",
+              "author": "MA",
+              "date": "2026-06-18T09:30",
+              "body": "Final blood culture report from the ED visit of 06/12/2026, received by fax: two sets, no growth at 5 days. Scanned for PCP review."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

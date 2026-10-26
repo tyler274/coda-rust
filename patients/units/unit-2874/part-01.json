@@ -1,0 +1,747 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002874",
+   "given": "Theresa",
+   "family": "Mayhew",
+   "birth_date": "1959-12-16",
+   "address_line": "48 Bay Road",
+   "phone": "+1-617-555-0185",
+   "email": "theresa.mayhew@example.test",
+   "marital_status": "divorced",
+   "summary": "Retired factory worker with COPD on triple inhaled therapy, a 42 pack-year current smoking habit and a 2018 LEEP for HPV-related cervical dysplasia. Invasive vaginal squamous cell carcinoma found in October 2023 and treated with radiation; a COPD exacerbation sent her to the ED in September 2025.",
+   "events": [
+    {
+     "id": "2021-05-26a",
+     "kind": "telephone",
+     "start": "2021-05-26T10:40",
+     "reason": "New patient intake call",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient intake",
+       "author": "front desk",
+       "date": "2021-05-26T10:52",
+       "body": "Caller wants to transfer care here; her previous doctor retired and the office is closing out its panel. Covered by Medicare through disability. Uses three inhalers for her lungs. First available new-patient slot 6/8 at 9:20 accepted. Release of information signed over the phone and sent to her old office for the last five years of notes, labs and imaging. Asked her to bring the inhalers themselves to the visit."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-08a",
+     "kind": "establish_care",
+     "start": "2021-06-08T09:20",
+     "end": "2021-06-08T10:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient visit, COPD",
+     "conditions": [
+      {
+       "label": "Chronic obstructive pulmonary disease",
+       "action": "history",
+       "onset": "2014-01-01"
+      },
+      {
+       "label": "Nicotine dependence, cigarettes",
+       "action": "history",
+       "onset": "1979-01-01"
+      },
+      {
+       "label": "Cervical high risk human papillomavirus (HPV) DNA test positive",
+       "icd10": "R87.810",
+       "action": "history",
+       "onset": "2018-03-01",
+       "note": "found with the cervical dysplasia treated by LEEP in 2018"
+      },
+      {
+       "label": "Personal history of cervical dysplasia",
+       "icd10": "Z87.410",
+       "action": "history",
+       "onset": "2018-03-01",
+       "note": "LEEP 2018"
+      },
+      {
+       "label": "Tubal ligation status",
+       "icd10": "Z98.51",
+       "action": "history",
+       "onset": "1992-01-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "60 ACTUAT fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler",
+       "action": "historical",
+       "sig": "Inhale 1 puff twice daily, rinse mouth after use",
+       "dose": {
+        "value": 1,
+        "unit": "puff"
+       },
+       "frequency": "BID",
+       "route": "Inhalation",
+       "course": "chronic",
+       "reason": "COPD"
+      },
+      {
+       "drug_text": "tiotropium 0.018 MG Inhalation Powder",
+       "action": "historical",
+       "sig": "Inhale contents of 1 capsule once daily",
+       "dose": {
+        "value": 18,
+        "unit": "mcg"
+       },
+       "frequency": "DAILY",
+       "route": "Inhalation",
+       "course": "chronic",
+       "reason": "COPD"
+      },
+      {
+       "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+       "action": "historical",
+       "sig": "Inhale 2 puffs every 4-6 hours as needed for shortness of breath",
+       "dose": {
+        "value": 2,
+        "unit": "puff"
+       },
+       "frequency": "PRN",
+       "route": "Inhalation",
+       "course": "chronic",
+       "reason": "COPD"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "Sulfonamide antibiotics",
+       "reaction": "Rash",
+       "severity": "moderate",
+       "criticality": "low",
+       "type": "allergy"
+      },
+      {
+       "substance": "Latex",
+       "reaction": "Rash",
+       "severity": "mild",
+       "criticality": "low",
+       "type": "allergy"
+      }
+     ],
+     "state": {
+      "weight_kg": 58.6,
+      "height_cm": 162.5,
+      "labs": {
+       "Hemoglobin A1c": 5.6
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-06-08T10:20",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-06-08T10:20",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-06-08T10:20",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-06-08T10:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-06-08T10:20",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-06-08T10:20",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current every day smoker"
+      },
+      {
+       "item": "Occupation",
+       "value": "Retired factory worker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "None"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2021-06-08T09:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2021-06-08T10:20"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2021",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "42 pack-year current smoker"
+      },
+      {
+       "id": "mammo-2021",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "screening; sister with breast cancer"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2021-06-08T11:40",
+       "body": "61 y/o woman establishing care; her prior PCP retired. Main issue is COPD, which she says was named about seven years ago after a winter of bronchitis that never quite cleared. Gets winded on a flight of stairs or carrying laundry up from the basement, better than it was before she was on the current inhalers. No hospital stays for her lungs. Uses albuterol a few times a week, mostly in humid weather.\n\nInhalers (brought in): fluticasone/salmeterol 250/50 one puff BID, tiotropium 18 mcg capsule daily, albuterol HFA PRN. Technique on the disk inhaler is decent; she forgets to rinse sometimes.\n\nGYN: abnormal Pap with high-risk HPV in 2018, LEEP that year for dysplasia, followed since by her own gynecologist. Postmenopausal, no bleeding. Tubal ligation at 32.\n\nAllergies: sulfa (rash); latex (contact dermatitis).\n\nFamily: mother died at 67 of cervical cancer; father died at 71 of lung cancer; sister had breast cancer at 55.\n\nSocial: retired from factory work, on disability. Divorced, lives alone. Smokes, roughly 42 pack-years total. Knows it is the reason for her breathing and says she 'thinks about it' but isn't ready to commit to anything. No alcohol, no drugs.\n\nExam: thin, comfortable at rest, speaking full sentences. HEENT unremarkable. Neck supple, no nodes. Lungs: diminished at both bases, prolonged expiration, no wheeze or crackles. Heart RRR, no murmur. Abd soft, nontender. Ext without edema or clubbing. Skin: no rash.\n\nA/P\n1. COPD on LABA/ICS plus LAMA, stable. Continue all three. Rinse after the steroid inhaler. No spirometry in what she remembers; will look for it in the old records.\n2. Tobacco: 5 minutes spent on cessation. Contemplative. Offered patch, varenicline, quitline; she will think it over.\n3. Lung cancer screening: qualifies. Low-dose CT ordered; discussed what a positive or incidental finding would mean.\n4. Breast: screening mammogram ordered, last one she thinks two years ago.\n5. HPV / prior LEEP: cervical follow-up stays with her gynecologist.\n6. Health maintenance: CBC, CMP, lipids, A1c, one-time hep C and HIV today. Vaccines: will catch up this fall.\nReturn in about 6 months, sooner if needed."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-14a",
+     "kind": "outside_records",
+     "start": "2021-06-14T14:05",
+     "reason": "Records from prior primary care office",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior primary care records",
+       "author": "front desk",
+       "date": "2021-06-14T14:05",
+       "body": "38 pages arrived from the closing primary care office covering 2016 to 2021. Contents: office notes, medication lists matching the three inhalers, allergy list (sulfa, latex), and a screening colonoscopy report from 2016 that was normal with a 10-year repeat interval. No spirometry report in the packet. Indexed under outside records for PCP review."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-15a",
+     "kind": "portal_message",
+     "start": "2021-06-15T08:10",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your labs from last week",
+       "author": "PCP",
+       "date": "2021-06-15T08:10",
+       "body": "Hi Ms. Mayhew, your blood counts, kidney and liver tests, cholesterol and sugar all came back fine, and the hepatitis C and HIV screens were negative, so those never need repeating unless something changes. Your old records came in too; the colonoscopy from 2016 was clean and isn't due again until 2026. The radiology scheduler should call about the CT. Take care."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-29a",
+     "kind": "imaging",
+     "start": "2021-06-29T13:30",
+     "reason": "Lung cancer screening",
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2021-06-29T13:30",
+       "text": "Indication: Lung cancer screening, current smoker, 42 pack-years. Baseline exam.\nTechnique: Low-dose helical CT of the chest without IV contrast.\nFindings: Mild centrilobular emphysema, upper-lobe predominant. No pulmonary nodules. Airways patent. No consolidation or effusion. Heart size normal; no pericardial effusion. No mediastinal or hilar lymphadenopathy. Visualized upper abdomen unremarkable. No suspicious osseous lesion.",
+       "conclusion": "Lung-RADS 1: negative. Continue annual screening in 12 months."
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2021",
+       "action": "done",
+       "date": "2021-06-29T13:30"
+      }
+     ]
+    },
+    {
+     "id": "2021-07-21a",
+     "kind": "imaging",
+     "start": "2021-07-21T08:45",
+     "reason": "Screening mammogram",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2021-07-21T08:45",
+       "text": "Bilateral CC and MLO views with tomosynthesis. Comparison: none available. Breasts are scattered areas of fibroglandular density. No suspicious mass, architectural distortion or suspicious calcifications. Skin and nipples unremarkable.",
+       "conclusion": "BI-RADS 1: Negative. Routine annual screening."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2021",
+       "action": "done",
+       "date": "2021-07-21T08:45"
+      }
+     ]
+    },
+    {
+     "id": "2021-09-14a",
+     "kind": "pharmacy",
+     "start": "2021-09-14T11:25",
+     "reason": "Prior authorization, inhaler",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Part D prior authorization - fluticasone/salmeterol",
+       "author": "MA",
+       "date": "2021-09-14T11:25",
+       "body": "Pharmacy faxed a rejection: plan wants PA for brand fluticasone/salmeterol 250/50 disk. Submitted via cover portal with COPD diagnosis and inhaler history; plan accepts the generic disk inhaler. Pharmacy will fill the generic. Patient aware, fine with it."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-19a",
+     "kind": "nurse_visit",
+     "start": "2021-10-19T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Fall vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-19T14:05"
+      },
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2021-10-19T14:07"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-10-19T14:10"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-19T14:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunizations",
+       "author": "RN",
+       "date": "2021-10-19T14:30",
+       "body": "Here for flu, pneumonia and COVID booster per PCP standing order. Screening questions negative, no latex gloves used. Flu L deltoid, PCV20 R deltoid, Pfizer booster L deltoid lower site. VIS given for each. Observed 15 min, no reaction. Card updated."
+      }
+     ]
+    },
+    {
+     "id": "2021-12-07a",
+     "kind": "office_visit",
+     "start": "2021-12-07T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "COPD follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-12-07T10:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "spiro-2022",
+       "action": "placed",
+       "order": "Spirometry",
+       "category": "procedure",
+       "reason": "COPD, no testing on file"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "COPD follow-up",
+       "author": "PCP",
+       "date": "2021-12-07T10:50",
+       "body": "S: Six-month check. Breathing about the same as summer; the cold air bothers her walking to the mailbox. Albuterol 2-3x/week. No ED visits, no steroid courses. Still smoking, a little under a pack a day. Generic disk inhaler working the same as the brand.\nO: Vitals as charted. Lungs with distant breath sounds, no wheeze. Heart regular. No edema.\nA/P: COPD, stable on triple therapy. No spirometry anywhere in her old records, so ordering full PFT-lab spirometry with bronchodilator to document the baseline. Smoking: revisited; she agrees cigarettes are the problem but 'not right now.' Gave the quitline card again. Flu, PCV20 and booster done in October. RTC 6 months for wellness visit."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-22a",
+     "kind": "procedure_visit",
+     "start": "2022-03-22T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Spirometry",
+     "reports": [
+      {
+       "study": "Spirometry",
+       "performed": "2022-03-22T09:00",
+       "text": "Pre- and post-bronchodilator spirometry, albuterol 4 puffs via spacer. Effort and reproducibility acceptable (ATS/ERS criteria met, 3 acceptable maneuvers). Post-bronchodilator FEV1/FVC 0.58. Post-bronchodilator FEV1 61% predicted. No significant bronchodilator response. Flow-volume loop with concave expiratory limb.",
+       "conclusion": "Moderate airflow obstruction without significant reversibility, consistent with COPD."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Spirometry",
+       "performed": "2022-03-22T09:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "spiro-2022",
+       "action": "done",
+       "date": "2022-03-22T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Spirometry interpretation",
+       "author": "PCP",
+       "date": "2022-03-22T16:15",
+       "body": "Ratio 0.58 post-BD with FEV1 61% predicted: moderate fixed obstruction, fits her COPD. No change to inhalers; she already takes LAMA plus LABA/ICS. Will go over it at the wellness visit. Message sent to patient."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-16a",
+     "kind": "telephone",
+     "start": "2022-05-16T16:20",
+     "reason": "Reschedule",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Cancel and rebook",
+       "author": "front desk",
+       "date": "2022-05-16T16:25",
+       "body": "Pt has no ride tomorrow, her neighbor who drives her is away. Cancelled 5/17 wellness visit; moved to 6/14 at 9:00."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-17a",
+     "kind": "annual_physical",
+     "start": "2022-05-17T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "appointment": "cancelled"
+    },
+    {
+     "id": "2022-06-14a",
+     "kind": "annual_physical",
+     "start": "2022-06-14T09:00",
+     "end": "2022-06-14T09:55",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Initial annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-06-14T10:00",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-06-14T10:00",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-06-14T10:00",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current every day smoker"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2022-06-14T09:50"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, initial",
+       "performed": "2022-06-14T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-06-14T09:50"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-06-14T10:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2022",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "annual screening"
+      },
+      {
+       "id": "mammo-2022",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "annual screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit (initial)",
+       "author": "PCP",
+       "date": "2022-06-14T11:05",
+       "body": "Initial AWV.\nHRA reviewed: lives alone in a single-floor house, manages her own meds, shopping and bills. Drives short distances; a neighbor takes her on longer trips. No falls this year. Hearing and vision fine by her report, glasses for reading. Mood good, PHQ-2 = 0. No memory complaints; recall 3/3, clock normal.\nProblems: COPD (spirometry 3/2022 FEV1/FVC 0.58, FEV1 61%), tobacco dependence, high-risk HPV with LEEP 2018, tubal ligation.\nMeds: fluticasone/salmeterol 250/50 BID, tiotropium 18 mcg daily, albuterol PRN. Allergies sulfa (rash), latex (dermatitis).\nBreathing steady; albuterol twice a week. No bleeding or discharge; sees her gynecologist yearly.\nExam: BP and weight as charted. Lungs diminished, no wheeze. Heart RRR. No edema.\nScreening plan: LDCT due this month (baseline 6/2021 Lung-RADS 1); mammogram due; colonoscopy 2016 normal, next 2026; cervical care with GYN. Tdap today. Shingrix: she'll get the series at her pharmacy. Labs today.\nTobacco: advised to quit, contemplative, declines meds for now.\nAdvance directive: she will think about naming her sister as proxy; forms given.\nRTC 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-23a",
+     "kind": "imaging",
+     "start": "2022-06-23T15:10",
+     "reason": "Lung cancer screening",
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2022-06-23T15:10",
+       "text": "Indication: Annual lung cancer screening. Comparison: 6/29/2021.\nTechnique: Low-dose non-contrast CT chest.\nFindings: Unchanged mild centrilobular emphysema. No pulmonary nodule. No consolidation, effusion or pneumothorax. Heart and great vessels normal in caliber. No adenopathy. Limited upper abdomen unremarkable.",
+       "conclusion": "Lung-RADS 1: negative. Annual screening in 12 months."
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2022",
+       "action": "done",
+       "date": "2022-06-23T15:10"
+      }
+     ]
+    },
+    {
+     "id": "2022-07-12a",
+     "kind": "imaging",
+     "start": "2022-07-12T08:30",
+     "reason": "Screening mammogram",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2022-07-12T08:30",
+       "text": "Standard bilateral views with tomosynthesis, compared with 7/21/2021. Scattered fibroglandular densities. No new mass, distortion or suspicious calcification. Stable appearance.",
+       "conclusion": "BI-RADS 1: Negative. Return in 1 year."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2022",
+       "action": "done",
+       "date": "2022-07-12T08:30"
+      }
+     ]
+    },
+    {
+     "id": "2022-07-29a",
+     "kind": "pharmacy",
+     "start": "2022-07-29T12:00",
+     "reason": "Vaccine given at pharmacy",
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2022-07-28T15:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Pharmacy immunization notice",
+       "author": "pharmacy",
+       "date": "2022-07-29T12:00",
+       "body": "Immunization record from community pharmacy: recombinant zoster vaccine dose 1 of 2, 0.5 mL IM left deltoid, given 7/28/2022. Patient-reported allergies: sulfa, latex. Dose 2 due in 2-6 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-18a",
+     "kind": "nurse_visit",
+     "start": "2022-10-18T13:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2022-10-18T13:35"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-18T13:37"
+      },
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2022-10-18T13:40"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-18T13:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunizations",
+       "author": "RN",
+       "date": "2022-10-18T14:00",
+       "body": "Flu (R deltoid), bivalent COVID booster (L deltoid) and second Shingrix (L deltoid, separate site) given. First Shingrix was at her pharmacy in July. Nitrile gloves. Sat for 15 minutes, felt fine. Shingles series now complete."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-13a",
+     "kind": "telehealth_visit",
+     "start": "2022-12-13T11:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "COPD follow-up",
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2022-12-13T11:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "COPD follow-up (video)",
+       "author": "PCP",
+       "date": "2022-12-13T11:45",
+       "body": "Video visit at her request because of the icy roads; she is at home, ID checked with DOB.\nBreathing at her usual. Rescue inhaler twice weekly, more on cold mornings. No sputum change, no fevers. Taking both maintenance inhalers daily. Smoking unchanged.\nSpeaking comfortably in full sentences on video, no audible wheeze.\nA/P: COPD stable, continue regimen; refills sent for 90 days with 3 refills. Cessation discussed again briefly. Wellness visit in late spring."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

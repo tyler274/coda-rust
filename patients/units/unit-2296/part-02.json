@@ -1,0 +1,1102 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002296",
+   "events": [
+    {
+     "id": "2022-01-11a",
+     "kind": "outside_records",
+     "start": "2022-01-11T15:00",
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2022-01-04T11:00"
+      },
+      {
+       "vaccine": "Tdap",
+       "date": "2022-01-04T11:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Pharmacy vaccine notification",
+       "author": "MA",
+       "date": "2022-01-11T15:00",
+       "body": "Pharmacy notification: Shingrix dose 2 and Tdap given 1/4/2022. Shingrix series complete. Added to immunization history."
+      }
+     ]
+    },
+    {
+     "id": "2022-02-16a",
+     "kind": "office_visit",
+     "start": "2022-02-16T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Worsening shortness of breath, ankle swelling",
+     "state": {
+      "spo2": 92
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-02-16T15:20"
+      }
+     ],
+     "orders": [
+      {
+       "id": "pulm-rhf",
+       "action": "placed",
+       "order": "Pulmonology referral",
+       "category": "referral",
+       "to": "Pulmonology",
+       "reason": "progressive dyspnea and new leg edema in severe COPD; please see sooner"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2022-02-16T16:00",
+       "body": "S: Breathing has been sliding since about September. Now winded after one trip to the mailbox. Cough most of the day, yellow-white sputum, no blood, no fever. For two weeks his ankles have been puffy by evening, sock marks. No chest pain. No palpitations or fainting. Using albuterol 4-5 times a day. Still smoking 1 ppd.\n\nO: SpO2 92% on room air at rest. Speaking in full sentences. Neck veins visible at 45 degrees. Lungs: decreased breath sounds, scattered rhonchi, no focal crackles. Heart regular, P2 seems loud. Ankle/pretibial pitting edema bilaterally.\n\nA/P\nProgressive dyspnea with new peripheral edema in severe COPD - concern for right heart strain. He has a routine pulmonary appointment in April; called the pulmonary office and they moved him to 3/8. They will get labs, CXR and ECG there. Reviewed warning signs (worse breathing at rest, chest pain, confusion) - ED. Leg elevation. Albuterol as needed.\nAgain advised stopping smoking."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-01a",
+     "kind": "specialist_visit",
+     "start": "2022-03-01T10:00",
+     "service": "Otolaryngology",
+     "reason": "Laryngeal cancer surveillance",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "ENT surveillance",
+       "author": "otolaryngology",
+       "date": "2022-03-03T08:45",
+       "body": "OUTSIDE OTOLARYNGOLOGY - SURVEILLANCE\nNine months after left partial laryngectomy. Voice stable. Flexible laryngoscopy without suspicious lesion. No neck adenopathy. He mentions more breathlessness this winter and an upcoming pulmonary visit. NED. Return 3-4 months with CT."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-08a",
+     "kind": "specialist_visit",
+     "start": "2022-03-08T13:00",
+     "service": "Pulmonary & Critical Care",
+     "reason": "Dyspnea, cough, leg swelling",
+     "conditions": [
+      {
+       "label": "Cor pulmonale (chronic)",
+       "icd10": "I27.81",
+       "action": "diagnosed",
+       "onset": "2022-02-01",
+       "note": "Chronic right heart failure secondary to COPD"
+      },
+      {
+       "label": "Pulmonary hypertension",
+       "action": "diagnosed",
+       "onset": "2022-02-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "furosemide 40 MG Oral Tablet",
+       "sig": "Take 1 tablet by mouth once daily in the morning",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "action": "start",
+       "reason": "Right heart failure with edema"
+      }
+     ],
+     "vitals": {
+      "bp": [
+       135,
+       85
+      ],
+      "hr": 98,
+      "rr": 22,
+      "spo2": 92
+     },
+     "measure": [
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-03-08T13:40",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 15.2
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 7.8
+        },
+        {
+         "test": "Platelets",
+         "value": 250
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-03-08T13:40",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.1
+        },
+        {
+         "test": "Aspartate Aminotransferase",
+         "value": 40
+        },
+        {
+         "test": "Alanine Aminotransferase",
+         "value": 35
+        },
+        {
+         "test": "Albumin",
+         "value": 3.9
+        }
+       ]
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2022-03-08T13:40",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio",
+         "value": 1.0
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-03-08T13:40",
+       "results": [
+        {
+         "test": "Natriuretic peptide B",
+         "loinc": "30934-4",
+         "unit": "pg/mL",
+         "value": 250
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2022-03-08T13:20",
+       "text": "PA and lateral views. Lungs hyperinflated with flattened diaphragms. Central pulmonary arteries prominent. No focal consolidation, effusion or pneumothorax. Cardiac silhouette within normal limits.",
+       "conclusion": "Hyperinflation consistent with COPD. Prominent pulmonary artery."
+      },
+      {
+       "study": "12-lead ECG",
+       "performed": "2022-03-08T13:30",
+       "text": "Sinus rhythm, rate 98. Right axis deviation. Tall R wave in V1 with right ventricular strain pattern.",
+       "conclusion": "Right axis deviation and right ventricular hypertrophy."
+      }
+     ],
+     "orders": [
+      {
+       "id": "pulm-rhf",
+       "action": "done",
+       "date": "2022-03-08T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Pulmonary consultation",
+       "author": "pulmonology",
+       "date": "2022-03-11T09:30",
+       "body": "OUTSIDE PULMONARY & CRITICAL CARE GROUP - CLINIC LETTER\nVisit 3/8/2022\n\nDear colleague,\nI saw Mr. Bianchi, whom we know for severe COPD, earlier than planned. Over six months his breathing has steadily worsened; he has a daily productive cough and in recent weeks swollen legs. No chest pain, palpitations or syncope. History also of lip and laryngeal squamous cell carcinoma, both treated surgically. He smokes about 40 pack-years and continues.\n\nMedications: tiotropium, albuterol, fluticasone/salmeterol. NKDA.\n\nExam: BP 135/85, HR 98, RR 22, SpO2 92% on room air. Jugular venous distension; P2 is prominent and there is a palpable right ventricular heave. Abdomen soft, liver edge palpable below the costal margin. Pitting edema 2+ of both legs to mid-shin.\n\nLabs: Hgb 15.2, WBC 7.8, platelets 250, BNP 250, creatinine 1.1, AST 40, ALT 35, albumin 3.9, INR 1.0.\nCXR: hyperinflation with a prominent pulmonary artery.\nECG: right axis deviation and RVH.\n\nImpression: cor pulmonale - right heart failure due to pulmonary hypertension from his COPD.\nPlan:\n- Start furosemide 40 mg each morning. BMP in two weeks (we've asked your office to draw it).\n- Continue triple inhaled therapy.\n- Smoking cessation remains the most important step.\n- Return 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-22a",
+     "kind": "lab_only",
+     "start": "2022-03-22T08:15",
+     "service": "Internal Medicine — Primary Care",
+     "state": {
+      "weight_kg": 74.0
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-03-22T08:15",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-03-22T08:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "BMP on furosemide",
+       "author": "PCP",
+       "date": "2022-03-23T12:10",
+       "body": "BMP 2 weeks after starting furosemide: potassium and creatinine normal. Copy to pulmonary. Pt notified via phone message."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-12a",
+     "kind": "office_visit",
+     "start": "2022-04-12T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up, right heart failure",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-04-12T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2022-04-12T10:55",
+       "body": "Follow-up after pulmonary started furosemide for cor pulmonale. Ankles much better, gone by morning. Urinating more in the morning, otherwise fine. Breathing a bit easier, still limited. Down about 2 kg since February.\n\nExam: SpO2 92% RA. JVP lower than in February. Lungs: decreased BS, no crackles. Trace ankle edema.\n\nLabs 3/22: K and Cr normal.\n\nA/P\n1. Cor pulmonale/pulmonary hypertension: improved on furosemide 40 daily. Daily weights - call if up 2 kg. Low salt (he eats a lot of canned soup; talked about that).\n2. COPD: continue tiotropium, fluticasone/salmeterol, albuterol PRN.\n3. Tobacco 1 ppd, counseled.\nRTC 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-10a",
+     "kind": "specialist_visit",
+     "start": "2022-05-10T08:30",
+     "service": "Otolaryngology",
+     "reason": "Laryngeal cancer surveillance with CT",
+     "reports": [
+      {
+       "study": "CT neck with contrast",
+       "loinc": "24836-9",
+       "performed": "2022-05-03T10:00",
+       "text": "Postoperative changes of left partial laryngectomy. No mass or abnormal enhancement at the operative site. No cervical lymphadenopathy.",
+       "conclusion": "Expected postsurgical changes. No evidence of recurrence."
+      },
+      {
+       "study": "CT chest",
+       "performed": "2022-05-03T10:00",
+       "text": "Hyperinflated lungs. No pulmonary nodule or mass. No lymphadenopathy. Main pulmonary artery prominent. No effusion.",
+       "conclusion": "No evidence of metastatic disease."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "ENT surveillance",
+       "author": "otolaryngology",
+       "date": "2022-05-12T09:00",
+       "body": "OUTSIDE OTOLARYNGOLOGY - SURVEILLANCE\nOne year after left partial laryngectomy. Voice serviceable. No dysphagia. Scope: operative bed clean, no lesion. Neck soft, no nodes.\nOne-year CT neck and chest 5/3: postoperative changes only, no recurrence or metastasis.\nPlan: scope every 3-4 months through June 2023, then less often. Next CT in a year."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-14a",
+     "kind": "specialist_visit",
+     "start": "2022-06-14T13:40",
+     "service": "Pulmonary & Critical Care",
+     "reason": "Cor pulmonale follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Pulmonary follow-up",
+       "author": "pulmonology",
+       "date": "2022-06-16T09:00",
+       "body": "OUTSIDE PULMONARY & CRITICAL CARE - FOLLOW-UP\nThree months on furosemide 40 mg for cor pulmonale. Edema much improved, breathing somewhat better. Still smoking.\nExam: SpO2 92% on room air. JVP lower. Trace ankle edema.\nPlan: no changes. Continue triple inhaled therapy and furosemide. Return 6 months to a year, sooner if worse."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-19a",
+     "kind": "specialist_visit",
+     "start": "2022-07-19T11:00",
+     "service": "Dermatology",
+     "reason": "Annual skin check",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Dermatology skin check",
+       "author": "dermatology",
+       "date": "2022-07-21T09:00",
+       "body": "OUTSIDE DERMATOLOGY - ANNUAL SKIN EXAM\nHistory of lower lip SCC excised 2020. Lip scar intact, no recurrence. Full skin exam: chronic sun damage, lentigines. No suspicious lesions. Continue sun protection; return in one year."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-26a",
+     "kind": "office_visit",
+     "start": "2022-07-26T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "vitals": {
+      "spo2": 92
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-07-26T10:10",
+       "results": [
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-07-26T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2022-07-26T10:15",
+       "body": "Summer follow-up. Haying season was hard to watch from the porch, he says, but he stayed out of the dust. Breathing about the same as spring. Swelling controlled. Pulmonary saw him in June, no changes. ENT surveillance clean in May.\n\nMeds: tiotropium, fluticasone/salmeterol, albuterol PRN, furosemide 40 daily. Taking all.\n\nExam: SpO2 92% RA. Lungs diminished. No edema. Weight stable.\n\nPlan: BMP today. Continue. Flu/COVID this fall. AWV in October."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-27a",
+     "kind": "nurse_visit",
+     "start": "2022-09-27T14:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2022-09-27T14:12"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-09-27T14:14"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-09-27T14:12"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunizations",
+       "author": "RN",
+       "date": "2022-09-27T14:25",
+       "body": "High-dose flu L arm, bivalent COVID booster R arm. Tolerated. Observed 15 minutes. He asked to move his October physical to the 18th; done."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-18a",
+     "kind": "annual_physical",
+     "start": "2022-10-18T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "state": {
+      "labs": {
+       "Hemoglobin": 16.9
+      }
+     },
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 6
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-10-18T09:45",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-10-18T09:45",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 16.9
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-10-18T09:45",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-10-18T09:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2022-10-18T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2022-10-18T09:50",
+       "body": "MEDICARE AWV (subsequent)\n\nYear in brief: right heart failure from COPD diagnosed by pulmonary in March, on furosemide; ENT surveillance negative; derm skin check clean.\n\nFunction: independent, slower. Stops to rest walking the driveway. Still drives. No falls. Lives alone; a neighbor checks in.\nPHQ-2 0. AUDIT-C 6, unchanged.\nTobacco: 1 ppd. He knows what I'll say. Declines medication.\nHealth care proxy: still not done; reminded.\n\nExam: SpO2 92% RA. Lungs diminished with prolonged expiration. Heart regular, loud P2. Trace ankle edema.\n\nPrevention: flu and bivalent COVID done 9/27. Shingrix and Tdap complete. Colonoscopy 2016. AAA screen normal 2021.\nLabs: CMP, CBC, lipids, A1c.\n\nPlan: continue all meds. Follow-up winter."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-20a",
+     "kind": "portal_message",
+     "start": "2022-10-20T13:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2022-10-20T13:05",
+       "body": "Your labs from the wellness visit: kidney function and potassium normal on the water pill. Cholesterol and A1c fine. Your hemoglobin is a bit higher than last year (16.9); with lungs like yours the body sometimes makes more red cells. We'll keep an eye on it."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-09a",
+     "kind": "specialist_visit",
+     "start": "2022-11-09T09:00",
+     "service": "Otolaryngology",
+     "reason": "Laryngeal cancer surveillance",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "ENT surveillance",
+       "author": "otolaryngology",
+       "date": "2022-11-10T16:00",
+       "body": "OUTSIDE OTOLARYNGOLOGY - SURVEILLANCE\n17 months after partial laryngectomy. Asymptomatic from a laryngeal standpoint. Scope clean. Neck negative. NED. Next visit 3-4 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-13a",
+     "kind": "pharmacy",
+     "start": "2022-12-13T09:05",
+     "documents": [
+      {
+       "type": "Medication Refill",
+       "title": "Refill request",
+       "author": "MA",
+       "date": "2022-12-13T09:05",
+       "body": "Refill requests from mail-order pharmacy: tiotropium 18 mcg caps, fluticasone/salmeterol 250/50, furosemide 40 mg, 90-day supplies. Seen 10/18. Approved by PCP."
+      }
+     ]
+    },
+    {
+     "id": "2023-01-24a",
+     "kind": "office_visit",
+     "start": "2023-01-24T13:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Fatigue, headaches",
+     "state": {
+      "spo2": 90
+     },
+     "vitals": {
+      "spo2": 90
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-01-24T14:05",
+       "resulted": "2023-01-25T09:30",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 18.8
+        },
+        {
+         "test": "Hematocrit",
+         "value": 56
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-01-24T14:05",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-01-24T13:30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "heme-poly",
+       "action": "placed",
+       "order": "Hematology referral",
+       "category": "referral",
+       "to": "Hematology",
+       "reason": "erythrocytosis, Hgb 18.8 / Hct 56"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-01-24T14:10",
+       "body": "S: ~2 months of feeling wiped out, dull headaches most mornings, lightheaded when he stands quickly, and he can't keep his mind on the newspaper. No vision loss, no weakness or numbness, no chest pain. Breathing unchanged from fall. Sleeping in the recliner some nights. Still smoking 1 ppd.\n\nO: SpO2 90% RA at rest. Face ruddy. Lungs diminished. Heart regular, loud P2. Trace edema. Neuro nonfocal.\n\nA/P\nFatigue, headaches, poor concentration - check CBC (Hgb rose to 16.9 in October) and BMP today.\nAddendum 1/25: Hgb 18.8, Hct 56. BMP ok. Erythrocytosis, most likely secondary to chronic hypoxemia and smoking. Hematology referral placed. Called pt (see phone note)."
+      }
+     ]
+    },
+    {
+     "id": "2023-01-26a",
+     "kind": "telephone",
+     "start": "2023-01-26T09:15",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "CBC result",
+       "author": "RN",
+       "date": "2023-01-26T09:15",
+       "body": "Called pt per PCP: red blood count high; hematology referral sent and they have an opening 2/20. Pt agreeable. Reinforced fluids, and to go to ED for chest pain, weakness on one side, or trouble speaking. Pt verbalized understanding."
+      }
+     ]
+    },
+    {
+     "id": "2023-02-20a",
+     "kind": "specialist_visit",
+     "start": "2023-02-20T10:30",
+     "service": "Hematology & Oncology",
+     "reason": "Erythrocytosis",
+     "conditions": [
+      {
+       "label": "Secondary polycythemia",
+       "icd10": "D75.1",
+       "action": "diagnosed",
+       "onset": "2022-12-01"
+      }
+     ],
+     "vitals": {
+      "spo2": 89
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-02-20T10:15",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 19.0
+        },
+        {
+         "test": "Hematocrit",
+         "value": 57
+        },
+        {
+         "test": "Mean Corpuscular Volume",
+         "value": 89
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-02-20T10:15",
+       "resulted": "2023-02-22T14:00",
+       "results": [
+        {
+         "test": "Erythropoietin",
+         "loinc": "15061-5",
+         "text": "Elevated"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "heme-poly",
+       "action": "done",
+       "date": "2023-02-20T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology consultation",
+       "author": "hematology",
+       "date": "2023-02-23T11:00",
+       "body": "OUTSIDE HEMATOLOGY & ONCOLOGY - CONSULT LETTER\nVisit 2/20/2023\n\nReason: erythrocytosis.\n\n69-year-old man with severe COPD (GOLD D), pulmonary hypertension with chronic right heart failure, and previously treated laryngeal and lower lip squamous cell carcinomas. He describes tiredness, headaches, some dizziness and difficulty concentrating. He smokes a pack a day.\n\nExam: SpO2 89% breathing room air. Breath sounds decreased on both sides; slight cyanosis of the lips. Neurologic exam normal. Spleen not palpable; no lymphadenopathy.\n\nLabs: Hgb 19.0, Hct 57%, MCV 89. Serum erythropoietin elevated (resulted 2/22).\n\nAssessment: secondary polycythemia, driven by chronic hypoxemia (and smoking). The raised EPO and absent splenomegaly argue against a primary marrow process.\n\nRecommendations:\n1. Continuous supplemental oxygen - his resting saturation qualifies. Primary care to order.\n2. Smoking cessation.\n3. No phlebotomy for now; will recheck CBC here in about 4 months."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-07a",
+     "kind": "office_visit",
+     "start": "2023-03-07T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Home oxygen evaluation",
+     "conditions": [
+      {
+       "label": "Dependence on supplemental oxygen",
+       "action": "diagnosed",
+       "onset": "2023-03-07"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "oxygen 99 % Gas for Inhalation",
+       "sig": "2 liters per minute by nasal cannula, continuous",
+       "dose": {
+        "value": 2,
+        "unit": "L/min"
+       },
+       "frequency": "CONTINUOUS",
+       "route": "Inhalation",
+       "course": "chronic",
+       "action": "start",
+       "reason": "Chronic hypoxemia, SpO2 89% on room air"
+      }
+     ],
+     "vitals": {
+      "spo2": 89
+     },
+     "state": {
+      "spo2": 93
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-03-07T11:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "dme-o2",
+       "action": "placed",
+       "order": "Home oxygen concentrator and portable system, 2 L/min continuous",
+       "category": "procedure",
+       "reason": "resting hypoxemia with secondary polycythemia and cor pulmonale"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-03-07T11:45",
+       "body": "Here to set up home oxygen per hematology (secondary polycythemia, Hgb 19.0/Hct 57, EPO high).\n\nResting SpO2 89% on room air after 10 min seated. On 2 L/min nasal cannula: 94%.\n\nLong talk about oxygen and cigarettes: no smoking with oxygen on or in the same room, open flame risk, burns to the face. He says he will smoke on the porch with it off. Not ideal - again offered patch/varenicline, he declines.\n\nA/P\n1. Chronic hypoxemic respiratory failure with secondary polycythemia and cor pulmonale: home oxygen 2 L/min continuous via nasal cannula, concentrator plus portable tanks. Order and certificate of medical necessity sent to the oxygen supplier.\n2. Secondary polycythemia: hematology rechecking in ~4 months.\n3. COPD, right heart failure: meds unchanged.\nRTC 4 months."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-14a",
+     "kind": "telephone",
+     "start": "2023-03-14T15:40",
+     "orders": [
+      {
+       "id": "dme-o2",
+       "action": "done",
+       "date": "2023-03-14T15:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Oxygen supplier",
+       "author": "MA",
+       "date": "2023-03-14T15:40",
+       "body": "Oxygen supplier called: concentrator and portable cylinders delivered to the home 3/13, setup and safety teaching done. They need the signed CMN back - placed in PCP folder, signed and faxed same day."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-21a",
+     "kind": "specialist_visit",
+     "start": "2023-03-21T09:20",
+     "service": "Otolaryngology",
+     "reason": "Laryngeal cancer surveillance",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "ENT surveillance",
+       "author": "otolaryngology",
+       "date": "2023-03-22T13:00",
+       "body": "OUTSIDE OTOLARYNGOLOGY - SURVEILLANCE\nNow on home oxygen. Voice stable. Scope: no lesion. Neck negative. NED. CT neck/chest in May."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-09a",
+     "kind": "imaging",
+     "start": "2023-05-09T10:00",
+     "service": "Radiology",
+     "reason": "Laryngeal cancer surveillance",
+     "reports": [
+      {
+       "study": "CT neck with contrast",
+       "loinc": "24836-9",
+       "performed": "2023-05-09T10:05",
+       "text": "Stable postoperative appearance of the left larynx. No mass. No cervical lymphadenopathy.",
+       "conclusion": "No evidence of recurrent disease."
+      },
+      {
+       "study": "CT chest",
+       "performed": "2023-05-09T10:05",
+       "text": "Hyperinflated lungs without nodule or mass. Enlarged main pulmonary artery. No lymphadenopathy or effusion.",
+       "conclusion": "No evidence of metastatic disease."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-12a",
+     "kind": "specialist_visit",
+     "start": "2023-06-12T14:00",
+     "service": "Hematology & Oncology",
+     "reason": "Secondary polycythemia follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin": 17.4,
+       "Hematocrit": 52
+      }
+     },
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-06-12T13:45",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 17.4
+        },
+        {
+         "test": "Hematocrit",
+         "value": 52
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology follow-up",
+       "author": "hematology",
+       "date": "2023-06-14T10:00",
+       "body": "OUTSIDE HEMATOLOGY - FOLLOW-UP\nThree months on continuous oxygen 2 L. Headaches gone, thinking clearer, energy somewhat better. Still smokes (off oxygen, he says).\nCBC: Hgb 17.4, Hct 52%.\nAssessment: secondary polycythemia improving with oxygen. Phlebotomy not indicated. Discharged to primary care to follow CBC every 6 months; re-refer if Hct climbs above 55%."
+      }
+     ]
+    },
+    {
+     "id": "2023-07-18a",
+     "kind": "office_visit",
+     "start": "2023-07-18T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "vitals": {
+      "spo2": 93
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-07-18T09:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-07-18T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-07-18T09:35",
+       "body": "On oxygen 2 L since March; wears it most of the day and all night, off for \"porch time.\" Headaches resolved. Breathing same. Edema controlled. Hematology discharged him back to us, Hgb 17.4/Hct 52 in June. ENT CT in May clean.\n\nExam: SpO2 93% on 2 L. Lungs diminished. Loud P2. No edema.\n\nPlan: BMP today. CBC every 6 months - next with AWV. Oxygen safety reviewed again. Continue meds."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-22a",
+     "kind": "specialist_visit",
+     "start": "2023-08-22T10:10",
+     "service": "Dermatology",
+     "reason": "Annual skin check",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Dermatology skin check",
+       "author": "dermatology",
+       "date": "2023-08-23T08:30",
+       "body": "OUTSIDE DERMATOLOGY\nAnnual exam, hx lower lip SCC 2020. Lip scar quiet. Sun damage, no suspicious lesions. RTC 1 year."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-12a",
+     "kind": "specialist_visit",
+     "start": "2023-09-12T14:20",
+     "service": "Pulmonary & Critical Care",
+     "reason": "COPD and cor pulmonale follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Pulmonary follow-up",
+       "author": "pulmonology",
+       "date": "2023-09-14T10:30",
+       "body": "OUTSIDE PULMONARY & CRITICAL CARE - FOLLOW-UP\nNow on continuous oxygen 2 L since March for hypoxemia with secondary polycythemia. Feels clearer-headed. Dyspnea unchanged. Edema controlled on furosemide 40 mg.\nExam: SpO2 93% on 2 L. Diminished breath sounds. Trace edema.\nPlan: no changes. Oxygen and smoking safety reviewed. Return in a year."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-03a",
+     "kind": "annual_physical",
+     "start": "2023-10-03T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 6
+      }
+     ],
+     "vitals": {
+      "spo2": 93
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-10-03T09:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-10-03T09:40",
+       "results": [
+        {
+         "test": "Hematocrit"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-10-03T09:40",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2023-10-03T09:50"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-03T09:52"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2023-10-03T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-03T09:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2023-10-03T09:55",
+       "body": "MEDICARE AWV\n\nThis year: secondary polycythemia found in January, home O2 2 L since March, improved. ENT CT clean. Derm clean.\nFunction: independent; slower on stairs; no falls. Oxygen tubing trip hazard discussed.\nPHQ-2 0. AUDIT-C 6. Tobacco 1 ppd, declines treatment.\nHealth care proxy: brought it back signed (names a longtime neighbor - copy scanned).\n\nExam: SpO2 93% on 2 L. Lungs diminished. Heart regular, loud P2. Trace edema.\n\nFlu (high-dose) and updated COVID today. Discussed RSV vaccine - get at pharmacy.\nLabs: CMP, CBC, lipids."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-05a",
+     "kind": "portal_message",
+     "start": "2023-10-05T16:15",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2023-10-05T16:15",
+       "body": "Your blood counts are holding where hematology wanted them on the oxygen, and kidney function and potassium are normal on the furosemide. Cholesterol fine. No changes."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-08a",
+     "kind": "outside_records",
+     "start": "2023-11-08T12:00",
+     "immunizations": [
+      {
+       "vaccine": "RSV, adjuvanted (Arexvy)",
+       "date": "2023-11-01T15:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Pharmacy vaccine notification",
+       "author": "MA",
+       "date": "2023-11-08T12:00",
+       "body": "Pharmacy notification received: RSV vaccine given 11/1/2023. Entered."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-29a",
+     "kind": "specialist_visit",
+     "start": "2023-11-29T08:50",
+     "service": "Otolaryngology",
+     "reason": "Laryngeal cancer surveillance",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "ENT surveillance",
+       "author": "otolaryngology",
+       "date": "2023-11-30T12:00",
+       "body": "OUTSIDE OTOLARYNGOLOGY\n2.5 years after partial laryngectomy. Scope clean, neck negative. NED. Interval now every 6 months; final surveillance CT in spring."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

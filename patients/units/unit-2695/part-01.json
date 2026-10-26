@@ -1,0 +1,845 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002695",
+   "given": "Donna",
+   "family": "Fairbanks",
+   "birth_date": "1963-07-29",
+   "address_line": "57 Cabot Street",
+   "phone": "+1-508-555-0177",
+   "email": "donna.fairbanks@example.test",
+   "marital_status": "married",
+   "summary": "Retired administrative assistant with type 2 diabetes, hypertension and central diabetes insipidus who joined in 2019. Stage IA endometrial cancer treated surgically in 2020, later diabetic retinopathy, knee osteoarthritis, lisinopril angioedema, desmopressin-related hyponatremia and acute mitral regurgitation repaired surgically in 2025; records from outside care arrive unevenly.",
+   "events": [
+    {
+     "id": "2019-08-19a",
+     "kind": "telephone",
+     "start": "2019-08-19T10:42",
+     "reason": "New patient inquiry",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient call",
+       "author": "front desk",
+       "date": "2019-08-19T10:42",
+       "body": "Caller is looking for a new primary care doctor; her previous internist is cutting back hours. Explained the membership model and what insurance still covers. She wants to go ahead. New patient visit set for 9/10. Release signed over the phone for records from prior PCP and from her endocrinologist, who follows her for diabetes insipidus. She will bring her pill bottles."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-10a",
+     "kind": "establish_care",
+     "start": "2019-09-10T09:20",
+     "end": "2019-09-10T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Establish care",
+     "conditions": [
+      {
+       "label": "Type 2 diabetes mellitus without complications",
+       "action": "diagnosed",
+       "onset": "2006-01-01",
+       "note": "About 13 years, on metformin"
+      },
+      {
+       "label": "Essential hypertension",
+       "action": "diagnosed",
+       "onset": "2012-01-01"
+      },
+      {
+       "label": "Central diabetes insipidus",
+       "action": "diagnosed",
+       "onset": "2010-01-01",
+       "note": "Followed by outside endocrinology; desmopressin"
+      },
+      {
+       "label": "Severe obesity due to excess calories",
+       "action": "diagnosed",
+       "onset": "2015-01-01",
+       "note": "BMI 35"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily with meals",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Type 2 diabetes"
+      },
+      {
+       "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth every morning",
+       "dose": {
+        "value": 25,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension"
+      },
+      {
+       "drug_text": "desmopressin acetate 0.1 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily",
+       "dose": {
+        "value": 0.1,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Central diabetes insipidus (prescribed by endocrinology)"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "Sulfonamide antibiotics",
+       "reaction": "Rash",
+       "severity": "mild",
+       "criticality": "low",
+       "type": "allergy"
+      }
+     ],
+     "state": {
+      "bp": [
+       140,
+       88
+      ],
+      "weight_kg": 92.0,
+      "height_cm": 162.0,
+      "labs": {
+       "Hemoglobin": 12.8,
+       "Sodium": 140,
+       "Potassium": 4.2,
+       "Creatinine": 0.88,
+       "Low Density Lipoprotein": 118,
+       "High Density Lipoprotein": 46,
+       "Triglycerides": 160,
+       "Glucose": 150
+      }
+     },
+     "vitals": {
+      "bp": [
+       140,
+       88
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2019-09-10T10:25",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2019-09-10T10:25",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2019-09-10T10:25",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-09-10T10:25",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.4
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-09-10T10:25",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio",
+         "value": 22
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-09-10T10:25",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "1-2 glasses of wine per week"
+      },
+      {
+       "item": "Occupation",
+       "value": "Retired administrative assistant"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2019-09-10T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "History and Physical",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2019-09-10T10:20",
+       "body": "56 y/o woman establishing care. Previous internist reducing hours.\n\nDiabetes: type 2 since roughly 2006. Metformin 1000 twice a day, no other agents ever. Does not check sugars at home with any regularity. No lows. Last eye exam she can remember was well over a decade ago.\n\nBP: on HCTZ 25 for years, tolerates it.\n\nDiabetes insipidus (central): followed by an outside endocrinologist, on desmopressin 0.1 mg twice daily. Says thirst and urination are well controlled on it. Sees endo about every 1-2 years.\n\nPMH: as above, plus weight - she has carried extra weight since her 30s.\nPSH: C-section 1988. Laparoscopic appendectomy 1995.\nMeds: metformin 1000 mg BID, HCTZ 25 mg daily, desmopressin 0.1 mg BID.\nAllergies: sulfa drugs -> rash.\nFH: mother had endometrial cancer at 62. Father had type 2 diabetes with eye involvement. Sister with high blood pressure.\nSH: retired administrative assistant. Has a grown daughter. Smoked about a pack a day for 20 years, stopped in 2005. Wine 1-2 glasses a week. No drugs.\n\nROS: negative except mild fatigue some afternoons.\n\nExam: BP 140/88. BMI 35. Pleasant, well appearing. HEENT unremarkable. Neck supple, no thyromegaly. Heart regular, no murmurs. Lungs clear. Abdomen obese, soft, healed lower transverse and laparoscopic scars. No edema. Feet: skin intact, monofilament sensation normal both feet, DP pulses 2+.\n\nA/P\n1. T2DM - continue metformin. A1c, CMP, lipids, urine microalbumin today.\n2. HTN - 140/88 today, a bit above goal. Continue HCTZ, recheck next visit.\n3. Central DI - stable on desmopressin per endo; will watch sodium on our labs.\n4. Obesity, BMI 35 - talked about small steps; she walks some.\n5. Health maintenance - hep C and HIV screen today. Prior records requested for colonoscopy and mammogram dates. Flu shot and Shingrix next month at a nurse visit.\nPHQ-2 0.\n\nRTC 4 months."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-12a",
+     "kind": "portal_message",
+     "start": "2019-09-12T16:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2019-09-12T16:05",
+       "body": "Hi Donna, your labs are back. A1c 7.4, so diabetes is reasonably but not perfectly controlled. Kidney function, sodium and blood counts look fine. The urine protein screen was normal. Hepatitis C and HIV screening negative. Cholesterol numbers are in your chart. We'll go over everything at the January visit."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-24a",
+     "kind": "outside_records",
+     "start": "2019-09-24T11:30",
+     "reason": "Prior records received",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior PCP and endocrinology records",
+       "author": "RN",
+       "date": "2019-09-24T11:30",
+       "body": "38 pages received from prior internist's office and 3 pages from outside endocrinology.\n\nSummary for chart:\n- Colonoscopy 2016: normal, repeat in 10 years.\n- Screening mammogram February 2019: negative.\n- Tdap 2014.\n- Endocrinology letter dated March 2019: central diabetes insipidus, stable on desmopressin 0.1 mg twice daily, sodium 140, follow up in 1 to 2 years.\n- No prior eye exam reports in the packet.\nScanned to media. Health maintenance updated."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-08a",
+     "kind": "nurse_visit",
+     "start": "2019-10-08T14:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2019-10-08T14:15"
+      },
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2019-10-08T14:17"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-10-08T14:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse visit - immunizations",
+       "author": "RN",
+       "date": "2019-10-08T14:25",
+       "body": "Here for flu vaccine and first Shingrix. Screening questions negative. Flu 0.5 mL IM left arm, Shingrix 0.5 mL IM right arm. VIS sheets given. Told her the second Shingrix is due in 2-6 months; can be done at her January visit. Tolerated well."
+      }
+     ]
+    },
+    {
+     "id": "2020-01-14a",
+     "kind": "office_visit",
+     "start": "2020-01-14T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "state": {
+      "bp": [
+       138,
+       86
+      ],
+      "labs": {
+       "Hemoglobin A1c": 7.6
+      }
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2020-01-14T09:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.6
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-01-14T09:10",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2020-01-14T09:05"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-01-14T08:40"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-01-14T09:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes / HTN follow-up",
+       "author": "PCP",
+       "date": "2020-01-14T09:15",
+       "body": "S: Doing OK. Holidays were rough on her diet. Takes metformin most days, occasionally misses the evening dose. No polyuria beyond her usual. Mentions her periods have been all over the place since the fall, sometimes heavy - figures it's the change. No dizziness.\n\nO: BP 138/86. Wt stable. Heart RRR. Lungs clear. Feet intact.\n\nA/P: T2DM - A1c pending today; continue metformin, work on evening dose. HTN - closer to goal, continue HCTZ. Irregular menses at 56 - told her if bleeding gets heavy or she goes more than a few months and then bleeds, she should call; she is not keen on a pelvic exam today. Shingrix #2 given. Back in 6 months, sooner as needed."
+      }
+     ],
+     "vitals": {
+      "bp": [
+       138,
+       86
+      ]
+     }
+    },
+    {
+     "id": "2020-03-02a",
+     "kind": "pharmacy",
+     "start": "2020-03-02T13:20",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Metformin refill",
+       "author": "MA",
+       "date": "2020-03-02T13:20",
+       "body": "Pharmacy fax: metformin 1000 mg #180 for 90 days. Last A1c 7.6 (1/2020). Approved per protocol, 1 refill."
+      }
+     ]
+    },
+    {
+     "id": "2020-04-14a",
+     "kind": "telehealth_visit",
+     "start": "2020-04-14T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Abnormal vaginal bleeding",
+     "orders": [
+      {
+       "id": "gyn-referral",
+       "action": "placed",
+       "order": "Gynecology referral",
+       "category": "referral",
+       "to": "Gynecology",
+       "reason": "Abnormal uterine bleeding, age 56"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, moderate MDM",
+       "performed": "2020-04-14T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video visit - abnormal bleeding",
+       "author": "PCP",
+       "date": "2020-04-14T11:30",
+       "body": "Video visit, patient at home, verified with name and DOB. In-person visits limited right now.\n\nFor the last half year her cycles have come anywhere from 3 to 6-7 weeks apart, and when they come the flow is heavy enough that she goes through a pad every hour or two. Then nothing at all for 2 months, and this past week some spotting. No pain. Some tiredness. No lightheadedness or fainting.\n\nGiven age 56, obesity, diabetes and her mother's endometrial cancer, this needs prompt gynecology evaluation with endometrial sampling. Urgent referral placed; gyn office will draw labs at the visit. Bleeding precautions reviewed - go to the ED for soaking more than a pad an hour for several hours or feeling faint."
+      }
+     ]
+    },
+    {
+     "id": "2020-04-27a",
+     "kind": "specialist_visit",
+     "start": "2020-04-27T13:30",
+     "service": "Gynecology",
+     "reason": "Abnormal uterine bleeding",
+     "vitals": {
+      "bp": [
+       142,
+       90
+      ]
+     },
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-04-27T14:10",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 10.2
+        },
+        {
+         "test": "Platelets",
+         "value": 250
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-04-27T14:10",
+       "results": [
+        {
+         "test": "Fasting Glucose",
+         "value": 162
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-04-27T14:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.8
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "gyn-referral",
+       "action": "done",
+       "date": "2020-04-27T13:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gynecology consultation",
+       "author": "gynecology",
+       "date": "2020-05-05T09:00",
+       "body": "OUTSIDE GYNECOLOGY - consultation letter\nDate of visit: 04/27/2020\n\nThank you for sending Ms. Fairbanks, 56, for abnormal uterine bleeding.\n\nHistory: About six months of unpredictable cycles (intervals 21 to 45 days) with heavy flow needing a pad change every one to two hours, then two months with no period, and a week of spotting before this visit. Type 2 diabetes and hypertension. Central diabetes insipidus. C-section 1988, laparoscopic appendectomy 1995. Medications metformin 1000 mg twice daily, hydrochlorothiazide 25 mg daily, desmopressin 0.1 mg twice daily. Allergy: sulfa (rash). Mother with endometrial cancer at 62. Former smoker, quit 2005.\n\nExam: BP 142/90. BMI 35. External genitalia normal. Speculum: cervix without lesions, no discharge. Bimanual: uterus enlarged, non-tender; no adnexal masses.\n\nLabs today: hemoglobin 10.2, platelets 250, fasting glucose 162, A1c 7.8.\n\nProcedure: endometrial biopsy performed in the office without difficulty; sample sent to pathology.\n\nImpression: perimenopausal abnormal uterine bleeding with risk factors for endometrial hyperplasia or carcinoma. Will call her with pathology and plan.\n\nAllergies: sulfa drugs (rash)."
+      }
+     ]
+    },
+    {
+     "id": "2020-05-06a",
+     "kind": "telephone",
+     "start": "2020-05-06T15:50",
+     "reason": "Biopsy result",
+     "conditions": [
+      {
+       "label": "Malignant neoplasm of endometrium",
+       "action": "diagnosed",
+       "onset": "2020-04-27",
+       "note": "Endometrioid adenocarcinoma, FIGO grade 1, on office biopsy"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Patient call - biopsy result",
+       "author": "PCP",
+       "date": "2020-05-06T16:10",
+       "body": "Donna called. Gynecology told her the biopsy showed endometrial cancer - per the result she read me from the portal, endometrioid adenocarcinoma, FIGO grade 1. Gyn is sending her to gynecologic oncology; consult is set for later this month and surgery is being discussed. She is scared but practical; her mother went through the same thing. Answered questions about what grade 1 usually means. Offered a pre-op visit with us once a date is set. Added to problem list."
+      }
+     ]
+    },
+    {
+     "id": "2020-05-26a",
+     "kind": "office_visit",
+     "start": "2020-05-26T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Preoperative evaluation",
+     "state": {
+      "labs": {
+       "Hemoglobin": 10.6
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-05-26T10:40",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-05-26T10:40",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2020-05-26T10:30",
+       "text": "Sinus rhythm, rate in the 70s. Normal axis. PR, QRS and QT intervals normal. No ST-segment or T-wave abnormality. No prior tracing for comparison.",
+       "conclusion": "Normal ECG."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-05-26T10:00"
+      },
+      {
+       "procedure": "Electrocardiogram, 12-lead, with interpretation",
+       "performed": "2020-05-26T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Pre-operative evaluation",
+       "author": "PCP",
+       "date": "2020-05-26T10:55",
+       "body": "Pre-op for laparoscopic hysterectomy with removal of tubes and ovaries and node mapping, planned 6/9 with gynecologic oncology.\n\nFunctional capacity: climbs two flights and does her own yard work without chest pain or breathlessness. No prior anesthesia problems (C-section, appendectomy). No bleeding disorder history.\n\nExam: Mask on. Heart RRR, no murmur. Lungs clear. No edema.\nECG: normal sinus rhythm, no ischemic changes.\nLabs: BMP and CBC drawn today; hemoglobin was 10.2 at gyn last month.\n\nAssessment: low-risk patient for an intermediate-risk procedure; no further cardiac testing needed.\n- Metformin: hold the morning of surgery, resume when eating.\n- HCTZ: hold the morning of surgery.\n- Desmopressin: continue; anesthesia should know about central DI and watch sodium and fluids peri-op. Letter faxed to surgeon."
+      }
+     ]
+    },
+    {
+     "id": "2020-06-09a",
+     "kind": "procedure_visit",
+     "start": "2020-06-09T07:30",
+     "end": "2020-06-10T11:00",
+     "service": "Gynecologic Oncology",
+     "reason": "Endometrial carcinoma",
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2020-06-09T09:40",
+       "issued": "2020-06-16T14:00",
+       "text": "Specimen: uterus, cervix, bilateral fallopian tubes and ovaries; right and left pelvic sentinel lymph nodes; peritoneal washings.\nHistologic type: endometrioid adenocarcinoma.\nFIGO grade: 1.\nMyometrial invasion: 30% of myometrial thickness.\nLymphovascular invasion: not identified.\nCervical stromal involvement: not identified.\nBilateral tubes and ovaries: no tumor.\nSentinel lymph nodes: right 0/1, left 0/1, negative including ultrastaging.\nPeritoneal washings: negative for malignant cells.",
+       "conclusion": "Endometrioid adenocarcinoma, FIGO grade 1, invading less than half of the myometrium; nodes and washings negative. FIGO stage IA (pT1a pN0(sn))."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Laparoscopic total hysterectomy",
+       "performed": "2020-06-09T08:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Gynecologic oncology post-operative letter",
+       "author": "gynecologic oncology",
+       "date": "2020-07-21T10:00",
+       "body": "OUTSIDE GYNECOLOGIC ONCOLOGY\nRe: Donna Fairbanks, DOB 07/29/1963\n\nDear colleague,\nMs. Fairbanks underwent total laparoscopic hysterectomy, bilateral salpingo-oophorectomy and sentinel lymph node mapping on 06/09/2020. She went home on post-operative day 1 and was seen in clinic two weeks later with well-healed port sites.\n\nFinal pathology is enclosed: endometrioid adenocarcinoma, grade 1, 30% myometrial invasion, no LVSI, sentinel nodes negative bilaterally, washings negative - FIGO stage IA. No adjuvant therapy is indicated.\n\nPlan: surveillance visits with pelvic exam every 6 months for 2 years, then yearly. She knows to report any vaginal bleeding.\n\nMedications unchanged: metformin, hydrochlorothiazide, desmopressin. Allergy: sulfa (rash)."
+      },
+      {
+       "type": "Outside Records",
+       "title": "Gyn onc records scanned",
+       "author": "RN",
+       "date": "2020-07-21T10:20",
+       "body": "Post-op letter and surgical pathology received by fax today. Operative note not included - requested; office says it will follow. Scanned to media, routed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2020-06-23a",
+     "kind": "portal_message",
+     "start": "2020-06-23T09:14",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Checking in after surgery",
+       "author": "patient",
+       "date": "2020-06-23T09:14",
+       "body": "Just wanted to let you know the surgery went fine and I went home the next day. Saw the surgeon yesterday and she said I'm healing well and they got it all. Pathology was early stage and I don't need radiation. Sugars were a little high in the hospital but back to my usual now."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Checking in after surgery",
+       "author": "PCP",
+       "date": "2020-06-23T12:40",
+       "body": "That is wonderful news, Donna. Thanks for letting us know. We haven't received the paperwork yet and will ask the surgeon's office for it. Take it easy on lifting for the next few weeks. Let's see you in September for your physical."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-15a",
+     "kind": "annual_physical",
+     "start": "2020-09-15T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "weight_kg": 90.5,
+      "labs": {
+       "Hemoglobin A1c": 8.4,
+       "Glucose": 172
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2020-09-15T09:40",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-09-15T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 11.6
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2020-09-15T09:40",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-09-15T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 8.4
+        }
+       ],
+       "resulted": "2020-09-15T09:55"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2020-09-15T09:45"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2020-09-15T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-09-15T09:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual physical",
+       "author": "PCP",
+       "date": "2020-09-15T10:05",
+       "body": "57 y/o here for physical, three months out from hysterectomy/BSO for stage IA endometrial cancer. Recovered well, no bleeding, no pelvic pain. Some hot flashes after the ovaries came out, tolerable. Gyn onc surveillance every 6 months.\n\nDiabetes: home readings 150s-170s fasting. Admits eating has drifted with being home all the time this year. Metformin twice daily.\nBP: home readings mostly 130s.\nDI: unchanged on desmopressin.\n\nExam: BP measured, see vitals. Weight down a few pounds since last year. HEENT normal. Neck no nodes or thyroid enlargement. Heart RRR. Lungs clear. Abdomen soft, port scars healed. Ext no edema. Feet: monofilament intact, pulses good. Skin no concerning lesions.\n\nA/P\n1. T2DM - A1c 8.4 today, up from 7.6 in January. Talked about adding a second medication; she would rather tighten up her eating and walking first now that she's recovered from surgery. Reasonable for a few months; recheck A1c in 3 months and add an agent if not improving.\n2. HTN - continue HCTZ.\n3. Endometrial cancer s/p surgery - surveillance with gyn onc.\n4. Anemia before surgery (Hgb 10.2 at gyn) - CBC today now that the bleeding has stopped.\n5. HM: flu shot today. Mammogram due - order placed. Colonoscopy 2016 normal. Shingrix complete. No Pap needed after hysterectomy. PHQ-2 1.\nFollow-up 3 months for diabetes."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2020",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "Breast cancer screening"
+      }
+     ]
+    },
+    {
+     "id": "2020-11-12a",
+     "kind": "imaging",
+     "start": "2020-11-12T08:30",
+     "service": "Breast Imaging",
+     "reason": "Screening mammogram",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2020-11-12T08:30",
+       "issued": "2020-11-13T11:00",
+       "text": "Bilateral CC and MLO views with tomosynthesis. Comparison: 02/2019. The breasts are scattered areas of fibroglandular density. No suspicious mass, calcification or architectural distortion. Skin and axillae unremarkable.",
+       "conclusion": "BI-RADS 1: negative. Routine annual screening."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2020",
+       "action": "done",
+       "date": "2020-11-12T08:30"
+      }
+     ]
+    },
+    {
+     "id": "2020-12-08a",
+     "kind": "office_visit",
+     "start": "2020-12-08T14:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "appointment": "no-show"
+    },
+    {
+     "id": "2020-12-09a",
+     "kind": "telephone",
+     "start": "2020-12-09T09:35",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed appointment",
+       "author": "front desk",
+       "date": "2020-12-09T09:35",
+       "body": "Pt missed yesterday's 2:20 diabetes follow-up. Left voicemail to reschedule. Also sent portal reminder."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,193 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002620",
+      "given": "Henry",
+      "family": "Bergeron",
+      "birth_date": "2000-03-13",
+      "address_line": "52 Line Street, Apt 2",
+      "phone": "+1-603-555-0148",
+      "email": "henry.bergeron@example.test",
+      "marital_status": "single",
+      "summary": "Lean, athletic graduate student and part-time fitness instructor who joined in 2022. Left primary spontaneous pneumothorax in 2024, a complete recurrence in 2025 managed with a chest tube and deferred surgery, and a bicycle straddle urethral injury in 2026 after he was last seen.",
+      "events": [
+        {
+          "id": "2022-08-09a",
+          "kind": "telephone",
+          "start": "2022-08-09T10:20",
+          "reason": "New patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Inquiry",
+              "author": "front desk",
+              "date": "2022-08-09T10:20",
+              "body": "Caller is starting grad school locally this fall and wants a primary care doctor nearby. Explained the membership and that insurance still covers labs/imaging. Signed up over the phone. New pt visit booked 8/23 at 9:00. Release form emailed for his records from the pediatric/family office he used growing up; he will sign and return today."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "establish_care",
+          "start": "2022-08-23T09:00",
+          "end": "2022-08-23T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 68.2, "height_cm": 190.5},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per week"},
+            {"item": "Occupation", "value": "Graduate student; part-time fitness instructor"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-08-23T09:45", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-08-23T09:45", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-08-23T09:45", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2022-08-23T09:45", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2022-08-23T09:40"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2022-08-23T09:00"},
+            {"procedure": "Immunization administration", "performed": "2022-08-23T09:40"},
+            {"procedure": "Venipuncture", "performed": "2022-08-23T09:45"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-08-23T09:00",
+              "body": "22 y/o man new to the practice, here to get set up before his graduate program starts. Feels well. No ongoing medical problems, takes nothing daily, no supplements beyond protein powder. No operations, never hospitalized. NKDA.\n\nSocial: grad student, teaches group fitness classes part time, plays pickup basketball a couple of times a week and lifts. Has never smoked cigarettes; uses cannabis now and then, mostly edibles, sometimes smoked. Alcohol 1-2 drinks a week. Lives with two roommates. Single.\n\nFamily: father had a spontaneous collapsed lung in his twenties, no recurrence that Henry knows of. Otherwise nothing he is aware of on either side.\n\nROS: negative across the board, including breathing, chest, GI, GU, skin, mood.\n\nExam: tall, slender, very fit-appearing young man in no distress. Ht 190.5 cm. HEENT clear. Neck supple, no nodes, thyroid normal. Breath sounds equal and clear bilaterally. Heart RRR, no murmur, no click. Abdomen soft, no organomegaly. Skin without rash. No joint laxity or chest wall deformity. Mood bright.\n\nA/P:\n1. Health maintenance, healthy adult. Last Tdap was in middle school per him; Tdap given today. Screening CBC, CMP, lipids, one-time HIV and hep C sent. PHQ-2 0.\n2. Family history of spontaneous pneumothorax in father. Mentioned that tall thin young men carry some of the same risk and that sudden one-sided chest pain or breathlessness should be checked same day. Smoking anything, cannabis included, adds risk; he heard that.\n3. Records requested from his prior office.\nReturn yearly, sooner as needed. Text or call any time."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-25a",
+          "kind": "portal_message",
+          "start": "2022-08-25T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2022-08-25T16:40",
+              "body": "Hi Henry, all of your bloodwork from Tuesday came back normal: blood counts, kidney and liver tests, cholesterol, and the HIV and hepatitis C screens were negative. Nothing to change. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-02a",
+          "kind": "outside_records",
+          "start": "2022-09-02T11:15",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Practice Records",
+              "author": "front desk",
+              "date": "2022-09-02T11:15",
+              "body": "Records arrived from his childhood family practice (31 pages). Contents: well visits through age 18, sports physical forms, immunization history. Routine childhood series complete; adolescent Tdap at age 12; HPV and meningococcal series documented. No chronic diagnoses, no surgeries, no medications on file. Growth chart notes tall stature tracking above the 95th percentile for height. Filed to media; PCP reviewed, immunizations entered from the history."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-04T16:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-04T16:37"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-04T16:35"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2022-10-04T16:30",
+              "body": "In after his afternoon class for flu and the bivalent COVID booster. No fever today, no prior reactions. Flu 0.5 mL IM left deltoid. Pfizer bivalent 0.3 mL IM right deltoid. VIS sheets reviewed. Sat for 15 minutes, felt fine, left walking."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-17a",
+          "kind": "portal_message",
+          "start": "2023-01-17T08:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Form Request",
+              "author": "patient",
+              "date": "2023-01-17T08:12",
+              "body": "Hey, the gym where I teach spin and circuit classes wants a medical clearance form signed for their staff file. I uploaded it. Is that something you can sign without a visit? Thanks, Henry"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Form Request",
+              "author": "PCP",
+              "date": "2023-01-17T13:30",
+              "body": "Signed and uploaded back to your portal documents. You were just in for a full visit in August, so no need to come in for this."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "annual_physical",
+          "start": "2023-09-12T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Appointment",
+              "author": "front desk",
+              "date": "2023-09-12T09:05",
+              "body": "No-show for 8:30 physical. Left voicemail and sent portal note. He wrote back at 9:02: overslept after a late lab shift, apologized. Rebooked 9/26 at 8:00."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "annual_physical",
+          "start": "2023-09-26T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-09-26T08:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-09-26T08:37"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-09-26T08:00"},
+            {"procedure": "Immunization administration", "performed": "2023-09-26T08:35"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-09-26T08:00",
+              "body": "Yearly exam. Second year of his program, still teaching 4-5 classes a week. No illnesses or injuries since last year. Sleep a bit short during a busy stretch in the lab. No meds. NKDA.\nHabits unchanged: no cigarettes, cannabis occasionally, a drink or two on weekends. Seatbelt yes, helmet on the bike most of the time; nudged him to make that every time.\nFHx: father's spontaneous pneumothorax, as before.\nROS negative.\n\nExam: lean, well. Weight stable. Ears/throat normal. Neck no adenopathy. Chest clear with equal air entry both sides. Heart regular, no murmur. Abdomen soft, nontender. Testes descended, no masses. Skin clear. Affect cheerful. PHQ-2 0.\n\nA/P: Healthy 23 y/o. Labs from last year all normal, no repeat needed. Flu shot and 2023-24 COVID vaccine given today. Tdap current (2022). Reminded him about same-day evaluation for sudden one-sided chest pain given his father's history. See him next fall."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

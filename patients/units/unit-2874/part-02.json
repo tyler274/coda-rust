@@ -1,0 +1,682 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002874",
+   "events": [
+    {
+     "id": "2023-01-10a",
+     "kind": "portal_message",
+     "start": "2023-01-10T19:42",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Refill - capsule inhaler",
+       "author": "patient",
+       "date": "2023-01-10T19:42",
+       "body": "Hi, the mail order says my tiotropium needs a new prescription, the one from December went to the drug store on the corner instead. Can you send it to the mail order? I have about 10 capsules left. Thanks, Theresa"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Refill - capsule inhaler",
+       "author": "MA",
+       "date": "2023-01-11T09:15",
+       "body": "Hi Theresa, new script for tiotropium 18 mcg (90 days, 3 refills) went to your mail-order pharmacy this morning and the old one at the local store was cancelled. Should ship within a week; if it runs late call us and we can send a short supply locally."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-09a",
+     "kind": "annual_physical",
+     "start": "2023-05-09T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-05-09T09:30",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-05-09T09:30",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-05-09T09:30",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current every day smoker"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2023-05-09T08:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-05-09T09:30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2023",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "annual screening"
+      },
+      {
+       "id": "mammo-2023",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "annual screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2023-05-09T10:20",
+       "body": "Subsequent AWV. Doing well overall. No falls. Still independent at home; neighbor helps with heavier errands. PHQ-2 = 1 (a few low days over the winter, better now). Cognition screen normal.\nCOPD: albuterol a couple of times a week, no exacerbations this year, no prednisone. Adherent to both maintenance inhalers; mail order working now.\nTobacco: same amount. We talked about how her father's illness weighs on her; she still is not ready to quit and wants no medication. Will keep asking.\nGYN: no bleeding; last gynecology visit about a year ago.\nExam: vitals as recorded. Lungs diminished bilaterally, no wheeze. Heart RRR. Abdomen benign. No edema.\nPlan: continue inhalers. Labs today. LDCT and mammogram ordered for this summer. Colonoscopy not due until 2026. Flu/COVID in the fall. Advance directive: health care proxy form returned naming her sister, scanned.\nRTC 6 months or sooner."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-20a",
+     "kind": "imaging",
+     "start": "2023-06-20T14:20",
+     "reason": "Lung cancer screening",
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2023-06-20T14:20",
+       "text": "Indication: Annual screening, current smoker. Comparison: 6/23/2022 and 6/29/2021.\nTechnique: Low-dose helical CT without contrast.\nFindings: Stable mild centrilobular emphysema. No nodules, masses or consolidation. No pleural effusion. Mediastinum and hila without adenopathy. Coronary arteries without significant calcification. Upper abdomen unremarkable.",
+       "conclusion": "Lung-RADS 1: negative. Continue annual LDCT."
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2023",
+       "action": "done",
+       "date": "2023-06-20T14:20"
+      }
+     ]
+    },
+    {
+     "id": "2023-07-25a",
+     "kind": "imaging",
+     "start": "2023-07-25T09:10",
+     "reason": "Screening mammogram",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2023-07-25T09:10",
+       "text": "Bilateral 2D and tomosynthesis views. Compared with 2021 and 2022 studies. Scattered fibroglandular tissue. No suspicious findings; no change.",
+       "conclusion": "BI-RADS 1: Negative. Annual screening recommended."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2023",
+       "action": "done",
+       "date": "2023-07-25T09:10"
+      }
+     ]
+    },
+    {
+     "id": "2023-07-26a",
+     "kind": "portal_message",
+     "start": "2023-07-26T12:10",
+     "reason": "Mammogram result",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Mammogram result",
+       "author": "PCP",
+       "date": "2023-07-26T12:10",
+       "body": "Your mammogram from yesterday was normal, no change from the last two years. Next one is due next summer. And the lung CT in June was clear as well."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-26a",
+     "kind": "nurse_visit",
+     "start": "2023-09-26T15:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Fall vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2023-09-26T15:20"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2023-09-26T15:22"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-09-26T15:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunizations",
+       "author": "RN",
+       "date": "2023-09-26T15:45",
+       "body": "Flu vaccine R deltoid, 2023-24 COVID vaccine L deltoid. Latex-free supplies. Tolerated, no reaction after 15 min observation. Pt quiet today, said she has 'a woman thing' she has been putting off; encouraged her to message the doctor or book a visit. She said she would."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-29a",
+     "kind": "portal_message",
+     "start": "2023-09-29T21:05",
+     "reason": "New symptom",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Bleeding question",
+       "author": "patient",
+       "date": "2023-09-29T21:05",
+       "body": "I didn't want to bring it up at the shot visit. Since sometime in July I've had spotting off and on, which I haven't had in years since the change, and a discharge that smells bad. It doesn't really hurt, just feels uncomfortable down there. Should I see you or go straight to my gynecologist? I'd rather start with you."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Bleeding question",
+       "author": "PCP",
+       "date": "2023-09-30T08:20",
+       "body": "Thank you for telling me, this needs to be looked at soon. Bleeding after menopause always gets checked. The front desk will call you Monday with a visit early next week, and I'll get you to gynecology quickly from there. If the bleeding gets heavy, go to the emergency room."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-03a",
+     "kind": "office_visit",
+     "start": "2023-10-03T13:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Postmenopausal bleeding and vaginal discharge",
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-10-03T13:40"
+      }
+     ],
+     "orders": [
+      {
+       "id": "gyn-referral-2023",
+       "action": "placed",
+       "order": "Gynecology referral",
+       "category": "referral",
+       "to": "Gynecology",
+       "reason": "postmenopausal bleeding, malodorous discharge, prior LEEP and high-risk HPV"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office visit - postmenopausal bleeding",
+       "author": "PCP",
+       "date": "2023-10-03T14:35",
+       "body": "CC: vaginal bleeding and discharge.\nHPI: 63 y/o, menopausal for years, with on-and-off spotting for about three months and a foul-smelling discharge over the same stretch. Not much pain, more a feeling of pelvic discomfort. No fever. No urinary symptoms reported. History of high-risk HPV with LEEP for dysplasia in 2018. Mother had cervical cancer. Smoker.\nShe called her own gynecology office last week; they had nothing for six weeks.\nExam: well appearing. Abdomen soft, nontender, no masses. She asked to have the pelvic exam done once by the gynecologist rather than twice; reasonable given she can be seen within days.\nA/P: Postmenopausal bleeding with malodorous discharge in a woman with HPV and prior LEEP. Needs speculum exam and tissue promptly. Called the gynecology group directly and got her in on 10/11. Referral and last note faxed. Return precautions for heavy bleeding. Will follow."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-11a",
+     "kind": "specialist_visit",
+     "start": "2023-10-11T10:30",
+     "service": "Gynecology",
+     "reason": "Postmenopausal bleeding and discharge",
+     "orders": [
+      {
+       "id": "gyn-referral-2023",
+       "action": "done",
+       "date": "2023-10-11T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gynecology visit",
+       "author": "gynecology",
+       "date": "2023-10-13T12:10",
+       "body": "Outside gynecology office note, date of service 10/11/2023, received by fax 10/13/2023.\n\nReason: intermittent vaginal bleeding x 3 months with malodorous discharge. Minimal pain; pelvic discomfort.\nHx: COPD; HR-HPV; LEEP for cervical dysplasia at 58; BTL at 32. Meds: fluticasone/salmeterol, tiotropium, albuterol PRN. Allergies: sulfa (rash), latex (contact dermatitis) - non-latex gloves and speculum used. FHx: mother cervical cancer, father lung cancer, sister breast cancer. Smoker, 42 pk-yr.\nExam: Irregular ulcerated lesion of the posterior vaginal wall. Biopsy obtained, hemostasis with pressure.\nPlan: await pathology; will call patient and PCP. Gyn-onc referral if malignant."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-17a",
+     "kind": "outside_records",
+     "start": "2023-10-17T09:05",
+     "reason": "Pathology report",
+     "conditions": [
+      {
+       "label": "Malignant neoplasm of vagina",
+       "icd10": "C52",
+       "action": "diagnosed",
+       "onset": "2023-10-16",
+       "note": "invasive squamous cell carcinoma, posterior vaginal wall"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2023-10-16T15:00",
+       "text": "Specimen: Vagina, posterior wall, biopsy.\nGross: Received in formalin, two tan-pink soft tissue fragments, aggregate 0.6 x 0.4 x 0.2 cm, entirely submitted in one cassette.\nMicroscopic: Squamous mucosa with atypical squamous cells showing invasion into the subepithelial connective tissue.",
+       "conclusion": "Vagina, posterior wall, biopsy: invasive squamous cell carcinoma."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Pathology - vaginal biopsy",
+       "author": "front desk",
+       "date": "2023-10-17T09:05",
+       "body": "Pathology report from the gynecology group's lab, signed 10/16/2023, faxed to PCP as copy recipient. Routed to PCP urgent."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-18a",
+     "kind": "telephone",
+     "start": "2023-10-18T12:30",
+     "reason": "Pathology result",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Call with patient re: biopsy",
+       "author": "PCP",
+       "date": "2023-10-18T12:55",
+       "body": "Called pt after the gynecologist had already given her the result yesterday. She knows it is a cancer of the vagina. Tearful but organized. Gynecology has referred her to gynecologic oncology; first appointment next week, scans to be scheduled through them. Answered what I could; told her I'd follow along and she can call any time. Added to problem list. She asked if smoking played a part; told her it can, and that stopping helps treatment go better. She said she'd think about it."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-08a",
+     "kind": "outside_records",
+     "start": "2023-11-08T15:40",
+     "reason": "Gynecologic oncology letter",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gynecologic oncology letter",
+       "author": "gynecologic oncology",
+       "date": "2023-11-08T15:40",
+       "body": "Dear colleague,\nI saw Ms. Mayhew on 10/25/2023 for biopsy-proven invasive squamous cell carcinoma of the posterior vaginal wall. Allergies: sulfa, latex.\nStaging: MRI pelvis shows the tumor confined to the vaginal wall without extension beyond it; no enlarged pelvic or inguinal nodes. PET/CT shows no nodal or distant disease. FIGO stage I.\nRecommendation, agreed with radiation oncology at tumor board: definitive radiation, external-beam pelvic treatment followed by vaginal brachytherapy, to begin 11/13. We will see her in surveillance after treatment.\nThank you for involving us.\nGynecologic oncology"
+      }
+     ]
+    },
+    {
+     "id": "2024-02-13a",
+     "kind": "office_visit",
+     "start": "2024-02-13T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Check-in after radiation",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-02-13T11:05",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-02-13T11:05",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-02-13T10:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-02-13T11:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up after cancer treatment",
+       "author": "PCP",
+       "date": "2024-02-13T11:20",
+       "body": "Here to catch up after radiation. Per her account: pelvic external-beam treatment daily from mid-November, then brachytherapy sessions, finished 1/19. She says she got through it and the team was good to her. First gyn-onc surveillance visit is in April. No summary from radiation oncology yet; records requested.\nBreathing: stable through the winter, no extra steroids, rescue inhaler 2-3 times a week. Still smoking, cut down 'a few' during treatment, back to usual now.\nExam: vitals as charted. Lungs with decreased breath sounds, no wheeze. Heart RRR. Abdomen soft, nontender.\nA/P\n1. Vaginal SCC, stage I, s/p definitive radiation - surveillance with gyn-onc. Basic labs today.\n2. COPD stable - continue inhalers.\n3. Tobacco - advised again; contemplation. She will call if she wants to try the patch.\nWellness visit in May."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-14a",
+     "kind": "telephone",
+     "start": "2024-02-14T09:30",
+     "reason": "Records request",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Records request - radiation oncology",
+       "author": "front desk",
+       "date": "2024-02-14T09:36",
+       "body": "Per PCP, called the radiation oncology office for her end-of-treatment summary. They will fax it once the physician signs it, usually within the week."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-22a",
+     "kind": "outside_records",
+     "start": "2024-02-22T13:15",
+     "reason": "Radiation oncology treatment summary",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Radiation oncology treatment summary",
+       "author": "radiation oncology",
+       "date": "2024-02-22T13:15",
+       "body": "Radiation treatment summary. Diagnosis: squamous cell carcinoma of the vagina, FIGO stage I. Allergies: sulfa, latex.\nCourse: external-beam radiation to the pelvis, 45 Gy in 25 fractions, 11/13/2023 to 12/18/2023, followed by vaginal brachytherapy, completed 1/19/2024. Treatment completed as planned.\nFollow-up: gynecologic oncology surveillance; radiation oncology as needed."
+      }
+     ]
+    },
+    {
+     "id": "2024-05-21a",
+     "kind": "annual_physical",
+     "start": "2024-05-21T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-05-21T09:55",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-05-21T09:55",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-05-21T09:55",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current every day smoker"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2024-05-21T09:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-05-21T09:55"
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2024",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "annual screening"
+      },
+      {
+       "id": "ldct-2024",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "annual screening; staging PET/CT 10/2023"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2024-05-21T10:40",
+       "body": "AWV. Saw gyn-onc in April: by her report the exam was clear and she goes back every three months. Energy fine. No falls. PHQ-2 1. Functional status unchanged, still driving locally.\nCOPD: same as last year; no flares. Uses the rescue inhaler when it's humid.\nTobacco: smoking her usual. Contemplation, no change.\nAllergies sulfa, latex. Meds unchanged: fluticasone/salmeterol 250/50 BID, tiotropium 18 mcg daily, albuterol PRN.\nExam: lungs with diminished air entry, no wheeze; heart RRR; abdomen soft; no edema.\nPrevention: mammogram this summer. LDCT: staging PET/CT last October covered the chest; next screening CT in November to keep the annual interval. Flu, COVID, and RSV this fall. Labs today.\nProblem list reviewed. RTC 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2024-08-06a",
+     "kind": "imaging",
+     "start": "2024-08-06T10:40",
+     "reason": "Screening mammogram",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2024-08-06T10:40",
+       "text": "Bilateral screening views with tomosynthesis. Comparison 7/25/2023. Scattered fibroglandular density. No mass, distortion or suspicious calcification.",
+       "conclusion": "BI-RADS 1: Negative."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2024",
+       "action": "done",
+       "date": "2024-08-06T10:40"
+      }
+     ]
+    },
+    {
+     "id": "2024-10-08a",
+     "kind": "nurse_visit",
+     "start": "2024-10-08T14:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Fall vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2024-10-08T14:45"
+      },
+      {
+       "vaccine": "RSV, adjuvanted (Arexvy)",
+       "date": "2024-10-08T14:47"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2024-10-08T14:50"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-10-08T14:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunizations",
+       "author": "RN",
+       "date": "2024-10-08T15:10",
+       "body": "Three vaccines today per PCP order: flu (L arm), RSV (R arm), 2024-25 COVID (R arm, 1 inch from RSV site). Pt chose all at once rather than two trips. Latex-free tray. No reaction in 15 minutes. Reminded her the RSV shot is a one-time dose."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-19a",
+     "kind": "imaging",
+     "start": "2024-11-19T13:00",
+     "reason": "Lung cancer screening",
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2024-11-19T13:00",
+       "text": "Indication: Annual lung screening. Comparison: LDCT 6/20/2023.\nTechnique: Low-dose non-contrast CT chest.\nFindings: Mild centrilobular emphysema, unchanged. No pulmonary nodules. No consolidation or effusion. No thoracic adenopathy. Heart size normal. Upper abdomen unremarkable.",
+       "conclusion": "Lung-RADS 1: negative. Next annual screening in 12 months."
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2024",
+       "action": "done",
+       "date": "2024-11-19T13:00"
+      }
+     ]
+    },
+    {
+     "id": "2024-12-10a",
+     "kind": "office_visit",
+     "start": "2024-12-10T15:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "COPD follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2024-12-10T15:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "COPD follow-up",
+       "author": "PCP",
+       "date": "2024-12-10T15:35",
+       "body": "Turns 65 next week. Breathing unchanged. Albuterol a few times a week. No ED visits or steroid courses this year. Gyn-onc saw her in October; she says all clear.\nExam: lungs diminished, no wheeze, no accessory muscle use. Heart regular. No edema.\nLDCT 11/19 Lung-RADS 1, discussed.\nA/P: COPD stable on triple therapy, refills sent. Tobacco: she asked if there's any point now; told her there is at any age. She says she'll see. Wellness visit in spring."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,223 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001917",
+      "given": "Tracy",
+      "family": "Leblanc",
+      "birth_date": "1989-02-18",
+      "address_line": "214 Bisbee Road, Chesterfield, MA 01012",
+      "phone": "+1-347-555-0191",
+      "email": "tracy.leblanc@example.test",
+      "marital_status": "single",
+      "summary": "Healthy elementary school teacher who joined the practice in 2022. Three episodes of Bell palsy (right January 2025, left September 2025, right again May 2026) handled through the ED and outside neurology; last seen at her 2025 physical.",
+      "events": [
+        {
+          "id": "2022-08-03a",
+          "kind": "telephone",
+          "start": "2022-08-03T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "author": "front desk",
+              "date": "2022-08-03T10:20",
+              "body": "Ms. Leblanc phoned wanting to transfer her primary care here. Moved her care because her prior office is a long drive from Chesterfield. Membership terms explained and agreement emailed. Insurance BCBS, card copied at intake. Signed release for her old office obtained by e-sign; request for records sent this morning. New patient physical booked for 8/16 at 9:00."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-11a",
+          "kind": "outside_records",
+          "start": "2022-08-11T14:05",
+          "reason": "Records from prior primary care office",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2017-08-22T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-09T15:30"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-30T15:30"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-12-04T11:00"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "author": "front desk",
+              "date": "2022-08-11T14:05",
+              "body": "Chart copy from her previous primary care office came in, 14 pages, indexed to media.\n\nContents: annual exam notes 2018-2021, immunization history, one cervical screening result.\n- Problem list: none active.\n- Meds: none.\n- Allergies: NKDA.\n- Cervical cytology 2019: NILM, high-risk HPV negative.\n- Immunizations: Tdap 8/2017; Pfizer COVID x2 March 2021, booster December 2021.\n- Surgical: third molars removed around age 22.\n\nFlagged for PCP review before the 8/16 visit."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-16a",
+          "kind": "establish_care",
+          "start": "2022-08-16T09:00",
+          "end": "2022-08-16T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical, establish care",
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 63.2, "height_cm": 165.0, "labs": {"Low Density Lipoprotein": 88}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "Occupation", "value": "Elementary school teacher"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-08-16T10:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-08-16T10:05", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-08-16T10:05", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2022-08-16T10:05", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2022-08-16T10:05", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2022-08-16T09:00"},
+            {"procedure": "Venipuncture", "performed": "2022-08-16T10:05"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-08-16T09:00",
+              "body": "33 y/o woman joining the practice. Here to get set up; nothing bothering her.\n\nPMH: none. No hospitalizations.\nPSH: wisdom teeth out at 22.\nMeds: none, no supplements.\nAllergies: NKDA.\nFH: mom has type 2 DM, dad has HTN. One sister, who had a Bell palsy some years back, recovered.\nSH: teaches elementary school (2nd grade this fall). Lives on her own in Chesterfield. Never a smoker. Wine a glass or two a month at most. No drugs. Walks and does a yoga class twice a week.\nGYN: regular cycles. Last cervical screen 2019 normal with neg HPV per old chart.\nImm: Tdap 2017, COVID x3. Flu shot most years.\n\nROS: negative on a full screen.\n\nExam: well appearing, BMI ~23. HEENT normal, TMs clear, no thyroid enlargement or nodes. Heart RRR no murmur. Lungs clear bilaterally. Abdomen benign. Skin without concerning lesions. Neuro: CN II-XII intact, face symmetric, gait normal. Mood bright.\nPHQ-2: 0.\n\nAssessment/plan: healthy adult, establishing care.\n- Baseline CBC, CMP, lipids. One-time HIV and hep C screens; she agreed.\n- Cervical cancer screening next due 2024 (co-test, 5 yr).\n- Flu and the bivalent COVID booster when they arrive; she'll come to a nurse visit.\n- Family hx of DM noted; screen A1c at a future physical.\n- Physical yearly. She has my cell for anything sooner."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-18a",
+          "kind": "portal_message",
+          "start": "2022-08-18T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2022-08-18T16:40",
+              "body": "Hi Tracy, everything from Tuesday's blood work came back fine: blood counts, kidney and liver tests, sugar and cholesterol all in the normal range, and the HIV and hepatitis C screens were negative. Nothing to do. Enjoy the rest of summer break."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your lab results",
+              "author": "patient",
+              "date": "2022-08-18T19:12",
+              "body": "Great, thank you! Will watch for the email about the fall vaccine clinic."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "measure": ["hr", "temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-04T15:50"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-04T15:52"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-04T15:50"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2022-10-04T15:45",
+              "body": "Came after school for vaccines. Afebrile, feels well, no prior vaccine reactions. Screening questions negative.\nFlu (quadrivalent) 0.5 mL IM left deltoid.\nPfizer bivalent COVID booster 0.3 mL IM right deltoid.\nVIS sheets given. Observed 15 min, no reaction. Immunization record updated; copy printed for her school nurse at her request."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-07a",
+          "kind": "portal_message",
+          "start": "2023-03-07T07:15",
+          "reason": "Immunization record request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vaccine record for district",
+              "author": "patient",
+              "date": "2023-03-07T07:15",
+              "body": "Good morning, our district HR is updating staff files and wants a current immunization printout. Could you upload one here so I can forward it? Thanks so much."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Vaccine record for district",
+              "author": "MA",
+              "date": "2023-03-07T11:30",
+              "body": "Hi Tracy, your full immunization history is attached as a PDF under Letters. It includes the outside entries from your previous office. Let us know if HR needs anything signed."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-15a",
+          "kind": "annual_physical",
+          "start": "2023-08-15T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-08-15T09:15", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-08-15T09:15", "results": [{"test": "Glucose"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-08-15T08:30"},
+            {"procedure": "Venipuncture", "performed": "2023-08-15T09:15"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-08-15T08:30",
+              "body": "Yearly exam. Doing well. Classroom prep starts in two weeks; spent July hiking with friends. No new symptoms on a full ROS.\n\nMeds: none. Allergies: NKDA.\nFH unchanged (mom T2DM, dad HTN, sister remote Bell palsy).\nNever smoker; alcohol rare.\n\nExam: vitals reviewed, weight stable. Pleasant, no distress. Eyes, ears, oropharynx normal. Neck supple, no adenopathy. RRR without murmur; lungs clear. Abdomen soft, nontender. No edema. Skin: scattered benign-appearing nevi, none irregular. Neuro grossly intact, face symmetric.\nPHQ-2 0.\n\nA/P: well adult.\n- CBC and CMP today (she asked to stay on yearly labs). Lipids were fine last year; recheck in 2024 with an A1c.\n- Cervical screening due next year.\n- Vaccines this fall; fine to get them at her pharmacy and send us the record.\n- Sunscreen, seatbelt, exercise all reviewed. RTC one year."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-17a",
+          "kind": "portal_message",
+          "start": "2023-08-17T12:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2023-08-17T12:10",
+              "body": "Tracy, your blood counts and chemistry panel from Tuesday are normal. Nothing further needed. Have a good first week back with the kids."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "outside_records",
+          "start": "2023-10-12T09:00",
+          "reason": "Pharmacy immunization record",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-07T11:20"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-07T11:25"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy vaccine administration record",
+              "author": "pharmacy",
+              "date": "2023-10-12T09:00",
+              "body": "Community pharmacy immunization notice. Patient: Tracy Leblanc, DOB 02/18/1989.\nAdministered 10/07/2023:\n- Influenza vaccine, quadrivalent, 0.5 mL IM, left arm.\n- COVID-19 vaccine, Pfizer 2023-2024 formula, 0.3 mL IM, right arm.\nNo adverse event reported at the pharmacy. Entered into the practice immunization record."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

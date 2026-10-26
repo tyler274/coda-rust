@@ -1,0 +1,2186 @@
+{
+  "unit": "unit-2811",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002811",
+      "given": "Margaret",
+      "family": "Cummings",
+      "birth_date": "1968-05-01",
+      "address_line": "27 Briar Hill Road",
+      "phone": "+1-774-555-0180",
+      "email": "margaret.cummings@example.test",
+      "marital_status": "married",
+      "summary": "Administrative assistant with limited cutaneous systemic sclerosis on mycophenolate from outside rheumatology, Raynaud and GERD, who joined in 2022. Esophageal dysmotility worked up by GI in 2024; last seen December 2024, after which SSc-associated pulmonary arterial hypertension was diagnosed and treated by cardiology and reached the chart only as outside letters.",
+      "events": [
+        {
+          "id": "2022-09-06a",
+          "kind": "telephone",
+          "start": "2022-09-06T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "date": "2022-09-06T10:20",
+              "author": "front desk",
+              "body": "Caller is looking for a new primary care doctor; her previous physician retired over the summer. Explained membership and that insurance still covers labs, imaging and specialists. Booked new patient visit 9/13 at 8:40. She sees an outside rheumatologist for scleroderma and will keep that. Signed records release for prior PCP office; request sent today. Asked her to bring all medication bottles."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "establish_care",
+          "start": "2022-09-13T08:40",
+          "end": "2022-09-13T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Limited cutaneous systemic sclerosis (CREST syndrome)",
+              "action": "history",
+              "onset": "2016-03-01",
+              "note": "followed by outside rheumatology",
+              "icd10": "M34.1"
+            },
+            {
+              "label": "Raynaud phenomenon",
+              "action": "history",
+              "onset": "2014-01-01"
+            },
+            {
+              "label": "Gastroesophageal reflux disease without esophagitis",
+              "action": "history",
+              "onset": "2017-06-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "omeprazole 40 MG Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily before breakfast",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "GERD"
+            },
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Raynaud phenomenon"
+            },
+            {
+              "drug_text": "mycophenolate mofetil 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (1000 mg) by mouth twice daily",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Systemic sclerosis; prescribed by rheumatology"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              70
+            ],
+            "hr": 65,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 61.5,
+            "height_cm": 164.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-13T09:35",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 232
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.45
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-13T09:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 86
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 67
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-13T09:35",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 90
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 57
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 172
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 125
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 115
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.6
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Administrative assistant"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Rare, 1-2 glasses of wine per month"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-09-13T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-13T09:35"
+            },
+            {
+              "procedure": "Laparoscopic cholecystectomy",
+              "performed": "2010-07-12T08:00"
+            },
+            {
+              "procedure": "Carpal tunnel release",
+              "performed": "2022-06-21T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-09-13T09:50",
+              "author": "PCP",
+              "body": "NEW PATIENT\n\n54F transferring care after her longtime PCP retired. Brought her bottles.\n\nScleroderma, limited type (CREST), diagnosed around 2016 by rheumatology. Fingers blanch in cold and with stress - has had that for years before the SSc diagnosis. Wears gloves Oct-April, amlodipine helps. Rheum keeps her on mycophenolate 1000 bid, labs through their office every few months, sees them once a year in the fall. Reflux for years, omeprazole 40 every morning, no heartburn breaking through on it. Swallowing fine. No SOB, no cough, walks the dog most evenings without trouble.\n\nPSH: lap chole 2010. R carpal tunnel release this June, healed, numbness gone.\nMeds: omeprazole 40 daily, amlodipine 5 daily, mycophenolate 1000 bid (rheum), ASA 81 daily - not sure who started the aspirin or why, has just always been on it.\nAll: NKDA\nFH: mother RA, father HTN, sister Hashimoto.\nSH: married, admin assistant at a school district office. Never smoked. Wine once or twice a month.\n\nExam: well appearing. Skin tightening over the fingers distal to the MCPs, no digital ulcers, nailfolds unremarkable to the eye. Heart RRR, no murmur. Lungs clear, no crackles at the bases. Abd soft, healed lap scars. No edema. R palm scar well healed.\n\nA/P\n1. Limited cutaneous SSc - per rheum, continue MMF. Will ask them to cc us on letters.\n2. Raynaud - stable on amlodipine 5.\n3. GERD - controlled, continue omeprazole.\n4. HM: prior records requested (she thinks colonoscopy 2019 was clean, Pap 2018). Mammogram ordered. Labs today incl A1c, TSH, one-time HCV/HIV. Flu and shingles vaccine at a nurse visit next month - recombinant zoster is fine on MMF.\n\nRTC 6 mo."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.4,
+            "height_cm": 164.0,
+            "labs": {
+              "Hemoglobin A1c": 5.4,
+              "Low Density Lipoprotein": 88,
+              "Thyroid Stimulating Hormone": 1.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-09-15a",
+          "kind": "portal_message",
+          "start": "2022-09-15T16:05",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2022-09-15T16:05",
+              "author": "PCP",
+              "body": "Hi Margaret, your blood counts, kidney and liver tests, cholesterol, sugar and thyroid all came back normal, and the hepatitis C and HIV screens were negative. Nothing to change. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-29a",
+          "kind": "outside_records",
+          "start": "2022-09-29T11:00",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2018-05-08T10:00",
+              "text": "Specimen adequate, transformation zone present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2019-04-16T08:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2016-02-09T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2022-09-29T11:00",
+              "author": "MA",
+              "body": "38 pages received from previous PCP. Abstracted:\n- Screening colonoscopy 04/2019: normal to the cecum, good prep, no polyps; repeat at 10 years.\n- Pap with HPV cotest 05/2018: NILM, HPV negative.\n- Tdap 02/2016.\n- Lap cholecystectomy 2010; R carpal tunnel release 06/2022 (op note included).\n- Rheumatology letters 2019-2021 on file confirming limited SSc on mycophenolate.\nFiled to media; PCP to review."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T14:30",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-11T14:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-11T14:35"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-10-11T14:36"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse visit - immunizations",
+              "date": "2022-10-11T14:50",
+              "author": "RN",
+              "body": "Flu 0.5 mL IM L deltoid. Shingrix dose 1 0.5 mL IM R deltoid. Screening questions negative, aware of possible soreness and fatigue for a day or two. Dose 2 due in 2-6 months, scheduled for January. Tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-26a",
+          "kind": "imaging",
+          "start": "2022-10-26T09:15",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-10-26T09:15",
+              "text": "Bilateral CC and MLO views with tomosynthesis. Breasts are scattered areas of fibroglandular density. No suspicious mass, calcifications or architectural distortion. No prior outside comparison available.",
+              "conclusion": "BI-RADS 1, negative. Routine annual screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "done",
+              "date": "2022-10-26T09:15"
+            }
+          ]
+        },
+        {
+          "id": "2022-11-21a",
+          "kind": "outside_records",
+          "start": "2022-11-21T13:10",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-11-17T10:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 239
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.56
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-11-17T10:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 85
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology follow-up letter",
+              "date": "2022-11-21T13:10",
+              "author": "rheumatology",
+              "body": "Outside rheumatology practice\nDate of visit: 11/17/2022\n\nDear Colleague,\n\nThank you for taking over Mrs. Cummings's primary care. I saw her for her yearly review of limited cutaneous systemic sclerosis.\n\nShe is doing well. Raynaud attacks are typical for her for the season and manageable with gloves, hand warmers and amlodipine. No digital ulcers. Reflux is controlled. She denies dyspnea, cough or dysphagia.\n\nExamination: BP and pulse normal. Sclerodactyly limited to the fingers, unchanged from last year; no pitting scars or ulcers. Lungs clear. Heart sounds normal.\n\nMonitoring labs today: CBC and comprehensive panel within normal limits.\n\nImpression: limited cutaneous SSc, stable.\nPlan: continue mycophenolate mofetil 1000 mg twice daily (we will continue to prescribe and monitor every 3 months). Continue amlodipine 5 mg. Return in one year.\n\nMedications: mycophenolate mofetil 1000 mg BID, amlodipine 5 mg daily, omeprazole 40 mg daily, aspirin 81 mg daily.\nAllergies: NKDA.\n\nSincerely,\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "nurse_visit",
+          "start": "2023-01-10T15:00",
+          "reason": "Shingrix dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-01-10T15:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-01-10T15:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse visit - Shingrix #2",
+              "date": "2023-01-10T15:15",
+              "author": "RN",
+              "body": "Second Shingrix given IM L deltoid. Said the first one knocked her out for an evening, nothing more. Series complete, immunization record updated."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-07a",
+          "kind": "pharmacy",
+          "start": "2023-02-07T09:40",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: omeprazole",
+              "date": "2023-02-07T09:40",
+              "author": "MA",
+              "body": "Pharmacy e-request for omeprazole 40 mg DR caps, 90 day supply. On med list, seen 9/2022. Pended to PCP. -- Approved x 90 days with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-23a",
+          "kind": "office_visit",
+          "start": "2023-03-23T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "6 month follow-up",
+          "vitals": {
+            "bp": [
+              117,
+              71
+            ],
+            "hr": 60,
+            "spo2": 98,
+            "weight_kg": 61.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-03-23T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up visit",
+              "date": "2023-03-23T10:35",
+              "author": "PCP",
+              "body": "S: Routine recheck. Rough Raynaud winter, a few more attacks in Jan when the office heat was off for a week, color comes back with warming. No sores on her fingertips. Reflux quiet. No trouble swallowing, no breathing complaints. Saw rheum in Nov, letter reviewed.\n\nO: vitals as charted. Fingers cool, sclerodactyly unchanged, capillary refill brisk, no ulcers. Heart regular, no murmur. Lungs clear throughout. No edema.\n\nA/P: SSc/Raynaud/GERD all stable on current regimen. Talked about keeping the core warm, not just hands. Annual physical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "portal_message",
+          "start": "2023-06-13T19:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill amlodipine",
+              "date": "2023-06-13T19:22",
+              "author": "patient",
+              "body": "Hi, the pharmacy says my amlodipine is out of refills. Could you send a new one? I have about 5 left. Thank you, Margaret"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill amlodipine",
+              "date": "2023-06-14T08:50",
+              "author": "MA",
+              "body": "Hi Margaret, a 90 day supply with refills was sent to your pharmacy this morning."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-18a",
+          "kind": "annual_physical",
+          "start": "2023-09-18T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              131,
+              76
+            ],
+            "hr": 53,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 61.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-18T09:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 264
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.45
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-18T09:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.7
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-18T09:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 87
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 121
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 111
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2023-09-18T08:55",
+              "text": "Liquid-based preparation. Satisfactory for evaluation; endocervical component present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+              "conclusion": "NILM, HPV negative.",
+              "issued": "2023-09-21T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-09-18T08:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-18T09:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-18T09:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-09-18T09:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-09-18T09:25",
+              "author": "PCP",
+              "body": "ANNUAL EXAM - 55F\n\nInterval: no new problems. Raynaud fine this summer. GERD controlled on omeprazole. Still on MMF via rheum, last letter 11/22, next rheum visit in Nov. Walking the dog daily, no exertional limits. No swallowing trouble.\n\nROS otherwise negative. PHQ-2 0.\n\nMeds unchanged: omeprazole 40, amlodipine 5, MMF 1000 bid, ASA 81. NKDA.\n\nExam: Vitals reviewed. HEENT normal. Thyroid normal size. Heart regular rate, normal S1 S2. Lungs clear. Breast exam deferred to imaging per her preference. Abdomen benign. Pelvic: normal external genitalia, cervix normal, Pap with HPV collected. Skin: sclerodactyly as before. Ext without edema.\n\nPlan\n- Pap/HPV sent.\n- PCV20 today given immunosuppression.\n- Mammogram ordered.\n- Colonoscopy up to date (2019, next 2029).\n- CBC, CMP, lipids.\n- Flu and updated COVID when the fall supply is in - nurse visit in October.\n- Continue current meds. Recheck in spring."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-22a",
+          "kind": "portal_message",
+          "start": "2023-09-22T12:40",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical results",
+              "date": "2023-09-22T12:40",
+              "author": "PCP",
+              "body": "Margaret - Pap is normal and HPV negative, so the next one can wait 5 years. Blood counts, chemistries and cholesterol are all in a good range. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "nurse_visit",
+          "start": "2023-10-12T16:10",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-12T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-12T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-12T16:16"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse visit - fall vaccines",
+              "date": "2023-10-12T16:25",
+              "author": "RN",
+              "body": "2023-24 flu vaccine to L arm and 2023-24 Pfizer COVID to R arm. No prior reactions. Observed 15 minutes, left feeling well."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-25a",
+          "kind": "imaging",
+          "start": "2023-10-25T08:45",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-10-25T08:45",
+              "text": "Bilateral screening views with tomosynthesis, compared with 10/2022. Scattered fibroglandular densities. No new mass, suspicious calcification or distortion. Stable appearance.",
+              "conclusion": "BI-RADS 1, negative. Annual screening recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "done",
+              "date": "2023-10-25T08:45"
+            }
+          ]
+        },
+        {
+          "id": "2023-11-16a",
+          "kind": "outside_records",
+          "start": "2023-11-16T10:30",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-11-14T11:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 228
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.39
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-11-14T11:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology annual letter",
+              "date": "2023-11-16T10:30",
+              "author": "rheumatology",
+              "body": "Outside rheumatology practice - visit 11/14/2023\n\nRe: Margaret Cummings, DOB 05/01/1968\n\nAnnual review, limited cutaneous SSc. Uneventful year. Raynaud is seasonal and controlled; no ulceration. No breathlessness, cough or swallowing difficulty reported. Reflux controlled on PPI.\n\nExam: skin score stable, changes confined to the fingers. Chest clear. Cardiac exam normal.\n\nLabs: CBC and CMP unremarkable.\n\nPlan: no change. Mycophenolate mofetil 1000 mg twice daily, quarterly monitoring labs through our office. See again in 12 months.\n\nCurrent medications: mycophenolate mofetil 1000 mg BID; amlodipine 5 mg daily; omeprazole 40 mg daily; aspirin 81 mg daily. NKDA.\n\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "office_visit",
+          "start": "2024-02-13T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "6 month follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2024-02-13T07:05",
+              "author": "front desk",
+              "body": "Pt left voicemail at 6:50am - roads on the hill are not plowed yet, cancelling today. Rebooked for late March."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-03-28a",
+          "kind": "office_visit",
+          "start": "2024-03-28T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "vitals": {
+            "bp": [
+              109,
+              73
+            ],
+            "hr": 54,
+            "spo2": 98,
+            "weight_kg": 61.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-03-28T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up visit",
+              "date": "2024-03-28T11:50",
+              "author": "PCP",
+              "body": "Rescheduled from the snow day in Feb.\n\nFeels well. Winter was easier on the hands than last year. No ulcers. Omeprazole keeps the reflux away; eating normally. Energy fine, still walking daily. Rheum letter from November reviewed - stable, labs fine.\n\nVitals ok. Fingers: same sclerodactyly, warm today. Heart RRR without murmur. Lungs clear. No edema.\n\nImp: SSc (limited), Raynaud, GERD - all stable.\nPlan: same meds. Physical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-07-19a",
+          "kind": "portal_message",
+          "start": "2024-07-19T13:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Chest squeezing",
+              "date": "2024-07-19T13:12",
+              "author": "patient",
+              "body": "For the last few weeks I have been getting a squeezing feeling in the middle of my chest. It mostly comes when I'm eating and sometimes it feels like food stops halfway down. It goes away after a few minutes. Nothing right now. Should I come in?"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "RN triage call",
+              "date": "2024-07-19T13:40",
+              "author": "RN",
+              "body": "Called pt back. Episodes brief, minutes, mostly with meals, a couple while sitting at her desk. Not with walking or stairs. No pain now, no SOB, sweating, nausea or palpitations. Spoke with PCP - first available Tuesday 7/23 is fine; advised 911 for pain that lasts more than a few minutes or comes with breathlessness or sweating. Pt agrees."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "office_visit",
+          "start": "2024-07-23T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Intermittent chest discomfort",
+          "vitals": {
+            "bp": [
+              122,
+              75
+            ],
+            "hr": 57,
+            "spo2": 98,
+            "weight_kg": 61.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-07-23T09:15",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "unit": "ng/L",
+                  "value": 3
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-07-23T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.48
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 284
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-07-23T09:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2024-07-23T08:55",
+              "text": "Sinus rhythm, rate 68. PR, QRS and QT intervals normal. Normal axis. No ST or T wave abnormality. No prior tracing in our system.",
+              "conclusion": "Normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-07-23T08:40"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2024-07-23T08:55"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-07-23T09:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ett-2024",
+              "action": "placed",
+              "order": "Exercise stress test",
+              "category": "procedure",
+              "to": "Cardiology",
+              "reason": "intermittent chest discomfort"
+            },
+            {
+              "id": "gi-referral-2024",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "chest discomfort with eating, food sticking"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office visit - chest discomfort",
+              "date": "2024-07-23T09:40",
+              "author": "PCP",
+              "body": "CC: chest squeezing, see portal msg 7/19.\n\nHPI: 56F with limited SSc. About 3-4 weeks of brief episodes of tight, squeezing discomfort behind the sternum, lasting a few minutes. Most with eating, a couple at rest at work. Never with exertion - walked 2 miles Sunday without anything. Doesn't travel. Sometimes the bite of food feels hung up mid-chest. No heartburn on her omeprazole, no regurgitation, weight steady. No dyspnea, palpitations, syncope.\n\nMeds/allergies unchanged; NKDA.\n\nExam: comfortable. Vitals reviewed. Heart RRR, no murmur, rub or gallop. Lungs clear. Chest wall nontender. Abd soft, nontender. No edema.\n\nECG in office: NSR, normal intervals, no ST-T changes.\nhs-troponin, CBC, BMP drawn.\n\nA/P: Episodic chest pain, atypical features - pattern with meals and food sticking points toward the esophagus (SSc esophageal involvement on the list of possibilities) but she is 56 and we should exclude a cardiac cause first.\n- Exercise treadmill test ordered.\n- GI referral for the dysphagia.\n- Continue omeprazole. ED precautions reviewed again."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-07-24a",
+          "kind": "portal_message",
+          "start": "2024-07-24T12:15",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Troponin and labs",
+              "date": "2024-07-24T12:15",
+              "author": "PCP",
+              "body": "Your heart enzyme (troponin) was normal at 3, and the blood count and kidney tests are normal too. The stress test office will call you to schedule. Keep the GI appointment as well."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-08a",
+          "kind": "outside_records",
+          "start": "2024-08-08T15:00",
+          "reports": [
+            {
+              "study": "Exercise stress test",
+              "performed": "2024-08-06T10:30",
+              "text": "Indication: intermittent chest discomfort. Standard Bruce protocol. Resting ECG sinus rhythm, normal. Exercised 8 minutes 30 seconds, stopped for fatigue, reaching 92% of maximum predicted heart rate. Blood pressure response normal. No chest pain during exercise or recovery. No ischemic ST segment changes. No arrhythmia.",
+              "conclusion": "Normal exercise treadmill test; no evidence of exercise-induced ischemia at an adequate workload."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ett-2024",
+              "action": "done",
+              "date": "2024-08-08T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Stress test report received",
+              "date": "2024-08-08T15:00",
+              "author": "MA",
+              "body": "Exercise treadmill test from outside cardiology lab (performed 8/6) received by fax and scanned. Routed to PCP. -- PCP: normal study, pt notified via portal, GI consult still on for 8/26."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-28a",
+          "kind": "outside_records",
+          "start": "2024-08-28T10:45",
+          "conditions": [
+            {
+              "label": "Esophageal dysmotility",
+              "action": "diagnosed",
+              "onset": "2024-08-26",
+              "note": "outside GI; manometry pending",
+              "icd10": "K22.4"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Barium esophagram",
+              "loinc": "30633-2",
+              "performed": "2024-08-26T13:30",
+              "text": "Single and double contrast esophagram with patient upright and prone. The pharyngeal phase is normal without aspiration or penetration. The distal esophagus shows weak and disordered peristalsis, with delayed clearance of barium into the stomach. No stricture, web or ring. No mass or mucosal irregularity. No hiatal hernia. A 13 mm barium tablet passed without hold-up.",
+              "conclusion": "Weak, disordered distal esophageal peristalsis with delayed clearance. No stricture, mass or hiatal hernia."
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2024",
+              "action": "done",
+              "date": "2024-08-28T10:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology consultation",
+              "date": "2024-08-28T10:45",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology group - new consultation, 08/26/2024\nReferred by: primary care, for chest discomfort and dysphagia.\n\nMargaret Cummings is a 56-year-old woman with limited cutaneous systemic sclerosis, Raynaud phenomenon and reflux.\n\nShe describes spells of abrupt, severe pressure behind the breastbone that she calls squeezing. They last several minutes, most often come on during a meal, occasionally at rest, and are unrelated to effort. The pain stays central. Solids sometimes seem to stop partway down. A warm drink often helps. On omeprazole she has no heartburn now. No weight loss and no regurgitation.\n\nCardiac evaluation through her PCP: ECG normal, troponin normal, and an exercise treadmill test on 8/6 without ischemia.\n\nPMH: limited SSc (rheumatology), Raynaud, GERD.\nPSH: laparoscopic cholecystectomy; right carpal tunnel release.\nMedications: omeprazole 40 mg daily, amlodipine 5 mg daily, mycophenolate mofetil 1000 mg twice daily, aspirin 81 mg daily.\nAllergies: none known.\nFamily history: mother rheumatoid arthritis, father hypertension, sister Hashimoto thyroiditis.\nSocial: never smoker, wine rarely, works as an administrative assistant.\n\nVital signs normal. Exam unremarkable: abdomen soft and nontender, no adenopathy.\n\nBarium esophagram performed today (separate report): weak, disordered distal peristalsis with slow emptying; no stricture or mass.\n\nAssessment: chest pain and solid dysphagia from esophageal dysmotility, in keeping with esophageal involvement of systemic sclerosis. Cardiac causes reasonably excluded.\n\nPlan:\n1. High-resolution esophageal manometry - ordered.\n2. Continue omeprazole 40 mg daily.\n3. Small bites, chew well, sip warm fluids with meals, stay upright after eating.\n4. Will write again with manometry results.\n\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "outside_records",
+          "start": "2024-09-24T14:20",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Esophageal manometry results",
+              "date": "2024-09-24T14:20",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology group\nHigh-resolution esophageal manometry, 09/17/2024\n\nTen 5 mL supine wet swallows. Upper esophageal sphincter: normal resting pressure and relaxation. Lower esophageal sphincter resting pressure 9 mmHg (low); relaxation normal. Esophageal body: 8 of 10 swallows ineffective (80%), with weak distal contractile vigor; no premature or spastic contractions; no outflow obstruction.\n\nImpression: ineffective esophageal motility with a hypotensive lower esophageal sphincter, consistent with esophageal involvement of systemic sclerosis.\n\nDear colleague, this confirms the dysmotility we suspected. No medication change: continue omeprazole 40 mg daily, which matters more given the weak sphincter. She is already using the eating measures we discussed and says the spells are less frequent. GI follow-up as needed.\n\nGastroenterology"
+            },
+            {
+              "type": "Outside Records",
+              "title": "Manometry letter filed",
+              "date": "2024-09-24T14:30",
+              "author": "MA",
+              "body": "GI manometry letter (9/17) scanned to media and routed. -- PCP: reviewed, dysmotility confirmed, no med change. Will go over it at her physical."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "nurse_visit",
+          "start": "2024-10-09T15:40",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-09T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-09T15:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-09T15:46"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse visit - fall vaccines",
+              "date": "2024-10-09T15:55",
+              "author": "RN",
+              "body": "Flu (2024-25 trivalent) L deltoid, 2024-25 COVID R deltoid. VIS reviewed. Mammogram due - order pended to PCP and signed. Pt tolerated both."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-23a",
+          "kind": "imaging",
+          "start": "2024-10-23T10:10",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-10-23T10:10",
+              "text": "Digital breast tomosynthesis, bilateral. Comparison 10/2023 and 10/2022. Scattered fibroglandular tissue. No suspicious findings in either breast.",
+              "conclusion": "BI-RADS 1, negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "done",
+              "date": "2024-10-23T10:10"
+            }
+          ]
+        },
+        {
+          "id": "2024-11-14a",
+          "kind": "outside_records",
+          "start": "2024-11-14T09:55",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-11-12T10:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 247
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.37
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-11-12T10:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 85
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology annual letter",
+              "date": "2024-11-14T09:55",
+              "author": "rheumatology",
+              "body": "Outside rheumatology practice - visit 11/12/2024\n\nDear Dr.,\n\nYearly visit for limited cutaneous systemic sclerosis. Since I last saw her she was evaluated by GI for chest pain and dysphagia; manometry in September showed ineffective motility with a low LES pressure, consistent with esophageal SSc. Symptoms are better with eating modifications and she stays on omeprazole. Raynaud stable. No digital ulcers. No shortness of breath or cough.\n\nExam: findings limited to the hands as before. Lungs clear, heart sounds normal.\n\nCBC and CMP today normal.\n\nPlan: continue mycophenolate mofetil 1000 mg BID; continue amlodipine. Agree with GI plan. Return 1 year.\n\nMeds: mycophenolate 1000 mg BID, amlodipine 5 mg, omeprazole 40 mg, aspirin 81 mg. NKDA.\n\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-20a",
+          "kind": "annual_physical",
+          "start": "2024-12-20T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              120,
+              69
+            ],
+            "hr": 70,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 62.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-20T09:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 253
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-12-20T09:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.83
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 83
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-12-20T09:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 162
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 83
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 57
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 111
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 105
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-12-20T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-12-20T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-12-20T10:05",
+              "author": "PCP",
+              "body": "Annual - 56F\n\nSince last physical: chest squeezing spells in the summer - ECG, troponin and treadmill test normal; GI found esophageal dysmotility from her scleroderma (barium swallow, then manometry 9/17 with ineffective motility and a weak LES). Eating slowly, small bites, upright after meals - only one mild spell since late August. Solids go down if she takes her time. No heartburn on omeprazole. Rheum visit 11/12: stable, labs normal, MMF unchanged.\n\nOtherwise well. Still walking the dog, no breathing limits. Mood good, PHQ-2 0.\n\nMeds: omeprazole 40, amlodipine 5, MMF 1000 bid (rheum), ASA 81. NKDA.\n\nExam: well. HEENT clear. Neck supple, no thyroid enlargement. Heart: regular, S1 S2 normal, no murmur. Lungs clear bilaterally. Abd soft. Skin: sclerodactyly unchanged, fingertips intact. No edema.\n\nAssessment/plan\n- Esophageal dysmotility (SSc) - improved with measures, continue PPI, call GI if food impaction or weight loss.\n- Limited SSc, Raynaud - per rheum, stable.\n- GERD - controlled.\n- HM: mammogram 10/24 negative. Colonoscopy due 2029. Pap 2023 normal. Flu, COVID, PCV20, Shingrix done.\n- Labs today: CBC, CMP, lipids.\n- Return for chronic follow-up in 6 months, physical next winter."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-12-23a",
+          "kind": "portal_message",
+          "start": "2024-12-23T11:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2024-12-23T11:30",
+              "author": "PCP",
+              "body": "All of Friday's labs look good - blood counts, kidney, liver and cholesterol in range. Happy holidays, and let us know if the swallowing changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "pharmacy",
+          "start": "2025-03-11T08:30",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refills: omeprazole, amlodipine",
+              "date": "2025-03-11T08:30",
+              "author": "MA",
+              "body": "Pharmacy requests 90 day renewals of omeprazole 40 mg and amlodipine 5 mg. Last seen 12/20/24, due for 6 mo f/u in June. Pended. -- PCP approved both x 90 days, 1 refill. Please have her book June visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "portal_message",
+          "start": "2025-09-16T20:04",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Appointment",
+              "date": "2025-09-16T20:04",
+              "author": "patient",
+              "body": "I got a reminder that I'm overdue for a checkup. Work has been crazy with the new school year. Can I wait until after the holidays?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Appointment",
+              "date": "2025-09-17T09:12",
+              "author": "front desk",
+              "body": "Of course. When you are ready just reply here or call and we will find a time that works. Your refills will still need a visit before next spring."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-21a",
+          "kind": "outside_records",
+          "start": "2025-11-21T14:40",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-18T09:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 303
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-11-18T09:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology annual letter",
+              "date": "2025-11-21T14:40",
+              "author": "rheumatology",
+              "body": "Outside rheumatology practice - visit 11/18/2025\n\nRe: Margaret Cummings\n\nAnnual SSc review. New this year: she has been more tired and more short of breath with exertion for much of 2025 - stairs at work and hills on her walks slow her down now, which was not the case a year ago. No cough. Swallowing remains a nuisance with solids but manageable. Raynaud unchanged.\n\nExam: sclerodactyly unchanged. Lungs clear without crackles. Heart sounds as before. No edema.\n\nCBC and CMP normal.\n\nAssessment: limited cutaneous SSc with new exertional dyspnea. In limited SSc this needs evaluation for pulmonary vascular disease as well as lung involvement.\n\nPlan:\n1. Complete pulmonary function tests with diffusing capacity - ordered.\n2. Referral to cardiology.\n3. Continue mycophenolate mofetil 1000 mg BID.\n\nMeds: mycophenolate 1000 mg BID, amlodipine 5 mg daily, omeprazole 40 mg daily, aspirin 81 mg daily. NKDA.\n\nRheumatology"
+            },
+            {
+              "type": "Outside Records",
+              "title": "Rheumatology letter filed",
+              "date": "2025-11-21T14:50",
+              "author": "MA",
+              "body": "Rheum annual letter 11/18/25 received by fax, scanned and routed to PCP. Copy notes PFTs and cardiology referral ordered by rheum."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-12a",
+          "kind": "outside_records",
+          "start": "2025-12-12T11:15",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pulmonary function test report",
+              "date": "2025-12-12T11:15",
+              "author": "pulmonary function lab",
+              "body": "Outside pulmonary function laboratory\nDate of test: 12/09/2025\nOrdering: rheumatology. Copy to primary care.\n\nSpirometry, lung volumes and DLCO. Good effort, acceptable and reproducible.\n\nFVC 91% predicted\nFEV1 89% predicted\nFEV1/FVC 0.78\nTLC 93% predicted\nDLCO 51% predicted\n\nInterpretation: normal spirometry and lung volumes. Diffusing capacity moderately reduced. An isolated reduction in DLCO with preserved volumes raises the question of a pulmonary vascular process; clinical correlation advised."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "outside_records",
+          "start": "2026-02-24T13:25",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-02-19T11:20",
+              "results": [
+                {
+                  "test": "N-terminal Pro-B-Type Natriuretic Peptide",
+                  "unit": "pg/mL",
+                  "value": 410
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology consultation",
+              "date": "2026-02-24T13:25",
+              "author": "cardiology",
+              "body": "Outside cardiology group - consultation 02/19/2026\nReferred by rheumatology; copy to primary care.\n\nReason: worsening fatigue and breathlessness on exertion.\n\nMs. Cummings, 57, has limited cutaneous systemic sclerosis. She was seen by GI in August 2024 for chest pain and swallowing trouble and was found to have esophageal dysmotility. Over roughly the past twelve months she has become steadily more fatigued and more winded with exertion. She still has difficulty getting solid food down. Her fingers still go white and hurt in the cold, and the skin over her hands feels tight.\n\nMedications: mycophenolate mofetil 1000 mg twice daily, amlodipine 5 mg daily, omeprazole 40 mg daily, aspirin 81 mg daily. NKDA.\nFamily history: mother rheumatoid arthritis, father hypertension, sister Hashimoto thyroiditis. Never smoker, rare alcohol.\n\nExamination: the skin over the fingers is taut and shiny. Telangiectasias on the face. Heart: the pulmonic component of S2 is loud. Lungs clear. No edema.\n\nData reviewed: PFTs 12/2025 with preserved spirometry and volumes and DLCO reduced to 51% predicted. NT-proBNP today 410 pg/mL.\n\nAssessment: progressive exertional dyspnea in limited SSc, with a loud P2 and an isolated low DLCO. Pulmonary arterial hypertension associated with systemic sclerosis is suspected.\n\nPlan:\n1. Transthoracic echocardiogram.\n2. Right heart catheterization through our pulmonary hypertension clinic to confirm.\n3. No medication changes for now.\n\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-13a",
+          "kind": "outside_records",
+          "start": "2026-03-13T10:05",
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-03-10T09:30",
+              "text": "Indication: dyspnea, suspected pulmonary hypertension in systemic sclerosis. Left ventricle normal in size with normal wall thickness and systolic function; LVEF 60%. No regional wall motion abnormality. Right ventricle mildly dilated with preserved systolic function, TAPSE 18 mm. Estimated right ventricular systolic pressure 56 mmHg. Atria normal in size. Valves structurally normal. No pericardial effusion.",
+              "conclusion": "Normal left ventricular function, LVEF 60%. Mildly dilated right ventricle with preserved function. Estimated RVSP 56 mmHg."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Echocardiogram report received",
+              "date": "2026-03-13T10:05",
+              "author": "MA",
+              "body": "Echo report from outside cardiology (3/10/26) received by fax, scanned to results. Routed to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-07a",
+          "kind": "outside_records",
+          "start": "2026-04-07T15:30",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary hypertension clinic - catheterization and treatment",
+              "date": "2026-04-07T15:30",
+              "author": "cardiology",
+              "body": "Outside cardiology group, pulmonary hypertension clinic\nVisit 04/02/2026 (catheterization 03/31/2026)\n\nDear colleague,\n\nMs. Cummings underwent right heart catheterization on 3/31 via the right internal jugular vein, without complication.\n\nHemodynamics:\nRight atrial pressure 6 mmHg\nMean pulmonary artery pressure 36 mmHg\nPulmonary artery wedge pressure 10 mmHg\nCardiac output 4.6 L/min, cardiac index 2.7 L/min/m2\nPulmonary vascular resistance 5.7 Wood units\n\nSix-minute walk on 4/2: 405 m, lowest SpO2 94%.\n\nTogether with her echo (estimated RVSP 56 mmHg, mildly dilated RV with preserved function), NT-proBNP of 410 and the isolated low DLCO, this confirms precapillary pulmonary arterial hypertension associated with systemic sclerosis.\n\nPlan, discussed at length with her:\n1. Upfront combination therapy: ambrisentan 5 mg daily and tadalafil 20 mg daily, starting 4/2/2026. Tadalafil will go up to 40 mg daily after four weeks if tolerated. Both through a specialty pharmacy, prescribed by our clinic.\n2. Continue her other medications, including mycophenolate per rheumatology.\n3. Return in about 3 months with a six-minute walk and NT-proBNP.\n\nMedications after this visit: ambrisentan 5 mg daily, tadalafil 20 mg daily, mycophenolate mofetil 1000 mg BID, amlodipine 5 mg daily, omeprazole 40 mg daily, aspirin 81 mg daily. NKDA.\n\nPulmonary Hypertension Clinic"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-30a",
+          "kind": "outside_records",
+          "start": "2026-06-30T09:40",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-06-25T10:40",
+              "results": [
+                {
+                  "test": "N-terminal Pro-B-Type Natriuretic Peptide",
+                  "unit": "pg/mL",
+                  "value": 300
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary hypertension clinic follow-up",
+              "date": "2026-06-30T09:40",
+              "author": "cardiology",
+              "body": "Outside cardiology group, pulmonary hypertension clinic - follow-up 06/25/2026\n\nSSc-associated PAH, about 12 weeks into ambrisentan 5 mg daily and tadalafil, which was increased to 40 mg daily in early May. She is tolerating both. She notices she is less winded climbing hills on her walks.\n\nSix-minute walk 440 m (405 m in April). NT-proBNP 300 pg/mL (410 in February).\n\nPlan: continue ambrisentan 5 mg daily and tadalafil 40 mg daily. Return in 3 months.\n\nCurrent medications: ambrisentan 5 mg daily, tadalafil 40 mg daily, mycophenolate mofetil 1000 mg BID, amlodipine 5 mg daily, omeprazole 40 mg daily, aspirin 81 mg daily. NKDA.\n\nPulmonary Hypertension Clinic"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "pharmacy",
+          "start": "2026-07-14T08:15",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: omeprazole",
+              "date": "2026-07-14T08:15",
+              "author": "MA",
+              "body": "Pharmacy request for omeprazole 40 mg x 90 days. Not seen since 12/2024. Pended to PCP. -- PCP: 30 day bridge sent; she needs a visit, front desk please reach out to schedule."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Esophageal dysmotility|K22.4": {
+        "code": "K22.4",
+        "display": "Dyskinesia of esophagus",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Limited cutaneous systemic sclerosis (CREST syndrome)|M34.1": {
+        "code": "M34.1",
+        "display": "CR(E)ST syndrome",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "mycophenolate mofetil 500 MG Oral Tablet": {
+        "code": "200060",
+        "display": "mycophenolate mofetil 500 MG Oral Tablet",
+        "ingredient": "mycophenolate",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "reports": {
+      "Barium esophagram": {
+        "code": "30633-2",
+        "display": "RF Esophagus Views W barium contrast PO",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

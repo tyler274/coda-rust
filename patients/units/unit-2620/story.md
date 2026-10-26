@@ -1,0 +1,27 @@
+# unit-2620 story (Henry Bergeron, MRN00002620)
+
+- 2022-08-09 front desk call, wants to join the practice; prior records requested (P)
+- 2022-08-23 new-patient visit; healthy, no meds, NKDA; father's pneumothorax noted; Tdap; CBC, CMP, lipids, HIV, hep C (A1, S, P)
+- 2022-08-25 portal note with normal labs (P)
+- 2022-09-02 prior practice records received: childhood vaccines, adolescent Tdap, nothing abnormal (P)
+- 2022-10-04 nurse visit: flu and bivalent COVID vaccines (P)
+- 2023-01-17 portal: instructor clearance form signed (P)
+- 2023-09-12 physical missed (no-show) (P)
+- 2023-09-26 annual physical; PHQ-2 0; flu and updated COVID vaccines (P)
+- 2024-09-21 ED: small left primary spontaneous pneumothorax playing basketball; observed, repeat film unchanged, home (S, A2); record received 09-23
+- 2024-09-23 RN call after ED visit (P)
+- 2024-09-24 post-ED office visit; repeat chest film ordered; flu vaccine (P)
+- 2024-10-08 chest x-ray: re-expanded; pneumothorax resolved (A3)
+- 2024-10-09 portal result note (P)
+- 2024-10-19 pharmacy COVID vaccine recorded (P)
+- 2025-07-02 ED then admission: recurrent left pneumothorax, complete collapse; chest tube; discharged 07-05 (S, A4); summary received 07-07
+- 2025-07-07 RN call after discharge (P)
+- 2025-07-10 post-discharge visit; situational anxiety, GAD-7 9; thoracic surgery referral (R4, A5, A6)
+- 2025-08-12 thoracic surgery consult: VATS offered, deferred (A6, R3); letter received 08-14
+- 2025-08-19 portal: question about flying to a conference (P)
+- 2025-10-07 annual physical, last seen; GAD-7 5; flu vaccine (P, A5)
+- 2026-01-13 portal: immunization record requested for a job (P)
+- 2026-04-04 ED: bicycle crossbar injury, urethral injury; urethrogram partial disruption; suprapubic catheter (S, A7); record received 04-07
+- 2026-04-06 portal: patient tells the PCP about the accident (P)
+- 2026-04-28 urology: healed, catheter out (A8); letter received 04-30
+- 2026-07-21 urology: uroflow normal, stricture surveillance (A8); letter received 07-23

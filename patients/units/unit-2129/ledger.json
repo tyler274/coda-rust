@@ -1,0 +1,4663 @@
+{
+  "unit": "unit-2129",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00002129/2025-10-09a: reaction \"Toxic epidermal necrolysis\" not in catalog (text only)"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002129",
+      "given": "Andre",
+      "family": "Medeiros",
+      "birth_date": "1985-09-03",
+      "address_line": "27 Fernbrook Road",
+      "phone": "+1-347-555-0153",
+      "email": "andre.medeiros@example.test",
+      "marital_status": "single",
+      "summary": "High school math teacher who joined in 2021 with seasonal allergies and mild acne. Developed nephrotic syndrome from FSGS in 2022, treated by nephrology to complete remission; SIRS after a viral URI in 2024; toxic epidermal necrolysis from urgent-care amoxicillin in 2025 requiring ICU care, now healed.",
+      "events": [
+        {
+          "id": "2021-05-11a",
+          "kind": "telephone",
+          "start": "2021-05-11T15:42",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "date": "2021-05-11T15:42",
+              "author": "front desk",
+              "body": "Caller wants to establish with the practice; previous doctor's office is closing its adult panel. Teaches math at the high school, asked for an appointment after 3 pm if possible. Membership agreement and BCBS PPO card info emailed for him to complete. Records release signed electronically for prior primary care office. New pt visit set for 5/20 at 3:45."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-20a",
+          "kind": "establish_care",
+          "start": "2021-05-20T15:45",
+          "end": "2021-05-20T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Allergic rhinitis due to pollen",
+              "action": "history",
+              "onset": "2005-04-01",
+              "note": "spring and fall, uses cetirizine as needed"
+            },
+            {
+              "label": "Acne vulgaris",
+              "action": "history",
+              "onset": "2002-01-01",
+              "note": "mild, untreated"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "cetirizine hydrochloride 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily as needed for allergy symptoms",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "seasonal allergic rhinitis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              76
+            ],
+            "hr": 65,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 83.6,
+            "height_cm": 181.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-05-20T16:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-05-20T16:35",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 238
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.07
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-05-20T16:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 174
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 103
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 100
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 123
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2021-05-20T16:35",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.018
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.9
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-05-20T16:35",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks on weekends"
+            },
+            {
+              "item": "Occupation",
+              "value": "High school mathematics teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, low MDM",
+              "performed": "2021-05-20T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-05-20T17:20",
+              "author": "PCP",
+              "body": "35 y/o man here to set up primary care. Previous office is no longer taking adults on his plan. Feels well overall.\n\nPMH: Seasonal allergies since his late teens/early 20s, worse April-May and again September. Takes cetirizine 10 mg on the days he needs it, which is most of the spring. Mild acne off and on since high school, mostly forehead and jaw; never used a prescription for it and isn't bothered enough to want one.\nPSH: none.\nMeds: cetirizine 10 mg daily PRN.\nAllergies: no known drug allergies.\nFH: Dad has type 2 diabetes and high blood pressure. Mom has hypothyroidism and seasonal allergies. An uncle on his father's side was on dialysis; family never learned the cause.\nSH: Teaches algebra and precalculus at the high school. Lives in Amherst. Never smoked. A drink or two on weekends. No drug use. Coaches the math team.\n\nROS otherwise negative.\n\nExam: Well appearing. HEENT: mild pale nasal turbinates, oropharynx clear, TMs normal. Neck supple, no nodes or thyromegaly. Heart RRR, no murmur. Lungs clear. Abd soft, nontender, no organomegaly. Ext warm, no swelling. Skin: a few small comedones and papules on forehead, no cysts or scarring.\n\nAssessment/plan:\n1. Health maintenance. Baseline CMP, CBC, lipids, UA. One-time HIV and hep C screens; he agrees. Tetanus and COVID per prior records, will confirm when they arrive.\n2. Seasonal allergic rhinitis, controlled with as-needed cetirizine. Continue.\n3. Mild acne. No treatment wanted.\n4. FH of kidney disease in an uncle, unknown cause. Baseline creatinine and UA today.\n\nRTC for a physical in about a year, sooner as needed."
+            }
+          ],
+          "state": {
+            "bp": [
+              120,
+              74
+            ],
+            "weight_kg": 84.0,
+            "height_cm": 182.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-05-25a",
+          "kind": "portal_message",
+          "start": "2021-05-25T07:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2021-05-25T07:10",
+              "author": "PCP",
+              "body": "Hi Andre, everything from your first visit came back normal: kidney and liver tests, blood counts, cholesterol and urine. The HIV and hepatitis C screens were negative. Nothing to change. Good to meet you."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your lab results",
+              "date": "2021-05-25T21:33",
+              "author": "patient",
+              "body": "Great, thanks for the quick turnaround."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-04a",
+          "kind": "outside_records",
+          "start": "2021-06-04T10:15",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-27T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-17T10:00"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2017-08-22T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2021-06-04T10:15",
+              "author": "MA",
+              "body": "34 pages received from previous primary care office covering 2014-2020. Summary for chart: annual visits most years, routine labs unremarkable, problem list allergic rhinitis and mild acne. Tdap 8/2017. COVID primary series (Pfizer) 3/27/21 and 4/17/21 per state registry printout he brought. No hospitalizations. Entered immunizations; forwarded to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T15:30",
+          "reason": "flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Influenza vaccination",
+              "date": "2021-10-19T15:45",
+              "author": "RN",
+              "body": "Came by after school for flu vaccine. No fever today, no prior reactions. Quadrivalent 0.5 mL IM left deltoid. VIS reviewed. Tolerated well, left after brief observation."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-19a",
+          "kind": "portal_message",
+          "start": "2022-04-19T19:52",
+          "medications": [
+            {
+              "drug": "cetirizine hydrochloride 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "converted to prescription for coverage"
+            },
+            {
+              "drug": "cetirizine hydrochloride 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily as needed for allergy symptoms",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "seasonal allergic rhinitis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Allergy pills",
+              "date": "2022-04-19T19:52",
+              "author": "patient",
+              "body": "Pollen is brutal this week. I've been buying cetirizine over the counter but my plan apparently covers it with a prescription. Could you send one in? Same 10 mg I always take."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Allergy pills",
+              "date": "2022-04-20T08:05",
+              "author": "PCP",
+              "body": "Sent cetirizine 10 mg, 90 tablets with refills, to your pharmacy. If the eyes are itchy too, an OTC antihistamine eye drop is fine on top of it."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "annual_physical",
+          "start": "2022-06-21T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              121,
+              75
+            ],
+            "hr": 66,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 83.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-06-21T10:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-06-21T10:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 211
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.84
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-06-21T10:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 172
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 97
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 123
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-06-21T10:10",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.018
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-06-21T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-06-21T11:02",
+              "author": "PCP",
+              "body": "Last week of school, so he's on a morning slot. Doing well. Allergies were bad in April, settled with daily cetirizine and now he's back to occasional use. Skin unchanged. Exercise: pickup basketball twice a week. Sleep fine, mood good.\n\nMeds: cetirizine 10 mg PRN. NKDA.\nSH: unchanged; weekend drinks only, never smoker.\n\nExam: NAD. HEENT normal. Neck no adenopathy. CV regular, no murmur. Lungs clear. Abdomen benign. No edema. Skin: scattered small papules on forehead.\nPHQ-9: 1.\n\nA/P:\n- Adult preventive care. Labs: CMP, CBC, lipids, UA. Tdap current (2017). COVID primary series done; booster discussed, he'll get it at the pharmacy.\n- Allergic rhinitis: PRN cetirizine.\n- Acne: stable, no treatment.\nSee in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-06-24a",
+          "kind": "portal_message",
+          "start": "2022-06-24T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2022-06-24T12:40",
+              "author": "PCP",
+              "body": "Andre, your labs from Tuesday are all in a good range, cholesterol included, and the urine was clean. Enjoy the summer."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-12a",
+          "kind": "telehealth_visit",
+          "start": "2022-09-12T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "cough and congestion",
+          "conditions": [
+            {
+              "label": "Acute upper respiratory infection",
+              "action": "diagnosed",
+              "onset": "2022-09-08"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2022-09-12T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2022-09-12T16:45",
+              "author": "PCP",
+              "body": "Video from his classroom after dismissal. Four days of stuffy nose, sore throat and dry cough, started the first week back with students. Tmax 99.8 at home. No shortness of breath, no facial pain, no ear pain. Eating and drinking normally. Home COVID antigen negative x2.\n\nOn video: speaking full sentences, congested voice, no distress, no increased work of breathing.\n\nImpression: viral upper respiratory infection.\nPlan: supportive care, fluids, saline rinses, acetaminophen or ibuprofen as needed, honey for the cough. Antibiotics not indicated. Call if fever above 101, breathing trouble, or not better in 10 days."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-26a",
+          "kind": "office_visit",
+          "start": "2022-09-26T15:50",
+          "end": "2022-09-26T16:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "leg swelling and fatigue",
+          "conditions": [
+            {
+              "label": "Acute upper respiratory infection",
+              "action": "resolved"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              133,
+              74
+            ],
+            "hr": 62,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 88.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-26T16:40",
+              "resulted": "2022-09-27T09:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Albumin",
+                  "value": 2.5
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 5.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 67
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-26T16:40",
+              "resulted": "2022-09-27T09:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 273
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 198
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 124
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 223
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-26T16:40",
+              "resulted": "2022-09-27T09:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 233
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.99
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-09-26T16:40",
+              "resulted": "2022-09-26T17:30",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "4+"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.7
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-09-26T15:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neph-referral",
+              "action": "placed",
+              "order": "Nephrology referral, urgent",
+              "category": "referral",
+              "to": "Nephrology",
+              "reason": "heavy proteinuria with edema"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-09-26T18:05",
+              "author": "PCP",
+              "body": "CC: legs swelling, tired.\n\nHe noticed his socks leaving deep marks in early August, before school started, and figured it was the heat. Swelling in both ankles and shins has kept up since, worse by evening, and the last couple of weeks his eyes look puffy when he wakes up. More tired than usual, napping after school, which isn't like him. Pants a little tight at the waist. The cold from two weeks ago is gone. Urine looks foamy to him. No dyspnea, no orthopnea, no chest pain, no rash, no joint pain. No new meds or supplements, no NSAIDs beyond a few doses with the cold.\n\nExam: Up 4 kg from June. Mild puffiness of both lower lids. JVP not elevated. Heart regular, no gallop. Lungs clear, no crackles. Abdomen soft, no fluid wave. 2+ pitting edema to mid-shin bilaterally, symmetric, calves nontender.\n\nUA in office: protein 4+, blood negative.\n\nAssessment: new edema with heavy proteinuria, picture of nephrotic syndrome until proven otherwise. Cardiac and liver causes unlikely on exam. FH of an uncle with ESRD.\n\nPlan:\n- CMP, lipids, CBC sent today.\n- Called nephrology directly; they can see him next Monday 10/3.\n- Low-salt diet in the meantime, legs up in the evening.\n- Avoid ibuprofen/naproxen.\n- He knows to go to the ED for breathlessness, chest pain or much less urine."
+            }
+          ],
+          "state": {
+            "weight_kg": 88.0,
+            "labs": {
+              "Albumin": 2.6,
+              "Low Density Lipoprotein": 198,
+              "Total Cholesterol": 290,
+              "Total Protein": 5.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-09-28a",
+          "kind": "telephone",
+          "start": "2022-09-28T12:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Lab results call",
+              "date": "2022-09-28T12:10",
+              "author": "RN",
+              "body": "Called pt on his lunch break per PCP. Albumin low and cholesterol high, consistent with the protein loss in his urine; kidney function (creatinine) normal, blood counts normal. Nephrology appt confirmed Mon 10/3 at 2:30, he has arranged coverage for his last classes. Swelling about the same. Reinforced low salt, no NSAIDs. He verbalized understanding."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-03a",
+          "kind": "specialist_visit",
+          "start": "2022-10-03T14:30",
+          "service": "Nephrology",
+          "reason": "nephrotic-range proteinuria",
+          "vitals": {
+            "bp": [
+              124,
+              74
+            ],
+            "hr": 70,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 88.5
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-10-03T15:20",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "4+"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.02
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.8
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-10-03T15:20",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 2.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 5.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-10-03T15:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 300
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 107
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 195
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-03T15:20",
+              "results": [
+                {
+                  "test": "Protein/Creatinine ratio, urine",
+                  "loinc": "2890-2",
+                  "unit": "g/g",
+                  "value": 6.8
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "neph-referral",
+              "action": "done",
+              "date": "2022-10-03T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Consultation",
+              "date": "2022-10-05T11:20",
+              "author": "nephrology",
+              "body": "Outside nephrology group, new consultation. Received by fax 10/5/2022.\n\nReason: edema and heavy proteinuria, referred by his primary care physician.\n\nHPI: 37-year-old teacher with roughly two months of tiredness and swelling of both legs. He had a viral respiratory illness about three weeks ago, managed by his PCP with supportive care, now over. Describes foamy urine. No hematuria, rash, arthralgia, or NSAID use beyond a few doses.\n\nPMH: allergic rhinitis, mild acne. Meds: cetirizine 10 mg as needed. Allergies: NKDA.\nFH: father with type 2 DM and HTN; mother with hypothyroidism and seasonal allergies; paternal uncle with ESRD, cause unknown.\nSH: never smoker, light weekend alcohol, high school math teacher.\n\nExam: Vitals within normal limits. Periorbital edema present. Lower extremities with 2+ pitting edema bilaterally. Cardiopulmonary exam unremarkable. No rash.\n\nData: Urinalysis with 4+ protein; microscopy shows oval fat bodies with Maltese-cross pattern under polarized light, no RBC casts. Serum albumin 2.5 g/dL. Total cholesterol 300 mg/dL. Creatinine 1.0 mg/dL. Spot urine protein/creatinine 6.8 g/g.\n\nImpression: nephrotic syndrome in a young adult with preserved filtration. Differential includes minimal change disease, FSGS and membranous nephropathy; a tissue diagnosis will guide therapy.\n\nPlan: percutaneous kidney biopsy scheduled 10/13. Sodium restriction. Avoid NSAIDs. Will see after pathology returns.\n\ncc: primary care physician"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-13a",
+          "kind": "procedure_visit",
+          "start": "2022-10-13T08:00",
+          "end": "2022-10-13T14:00",
+          "service": "Nephrology",
+          "reason": "kidney biopsy",
+          "conditions": [
+            {
+              "label": "Focal segmental glomerulosclerosis",
+              "action": "diagnosed",
+              "onset": "2022-08-01",
+              "note": "biopsy proven, nephrotic presentation",
+              "icd10": "N04.1"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2022-10-13T09:10",
+              "text": "Specimen: native kidney, left, percutaneous needle core biopsy (ultrasound guided, 16-gauge, two cores).\nLight microscopy: adequate sample with multiple glomeruli for evaluation. Scattered glomeruli show segmental areas of sclerosis with hyalinosis; the remaining glomeruli appear unremarkable. Tubules and interstitium without significant change. Vessels unremarkable.\nImmunofluorescence: negative for IgG, IgA, IgM, C3 and C1q; no immune complex deposits.\nElectron microscopy: no electron-dense deposits identified.",
+              "conclusion": "Focal segmental glomerulosclerosis. No immune complex or complement deposition.",
+              "issued": "2022-10-19T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Kidney biopsy pathology received",
+              "date": "2022-10-24T09:05",
+              "author": "MA",
+              "body": "Pathology report from the outside hospital (kidney biopsy 10/13/22) received by fax and scanned. Routed to PCP."
+            },
+            {
+              "type": "Procedure Note",
+              "title": "Percutaneous Kidney Biopsy",
+              "date": "2022-10-24T09:05",
+              "author": "nephrology",
+              "body": "Outside procedure note, received 10/24/2022. Indication: nephrotic syndrome. Consent obtained. Prone position, left lower pole localized by ultrasound, local anesthetic, two cores with 16-gauge automated device. No immediate complications. Observed 4 hours, hemoglobin stable, urine clear, discharged home with instructions."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-24a",
+          "kind": "specialist_visit",
+          "start": "2022-10-24T14:30",
+          "service": "Nephrology",
+          "reason": "biopsy results",
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 3 tablets (60 mg) by mouth every morning with food",
+              "dose": {
+                "value": 60,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "focal segmental glomerulosclerosis"
+            },
+            {
+              "drug": "losartan potassium 25 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "proteinuria"
+            },
+            {
+              "drug": "furosemide 20 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "edema"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              75
+            ],
+            "hr": 67,
+            "weight_kg": 86.9
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Follow-up",
+              "date": "2022-10-26T10:40",
+              "author": "nephrology",
+              "body": "Outside nephrology follow-up, visit 10/24/2022, received 10/26/2022.\n\nBiopsy reviewed with patient: focal segmental glomerulosclerosis without immune deposits. With the full nephrotic picture and no secondary cause found, we are treating as primary disease.\n\nStill has ankle and shin edema. No complications after the biopsy. Vitals unremarkable.\n\nPlan:\n1. Prednisone 60 mg each morning, to continue at full dose until remission or up to about 16 weeks, then a slow taper. Reviewed effects on mood, sleep, appetite and glucose.\n2. Losartan 25 mg daily for proteinuria; BMP in 2 weeks.\n3. Furosemide 20 mg daily for the swelling, to stop once edema clears.\n4. 2 g sodium diet.\n5. Return in 6-8 weeks with urine protein/creatinine.\n\nMeds: cetirizine 10 mg PRN, prednisone, losartan, furosemide. Allergies: NKDA.\n\ncc: primary care physician"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-31a",
+          "kind": "office_visit",
+          "start": "2022-10-31T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, new kidney diagnosis",
+          "vitals": {
+            "bp": [
+              131,
+              77
+            ],
+            "hr": 71,
+            "spo2": 99,
+            "weight_kg": 88.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-10-31T16:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-10-31T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-31T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-31T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-10-31T17:10",
+              "author": "PCP",
+              "body": "Follow-up after his kidney biopsy and nephrology visit. Diagnosis is FSGS; nephrology started prednisone 60 mg, losartan 25 mg and furosemide 20 mg one week ago. He has read a lot and came in with a page of questions, mostly whether this is what his uncle had and whether he can keep teaching. Swelling a bit better with the water pill. Tolerating prednisone so far.\n\nExam: puffiness around eyes less. Lungs clear. 1+ pitting edema at the ankles. \n\nA/P:\n1. FSGS with nephrotic syndrome, on steroids per nephrology. We went through what is and isn't known about familial kidney disease; the rest of that conversation belongs with nephrology. He can work. Hand hygiene in class while immunosuppressed; flu vaccine today. BMP today for the 2-week potassium/creatinine check nephrology asked for, results to them.\n2. Allergic rhinitis: cetirizine PRN.\nNext: physical next summer, sooner with any fever or worse swelling."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-11-16a",
+          "kind": "portal_message",
+          "start": "2022-11-16T20:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Flu going around school",
+              "date": "2022-11-16T20:14",
+              "author": "patient",
+              "body": "Half my 3rd period is out with flu. I'm fine, no symptoms. Since I'm on the prednisone should I be doing anything different? Masking?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Flu going around school",
+              "date": "2022-11-17T07:48",
+              "author": "PCP",
+              "body": "Good that you got the flu shot. A mask in class during this stretch is reasonable, and wash hands before eating. If you get a fever or body aches, message or call the same day so we can test and treat early."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-12a",
+          "kind": "specialist_visit",
+          "start": "2022-12-12T14:30",
+          "service": "Nephrology",
+          "reason": "FSGS follow-up",
+          "medications": [
+            {
+              "drug": "furosemide 20 MG Oral Tablet",
+              "action": "stop",
+              "reason": "edema resolved"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              108,
+              75
+            ],
+            "hr": 69,
+            "weight_kg": 84.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-12-12T15:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Albumin",
+                  "value": 2.6
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 16
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 107
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 5.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-12-12T15:10",
+              "results": [
+                {
+                  "test": "Protein/Creatinine ratio, urine",
+                  "loinc": "2890-2",
+                  "unit": "g/g",
+                  "value": 2.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Follow-up",
+              "date": "2022-12-14T09:30",
+              "author": "nephrology",
+              "body": "Outside nephrology note, visit 12/12/2022, received 12/14/2022.\n\nSeven weeks into prednisone 60 mg. Swelling gone; weight back to his usual. No infections.\nExam: no periorbital or leg edema. BP normal.\nUrine protein/creatinine 2.1 g/g, down from 6.8. Chemistry acceptable.\n\nPlan: stop furosemide. Continue prednisone 60 mg and losartan 25 mg. Recheck in 8 weeks.\n\ncc: primary care physician"
+            }
+          ],
+          "state": {
+            "weight_kg": 85.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-02-13a",
+          "kind": "specialist_visit",
+          "start": "2023-02-13T15:00",
+          "service": "Nephrology",
+          "reason": "FSGS follow-up",
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "stop",
+              "reason": "remission; taper begins"
+            },
+            {
+              "drug": "prednisone 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 4 tablets (40 mg) by mouth every morning, then taper as directed by nephrology",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "focal segmental glomerulosclerosis, taper"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              72
+            ],
+            "hr": 72,
+            "weight_kg": 85.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-02-13T15:40",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 3.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-02-13T15:40",
+              "results": [
+                {
+                  "test": "Protein/Creatinine ratio, urine",
+                  "loinc": "2890-2",
+                  "unit": "g/g",
+                  "value": 0.18
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Follow-up",
+              "date": "2023-02-15T13:25",
+              "author": "nephrology",
+              "body": "Outside nephrology note, visit 2/13/2023, received 2/15/2023.\n\nAbout 16 weeks on prednisone 60 mg. No edema, energy back. Tolerating prednisone and losartan.\n\nUrine protein/creatinine 0.18 g/g. Serum albumin 3.9 g/dL. Creatinine stable.\n\nAssessment: FSGS in complete remission.\n\nPlan: begin taper: prednisone 40 mg daily for 4 weeks, then 30 mg for 4 weeks, 20 mg for 4 weeks, then down by 5 mg every 3-4 weeks to off (written schedule given). Continue losartan 25 mg. Recheck at the end of the taper.\n\ncc: primary care physician"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Albumin": 4.0,
+              "Low Density Lipoprotein": 158,
+              "Total Cholesterol": 236,
+              "Total Protein": 6.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "pharmacy",
+          "start": "2023-04-11T10:20",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Cetirizine refill",
+              "date": "2023-04-11T10:20",
+              "author": "MA",
+              "body": "Pharmacy refill request for cetirizine 10 mg #90. Last filled 4/2022. Approved per protocol, 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "annual_physical",
+          "start": "2023-06-13T15:30",
+          "reason": "annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2023-06-12T08:12",
+              "author": "front desk",
+              "body": "Pt cancelled tomorrow's physical; finals week and he is proctoring. Rebooked for July 11, morning."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2023-07-11a",
+          "kind": "annual_physical",
+          "start": "2023-07-11T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              119,
+              83
+            ],
+            "hr": 68,
+            "temp_c": 37.1,
+            "spo2": 98,
+            "weight_kg": 85.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-07-11T09:45",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-07-11T09:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 209
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-07-11T09:45",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.017
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.8
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-07-11T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-07-11T10:40",
+              "author": "PCP",
+              "body": "Rescheduled physical. Kidney disease went into remission in February; now near the bottom of the prednisone taper (10 mg a day this week), still on losartan 25 mg. Feels like himself again. Back to basketball. Allergies mild this spring.\n\nMeds: prednisone per taper, losartan 25 mg daily, cetirizine 10 mg PRN. NKDA.\n\nExam: well. No periorbital puffiness. Heart regular, lungs clear. Abdomen benign. No edema. Skin: few forehead papules, unchanged.\nPHQ-9 2.\n\nA/P:\n- FSGS in remission, taper nearly done; nephrology following. Glucose on today's chemistry is a reasonable check while on steroids. Urine protein today.\n- Lipids deferred until he's off prednisone; nephrology rechecking at the end of the taper.\n- Allergic rhinitis, acne: unchanged.\n- Flu shot in the fall. See in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-08-14a",
+          "kind": "specialist_visit",
+          "start": "2023-08-14T14:00",
+          "service": "Nephrology",
+          "reason": "FSGS follow-up",
+          "medications": [
+            {
+              "drug": "prednisone 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "taper complete"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              62
+            ],
+            "hr": 70,
+            "weight_kg": 86.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-14T14:40",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-14T14:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 176
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 103
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 124
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-08-14T14:40",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.019
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.9
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Follow-up",
+              "date": "2023-08-16T11:00",
+              "author": "nephrology",
+              "body": "Outside nephrology note, visit 8/14/2023, received 8/16/2023.\n\nTook his last prednisone dose last week. No edema, no foamy urine.\nUrinalysis negative for protein; urine protein/creatinine under 0.2 g/g. Albumin normal. Cholesterol now in the normal range without treatment.\n\nAssessment: FSGS, sustained complete remission, off steroids.\nPlan: continue losartan for now; reassess next month. Reviewed relapse signs (swelling, foamy urine) and to call promptly.\n\ncc: primary care physician"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Albumin": 4.3,
+              "Low Density Lipoprotein": 112,
+              "Total Cholesterol": 184
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-18a",
+          "kind": "specialist_visit",
+          "start": "2023-09-18T15:15",
+          "service": "Nephrology",
+          "reason": "FSGS follow-up",
+          "medications": [
+            {
+              "drug": "losartan potassium 25 MG Oral Tablet",
+              "action": "stop",
+              "reason": "sustained remission, normal blood pressure"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              70
+            ],
+            "hr": 68,
+            "weight_kg": 85.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-09-18T15:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-18T15:50",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Follow-up",
+              "date": "2023-09-20T10:30",
+              "author": "nephrology",
+              "body": "Outside nephrology note, visit 9/18/2023, received 9/20/2023.\n\nSeven months in remission, five weeks off prednisone. BP normal off any other agents; urine albumin normal.\nDecision with patient: stop losartan and follow. Home BP check occasionally. Yearly visit with urine and chemistry, sooner with any swelling or foamy urine. \n\nCurrent meds: cetirizine 10 mg PRN.\n\ncc: primary care physician"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Microalbumin/Creatinine Ratio": 11
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T15:35",
+          "reason": "flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T15:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T15:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-06T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu shot",
+              "date": "2023-10-17T15:50",
+              "author": "RN",
+              "body": "Flu vaccine given, R deltoid, 0.5 mL IM. Afebrile, feeling well. He had the 2023-24 COVID vaccine at his pharmacy on 10/6; card shown, entered in immunization record. No problems after either."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-26a",
+          "kind": "telehealth_visit",
+          "start": "2024-03-26T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "cold symptoms",
+          "conditions": [
+            {
+              "label": "Acute upper respiratory infection",
+              "action": "diagnosed",
+              "onset": "2024-03-22"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-03-26T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2024-03-26T16:22",
+              "author": "PCP",
+              "body": "Video, he's at home. Runny nose, scratchy throat and cough since Friday; a lot of it going through the building. Low-grade temps, highest 100.1. No dyspnea, no chest pain, no ear or sinus pain. Home COVID test negative today. No swelling or foamy urine.\n\nComfortable on camera, nasal voice, no audible wheeze, talking easily.\n\nViral URI. Fluids, rest, acetaminophen, saline. Stay home tomorrow if febrile. Message us if fever climbs or lasts past the weekend, or anything feels off."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-01a",
+          "kind": "ed_visit",
+          "start": "2024-04-01T18:50",
+          "end": "2024-04-02T02:30",
+          "service": "Emergency Medicine",
+          "reason": "fever and malaise",
+          "conditions": [
+            {
+              "label": "Systemic inflammatory response syndrome",
+              "action": "diagnosed",
+              "onset": "2024-04-01",
+              "note": "after viral respiratory infection; cultures sent",
+              "icd10": "R65.10"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-04-01T18:55",
+              "bp": [
+                124,
+                74
+              ],
+              "hr": 112,
+              "rr": 20,
+              "temp_c": 38.7,
+              "spo2": 97
+            },
+            {
+              "time": "2024-04-02T01:45",
+              "bp": [
+                122,
+                72
+              ],
+              "hr": 88,
+              "rr": 16,
+              "temp_c": 37.4,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-04-01T19:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 13.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 229
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.88
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 54
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 34
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 7.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-04-01T19:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 16
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-04-01T19:10",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 87
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-04-01T19:25",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.018
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.2
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-04-01T19:15",
+              "resulted": "2024-04-06T08:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2024-04-01T19:40",
+              "text": "PA and lateral views. Lungs clear. No consolidation, effusion or pneumothorax. Heart size normal. Mediastinum unremarkable.",
+              "conclusion": "No acute cardiopulmonary process."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2024-04-01T18:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2024-04-02T11:30",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED, visit 4/1/2024, received 4/2/2024.\n\n38-year-old man, history of FSGS in remission off treatment, presenting with fever and generally feeling unwell. Cold symptoms for about 10 days, seen by video by his PCP last week; today worse, with chills, aches and fatigue. Mild cough. No dyspnea, chest pain, dysuria, abdominal pain, headache or neck stiffness. No rash.\nMeds: cetirizine PRN. NKDA. Never smoker.\n\nTriage: T 38.7, HR 112, BP 124/74, RR 20, SpO2 97% RA.\nExam: ill-appearing but nontoxic. Oropharynx mildly erythematous. Neck supple. Lungs clear. Heart tachycardic, regular. Abdomen soft, nontender. No edema. Skin without rash.\n\nResults: WBC 13.6. CRP 87 mg/L. Chemistry with normal creatinine. UA no protein, no infection. CXR clear. Blood cultures x2 sent.\n\nCourse: 2 L IV fluids, acetaminophen 1 g. Repeat T 37.4, HR 88, feeling much better, tolerating PO.\n\nImpression: systemic inflammatory response following a viral upper respiratory infection; no bacterial source identified.\nDisposition: home. PCP follow-up in 2-3 days; we will call with any positive culture. Return for persistent fever, breathing trouble, confusion or new swelling."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-04a",
+          "kind": "office_visit",
+          "start": "2024-04-04T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up",
+          "conditions": [
+            {
+              "label": "Systemic inflammatory response syndrome",
+              "action": "resolved",
+              "icd10": "R65.10"
+            },
+            {
+              "label": "Acute upper respiratory infection",
+              "action": "resolved"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              75
+            ],
+            "hr": 71,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 84.6
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-04-04T16:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.85
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 242
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-04-04T16:20",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 3.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-04-04T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Visit",
+              "date": "2024-04-04T16:55",
+              "author": "PCP",
+              "body": "Seen in the ED Monday night for fever and malaise after his cold; inflammatory markers up (WBC 13.6, CRP 87), fluids and acetaminophen, home same night. Cultures pending at discharge, nothing called back so far.\n\nSince then: no fever after Tuesday morning, cough nearly gone, back at work today. No swelling.\n\nExam: afebrile, HR in the 70s. Throat clear, lungs clear, heart regular. No edema.\n\nA/P: SIRS after a viral URI, resolved clinically. CBC and CRP today to document recovery; will chase final blood cultures. URI resolved. FSGS in remission: ED urine had no protein, reassuring."
+            }
+          ],
+          "state": {
+            "labs": {
+              "C Reactive Protein": 3.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-08a",
+          "kind": "outside_records",
+          "start": "2024-04-08T09:40",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "ED blood culture result",
+              "date": "2024-04-08T09:40",
+              "author": "MA",
+              "body": "Addendum from the regional hospital ED: blood cultures from 4/1 final, no growth at 5 days. Scanned and routed to PCP."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Follow-up labs",
+              "date": "2024-04-08T12:15",
+              "author": "PCP",
+              "body": "Hi Andre, Thursday's blood count and CRP are back to normal, and the ED's blood cultures grew nothing. That episode is behind you. Glad you're feeling well."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-25a",
+          "kind": "annual_physical",
+          "start": "2024-06-25T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              123,
+              83
+            ],
+            "hr": 68,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 85.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-06-25T10:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.6
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 16
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-06-25T10:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.01
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 220
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-06-25T10:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 181
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 110
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 109
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 132
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-06-25T10:00",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.018
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.5
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-06-25T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-06-25T10:35",
+              "author": "PCP",
+              "body": "Yearly exam. School's out. No illness since the April ED trip. No swelling, urine looks normal. Allergy season was manageable. Plays basketball twice a week.\n\nMeds: cetirizine 10 mg as needed. NKDA. Never smoker, weekend drinks.\n\nExam: well. ENT normal. Neck supple. Heart RRR. Lungs clear. Abdomen soft. Extremities without edema. Skin with mild comedonal acne on forehead.\nPHQ-2 negative.\n\nPlan:\n- Preventive: labs (CMP, CBC, lipids, UA). Vaccines: flu in the fall; COVID per season.\n- FSGS, remission since 2/2023, off all treatment; nephrology yearly in September.\n- SIRS 4/2024: resolved.\n- Rhinitis and acne unchanged.\nRTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-16a",
+          "kind": "specialist_visit",
+          "start": "2024-09-16T15:30",
+          "service": "Nephrology",
+          "reason": "annual FSGS follow-up",
+          "vitals": {
+            "bp": [
+              104,
+              75
+            ],
+            "hr": 73,
+            "weight_kg": 84.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-09-16T16:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-09-16T16:00",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.018
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.7
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-16T16:00",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Annual Visit",
+              "date": "2024-09-18T14:10",
+              "author": "nephrology",
+              "body": "Outside nephrology note, visit 9/16/2024, received 9/18/2024.\n\nFSGS, complete remission since 2/2023, off immunosuppression and RAAS blockade for a year. ED visit in April for a febrile inflammatory response after a viral illness, recovered; urine stayed protein-free.\nToday BP normal, no edema. Urine negative for protein, urine albumin normal, creatinine stable.\nPlan: continue observation; yearly visit. Call for edema or foamy urine.\n\ncc: primary care physician"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T15:30",
+          "reason": "flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-22T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-03T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Influenza vaccine",
+              "date": "2024-10-22T15:45",
+              "author": "RN",
+              "body": "Seasonal flu vaccine 0.5 mL IM to left arm. Screening questions negative. He reports this year's COVID shot at a pharmacy 10/3; added to record. Tolerated without issue."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-14a",
+          "kind": "pharmacy",
+          "start": "2025-04-14T09:05",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Cetirizine",
+              "date": "2025-04-14T09:05",
+              "author": "MA",
+              "body": "eRx renewal request from pharmacy: cetirizine 10 mg tab, #90. Active on med list, seen within the year. Renewed with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "annual_physical",
+          "start": "2025-06-24T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              125,
+              75
+            ],
+            "hr": 63,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 85.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-06-24T09:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-24T09:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 239
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.96
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-06-24T09:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 195
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 120
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 52
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 116
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 143
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-06-24T09:30",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.017
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.8
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-06-24T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Preventive Visit",
+              "date": "2025-06-24T09:50",
+              "author": "PCP",
+              "body": "Annual. Nothing new this year, no urgent visits. Rhinitis flared in May, cetirizine most days then, now PRN again. Sleeping and eating well, active.\n\nMeds: cetirizine 10 mg PRN. Allergies: NKDA.\nFH reviewed, unchanged.\n\nVitals reviewed. Exam: pleasant, well. Eyes, ears, throat normal. No lymphadenopathy. Cardiac exam normal. Lungs clear bilaterally. Abdomen nontender. No pedal edema. Skin: a few forehead comedones.\nPHQ-9: 1.\n\nAssessment/plan:\n1. Preventive care, age 39. Labs ordered. Colon cancer screening starts at 45; discussed. Flu and COVID vaccines this fall.\n2. FSGS in remission; nephrology annual visit in September.\n3. Allergic rhinitis: as needed cetirizine.\n4. Mild acne: no treatment.\nNext physical summer 2026."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-08a",
+          "kind": "specialist_visit",
+          "start": "2025-09-08T15:45",
+          "service": "Nephrology",
+          "reason": "annual FSGS follow-up",
+          "vitals": {
+            "bp": [
+              112,
+              71
+            ],
+            "hr": 64,
+            "weight_kg": 85.4
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-09-08T16:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 112
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-09-08T16:15",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.018
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-08T16:15",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Annual Visit",
+              "date": "2025-09-10T09:20",
+              "author": "nephrology",
+              "body": "Outside nephrology note, visit 9/8/2025, received 9/10/2025.\n\nFSGS, primary, biopsy 10/2022; complete remission 2/2023 after prednisone, now more than two years off all therapy. Well. No edema.\nBP within normal limits. Urine protein negative; urine albumin normal; creatinine at baseline.\nContinue yearly surveillance. \n\ncc: primary care physician"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-01a",
+          "kind": "urgent_care",
+          "start": "2025-10-01T17:30",
+          "service": "Urgent Care",
+          "reason": "congestion, aches, low-grade fever",
+          "conditions": [
+            {
+              "label": "Acute upper respiratory infection",
+              "action": "diagnosed",
+              "onset": "2025-09-25"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "amoxicillin 500 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth three times daily for 7 days",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "upper respiratory illness, possible sinusitis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              110,
+              78
+            ],
+            "hr": 58,
+            "temp_c": 37.9,
+            "spo2": 98
+          },
+          "documents": [
+            {
+              "type": "Urgent Care Note",
+              "title": "Urgent Care Visit",
+              "date": "2025-10-03T08:30",
+              "author": "urgent care",
+              "body": "Outside urgent care, visit 10/1/2025, received 10/3/2025.\n\nAbout a week of feeling run down with low-grade fevers, body aches and nasal congestion. Some pressure across the cheeks. No shortness of breath.\nPMH: allergic rhinitis, kidney disease in remission. Meds: cetirizine. Allergies: NKDA.\nT 37.9. Nasal mucosa congested, purulent drainage. Pharynx mildly red. Lungs clear.\nAssessment: upper respiratory infection; possible bacterial sinusitis given duration.\nPlan: amoxicillin 500 mg three times daily x 7 days, saline irrigation, follow up with PCP if not improving."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "hospital_admission",
+          "start": "2025-10-09T11:20",
+          "end": "2025-10-30T13:00",
+          "service": "Critical Care Medicine",
+          "reason": "painful blistering rash with mucosal involvement",
+          "conditions": [
+            {
+              "label": "Toxic epidermal necrolysis",
+              "action": "diagnosed",
+              "onset": "2025-10-05",
+              "note": "attributed to amoxicillin; biopsy confirmed",
+              "icd10": "L51.2"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "amoxicillin 500 MG Oral Capsule",
+              "action": "stop",
+              "reason": "suspected cause of toxic epidermal necrolysis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Amoxicillin",
+              "reaction": "Toxic epidermal necrolysis",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-10-09T11:30",
+              "bp": [
+                112,
+                68
+              ],
+              "hr": 124,
+              "rr": 22,
+              "temp_c": 38.9,
+              "spo2": 96
+            },
+            {
+              "time": "2025-10-30T08:00",
+              "bp": [
+                118,
+                74
+              ],
+              "hr": 82,
+              "rr": 16,
+              "temp_c": 36.8,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-10-09T12:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 3.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 238
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.99
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-09T12:00",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 118
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 96
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-29T06:00",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 16
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-29T06:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.02
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 235
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-10-09T13:05",
+              "text": "Portable AP view. Lungs clear. No effusion or pneumothorax. Cardiomediastinal silhouette normal.",
+              "conclusion": "No acute abnormality."
+            },
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-10-09T15:30",
+              "text": "Specimen: skin, upper chest, punch biopsy at the edge of a blister. Sections show full-thickness necrosis of the epidermis with subepidermal separation. Sparse superficial perivascular lymphocytic infiltrate in the dermis.",
+              "conclusion": "Full-thickness epidermal necrosis with sparse lymphocytic infiltrate, consistent with toxic epidermal necrolysis in the clinical setting.",
+              "issued": "2025-10-10T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-10-09T11:20"
+            },
+            {
+              "procedure": "Punch skin biopsy, single lesion",
+              "performed": "2025-10-09T15:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-10-30T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "ICU Discharge Summary",
+              "date": "2025-11-03T10:15",
+              "author": "critical care",
+              "body": "Regional hospital, critical care service. Admitted 10/9/2025, discharged 10/30/2025. Received 11/3/2025.\n\nPresentation: 40-year-old man, FSGS in remission and a prior systemic inflammatory response episode (2024), seen at urgent care 10/1 for an upper respiratory illness and started on amoxicillin. A week of malaise, low-grade fevers and aches. A few days after starting the antibiotic, redness and stinging of the face and chest, then painful, spreading darker areas that blistered and peeled. Severe mouth soreness, burning and swelling of the eyes so he could hardly open them, difficulty drinking, and pain with urination. Home meds: cetirizine as needed, amoxicillin. Allergies on arrival: none known.\n\nAdmission exam: T 38.9, HR 124. Uncomfortable and distressed. Face and upper trunk with confluent dusky erythematous patches, flaccid bullae and areas of sloughing; Nikolsky sign positive. Oral mucosa with erosions and hemorrhagic crusts on the lips. Similar lesions periocular and genital.\n\nData: WBC 3.3 (mild leukopenia). ALT 118, AST 96. Creatinine normal. Chest x-ray unremarkable. Skin punch biopsy: full-thickness epidermal necrosis with sparse lymphocytic infiltrate.\n\nDiagnosis: toxic epidermal necrolysis; amoxicillin judged the culprit (only new drug, typical timing).\n\nHospital course: amoxicillin stopped on arrival. ICU-level supportive care: fluid resuscitation, warmed room, non-adherent dressings and wound care with the burn nursing team, pain control, nutrition support, urinary catheter for the genital involvement for the first part of the stay. Ophthalmology saw him daily for the eyes. Mouth care with bland rinses. Fever settled. No infection identified. Skin progressively re-epithelialized; mucosa healed enough to eat by week three. Creatinine stayed at his baseline throughout. Liver enzymes back to normal by 10/29; white count recovered.\n\nAllergy added: AMOXICILLIN (toxic epidermal necrolysis). Avoid amoxicillin and related penicillins.\n\nDischarge meds: cetirizine 10 mg PRN.\nFollow-up: PCP within 1 week; ophthalmology and dermatology clinic appointments made."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-31a",
+          "kind": "telephone",
+          "start": "2025-10-31T10:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2025-10-31T10:30",
+              "author": "RN",
+              "body": "Called after hospital discharge yesterday. He's home. Skin tender in spots but no new blisters; eating soft foods. Eyes comfortable. No fever. Medication list reviewed: cetirizine only. Amoxicillin allergy added to our chart pending the summary. PCP visit Wed 11/5 at 3:30 confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-05a",
+          "kind": "office_visit",
+          "start": "2025-11-05T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [
+            {
+              "label": "Acute upper respiratory infection",
+              "action": "resolved"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              113,
+              78
+            ],
+            "hr": 68,
+            "temp_c": 37.1,
+            "spo2": 99,
+            "weight_kg": 85.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-11-05T16:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 16
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-05T16:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 231
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-11-05T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2025-11-05T17:00",
+              "author": "PCP",
+              "body": "Three weeks in the ICU at the regional hospital for toxic epidermal necrolysis after amoxicillin from urgent care (summary received 11/3, reviewed in full). Home since 10/30.\n\nToday: skin no longer weeping, a few areas still pink and tender on the chest. Eating regular food now. Eyes feel normal. Urinating without pain. No fever. Tired, but walking daily. Planning to go back to school in a couple of weeks; asked for a work note.\n\nExam: afebrile, vitals stable. Face and upper chest with pink, newly healed skin, no bullae, no erosions, no drainage. Lips healed. Conjunctivae quiet. Lungs clear. \n\nA/P:\n1. TEN due to amoxicillin, healing well. Allergy entered: amoxicillin, severe, high criticality; advised to avoid all penicillins and to tell every prescriber and pharmacist. Wallet card printed. Ophthalmology 11/19 and dermatology 12/3 already booked.\n2. Labs: CMP and CBC to confirm the liver and counts stayed normal.\n3. FSGS: creatinine was normal throughout the admission; nephrology letter to follow at their annual visit.\n4. Work note for return 11/17.\nRTC after the specialist visits, around the new year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "specialist_visit",
+          "start": "2025-11-19T10:00",
+          "service": "Ophthalmology",
+          "reason": "eye follow-up after TEN",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology Follow-up",
+              "date": "2025-11-21T14:00",
+              "author": "ophthalmology",
+              "body": "Outside ophthalmology letter, visit 11/19/2025, received 11/21/2025.\n\nSeen in follow-up after inpatient care for ocular involvement of toxic epidermal necrolysis. Asymptomatic.\nVision 20/20 each eye. Lids and lashes normal. Conjunctivae quiet without symblepharon or scarring. Corneas clear, no staining. Tear film adequate.\nImpression: ocular surface healed, no sequelae.\nPlan: no further routine follow-up needed; return for redness, pain or vision change.\nAllergies: amoxicillin (TEN).\n\ncc: primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2025-12-03a",
+          "kind": "specialist_visit",
+          "start": "2025-12-03T13:30",
+          "service": "Dermatology",
+          "reason": "skin follow-up after TEN",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Follow-up",
+              "date": "2025-12-05T09:45",
+              "author": "dermatology",
+              "body": "Outside dermatology letter, visit 12/3/2025, received 12/5/2025.\n\nFollow-up after toxic epidermal necrolysis attributed to amoxicillin, October 2025. Back at work, no complaints.\nExam: previously affected skin of face, chest and upper back fully re-epithelialized; no blisters, erosions or scarring. Oral and genital mucosa normal. Nails normal. Mild comedonal acne on forehead.\nAssessment: TEN, healed.\nRecommendations: lifelong avoidance of amoxicillin and other penicillins; allergy documented in all records; consider a medical alert bracelet. Sun protection for the next few months on recently healed skin.\n\ncc: primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-02a",
+          "kind": "office_visit",
+          "start": "2026-01-02T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after TEN",
+          "conditions": [
+            {
+              "label": "Toxic epidermal necrolysis",
+              "action": "resolved",
+              "icd10": "L51.2"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              75
+            ],
+            "hr": 62,
+            "temp_c": 36.9,
+            "spo2": 99,
+            "weight_kg": 85.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-01-02T11:10",
+              "resulted": "2026-01-05T08:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 62
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-02T11:10",
+              "resulted": "2026-01-05T08:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.09
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 271
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-01-02T11:10",
+              "resulted": "2026-01-05T08:30",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.017
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.1
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-02T11:10",
+              "resulted": "2026-01-05T08:30",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-01-02T10:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2026-01-02T11:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2026-01-02T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-01-02T11:40",
+              "author": "PCP",
+              "body": "Winter break visit. Ten weeks out from the TEN admission. Back teaching full time since mid-November. Skin feels normal, no sores, eyes fine. No fevers or infections since. Got through the fall without his usual flu shot because of the hospital stay; wants it today.\n\nOphthalmology (11/19): eyes healed, no scarring, discharged from their care. Dermatology (12/3): skin healed, avoid penicillins.\n\nMeds: cetirizine 10 mg PRN. Allergies: amoxicillin (TEN).\n\nExam: well. Skin of face and trunk intact, no erosions or blisters. Oral mucosa normal. Conjunctivae clear. Heart and lungs normal. No ankle edema.\n\nA/P:\n1. Toxic epidermal necrolysis, amoxicillin: healed; moved to history. Allergy flagged; he carries the card.\n2. FSGS in remission: chemistry, UA and urine albumin today after the hospital stay; results will be copied to them.\n3. Flu vaccine given.\n4. Allergic rhinitis, mild acne: unchanged.\nPhysical next summer or early fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "portal_message",
+          "start": "2026-01-06T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "January labs",
+              "date": "2026-01-06T07:55",
+              "author": "PCP",
+              "body": "Andre, Friday's results are all normal: kidney function, liver tests, blood counts, and no protein or albumin in the urine. I've sent a copy to nephrology. Happy new year."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: January labs",
+              "date": "2026-01-06T18:20",
+              "author": "patient",
+              "body": "Best news I've had in a while. Thank you."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "specialist_visit",
+          "start": "2026-03-09T15:30",
+          "service": "Nephrology",
+          "reason": "FSGS follow-up",
+          "vitals": {
+            "bp": [
+              115,
+              70
+            ],
+            "hr": 59,
+            "weight_kg": 86.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-09T16:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-03-09T16:00",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.018
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.7
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-09T16:00",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Follow-up",
+              "date": "2026-03-11T13:00",
+              "author": "nephrology",
+              "body": "Outside nephrology note, visit 3/9/2026, received 3/11/2026.\n\nSeen a little early after his October ICU admission for toxic epidermal necrolysis (amoxicillin), now healed. Renal function was preserved through that illness and January labs from his PCP were normal.\nToday: no edema, BP normal. Urine protein negative, urine albumin normal, creatinine baseline.\nAssessment: FSGS, sustained complete remission, off therapy since 2023.\nPlan: yearly follow-up. Allergies: amoxicillin (TEN); avoid penicillins.\n\ncc: primary care physician"
+            },
+            {
+              "type": "Outside Records",
+              "title": "Nephrology note filed",
+              "date": "2026-03-11T13:10",
+              "author": "MA",
+              "body": "Nephrology follow-up from 3/9 received by fax, scanned to chart, routed to PCP inbox."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-20a",
+          "kind": "pharmacy",
+          "start": "2026-04-20T11:45",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Cetirizine renewal",
+              "date": "2026-04-20T11:45",
+              "author": "MA",
+              "body": "Pharmacy request: cetirizine 10 mg, 90 tabs. Renewed x1 year per PCP refill protocol."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T20:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "date": "2026-08-11T20:40",
+              "author": "patient",
+              "body": "Hi, I'm due for my yearly exam. Teachers go back the 31st; anything after school mid-September works. Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "date": "2026-08-12T09:15",
+              "author": "front desk",
+              "body": "Booked you for Tuesday, September 15 at 3:45 pm. Reminder will go out the day before."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-15a",
+          "kind": "annual_physical",
+          "start": "2026-09-15T15:45",
+          "reason": "annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Focal segmental glomerulosclerosis|N04.1": {
+        "code": "N04.1",
+        "display": "Nephrotic syndrome with focal and segmental glomerular lesions",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Systemic inflammatory response syndrome|R65.10": {
+        "code": "R65.10",
+        "display": "Systemic inflammatory response syndrome (SIRS) of non-infectious origin without acute organ dysfunction",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Toxic epidermal necrolysis|L51.2": {
+        "code": "L51.2",
+        "display": "Toxic epidermal necrolysis [Lyell]",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "Protein/Creatinine ratio, urine": {
+        "code": "2890-2",
+        "display": "Protein/Creatinine [Mass Ratio] in Urine",
+        "unit": "g/g",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

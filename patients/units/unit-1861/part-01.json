@@ -1,0 +1,576 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001861",
+      "given": "Margo",
+      "family": "Norris",
+      "birth_date": "2005-09-30",
+      "address_line": "17 Laurel Ridge Road, Apt 3",
+      "phone": "+1-518-555-0182",
+      "email": "margo.norris@example.test",
+      "marital_status": "single",
+      "summary": "First-year college cross-country runner with bulimia nervosa in remission on fluoxetine who joins in 2023, develops functional hypothalamic amenorrhea and female athlete triad in 2024, and relapses with laxative purging in 2026 with an ED visit for hyperchloremic acidosis after saline. Referred to an outpatient eating-disorder program; not seen since March 2026.",
+      "events": [
+        {
+          "id": "2023-10-02a",
+          "kind": "telephone",
+          "start": "2023-10-02T10:42",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Request",
+              "author": "front desk",
+              "date": "2023-10-02T10:42",
+              "body": "Caller is a first-year student who just moved into the dorms for the fall term, family lives out of state. Wants a doctor nearby rather than going home for refills. Takes fluoxetine, calcium with vitamin D and a multivitamin. Insurance is the university student plan, card info taken. Booked new patient visit 10/10 at 9:00. Asked her to have her old pediatric office send records; release form emailed."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "establish_care",
+          "start": "2023-10-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Bulimia nervosa",
+              "icd10": "F50.20",
+              "action": "diagnosed",
+              "onset": "2022-02-01",
+              "note": "Diagnosed at 16 under prior adolescent care; no purging by her report since"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "fluoxetine 20 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Bulimia nervosa"
+            },
+            {
+              "drug_text": "calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug_text": "multivitamin Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 45.5,
+            "height_cm": 165.0,
+            "bp": [
+              108,
+              66
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-10T09:40",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-10-10T09:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-10T09:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "College student"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T09:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T09:52"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-10-10T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-10-10T09:00",
+              "body": "18F, first-year college student, here to set up care locally. Runs cross-country for the college team, practices six days a week.\n\nHx: bulimia nervosa dx at 16 through her adolescent clinic back home. Did outpatient therapy for about a year and was started on fluoxetine 20 mg then; has stayed on it. States she has not binged or purged in well over a year, no vomiting, no laxatives or diet pills. Not currently seeing a therapist; would like to keep the option open. Also on calcium/vit D 600 mg/400 IU BID (mom's idea, mom has osteoporosis) and a daily multivitamin.\nMenses: has been irregular since practice started in August, last one early September. Not sexually active.\nPSH: wisdom teeth out at 16.\nFH: mother osteoporosis, father HTN, older sister with bulimia nervosa.\nSH: never smoked, no alcohol, no drugs. Lives in a dorm with one roommate.\nAllergies: NKDA.\n\nExam: thin young woman, well appearing. Wt 45.5 kg, ht 165 cm, BMI 16.7. HEENT normal, no parotid swelling, dentition intact without enamel wear. Neck supple, thyroid not enlarged. Heart RRR without murmur. Lungs clear. Abd soft, nontender. Skin warm, no lanugo. Knuckles without calluses. Mood euthymic, PHQ-9 4.\n\nA/P\n1. Bulimia nervosa, in remission by her account. Continue fluoxetine 20. Talked openly about the pull between running and food; she knows to tell me early if old habits come back. Low weight noted and discussed; she says she has always been on the slim side. Weight check at each visit.\n2. Irregular menses since training ramped up. Keep a calendar; if no period by winter break let me know.\n3. Health maintenance: CBC, CMP, TSH today. Flu and updated COVID given. Pediatric records requested.\nRTC 3-4 months."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 45.5,
+            "height_cm": 165.0
+          }
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "portal_message",
+          "start": "2023-10-12T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2023-10-12T16:05",
+              "body": "Hi Margo, your blood count, chemistry panel and thyroid test all came back normal. Nothing to change. Good luck at the meet this weekend."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "outside_records",
+          "start": "2023-10-24T13:20",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Pediatric Records",
+              "author": "outside pediatrics",
+              "date": "2023-10-24T13:20",
+              "body": "Summary of records from prior pediatric practice, covering birth through August 2023 (48 pages received by fax).\n\nProblem list: bulimia nervosa, diagnosed age 16 by adolescent medicine; therapy notes through spring 2023 describe sustained remission of purging.\nMedications at transfer: fluoxetine 20 mg daily (started age 16), calcium carbonate/vitamin D 600 mg/400 IU twice daily, multivitamin daily.\nSurgical: third molar extraction under oral surgery at age 16, uncomplicated.\nAllergies: none known.\nImmunizations: routine childhood series complete, including Tdap at 11, HPV series complete, MenACWY two doses.\nScreening: annual well visits with normal vision and hearing; lipid screen at 17 normal.\n\nFiled to chart. PCP reviewed."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-04a",
+          "kind": "portal_message",
+          "start": "2024-01-04T21:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Still No Period",
+              "author": "patient",
+              "date": "2024-01-04T21:14",
+              "body": "Hi, you said to tell you if my period didn't come back by break. It still hasn't, last one was the beginning of September. I'm back on campus Sunday. Should I come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Still No Period",
+              "author": "RN",
+              "date": "2024-01-05T09:31",
+              "body": "Thanks for letting us know. Doctor would like to see you Monday 1/8 at 2:30 and draw some labs at that visit. Reply here if that time does not work."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-08a",
+          "kind": "office_visit",
+          "start": "2024-01-08T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Missed periods",
+          "state": {
+            "weight_kg": 44.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-01-08T14:45",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-01-08T14:55",
+              "resulted": "2024-01-10T11:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                },
+                {
+                  "test": "Prolactin",
+                  "value": 9
+                },
+                {
+                  "test": "Follicle Stimulating Hormone",
+                  "value": 3.4
+                },
+                {
+                  "test": "Luteinizing hormone",
+                  "loinc": "10501-5",
+                  "unit": "m[IU]/mL",
+                  "value": 1.1
+                },
+                {
+                  "test": "Estradiol",
+                  "loinc": "2243-4",
+                  "unit": "pg/mL",
+                  "value": 16
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Gynecology",
+              "reason": "Secondary amenorrhea workup"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-01-08T14:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-01-08T14:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-01-08T14:30",
+              "body": "S: No menses since early Sept, so about 4 months. Training heavier this winter, team is aiming at championship meets. Some fatigue on long runs. Denies vomiting, laxatives, skipping meals on purpose. Not sexually active. No headaches, vision change, galactorrhea, hair growth or acne. Eating 'pretty normally' but admits she does not always keep up with mileage.\n\nO: Wt 44.2 kg (down from 45.5 in Oct). Thin, appears well. Thyroid normal size. Heart and lungs normal. No acne or hirsutism. Urine hCG negative in office.\n\nA/P: Secondary amenorrhea in a lean endurance athlete with ED history, low weight trending down. Hypothalamic cause most likely but needs a proper workup.\n- TSH, prolactin, FSH, LH, estradiol sent.\n- Referral to gynecology at the college health service, where she can be seen between classes.\n- Asked her to eat back her training; she was receptive.\nWill message results."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 44.2
+          }
+        },
+        {
+          "id": "2024-01-10a",
+          "kind": "portal_message",
+          "start": "2024-01-10T15:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hormone Results",
+              "author": "PCP",
+              "date": "2024-01-10T15:48",
+              "body": "Margo, thyroid and prolactin are normal. Your FSH, LH and estrogen levels are all on the low side, which fits with the brain dialing down the reproductive hormones when the body is short on fuel for the amount of training. Gynecology will go over this with you on the 29th. Keep the calcium and vitamin D going."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-29a",
+          "kind": "specialist_visit",
+          "start": "2024-01-29T11:00",
+          "service": "Gynecology",
+          "reason": "Missed menstrual periods",
+          "conditions": [
+            {
+              "label": "Secondary amenorrhea",
+              "icd10": "N91.1",
+              "action": "diagnosed",
+              "onset": "2023-10-01"
+            },
+            {
+              "label": "Functional hypothalamic amenorrhea",
+              "icd10": "E23.3",
+              "action": "diagnosed",
+              "onset": "2023-10-01"
+            },
+            {
+              "label": "Female athlete triad",
+              "icd10": "E63.8",
+              "action": "diagnosed",
+              "onset": "2023-10-01"
+            },
+            {
+              "label": "Protein-calorie malnutrition",
+              "icd10": "E46",
+              "action": "diagnosed",
+              "onset": "2023-10-01"
+            }
+          ],
+          "vitals": {
+            "weight_kg": 43.8,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2024-01-29T11:40",
+              "text": "Transabdominal pelvic ultrasound. Uterus anteverted and small for age, endometrium thin. Both ovaries small with few follicles, no dominant follicle and no cyst or mass. No free fluid.",
+              "conclusion": "Small uterus and ovaries with decreased follicular activity."
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral",
+              "action": "done",
+              "date": "2024-01-29T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Consultation",
+              "author": "gynecology",
+              "date": "2024-02-01T09:15",
+              "body": "College Health Service, Gynecology Clinic\nDate of visit: 01/29/2024\nReason for referral: secondary amenorrhea\n\nThank you for sending this 18-year-old student. She has had no menstrual bleeding for more than four months. She has never been sexually active and has never been pregnant. She runs cross-country competitively and her training volume went up this season ahead of championship meets. She is more tired during workouts and sometimes feels lightheaded when she stands quickly. She denies vomiting, laxatives or worries about her body shape, and describes herself as having always been thin. She often feels cold, and her mother has told her she looks paler lately.\n\nPMH: bulimia nervosa (in remission by report). PSH: third molars removed at 16.\nMeds: fluoxetine 20 mg daily, calcium carbonate/vitamin D 600 mg/400 IU twice daily, multivitamin daily.\nAllergies: NKDA.\nFH: osteoporosis in mother, sister with bulimia nervosa, father with hypertension.\nSH: never smoker, no alcohol, full-time student.\n\nExam: weight 43.8 kg, height 165 cm, BMI 16.1. Vital signs within normal limits. Thin body habitus with dry skin. Secondary sexual development looks delayed for her age. No hirsutism, no acne.\nLabs from PCP reviewed: urine hCG negative, TSH and prolactin normal, low FSH, LH and estradiol.\nPelvic ultrasound today: small uterus and ovaries with decreased follicular activity.\n\nImpression:\n1. Secondary amenorrhea due to functional hypothalamic amenorrhea.\n2. Female athlete triad: low energy availability with menstrual dysfunction.\n3. Protein-calorie malnutrition, BMI 16.1.\n\nPlan: The cause is energy deficit, not a structural problem. She should increase intake and cut back training load in discussion with her coach. Continue calcium and vitamin D. Recommend a sports dietitian; the PCP office will place the referral. No hormonal therapy at this time. Return to gynecology if no menses after weight restoration.\n\nGynecology, College Health Service"
+            }
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "office_visit",
+          "start": "2024-02-13T15:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after gynecology consult",
+          "state": {
+            "weight_kg": 44.0
+          },
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-02-13T15:40",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 36
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "orders": [
+            {
+              "id": "dietitian-referral",
+              "action": "placed",
+              "order": "Sports dietitian referral",
+              "category": "referral",
+              "to": "Nutrition",
+              "reason": "Functional hypothalamic amenorrhea, low energy availability"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-02-13T15:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-02-13T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-02-13T15:15",
+              "body": "Here to go over the gyn consult. Agrees with the explanation, a little relieved it is 'not something wrong with my ovaries'. Still no period. Has talked to her coach, who cut her weekly mileage and moved her off the travel squad for two meets. Eating three meals, snacks hit or miss. No vomiting or laxatives. PHQ-9 5, sleeping fine.\n\nWt 44.0 kg. BP and HR fine. Exam otherwise unchanged.\n\nA/P\nFHA / athlete triad / low weight: sports dietitian referral placed today, she prefers someone who works with runners. Continue Ca/vit D; vitamin D level sent. Weight check in about 6 weeks with RN or at next visit.\nBulimia nervosa, remission: continue fluoxetine 20. We talked about how restricting can tip back into old patterns; she agreed to flag it.\nRTC late summer, sooner if needed."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 44.0
+          }
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "outside_records",
+          "start": "2024-03-12T10:05",
+          "orders": [
+            {
+              "id": "dietitian-referral",
+              "action": "done",
+              "date": "2024-03-12T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Sports Dietitian Initial Assessment",
+              "author": "dietitian",
+              "date": "2024-03-12T10:05",
+              "body": "Sports nutrition initial assessment, seen 03/05/2024.\nReferred for low energy availability with amenorrhea in a collegiate distance runner. Diet recall shows intake well short of her training needs, particularly on long-run days. Plan built with her: three meals and two snacks daily, recovery snack within an hour of practice, a fueling plan for long runs. Coach has agreed to fewer training miles for the rest of the indoor season. Will follow every 2-3 weeks. Thank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-20a",
+          "kind": "pharmacy",
+          "start": "2024-05-20T11:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "MA",
+              "date": "2024-05-20T11:30",
+              "body": "Pharmacy fax: refill request fluoxetine 20 mg caps #90. Pt going home for summer and wants a 90-day supply. Approved per PCP, 90 days with 1 refill sent."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "office_visit",
+          "start": "2024-09-10T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up amenorrhea and weight",
+          "conditions": [
+            {
+              "label": "Secondary amenorrhea",
+              "icd10": "N91.1",
+              "action": "resolved",
+              "onset": "2023-10-01"
+            }
+          ],
+          "state": {
+            "weight_kg": 48.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-09-10T09:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-10T09:07"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-09-10T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-10T09:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-09-10T08:40",
+              "body": "Back for sophomore year. Period came back in July and has come every 4-5 weeks since. Worked with the dietitian through the spring, stopped over the summer but kept the meal pattern. Running again with the team, mileage still below last fall per coach. No purging, no laxatives. Feels warmer and less wiped out.\n\nWt 48.2 kg, BMI 17.7, up about 4 kg since February. Exam: well appearing, skin less dry, heart and lungs normal.\n\nA/P\n- Secondary amenorrhea: resolved with weight gain. FHA and triad stay on the list since the risk returns if intake slips during heavy training.\n- Bulimia nervosa: stable, fluoxetine 20.\n- Ca/vit D and multivitamin continue.\n- Flu and COVID given today.\nRTC for a physical next summer."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 48.2
+          }
+        }
+      ]
+    }
+  ]
+}

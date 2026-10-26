@@ -1,0 +1,483 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002811",
+      "events": [
+        {
+          "id": "2024-02-13a",
+          "kind": "office_visit",
+          "start": "2024-02-13T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "6 month follow-up",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "author": "front desk",
+              "date": "2024-02-13T07:05",
+              "body": "Pt left voicemail at 6:50am - roads on the hill are not plowed yet, cancelling today. Rebooked for late March."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-28a",
+          "kind": "office_visit",
+          "start": "2024-03-28T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-03-28T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up visit",
+              "author": "PCP",
+              "date": "2024-03-28T11:50",
+              "body": "Rescheduled from the snow day in Feb.\n\nFeels well. Winter was easier on the hands than last year. No ulcers. Omeprazole keeps the reflux away; eating normally. Energy fine, still walking daily. Rheum letter from November reviewed - stable, labs fine.\n\nVitals ok. Fingers: same sclerodactyly, warm today. Heart RRR without murmur. Lungs clear. No edema.\n\nImp: SSc (limited), Raynaud, GERD - all stable.\nPlan: same meds. Physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-19a",
+          "kind": "portal_message",
+          "start": "2024-07-19T13:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Chest squeezing",
+              "author": "patient",
+              "date": "2024-07-19T13:12",
+              "body": "For the last few weeks I have been getting a squeezing feeling in the middle of my chest. It mostly comes when I'm eating and sometimes it feels like food stops halfway down. It goes away after a few minutes. Nothing right now. Should I come in?"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "RN triage call",
+              "author": "RN",
+              "date": "2024-07-19T13:40",
+              "body": "Called pt back. Episodes brief, minutes, mostly with meals, a couple while sitting at her desk. Not with walking or stairs. No pain now, no SOB, sweating, nausea or palpitations. Spoke with PCP - first available Tuesday 7/23 is fine; advised 911 for pain that lasts more than a few minutes or comes with breathlessness or sweating. Pt agrees."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "office_visit",
+          "start": "2024-07-23T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Intermittent chest discomfort",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-07-23T09:15",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "value": 3,
+                  "unit": "ng/L"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-07-23T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-07-23T09:15",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2024-07-23T08:55",
+              "text": "Sinus rhythm, rate 68. PR, QRS and QT intervals normal. Normal axis. No ST or T wave abnormality. No prior tracing in our system.",
+              "conclusion": "Normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-07-23T08:40"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2024-07-23T08:55"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-07-23T09:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ett-2024",
+              "action": "placed",
+              "order": "Exercise stress test",
+              "category": "procedure",
+              "to": "Cardiology",
+              "reason": "intermittent chest discomfort"
+            },
+            {
+              "id": "gi-referral-2024",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "chest discomfort with eating, food sticking"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office visit - chest discomfort",
+              "author": "PCP",
+              "date": "2024-07-23T09:40",
+              "body": "CC: chest squeezing, see portal msg 7/19.\n\nHPI: 56F with limited SSc. About 3-4 weeks of brief episodes of tight, squeezing discomfort behind the sternum, lasting a few minutes. Most with eating, a couple at rest at work. Never with exertion - walked 2 miles Sunday without anything. Doesn't travel. Sometimes the bite of food feels hung up mid-chest. No heartburn on her omeprazole, no regurgitation, weight steady. No dyspnea, palpitations, syncope.\n\nMeds/allergies unchanged; NKDA.\n\nExam: comfortable. Vitals reviewed. Heart RRR, no murmur, rub or gallop. Lungs clear. Chest wall nontender. Abd soft, nontender. No edema.\n\nECG in office: NSR, normal intervals, no ST-T changes.\nhs-troponin, CBC, BMP drawn.\n\nA/P: Episodic chest pain, atypical features - pattern with meals and food sticking points toward the esophagus (SSc esophageal involvement on the list of possibilities) but she is 56 and we should exclude a cardiac cause first.\n- Exercise treadmill test ordered.\n- GI referral for the dysphagia.\n- Continue omeprazole. ED precautions reviewed again."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-24a",
+          "kind": "portal_message",
+          "start": "2024-07-24T12:15",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Troponin and labs",
+              "author": "PCP",
+              "date": "2024-07-24T12:15",
+              "body": "Your heart enzyme (troponin) was normal at 3, and the blood count and kidney tests are normal too. The stress test office will call you to schedule. Keep the GI appointment as well."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-08a",
+          "kind": "outside_records",
+          "start": "2024-08-08T15:00",
+          "reports": [
+            {
+              "study": "Exercise stress test",
+              "performed": "2024-08-06T10:30",
+              "text": "Indication: intermittent chest discomfort. Standard Bruce protocol. Resting ECG sinus rhythm, normal. Exercised 8 minutes 30 seconds, stopped for fatigue, reaching 92% of maximum predicted heart rate. Blood pressure response normal. No chest pain during exercise or recovery. No ischemic ST segment changes. No arrhythmia.",
+              "conclusion": "Normal exercise treadmill test; no evidence of exercise-induced ischemia at an adequate workload."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ett-2024",
+              "action": "done",
+              "date": "2024-08-08T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Stress test report received",
+              "author": "MA",
+              "date": "2024-08-08T15:00",
+              "body": "Exercise treadmill test from outside cardiology lab (performed 8/6) received by fax and scanned. Routed to PCP. -- PCP: normal study, pt notified via portal, GI consult still on for 8/26."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-28a",
+          "kind": "outside_records",
+          "start": "2024-08-28T10:45",
+          "conditions": [
+            {
+              "label": "Esophageal dysmotility",
+              "icd10": "K22.4",
+              "action": "diagnosed",
+              "onset": "2024-08-26",
+              "note": "outside GI; manometry pending"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Barium esophagram",
+              "loinc": "30633-2",
+              "performed": "2024-08-26T13:30",
+              "text": "Single and double contrast esophagram with patient upright and prone. The pharyngeal phase is normal without aspiration or penetration. The distal esophagus shows weak and disordered peristalsis, with delayed clearance of barium into the stomach. No stricture, web or ring. No mass or mucosal irregularity. No hiatal hernia. A 13 mm barium tablet passed without hold-up.",
+              "conclusion": "Weak, disordered distal esophageal peristalsis with delayed clearance. No stricture, mass or hiatal hernia."
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2024",
+              "action": "done",
+              "date": "2024-08-28T10:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology consultation",
+              "author": "gastroenterology",
+              "date": "2024-08-28T10:45",
+              "body": "Outside gastroenterology group - new consultation, 08/26/2024\nReferred by: primary care, for chest discomfort and dysphagia.\n\nMargaret Cummings is a 56-year-old woman with limited cutaneous systemic sclerosis, Raynaud phenomenon and reflux.\n\nShe describes spells of abrupt, severe pressure behind the breastbone that she calls squeezing. They last several minutes, most often come on during a meal, occasionally at rest, and are unrelated to effort. The pain stays central. Solids sometimes seem to stop partway down. A warm drink often helps. On omeprazole she has no heartburn now. No weight loss and no regurgitation.\n\nCardiac evaluation through her PCP: ECG normal, troponin normal, and an exercise treadmill test on 8/6 without ischemia.\n\nPMH: limited SSc (rheumatology), Raynaud, GERD.\nPSH: laparoscopic cholecystectomy; right carpal tunnel release.\nMedications: omeprazole 40 mg daily, amlodipine 5 mg daily, mycophenolate mofetil 1000 mg twice daily, aspirin 81 mg daily.\nAllergies: none known.\nFamily history: mother rheumatoid arthritis, father hypertension, sister Hashimoto thyroiditis.\nSocial: never smoker, wine rarely, works as an administrative assistant.\n\nVital signs normal. Exam unremarkable: abdomen soft and nontender, no adenopathy.\n\nBarium esophagram performed today (separate report): weak, disordered distal peristalsis with slow emptying; no stricture or mass.\n\nAssessment: chest pain and solid dysphagia from esophageal dysmotility, in keeping with esophageal involvement of systemic sclerosis. Cardiac causes reasonably excluded.\n\nPlan:\n1. High-resolution esophageal manometry - ordered.\n2. Continue omeprazole 40 mg daily.\n3. Small bites, chew well, sip warm fluids with meals, stay upright after eating.\n4. Will write again with manometry results.\n\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "outside_records",
+          "start": "2024-09-24T14:20",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Esophageal manometry results",
+              "author": "gastroenterology",
+              "date": "2024-09-24T14:20",
+              "body": "Outside gastroenterology group\nHigh-resolution esophageal manometry, 09/17/2024\n\nTen 5 mL supine wet swallows. Upper esophageal sphincter: normal resting pressure and relaxation. Lower esophageal sphincter resting pressure 9 mmHg (low); relaxation normal. Esophageal body: 8 of 10 swallows ineffective (80%), with weak distal contractile vigor; no premature or spastic contractions; no outflow obstruction.\n\nImpression: ineffective esophageal motility with a hypotensive lower esophageal sphincter, consistent with esophageal involvement of systemic sclerosis.\n\nDear colleague, this confirms the dysmotility we suspected. No medication change: continue omeprazole 40 mg daily, which matters more given the weak sphincter. She is already using the eating measures we discussed and says the spells are less frequent. GI follow-up as needed.\n\nGastroenterology"
+            },
+            {
+              "type": "Outside Records",
+              "title": "Manometry letter filed",
+              "author": "MA",
+              "date": "2024-09-24T14:30",
+              "body": "GI manometry letter (9/17) scanned to media and routed. -- PCP: reviewed, dysmotility confirmed, no med change. Will go over it at her physical."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "nurse_visit",
+          "start": "2024-10-09T15:40",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-09T15:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-09T15:46"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-09T15:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse visit - fall vaccines",
+              "author": "RN",
+              "date": "2024-10-09T15:55",
+              "body": "Flu (2024-25 trivalent) L deltoid, 2024-25 COVID R deltoid. VIS reviewed. Mammogram due - order pended to PCP and signed. Pt tolerated both."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-23a",
+          "kind": "imaging",
+          "start": "2024-10-23T10:10",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-10-23T10:10",
+              "text": "Digital breast tomosynthesis, bilateral. Comparison 10/2023 and 10/2022. Scattered fibroglandular tissue. No suspicious findings in either breast.",
+              "conclusion": "BI-RADS 1, negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "done",
+              "date": "2024-10-23T10:10"
+            }
+          ]
+        },
+        {
+          "id": "2024-11-14a",
+          "kind": "outside_records",
+          "start": "2024-11-14T09:55",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-11-12T10:15",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-11-12T10:15",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology annual letter",
+              "author": "rheumatology",
+              "date": "2024-11-14T09:55",
+              "body": "Outside rheumatology practice - visit 11/12/2024\n\nDear Dr.,\n\nYearly visit for limited cutaneous systemic sclerosis. Since I last saw her she was evaluated by GI for chest pain and dysphagia; manometry in September showed ineffective motility with a low LES pressure, consistent with esophageal SSc. Symptoms are better with eating modifications and she stays on omeprazole. Raynaud stable. No digital ulcers. No shortness of breath or cough.\n\nExam: findings limited to the hands as before. Lungs clear, heart sounds normal.\n\nCBC and CMP today normal.\n\nPlan: continue mycophenolate mofetil 1000 mg BID; continue amlodipine. Agree with GI plan. Return 1 year.\n\nMeds: mycophenolate 1000 mg BID, amlodipine 5 mg, omeprazole 40 mg, aspirin 81 mg. NKDA.\n\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-20a",
+          "kind": "annual_physical",
+          "start": "2024-12-20T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-20T09:45",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-12-20T09:45",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-12-20T09:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-12-20T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-12-20T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-12-20T10:05",
+              "body": "Annual - 56F\n\nSince last physical: chest squeezing spells in the summer - ECG, troponin and treadmill test normal; GI found esophageal dysmotility from her scleroderma (barium swallow, then manometry 9/17 with ineffective motility and a weak LES). Eating slowly, small bites, upright after meals - only one mild spell since late August. Solids go down if she takes her time. No heartburn on omeprazole. Rheum visit 11/12: stable, labs normal, MMF unchanged.\n\nOtherwise well. Still walking the dog, no breathing limits. Mood good, PHQ-2 0.\n\nMeds: omeprazole 40, amlodipine 5, MMF 1000 bid (rheum), ASA 81. NKDA.\n\nExam: well. HEENT clear. Neck supple, no thyroid enlargement. Heart: regular, S1 S2 normal, no murmur. Lungs clear bilaterally. Abd soft. Skin: sclerodactyly unchanged, fingertips intact. No edema.\n\nAssessment/plan\n- Esophageal dysmotility (SSc) - improved with measures, continue PPI, call GI if food impaction or weight loss.\n- Limited SSc, Raynaud - per rheum, stable.\n- GERD - controlled.\n- HM: mammogram 10/24 negative. Colonoscopy due 2029. Pap 2023 normal. Flu, COVID, PCV20, Shingrix done.\n- Labs today: CBC, CMP, lipids.\n- Return for chronic follow-up in 6 months, physical next winter."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-23a",
+          "kind": "portal_message",
+          "start": "2024-12-23T11:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2024-12-23T11:30",
+              "body": "All of Friday's labs look good - blood counts, kidney, liver and cholesterol in range. Happy holidays, and let us know if the swallowing changes."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2368 @@
+{
+  "unit": "unit-2792",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002792",
+      "given": "Heather",
+      "family": "Fournier",
+      "birth_date": "1970-10-25",
+      "address_line": "27 Cold Spring Rd",
+      "phone": "+1-508-555-0155",
+      "email": "heather.fournier@example.test",
+      "marital_status": "married",
+      "summary": "Healthy high school math teacher who joined in 2022. Develops a heliotrope rash and proximal weakness in 2024; dermatology makes a clinical diagnosis of dermatomyositis, rheumatology confirms it in January 2026 (anti-Mi-2, EMG, biopsy) and starts prednisone and methotrexate.",
+      "events": [
+        {
+          "id": "2022-08-02a",
+          "kind": "telephone",
+          "start": "2022-08-02T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2022-08-02T10:20",
+              "author": "front desk",
+              "body": "Caller would like to transfer her primary care here; her previous doctor retired in the spring. Teaches math at the high school and wants to get in before classes resume. Reviewed membership and that labs/imaging still bill to her PPO. New pt preventive visit set for 8/10 at 9:00. Records release form emailed for her prior office."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-10a",
+          "kind": "establish_care",
+          "start": "2022-08-10T09:00",
+          "end": "2022-08-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient preventive visit",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              153,
+              79
+            ],
+            "hr": 76,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 96,
+            "weight_kg": 67.3,
+            "height_cm": 165.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-10T10:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 236
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.26
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-08-10T10:05",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 82
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 66
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-08-10T10:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 197
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 113
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 66
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 90
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 131
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-10T10:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 glasses of wine per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "High school mathematics teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 40-64",
+              "performed": "2022-08-10T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-08-10T09:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2022-08-10T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "date": "2022-08-10T09:00",
+              "author": "PCP",
+              "body": "51 y/o woman establishing care. Prior PCP retired; records requested.\n\nNo active complaints. Feels well, walks most evenings, gardens. No chronic conditions and no daily medications.\n\nPMH: none.\nPSH: lap cholecystectomy 2014; tubal ligation 1999.\nMeds: none.\nAllergies: NKDA.\nFH: mother - autoimmune thyroiditis; father - hypertension; maternal aunt - rheumatoid arthritis.\nSH: teaches high school math. Never smoker. Wine 1-2 glasses a week. No drugs.\n\nROS: negative except as above. No fatigue, no weight change, no joint pain, no rash.\n\nExam: Well appearing. HEENT normal. Thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Abdomen soft, healed lap scars. Skin without rash. Strength 5/5 throughout. No edema.\n\nPHQ-2 = 0.\n\nAssessment/Plan:\n1. Adult preventive care. Screening labs: CBC, CMP, lipids, TSH (mother's thyroid history), A1c. One-time hep C and HIV screen, she agrees.\n2. Immunizations: no record of a tetanus booster in 10+ years - Tdap given today. Flu and COVID in the fall. Discussed Shingrix series, she'd like to start after the school year settles.\n3. Cancer screening: per her, colonoscopy last year and a mammogram last year were both fine; Pap 2 years ago. Will confirm from records.\n4. RTC 1 year, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 68.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Hemoglobin A1c": 5.3,
+              "Thyroid Stimulating Hormone": 1.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-08-12a",
+          "kind": "portal_message",
+          "start": "2022-08-12T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2022-08-12T16:40",
+              "author": "PCP",
+              "body": "Hi Heather - all of your bloodwork from Wednesday came back normal: blood counts, kidney and liver tests, thyroid, sugar (A1c), and cholesterol all in good ranges. Hep C and HIV screens negative. Nothing to change. Enjoy the rest of the summer."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-24a",
+          "kind": "outside_records",
+          "start": "2022-08-24T11:10",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "date": "2022-08-24T11:10",
+              "author": "prior PCP office",
+              "body": "38 pages received electronically from the patient's previous primary care office (provider retired 2022).\n\nSummary of contents:\n- Problem list: none active. Surgical: cholecystectomy 2014, tubal ligation 1999.\n- Medications: none.\n- Allergies: no known drug allergies.\n- Colonoscopy 05/2021, average-risk screening: normal exam to the cecum, no polyps. Repeat in 10 years.\n- Screening mammogram 10/2021: BI-RADS 1, negative.\n- Pap with HR-HPV co-test 09/2020: NILM, HPV negative.\n- Immunizations: influenza yearly; COVID primary series 2021 plus one booster.\n- Office notes 2017-2022: annual physicals, unremarkable.\n\nReviewed and abstracted to chart. HM updated."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-12a",
+          "kind": "nurse_visit",
+          "start": "2022-10-12T15:30",
+          "reason": "Fall vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-12T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-12T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-12T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization visit",
+              "date": "2022-10-12T15:30",
+              "author": "RN",
+              "body": "Came in after school. Screening questions negative, no prior reactions. Influenza quadrivalent 0.5 mL IM L deltoid. Pfizer bivalent booster IM R deltoid. Observed 15 min, felt fine, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-09a",
+          "kind": "imaging",
+          "start": "2022-11-09T07:40",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-11-09T07:40",
+              "text": "Bilateral screening mammogram with tomosynthesis. Comparison: 10/2021 outside study. Breast density: scattered areas of fibroglandular density. No suspicious mass, architectural distortion or calcifications in either breast. Skin and nipples unremarkable.",
+              "conclusion": "BI-RADS 1: Negative. Routine annual screening recommended."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-08a",
+          "kind": "nurse_visit",
+          "start": "2023-03-08T15:45",
+          "reason": "Shingrix dose 1",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-03-08T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-03-08T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Shingrix #1",
+              "date": "2023-03-08T15:45",
+              "author": "RN",
+              "body": "Shingrix dose 1 of 2, 0.5 mL IM L deltoid. Told her to expect a sore arm and maybe a day of feeling run down; she chose a Wednesday so she has Thursday to recover. Dose 2 due in 2-6 months, will book before she leaves."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-14a",
+          "kind": "nurse_visit",
+          "start": "2023-06-14T15:40",
+          "reason": "Shingrix dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-06-14T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-06-14T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Shingrix #2",
+              "date": "2023-06-14T15:40",
+              "author": "RN",
+              "body": "Second Shingrix, R deltoid. After dose 1 she had a tender arm and chills overnight, resolved by the next afternoon - not a contraindication, she wanted to finish the series. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-16a",
+          "kind": "annual_physical",
+          "start": "2023-08-16T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              129,
+              72
+            ],
+            "hr": 77,
+            "rr": 16,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 68.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-16T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 227
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.58
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-16T09:10",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-16T09:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 197
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 114
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 96
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 133
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-16T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-08-16T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-08-16T08:30",
+              "author": "PCP",
+              "body": "Annual exam. Doing well. Summer off, back to school in two weeks. Walking 3-4 evenings a week.\n\nNo meds. NKDA. FH/SH unchanged from last year.\n\nROS: no chest pain, dyspnea, GI or GU complaints. No rash, no muscle or joint complaints.\n\nExam: NAD. Thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen benign. Skin clear. Extremities without edema. Neuro grossly normal, strength normal.\n\nPHQ-2 negative.\n\nA/P: Healthy 52 y/o.\n- Labs: CBC, CMP, lipids, A1c.\n- Mammogram due in November - order placed.\n- Colon screening up to date (2021). Pap/HPV due 2025.\n- Shingrix done. Flu and the new COVID shot this fall.\n- Back in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-08-18a",
+          "kind": "portal_message",
+          "start": "2023-08-18T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2023-08-18T12:15",
+              "author": "PCP",
+              "body": "Heather, your labs look great - nothing out of range. See you next August. Your mammogram order is in; the imaging center will call to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "nurse_visit",
+          "start": "2023-10-11T15:35",
+          "reason": "Fall vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-11T15:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-11T15:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-11T15:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu/COVID",
+              "date": "2023-10-11T15:35",
+              "author": "MA",
+              "body": "Flu 0.5 mL IM left arm, 2023-24 COVID (Pfizer) IM right arm. VIS reviewed. No reaction during 15 min wait."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "imaging",
+          "start": "2023-11-08T16:10",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-11-08T16:10",
+              "text": "Screening tomosynthesis of both breasts compared with 11/2022 and 10/2021. Scattered fibroglandular densities. No new mass, no suspicious calcification, no distortion. Axillary tails unremarkable.",
+              "conclusion": "Negative mammogram (BI-RADS 1). Return in one year."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-20a",
+          "kind": "portal_message",
+          "start": "2024-06-20T19:52",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Rash and feeling weak",
+              "date": "2024-06-20T19:52",
+              "author": "patient",
+              "body": "Hi, school just ended and I finally have time to deal with this. For maybe two months I've had a purplish-red color on my upper eyelids and some red blotchy patches on the backs of my hands. I thought it was a reaction to a new eye cream but I stopped it and nothing changed. The other thing - and maybe unrelated - stairs have been a real effort since the winter, and holding my arms up to blow-dry or comb my hair wears me out. I'm not sick otherwise. Could I come in next week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Rash and feeling weak",
+              "date": "2024-06-21T08:14",
+              "author": "front desk",
+              "body": "Hi Heather, Dr. reviewed your message and would like to see you Monday 6/24 at 10:30. Please plan to have blood drawn while you're here."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-24a",
+          "kind": "office_visit",
+          "start": "2024-06-24T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Eyelid and hand rash, trouble with stairs",
+          "vitals": {
+            "bp": [
+              133,
+              76
+            ],
+            "hr": 69,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 67.2
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-06-24T11:15",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 1840
+                },
+                {
+                  "test": "Antinuclear Antibodies",
+                  "text": "Positive, titer 1:640, speckled pattern"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-06-24T11:15",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 58
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 44
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-06-24T11:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 267
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.39
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-06-24T10:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral-2024",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "eyelid and dorsal hand rash with proximal weakness"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-06-24T10:30",
+              "author": "PCP",
+              "body": "S: 53F, last seen 8/2023 for physical. About 2 months of violet-red discoloration of both upper lids and red patches on the backs of both hands. Not itchy to speak of. Stopped a new eye cream, no change. Separately, since roughly winter, climbing the stairs to her 2nd-floor classroom takes effort and her arms tire holding a hair dryer or comb. No muscle pain, no trouble swallowing, no shortness of breath. Denies fever, weight loss, night sweats. No new meds or supplements.\n\nO: Afebrile, vitals reviewed. Violaceous discoloration of the upper eyelids bilaterally. Blanching erythematous patches over the dorsal hands. Joints without synovitis. Strength 4+/5 deltoids and hip flexors bilaterally, symmetric; distal strength 5/5. Reflexes 2+ and symmetric. Heart and lungs normal.\n\nA/P: Rash of the lids and hands with symmetric proximal weakness - concerned for an inflammatory myopathy such as dermatomyositis.\n- CK, ANA, CMP, CBC, TSH today.\n- Dermatology referral for the rash; asked their office to see her this summer.\n- Will call with results. If swallowing or breathing trouble, call right away."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-26a",
+          "kind": "portal_message",
+          "start": "2024-06-26T17:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from Monday",
+              "date": "2024-06-26T17:05",
+              "author": "PCP",
+              "body": "Heather - your CK, a muscle enzyme, is high at 1,840, and the ANA (an autoimmune screening test) is positive at 1:640. Two liver tests are mildly up, which goes along with muscle inflammation rather than a liver problem. Thyroid and blood counts are normal. Together with the rash and the weakness this fits an inflammatory muscle condition, most likely dermatomyositis. Dermatology has you on July 19; I've sent them these results. We'll talk after that visit."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Results from Monday",
+              "date": "2024-06-26T20:31",
+              "author": "patient",
+              "body": "Thank you for explaining. I looked it up and it sounds scary but I'll wait to hear what they say. See you after the 19th."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-19a",
+          "kind": "specialist_visit",
+          "start": "2024-07-19T13:20",
+          "service": "Dermatology",
+          "reason": "Rash of eyelids and hands, proximal weakness",
+          "conditions": [
+            {
+              "label": "Dermatomyositis",
+              "action": "diagnosed",
+              "onset": "2024-04-01",
+              "note": "clinical diagnosis by dermatology",
+              "icd10": "M33.12"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              76
+            ],
+            "hr": 80,
+            "rr": 14,
+            "temp_c": 36.8,
+            "spo2": 99
+          },
+          "orders": [
+            {
+              "id": "derm-referral-2024",
+              "action": "done",
+              "date": "2024-07-19T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Consultation",
+              "date": "2024-07-25T09:30",
+              "author": "dermatology",
+              "body": "OUTSIDE DERMATOLOGY GROUP - CONSULTATION\nDate of visit: 07/19/2024\nRe: Heather Fournier, DOB 10/25/1970\n\nThank you for asking us to see this 53-year-old teacher. Over several months she has found it steadily harder to get up stairs and to keep her arms raised to comb her hair, and more recently noticed red skin changes on the face and hands. No fevers, no weight loss.\n\nPSH: cholecystectomy, tubal ligation. Meds: none. Allergies: NKDA.\nFamily: mother with autoimmune thyroiditis; maternal aunt with rheumatoid arthritis; father with hypertension.\nSocial: never smoker, a glass or two of wine weekly, high school math teacher.\n\nVitals: T 36.8 C (98.2 F), BP 124/76, P 80, RR 14, SpO2 99% RA.\n\nExam: Violaceous erythema of both upper eyelids (heliotrope pattern). Erythematous macules and thin patches on the dorsal hands. Scalp, trunk and nails otherwise unremarkable. Symmetric weakness of proximal arm and leg muscles on confrontation.\n\nData: Labs drawn by her primary care office on 06/24 - creatine kinase 1,840 U/L and ANA positive (1:640, speckled).\n\nImpression: Heliotrope eruption with hand involvement, symmetric proximal weakness and a raised CK - clinically dermatomyositis.\n\nRecommendations:\n1. Rheumatology for confirmation (myositis antibodies, EMG/biopsy as they see fit) and systemic treatment.\n2. Daily broad-spectrum sunscreen and sun-protective clothing; the eruption is often photosensitive.\n3. We are glad to see her again for the skin as needed.\n\ncc: primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2024-07-30a",
+          "kind": "telehealth_visit",
+          "start": "2024-07-30T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Review dermatology consult",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2024-07-30T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "rheum-referral-2024",
+              "action": "placed",
+              "order": "Rheumatology referral",
+              "category": "referral",
+              "to": "Rheumatology",
+              "reason": "dermatomyositis, confirmation and treatment"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2024-07-30T11:00",
+              "author": "PCP",
+              "body": "Video, she is at home; verified name and DOB.\n\nReviewed the dermatology letter with her. Their read is dermatomyositis on clinical grounds. She says the lids look about the same, hands a little less red with sunscreen. Stairs still slow. Swallowing fine, no breathing complaints.\n\nA/P: Dermatomyositis, clinical diagnosis - added to problem list.\n- Rheumatology referral placed today for confirmation and treatment.\n- Explained why confirming matters and that treatment is usually steroids plus a second medicine.\n- She will call if weakness worsens quickly, or with choking or breathlessness."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-11a",
+          "kind": "telephone",
+          "start": "2024-09-11T07:05",
+          "reason": "Rheumatology appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Rheumatology appointment cancelled",
+              "date": "2024-09-11T07:05",
+              "author": "front desk",
+              "body": "Pt called before school. Rheumatology offered 10/2 at 1:40; she cancelled it - can't take an afternoon off in the first weeks of classes, says the weakness hasn't changed and the rash is quieter. Asked her to reschedule with them directly when she can. Referral left open."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "nurse_visit",
+          "start": "2024-10-09T15:30",
+          "reason": "Fall vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-09T15:34"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-09T15:34"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-09T15:36"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "date": "2024-10-09T15:30",
+              "author": "RN",
+              "body": "Trivalent flu L deltoid and 2024-25 Moderna R deltoid, both IM. No immunosuppressive meds currently. Tolerated, waited 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-04a",
+          "kind": "imaging",
+          "start": "2024-12-04T16:20",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-12-04T16:20",
+              "text": "Digital breast tomosynthesis, screening. Prior studies 2021-2023 available. The breasts are heterogeneously dense in small areas, unchanged in appearance. No masses, suspicious calcifications or architectural distortion. Stable.",
+              "conclusion": "BI-RADS 1, negative. Annual screening."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-13a",
+          "kind": "annual_physical",
+          "start": "2025-08-13T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              125,
+              77
+            ],
+            "hr": 77,
+            "rr": 18,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 67.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-08-13T09:05",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 2650
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-13T09:05",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 71
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 52
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.68
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 63
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-13T09:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 240
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-08-13T09:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 201
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 114
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 69
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 90
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 132
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2025-08-13T08:50",
+              "text": "Specimen: liquid-based cervical cytology with high-risk HPV testing. Specimen adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HR-HPV negative.",
+              "issued": "2025-08-19T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-08-13T08:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "rheum-referral-2024",
+              "action": "cancelled",
+              "date": "2025-08-13T08:20"
+            },
+            {
+              "id": "rheum-referral-2025",
+              "action": "placed",
+              "order": "Rheumatology referral",
+              "category": "referral",
+              "to": "Rheumatology",
+              "reason": "dermatomyositis, weakness worsening; please see soon"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-08-13T08:20",
+              "author": "PCP",
+              "body": "Physical; last full exam 8/2023. Dermatomyositis (clinical dx by derm 7/2024), never made it to rheumatology - the October appointment was cancelled and not rebooked.\n\nShe says the weakness held steady through the year, but since early summer stairs are harder again and she rests partway up. Lifting her arms to put things on high shelves is tiring. Lids still dusky, knuckles red. No dysphagia, no dyspnea, no fevers.\n\nMeds: none. NKDA.\n\nExam: Well appearing. Violaceous upper-lid discoloration. Erythematous patches over the knuckles. Heart regular, lungs clear, abdomen benign. Strength 4+/5 shoulder abductors and hip flexors bilaterally, 5/5 distally. Pelvic: normal external genitalia, cervix normal, Pap/HPV collected. Breasts without mass.\n\nPHQ-9 = 2.\n\nA/P:\n1. Dermatomyositis, with weakness worse this summer. CK today. New rheumatology referral, asked for an early slot; she has agreed to take the time off this time.\n2. Preventive: Pap/HPV today. Labs CBC, CMP, lipids, A1c, TSH. Mammogram due in fall - order in. Colonoscopy not due until 2031. Flu/COVID in October.\n3. RTC after rheumatology."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-18a",
+          "kind": "portal_message",
+          "start": "2025-08-18T13:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results and rheumatology",
+              "date": "2025-08-18T13:30",
+              "author": "PCP",
+              "body": "Hi Heather, your CK came back at 2,650 - higher than last summer's 1,840, which matches the weakness you've noticed. The liver tests are mildly up again from the muscle. Everything else (blood counts, kidney, sugar, cholesterol, thyroid) is fine. Rheumatology has your referral marked as soon; their scheduler should call this week. The Pap result will follow in a few days."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results and rheumatology",
+              "date": "2025-08-20T06:48",
+              "author": "patient",
+              "body": "Got the Pap result too, thanks. Rheumatology called - first visit is November 19. They said they'd put me on the cancellation list. I'll take whatever comes up."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "nurse_visit",
+          "start": "2025-10-08T15:40",
+          "reason": "Fall vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-08T15:44"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-08T15:44"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-08T15:46"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu and COVID",
+              "date": "2025-10-08T15:40",
+              "author": "MA",
+              "body": "Flu IM L arm, Pfizer 2025-26 IM R arm. Pt asked whether to get these before any rheum meds - told her yes, good timing. No reaction."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-05a",
+          "kind": "imaging",
+          "start": "2025-11-05T16:00",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-11-05T16:00",
+              "text": "Bilateral screening mammography with tomosynthesis; compared with 12/2024 and 11/2023. Scattered fibroglandular tissue. No suspicious finding in either breast. No change from prior.",
+              "conclusion": "Negative (BI-RADS 1). Next screening in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "specialist_visit",
+          "start": "2025-11-19T14:00",
+          "service": "Rheumatology",
+          "reason": "Dermatomyositis, new consult",
+          "vitals": {
+            "bp": [
+              130,
+              74
+            ],
+            "hr": 83,
+            "weight_kg": 67.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-11-19T15:00",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 3120
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-19T15:00",
+              "resulted": "2025-12-08T11:30",
+              "results": [
+                {
+                  "test": "Mi-2 alpha IgG Antibody",
+                  "loinc": "82997-8",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-11-19T15:00",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 96
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 71
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "rheum-referral-2025",
+              "action": "done",
+              "date": "2025-11-19T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Consultation",
+              "date": "2025-11-24T10:00",
+              "author": "rheumatology",
+              "body": "RHEUMATOLOGY - NEW PATIENT CONSULTATION\nSeen 11/19/2025. Referred by her primary care physician.\n\nMs. Fournier is a 55-year-old math teacher with a heliotrope eruption, red knuckle patches and proximal weakness. Dermatology diagnosed dermatomyositis clinically in July 2024 (CK 1,840, ANA 1:640 speckled). She deferred the first rheumatology visit. Weakness was stable for about a year, then progressed from early summer 2025 (CK 2,650 in August). Now rests halfway up a flight of stairs. No dysphagia, dyspnea, cough, fevers or joint swelling.\n\nMeds: none. Allergies: NKDA.\n\nExam: Heliotrope discoloration of the lids; scaly erythematous patches over the MCP and PIP joints. Proximal muscle weakness, symmetric, upper and lower limbs (deltoids and hip flexors 4/5). Distal strength full. Lungs clear. No synovitis.\n\nToday: CK 3,120 U/L; AST 96, ALT 71 (muscle source likely).\n\nImpression: Probable dermatomyositis, progressing.\n\nPlan:\n1. Myositis-specific and associated antibody panel.\n2. EMG/NCS - requested at our neurophysiology lab.\n3. Muscle biopsy guided by the EMG, contralateral side.\n4. Return after results to discuss treatment.\n\ncc: PCP"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-10a",
+          "kind": "procedure_visit",
+          "start": "2025-12-10T09:00",
+          "service": "Neurology — Neurophysiology",
+          "reason": "EMG/NCS for proximal weakness",
+          "reports": [
+            {
+              "study": "Nerve conduction study and EMG",
+              "performed": "2025-12-10T09:00",
+              "text": "Nerve conduction: right median, ulnar, peroneal and sural nerves with normal distal latencies, amplitudes and conduction velocities; F-waves normal. Needle EMG: right deltoid, biceps, iliopsoas and vastus lateralis show fibrillation potentials and positive sharp waves, with early recruitment of short-duration, low-amplitude, polyphasic motor unit potentials. Right first dorsal interosseous and tibialis anterior normal. Thoracic paraspinals not sampled.",
+              "conclusion": "Irritable myopathy affecting proximal muscles of the right arm and leg, with normal nerve conduction. Consistent with an inflammatory myopathy. Left vastus lateralis suggested for biopsy."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Nerve conduction study with needle EMG",
+              "performed": "2025-12-10T09:00"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "procedure_visit",
+          "start": "2026-01-06T08:30",
+          "service": "General Surgery",
+          "reason": "Muscle biopsy, left thigh",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-01-06T08:30",
+              "text": "Specimen: skeletal muscle, left vastus lateralis, open biopsy (fresh and fixed portions). Frozen and paraffin sections show perifascicular atrophy, with small, basophilic fibers concentrated at the edges of fascicles. Perivascular inflammatory infiltrates in the perimysium, predominantly lymphocytes. Scattered necrotic and regenerating fibers. No rimmed vacuoles, no inclusions. Special stains and enzyme histochemistry otherwise unremarkable for this pattern.",
+              "conclusion": "Inflammatory myopathy with perifascicular atrophy and perivascular inflammation, consistent with dermatomyositis.",
+              "issued": "2026-01-14T16:20"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "specialist_visit",
+          "start": "2026-01-21T13:30",
+          "service": "Rheumatology",
+          "reason": "Dermatomyositis, results and treatment",
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 3 tablets (60 mg) by mouth every morning",
+              "dose": {
+                "value": 60,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Dermatomyositis"
+            },
+            {
+              "drug": "methotrexate 2.5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 6 tablets (15 mg) by mouth once a week on the same day",
+              "dose": {
+                "value": 15,
+                "unit": "mg"
+              },
+              "frequency": "WEEKLY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Dermatomyositis"
+            },
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "cholecalciferol 0.025 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet (1000 units) by mouth daily",
+              "dose": {
+                "value": 1000,
+                "unit": "[iU]"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              76
+            ],
+            "hr": 85,
+            "weight_kg": 67.9
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-01-21T14:30",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 3480
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Quantiferon-TB Gold",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-01-21T14:30",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 104
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 78
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-21T14:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 208
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.56
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up",
+              "date": "2026-01-26T09:15",
+              "author": "rheumatology",
+              "body": "RHEUMATOLOGY FOLLOW-UP - 01/21/2026\n\nShe returns to go over the workup for the problem first evaluated by dermatology in July 2024. Over the last six months she has had more trouble with stairs and with lifting her arms; brushing her hair now tires her out, and she notices her neck feels weak holding her head up while sitting. No dysphagia or dyspnea. No regular medications. NKDA.\n\nPSH: cholecystectomy 2014, tubal ligation 1999.\nFH: mother - autoimmune thyroiditis; maternal aunt - rheumatoid arthritis; father - hypertension.\nSH: high school math teacher; never smoked; wine 1-2 glasses a week.\n\nExam: Symmetric proximal weakness in arms and legs; neck flexors 4/5. Violaceous rash of the eyelids. Scaly red patches over the knuckles. Lungs clear.\n\nResults:\n- CK 3,480 U/L today (3,120 in November). AST 104, ALT 78.\n- Myositis panel: anti-Mi-2 positive; remaining myositis-specific antibodies negative.\n- EMG 12/10: irritable myopathy, proximal.\n- Muscle biopsy (L vastus lateralis) 01/06: perifascicular atrophy with perivascular inflammation - consistent with dermatomyositis.\n- Pre-treatment screening: HBsAg nonreactive, HCV Ab nonreactive, QuantiFERON negative.\n\nAssessment: Dermatomyositis, confirmed by antibody, electrodiagnostic and biopsy findings.\n\nPlan:\n1. Prednisone 60 mg each morning. Will taper by response.\n2. Methotrexate 15 mg once weekly, folic acid 1 mg daily. No alcohol beyond an occasional glass. CBC and liver tests every 4-6 weeks at first.\n3. Vitamin D3 1000 units daily; calcium through diet.\n4. CT chest, abdomen and pelvis for age-appropriate malignancy screening in adult dermatomyositis; her mammogram, Pap and colonoscopy are current.\n5. Please consider bone density and pneumococcal vaccination with her PCP.\n6. Return in 8 weeks.\n\ncc: PCP"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-23a",
+          "kind": "portal_message",
+          "start": "2026-01-23T20:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update from rheumatology",
+              "date": "2026-01-23T20:12",
+              "author": "patient",
+              "body": "Hi - rheumatology confirmed the dermatomyositis. I started prednisone 60 mg yesterday and the methotrexate this Sunday, plus folic acid and vitamin D. They said you might want to do a bone scan and a pneumonia vaccine. CT scan is booked for Feb 4. Should I come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Update from rheumatology",
+              "date": "2026-01-24T09:02",
+              "author": "PCP",
+              "body": "Thanks for the update, glad you have a plan. Yes - let's see you after the CT. The front desk will offer Feb 11. We'll give the pneumonia vaccine then and order the bone density test. Prednisone can raise blood sugar, so we'll check it at the visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-04a",
+          "kind": "imaging",
+          "start": "2026-02-04T07:50",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-02-04T07:50",
+              "text": "CT of the chest with IV contrast, performed with the abdomen and pelvis. Lungs are clear without nodules, consolidation, ground-glass or reticular opacity. No interstitial lung disease. Airways patent. No pleural or pericardial effusion. Heart size normal. No mediastinal, hilar or axillary lymphadenopathy. Thyroid and visualized breast tissue unremarkable. No osseous lesion.",
+              "conclusion": "Normal CT chest. No mass, adenopathy or interstitial lung disease."
+            },
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2026-02-04T07:50",
+              "text": "Liver, spleen, pancreas, adrenal glands and kidneys normal in appearance. Gallbladder surgically absent; no biliary dilatation. Bowel normal in caliber without wall thickening or mass. Uterus and adnexa unremarkable for age. No ascites. No retroperitoneal, mesenteric or pelvic lymphadenopathy. Bones without suspicious lesion.",
+              "conclusion": "No evidence of malignancy in the abdomen or pelvis. Post-cholecystectomy."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-11a",
+          "kind": "office_visit",
+          "start": "2026-02-11T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after rheumatology, starting immunosuppression",
+          "vitals": {
+            "bp": [
+              126,
+              80
+            ],
+            "hr": 82,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 69.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-11T16:10",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-02-11T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2026-02-11T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2026-02-11T16:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "dxa-2026",
+              "action": "placed",
+              "order": "DXA bone density, hip and spine",
+              "category": "imaging",
+              "reason": "long-term glucocorticoid therapy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-02-11T15:40",
+              "author": "PCP",
+              "body": "Here to catch up after rheumatology. Dermatomyositis now confirmed (anti-Mi-2 positive, myopathic EMG, biopsy with perifascicular atrophy). Three weeks into prednisone 60 mg daily; methotrexate 15 mg weekly with folic acid and vitamin D3 1000 units.\n\nSays the stairs feel a bit easier already. Took methotrexate the last 3 Sundays without nausea. CT last week normal - she had read the report and was relieved.\n\nExam: BP 126/80. Weight up about 1.5 kg. Lids still dusky. Strength in the hip flexors 4/5, shoulders 4+/5. Lungs clear.\n\nA/P:\n1. Dermatomyositis - treatment per rheumatology. Reviewed weekly (not daily) methotrexate dosing; she has a pill box marked for Sundays.\n2. Glucocorticoid therapy - BMP for glucose today. DXA ordered. Vitamin D on board, dietary calcium ok (yogurt, milk).\n3. Immunosuppressed - PCV20 given today. Flu and COVID already this season. Shingrix complete (2023). No live vaccines.\n4. Follow up in summer, or sooner."
+            }
+          ],
+          "state": {
+            "weight_kg": 69.5
+          },
+          "measure": [
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-25a",
+          "kind": "imaging",
+          "start": "2026-02-25T10:30",
+          "reports": [
+            {
+              "study": "DXA bone density, hip and spine",
+              "performed": "2026-02-25T10:30",
+              "text": "Dual-energy x-ray absorptiometry of the lumbar spine (L1-L4) and left hip. All vertebral levels evaluable. Lumbar spine T-score -0.9. Total hip T-score -0.4. Indication: long-term glucocorticoid therapy.",
+              "conclusion": "Normal bone density (WHO criteria)."
+            }
+          ],
+          "orders": [
+            {
+              "id": "dxa-2026",
+              "action": "done",
+              "date": "2026-02-25T10:30"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-27a",
+          "kind": "portal_message",
+          "start": "2026-02-27T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Bone density result",
+              "date": "2026-02-27T12:40",
+              "author": "PCP",
+              "body": "Good news - your bone density is normal (spine -0.9, hip -0.4). Keep up the vitamin D and calcium from food. We'll repeat it in a couple of years if you're still on prednisone. Your sugar on the 11th was fine too."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-18a",
+          "kind": "specialist_visit",
+          "start": "2026-03-18T14:10",
+          "service": "Rheumatology",
+          "reason": "Dermatomyositis follow-up",
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "stop",
+              "sig": "Take 3 tablets (60 mg) by mouth every morning"
+            },
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (40 mg) by mouth every morning",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Dermatomyositis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              78
+            ],
+            "hr": 91,
+            "weight_kg": 69.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-03-18T15:00",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 910
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-03-18T15:00",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 40
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 38
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-18T15:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.41
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up",
+              "date": "2026-03-23T08:40",
+              "author": "rheumatology",
+              "body": "Rheumatology follow-up 03/18/2026.\n\nDermatomyositis (anti-Mi-2), 8 weeks into treatment. Clear improvement: climbs her classroom stairs without stopping, can hold her arms up to wash her hair. Lid and knuckle redness fading. Neck no longer feels weak. Methotrexate tolerated, no mouth sores.\n\nExam: deltoids and hip flexors 4+/5, neck flexors 5/5. Faint heliotrope.\n\nLabs: CK 910 (from 3,480). AST 40, ALT 38. CBC fine.\n\nPlan: Prednisone down to 40 mg daily. Methotrexate 15 mg weekly unchanged with folic acid. Labs again in 4-6 weeks. Return in 8 weeks.\n\ncc: PCP"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-13a",
+          "kind": "specialist_visit",
+          "start": "2026-05-13T13:50",
+          "service": "Rheumatology",
+          "reason": "Dermatomyositis follow-up",
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "stop",
+              "sig": "Take 2 tablets (40 mg) by mouth every morning"
+            },
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet (20 mg) by mouth every morning",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Dermatomyositis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              87
+            ],
+            "hr": 79,
+            "weight_kg": 69.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-13T14:40",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 260
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-05-13T14:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-13T14:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 273
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.48
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up",
+              "date": "2026-05-18T11:25",
+              "author": "rheumatology",
+              "body": "Follow-up visit 5/13/26 - dermatomyositis.\n\nContinues to improve. Teaching full days without needing to sit; stairs fine. Skin nearly clear. Taking methotrexate every Sunday with folic acid daily; no GI upset.\n\nExam: strength 5-/5 proximally, symmetric. Minimal residual lid discoloration.\n\nLabs: CK 260. Liver tests and CBC normal.\n\nPlan: Prednisone 20 mg daily. Methotrexate 15 mg weekly continues. Labs before next visit. Back in about 3 months.\n\ncc: PCP"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-08a",
+          "kind": "office_visit",
+          "start": "2026-07-08T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, dermatomyositis on prednisone and methotrexate",
+          "vitals": {
+            "bp": [
+              128,
+              80
+            ],
+            "hr": 85,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 71.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-07-08T09:55",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 170
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-08T09:55",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-08T09:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 214
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.41
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-07-08T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-07-08T09:20",
+              "author": "PCP",
+              "body": "Summer check-in. Dermatomyositis much improved - she finished the school year without trouble on the stairs and is gardening again. On prednisone 20 mg daily since mid-May, methotrexate 15 mg Sundays, folic acid, D3. No mouth sores, no cough, no breathlessness. A few pounds up on prednisone.\n\nExam: BP 128/80. Wt 71.5 kg. Lids nearly clear, knuckles faint pink. Strength 5-/5 hip flexors, otherwise 5/5. Lungs clear. No edema.\n\nA/P:\n1. Dermatomyositis, responding. CK, CMP, CBC today (also covers rheum's monitoring labs this cycle - will forward).\n2. Prednisone effects - A1c today. BP fine. DXA normal in Feb.\n3. Health maintenance: flu and COVID in the fall (inactivated only). Mammogram due November.\n4. Rheumatology next in August."
+            }
+          ],
+          "state": {
+            "weight_kg": 71.5
+          },
+          "measure": [
+            "hr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-07-10a",
+          "kind": "portal_message",
+          "start": "2026-07-10T08:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Wednesday's labs",
+              "date": "2026-07-10T08:45",
+              "author": "PCP",
+              "body": "Heather, the CK is down to 170 - in the normal range for the first time since this started. Liver tests, blood counts, kidney function and A1c are all normal. I've sent the results to rheumatology. Enjoy the summer."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Wednesday's labs",
+              "date": "2026-07-10T10:02",
+              "author": "patient",
+              "body": "That's wonderful news. Thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "specialist_visit",
+          "start": "2026-08-12T14:20",
+          "service": "Rheumatology",
+          "reason": "Dermatomyositis follow-up",
+          "vitals": {
+            "bp": [
+              127,
+              72
+            ],
+            "hr": 84,
+            "weight_kg": 72.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-08-12T15:05",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 140
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up",
+              "date": "2026-08-19T13:30",
+              "author": "rheumatology",
+              "body": "Rheumatology - 08/12/2026\n\nDermatomyositis, anti-Mi-2 positive. Doing very well; strength near normal and the rash has essentially cleared. Ready for the school year. Labs from her PCP in July reviewed (CK 170, liver tests and CBC normal).\n\nCurrent: prednisone 20 mg daily, methotrexate 15 mg weekly, folic acid 1 mg, vitamin D3 1000 units.\n\nExam: 5/5 proximal strength except hip flexors 5-/5. Skin clear.\n\nCK today 140.\n\nPlan: Reduce prednisone to 15 mg daily. Continue methotrexate 15 mg weekly and folic acid. Labs in 6 weeks. Next visit in 3 months.\n\ncc: PCP"
+            },
+            {
+              "type": "Outside Records",
+              "title": "Rheumatology note received",
+              "date": "2026-08-19T14:05",
+              "author": "MA",
+              "body": "Rheumatology note from 8/12 received by fax and scanned. Routed to PCP inbox."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Dermatomyositis|M33.12": {
+        "code": "M33.12",
+        "display": "Other dermatomyositis with myopathy",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "Mi-2 alpha IgG Antibody": {
+        "code": "82997-8",
+        "display": "Mi-2 alpha IgG Ab [Presence] in Serum by Line blot",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

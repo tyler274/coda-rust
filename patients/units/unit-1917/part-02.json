@@ -1,0 +1,337 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001917",
+      "events": [
+        {
+          "id": "2024-02-06a",
+          "kind": "telephone",
+          "start": "2024-02-06T13:05",
+          "reason": "Membership billing question",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Billing question",
+              "author": "front desk",
+              "date": "2024-02-06T13:05",
+              "body": "Pt asked whether the annual membership fee can be paid from her HSA card and whether we provide an itemized receipt. Explained the fee is not a covered insurance service; receipt emailed for her own records, she will check with her plan administrator. Card on file updated by her through the billing portal."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-27a",
+          "kind": "annual_physical",
+          "start": "2024-08-27T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-08-27b",
+          "kind": "portal_message",
+          "start": "2024-08-27T06:50",
+          "reason": "Reschedule physical",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Need to move my physical",
+              "author": "patient",
+              "date": "2024-08-27T06:50",
+              "body": "So sorry for the late notice. Our building had a last-minute staff meeting called for this morning and I can't miss it. Could I come in after school some day in the next couple weeks instead?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Need to move my physical",
+              "author": "front desk",
+              "date": "2024-08-27T08:05",
+              "body": "No problem at all. You're rebooked for Tuesday 9/10 at 3:45. If you can, skip food after lunch that day so we can draw the cholesterol panel."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "annual_physical",
+          "start": "2024-09-10T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, cervical screening",
+          "state": {"labs": {"Hemoglobin A1c": 5.2}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 1}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-10T16:30", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-10T16:30", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2024-09-10T16:30", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2024-09-10T16:10",
+              "issued": "2024-09-13T10:00",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV DNA: not detected.",
+              "conclusion": "NILM. High-risk HPV negative."
+            }
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-09-10T16:35"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-09-10T15:45"},
+            {"procedure": "Immunization administration", "performed": "2024-09-10T16:35"},
+            {"procedure": "Venipuncture", "performed": "2024-09-10T16:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-10T15:45",
+              "body": "Rescheduled physical, seen after her school day. Feels well. Busy fall with a larger class but sleeping fine, mood good. No complaints on review of systems. Cycles regular.\n\nMeds none. NKDA. Never smoker. Alcohol unchanged, rare.\nFH: as before.\n\nExam: BP and pulse in range, weight about where it was. Alert, comfortable. HEENT unremarkable. No thyroid enlargement. Cardiac exam regular, no murmur. Clear lungs. Abdomen nontender. Breasts: no masses, no axillary nodes. Pelvic: normal external genitalia, cervix without lesion; co-test obtained. Extremities warm, no swelling. Face symmetric, CN grossly intact.\nPHQ-2 = 1.\n\nPlan:\n- Pap with HPV co-test sent (last 2019).\n- CMP, lipids, A1c given family history of diabetes; drawn ~4.5 h after lunch.\n- Flu vaccine today. COVID at the pharmacy when the fall formula is out.\n- Mammogram discussion at 40.\n- RTC 1 yr."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-13a",
+          "kind": "portal_message",
+          "start": "2024-09-13T15:20",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and blood work results",
+              "author": "PCP",
+              "date": "2024-09-13T15:20",
+              "body": "Hi Tracy, good news all around. Your Pap was normal and the HPV test negative, so the next cervical screen isn't due for five years. A1c (the diabetes screening test) is normal, and your cholesterol, kidney and liver numbers are all where we'd like them. Talk soon."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pap and blood work results",
+              "author": "patient",
+              "date": "2024-09-13T20:02",
+              "body": "Thank you! That's a relief with my mom's diabetes."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "outside_records",
+          "start": "2024-10-08T09:30",
+          "reason": "Pharmacy immunization record",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-05T10:40"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy vaccine administration record",
+              "author": "pharmacy",
+              "date": "2024-10-08T09:30",
+              "body": "Immunization notice from community pharmacy for Tracy Leblanc (DOB 02/18/1989). COVID-19 vaccine, Pfizer 2024-2025 formula, 0.3 mL IM left deltoid, given 10/05/2024. Tolerated. Recorded in the practice chart."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-30a",
+          "kind": "ed_visit",
+          "start": "2025-01-30T07:25",
+          "end": "2025-01-30T10:40",
+          "service": "Emergency Medicine",
+          "reason": "Right-sided facial weakness",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2"],
+          "conditions": [
+            {"label": "Bell palsy", "action": "diagnosed", "onset": "2025-01-30", "note": "Right side."}
+          ],
+          "medications": [
+            {"drug": "prednisone 20 MG Oral Tablet", "action": "historical", "sig": "Take 3 tablets (60 mg) by mouth once daily for 7 days", "dose": {"value": 60, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "short", "reason": "Bell palsy"},
+            {"drug_text": "carboxymethylcellulose sodium 5 MG/ML Ophthalmic Solution", "action": "historical", "sig": "1-2 drops in the right eye every 2 hours while awake", "frequency": "Q2H", "route": "Ophthalmic", "course": "short", "reason": "Incomplete eye closure"}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, moderate MDM", "performed": "2025-01-30T07:40"}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Physician Record",
+              "author": "emergency medicine",
+              "date": "2025-01-31T08:15",
+              "body": "Emergency Department, community hospital. Visit 01/30/2025, arrival 07:25. Copy sent to PCP.\n\nCC: R face weak since waking.\n\nHPI: 35F, no medical history, awoke today unable to fully shut the R eye; smile pulls to the left. Was normal at bedtime. No URI or other illness lately, no head or face injury. Denies limb weakness, numbness, speech or vision change, headache, ear pain, rash.\n\nPMH none. PSH third molar extraction age 22. Meds none. Allergies: NKDA.\nFH: mother type 2 DM, father HTN, sister had a Bell palsy.\nSH: elementary teacher; never smoker; alcohol 1-2/month.\n\nExam: VS as charted, afebrile. Alert, fluent speech. R face: forehead does not wrinkle, eyelid closure incomplete, cannot show teeth on the R. Remaining cranial nerves intact. External auditory canals clear, no vesicles. Hearing grossly intact bilaterally. Strength, sensation, coordination and gait normal. No other abnormal findings.\n\nMDM: isolated R lower motor neuron facial nerve palsy, forehead involved, normal remainder of the neuro exam, onset within hours. Consistent with idiopathic facial palsy; no features of stroke, no zoster findings, no imaging indicated.\n\nDx: Bell palsy, right.\n\nDisposition: home.\n- Prednisone 60 mg PO daily x 7 days, first dose given here.\n- Lubricating drops to R eye frequently while awake; tape eyelid closed at night; sunglasses outdoors.\n- See PCP within 1 week. Return for new weakness elsewhere, eye pain or redness, worsening.\nDischarged 10:40 in stable condition."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-30b",
+          "kind": "portal_message",
+          "start": "2025-01-30T12:35",
+          "reason": "ED visit this morning",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Was in the ER this morning",
+              "author": "patient",
+              "date": "2025-01-30T12:35",
+              "body": "Hi, wanted you to know I woke up with the right side of my face not working and went straight to the ER because I was scared it was a stroke. They said it's Bell's palsy like my sister had and gave me prednisone and eye drops. They told me to see you this week. I'm home from school today and tomorrow."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Was in the ER this morning",
+              "author": "PCP",
+              "date": "2025-01-30T13:10",
+              "body": "Tracy, I'm glad you went in, that was the right call. Take the prednisone every morning with food until it's finished, and be diligent about the drops and taping the eye at night, because the eye is the thing we most need to protect right now. Most people recover well over weeks. Let's see you Tuesday the 4th at 8:15. Message or call me sooner if you notice weakness anywhere else, eye pain, or it gets worse."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-04a",
+          "kind": "office_visit",
+          "start": "2025-02-04T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after ED visit for facial palsy",
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2025-02-04T08:15"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Follow-up",
+              "author": "PCP",
+              "date": "2025-02-04T08:15",
+              "body": "Seen after ED visit 1/30 for R Bell palsy (ED record reviewed). On prednisone 60 mg day 6 of 7, taking it with breakfast. Using drops many times a day and taping at night; no eye pain or redness. Weakness unchanged to slightly better per her. No new symptoms elsewhere. Back at work tomorrow; worried about the kids noticing.\n\nExam: vitals fine. R peripheral facial weakness persists, forehead included; R eye closes incompletely with effort, cornea clear, no injection. Left face normal. Other CN normal. Limbs normal.\n\nA/P: R Bell palsy, ~1 wk, early in expected course.\n- Finish prednisone, no taper needed for 7 days.\n- Keep up eye protection until closure is complete.\n- Note for school given for absence 1/30-2/4.\n- Expect gradual return over weeks to a few months; message me with progress. If not clearly improving by 3 months, refer to neurology."
+            },
+            {
+              "type": "Letter",
+              "title": "Work note",
+              "author": "PCP",
+              "date": "2025-02-04T08:50",
+              "body": "To whom it may concern: Ms. Tracy Leblanc was under medical care and unable to work from January 30 through February 4, 2025. She may return to full duties on February 5, 2025."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "portal_message",
+          "start": "2025-04-22T19:40",
+          "reason": "Facial palsy update",
+          "conditions": [
+            {"label": "Bell palsy", "action": "resolved", "note": "Right side recovered fully by April 2025."}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Face update",
+              "author": "patient",
+              "date": "2025-04-22T19:40",
+              "body": "You asked me to report back, so: my face is totally back to normal! The eye closes all the way, the smile is even, and I stopped the drops a couple weeks ago. Took longer than I wanted but I'm so happy."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Face update",
+              "author": "PCP",
+              "date": "2025-04-22T21:05",
+              "body": "That's wonderful to hear, Tracy. I'll mark it as resolved in your chart. Nothing else needed. See you for your physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-22a",
+          "kind": "telephone",
+          "start": "2025-09-22T07:05",
+          "reason": "New left facial weakness",
+          "orders": [
+            {"id": "neuro-referral-2025", "action": "placed", "order": "Neurology referral", "category": "referral", "to": "Neurology", "reason": "Facial palsy, now on the left after a right-sided episode in January"}
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Left facial weakness",
+              "author": "PCP",
+              "date": "2025-09-22T07:05",
+              "body": "Pt called before school. Since yesterday morning water dribbles out the L corner of her mouth when she drinks and food tastes flat at the front of the tongue. L eye doesn't feel like it closes as tight. Arms, legs, speech, vision fine. No headache, fever, ear pain or rash. R side fully recovered after the January episode.\n\nThis is the opposite side, so I'd like neurology eyes on it within the treatment window. Called the outside neurology office directly; they can see her tomorrow (9/23) at 1:30. Referral faxed. Told her to go to the ED instead if any arm/leg weakness, speech trouble or sudden severe headache. Restart eye drops now and tape at night. She keeps her physical here Wednesday."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "specialist_visit",
+          "start": "2025-09-23T13:30",
+          "service": "Neurology",
+          "reason": "Left facial weakness and taste change",
+          "measure": ["bp", "hr"],
+          "conditions": [
+            {"label": "Bell palsy", "action": "diagnosed", "onset": "2025-09-21", "note": "Left side; prior right-sided episode January 2025."}
+          ],
+          "medications": [
+            {"drug": "prednisone 20 MG Oral Tablet", "action": "historical", "sig": "Take 3 tablets (60 mg) by mouth once daily for 7 days", "dose": {"value": 60, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "short", "reason": "Bell palsy"},
+            {"drug_text": "carboxymethylcellulose sodium 5 MG/ML Ophthalmic Solution", "action": "historical", "sig": "1-2 drops in the left eye every 2 hours while awake", "frequency": "Q2H", "route": "Ophthalmic", "course": "short", "reason": "Incomplete eye closure"}
+          ],
+          "orders": [
+            {"id": "neuro-referral-2025", "action": "done", "date": "2025-09-23T13:30"}
+          ],
+          "procedures": [
+            {"procedure": "Office consultation, comprehensive", "performed": "2025-09-23T13:30"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Consultation",
+              "author": "neurology",
+              "date": "2025-09-26T10:20",
+              "body": "Outpatient neurology, consultation of 09/23/2025. Requested by her primary care physician. Copy to PCP.\n\nReason: left facial weakness and altered taste.\n\nHistory: 36-year-old teacher, otherwise healthy, with a right-sided idiopathic facial palsy in late January 2025, treated with steroids in the ED and fully recovered by spring. Roughly eight months later, since the morning of 9/21, she has trouble keeping fluids in on the left when drinking and finds food bland on the front of her tongue while the back tastes normal. No headache, fever or recent infection.\n\nMedications: none prior to today. Allergies: no known drug allergies.\nFamily: sister with a prior Bell palsy; mother type 2 diabetes; father hypertension.\nSocial: never smoker, alcohol 1-2 drinks per month, elementary school teacher.\n\nExamination: alert, fluent. Taste diminished over the left anterior tongue. Left eyelid closure incomplete. Smile mildly asymmetric, weaker on the left. Facial sensation intact in all divisions. Tongue protrudes midline. Masseter and pterygoid strength normal. Remaining cranial nerves and limb examination normal.\n\nImpression: acute left peripheral facial palsy, a contralateral recurrence of Bell palsy within 48 hours of onset.\n\nPlan:\n1. Prednisone 60 mg daily for 7 days, started today.\n2. Artificial tears every 2 hours while awake to the left eye, lid taping at night.\n3. Recovery usually follows over weeks. Return to clinic for any further episode or if no improvement in 3 months.\n\nThank you for this referral."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-24a",
+          "kind": "annual_physical",
+          "start": "2025-09-24T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical; left facial palsy follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 3}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-09-24T16:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-09-24T16:17"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-09-24T15:30"},
+            {"procedure": "Immunization administration", "performed": "2025-09-24T16:15"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-09-24T15:30",
+              "body": "Scheduled physical, also our follow-up after yesterday's neurology consult.\n\nInterval: R Bell palsy Jan 2025, recovered fully by April. L-sided facial palsy began 9/21; neurology saw her 9/23, agreed it's a Bell palsy on the other side, started prednisone 60 mg x7 d (took dose 2 this morning) and lubricating drops. Formal letter not yet in; she brought the after-visit summary. Some trouble with drinking from a cup and taste at the tongue tip; L eye a bit dry. Otherwise well. Frustrated that it happened again, sleeping OK, teaching through it.\n\nMeds: prednisone 60 mg daily (through 9/29), artificial tears. NKDA.\nFH/SH unchanged.\n\nExam: vitals in range, weight stable. L lower motor neuron facial weakness: incomplete eyelid closure, mild smile asymmetry. L cornea clear. R face normal. Remaining CN, strength and gait normal. HEENT otherwise normal; neck without nodes. Heart regular without murmur; lungs clear. Abdomen soft. No edema.\nPHQ-9: 3.\n\nAssessment/plan:\n1. Bell palsy, left, day 3. Agree with neurology plan. Eye protection reinforced. Prednisone may raise sugars and disturb sleep for the week; take it in the morning. Neurology to see her again for any further episode.\n2. Health maintenance: flu and 2025-26 COVID vaccines today. Pap/HPV current (2024, next 2029). Labs not repeated today on steroids; all normal last year.\n3. RTC one year, sooner by message."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "portal_message",
+          "start": "2025-11-12T18:25",
+          "reason": "Facial palsy update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Left side update",
+              "author": "patient",
+              "date": "2025-11-12T18:25",
+              "body": "Quick update: the left side is coming back. I can close my eye now and only notice my smile in photos. Taste is mostly back. Teaching full days with no trouble."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Left side update",
+              "author": "PCP",
+              "date": "2025-11-12T19:00",
+              "body": "Really glad it's moving the right way. Keep using drops if the eye feels dry. Reach out if it stalls or anything new shows up."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

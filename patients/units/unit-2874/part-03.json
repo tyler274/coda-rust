@@ -1,0 +1,595 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002874",
+   "events": [
+    {
+     "id": "2025-03-11a",
+     "kind": "pharmacy",
+     "start": "2025-03-11T10:05",
+     "reason": "Prior authorization renewal",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Inhaler PA renewal",
+       "author": "MA",
+       "date": "2025-03-11T10:05",
+       "body": "New plan year: mail-order pharmacy flagged tiotropium capsules as needing PA again. Completed the form with spirometry 3/2022 (FEV1/FVC 0.58, FEV1 61%) and current regimen. Approved through end of year, confirmation number on the fax. Pharmacy notified, shipment released."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-22a",
+     "kind": "annual_physical",
+     "start": "2025-04-22T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "appointment": "no-show"
+    },
+    {
+     "id": "2025-04-23a",
+     "kind": "telephone",
+     "start": "2025-04-23T09:50",
+     "reason": "Missed appointment",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed wellness visit",
+       "author": "front desk",
+       "date": "2025-04-23T09:58",
+       "body": "Called about yesterday's missed appointment. She had it written for the 29th on her calendar. Rebooked for 5/13, 9:40. Reminder text turned on."
+      }
+     ]
+    },
+    {
+     "id": "2025-05-13a",
+     "kind": "annual_physical",
+     "start": "2025-05-13T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-05-13T10:30",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-05-13T10:30",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2025-05-13T10:30",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current every day smoker"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2025-05-13T09:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-05-13T10:30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "dxa-2025",
+       "action": "placed",
+       "order": "DXA bone density, hip and spine",
+       "category": "imaging",
+       "reason": "osteoporosis screening, age 65"
+      },
+      {
+       "id": "mammo-2025",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "annual screening"
+      },
+      {
+       "id": "ldct-2025",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "annual screening, due November"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2025-05-13T11:00",
+       "body": "AWV, now 65. Apologized for the missed April slot (calendar mix-up).\nOncology: gyn-onc every 3 months; last visit in April, told no sign of the cancer.\nCOPD: no exacerbations. Albuterol 2-3x/week. Inhalers covered after the PA in March.\nTobacco: daily, unchanged; still not ready.\nFunction: independent; no falls; PHQ-2 0; cognition screen normal.\nAllergies: sulfa (rash), latex (dermatitis).\nExam: lungs diminished at bases, no wheeze; heart RRR; no edema; gait steady.\nPrevention: DXA now that she's 65; mammogram this summer; LDCT November; colonoscopy due next year. Fall vaccines at the October nurse visit.\nLabs today. RTC fall or as needed."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-10a",
+     "kind": "imaging",
+     "start": "2025-06-10T11:15",
+     "reason": "Bone density",
+     "reports": [
+      {
+       "study": "DXA bone density, hip and spine",
+       "performed": "2025-06-10T11:15",
+       "text": "Indication: Screening, postmenopausal woman age 65. Lumbar spine L1-L4 and bilateral proximal femur measured; all regions analyzable. T-scores at the lumbar spine, femoral neck and total hip are all within the normal range (above -1.0).",
+       "conclusion": "Normal bone density."
+      }
+     ],
+     "orders": [
+      {
+       "id": "dxa-2025",
+       "action": "done",
+       "date": "2025-06-10T11:15"
+      }
+     ]
+    },
+    {
+     "id": "2025-06-11a",
+     "kind": "portal_message",
+     "start": "2025-06-11T17:45",
+     "reason": "Bone density result",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Bone density",
+       "author": "PCP",
+       "date": "2025-06-11T17:45",
+       "body": "Hi Theresa, your bone density scan is normal for both the hips and the spine. No treatment needed. Keep up the walking."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Bone density",
+       "author": "patient",
+       "date": "2025-06-11T20:02",
+       "body": "Good news for once! Thank you."
+      }
+     ]
+    },
+    {
+     "id": "2025-08-05a",
+     "kind": "imaging",
+     "start": "2025-08-05T08:50",
+     "reason": "Screening mammogram",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2025-08-05T08:50",
+       "text": "Bilateral CC and MLO with tomosynthesis, compared with 8/6/2024. Scattered fibroglandular densities. No suspicious mass, calcification or distortion.",
+       "conclusion": "BI-RADS 1: Negative. Routine screening in one year."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2025",
+       "action": "done",
+       "date": "2025-08-05T08:50"
+      }
+     ]
+    },
+    {
+     "id": "2025-09-29a",
+     "kind": "ed_visit",
+     "start": "2025-09-29T06:40",
+     "end": "2025-09-29T11:55",
+     "service": "Emergency Medicine",
+     "reason": "Shortness of breath, COPD exacerbation",
+     "conditions": [
+      {
+       "label": "Chronic obstructive pulmonary disease with acute exacerbation",
+       "action": "diagnosed",
+       "onset": "2025-09-27"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "prednisone 20 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 2 tablets (40 mg) by mouth once daily for 5 days",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "short",
+       "reason": "COPD exacerbation"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2025-09-29T06:45",
+       "spo2": 91
+      },
+      {
+       "time": "2025-09-29T08:10",
+       "spo2": 95
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, moderate MDM",
+       "performed": "2025-09-29T06:40"
+      },
+      {
+       "procedure": "Nebulizer treatment",
+       "performed": "2025-09-29T07:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Notes",
+       "title": "Emergency department note",
+       "author": "emergency medicine",
+       "date": "2025-09-30T14:20",
+       "body": "ED provider note, visit 9/29/2025, faxed to PCP 9/30.\n65F with COPD, high-risk HPV, and vaginal SCC diagnosed 10/2023 s/p radiation, here with worsening shortness of breath over a couple of days, more than her baseline. Home meds: fluticasone/salmeterol 250/50 BID, tiotropium 18 mcg daily, albuterol PRN. Allergies: sulfa (rash), latex (contact dermatitis). Current smoker.\nSpO2 91% RA on arrival. Albuterol/ipratropium nebulizer given; SpO2 95% RA afterward and breathing eased.\nImpression: acute exacerbation of COPD.\nDispo: home on prednisone 40 mg daily x 5 days; continue home inhalers; PCP follow-up within a week. Before discharge she acknowledged her smoking has caused her problems but felt it was likely too late to stop now."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-30a",
+     "kind": "telephone",
+     "start": "2025-09-30T15:10",
+     "reason": "Post-ED call",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Call after ED visit",
+       "author": "RN",
+       "date": "2025-09-30T15:22",
+       "body": "ED fax received. Called pt: breathing better than yesterday, took the first two prednisone doses with breakfast as told, using albuterol every 4-6 hours today. No fever. Booked follow-up with PCP Monday 10/6 at 11:00. Told her to call or go back if she is getting worse before then."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-06a",
+     "kind": "office_visit",
+     "start": "2025-10-06T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after ED visit",
+     "conditions": [
+      {
+       "label": "Chronic obstructive pulmonary disease with acute exacerbation",
+       "action": "resolved",
+       "onset": "2025-09-27"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "prednisone 20 MG Oral Tablet",
+       "action": "stop",
+       "reason": "course completed"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-10-06T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-ED follow-up",
+       "author": "PCP",
+       "date": "2025-10-06T11:45",
+       "body": "Seen in the ED 9/29 for a COPD flare (short ED note received: SpO2 91% on arrival, 95% after a neb; sent home on prednisone 40 mg x 5 days). Finished the steroid on 10/3. Breathing is back to her normal now; walking around the house and to the car without trouble. Using maintenance inhalers daily.\nWatched her use both inhalers: disk technique good; with the capsule device she was not breathing in hard enough to rattle the capsule, corrected and she repeated it well.\nExam: speaking full sentences, no distress. Lungs diminished, no wheeze. Heart RRR. No edema.\nA/P\n1. COPD exacerbation, resolved. Continue current inhalers. Written action plan reviewed: when to use albuterol more, when to call.\n2. Tobacco: she told the ED it's too late to quit. We talked it through again - quitting still reduces flares. Offered varenicline or patches with quitline support; she declined both today. Remains contemplative.\n3. Flu and COVID vaccines at the nurse visit later this month.\nRTC in a few months."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-21a",
+     "kind": "nurse_visit",
+     "start": "2025-10-21T13:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Fall vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2025-10-21T13:55"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2025-10-21T13:57"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-10-21T13:55"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunizations",
+       "author": "RN",
+       "date": "2025-10-21T14:15",
+       "body": "High-dose flu (first year eligible at 65) in L deltoid; 2025-26 COVID in R deltoid. Gloves latex-free. Breathing comfortable today, no recent illness. No reaction during 15 min wait."
+      }
+     ]
+    },
+    {
+     "id": "2025-11-18a",
+     "kind": "imaging",
+     "start": "2025-11-18T14:30",
+     "reason": "Lung cancer screening",
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2025-11-18T14:30",
+       "text": "Indication: Annual lung screening, current smoker. Comparison: 11/19/2024.\nTechnique: Low-dose helical CT chest without contrast.\nFindings: Stable mild centrilobular emphysema. No pulmonary nodules. Lungs otherwise clear; no effusion. No mediastinal, hilar or axillary adenopathy. Heart size normal. Visualized upper abdomen unremarkable.",
+       "conclusion": "Lung-RADS 1: negative. Continue annual screening."
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2025",
+       "action": "done",
+       "date": "2025-11-18T14:30"
+      }
+     ]
+    },
+    {
+     "id": "2026-01-20a",
+     "kind": "telehealth_visit",
+     "start": "2026-01-20T14:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "COPD follow-up",
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2026-01-20T14:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "COPD follow-up (video)",
+       "author": "PCP",
+       "date": "2026-01-20T14:40",
+       "body": "Video from home (snow day), identity confirmed with birthdate.\nNo further flares since the fall. Rescue inhaler about twice weekly. Maintenance inhalers daily; capsule technique she says is better since we went over it.\nGyn-onc visit in January was fine by her account; they are spacing her visits to every six months now.\nNovember LDCT negative.\nStill smoking. Not interested in medications. Will raise again in May.\nPlan: continue regimen; refills current; wellness visit in May with labs."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-12a",
+     "kind": "annual_physical",
+     "start": "2026-05-12T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit and COPD",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-05-12T09:50",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-05-12T09:50",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2026-05-12T09:50",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current every day smoker"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2026-05-12T09:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-05-12T09:50"
+      }
+     ],
+     "orders": [
+      {
+       "id": "colo-2026",
+       "action": "placed",
+       "order": "Gastroenterology referral for screening colonoscopy",
+       "category": "referral",
+       "to": "Gastroenterology",
+       "reason": "10-year interval since normal 2016 colonoscopy"
+      },
+      {
+       "id": "mammo-2026",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "annual screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2026-05-12T10:35",
+       "body": "AWV plus COPD check.\nCOPD: one ED-treated flare last September, none since. Albuterol twice a week or so. Inhalers: fluticasone/salmeterol 250/50 BID, tiotropium 18 mcg daily, albuterol PRN - no changes.\nVaginal SCC (stage I, radiation completed 1/2024): gyn-onc now every six months; she reports no evidence of disease at the last visit.\nTobacco: daily smoker. Asked again; she says she thinks about it more since the ED trip but isn't ready. Offer stands.\nFunction: independent, no falls, PHQ-2 0, cognition screen normal. Health care proxy on file (sister).\nAllergies: sulfa, latex.\nExam: no distress. Lungs diminished throughout, no wheeze or crackles. Heart RRR. Abdomen soft. No edema. Gait normal.\nPrevention: colonoscopy due (2016 normal) - GI referral placed. Mammogram due August - ordered. LDCT again in November. DXA 2025 normal. Vaccines current; flu/COVID in the fall.\nLabs today. Follow-up in about six months for COPD."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-14a",
+     "kind": "portal_message",
+     "start": "2026-05-14T07:55",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results from Tuesday",
+       "author": "PCP",
+       "date": "2026-05-14T07:55",
+       "body": "Good morning Theresa - blood counts, kidney and liver function, sugar and cholesterol all look normal. Nothing to change. The GI office should reach out to set up the colonoscopy; let us know if you haven't heard from them in a few weeks."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-16a",
+     "kind": "pharmacy",
+     "start": "2026-06-16T10:30",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Albuterol refill",
+       "author": "MA",
+       "date": "2026-06-16T10:40",
+       "body": "Electronic refill request from mail order for albuterol HFA. Last fill 2/2026, use consistent with her pattern. Refilled per protocol, 2 inhalers with 3 refills, PCP to co-sign."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-21a",
+     "kind": "outside_records",
+     "start": "2026-07-21T16:00",
+     "reason": "Gynecologic oncology surveillance letter",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gynecologic oncology follow-up",
+       "author": "gynecologic oncology",
+       "date": "2026-07-21T16:00",
+       "body": "Surveillance visit 7/14/2026. Diagnosis: squamous cell carcinoma of the vagina, FIGO stage I, definitive radiation completed 1/2024. Allergies: sulfa, latex. Medications per patient: fluticasone/salmeterol, tiotropium, albuterol.\nExam today without evidence of recurrence. No evidence of disease.\nPlan: continue surveillance every 6 months. Smoking cessation encouraged.\nGynecologic oncology"
+      }
+     ]
+    },
+    {
+     "id": "2026-11-10a",
+     "kind": "office_visit",
+     "start": "2026-11-10T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "COPD follow-up",
+     "appointment": "booked"
+    }
+   ]
+  }
+ ]
+}

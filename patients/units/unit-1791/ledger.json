@@ -1,0 +1,3885 @@
+{
+  "unit": "unit-1791",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001791",
+      "given": "Malee",
+      "family": "Bautista",
+      "birth_date": "1992-08-19",
+      "address_line": "41 Cottage Row",
+      "phone": "+1-617-555-0100",
+      "email": "malee.bautista@example.test",
+      "marital_status": "married",
+      "summary": "Elementary school teacher with generalized myasthenia gravis on pyridostigmine and prednisone, mild asthma and alpha-thalassemia trait. In 2021 a second pregnancy was lost at 26 weeks to parvovirus B19 hydrops; in 2022 persistent parvovirus caused pancytopenia treated with IVIG. Last seen 2026-05-28 for bronchitis, admitted that night in myasthenic crisis.",
+      "events": [
+        {
+          "id": "2019-09-05a",
+          "kind": "telephone",
+          "start": "2019-09-05T13:22",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "date": "2019-09-05T13:22",
+              "author": "front desk",
+              "body": "Caller would like to establish with the practice. Moved to Easthampton over the summer, teaches second grade, starts back next week. Has a neurologist she plans to keep. Membership explained, intake packet emailed. Signed release sent to her old primary care office for records. New patient appt booked 9/17 at 3:40 (after school)."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-12a",
+          "kind": "outside_records",
+          "start": "2019-09-12T10:05",
+          "reason": "records from prior primary care",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "date": "2019-09-12T10:05",
+              "author": "front desk",
+              "body": "41 pages received from prior primary care office, scanned under Media.\n\nIndex for the PCP:\n- Problem list there: myasthenia gravis (generalized; neurology diagnosis 2017, followed by outside neuromuscular clinic), asthma since childhood, alpha thalassemia trait.\n- Meds on their last list: pyridostigmine 60 mg q4-6h while awake, prednisone 10 mg daily, albuterol HFA prn.\n- Allergies: none recorded.\n- Pap 04/2019 at postpartum visit: negative for intraepithelial lesion.\n- Delivered a healthy baby early 2019, uncomplicated pregnancy per their notes.\n- Last labs there: CBC with mild microcytic anemia, consistent with her trait per their comment."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-17a",
+          "kind": "establish_care",
+          "start": "2019-09-17T15:40",
+          "end": "2019-09-17T16:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Myasthenia gravis without exacerbation",
+              "action": "history",
+              "onset": "2017-06-01",
+              "note": "generalized; outside neurology"
+            },
+            {
+              "label": "Mild intermittent asthma",
+              "action": "history",
+              "onset": "2001-01-01"
+            },
+            {
+              "label": "Alpha thalassemia trait",
+              "action": "history",
+              "onset": "1992-08-19",
+              "icd10": "D56.3"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "pyridostigmine bromide 60 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 4 to 6 hours while awake",
+              "dose": {
+                "value": 60,
+                "unit": "mg"
+              },
+              "frequency": "Q4H",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "myasthenia gravis"
+            },
+            {
+              "drug": "prednisone 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "myasthenia gravis"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed for shortness of breath",
+              "dose": {
+                "value": 2,
+                "unit": "puff"
+              },
+              "frequency": "PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "asthma"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              68
+            ],
+            "hr": 68,
+            "spo2": 97,
+            "weight_kg": 55.2,
+            "height_cm": 158.3
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2019-09-17T16:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 225
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.96
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 71
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 23.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-09-17T16:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-09-17T16:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 111
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 187
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 57
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 97
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 130
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-17T16:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2019-09-17T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-09-17T16:25"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-09-17T16:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-09-17T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2019-09-17T17:10",
+              "author": "PCP",
+              "body": "27F, second-grade teacher, new to the area, here to set up primary care. Old records reviewed (scanned 9/12).\n\nMyasthenia gravis: generalized, diagnosed 2017 by her neurologist, who she will keep seeing (next visit in Nov). Describes herself as \"mostly normal\" on current regimen. End of the school day she sometimes notices her eyelids feel heavy; resolves with rest and her afternoon pyridostigmine. No swallowing or breathing trouble. Never hospitalized for it.\nAsthma: since childhood. Uses albuterol a handful of times a year, mostly with colds or cold air at recess duty. No night symptoms, no ED visits, no oral steroid bursts beyond her daily prednisone.\nAlpha thalassemia trait: knows about it; her dad carries it too. Told years ago her blood count always runs a little low.\n\nOB: one child, born early this year, uncomplicated pregnancy and delivery. Pap at her postpartum visit in April was normal.\nMeds: pyridostigmine 60 mg every 4-6 h while awake, prednisone 10 mg every morning, albuterol HFA prn.\nAllergies: NKDA.\nFH: father with alpha thal trait; mother with autoimmune thyroid disease.\nSH: married, one baby at home. Never smoker, no alcohol. Teaches elementary school.\n\nExam: well-appearing, conversant, no ptosis at rest; sustained upgaze 60 s without fatigue. EOMI, no diplopia. Speech normal. Lungs clear, no wheeze. Heart RRR, no murmur. Abdomen soft. Strength 5/5 proximal and distal. No rash.\n\nA/P\n1. Myasthenia gravis, generalized, stable - continue pyridostigmine and prednisone as prescribed by neurology; will refill locally if easier for her. Reviewed warning signs: trouble swallowing, breathing, or speaking -> ED.\n2. Asthma, mild intermittent - albuterol prn. \n3. Alpha thalassemia trait - CBC today for her baseline.\n4. Long-term prednisone - A1c and CMP today.\n5. Health maintenance: CMP, lipids, TSH (mother's thyroid history), one-time HIV and hep C screen. Tdap given. Flu shot when supply arrives. Pap up to date (04/2019).\nPHQ-2 0.\nFollow up yearly physical, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 55.2,
+            "height_cm": 157.5,
+            "labs": {
+              "Hemoglobin": 11.6,
+              "Hemoglobin A1c": 5.3,
+              "Mean Corpuscular Volume": 71,
+              "Red Blood Cells": 5.08,
+              "Thyroid Stimulating Hormone": 1.7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2019-09-19a",
+          "kind": "portal_message",
+          "start": "2019-09-19T19:48",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2019-09-19T19:48",
+              "author": "PCP",
+              "body": "Hi Malee, your labs from Tuesday are back. Kidney and liver tests, sugar (A1c), cholesterol and thyroid are all normal. HIV and hepatitis C screens negative. Your blood count shows the small red cells and slightly low hemoglobin we expect with alpha thalassemia trait - this is your baseline, and I'll use it to compare going forward. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T15:30",
+          "reason": "flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-08T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-08T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2019-10-08T15:45",
+              "author": "RN",
+              "body": "Here after school for flu vaccine. No fever today. Screening questions reviewed; on prednisone 10 mg, inactivated vaccine fine. Quadrivalent flu 0.5 mL IM left deltoid. VIS given. Tolerated well, left after 15 min."
+            }
+          ]
+        },
+        {
+          "id": "2019-11-21a",
+          "kind": "specialist_visit",
+          "start": "2019-11-21T09:00",
+          "service": "Neurology",
+          "reason": "myasthenia gravis follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neuromuscular Clinic Follow-up",
+              "date": "2019-11-26T11:30",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROMUSCULAR CLINIC - FOLLOW-UP LETTER\nVisit date: 11/21/2019\n\nDear colleague, thank you for taking over her primary care.\n\nMs. Bautista returns for routine review of generalized myasthenia gravis. Since her last visit she reports mild late-afternoon lid heaviness on long days, no diplopia, no bulbar or respiratory symptoms.\n\nMedications: pyridostigmine 60 mg every 4-6 hours while awake; prednisone 10 mg daily; albuterol inhaler as needed.\nAllergies: NKDA.\n\nExamination: no ptosis at rest or after sustained upgaze; extraocular movements full; facial and bulbar strength normal; neck flexion 5/5; limbs 5/5 without fatigable weakness.\n\nImpression: generalized myasthenia gravis, well controlled.\nPlan: no change in doses. Reviewed medications that can worsen myasthenia; list given to patient. Return in 6-12 months.\n\nNeuromuscular clinic"
+            }
+          ]
+        },
+        {
+          "id": "2019-12-16a",
+          "kind": "pharmacy",
+          "start": "2019-12-16T11:12",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill Request",
+              "date": "2019-12-16T11:12",
+              "author": "MA",
+              "body": "Pharmacy fax requesting pyridostigmine 60 mg #180 with refills. Original prescriber is her neurologist; pt asked us to take over refills. Routed to PCP - approved, 90-day supply x 3 refills sent. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-04a",
+          "kind": "portal_message",
+          "start": "2020-03-04T20:31",
+          "reason": "question about illness at school",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question about getting sick at school",
+              "date": "2020-03-04T20:31",
+              "author": "patient",
+              "body": "Hi, with everything going around my classroom right now I'm a little nervous since I take prednisone every day. Is there anything I should be doing differently? Thanks, Malee"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question about getting sick at school",
+              "date": "2020-03-05T07:52",
+              "author": "PCP",
+              "body": "Good question. Ten milligrams a day does lower your defenses somewhat, so: hand washing, keep up with vaccines, and let us know early if you get sick rather than waiting it out - especially a fever, a cough that is getting worse, or any change in your swallowing, speech or breathing, since infections can stir up myasthenia. Don't stop or skip the prednisone on your own. We're here same day if you need us."
+            }
+          ]
+        },
+        {
+          "id": "2020-05-13a",
+          "kind": "telehealth_visit",
+          "start": "2020-05-13T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "check-in, refills",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-05-13T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2020-05-13T16:30",
+              "author": "PCP",
+              "body": "Video, pt at home, consent for telehealth obtained.\nTeaching remotely since March; home with the baby. MG: no change - lids heavy some evenings, no diplopia, chewing and swallowing fine, no shortness of breath. Asthma: used albuterol twice this spring. No fevers or illness.\nMeds unchanged. Visually no ptosis, speech clear and full sentences, no increased work of breathing.\nA/P: Myasthenia gravis stable; asthma mild intermittent. Prednisone and albuterol refilled. Neurology video follow-up next month. Physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2020-06-23a",
+          "kind": "specialist_visit",
+          "start": "2020-06-23T10:30",
+          "service": "Neurology",
+          "reason": "myasthenia gravis follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neuromuscular Clinic Video Follow-up",
+              "date": "2020-06-26T09:15",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROMUSCULAR CLINIC - VIDEO FOLLOW-UP\nVisit date: 06/23/2020\n\nGeneralized myasthenia gravis. Remote visit due to the pandemic. Patient reports stable symptoms with occasional end-of-day eyelid fatigue only. No double vision, dysphagia, dysarthria or dyspnea.\nMedications: pyridostigmine 60 mg q4-6h while awake; prednisone 10 mg daily; albuterol prn. NKDA.\nVideo exam: no ptosis at rest or after 45 seconds of upgaze; facial movements symmetric; speech clear; counts to 30 on one breath.\nImpression: stable. Plan: continue current doses. In-person visit in about 9 months.\n\nNeuromuscular clinic"
+            }
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "annual_physical",
+          "start": "2020-09-22T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              118,
+              78
+            ],
+            "hr": 83,
+            "rr": 13,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 55.9
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2020-09-22T16:25",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 259
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.63
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 71
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 24.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-09-22T16:25",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-22T16:25",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-09-22T15:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-09-22T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-09-22T16:50",
+              "author": "PCP",
+              "body": "Annual exam. Back in the classroom (hybrid) this month, masked. Feels well.\nMG: stable per her and per neurology video visit in June; same doses. Asthma: rare albuterol. No interval illness.\nMeds: pyridostigmine 60 mg q4-6h, prednisone 10 mg daily, albuterol prn. NKDA.\nROS negative otherwise. Periods regular. Not currently planning pregnancy but may in the next year or two - would want to talk with neurology first.\n\nExam: NAD. No ptosis, EOM full. Oropharynx clear. Neck supple, thyroid not enlarged. Lungs clear. RRR. Abdomen benign. No edema. Skin: no petechiae or bruising. Strength full.\nPHQ-2 0.\n\nA/P\n- Health maintenance: CBC, BMP, A1c (prednisone). Pap next due 2022. Flu shot - nurse visit in two weeks once our supply is in.\n- MG, asthma: stable, no changes.\n- Pregnancy planning: discuss timing with neurology when ready; let us know."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-09-24a",
+          "kind": "portal_message",
+          "start": "2020-09-24T12:40",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2020-09-24T12:40",
+              "author": "PCP",
+              "body": "Results are fine - kidney function, sugar and A1c normal on the prednisone. Blood count is right where it was last year for your thalassemia trait. See you for your flu shot."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T15:20",
+          "reason": "flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-06T15:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-06T15:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2020-10-06T15:35",
+              "author": "RN",
+              "body": "Flu vaccine. Afebrile, no symptoms; COVID screening questions negative at door. Quadrivalent 0.5 mL IM R deltoid. VIS reviewed. No reaction."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-08a",
+          "kind": "pharmacy",
+          "start": "2020-12-08T09:50",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill Request",
+              "date": "2020-12-08T09:50",
+              "author": "MA",
+              "body": "Pt portal request: albuterol inhaler, current one is empty. Last fill 03/2020. Sent to PCP queue. Approved x1 inhaler with 1 refill. Pt aware."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-08a",
+          "kind": "portal_message",
+          "start": "2021-03-08T06:58",
+          "reason": "positive pregnancy test",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test",
+              "date": "2021-03-08T06:58",
+              "author": "patient",
+              "body": "Good morning - I took a home test this weekend and it was positive! Last period started Feb 15. We were hoping for this. Should I keep taking everything as usual? I don't want to stop anything without asking. - Malee"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive test",
+              "date": "2021-03-08T07:41",
+              "author": "PCP",
+              "body": "Congratulations! Yes - keep taking your pyridostigmine and prednisone exactly as you have been; stopping either suddenly is riskier than continuing. Let's see you this week to confirm, go over your medicines, and get you to obstetrics early given the myasthenia. Front desk will reach out with a time."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-11a",
+          "kind": "office_visit",
+          "start": "2021-03-11T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pregnancy confirmation",
+          "conditions": [
+            {
+              "label": "Supervision of high risk pregnancy, unspecified, first trimester",
+              "action": "diagnosed",
+              "onset": "2021-02-15",
+              "note": "G2P1; LMP 2021-02-15; myasthenia gravis on prednisone",
+              "icd10": "O09.91"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              70
+            ],
+            "hr": 71,
+            "weight_kg": 54.2
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-03-11T15:55",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-03-11T15:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2021",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics & Gynecology",
+              "reason": "intrauterine pregnancy, mother with myasthenia gravis on prednisone"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-03-11T16:35",
+              "author": "PCP",
+              "body": "Here after a positive home pregnancy test. LMP 2/15/21 -> about 3.5 weeks; EDD around 11/22/21. G2P1 (healthy 2-year-old, uncomplicated pregnancy and delivery). Mild nausea, no bleeding or cramping.\nMG: stable, same doses, neurologist aware of plans to conceive. Asthma: quiet.\nMeds: pyridostigmine 60 mg q4-6h, prednisone 10 mg daily, albuterol prn. NKDA.\nUrine hCG positive in office.\nExam: well. No ptosis. Lungs clear. Abdomen soft, nontender.\n\nA/P\n1. Intrauterine pregnancy, early first trimester - referral to obstetrics placed; she would like an OB close to home. Asked them to see her early given MG and chronic steroid.\n2. Myasthenia gravis - continue pyridostigmine and prednisone unchanged; both have been used through her first pregnancy without trouble. Messaging neurology so they know. She has the list of drugs to avoid with MG to share with OB.\n3. Asthma - albuterol prn is fine in pregnancy.\nShe will get her COVID vaccine when teachers become eligible; reviewed that it's recommended in pregnancy."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-04-20a",
+          "kind": "pharmacy",
+          "start": "2021-04-20T10:15",
+          "reason": "outside immunizations",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-26T14:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-16T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Note",
+              "title": "Outside Immunizations Recorded",
+              "date": "2021-04-20T10:15",
+              "author": "MA",
+              "body": "Pt uploaded her vaccination card. Pfizer COVID doses 3/26/21 and 4/16/21, given at a regional vaccination site. Entered in immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-20a",
+          "kind": "specialist_visit",
+          "start": "2021-05-20T09:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "prenatal visit",
+          "vitals": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 88,
+            "rr": 18
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-05-20T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 70
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.71
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 23.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 247
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-05-20T10:10",
+              "resulted": "2021-05-24T15:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A/Hemoglobin.total in Blood",
+                  "loinc": "4546-8",
+                  "unit": "%",
+                  "value": 97
+                },
+                {
+                  "test": "Hemoglobin A2/Hemoglobin.total in Blood by Electrophoresis",
+                  "loinc": "4552-6",
+                  "unit": "%",
+                  "value": 2.5
+                },
+                {
+                  "test": "Hemoglobin F/Hemoglobin.total in Blood by Electrophoresis",
+                  "loinc": "32682-7",
+                  "unit": "%",
+                  "value": 0.5
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Obstetric ultrasound",
+              "loinc": "11525-3",
+              "performed": "2021-05-20T10:30",
+              "text": "Single intrauterine pregnancy. Fetal cardiac activity present. Crown-rump length consistent with dates by LMP. Amniotic fluid normal in amount. Placenta posterior, normal in thickness, no previa. No fetal fluid collections. Cervix long and closed.",
+              "conclusion": "Single live intrauterine pregnancy, size consistent with dates."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2021",
+              "action": "done",
+              "date": "2021-05-20T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Prenatal Visit",
+              "date": "2021-05-26T13:05",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRICS & GYNECOLOGY - PRENATAL VISIT\nDate of visit: 05/20/2021\nGA 13w3d by LMP (2/15/21). G2P1001.\n\nThank you for referring Ms. Bautista. Pregnancy unremarkable so far. Today she raises two concerns: her belly feels bigger than it did at this point last time, and for about a week she has been a little short of breath.\n\nPMH: generalized myasthenia gravis (neurology), asthma, alpha thalassemia trait.\nMeds: pyridostigmine 60 mg q4-6h, prednisone 10 mg daily, albuterol HFA prn.\nAllergies: NKDA.\nFamily: father alpha thal carrier; mother autoimmune thyroid disease. One healthy child, 2.\nSocial: elementary school teacher; never smoker; no alcohol.\n\nBP 120/75, HR 88, RR 18.\nUterus measures larger than expected for 13 weeks. Fetal heart tones present. Lungs clear.\n\nLabs: Hgb 11 g/dL, Hct 33%, MCV 70 fL. Hemoglobin electrophoresis: HbA 97%, HbA2 2.5%, HbF 0.5% - no beta-chain variant; with the microcytosis, consistent with her known alpha thalassemia trait.\nUltrasound: single live IUP, size equals dates, normal fluid (report attached).\n\nAssessment: IUP at 13 weeks. Size greater than dates on exam, not borne out on ultrasound. Mild dyspnea of pregnancy vs asthma; lungs clear. Alpha thalassemia trait confirmed.\nPlan: routine prenatal labs; recheck growth and fluid at next visit in 4 weeks. Will coordinate with neurology.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2021-06-16a",
+          "kind": "specialist_visit",
+          "start": "2021-06-16T10:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "prenatal visit",
+          "conditions": [
+            {
+              "label": "Hydrops fetalis",
+              "action": "diagnosed",
+              "onset": "2021-06-16",
+              "icd10": "O36.22X0"
+            },
+            {
+              "label": "Parvovirus B19 infection",
+              "action": "diagnosed",
+              "onset": "2021-06-02",
+              "icd10": "B34.3"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-06-16T11:20",
+              "resulted": "2021-06-18T14:10",
+              "results": [
+                {
+                  "test": "Parvovirus B19 IgM Ab [Presence] in Serum by Immunoassay",
+                  "loinc": "40658-7",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Parvovirus B19 IgG Ab [Presence] in Serum by Immunoassay",
+                  "loinc": "29660-8",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Obstetric ultrasound",
+              "loinc": "11525-3",
+              "performed": "2021-06-16T10:40",
+              "text": "Single intrauterine pregnancy. Fetal heart rate 165/min. Fetal ascites. Fetal skin edema. Small pericardial effusion. Polyhydramnios. Placenta thickened. No structural anomaly seen on this limited survey.",
+              "conclusion": "Fetal hydrops: ascites, skin edema and pericardial effusion, with polyhydramnios and placental thickening."
+            },
+            {
+              "study": "Fetal middle cerebral artery Doppler",
+              "loinc": "11525-3",
+              "performed": "2021-06-16T11:05",
+              "text": "Middle cerebral artery peak systolic velocity measured on the follow-up study is elevated for gestational age. Umbilical artery waveform with forward diastolic flow.",
+              "conclusion": "Elevated MCA peak systolic velocity, suggesting fetal anemia."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Prenatal Visit",
+              "date": "2021-06-21T09:20",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRICS & GYNECOLOGY - PRENATAL VISIT\nDate of visit: 06/16/2021, with serology addendum 06/18/2021\nGA 17w2d.\n\nFollow-up after last month's size-dates question and shortness of breath. She has felt fine overall. Mentions a mild cold around two weeks ago - low-grade temperature, tiredness, stuffy nose - gone on its own within days. No travel. No known sick contacts, though several children in her class have been passing around viral illnesses.\n\nMeds unchanged (pyridostigmine, prednisone 10 mg, albuterol prn). NKDA.\n\nUltrasound today: fetal ascites, skin edema and a small pericardial effusion; polyhydramnios; thick placenta. FHR 165. Follow-up study shows raised MCA peak systolic velocity (reports attached).\n\nAssessment: fetal hydrops with Doppler evidence of fetal anemia at 17 weeks. Infectious cause suspected given classroom exposure and recent illness.\nPlan: parvovirus B19 serology sent today. Counseling done; she understands the findings are serious.\n\nADDENDUM 06/18/2021: parvovirus B19 IgM POSITIVE, IgG NEGATIVE - acute maternal parvovirus B19 infection. Patient informed by phone. Close ultrasound surveillance.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2021-06-22a",
+          "kind": "telephone",
+          "start": "2021-06-22T12:15",
+          "reason": "update on pregnancy",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Telephone Call",
+              "date": "2021-06-22T12:30",
+              "author": "PCP",
+              "body": "Called pt after reviewing OB letter (fetal hydrops, parvovirus B19 IgM positive). She is frightened but understands what OB told her. Answered questions about the virus - common in schools, not something she did wrong. She asked whether her prednisone made it worse; explained steroids can blunt the immune response, but stopping it now would risk a myasthenia flare - keep taking it, OB and neurology agree. No weakness, swallowing or breathing symptoms. She has OB follow-up set. Told her to call any time; offered to see her. 15 min."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-20a",
+          "kind": "specialist_visit",
+          "start": "2021-07-20T08:40",
+          "service": "Obstetrics & Gynecology",
+          "reason": "fever, rash",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-07-20T09:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 239
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.62
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 72
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 24.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Obstetric ultrasound",
+              "loinc": "11525-3",
+              "performed": "2021-07-20T09:30",
+              "text": "Single intrauterine pregnancy, cardiac activity present. Nuchal skin thickening. Pericardial effusion. Fetal ascites.",
+              "conclusion": "Persistent fetal hydrops: nuchal skin thickening, pericardial effusion and ascites."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Visit",
+              "date": "2021-07-22T16:40",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRICS & GYNECOLOGY - VISIT NOTE\nDate of visit: 07/20/2021\nGA 22w2d.\n\nKnown maternal parvovirus B19 infection about a month ago with fetal hydrops. Comes in early: for the last few days low-grade temperatures, fatigue, and a pink rash on both cheeks. Says several of her students looked the same last week. Because of her job and these symptoms a CBC and ultrasound were done today.\n\nMeds: pyridostigmine, prednisone 10 mg daily, albuterol prn. NKDA.\nExam: faint erythematous rash over both cheeks; otherwise unremarkable.\nCBC: unremarkable for her.\nUltrasound: nuchal skin thickening, pericardial effusion, ascites (report attached).\n\nAssessment: facial rash consistent with parvovirus; ongoing fetal hydrops at 22 weeks.\nPlan: close surveillance; reviewed fetal kick counts and when to go to the hospital.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2021-07-20b",
+          "kind": "ed_visit",
+          "start": "2021-07-20T19:05",
+          "end": "2021-07-21T01:30",
+          "service": "Emergency Medicine",
+          "reason": "decreased fetal movement",
+          "conditions": [
+            {
+              "label": "Severe parvovirus B19 infection (immunocompromised host)",
+              "action": "diagnosed",
+              "onset": "2021-06-02",
+              "note": "on chronic prednisone; no IgG response",
+              "icd10": "B34.3"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 88,
+            "temp_c": 36.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-07-20T19:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.63
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 70
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 23.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-07-20T19:30",
+              "results": [
+                {
+                  "test": "ABO and Rh group [Type] in Blood",
+                  "loinc": "882-1",
+                  "text": "O positive"
+                },
+                {
+                  "test": "Blood group antibody screen [Presence] in Serum or Plasma",
+                  "loinc": "890-4",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Parvovirus B19 IgM Ab [Presence] in Serum by Immunoassay",
+                  "loinc": "40658-7",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Parvovirus B19 IgG Ab [Presence] in Serum by Immunoassay",
+                  "loinc": "29660-8",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Obstetric ultrasound",
+              "loinc": "11525-3",
+              "performed": "2021-07-20T20:15",
+              "text": "Single intrauterine fetus with cardiac activity. Fetal skin edema and ascites. Placenta without retroplacental collection; no placenta previa.",
+              "conclusion": "Fetal skin edema and ascites. No evidence of abruption or previa."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "date": "2021-07-23T08:50",
+              "author": "emergency medicine",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT - PHYSICIAN RECORD\nArrival 07/20/2021 19:05\n\nCC: baby moving less for two days.\nHPI: 28-year-old G2P1 at 22 weeks, generalized myasthenia gravis on daily prednisone, seen in her OB's office this morning for a parvovirus rash. Over two days fewer fetal movements. Denies vaginal bleeding, fluid leakage or contractions.\nPMH: myasthenia gravis, asthma, alpha thalassemia trait; parvovirus B19 infection this pregnancy with fetal hydrops. Prior pregnancy term, uncomplicated.\nMeds: pyridostigmine 60 mg q4-6h, prednisone 10 mg daily, albuterol prn. NKDA.\nSH: teacher; never smoker; no alcohol.\n\nVitals: BP 120/78, HR 88, T 36.8 C.\nExam: comfortable; abdomen gravid, nontender; no vaginal bleeding.\n\nLabs: O positive; antibody screen negative. Hgb 13.2, WBC 7,000, platelets 250,000. Parvovirus B19 IgM positive, IgG negative.\nOB ultrasound: single fetus, skin edema and ascites; no abruption or previa.\nFetal monitoring: baseline 160 bpm, minimal variability, no accelerations.\n\nMDM: persistent parvovirus B19 viremia without seroconversion five weeks after illness in a patient on chronic corticosteroids - severe infection in an immunocompromised host, with fetal hydrops. Reviewed with on-call obstetrics.\nDisposition: discharged 01:30 with close obstetric follow-up and return precautions for absent movement, bleeding or pain.\n\nEmergency Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2021-07-26a",
+          "kind": "telephone",
+          "start": "2021-07-26T16:10",
+          "reason": "check-in after ED visit",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Telephone Call",
+              "date": "2021-07-26T16:25",
+              "author": "PCP",
+              "body": "Called to check in after ED record arrived. Rash fading, energy so-so. Following with OB twice weekly. Still on prednisone and pyridostigmine, no MG symptoms. Family staying with her this week. Will keep in touch; she knows to reach us any time."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-16a",
+          "kind": "hospital_admission",
+          "start": "2021-08-16T07:45",
+          "end": "2021-08-18T11:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "absent fetal movement",
+          "conditions": [
+            {
+              "label": "Intrauterine fetal demise",
+              "action": "diagnosed",
+              "onset": "2021-08-16",
+              "icd10": "O36.4XX0"
+            },
+            {
+              "label": "Supervision of high risk pregnancy, unspecified, first trimester",
+              "action": "resolved",
+              "icd10": "O09.91"
+            },
+            {
+              "label": "Hydrops fetalis",
+              "action": "resolved",
+              "icd10": "O36.22X0"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-08-16T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.21
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 70
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 23.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2021-08-16T08:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-16T08:20",
+              "results": [
+                {
+                  "test": "aPTT in Platelet poor plasma by Coagulation assay",
+                  "loinc": "3173-2",
+                  "unit": "s",
+                  "value": 30
+                },
+                {
+                  "test": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
+                  "loinc": "3255-7",
+                  "unit": "mg/dL",
+                  "value": 400
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Obstetric ultrasound",
+              "loinc": "11525-3",
+              "performed": "2021-08-16T08:05",
+              "text": "Single intrauterine fetus. No cardiac activity. No fetal movement.",
+              "conclusion": "Intrauterine fetal demise."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2021-08-20T14:15",
+              "author": "obstetrics",
+              "body": "REGIONAL HOSPITAL LABOR & DELIVERY - DISCHARGE SUMMARY\nAdmitted 08/16/2021  Discharged 08/18/2021\n\nReason for admission: no fetal movement for 24 hours at 26w0d.\nHistory: G2P1, generalized myasthenia gravis on pyridostigmine and prednisone 10 mg, asthma, alpha thalassemia trait. This pregnancy complicated by maternal parvovirus B19 infection without seroconversion and fetal hydrops. Denied bleeding, abdominal pain, fever or trauma.\n\nOn arrival vital signs stable. Abdomen appropriate for gestational age; no fetal heart tones by handheld Doppler. Ultrasound confirmed intrauterine fetal demise with no cardiac activity.\nLabs: Hgb 12.2, platelets 250K, PT 12 s, PTT 30 s, fibrinogen 400 mg/dL.\n\nCourse: the patient was understandably distraught and asked for time with her family before deciding about management. On 8/17 she chose induction; misoprostol induction, uncomplicated vaginal delivery of a stillborn infant with marked hydrops. Placenta delivered intact. Estimated blood loss small. Blood type O positive - anti-D not indicated. Home medications continued throughout; no myasthenic symptoms. Bereavement and social work support provided.\n\nDischarge diagnoses: intrauterine fetal demise at 26 weeks; fetal hydrops due to maternal parvovirus B19 infection.\nDischarge medications: pyridostigmine 60 mg q4-6h, prednisone 10 mg daily, albuterol prn.\nFollow-up: obstetrics in 6 weeks; primary care.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2021-08-24a",
+          "kind": "telephone",
+          "start": "2021-08-24T11:40",
+          "reason": "check-in after delivery",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Telephone Call",
+              "date": "2021-08-24T12:00",
+              "author": "PCP",
+              "body": "Called after reading the discharge summary. Expressed our condolences. Physically recovering, bleeding light, no fever. Sleeping poorly. Supportive family around. School starts in two weeks - unsure she's ready but wants the routine. Taking all her medicines. Visit set for mid-September to check in; sooner if needed."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "office_visit",
+          "start": "2021-09-14T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after pregnancy loss",
+          "conditions": [
+            {
+              "label": "Intrauterine fetal demise",
+              "action": "resolved",
+              "icd10": "O36.4XX0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              79
+            ],
+            "hr": 83,
+            "rr": 14,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 57.6
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-09-14T15:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-09-14T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-09-14T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-09-14T16:40",
+              "author": "PCP",
+              "body": "Four weeks after stillbirth at 26 weeks (parvovirus B19 with fetal hydrops). She went back to her classroom last week; says being with the kids helps and also is hard. Sad most days, some crying, sleep improving. Eating ok. No thoughts of self-harm. Leaning on family; considering the hospital's bereavement group.\nBleeding stopped. No fever. No weakness, ptosis, swallowing or breathing trouble. Rash long gone.\nMeds: pyridostigmine, prednisone 10 mg, albuterol prn.\nPHQ-9 6, GAD-7 4.\nExam: tearful at times, appropriate. No ptosis. Lungs clear. Abdomen soft, nontender.\n\nA/P\n1. Grief after stillbirth - normal grief response, mild symptom scores. No diagnosis. Gave bereavement group and counselor contacts; she'll reach out. Recheck in a couple of months or sooner.\n2. MG - stable through delivery.\n3. Postpartum check with OB in 2 weeks.\nFlu vaccine today."
+            }
+          ],
+          "state": {
+            "weight_kg": 57.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "specialist_visit",
+          "start": "2021-09-28T14:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "postpartum visit",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Postpartum Visit",
+              "date": "2021-10-04T10:30",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRICS & GYNECOLOGY - POSTPARTUM VISIT\nDate of visit: 09/28/2021\n\nSix weeks after misoprostol induction and vaginal delivery of a stillborn at 26 weeks (fetal hydrops, maternal parvovirus B19). Lochia resolved. No fever or pelvic pain. Coping with grief, has support; seeing her PCP.\nExam: abdomen soft; uterus normal size, nontender; perineum healed.\nAssessment: normal postpartum recovery.\nPlan: discussed that parvovirus does not usually recur in a later pregnancy; preconception visit when she is ready. Routine gynecologic care through PCP.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2021-11-18a",
+          "kind": "pharmacy",
+          "start": "2021-11-18T17:30",
+          "reason": "outside immunization",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-18T17:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Note",
+              "title": "Outside Immunization Recorded",
+              "date": "2021-11-19T09:05",
+              "author": "MA",
+              "body": "State registry update: Pfizer COVID booster given 11/18/21 at a retail pharmacy. Added to history."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "portal_message",
+          "start": "2021-12-07T21:14",
+          "reason": "refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Prednisone refill",
+              "date": "2021-12-07T21:14",
+              "author": "patient",
+              "body": "Hi, the pharmacy says my prednisone has no refills left. I have about a week of pills. Thank you!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Prednisone refill",
+              "date": "2021-12-08T08:20",
+              "author": "MA",
+              "body": "Sent today - prednisone 10 mg, 90 days with 3 refills, to your usual pharmacy. Dr. wanted me to ask how you are doing; reply anytime if you'd like a visit."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-01a",
+          "kind": "telephone",
+          "start": "2022-02-01T07:05",
+          "reason": "cold symptoms",
+          "conditions": [
+            {
+              "label": "Acute upper respiratory infection",
+              "action": "diagnosed",
+              "onset": "2022-01-30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Nurse Triage",
+              "date": "2022-02-01T07:20",
+              "author": "RN",
+              "body": "Pt calling before school. Two days of runny nose, sore throat, mild cough. Temp 99.4 at home last night. Home COVID antigen negative x2. No shortness of breath beyond her usual, no wheeze, using albuterol once. Specifically denies droopy eyelids, double vision, trouble chewing, swallowing or talking. Reviewed with PCP: viral URI. Fluids, rest, acetaminophen as needed, continue all meds including prednisone - do not skip. Call same day if fever climbs, breathing worsens, or any myasthenia symptoms. Pt agrees, taking a sick day."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-21a",
+          "kind": "office_visit",
+          "start": "2022-02-21T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fatigue, bruising, nosebleeds",
+          "conditions": [
+            {
+              "label": "Acute upper respiratory infection",
+              "action": "resolved"
+            },
+            {
+              "label": "Pancytopenia",
+              "action": "diagnosed",
+              "onset": "2022-01-21",
+              "icd10": "D61.818"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              78
+            ],
+            "hr": 93,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 56.8
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-02-21T08:55",
+              "resulted": "2022-02-21T11:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 24
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.17
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 24.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 76
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 25.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-02-21T08:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2022-02-21T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-02-21T08:55"
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-referral-2022",
+              "action": "placed",
+              "order": "Hematology referral",
+              "category": "referral",
+              "to": "Hematology & Oncology",
+              "reason": "pancytopenia, urgent"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-02-21T09:30",
+              "author": "PCP",
+              "body": "29F with generalized MG on prednisone 10 mg, asthma, alpha thal trait; stillbirth Aug 2021 from parvovirus B19 hydrops.\nAbout a month of being wiped out - napping after school, which isn't her. Bruises on her legs she can't explain, and nosebleeds several times a week, each stopping with pressure in 10 minutes. Had a cold early this month that cleared within the week. No fevers since. No melena, no heavy menses. No weight loss. No new meds or supplements. No ptosis, diplopia, dysphagia or dyspnea.\nMeds: pyridostigmine 60 mg q4-6h, prednisone 10 mg daily, albuterol prn. NKDA.\n\nExam: pale. Conjunctivae pale. No scleral icterus. Nasal mucosa with dried blood on the left, no active bleeding. No lymphadenopathy. Lungs clear. RRR, no murmur. Abdomen soft, no hepatosplenomegaly. Scattered petechiae over both lower legs, a few ecchymoses on the shins. No ptosis, strength full.\n\nA/P\nFatigue, bruising, epistaxis with pallor and petechiae - concern for a marrow problem. CBC with diff and CMP drawn now, asked lab to call results.\nAddendum 11:45: lab called - all three cell lines low (see results). Pancytopenia. Discussed with on-call hematology, who will see her tomorrow morning. Spoke with pt: no NSAIDs, nosebleed first aid, ED for heavy bleeding, fever, or any new weakness. She'll stay home from school.\nUrgent hematology referral placed."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Critical Result Call",
+              "date": "2022-02-21T11:40",
+              "author": "RN",
+              "body": "Lab called critical platelet count on today's CBC; read back and verified. Given to PCP at 11:42. PCP spoke with patient and hematology; appointment tomorrow 9:00 confirmed with pt."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 7.9,
+              "Platelets": 22,
+              "White Blood Cells": 2.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-02-22a",
+          "kind": "specialist_visit",
+          "start": "2022-02-22T09:00",
+          "service": "Hematology & Oncology",
+          "reason": "pancytopenia",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-02-22T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 7.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 20
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.19
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 23.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 72
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 24.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-02-22T09:20",
+              "results": [
+                {
+                  "test": "Reticulocytes/100 erythrocytes in Blood",
+                  "loinc": "4679-7",
+                  "unit": "%",
+                  "value": 0.5
+                },
+                {
+                  "test": "Morphology [Interpretation] in Blood Narrative",
+                  "loinc": "18314-5",
+                  "text": "No abnormal cells. No schistocytes."
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2022-02-22T13:30",
+              "text": "Specimen: bone marrow core biopsy and aspirate, posterior iliac crest. The core shows profound hypocellularity with fatty infiltration. Residual hematopoietic elements are sparse. No infiltrating tumor. No granulomas. Aspirate smears paucicellular.",
+              "conclusion": "Profoundly hypocellular marrow with fatty infiltration.",
+              "issued": "2022-02-25T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-referral-2022",
+              "action": "done",
+              "date": "2022-02-22T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Consultation",
+              "date": "2022-02-25T15:10",
+              "author": "hematology",
+              "body": "OUTSIDE HEMATOLOGY & ONCOLOGY - NEW CONSULTATION\nDate of visit: 02/22/2022\n\nThank you for the urgent referral of Ms. Bautista, 29, with generalized myasthenia gravis on prednisone 10 mg daily, asthma and alpha thalassemia trait. Six months ago her pregnancy ended in intrauterine fetal demise from parvovirus B19 hydrops. For a month: fatigue, easy bruising, frequent nosebleeds. She had an upper respiratory infection that cleared about two weeks ago.\n\nMedications: pyridostigmine 60 mg q4-6h, prednisone 10 mg daily, albuterol prn. NKDA.\nFamily history: father alpha thal trait; mother autoimmune thyroid disease.\nSocial: teacher; never smoker; no alcohol.\n\nExam: pale. Scattered petechiae on the lower extremities. No lymphadenopathy, no hepatosplenomegaly.\n\nLabs: Hgb 7.8 g/dL, WBC 2.1 x10^9/L, platelets 20 x10^9/L, reticulocytes 0.5%. Smear: no abnormal cells, no schistocytes.\nBone marrow biopsy (done today): profound hypocellularity with fatty infiltration (pathology attached, finalized 2/25).\n\nImpression: pancytopenia with a hypocellular marrow. In a woman on chronic steroids who never formed IgG to parvovirus B19 last summer, persistent B19 infection is the leading cause.\nPlan: parvovirus B19 PCR on blood; follow-up next week. Bleeding precautions, no NSAIDs. Threshold for platelet transfusion discussed.\n\nHematology & Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2022-03-02a",
+          "kind": "specialist_visit",
+          "start": "2022-03-02T10:30",
+          "service": "Hematology & Oncology",
+          "reason": "pancytopenia follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-02-22T09:20",
+              "resulted": "2022-02-28T16:00",
+              "results": [
+                {
+                  "test": "Parvovirus B19 DNA [#/volume] (viral load) in Serum or Plasma by NAA with probe detection",
+                  "loinc": "49434-4",
+                  "text": "Detected, 5.2 x 10^10 IU/mL"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Follow-up",
+              "date": "2022-03-04T12:00",
+              "author": "hematology",
+              "body": "OUTSIDE HEMATOLOGY & ONCOLOGY - FOLLOW-UP\nDate of visit: 03/02/2022\n\nParvovirus B19 DNA PCR from 2/22: DETECTED, 5.2 x 10^10 IU/mL.\n\nImpression: persistent parvovirus B19 infection in a host on chronic prednisone, causing marrow failure with pancytopenia.\nPlan: intravenous immune globulin 0.4 g/kg daily for 5 days at our infusion center, 3/7 through 3/11. Prednisone unchanged - discussed with her neurologist; IVIG is also well tolerated in myasthenia. No transfusion needed at present; she has had no further significant bleeding. CBC weekly during and after infusion, visit in about 6 weeks with repeat PCR later.\n\nHematology & Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2022-03-14a",
+          "kind": "portal_message",
+          "start": "2022-03-14T19:22",
+          "reason": "update after IVIG",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Finished the infusions",
+              "date": "2022-03-14T19:22",
+              "author": "patient",
+              "body": "Just wanted to let you know I finished all five IVIG infusions last week. No problems with them. Hematology says the counts are starting to move. I'm back at school half days. Thank you for getting me in so fast."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Finished the infusions",
+              "date": "2022-03-15T07:35",
+              "author": "PCP",
+              "body": "So glad to hear it. Keep the half days as long as you need. Let's plan a visit in April after your next hematology appointment."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-12a",
+          "kind": "specialist_visit",
+          "start": "2022-04-12T09:45",
+          "service": "Hematology & Oncology",
+          "reason": "pancytopenia follow-up",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-04-12T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 3.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 112
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.12
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 73
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 24.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Follow-up",
+              "date": "2022-04-15T11:20",
+              "author": "hematology",
+              "body": "OUTSIDE HEMATOLOGY & ONCOLOGY - FOLLOW-UP\nDate of visit: 04/12/2022\n\nFive weeks after IVIG for persistent parvovirus B19. Energy better. No bruising or nosebleeds for three weeks.\nExam: color improved; no petechiae.\nCBC: Hgb 10.1, WBC 3.4, platelets 112.\nImpression: recovering marrow.\nPlan: CBC monthly; repeat B19 PCR in June.\n\nHematology & Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2022-04-19a",
+          "kind": "office_visit",
+          "start": "2022-04-19T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up pancytopenia",
+          "vitals": {
+            "bp": [
+              125,
+              77
+            ],
+            "hr": 70,
+            "rr": 14,
+            "temp_c": 36.2,
+            "spo2": 96,
+            "weight_kg": 57.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-04-19T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-04-19T16:15",
+              "author": "PCP",
+              "body": "F/u pancytopenia from persistent parvovirus B19, treated with IVIG 3/7-3/11 by hematology. Back to full days at school since spring break. Still tires by evening but much better. No bleeding, no bruises. MG stable throughout - no ptosis, chewing/swallowing fine. Asthma quiet.\nHeme CBC 4/12: Hgb 10.1, WBC 3.4, plt 112 - reviewed together.\nExam: color better. No petechiae. Lungs clear. No ptosis.\nA/P: Pancytopenia improving after IVIG - hematology following with monthly counts; no labs needed here today. MG/asthma stable, meds unchanged. Physical in the fall; Pap due then."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "specialist_visit",
+          "start": "2022-06-14T10:15",
+          "service": "Hematology & Oncology",
+          "reason": "pancytopenia follow-up",
+          "conditions": [
+            {
+              "label": "Pancytopenia",
+              "action": "resolved",
+              "icd10": "D61.818"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-06-14T10:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 4.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 188
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.68
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 73
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 24.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-06-14T10:20",
+              "resulted": "2022-06-16T13:00",
+              "results": [
+                {
+                  "test": "Parvovirus B19 DNA [#/volume] (viral load) in Serum or Plasma by NAA with probe detection",
+                  "loinc": "49434-4",
+                  "text": "Detected, 8.4 x 10^3 IU/mL"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Follow-up",
+              "date": "2022-06-17T14:45",
+              "author": "hematology",
+              "body": "OUTSIDE HEMATOLOGY & ONCOLOGY - FOLLOW-UP\nDate of visit: 06/14/2022\n\nFeeling back to normal. No bleeding.\nCBC: Hgb 11.4 (her trait baseline is in this range), WBC 4.6, platelets 188.\nParvovirus B19 PCR 8.4 x 10^3 IU/mL, down from 5.2 x 10^10.\nImpression: pancytopenia resolved; low-level residual B19 DNA.\nPlan: repeat PCR and CBC in September. No further IVIG unless counts fall.\n\nHematology & Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "specialist_visit",
+          "start": "2022-09-20T15:30",
+          "service": "Hematology & Oncology",
+          "reason": "final follow-up",
+          "conditions": [
+            {
+              "label": "Parvovirus B19 infection",
+              "action": "resolved",
+              "icd10": "B34.3"
+            },
+            {
+              "label": "Severe parvovirus B19 infection (immunocompromised host)",
+              "action": "resolved",
+              "icd10": "B34.3"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-20T15:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 4.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 225
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.94
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 72
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 24.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-20T15:35",
+              "resulted": "2022-09-22T12:00",
+              "results": [
+                {
+                  "test": "Parvovirus B19 DNA [#/volume] (viral load) in Serum or Plasma by NAA with probe detection",
+                  "loinc": "49434-4",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Discharge Letter",
+              "date": "2022-09-23T10:40",
+              "author": "hematology",
+              "body": "OUTSIDE HEMATOLOGY & ONCOLOGY - FOLLOW-UP AND DISCHARGE\nDate of visit: 09/20/2022\n\nWell. No bleeding, energy normal, teaching full time.\nCBC today at her alpha thalassemia trait baseline (attached). Parvovirus B19 PCR: not detected.\nImpression: persistent parvovirus B19 infection and resulting pancytopenia - resolved after IVIG.\nPlan: discharged from hematology clinic to primary care. A CBC with each annual physical is enough. Please re-refer for any new drop in counts.\n\nHematology & Oncology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.7,
+              "Platelets": 231,
+              "White Blood Cells": 5.6
+            }
+          }
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "annual_physical",
+          "start": "2022-09-27T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              126,
+              79
+            ],
+            "hr": 90,
+            "rr": 14,
+            "temp_c": 36.2,
+            "spo2": 97,
+            "weight_kg": 57.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-27T16:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-27T16:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 109
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 191
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 132
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-27T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-09-27T16:10",
+              "text": "Specimen adequate, transformation zone present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+              "conclusion": "NILM, HPV negative.",
+              "issued": "2022-10-03T09:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-09-27T15:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-27T16:25"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-27T16:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-27T16:25"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-09-27T16:26"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-09-27T17:05",
+              "author": "PCP",
+              "body": "Annual. Just turned 30. Teaching full time again, new class of second graders. Feels like herself.\nInterval: hematology discharged her last week - B19 PCR undetectable, counts at baseline (CBC 9/20, so not repeated today). MG: stable, no flares through all of it. Asthma: albuterol maybe twice since spring.\nGrief: still hard around the anniversary in August; she did go to the bereavement group for a while. Mood ok. Not planning pregnancy right now.\nMeds: pyridostigmine 60 mg q4-6h, prednisone 10 mg daily, albuterol prn. NKDA.\nPHQ-2 1.\n\nExam: well. No ptosis, EOM full. Thyroid normal. Lungs clear. RRR. Abdomen soft. Pelvic: normal external genitalia, cervix without lesions; Pap/HPV collected. Skin without petechiae. No edema.\n\nA/P\n- Health maintenance: Pap with HPV (age 30). CMP, A1c, lipids, TSH. Flu today. On long-term prednisone, so PCV20 today; recommended the 2-dose recombinant shingles series - she'll get dose 1 at the pharmacy with her COVID booster.\n- MG, asthma: stable, no changes.\n- Parvovirus/pancytopenia: resolved per hematology; CBC with yearly physicals."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-09-30a",
+          "kind": "portal_message",
+          "start": "2022-09-30T13:05",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2022-09-30T13:05",
+              "author": "PCP",
+              "body": "Malee - kidney and liver function, sugar, cholesterol and thyroid all normal. The Pap result will follow next week; I'll send it when it's in."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "date": "2022-10-04T08:10",
+              "author": "PCP",
+              "body": "Pap normal and HPV negative. Next one in 3 years."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "pharmacy",
+          "start": "2022-11-29T17:45",
+          "reason": "outside immunizations",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-11-29T17:45"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-11-29T17:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Note",
+              "title": "Outside Immunizations Recorded",
+              "date": "2022-12-01T09:30",
+              "author": "MA",
+              "body": "Registry shows bivalent Pfizer COVID booster and Shingrix dose 1, both 11/29/22 at a retail pharmacy. Entered. Dose 2 of Shingrix due in 1-2 months (immunocompromised schedule); reminder set, she'd like it here."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-31a",
+          "kind": "nurse_visit",
+          "start": "2023-01-31T15:25",
+          "reason": "shingles vaccine dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-01-31T15:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-01-31T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2023-01-31T15:40",
+              "author": "RN",
+              "body": "Shingrix #2 (dose 1 at pharmacy 11/29/22). Tolerated dose 1. 0.5 mL IM L deltoid. Series complete. Observed, no issues."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-09a",
+          "kind": "specialist_visit",
+          "start": "2023-03-09T13:00",
+          "service": "Neurology",
+          "reason": "myasthenia gravis follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neuromuscular Clinic Follow-up",
+              "date": "2023-03-14T08:45",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROMUSCULAR CLINIC - FOLLOW-UP LETTER\nVisit date: 03/09/2023\n\nGeneralized myasthenia gravis. Eventful two years outside of neurology - pregnancy loss in 2021 from parvovirus B19 and marrow suppression in 2022 treated with IVIG by hematology - yet her myasthenia remained quiet throughout. Today: occasional evening lid heaviness only. No diplopia, bulbar or respiratory symptoms.\nMedications: pyridostigmine 60 mg every 4-6 hours while awake; prednisone 10 mg daily; albuterol prn. NKDA.\nExam: no ptosis after sustained upgaze; EOM full; bulbar and facial strength normal; neck flexion 5/5; limbs full without fatigability.\nImpression: stable.\nPlan: continue current doses. Annual review. She has our after-hours number for any bulbar or breathing change.\n\nNeuromuscular clinic"
+            }
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "office_visit",
+          "start": "2023-05-16T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "myasthenia and asthma follow-up",
+          "vitals": {
+            "bp": [
+              125,
+              74
+            ],
+            "hr": 80,
+            "rr": 14,
+            "temp_c": 36.3,
+            "spo2": 96,
+            "weight_kg": 58.6
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-05-16T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-05-16T16:20",
+              "author": "PCP",
+              "body": "Routine check. End of the school year, tired in the usual way. MG: unchanged, neurology in March kept doses the same. Asthma: albuterol a couple of times this spring with pollen and recess; no night cough.\nMeds: pyridostigmine 60 mg q4-6h, prednisone 10 mg qAM, albuterol prn.\nExam: no ptosis, speech normal. Lungs clear, good air movement. RRR.\nA/P: MG stable. Mild intermittent asthma, controlled - albuterol refilled. Physical in September."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "pharmacy",
+          "start": "2023-06-12T10:20",
+          "reason": "prior authorization",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Prior Authorization - Pyridostigmine",
+              "date": "2023-06-12T10:20",
+              "author": "MA",
+              "body": "Pharmacy notified: new plan year, insurer now requires PA for pyridostigmine 60 mg above 150 tabs/month. Submitted PA with diagnosis (generalized myasthenia gravis), dosing q4-6h while awake, and neurology letter 3/2023. "
+            },
+            {
+              "type": "Prior Authorization",
+              "title": "Prior Authorization - Approved",
+              "date": "2023-06-14T14:05",
+              "author": "MA",
+              "body": "PA approved through 06/2024. Pharmacy and pt notified; fill ready today."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "annual_physical",
+          "start": "2023-09-26T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              113,
+              80
+            ],
+            "hr": 81,
+            "rr": 11,
+            "temp_c": 36.3,
+            "spo2": 97,
+            "weight_kg": 58.1
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-09-26T16:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 245
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.86
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 71
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 23.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.6
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-09-26T16:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-26T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-26T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-26T16:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-26T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-26T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-09-26T16:55",
+              "author": "PCP",
+              "body": "Yearly exam. Good summer. Back teaching. No illnesses this year. MG quiet; asthma quiet.\nMeds unchanged: pyridostigmine 60 mg q4-6h while awake, prednisone 10 mg daily, albuterol prn. NKDA.\nPHQ-2 0.\nExam: well. No ptosis. Lungs clear. RRR. Abdomen soft. Skin clear, no petechiae or bruising. Strength full.\nA/P\n- CBC (hematology asked for one yearly), BMP, A1c on prednisone.\n- Flu shot today. Updated COVID vaccine at the pharmacy when available. Pap due 2025. Shingrix and PCV20 done.\n- MG and asthma stable."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-28a",
+          "kind": "portal_message",
+          "start": "2023-09-28T12:15",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2023-09-28T12:15",
+              "author": "PCP",
+              "body": "Everything looks good. Blood count stable at your usual level, kidney function and A1c normal."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "pharmacy",
+          "start": "2023-10-24T18:00",
+          "reason": "outside immunization",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-24T18:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Note",
+              "title": "Outside Immunization Recorded",
+              "date": "2023-10-26T09:10",
+              "author": "MA",
+              "body": "Registry: 2023-24 Pfizer COVID vaccine 10/24/23, retail pharmacy. Added."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "telehealth_visit",
+          "start": "2024-02-06T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "medication review",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-02-06T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2024-02-06T16:35",
+              "author": "PCP",
+              "body": "Video from home after school. Requested a quick visit to renew prescriptions before her prednisone and inhaler run out. Doing fine this winter; no sick days. No ptosis or diplopia beyond the occasional tired evening; speech and swallowing normal. Albuterol used once since the fall.\nOn video: no ptosis, speaking full sentences comfortably.\nA/P: MG and asthma stable. Prednisone 10 mg and albuterol renewed for the year; pyridostigmine refills on file through the summer."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-14a",
+          "kind": "specialist_visit",
+          "start": "2024-03-14T11:00",
+          "service": "Neurology",
+          "reason": "myasthenia gravis follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neuromuscular Clinic Follow-up",
+              "date": "2024-03-19T15:20",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROMUSCULAR CLINIC - FOLLOW-UP LETTER\nVisit date: 03/14/2024\n\nGeneralized myasthenia gravis, stable over the past year. No bulbar, respiratory or limb symptoms; mild evening eyelid fatigue on long days.\nMedications: pyridostigmine 60 mg q4-6h; prednisone 10 mg daily; albuterol prn. NKDA.\nExam: normal neuromuscular examination today; no fatigable ptosis; neck flexors 5/5.\nPlan: same doses. Reviewed that respiratory infections can trigger worsening; seek care early for any swallowing or breathing change. Return in one year.\n\nNeuromuscular clinic"
+            }
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "office_visit",
+          "start": "2024-05-21T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "date": "2024-05-21T07:30",
+              "author": "front desk",
+              "body": "Pt called to cancel this afternoon's appointment - field trip ran late in the schedule and she can't get here. Rebooked 6/4 at 3:40."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-06-04a",
+          "kind": "office_visit",
+          "start": "2024-06-04T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "myasthenia and asthma follow-up",
+          "vitals": {
+            "bp": [
+              114,
+              78
+            ],
+            "hr": 78,
+            "rr": 14,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 57.6
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-06-04T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-06-04T16:10",
+              "author": "PCP",
+              "body": "Rescheduled check-in. Two weeks of school left. MG unchanged per her and per neurology in March. Asthma: no albuterol use since winter.\nMeds: pyridostigmine 60 mg q4-6h, prednisone 10 mg daily, albuterol prn. NKDA.\nPA for pyridostigmine expires this month - MA to renew.\nExam: no ptosis; EOM full. Lungs clear. RRR.\nA/P: MG and mild intermittent asthma stable. No changes. Physical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-10a",
+          "kind": "pharmacy",
+          "start": "2024-06-10T09:40",
+          "reason": "prior authorization renewal",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Prior Authorization Renewal - Pyridostigmine",
+              "date": "2024-06-10T09:40",
+              "author": "MA",
+              "body": "Renewal submitted for pyridostigmine 60 mg quantity. Approved same day through 06/2025. Pharmacy notified."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-01a",
+          "kind": "annual_physical",
+          "start": "2024-10-01T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              127,
+              70
+            ],
+            "hr": 88,
+            "rr": 14,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 57.3
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-10-01T16:25",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 222
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.87
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 71
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 24.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-01T16:25",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-01T16:25",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-01T15:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-01T16:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-01T16:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-01T16:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-01T16:21"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-10-01T17:00",
+              "author": "PCP",
+              "body": "32F, annual. Third-grade class this year. Feels well. No ER visits or sick visits since last physical.\nMG stable (neurology 3/2024, no change). Asthma: rare albuterol.\nMeds: pyridostigmine 60 mg q4-6h while awake, prednisone 10 mg daily, albuterol HFA prn. NKDA.\nFH unchanged (mother autoimmune thyroid disease; father alpha thal trait).\nPHQ-2 0.\nExam: well, no ptosis, EOM full. Thyroid nonpalpable. Lungs clear. RRR. Abdomen soft. Skin unremarkable. Strength 5/5.\nA/P\n- CBC, CMP, A1c, TSH.\n- Flu and 2024-25 COVID vaccines today.\n- Pap/HPV due next year.\n- MG/asthma stable."
+            }
+          ],
+          "state": {
+            "weight_kg": 56.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-03a",
+          "kind": "portal_message",
+          "start": "2024-10-03T17:50",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "date": "2024-10-03T17:50",
+              "author": "PCP",
+              "body": "Labs normal, blood count steady at your usual. Thyroid fine. Have a good fall!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Results",
+              "date": "2024-10-03T20:02",
+              "author": "patient",
+              "body": "Thank you! Arm was a little sore from both shots but fine now."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-23a",
+          "kind": "portal_message",
+          "start": "2025-01-23T06:45",
+          "reason": "inhaler refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Inhaler",
+              "date": "2025-01-23T06:45",
+              "author": "patient",
+              "body": "Morning - my albuterol inhaler expired last month and I'd like a fresh one to keep in my desk at school, recess duty in the cold is when I sometimes need it. Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Inhaler",
+              "date": "2025-01-23T09:15",
+              "author": "MA",
+              "body": "Sent - albuterol inhaler x2 so you can keep one at school and one at home."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-20a",
+          "kind": "specialist_visit",
+          "start": "2025-03-20T10:00",
+          "service": "Neurology",
+          "reason": "myasthenia gravis follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neuromuscular Clinic Follow-up",
+              "date": "2025-03-25T13:40",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROMUSCULAR CLINIC - FOLLOW-UP LETTER\nVisit date: 03/20/2025\n\nGeneralized myasthenia gravis. Another stable year. Lid fatigue only at the end of long days; no diplopia, dysarthria, dysphagia or dyspnea; no limb weakness.\nMedications: pyridostigmine 60 mg every 4-6 hours while awake; prednisone 10 mg daily; albuterol prn. NKDA.\nExam: no ptosis at rest or with upgaze; EOM full; facial, bulbar and neck strength normal; limbs 5/5.\nPlan: unchanged. Re-reviewed crisis warning signs, including after respiratory infections. Return in 12 months.\n\nNeuromuscular clinic"
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "office_visit",
+          "start": "2025-04-22T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-Show",
+              "date": "2025-04-22T16:10",
+              "author": "front desk",
+              "body": "Pt did not arrive for 3:40 follow-up. Called, left voicemail to reschedule. Pt messaged back that parent-teacher conferences ran over and she forgot; asked for a video visit instead. Booked 5/6."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-05-06a",
+          "kind": "telehealth_visit",
+          "start": "2025-05-06T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "myasthenia and asthma follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-05-06T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2025-05-06T16:25",
+              "author": "PCP",
+              "body": "Video; pt at home, consented.\nMG: stable per neurology in March, doses unchanged. No ptosis complaints beyond tired evenings. Swallowing and breathing normal.\nAsthma: fresh inhalers in January; used a few times on cold mornings.\nMeds: pyridostigmine 60 mg q4-6h, prednisone 10 mg daily, albuterol prn.\nOn camera: no ptosis, clear speech, no audible wheeze.\nA/P: Stable. Pyridostigmine PA renewal due in June - MA aware. Physical with Pap in September."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-09a",
+          "kind": "pharmacy",
+          "start": "2025-06-09T10:05",
+          "reason": "prior authorization renewal",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Prior Authorization Renewal - Pyridostigmine",
+              "date": "2025-06-09T10:05",
+              "author": "MA",
+              "body": "Annual PA renewal for pyridostigmine 60 mg submitted with current neurology letter. Approved through 06/2026."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              109,
+              75
+            ],
+            "hr": 87,
+            "rr": 12,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 56.8
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-09-23T16:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 224
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.58
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 74
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 24.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-23T16:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-23T16:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 112
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 194
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 110
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 134
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-23T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2025-09-23T16:10",
+              "text": "Satisfactory for evaluation; endocervical/transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV negative.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy; HPV negative.",
+              "issued": "2025-09-30T08:30"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-23T15:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-23T16:25"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-23T16:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-23T16:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-09-23T16:26"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-23T17:05",
+              "author": "PCP",
+              "body": "Annual exam, age 33. Teaching, coaching the after-school reading club. Feels well; no illnesses this past year.\nMG: stable, last neurology 3/2025. Asthma: albuterol on a few cold mornings.\nMeds: pyridostigmine 60 mg q4-6h while awake, prednisone 10 mg daily, albuterol prn. NKDA.\nPHQ-2 0.\nExam: well. No ptosis, EOM full, no diplopia. Neck supple, thyroid normal. Lungs clear. RRR. Abdomen soft. Pelvic: cervix normal appearing, Pap/HPV obtained. Skin: no bruising or petechiae. Strength full.\nA/P\n- Pap with HPV. CBC, CMP, lipids, A1c.\n- Flu and COVID vaccines today.\n- MG and asthma stable on current regimen. Re-reviewed: with any respiratory infection, call early and tell us about any swallowing, voice or breathing change."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-26a",
+          "kind": "portal_message",
+          "start": "2025-09-26T12:30",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs",
+              "date": "2025-09-26T12:30",
+              "author": "PCP",
+              "body": "Blood counts at your baseline, kidney/liver tests, cholesterol and A1c normal. Pap pending."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "date": "2025-10-01T07:55",
+              "author": "PCP",
+              "body": "Pap normal, HPV negative. Next in 2030 if things stay this way."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "pharmacy",
+          "start": "2025-12-09T14:30",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill Request",
+              "date": "2025-12-09T14:30",
+              "author": "MA",
+              "body": "eRx renewal request for pyridostigmine 60 mg, 90-day supply. Current PA valid to 06/2026. Approved by PCP with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "telephone",
+          "start": "2026-02-10T12:05",
+          "reason": "prednisone refill",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Telephone Call",
+              "date": "2026-02-10T12:15",
+              "author": "RN",
+              "body": "Pt calling on lunch break: pharmacy shows prednisone script expired. Has 4 days left. Taking 10 mg daily as always; no changes in MG symptoms. Routed to PCP - prednisone 10 mg renewed for a year. Pt notified."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-28a",
+          "kind": "portal_message",
+          "start": "2026-05-28T06:52",
+          "reason": "cough, asking to be seen",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Can I be seen today?",
+              "date": "2026-05-28T06:52",
+              "author": "patient",
+              "body": "Hi - I had a low fever and felt run down last week, that went away, but I've had a cough for about five days and I'm a bit short of breath. I didn't think it was worth bothering you about at first. Could someone see me today? I can come before school starts or at lunch."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Can I be seen today?",
+              "date": "2026-05-28T07:20",
+              "author": "front desk",
+              "body": "Yes - we have 9:40 this morning with your doctor. See you then."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-28b",
+          "kind": "office_visit",
+          "start": "2026-05-28T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "cough and shortness of breath",
+          "conditions": [
+            {
+              "label": "Acute bronchitis",
+              "action": "diagnosed",
+              "onset": "2026-05-23"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 88,
+            "rr": 20,
+            "temp_c": 37.2,
+            "spo2": 97,
+            "weight_kg": 56.9
+          },
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2026-05-28T10:05",
+              "text": "PA and lateral views. Lungs are clear without consolidation, effusion or pneumothorax. Cardiomediastinal silhouette normal. Osseous structures unremarkable.",
+              "conclusion": "No pneumonia. No acute cardiopulmonary abnormality.",
+              "issued": "2026-05-28T10:45"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-28T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-Day Sick Visit",
+              "date": "2026-05-28T11:05",
+              "author": "PCP",
+              "body": "33F with generalized myasthenia gravis on pyridostigmine/prednisone, mild intermittent asthma, alpha thal trait; history of parvovirus B19 (2021 stillbirth, 2022 pancytopenia, resolved).\nS: About a week ago low-grade fever and malaise, which went away. Since then five days of cough and mildly short of breath. No chest pain. No vomiting or diarrhea. Has used albuterol a few times this week.\nMeds: pyridostigmine 60 mg q4-6h, prednisone 10 mg daily, albuterol prn. NKDA.\n\nO: T 37.2 C (99 F), BP 120/78, P 88, RR 20, SpO2 97% RA.\nScattered wheezes both lungs; no rales, no rhonchi. Rest of exam unremarkable.\nCXR PA/lat (in office): no pneumonia, no other abnormality.\n\nA/P\nAcute bronchitis after a viral illness, with wheeze in a patient with asthma. No pneumonia on film. Albuterol 2 puffs every 4-6 hours as needed for the next several days; continue prednisone and pyridostigmine. Fluids, rest; okay to finish the school week if she feels up to it. Call or message if not improving in a week, sooner for fever, worsening breathing. Follow-up as needed."
+            }
+          ],
+          "measure": [
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-28c",
+          "kind": "hospital_admission",
+          "start": "2026-05-28T19:20",
+          "end": "2026-06-05T13:00",
+          "service": "Pulmonary & Critical Care",
+          "reason": "difficulty breathing and swallowing",
+          "vitals": {
+            "rr": 28
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-28T20:05",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.32
+                },
+                {
+                  "test": "Carbon dioxide [Partial pressure] in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 50
+                },
+                {
+                  "test": "Oxygen [Partial pressure] in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 60
+                },
+                {
+                  "test": "Bicarbonate in Arterial blood",
+                  "loinc": "1960-4",
+                  "unit": "meq/L",
+                  "value": 24
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "ICU Admission Note",
+              "date": "2026-06-09T09:30",
+              "author": "critical care",
+              "body": "REGIONAL HOSPITAL - MEDICAL ICU ADMISSION NOTE\nDate: 05/28/2026 20:30\n\nCC: two days of worsening trouble breathing and swallowing after a respiratory infection.\nHPI: 33-year-old with generalized myasthenia gravis, seen by her primary care physician earlier today for cough. Over the past two days her breathing and swallowing have steadily worsened. She had a respiratory infection last week and did not seek care for it until today. Brought in this evening.\nMeds: pyridostigmine 60 mg q4-6h; prednisone 10 mg daily; albuterol prn. NKDA.\nPMH: myasthenia gravis, asthma, alpha thalassemia trait; parvovirus B19 2021-2022, resolved.\nSH: teacher; never smoker; no alcohol.\n\nExam: bilateral ptosis; reports diplopia. Nasal speech, drooling. Neck flexion 3/5. Shallow breathing, RR 28.\nABG: pH 7.32, PaCO2 50, PaO2 60, HCO3 24.\n\nImpression: myasthenic crisis precipitated by respiratory infection, with hypercapnic respiratory failure.\nPlan: intubation for airway protection and ventilation; hold pyridostigmine while intubated; IVIG 2 g/kg divided over 5 days; continue prednisone 10 mg via tube; avoid drugs that worsen myasthenia; neurology consulted.\n\nPulmonary & Critical Care"
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2026-06-09T09:31",
+              "author": "hospital medicine",
+              "body": "REGIONAL HOSPITAL - DISCHARGE SUMMARY\nAdmitted 05/28/2026 (via ED to medical ICU)  Discharged 06/05/2026\n\nPrincipal diagnosis: myasthenic crisis.\nSecondary: acute bronchitis (precipitant); asthma; alpha thalassemia trait.\n\nCourse: Arrived the evening of 5/28 with bulbar weakness, ptosis, neck flexor weakness and hypercapnia (ABG 7.32/50/60/24). Intubated on arrival. Pyridostigmine held. IVIG 2 g/kg given over five days with neurology. Strength improved steadily; extubated 6/2 without difficulty. Pyridostigmine restarted at home dose; swallow normal before diet advanced. Transferred out of ICU 6/3. Walking independently, speech and swallowing at baseline at discharge.\n\nDischarge medications (unchanged from home): pyridostigmine 60 mg every 4-6 hours while awake; prednisone 10 mg daily; albuterol 2 puffs prn.\nAllergies: NKDA.\nFollow-up: outpatient neuromuscular clinic in about 6 weeks; primary care in 1-2 weeks. Return for any swallowing, voice or breathing difficulty.\n\nHospital Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-08a",
+          "kind": "telephone",
+          "start": "2026-06-08T10:10",
+          "reason": "post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "date": "2026-06-08T10:30",
+              "author": "RN",
+              "body": "Called pt - heard from her by message that she was home 6/5 after ICU stay for myasthenic crisis; records requested from the hospital. She is home resting, school year is done for her. Voice normal, eating regular food, no choking, breathing comfortable, cough nearly gone. Taking pyridostigmine and prednisone 10 mg as before, has albuterol. Neuromuscular follow-up 7/14. Offered PCP visit next week - booked 6/16. Knows to call 911 for any breathing or swallowing trouble."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "office_visit",
+          "start": "2026-06-16T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "date": "2026-06-15T15:45",
+              "author": "front desk",
+              "body": "Pt cancelled tomorrow's hospital follow-up - feeling well, already has neurology on 7/14 and will be away part of the summer. Asked to come in after neurology instead; offered August dates, she will call back."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "specialist_visit",
+          "start": "2026-07-14T09:30",
+          "service": "Neurology",
+          "reason": "follow-up after myasthenic crisis",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neuromuscular Clinic Follow-up",
+              "date": "2026-07-17T14:10",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROMUSCULAR CLINIC - FOLLOW-UP LETTER\nVisit date: 07/14/2026\n\nSeen six weeks after ICU admission for myasthenic crisis triggered by a respiratory infection (intubated, IVIG, extubated 6/2, home 6/5). Since discharge she has steadily regained strength. Now back to her baseline: no ptosis, diplopia, dysarthria, dysphagia or shortness of breath.\nMedications: pyridostigmine 60 mg every 4-6 hours while awake; prednisone 10 mg daily; albuterol prn. NKDA.\nExam: no ptosis after sustained upgaze; EOM full; speech normal; neck flexion 5/5; limbs 5/5 without fatigability.\nImpression: generalized myasthenia gravis, recovered to baseline after crisis.\nPlan: same doses. Early care for future respiratory infections. Return in 3 months.\n\nNeuromuscular clinic"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "pharmacy",
+          "start": "2026-08-11T11:00",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill Request",
+              "date": "2026-08-11T11:00",
+              "author": "MA",
+              "body": "Pyridostigmine 60 mg 90-day renewal requested by pharmacy. PA renewed through 06/2027 in June. Approved by PCP x3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T13:40",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Follow-up appointment",
+              "date": "2026-08-18T13:40",
+              "author": "patient",
+              "body": "Hi, sorry I never called back about the follow-up visit. Neurology went well and I feel back to normal. Could I come in before school starts? Afternoons are best."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Follow-up appointment",
+              "date": "2026-08-18T15:05",
+              "author": "front desk",
+              "body": "You're booked Wednesday 9/2 at 2:30 with your doctor. See you then!"
+            }
+          ]
+        },
+        {
+          "id": "2026-09-02a",
+          "kind": "office_visit",
+          "start": "2026-09-02T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, myasthenia gravis and asthma",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Alpha thalassemia trait|D56.3": {
+        "code": "D56.3",
+        "display": "Thalassemia minor",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hydrops fetalis|O36.22X0": {
+        "code": "O36.22X0",
+        "display": "Maternal care for hydrops fetalis, second trimester, not applicable or unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Intrauterine fetal demise|O36.4XX0": {
+        "code": "O36.4XX0",
+        "display": "Maternal care for intrauterine death, not applicable or unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pancytopenia|D61.818": {
+        "code": "D61.818",
+        "display": "Other pancytopenia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Parvovirus B19 infection|B34.3": {
+        "code": "B34.3",
+        "display": "Parvovirus infection, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Severe parvovirus B19 infection (immunocompromised host)|B34.3": {
+        "code": "B34.3",
+        "display": "Parvovirus infection, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Supervision of high risk pregnancy, unspecified, first trimester|O09.91": {
+        "code": "O09.91",
+        "display": "Supervision of high risk pregnancy, unspecified, first trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "pyridostigmine bromide 60 MG Oral Tablet": {
+        "code": "903857",
+        "display": "pyridostigmine bromide 60 MG Oral Tablet",
+        "ingredient": "pyridostigmine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "ABO and Rh group [Type] in Blood": {
+        "code": "882-1",
+        "display": "ABO and Rh group [Type] in Blood",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Bicarbonate in Arterial blood": {
+        "code": "1960-4",
+        "display": "Bicarbonate [Moles/volume] in Arterial blood",
+        "unit": "meq/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Blood group antibody screen [Presence] in Serum or Plasma": {
+        "code": "890-4",
+        "display": "Blood group antibody screen [Presence] in Serum or Plasma",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Carbon dioxide [Partial pressure] in Arterial blood": {
+        "code": "2019-8",
+        "display": "Carbon dioxide [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay": {
+        "code": "3255-7",
+        "display": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hemoglobin A/Hemoglobin.total in Blood": {
+        "code": "4546-8",
+        "display": "Hemoglobin A/Hemoglobin.total in Blood",
+        "unit": "%",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hemoglobin A2/Hemoglobin.total in Blood by Electrophoresis": {
+        "code": "4552-6",
+        "display": "Hemoglobin A2/Hemoglobin.total in Blood by Electrophoresis",
+        "unit": "%",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hemoglobin F/Hemoglobin.total in Blood by Electrophoresis": {
+        "code": "32682-7",
+        "display": "Hemoglobin F/Hemoglobin.total in Blood by Electrophoresis",
+        "unit": "%",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Morphology [Interpretation] in Blood Narrative": {
+        "code": "18314-5",
+        "display": "Morphology [Interpretation] in Blood Narrative",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Oxygen [Partial pressure] in Arterial blood": {
+        "code": "2703-7",
+        "display": "Oxygen [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Parvovirus B19 DNA [#/volume] (viral load) in Serum or Plasma by NAA with probe detection": {
+        "code": "49434-4",
+        "display": "Parvovirus B19 DNA [#/volume] (viral load) in Serum or Plasma by NAA with probe detection",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Parvovirus B19 IgG Ab [Presence] in Serum by Immunoassay": {
+        "code": "29660-8",
+        "display": "Parvovirus B19 IgG Ab [Presence] in Serum by Immunoassay",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Parvovirus B19 IgM Ab [Presence] in Serum by Immunoassay": {
+        "code": "40658-7",
+        "display": "Parvovirus B19 IgM Ab [Presence] in Serum by Immunoassay",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Reticulocytes/100 erythrocytes in Blood": {
+        "code": "4679-7",
+        "display": "Reticulocytes/Erythrocytes in Blood",
+        "unit": "%",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "aPTT in Platelet poor plasma by Coagulation assay": {
+        "code": "3173-2",
+        "display": "aPTT in Blood by Coagulation assay",
+        "unit": "s",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH of Arterial blood": {
+        "code": "2744-1",
+        "display": "pH of Arterial blood",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Fetal middle cerebral artery Doppler": {
+        "code": "11525-3",
+        "display": "US for pregnancy",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Obstetric ultrasound": {
+        "code": "11525-3",
+        "display": "US for pregnancy",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}
