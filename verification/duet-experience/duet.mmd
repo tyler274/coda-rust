@@ -40,7 +40,7 @@ stateDiagram-v2
 %% one Send and no Stop. A sent message is never lost (D1).
 %% event type in the composer | by you | needs DIn, TCur | reason: the composer belongs to this device's session and a set-up account; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You write a draft; it waits while AI is off or permission is missing (north-star.md, Product structure).
 %% event clear your draft | by you | needs DrText, TCur | reason: only a draft can be cleared; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You empty the composer.
-%% event ask about this | by you | needs DIn, TCur | reason: only a set-up account has items to ask about; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You pick Ask about this on an insight, a record, a measurement or a saved item: that exact item and version join your draft, your text stays, and nothing is sent (north-star.md, Today; ENG-26).
+%% event ask about this | by you | needs DIn, TCur | reason: only a set-up account has items to ask about; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You pick Ask about this on an insight, a record, a measurement or a saved item: that item joins your draft, your text stays, and nothing is sent (north-star.md, Today; ENG-26). While you draft it shows its current version, marked if it was corrected since you picked it; the message keeps the version it carried once sent (Dev 2026-10-26).
 %% event remove the attached item | by you | needs CtxOn, TCur | reason: only an attached item can be removed; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The item leaves your draft.
 %% event reply to a message | by you | needs DIn, TCur | reason: only a set-up account has a thread; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You quote one earlier message, yours or Duet's, in your draft; quoting gives no new permission to repeat what it said (north-star.md, Product structure).
 %% event dismiss the quote | by you | needs QOn, TCur | reason: only a quote can be dismissed; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The quote leaves your draft.
@@ -48,8 +48,8 @@ stateDiagram-v2
 %% event Duet receives your message | by Duet | needs OSending, OUnsure, AReady | reason: only a message on its way arrives, sent or not yet confirmed | Your message is in the thread for good. With no reply in progress Duet starts one; while Duet is writing, your message steers that reply, which answers both (Dev 2026-10-25).
 %% event your message isn't confirmed | by the network | needs OSending | reason: only a message on its way can go unconfirmed | Duet can't tell yet whether it arrived; the message says so and keeps your words, never shown as failed or as sent.
 %% event try sending again | by you | needs DIn, OUnsure, OUnsent, TCur | reason: only a message that didn't arrive or isn't confirmed is retried; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The same message goes again; it can never arrive twice.
-%% event Duet refuses your message | by Duet | needs OSending | reason: only a message on its way can be refused | A definite refusal, such as an attached item that changed: the message stays with your words, Try again and Edit.
-%% event edit the unsent message | by you | needs DIn, OUnsent, TCur | reason: only a refused message goes back to the composer; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | Its words and quote return to the composer, after asking if they would replace a newer draft; its attached item returns only while it is still current.
+%% event Duet refuses your message | by Duet | needs OSending | reason: only a message on its way can be refused | A definite refusal: the message stays with your words, Try again and Edit.
+%% event edit the unsent message | by you | needs DIn, OUnsent, TCur | reason: only a refused message goes back to the composer; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | Its words and quote return to the composer, after asking if they would replace a newer draft; its attached item returns at its current version.
 %% event Duet finishes the reply | by Duet's AI | needs RWriting | reason: only a reply being written finishes | The reply is complete in the thread with what it cites.
 %% event the reply can't finish | by Duet's runtime | needs RWriting | reason: only a reply being written can fail | What was written stays, marked unfinished, with Try again; never silence (D1). Whatever the reply already saved stays saved.
 %% events Duet posts in the thread = Duet finishes the reply | the reply can't finish
@@ -983,7 +983,7 @@ stateDiagram-v2
           CtxOn --> CtxOn : ask about this
           CtxOn --> CtxNone : remove the attached item
           CtxOn --> CtxNone : send your message
-          CtxNone --> CtxOn : edit the unsent message / may restore the item while it is still current
+          CtxNone --> CtxOn : edit the unsent message / may restore the item
         }
         --
         state "Quote in your draft" as Quote {

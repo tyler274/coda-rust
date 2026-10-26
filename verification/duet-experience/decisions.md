@@ -115,7 +115,7 @@ Linear wins.
   ui-surface-map.md, Composer and message). Once sent, a message belongs to
   your account, not the device: signing out doesn't drop it, and it arrives
   and is answered (Dev 2026-10-25). Edit returns the words and quote,
-  and the attached item only while it is still current. That the words
+  and the attached item at its current version. That the words
   survive is a data promise about the message's identity, for a linked data
   proof; the chart holds the states around it.
 - A reply that can't finish shows unfinished with Try again, never silence. A
@@ -133,8 +133,11 @@ Linear wins.
   a note that save with Done; tapping the chosen thumb again removes it
   (ui-surface-map.md, Reply feedback, Dev 2026-09-23). Whether the reasons sheet
   is open is presentation and is left out.
-- Ask about this attaches the exact item to your draft; replying to a message
-  quotes it (north-star.md, Product structure; Dev 2026-09-23).
+- Ask about this attaches the item to your draft; replying to a message
+  quotes it (north-star.md, Product structure; Dev 2026-09-23). While you
+  draft, the item follows its current version, marked if it was corrected, and
+  a changed item never bounces the message; once sent, the message keeps the
+  version it carried (Dev 2026-10-26, live where you work).
 - Modeling note: "Your latest message" tracks the newest message on its way, on
   the account;
   each earlier message keeps its own state the same way. Person-to-person
