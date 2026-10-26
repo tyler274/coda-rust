@@ -434,6 +434,31 @@ map; Page and state inventory), with later decisions winning.
   standards, data and consent. Duet's own choices are written as "may"
   (Dev 2026-10-26; Dev 2026-10-23 for Coda).
 
+## Notes and medications you enter (step 11)
+
+- The graph is the harness: it gives Duet the right tool for each action you
+  can take yourself and lets the model decide when to use it, gated only by
+  consent and access (Dev 2026-10-26).
+- You add, change and delete notes and medications yourself, from You's add
+  menu, with or without AI; you can't edit connected records (north-star.md,
+  You). Confirming a medication from your records marks it as one you take;
+  the record never changes. These show under What I take (confirmed by me)
+  (north-star.md, The page).
+- When you ask in conversation, Duet saves or changes them right away, and its
+  message shows exactly what it saved, with Undo (Dev 2026-10-26).
+- Duet may propose a dated note on its own from what you tell it, in your words
+  and without a diagnosis or urgency judgment; it saves nothing until you save
+  it, by Save or by saying so (ENG-52; Dev 2026-10-26). Proposing on its own
+  alerts only once you turn on alerts for Duet's own work.
+- A saved note is a record entered by you, kept apart from Duet's private
+  understanding. Duet reads it, For my doctor can hold it, and while you're
+  connected it flows to your practice, as do your medications (ENG-52;
+  Dev 2026-10-25).
+- Stopping a medication keeps it, marked stopped with the date, and it leaves
+  What I take; delete is for a mistake (Dev 2026-10-26).
+- Any change to your notes or medications makes running work look again, as
+  your Plan edits do.
+
 ## Open, to add later
 
 - **Pausing reviews while you're away (Dev 2026-10-25).** coda-app paused

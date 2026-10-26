@@ -3,7 +3,7 @@ stateDiagram-v2
 %% The graph is the spec; Verus derives from it. It states the ideal behavior of the full
 %% product for every person, from Dev's intent and the settled sources, never from existing
 %% code. decisions.md holds the charter, the sources and the dated decisions it cites.
-%% Written region by region; this file currently holds your screens, the thread and its alerts, the account and export, your health sources, the conversation, follow-through, Duet's reviews and Today, For my doctor, your practice, and what comes back from it.
+%% Written region by region; this file currently holds your screens, the thread and its alerts, notes and medications you enter, the account and export, your health sources, the conversation, follow-through, Duet's reviews and Today, For my doctor, your practice, and what comes back from it.
 %% Scope: MVP behavior (Dev 2026-10-25); later functionality joins as connected graphs.
 %%
 %% Events. Every labeled step carries a declared event: who causes it, what it needs, and
@@ -53,7 +53,7 @@ stateDiagram-v2
 %% event Duet finishes the reply | by Duet's AI | needs RWriting | reason: only a reply being written finishes | The reply is complete in the thread with what it cites.
 %% event the reply can't finish | by Duet's runtime | needs RWriting | reason: only a reply being written can fail | What was written stays, marked unfinished, with Try again; never silence (D1). Whatever the reply already saved stays saved.
 %% events Duet posts in the thread = Duet finishes the reply | the reply can't finish
-%% events Duet has something to tell you = Duet finishes the daily look with something to tell you | Duet finishes the weekly recap with something to tell you | Duet finishes the new-records review with something to tell you | Duet finishes the work it took on with something to tell you | Duet delivers the Reminder | Duet delivers the Check-in | the Check-in can't finish | the Check-in can't finish a third time in a row | your doctor's plan arrives or changes | your practice schedules your appointment | your practice moves your appointment | your practice cancels your appointment | your practice's invitation reaches you | your practice discharges you
+%% events Duet has something to tell you = Duet proposes a note | Duet finishes the daily look with something to tell you | Duet finishes the weekly recap with something to tell you | Duet finishes the new-records review with something to tell you | Duet finishes the work it took on with something to tell you | Duet delivers the Reminder | Duet delivers the Check-in | the Check-in can't finish | the Check-in can't finish a third time in a row | your doctor's plan arrives or changes | your practice schedules your appointment | your practice moves your appointment | your practice cancels your appointment | your practice's invitation reaches you | your practice discharges you
 %% events Duet stops writing early = turn AI off | Duet publishes new Terms | Duet publishes a new AI permission | withdraw AI permission
 %% event you see the new messages | by you | needs ThUnseen, DIn, AppFront, TabDuet, CoNone, RdShown@conversation, RdKept@conversation, TCur | reason: only messages on screen in front of you are seen; newer Terms wait for your acceptance first | The conversation shows Duet's new messages on this device's screen, so they are seen everywhere: seen is one fact for your account (Dev 2026-10-26).
 %% event you see the new messages on another device | by you | needs ThUnseen, ODIn | reason: only a signed-in device shows the conversation | You read Duet's new messages on your other device; they are seen here too (Dev 2026-10-26).
@@ -152,8 +152,8 @@ stateDiagram-v2
 %% hears the changes you or your sources make, including your own edits to a Reminder or Check-in, so a
 %% reply already writing never overwrites them (D9; behaviour-contract rule 16). Duet's own Plan saves
 %% happen inside the reply.
-%% events you or your sources change what Duet read = a record is corrected | a clinical record changes in your phone's health app | a reading is deleted in your phone's health app | your doctor's plan arrives or changes | change the Plan | delete the Plan | mark an insight not accurate | pause the Reminder | pause the Check-in | resume the Reminder | resume the Check-in | change the Reminder | change the Check-in | cancel the Reminder | cancel the Check-in
-%% events what Duet read changes = a record is corrected | a clinical record changes in your phone's health app | a reading is deleted in your phone's health app | your doctor's plan arrives or changes | change the Plan | delete the Plan | mark an insight not accurate | Duet saves the Plan you asked for | Duet deletes the Plan as you asked
+%% events you or your sources change what Duet read = a record is corrected | a clinical record changes in your phone's health app | a reading is deleted in your phone's health app | your doctor's plan arrives or changes | change the Plan | delete the Plan | mark an insight not accurate | pause the Reminder | pause the Check-in | resume the Reminder | resume the Check-in | change the Reminder | change the Check-in | cancel the Reminder | cancel the Check-in | add a note | change the note | delete the note | save the proposed note | add a medication | confirm a medication from your records | change the medication | mark the medication stopped | delete the medication
+%% events what Duet read changes = a record is corrected | a clinical record changes in your phone's health app | a reading is deleted in your phone's health app | your doctor's plan arrives or changes | change the Plan | delete the Plan | mark an insight not accurate | Duet saves the Plan you asked for | Duet deletes the Plan as you asked | add a note | change the note | delete the note | save the proposed note | add a medication | confirm a medication from your records | change the medication | mark the medication stopped | delete the medication | Duet saves a note as you asked | Duet changes the note as you asked | Duet deletes the note as you asked | Duet saves the proposed note as you asked | Duet adds a medication as you asked | Duet confirms a medication from your records as you asked | Duet changes the medication as you asked | Duet marks the medication stopped as you asked | Duet deletes the medication as you asked
 %% Your edits to For my doctor and your appointment don't restart work that is running. A review or
 %% reply notes the change, and an update it proposes afterwards waits for you to review it again
 %% against your latest version (Dev 2026-10-26).
@@ -184,6 +184,33 @@ stateDiagram-v2
 %% event Duet proposes an update for your doctor | by Duet's AI | needs RWriting | reason: a reply proposes when you ask or whenever Duet judges an update useful; a proposal saves nothing until you review it (ENG-169; Dev 2026-10-25) | Duet drafts a concise, factual account from your sources, each with its source and date; the proposal carries only the changes and is never saved by itself (ENG-169). It posts in the thread with Save and Dismiss, and For my doctor shows it too (Dev 2026-10-26).
 %% event Duet saves the update for your doctor as you asked | by Duet's AI | needs RWriting, PrReady | reason: a reply saves a proposal only when your current message asks for it, and only one you could save yourself against your latest workspace (Dev 2026-10-26) | You said yes in words; Duet saves exactly the proposed update, as Save would. A proposal overtaken by your edits must be reviewed again first.
 %% event Duet saves your question for your doctor as you said it | by Duet's AI | needs RWriting | reason: only your own exact words save without review (north-star.md, For my doctor) | Your question joins the workspace word for word; anything Duet would add or reword is proposed instead.
+%%
+%% Notes and medications you enter (ENG-52; north-star.md, You and the page; Dev 2026-10-26). They are yours:
+%% you add, change and delete them, with or without AI, and Duet has the same tools to use in conversation as
+%% you ask, deciding when; what it saved shows in its message, with Undo. Duet may also propose a note on its
+%% own from what you tell it; a proposal saves nothing until you save it. A saved note is a dated record
+%% entered by you, kept apart from Duet's private understanding; Duet reads it, For my doctor can hold it,
+%% and while you're connected it flows to your practice. One note and one medication stand for each.
+%% event add a note | by you | needs DIn, AReady, TCur | reason: a set-up account adds; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You write a dated note in You; it is a record entered by you (ENG-52).
+%% event change the note | by you | needs DIn, NoteSaved, TCur | reason: only a saved note changes; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You edit your note; its date and history stay yours.
+%% event delete the note | by you | needs DIn, NoteSaved, TCur | reason: only a saved note is deleted; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The note goes, including Undo on Duet's message; what was already sent keeps what it showed.
+%% event Duet saves a note as you asked | by Duet's AI | needs RWriting | reason: a reply saves a note when your current message asks for it (Dev 2026-10-26) | Duet saves the note and its message shows exactly what it saved, with Undo.
+%% event Duet changes the note as you asked | by Duet's AI | needs RWriting, NoteSaved | reason: a reply changes a note when your current message asks for it (Dev 2026-10-26) | Duet changes your note and shows what changed.
+%% event Duet deletes the note as you asked | by Duet's AI | needs RWriting, NoteSaved | reason: a reply deletes a note when your current message asks for it (Dev 2026-10-26) | Duet deletes your note and says so.
+%% event Duet proposes a note | by Duet's AI | needs PAllowed, SwOn, TCur | reason: Duet's AI drafts only with your permission, AI on and current Terms, and a proposal saves nothing (ENG-52) | From what you tell it, Duet drafts a short dated note in your words (what, when it started, how often, how bad) without a diagnosis or urgency judgment, and posts it with Save and Dismiss. A newer proposal replaces one still waiting.
+%% event save the proposed note | by you | command on the proposed note: Save, clicked while DIn | needs NpReady, TCur | reason: only a waiting proposal saves; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You save it as proposed or as you edited it (ENG-52).
+%% event Duet saves the proposed note as you asked | by Duet's AI | needs RWriting, NpReady | reason: a reply saves a proposal only when your current message asks for it (Dev 2026-10-26) | You said yes in words; Duet saves the proposed note as Save would.
+%% event dismiss the proposed note | by you | command on the proposed note: Dismiss, clicked while DIn | needs NpReady, TCur | reason: only a waiting proposal is dismissed; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The proposal goes; nothing was saved.
+%% event add a medication | by you | needs DIn, AReady, TCur | reason: a set-up account adds; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You add a medication you take; it shows under What I take (confirmed by me).
+%% event confirm a medication from your records | by you | needs DIn, RecHave, TCur | reason: only a medication in your records is confirmed; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You mark a medication from your records as one you take; the record itself never changes.
+%% event change the medication | by you | needs DIn, MdTaking, MdStopped, TCur | reason: only a medication of yours changes; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You change its dose, schedule or notes.
+%% event mark the medication stopped | by you | needs DIn, MdTaking, TCur | reason: only a medication you take is stopped; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | It stays in your medications, marked stopped with the date, and leaves What I take (Dev 2026-10-26).
+%% event delete the medication | by you | needs DIn, MdTaking, MdStopped, TCur | reason: only a medication of yours is deleted; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | For a mistake: it leaves your medications; a medication in your records stays there.
+%% event Duet adds a medication as you asked | by Duet's AI | needs RWriting | reason: a reply adds a medication when your current message asks for it (Dev 2026-10-26) | Duet adds it and its message shows exactly what it saved, with Undo.
+%% event Duet confirms a medication from your records as you asked | by Duet's AI | needs RWriting, RecHave | reason: a reply confirms a medication when your current message asks for it (Dev 2026-10-26) | Duet marks it as one you take and says so.
+%% event Duet changes the medication as you asked | by Duet's AI | needs RWriting, MdTaking, MdStopped | reason: a reply changes a medication when your current message asks for it (Dev 2026-10-26) | Duet changes it and shows what changed.
+%% event Duet marks the medication stopped as you asked | by Duet's AI | needs RWriting, MdTaking | reason: a reply stops a medication when your current message asks for it (Dev 2026-10-26) | Duet marks it stopped with the date and says so.
+%% event Duet deletes the medication as you asked | by Duet's AI | needs RWriting, MdTaking, MdStopped | reason: a reply deletes a medication when your current message asks for it (Dev 2026-10-26) | Duet deletes it and says so.
 %% event save the update for your doctor | by you | command on For my doctor: Save the update, clicked while DIn | needs PrReady, TCur | reason: only an update you reviewed against your latest workspace saves; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | Saves exactly the update as you reviewed and edited it, in one step (ENG-169).
 %% event dismiss the update for your doctor | by you | command on For my doctor: Dismiss the update, clicked while DIn | needs PrReady, PrStale, TCur | reason: only a proposed update is dismissed; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The proposal goes; your workspace is unchanged.
 %% event review the update again | by you | needs DIn, PrStale, TCur | reason: only an update overtaken by a change to what it read is reviewed again; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The update shows against your latest workspace and the current version of its sources, keeping what you edited in it, for you to review again (north-star.md, Proposals and review; ENG-34).
@@ -256,7 +283,7 @@ stateDiagram-v2
 %% event {read} fails to load | by Duet | What was shown stays with one quiet line and Retry; with nothing shown, it says it couldn't load, with Retry. Never a false empty state.
 %% event retry {read} | by you | needs DIn, RdKept@{key}, RdFailed@{key} | reason: only a read that shows a problem offers Retry | You read it again; what is shown stays.
 %% event the supporting information loads with a newer version | by Duet | needs RdLoading@source | reason: only supporting information being read loads | The exact cited version shows, with a note that a newer version exists (E5).
-%% events your shared data changes = new records arrive | a record is corrected | clinical records arrive from your phone's health app | a clinical record changes in your phone's health app | your phone's readings arrive | a reading is deleted in your phone's health app | you answer a Check-in about your doctor's plan
+%% events your shared data changes = new records arrive | a record is corrected | clinical records arrive from your phone's health app | a clinical record changes in your phone's health app | your phone's readings arrive | a reading is deleted in your phone's health app | you answer a Check-in about your doctor's plan | add a note | change the note | delete the note | save the proposed note | add a medication | confirm a medication from your records | change the medication | mark the medication stopped | delete the medication | Duet saves a note as you asked | Duet changes the note as you asked | Duet deletes the note as you asked | Duet saves the proposed note as you asked | Duet adds a medication as you asked | Duet confirms a medication from your records as you asked | Duet changes the medication as you asked | Duet marks the medication stopped as you asked | Duet deletes the medication as you asked
 
   state "Duet" as App {
 
@@ -852,6 +879,63 @@ stateDiagram-v2
           PrHas --> PrNone : dismiss the update for your doctor
         }
         --
+        %% Notes you enter (ENG-52): a dated record entered by you; one note stands for each.
+        state "Your note" as Note {
+          [*] --> NoteNone
+          state "No note" as NoteNone
+          state "Note saved" as NoteSaved
+          NoteNone --> NoteSaved : add a note
+          NoteSaved --> NoteSaved : add a note
+          NoteNone --> NoteSaved : Duet saves a note as you asked
+          NoteSaved --> NoteSaved : Duet saves a note as you asked
+          NoteNone --> NoteSaved : save the proposed note
+          NoteSaved --> NoteSaved : save the proposed note
+          NoteNone --> NoteSaved : Duet saves the proposed note as you asked
+          NoteSaved --> NoteSaved : Duet saves the proposed note as you asked
+          NoteSaved --> NoteSaved : change the note
+          NoteSaved --> NoteSaved : Duet changes the note as you asked
+          NoteSaved --> NoteNone : delete the note
+          NoteSaved --> NoteNone : Duet deletes the note as you asked
+        }
+        --
+        %% A note Duet proposed: it saves nothing until you save it (ENG-52).
+        state "Duet's proposed note" as NoteProp {
+          [*] --> NpNone
+          state "No note proposed" as NpNone
+          state "A note to review" as NpReady
+          NpNone --> NpReady : Duet proposes a note
+          NpReady --> NpReady : Duet proposes a note
+          NpReady --> NpNone : save the proposed note
+          NpReady --> NpNone : Duet saves the proposed note as you asked
+          NpReady --> NpNone : dismiss the proposed note
+        }
+        --
+        %% Medications you take: entered by you or confirmed from your records. One stands for each.
+        state "Your medication" as Med {
+          [*] --> MdNone
+          state "No medication of yours" as MdNone
+          state "Taking it" as MdTaking
+          state "Stopped, with the date" as MdStopped
+          MdNone --> MdTaking : add a medication
+          MdStopped --> MdTaking : add a medication
+          MdNone --> MdTaking : Duet adds a medication as you asked
+          MdStopped --> MdTaking : Duet adds a medication as you asked
+          MdNone --> MdTaking : confirm a medication from your records
+          MdStopped --> MdTaking : confirm a medication from your records
+          MdNone --> MdTaking : Duet confirms a medication from your records as you asked
+          MdStopped --> MdTaking : Duet confirms a medication from your records as you asked
+          MdTaking --> MdTaking : change the medication
+          MdStopped --> MdStopped : change the medication
+          MdTaking --> MdTaking : Duet changes the medication as you asked
+          MdStopped --> MdStopped : Duet changes the medication as you asked
+          MdTaking --> MdStopped : mark the medication stopped
+          MdTaking --> MdStopped : Duet marks the medication stopped as you asked
+          MdTaking --> MdNone : delete the medication
+          MdStopped --> MdNone : delete the medication
+          MdTaking --> MdNone : Duet deletes the medication as you asked
+          MdStopped --> MdNone : Duet deletes the medication as you asked
+        }
+        --
         state "Your appointment" as Appt {
           [*] --> ApNone
           state "No appointment date" as ApNone
@@ -1018,6 +1102,10 @@ stateDiagram-v2
         --
         state "Your command on your alerts" as AlertRc {
           %% receipt your alerts
+        }
+        --
+        state "Your command on the proposed note" as NoteRc {
+          %% receipt the proposed note
         }
         --
         %% Which tab you're on (ui-surface-map.md, Navigation map). Ask about this takes you to the conversation
@@ -1398,6 +1486,8 @@ stateDiagram-v2
       %% when AppBack, NtOn, DIn, RIdle, RPaused, RUnfinished, REnded, RDone | reason: what you asked for and your practice's news alert wherever alerts are allowed; while Duet writes it waits for the reply (Dev 2026-10-26)
       NoNone --> NoWaiting : Duet finishes with something to tell you [you're away, alerts allowed, your switch on, not mid-reply]
       %% when AppBack, NtOn, DIn, IaOn, RIdle, RPaused, RUnfinished, REnded, RDone | reason: what Duet noticed on its own alerts only once you turn it on (north-star.md, Notifications; Dev 2026-10-26)
+      NoNone --> NoWaiting : Duet proposes a note [you're away, alerts allowed, your switch on, not mid-reply]
+      %% when AppBack, NtOn, DIn, IaOn, RIdle, RPaused, RUnfinished, REnded, RDone | reason: what Duet offers on its own alerts only once you turn it on (Dev 2026-10-26)
       NoNone --> NoWaiting : Duet stops writing early [with a message waiting, you're away, alerts allowed]
       %% when OmWaiting, AppBack, NtOn, DIn | reason: a reply that stops posts what waited, and it alerts
       NoWaiting --> NoNone : open the notification
