@@ -1,82 +1,144 @@
 export const meta = {
   name: 'author-patients',
-  description: 'Author one primary-care chart per unit: story, ledger parts, check until ACCEPTED, preview and reread',
+  description: 'Make primary-care charts source-first: build-req, its check, the chart, an independent trace, a fix',
   phases: [
-    { title: 'Author', detail: 'one agent per unit (or per year), following the authoring guide' },
+    { title: 'Build-req', detail: 'write build-req.md from source.md, then check it against the source' },
+    { title: 'Author', detail: 'write the chart from build-req.md until check prints ACCEPTED' },
+    { title: 'Trace', detail: 'an independent reader traces every clinical fact to build-req.md' },
+    { title: 'Fix', detail: 'the author fixes what the trace found' },
   ],
 }
 
-// args: { repo: '<absolute path of the coda-rust checkout>', units: ['unit-0001', ...] }
+// args: { repo: '<absolute path of the coda-rust checkout>', units: ['unit-2013', ...] }
 const REPO = args.repo
-const DRAFTS = REPO + '/target/patient-bank/drafts'
+const UNITS = REPO + '/patients/units'
+const PREVIEW = REPO + '/target/patient-bank/preview'
 const RUN = `cd ${REPO} && cargo run -q -p patient-bank --`
+const GUIDES = REPO + '/crates/patient-bank/data'
 
-const SCHEMA = {
+const DONE = {
+  type: 'object',
+  properties: {
+    unit: { type: 'string' },
+    unfit: { type: 'boolean', description: 'true only if build-req.md says UNFIT' },
+    notes: { type: 'string', description: 'what you could not settle from the source, briefly' },
+  },
+  required: ['unit', 'unfit', 'notes'],
+}
+
+const ISSUES = {
+  type: 'object',
+  properties: {
+    unit: { type: 'string' },
+    issues: { type: 'array', items: { type: 'string' } },
+  },
+  required: ['unit', 'issues'],
+}
+
+const CHART = {
   type: 'object',
   properties: {
     unit: { type: 'string' },
     accepted: { type: 'boolean', description: 'true only if the last check printed ACCEPTED' },
-    patients: { type: 'array', items: { type: 'object', properties: {
-      mrn: { type: 'string' }, documents: { type: 'integer' }, observations: { type: 'integer' } },
-      required: ['mrn', 'documents', 'observations'] } },
+    documents: { type: 'integer' },
+    observations: { type: 'integer' },
+    notes: { type: 'string', description: 'anything in build-req.md you could not follow, and why' },
   },
-  required: ['unit', 'accepted', 'patients'],
+  required: ['unit', 'accepted', 'documents', 'observations', 'notes'],
 }
 
-const prompt = (u) => `You are writing the chart for unit ${u} of a primary-care patient bank: one fictional adult patient (or a family) over years of care.
+const TRACE = {
+  type: 'object',
+  properties: {
+    unit: { type: 'string' },
+    untraced: { type: 'array', items: { type: 'object', properties: {
+      where: { type: 'string' }, fact: { type: 'string' }, why: { type: 'string' } },
+      required: ['where', 'fact', 'why'] } },
+    mismatched: { type: 'array', items: { type: 'string' } },
+    missing: { type: 'array', items: { type: 'string' } },
+  },
+  required: ['unit', 'untraced', 'mismatched', 'missing'],
+}
 
-Run ${RUN} brief ${u}, then read the authoring guide it names end to end, the vocabulary file and the taken list it names. Follow the guide's "How you work": story.md, then the ledger part files, then check until it prints ACCEPTED, then preview and read chart.txt start to end as the physician inheriting this patient, fixing what you find and checking again.
+const ground = (u, writes) => `Ground rules:
+- Run commands only from ${REPO}. Write only ${writes}.
+- Never read other units, the seeds file or any code, never edit the guides, the catalog or the seeds, and never run git.`
 
-Ground rules:
-- Run commands only from ${REPO}. Write only inside ${DRAFTS}/${u}/.
-- Read only the guide, the vocabulary file and your own draft folder. Never edit code, the guide, the catalog or the seeds, and never run git.
+const writeReq = (u, issues) => `You are writing ${UNITS}/${u}/build-req.md: how one synthetic_hospital patient becomes a patient of our primary-care practice.
+
+Read ${GUIDES}/build-req-guide.md end to end, then ${UNITS}/${u}/source.md end to end, and run ${RUN} brief ${u} for the seed. Read the pilots' build-reqs the guide names (${UNITS}/unit-2013/build-req.md, unit-2188, unit-2797) as worked examples, never as content to reuse. ${issues ? `\n\nA reader checked your build-req.md against the source and found:\n\n${issues}\n\nFix each in build-req.md.` : 'Write build-req.md following the guide.'}
+
+${ground(u, `${UNITS}/${u}/build-req.md`)}
+
+Return the structured result.`
+
+const checkReq = (u) => `You are checking ${UNITS}/${u}/build-req.md against ${UNITS}/${u}/source.md, by the rules in ${GUIDES}/build-req-guide.md. Read all three end to end, and run ${RUN} brief ${u} for the seed.
+
+List, exactly and tersely:
+- every clinical fact or number in source.md that build-req.md neither carries nor resolves;
+- every contradiction the source holds that build-req.md leaves unresolved, or resolves incoherently;
+- every addition that is not justified by the guide's rule, and every new diagnosis, family member or life event;
+- every date, interval or age that does not fit the source's own statements or the seed;
+- every place build-req.md copies source wording or names a source clinician or a real institution.
+
+Return no issues if there are none. Read only those files; change nothing.`
+
+const author = (u) => `You are writing the chart for unit ${u} of a primary-care patient bank: one fictional adult patient over years of care in a western Massachusetts primary-care practice.
+
+The chart is source-first: ${UNITS}/${u}/build-req.md is the authority for every clinical fact, and ${UNITS}/${u}/source.md is the patient it comes from. Follow the "How you work" section of ${GUIDES}/authoring-guide.md. Write story.md and the part files in ${UNITS}/${u}/. Run ${RUN} check ${u} until it prints ACCEPTED, then ${RUN} preview ${u}, which writes ${PREVIEW}/${u}/chart.txt, and read that file start to end as the inheriting physician. Fix what you find and check again.
+
+${ground(u, `inside ${UNITS}/${u}/ (never source.md or build-req.md)`)}
 
 Return the structured result. Report accepted=true only if your final check printed ACCEPTED.`
 
-// args.revise: { '<unit>': 'what a reader found' }. The unit already has an
-// accepted chart; the agent revises its part files instead of starting over.
-const revisePrompt = (u, found) => `You are revising the accepted chart for unit ${u} of a primary-care patient bank: one fictional adult patient (or a family) over years of care.
+const trace = (u) => `You are checking one synthetic patient chart against its sources. Read ${UNITS}/${u}/build-req.md and ${UNITS}/${u}/source.md end to end, then ${PREVIEW}/${u}/chart.txt start to end.
 
-Run ${RUN} brief ${u}, then read the authoring guide it names end to end (its "A life, not a plot" section is new), the vocabulary file, the taken list it names, ${DRAFTS}/${u}/story.md and the part files. A physician reading the chart blind found:
+build-req.md allows a clinical fact only if it is (S) in the source as build-req carries it, (R) a listed resolution, (A) a listed addition, or (P) the primary-care layer it describes, including its rules for reports, exams and prior records. List every clinical fact in chart.txt that fails that: a diagnosis, medication, dose, result, finding, procedure, referral outcome, family member or life event with no basis, or one that contradicts build-req.md or another part of the chart. Also list any sentence copied from source.md word for word (more than about eight words in a row) and any source clinician name. List every number in note or message text that differs from the structured value on the chart for the same draw or visit, and any flagged H/L value that a note calls normal. Then list each timeline row of build-req.md that the chart does not carry.
+
+Be exact and terse. Don't list texture (wording, scheduling, portal traffic) that adds no clinical fact. Read only those three files; change nothing.`
+
+const fix = (u, found) => `You are revising the accepted, source-first chart for unit ${u}. Read ${UNITS}/${u}/build-req.md, ${UNITS}/${u}/source.md, ${UNITS}/${u}/story.md and the part files. An independent reader traced the chart against build-req.md and found:
 
 ${found}
 
-Revise the part files (and story.md if the plan changes) so the chart meets the guide: flatten the plotting, cut the props, let mistakes go unexplained, and make the values vary the way real ones do. Replace any name, phrase or lab value from the taken list with this patient's own. Keep what already reads like a real record, and keep everything else as it is. Then check until it prints ACCEPTED, preview, and reread the passages you changed in chart.txt.
+Fix each in the part files (and story.md if the plan changes), keeping everything else that already reads like a real record. Then run ${RUN} check ${u} until it prints ACCEPTED, run ${RUN} preview ${u}, and reread in ${PREVIEW}/${u}/chart.txt the passages you touched and every note that quotes a number you changed.
 
-Ground rules:
-- Run commands only from ${REPO}. Write only inside ${DRAFTS}/${u}/.
-- Read only the guide, the vocabulary file and your own draft folder. Never edit code, the guide, the catalog or the seeds, and never run git.
+${ground(u, `inside ${UNITS}/${u}/ (never source.md or build-req.md)`)}
 
 Return the structured result. Report accepted=true only if your final check printed ACCEPTED.`
 
-// args.years: { '<unit>': [2017, 2018, ...] }. The chart is written forward, one
-// agent per year, each seeing only the years before it.
-const yearPrompt = (u, y) => `You are writing one year, ${y}, of the chart for unit ${u} of a primary-care patient bank: one fictional adult patient over years of care. The years before it are already written; the years after it do not exist yet.
+const listed = (t) => [
+  ...t.untraced.map((x) => `- ${x.where}: ${x.fact} (${x.why})`),
+  ...t.mismatched.map((x) => `- ${x}`),
+  ...t.missing.map((x) => `- missing from the chart: ${x}`),
+].join('\n')
 
-Run ${RUN} year ${u} ${y}. Then read the authoring guide at ${REPO}/crates/patient-bank/data/authoring-guide.md end to end, the vocabulary file at ${REPO}/target/patient-bank/vocabulary.md, ${DRAFTS}/${u}/taken.md, and the part files already in ${DRAFTS}/${u}/. Follow the guide's "How you work" for ${y}: write ${DRAFTS}/${u}/part-${y}.json with what the brief holds, preview to see the measured numbers, write the documents, and check until it prints ACCEPTED. Then read ${y} in chart.txt as the physician who will inherit this patient and fix what that physician would not believe.
-
-Ground rules:
-- Run commands only from ${REPO}. Write only ${DRAFTS}/${u}/part-${y}.json; never change an earlier year's part.
-- Read only the guide, the vocabulary file, taken.md, the year brief and the part files. Never open the seeds, other units or other years' briefs. Never edit code, and never run git.
-
-Return the structured result. Report accepted=true only if your final check printed ACCEPTED.`
-
-if (args.years) {
-  const out = []
-  for (const u of args.units) {
-    let last = null
-    for (const y of args.years[u]) {
-      last = await agent(yearPrompt(u, y), { label: `${u}:${y}`, phase: 'Author', schema: SCHEMA })
-      if (!last || !last.accepted) { log(`${u} stopped at ${y}`); break }
+const results = await pipeline(args.units,
+  (u) => agent(writeReq(u), { label: `req:${u}`, phase: 'Build-req', schema: DONE }),
+  async (r, u) => {
+    if (!r || r.unfit) return r || { unit: u, failed: 'build-req' }
+    const c = await agent(checkReq(u), { label: `req-check:${u}`, phase: 'Build-req', schema: ISSUES })
+    if (c && c.issues.length) {
+      const again = await agent(writeReq(u, c.issues.map((x) => `- ${x}`).join('\n')),
+        { label: `req-fix:${u}`, phase: 'Build-req', schema: DONE })
+      return { ...(again || r), reqIssues: c.issues.length }
     }
-    out.push(last || { unit: u, failed: true })
-  }
-  return out
-}
+    return { ...r, reqIssues: 0 }
+  },
+  async (r, u) => {
+    if (r.unfit || r.failed) return r
+    const chart = await agent(author(u), { label: `author:${u}`, phase: 'Author', schema: CHART })
+    return { ...r, chart }
+  },
+  async (r, u) => {
+    if (r.unfit || r.failed || !r.chart || !r.chart.accepted) return r
+    const t = await agent(trace(u), { label: `trace:${u}`, phase: 'Trace', schema: TRACE })
+    const found = t ? listed(t) : ''
+    if (!found) return { ...r, traced: 0 }
+    const fixed = await agent(fix(u, found), { label: `fix:${u}`, phase: 'Fix', schema: CHART })
+    return { ...r, traced: found.split('\n').length, found, fixed }
+  })
 
-const results = await pipeline(args.units, (u) => args.revise
-  ? agent(revisePrompt(u, args.revise[u]), { label: `revise:${u}`, phase: 'Author', schema: SCHEMA })
-  : agent(prompt(u), { label: `author:${u}`, phase: 'Author', schema: SCHEMA }))
 const summary = results.map((r, i) => r || { unit: args.units[i], failed: true })
-log(`${summary.filter((s) => s.accepted).length}/${args.units.length} units accepted`)
+log(`${summary.filter((s) => (s.fixed || s.chart || {}).accepted).length}/${args.units.length} units accepted, ${summary.filter((s) => s.unfit).length} unfit`)
 return summary

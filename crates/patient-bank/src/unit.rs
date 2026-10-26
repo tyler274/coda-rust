@@ -6,7 +6,9 @@
 //! preview <unit>   render at the bank time and write chart.txt for reading
 //! ```
 //!
-//! Drafts live in `<root>/drafts/<unit>/` (story.md, part-NN.json). An accepted
+//! A unit lives in `patients/units/<unit>/`: source.md and build-req.md, which it is
+//! written from, and the author's story.md and part-NN.json. chart.txt and taken.md
+//! are derived into `<root>/preview/<unit>/`. An accepted
 //! ledger is written to `patients/ledgers/<unit>.json`, the only input the bank build
 //! renders; `check` is its only writer. See `data/authoring-guide.md`.
 
@@ -182,7 +184,7 @@ fn verify(drafts: &Path, patients: &[Patient], catalog: &Catalog) -> Result<Term
 }
 
 /// Write `taken.md`: what every other accepted unit already uses.
-fn write_taken(unit: &Unit, seeds: &Seeds, drafts: &Path) -> Result<PathBuf> {
+fn write_taken(unit: &Unit, seeds: &Seeds, out: &Path) -> Result<PathBuf> {
     let mut others = Vec::new();
     if let Ok(dir) = fs::read_dir(paths::ledgers()) {
         for e in dir.filter_map(|e| e.ok()) {
@@ -194,13 +196,13 @@ fn write_taken(unit: &Unit, seeds: &Seeds, drafts: &Path) -> Result<PathBuf> {
             }
         }
     }
-    let taken = drafts.join("taken.md");
+    let taken = out.join("taken.md");
     let found = repeats::find(&others, &repeats::own(seeds), 1);
     fs::write(&taken, repeats::taken(&found, others.len()))?;
     Ok(taken)
 }
 
-fn brief(unit: &Unit, seeds: &Seeds, drafts: &Path) -> Result<i32> {
+fn brief(unit: &Unit, seeds: &Seeds, drafts: &Path, out: &Path) -> Result<i32> {
     let n = unit.members.len();
     println!(
         "unit {} ({}, {n} patient{})",
@@ -219,8 +221,10 @@ fn brief(unit: &Unit, seeds: &Seeds, drafts: &Path) -> Result<i32> {
             m.mrn, m.target_documents, m.target_observations, m.years_with_practice
         );
     }
-    let taken = write_taken(unit, seeds, drafts)?;
-    println!("\nGuide:      {}", paths::authoring_guide().display());
+    let taken = write_taken(unit, seeds, out)?;
+    println!("\nSource:     {}", drafts.join("source.md").display());
+    println!("Build-req:  {}", drafts.join("build-req.md").display());
+    println!("Guide:      {}", paths::authoring_guide().display());
     println!("Vocabulary: {}", paths::vocabulary().display());
     println!("Taken:      {}", taken.display());
     println!(
@@ -293,7 +297,7 @@ fn accept(unit: &Unit, drafts: &Path, catalog: &Catalog) -> Result<i32> {
     Ok(0)
 }
 
-fn preview(unit: &Unit, drafts: &Path, catalog: &Catalog) -> Result<i32> {
+fn preview(unit: &Unit, drafts: &Path, out: &Path, catalog: &Catalog) -> Result<i32> {
     let (merged, errors) = merge_measured(unit, drafts);
     if !errors.is_empty() {
         for e in &errors {
@@ -324,7 +328,7 @@ fn preview(unit: &Unit, drafts: &Path, catalog: &Catalog) -> Result<i32> {
             format!("{}\n## Booked visits\n{booked}\n", chart_text(c))
         })
         .collect();
-    let path = drafts.join("chart.txt");
+    let path = out.join("chart.txt");
     fs::write(&path, text.join("\n\n"))?;
     println!(
         "wrote {} ({} KB). Read it start to end.",
@@ -332,19 +336,6 @@ fn preview(unit: &Unit, drafts: &Path, catalog: &Catalog) -> Result<i32> {
         fs::metadata(&path)?.len() / 1024
     );
     Ok(0)
-}
-
-/// `year <unit> <year>`: the year's brief, from the parts written so far.
-pub fn year(uid: &str, year: i16, seeds: &Path) -> Result<i32> {
-    let seeds = Seeds::read(seeds)?;
-    let unit = seeds
-        .unit(uid)
-        .ok_or_else(|| format!("unknown unit {uid}"))?;
-    let drafts = paths::root().join("drafts").join(uid);
-    fs::create_dir_all(&drafts)?;
-    write_taken(unit, &seeds, &drafts)?;
-    let (merged, _) = merge_measured(unit, &drafts);
-    crate::year::run(unit, &merged.patients, year, &drafts)
 }
 
 pub fn run(command: &str, uid: &str, seeds: &Path) -> Result<i32> {
@@ -359,12 +350,14 @@ pub fn run(command: &str, uid: &str, seeds: &Path) -> Result<i32> {
     let unit = seeds
         .unit(uid)
         .ok_or_else(|| format!("unknown unit {uid}"))?;
-    let drafts = paths::root().join("drafts").join(uid);
+    let drafts = paths::unit_dir(uid);
+    let out = paths::preview_dir(uid);
     fs::create_dir_all(&drafts)?;
+    fs::create_dir_all(&out)?;
     match command {
-        "brief" => brief(unit, &seeds, &drafts),
+        "brief" => brief(unit, &seeds, &drafts, &out),
         "check" => accept(unit, &drafts, &catalog),
-        _ => preview(unit, &drafts, &catalog),
+        _ => preview(unit, &drafts, &out, &catalog),
     }
 }
 

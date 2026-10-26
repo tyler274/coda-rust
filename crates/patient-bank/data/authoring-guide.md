@@ -1,11 +1,10 @@
 # Authoring a primary-care patient history
 
-You are writing the medical history of one fictional adult (or a small family)
-in an adult primary-care practice in western Massachusetts. It is a membership
-internal medicine practice: patients can call or text the physician and get
-same-day visits, and they still use insurance for labs, imaging, specialists and
-drugs. Most arrive after years at other practices, so their earlier care comes
-in as outside records.
+You are writing the medical history of one fictional adult in an adult
+primary-care practice in western Massachusetts. It is a membership internal
+medicine practice: patients can call or text the physician and get same-day visits,
+and they still use insurance for labs, imaging, specialists and drugs. Most arrive
+after years at other practices, so their earlier care comes in as outside records.
 
 What you write is a dated **ledger**: every event in the patient's care and every
 record it left. Code turns the ledger into FHIR R4. You never write FHIR.
@@ -16,39 +15,52 @@ voices, and the small mess real charts collect. Most patients are ordinary.
 
 ## How you work
 
-You write the chart forward, one year at a time, and you see only the past: the
-years already written, and the brief for the year you are writing. Nobody plans
-the whole life. Code decides what each year holds; you decide what each contact
-was and write it. Run every command from the repository root. `<unit>` and
-`<year>` are the ones you were given.
+Every patient comes from one patient of synthetic_hospital, a fully synthetic dataset
+built from exam vignettes. `source.md` in the unit folder is that patient: a profile
+and a few encounters, mostly at specialists or the ED. `build-req.md` says how they
+become our practice's patient: their identity, a fixed timeline, how the source's
+contradictions are resolved, the few things added, and the primary-care layer that
+may surround them. **build-req.md is the authority for every clinical fact.** Run
+every command from the repository root. `<unit>` is the one you were given.
 
-1. `cargo run -q -p patient-bank -- year <unit> <year>` prints who the patient is,
-   where the chart stands, and what this year holds: the visits, illnesses,
-   missed visits, office traffic (with how each turns out), and when a seed
-   condition or episode arrives. It also writes `taken.md`: names, phrases and lab
-   values other charts already use. Give this patient their own.
-2. Read the previous years' part files for continuity: current drugs, open
-   problems, levels, and how each writer sounds.
-3. Write `part-<year>.json` with that year's events: the structure first
-   (conditions, medications, orders, `state`, `measure`, tests named in each draw
-   with no values).
-4. `cargo run -q -p patient-bank -- preview <unit>` measures the numbers and writes
-   `chart.txt`. Read this year's section to see them.
-5. Write the documents into the events, using the numbers as measured. Run
-   `cargo run -q -p patient-bank -- check <unit>` until it prints `ACCEPTED`, preview
-   again, and read the year as the physician who will inherit this patient.
+1. Read build-req.md, then source.md, end to end.
+2. `cargo run -q -p patient-bank -- brief <unit>` prints the seed and the paths. Read
+   this guide, the vocabulary file and `taken.md` (names, phrases and lab values
+   other charts already use: give this patient their own).
+3. Write `story.md`: one line per contact in date order, each tagged with the
+   build-req letter it rests on (S, R1, A2, P).
+4. Write the part files (`part-01.json`, `part-02.json`, ...), a few years each:
+   the structure first (conditions, medications, orders, `state`, `measure`, tests
+   named in each draw), then `preview` to see the measured numbers, then the
+   documents, using the numbers as measured.
+5. `check` until it prints `ACCEPTED`, then `preview` and read `chart.txt` start to
+   end as the physician who will inherit this patient. Fix what that physician
+   would not believe and anything not traceable to build-req.md, and check again.
 
-Write what the brief holds and what follows from it (a result call, a referral
-visit, a refill, outside records). Add no illness, emergency or life event the
-brief does not give. A contact the brief gives can move a few days if the story
-needs it. Leave what is unresolved unresolved: next year's author picks it up.
+## What may be in the chart
 
-## The seed
+Every diagnosis, medication, dose, result, finding, procedure, referral outcome,
+family member and life event traces to build-req.md: **S** the source as build-req
+carries it, **R** a listed resolution, **A** a listed addition, **P** the
+primary-care layer. Nothing else. Texture is yours: how each writer sounds,
+scheduling, refills, portal traffic, admin, missed visits, the unevenness of real
+notes. Texture carries no new clinical fact.
 
-The brief gives the patient's identity and life. Seed conditions and episodes
-arrive in the year code places them; the first year's brief lists the history
-the patient brings. Family members authored together share a household or family,
-and their charts must agree.
+- **Re-voice everything.** The source notes are vignettes. Never copy a sentence
+  (eight words in a row is a copy), a source clinician's name, its problem-list
+  dumps, its "(diagnosed ...)" stamps or its quiz text. A year the source text
+  states ("seen in 2022 and 2024") follows the re-dated timeline.
+- **Carry build-req's numbers as written.** Every other number comes from code.
+- **Outside care** (consults, ED, hospital, urgent care) reaches the chart as the
+  letters and reports the practice receives, each in its own place's voice, and
+  carries the patient's known allergies like any letter.
+- **Reports and exams** state ordinary normal findings for what the source does not
+  mention. An abnormal finding appears only as build-req gives it: the descriptors
+  its kind of report always carries are fine, but never an added territory,
+  severity grade or symptom.
+- **Gaps stay gaps.** Where the source leaves care undone (a drug never raised, an
+  imaging study never ordered), nobody fills it and nobody remarks on it, unless
+  build-req says otherwise.
 
 ## Today
 
@@ -65,15 +77,13 @@ mid-life, not at a turning point. Most patients have nothing open today; some
 have one thing (an open referral, a recent message, a value nobody has commented
 on yet).
 
-The patient joined the practice about `years_with_practice` years before today.
-Earlier history comes in through outside records, the establish-care history or
-patient report. An outside document is dated when it was received, with the
-original date inside it.
+The patient joins the practice when build-req says. Earlier history comes in
+through outside records, the establish-care history or patient report. An outside
+document is dated when it was received, with the original date inside it.
 
 ## A life, not a plot
 
-- Most years are routine. A life has no arc and no resolution, and most patients
-  have a dramatic event once or twice in a decade, at no particular spacing.
+- Between the source's events, most of the chart is routine primary care.
 - Personal detail appears only where the writer would record it, not as color.
 - Mistakes go unexplained. Nobody writes down where an error came from, and many
   are never caught.

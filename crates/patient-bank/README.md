@@ -2,15 +2,20 @@
 
 Fictional adult patients of one primary-care practice in western Massachusetts,
 each a longitudinal chart in FHIR R4 NDJSON in the Coda Agents Roger fixture's
-format. Every chart ends at the bank's today, 2026-08-27T12:00 Eastern. Nothing
+format. Each patient is made from one adult patient of
+[synthetic_hospital](https://github.com/sparkcpark/synthetic_hospital) (MIT, fully
+synthetic), placed in the practice. Every chart ends at the bank's today, 2026-08-27T12:00 Eastern. Nothing
 here is real patient data, and nothing is physician reviewed.
 
 ## Pipeline
 
 ```text
-patients/seeds.json            who each patient is
-  -> data/author-workflow.js   one author agent per unit (a patient, or a family):
-                               story.md, ledger parts, `check` until ACCEPTED, `preview`
+patients/units/<unit>/source.md   the synthetic_hospital patient the unit is made from
+patients/seeds.json            who each patient is in the practice
+  -> data/author-workflow.js   per unit: build-req.md (what the chart may hold, traced
+                               to the source), checked against the source; then the
+                               author's story.md and ledger parts, `check` until
+                               ACCEPTED, `preview`; then an independent trace and fix
   -> patients/ledgers/<unit>.json   the clinical source of truth, written only by `check`
   -> build                     bank/patients/<MRN>/<Family>.ndjson, bank/calendar/
                                Appointment.ndjson (visits from today on), manifest.json
@@ -26,9 +31,10 @@ cargo run -q -p patient-bank -- catalog [--offline]
 ```
 
 Authoring runs `data/author-workflow.js` through Claude Code's Workflow tool with
-`{repo, units}` as args; each agent follows `data/authoring-guide.md`. The
-patients live apart from the tool in the workspace's `patients/`. Drafts, the bank
-and the schema live under the ignored `target/patient-bank/`. `PATIENT_BANK_DATA`,
+`{repo, units}` as args; build-req writers follow `data/build-req-guide.md` and
+authors `data/authoring-guide.md`. The patients live apart from the tool in the
+workspace's `patients/`. Previews (chart.txt, taken.md), the bank and the schema live
+under the ignored `target/patient-bank/`. `PATIENT_BANK_DATA`,
 `PATIENT_BANK_PATIENTS` and `PATIENT_BANK_ROOT` move the three.
 
 ## What the code owns
@@ -38,7 +44,7 @@ and the schema live under the ignored `target/patient-bank/`. `PATIENT_BANK_DATA
 - **Time.** `timeline.rs` gives every record its own instant, and a chart as of a
   moment holds exactly the records before it. Drug and problem status come from
   each concept's whole history: a restarted drug stops at its own stop, and a
-  resolved problem that returns is a recurrence.
+  problem diagnosed again after it resolved is a new episode with its own row.
 - **Today.** Everything is dated before the bank time. A draw not back yet is
   `pending` (no values, `registered`), and a booked visit is an empty event on the
   practice calendar. What happens after today is decided later, when the patients

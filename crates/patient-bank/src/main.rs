@@ -3,13 +3,12 @@
 //! ```text
 //! cargo run -p patient-bank -- catalog [--offline] [--roger-fixture DIR]
 //! cargo run -p patient-bank -- brief|check|preview UNIT [--seeds PATH]
-//! cargo run -p patient-bank -- year UNIT YEAR [--seeds PATH]
 //! cargo run -p patient-bank -- build [--seeds PATH] [--ledgers DIR] [--out DIR]
 //! cargo run -p patient-bank -- validate [--bank DIR] [--seeds PATH] [--schema PATH] [--jobs 8] [--report PATH]
 //! ```
 //!
 //! Defaults come from `patient_bank::paths`: inputs in `crates/patient-bank/data/`,
-//! seeds and ledgers in `patients/`, drafts and the bank under `target/patient-bank/`.
+//! seeds, units and ledgers in `patients/`, previews and the bank under `target/patient-bank/`.
 
 use std::collections::HashMap;
 use std::env;
@@ -50,14 +49,6 @@ fn dispatch(args: &[String]) -> Result<u8, Failure> {
             };
             let seeds = o.path("--seeds").unwrap_or_else(paths::seeds);
             unit::run(command, uid, &seeds)?
-        }
-        "year" => {
-            let o = Opts::parse(rest, &["--seeds"], &[])?;
-            let [uid, y] = o.positional.as_slice() else {
-                return Err("year takes a unit id and a year".into());
-            };
-            let y: i16 = y.parse().map_err(|_| format!("not a year: {y}"))?;
-            unit::year(uid, y, &o.path("--seeds").unwrap_or_else(paths::seeds))?
         }
         "build" => {
             let o = Opts::parse(rest, &["--seeds", "--ledgers", "--out"], &[])?;
@@ -151,7 +142,6 @@ patient-bank runs the synthetic patient bank pipeline.
 
   patient-bank catalog [--offline] [--roger-fixture DIR]
   patient-bank brief|check|preview UNIT [--seeds PATH]
-  patient-bank year UNIT YEAR [--seeds PATH]
   patient-bank build [--seeds PATH] [--ledgers DIR] [--out DIR]
   patient-bank validate [--bank DIR] [--seeds PATH] [--schema PATH] [--jobs 8] [--report PATH]
 
