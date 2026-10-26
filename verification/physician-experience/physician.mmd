@@ -25,18 +25,12 @@ stateDiagram-v2
 %% event clinical access reduced | by the practice | The physician keeps identity access only; clinical content closes.
 %% event patient access removed | by the practice | The physician can no longer see the patient; everything showing the patient closes.
 %% event go to Today | by you | needs SIn | reason: commands need an active session | You return to Today, the list of what needs you.
-%% event open Basis | by you | needs SIn | reason: commands need an active session | You open what the patient summary rests on and its limits.
-%% event close Basis | by you | needs SIn | reason: commands need an active session | You close Basis.
-%% event open Sources | by you | needs SIn | reason: commands need an active session | You open the list of sources Coda read.
-%% event close Sources | by you | needs SIn | reason: commands need an active session | You close Sources.
 %% event open all updates | by you | needs SIn | reason: commands need an active session | Coda opens on Updates, the record of everything Coda did.
 %% event open find patient | by you | needs SIn | reason: commands need an active session | You open the roster search.
 %% event close find patient | by you | needs SIn | reason: commands need an active session | You close the search.
 %% event type in find patient | by you | needs SIn | reason: commands need an active session | Each change searches the whole roster on the server, 50 at a time.
 %% event more results load | by the practice system | The next 50 results append.
 %% event more results fail to load | by the practice system | What loaded stays, with a quiet line and Retry.
-%% event collapse the {panel} | by you | needs SIn | reason: commands need an active session | You collapse the {panel}; the choice is remembered for you (M8).
-%% event expand the {panel} | by you | needs SIn | reason: commands need an active session | You expand the {panel}; the choice is remembered for you (M8).
 %%
 %% Coda's work: one lifecycle for every kind (rewrite-worklist "Ideal behavior: Coda's work").
 %% Causes are other owners' events; they make work owed. Starting waits for what the work needs.
@@ -173,7 +167,7 @@ stateDiagram-v2
 %% event open a citation in Updates | by you | needs SIn, AClin, UReading | reason: sources are clinical content | A citation in an update opens its preview.
 %% event open a citation in the patient summary | by you | needs SIn, AClin, PPatient | reason: sources are clinical content | A citation in the summary opens its preview on the page.
 %% event open a citation in the conversation | by you | needs SIn, AClin, PConv | reason: sources are clinical content | A citation in an answer opens its preview.
-%% event go to a source from Sources | by you | needs SIn, AClin, SrcOpen | reason: sources are clinical content | A Sources row opens that source's first citation, revealing Basis first if it sits there (PX 2026-09-17).
+%% event go to a source from Sources | by you | needs SIn, AClin, PPatient | reason: sources are clinical content | A row in the patient page's Sources opens that source's first citation (PX 2026-09-17).
 %% event expand the source | by you | needs SIn, AClin | reason: sources are clinical content | Expand adds the qualified source text.
 %% event the source loads | by the practice system | The source text shows.
 %% event the source fails to load | by the practice system | The preview stays, with Retry.
@@ -277,24 +271,6 @@ stateDiagram-v2
           [*] --> PToday
           state "Today" as PToday
           state "Patient page" as PPatient {
-            state "Basis and limitations" as Basis {
-              [*] --> BClosed
-              state "Basis closed" as BClosed
-              state "Basis open" as BOpen
-              BClosed --> BOpen : open Basis
-              BClosed --> BOpen : go to a source from Sources / may reveal Basis first
-              BOpen --> BClosed : close Basis
-            }
-            --
-            state "Sources list" as Sources {
-              [*] --> SrcClosed
-              state "Sources closed" as SrcClosed
-              state "Sources open" as SrcOpen
-              SrcClosed --> SrcOpen : open Sources
-              SrcOpen --> SrcClosed : close Sources
-              SrcOpen --> SrcClosed : go to a source from Sources
-            }
-            --
             %% The source pane, written once: it belongs to the surface that opened it and closes with it.
             %% One pane at a time: a citation elsewhere closes this one; another citation here changes only it.
             state "Source pane" as SourceShape {
@@ -325,6 +301,7 @@ stateDiagram-v2
               EOpen --> EClosed : open a citation in the reader
               EOpen --> EClosed : open a citation in Updates
             }
+            [*] --> EPg
           }
           state "Conversation" as PConv {
             state "Source pane in the conversation" as ECv {
@@ -466,9 +443,9 @@ stateDiagram-v2
           ROpen --> RNone : access to the patient narrows
           RLink --> RNone : access to the patient narrows
           %% never OnePaneRdUp: Source open in the reader & Source open in Updates -- The shell shows one source pane at a time.
-          %% never OnePaneRdPg: Source open in the reader & Source open on the patient page -- The shell shows one source pane at a time.
+          %% never OnePaneRdPg: Source open in the reader & Patient page.Source pane on the patient page.Source open on the patient page -- The shell shows one source pane at a time.
           %% never OnePaneRdCv: Source open in the reader & Conversation.Source pane in the conversation.Source open in the conversation -- The shell shows one source pane at a time.
-          %% never OnePaneUpPg: Source open in Updates & Source open on the patient page -- The shell shows one source pane at a time.
+          %% never OnePaneUpPg: Source open in Updates & Patient page.Source pane on the patient page.Source open on the patient page -- The shell shows one source pane at a time.
           %% never OnePaneUpCv: Source open in Updates & Conversation.Source pane in the conversation.Source open in the conversation -- The shell shows one source pane at a time.
           %% never ClinicalReaderNeedsAccess: Reader open & Identity only -- Clinical content never shows without clinical access.
           %% never ClinicalReaderNeedsAnyAccess: Reader open & Cannot see the patient -- Clinical content never shows without access to the patient.
@@ -1732,19 +1709,6 @@ stateDiagram-v2
       %% never NoReplyForNotAPatient: No correction waiting on Undo.Not a patient, until the sender writes again & Reply work open -- Not a patient keeps the conversation out of patient work.
       %% never NoAskForOtherPatient: No correction waiting on Undo.Another patient's message & asked reply in hand -- A moved message's asked reply stops.
       %% never NoRevisionWithoutReply: reply revision in hand.reply revision active & No open reply -- A revision runs only while its reply is open.
-    }
-    --
-    %% M8: sidebar and schedule collapse are the physician's remembered preferences; they outlive
-    %% sign-out.
-    state "{panel} preference" as Panel {
-      %% template
-      %% instance sidebar: panel = sidebar
-      %% instance schedule: panel = schedule
-      [*] --> PanOpen
-      state "{panel} expanded" as PanOpen
-      state "{panel} collapsed" as PanShut
-      PanOpen --> PanShut : collapse the {panel}
-      PanShut --> PanOpen : expand the {panel}
     }
   }
   [*] --> App

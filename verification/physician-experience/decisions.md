@@ -25,6 +25,11 @@ Linear, then the settled docs, then mockups.
   rule:
   - Previewing updates from the orb never navigates or clears attention; only
     opening one does. Collapsing Coda to the orb is presentation.
+  - The patient page shows what the summary rests on and its limits (Basis)
+    and the sources Coda read (Sources); a Sources row opens that source's
+    citation. Opening and closing them is presentation.
+  - Sidebar and schedule collapse are remembered per physician (M8); they are
+    preferences of the surface, not graph state.
 - **Ideal state, not infrastructure (2026-10-24).** The graph is the ideal
   behavior of the full product for any user: what they see and how things act and
   work for them. It leaves out runtime capacity, retries, timeouts, interruptions,

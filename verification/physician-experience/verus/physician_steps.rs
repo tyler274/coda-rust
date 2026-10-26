@@ -52,14 +52,20 @@ pub proof fn preserves_event_retry_the_source(s: State, t: State)
 pub proof fn preserves_event_close_the_source(s: State, t: State)
     requires inductive(s), ensures event_close_the_source(s, t) ==> inductive(t),
 {}
-pub proof fn preserves_event_open_a_citation_in_the_conversation(s: State, t: State)
-    requires inductive(s), ensures event_open_a_citation_in_the_conversation(s, t) ==> inductive(t),
+pub proof fn preserves_event_open_a_citation_in_the_patient_summary(s: State, t: State)
+    requires inductive(s), ensures event_open_a_citation_in_the_patient_summary(s, t) ==> inductive(t),
+{}
+pub proof fn preserves_event_go_to_a_source_from_sources(s: State, t: State)
+    requires inductive(s), ensures event_go_to_a_source_from_sources(s, t) ==> inductive(t),
 {}
 pub proof fn preserves_event_open_a_citation_in_the_reader(s: State, t: State)
     requires inductive(s), ensures event_open_a_citation_in_the_reader(s, t) ==> inductive(t),
 {}
 pub proof fn preserves_event_open_a_citation_in_updates(s: State, t: State)
     requires inductive(s), ensures event_open_a_citation_in_updates(s, t) ==> inductive(t),
+{}
+pub proof fn preserves_event_open_a_citation_in_the_conversation(s: State, t: State)
+    requires inductive(s), ensures event_open_a_citation_in_the_conversation(s, t) ==> inductive(t),
 {}
 pub proof fn preserves_event_open_the_patient(s: State, t: State)
     requires inductive(s), ensures event_open_the_patient(s, t) ==> inductive(t),
@@ -114,24 +120,6 @@ pub proof fn preserves_event_patient_access_removed(s: State, t: State)
 {}
 pub proof fn preserves_event_clinical_access_granted(s: State, t: State)
     requires inductive(s), ensures event_clinical_access_granted(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_open_basis(s: State, t: State)
-    requires inductive(s), ensures event_open_basis(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_go_to_a_source_from_sources(s: State, t: State)
-    requires inductive(s), ensures event_go_to_a_source_from_sources(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_close_basis(s: State, t: State)
-    requires inductive(s), ensures event_close_basis(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_open_sources(s: State, t: State)
-    requires inductive(s), ensures event_open_sources(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_close_sources(s: State, t: State)
-    requires inductive(s), ensures event_close_sources(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_open_a_citation_in_the_patient_summary(s: State, t: State)
-    requires inductive(s), ensures event_open_a_citation_in_the_patient_summary(s, t) ==> inductive(t),
 {}
 pub proof fn preserves_event_your_done_on_the_concern_goes_through(s: State, t: State)
     requires inductive(s), ensures event_your_done_on_the_concern_goes_through(s, t) ==> inductive(t),
@@ -1852,18 +1840,6 @@ pub proof fn preserves_event_edit_the_reply(s: State, t: State)
 pub proof fn preserves_event_open_the_reply(s: State, t: State)
     requires inductive(s), ensures event_open_the_reply(s, t) ==> inductive(t),
 {}
-pub proof fn preserves_event_collapse_the_sidebar(s: State, t: State)
-    requires inductive(s), ensures event_collapse_the_sidebar(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_expand_the_sidebar(s: State, t: State)
-    requires inductive(s), ensures event_expand_the_sidebar(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_collapse_the_schedule(s: State, t: State)
-    requires inductive(s), ensures event_collapse_the_schedule(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_expand_the_schedule(s: State, t: State)
-    requires inductive(s), ensures event_expand_the_schedule(s, t) ==> inductive(t),
-{}
 pub proof fn every_event_preserves_inductive(s: State, t: State)
     requires inductive(s), ensures step(s, t) ==> inductive(t),
 {
@@ -1883,9 +1859,11 @@ pub proof fn every_event_preserves_inductive(s: State, t: State)
     preserves_event_the_source_has_no_qualified_text(s, t);
     preserves_event_retry_the_source(s, t);
     preserves_event_close_the_source(s, t);
-    preserves_event_open_a_citation_in_the_conversation(s, t);
+    preserves_event_open_a_citation_in_the_patient_summary(s, t);
+    preserves_event_go_to_a_source_from_sources(s, t);
     preserves_event_open_a_citation_in_the_reader(s, t);
     preserves_event_open_a_citation_in_updates(s, t);
+    preserves_event_open_a_citation_in_the_conversation(s, t);
     preserves_event_open_the_patient(s, t);
     preserves_event_follow_a_link(s, t);
     preserves_event_open_a_conversation(s, t);
@@ -1904,12 +1882,6 @@ pub proof fn every_event_preserves_inductive(s: State, t: State)
     preserves_event_clinical_access_reduced(s, t);
     preserves_event_patient_access_removed(s, t);
     preserves_event_clinical_access_granted(s, t);
-    preserves_event_open_basis(s, t);
-    preserves_event_go_to_a_source_from_sources(s, t);
-    preserves_event_close_basis(s, t);
-    preserves_event_open_sources(s, t);
-    preserves_event_close_sources(s, t);
-    preserves_event_open_a_citation_in_the_patient_summary(s, t);
     preserves_event_your_done_on_the_concern_goes_through(s, t);
     preserves_event_open_the_concern(s, t);
     preserves_event_open_the_briefing(s, t);
@@ -2483,9 +2455,5 @@ pub proof fn every_event_preserves_inductive(s: State, t: State)
     preserves_event_the_channel_can_t_send_the_reply(s, t);
     preserves_event_edit_the_reply(s, t);
     preserves_event_open_the_reply(s, t);
-    preserves_event_collapse_the_sidebar(s, t);
-    preserves_event_expand_the_sidebar(s, t);
-    preserves_event_collapse_the_schedule(s, t);
-    preserves_event_expand_the_schedule(s, t);
 }
 }

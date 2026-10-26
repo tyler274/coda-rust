@@ -1,9 +1,9 @@
 {
   "format": 1,
   "module": "physician",
-  "chart_sha256": "c4669098afffc9924f86ab62208c7db4c92d546d0fb88558e1d9b0ee75afd6b7",
-  "generated_sha256": "aece544f658319684c8c59ae511c065c0e513bfa391d77e888ecd2d1677d8a4e",
-  "steps_sha256": "b1acaae7b14163625752db08d6153d66659295816c3a2a6e57db2980b8e9117e",
+  "chart_sha256": "7864b26d2bab5a26f68fb9dd88f580fe589123db6306441ad3fc7f9e00d6e802",
+  "generated_sha256": "ba9846004a4fa475966884f37fbde69e7dc0b1a4e5503c67d8b20155d4d7f945",
+  "steps_sha256": "91122e87000c037a26a754d0dc45a078b334e1d0facefa7f817e4985460dedcc",
   "semantics": "pstack broadcast events; pre-state guards; nondeterministic choices; stuttering allowed; parallel parts follow their parent's post-state, and exit wins",
   "regions": [
     {
@@ -93,8 +93,33 @@
           "initial": true
         },
         {
-          "caption": "Patient page",
-          "variant": "RegionPhysicianSessionSignedInScreen::StatePatientPage",
+          "caption": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "variant": "RegionPhysicianSessionSignedInScreen::StatePatientPageSourcePaneOnThePatientPageNoSourceOpenOnThePatientPage",
+          "initial": false
+        },
+        {
+          "caption": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "variant": "RegionPhysicianSessionSignedInScreen::StatePatientPageSourcePaneOnThePatientPageSourceOpenOnThePatientPageCitationPreviewOnThePatientPage",
+          "initial": false
+        },
+        {
+          "caption": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "variant": "RegionPhysicianSessionSignedInScreen::StatePatientPageSourcePaneOnThePatientPageSourceOpenOnThePatientPageLoadingTheSourceOnThePatientPage",
+          "initial": false
+        },
+        {
+          "caption": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "variant": "RegionPhysicianSessionSignedInScreen::StatePatientPageSourcePaneOnThePatientPageSourceOpenOnThePatientPageSourceTextShownOnThePatientPage",
+          "initial": false
+        },
+        {
+          "caption": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "variant": "RegionPhysicianSessionSignedInScreen::StatePatientPageSourcePaneOnThePatientPageSourceOpenOnThePatientPagePreviewKeptOnThePatientPageSourceCouldnTLoadWithRetry",
+          "initial": false
+        },
+        {
+          "caption": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
+          "variant": "RegionPhysicianSessionSignedInScreen::StatePatientPageSourcePaneOnThePatientPageSourceOpenOnThePatientPagePreviewOnlyOnThePatientPageNoQualifiedSourceText",
           "initial": false
         },
         {
@@ -135,111 +160,6 @@
         {
           "caption": "That patient is not available",
           "variant": "RegionPhysicianSessionSignedInScreen::StateThatPatientIsNotAvailable",
-          "initial": false
-        }
-      ]
-    },
-    {
-      "caption": "Physician session/Signed in/Screen/Patient page/Basis and limitations",
-      "field": "region_physician_session_signed_in_screen_patient_page_basis_and_limitations",
-      "type": "RegionPhysicianSessionSignedInScreenPatientPageBasisAndLimitations",
-      "scope": {
-        "region": "Physician session/Signed in/Screen",
-        "state": "Patient page"
-      },
-      "inactive": "(not in Patient page)",
-      "states": [
-        {
-          "caption": "(not in Patient page)",
-          "variant": "RegionPhysicianSessionSignedInScreenPatientPageBasisAndLimitations::StateNotInPatientPage",
-          "initial": false
-        },
-        {
-          "caption": "Basis closed",
-          "variant": "RegionPhysicianSessionSignedInScreenPatientPageBasisAndLimitations::StateBasisClosed",
-          "initial": true
-        },
-        {
-          "caption": "Basis open",
-          "variant": "RegionPhysicianSessionSignedInScreenPatientPageBasisAndLimitations::StateBasisOpen",
-          "initial": false
-        }
-      ]
-    },
-    {
-      "caption": "Physician session/Signed in/Screen/Patient page/Sources list",
-      "field": "region_physician_session_signed_in_screen_patient_page_sources_list",
-      "type": "RegionPhysicianSessionSignedInScreenPatientPageSourcesList",
-      "scope": {
-        "region": "Physician session/Signed in/Screen",
-        "state": "Patient page"
-      },
-      "inactive": "(not in Patient page)",
-      "states": [
-        {
-          "caption": "(not in Patient page)",
-          "variant": "RegionPhysicianSessionSignedInScreenPatientPageSourcesList::StateNotInPatientPage",
-          "initial": false
-        },
-        {
-          "caption": "Sources closed",
-          "variant": "RegionPhysicianSessionSignedInScreenPatientPageSourcesList::StateSourcesClosed",
-          "initial": true
-        },
-        {
-          "caption": "Sources open",
-          "variant": "RegionPhysicianSessionSignedInScreenPatientPageSourcesList::StateSourcesOpen",
-          "initial": false
-        }
-      ]
-    },
-    {
-      "caption": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-      "field": "region_physician_session_signed_in_screen_patient_page_source_pane_on_the_patient_page",
-      "type": "RegionPhysicianSessionSignedInScreenPatientPageSourcePaneOnThePatientPage",
-      "instance": {
-        "template": "EPg",
-        "key": "page"
-      },
-      "scope": {
-        "region": "Physician session/Signed in/Screen",
-        "state": "Patient page"
-      },
-      "inactive": "(not in Patient page)",
-      "states": [
-        {
-          "caption": "(not in Patient page)",
-          "variant": "RegionPhysicianSessionSignedInScreenPatientPageSourcePaneOnThePatientPage::StateNotInPatientPage",
-          "initial": false
-        },
-        {
-          "caption": "No source open on the patient page",
-          "variant": "RegionPhysicianSessionSignedInScreenPatientPageSourcePaneOnThePatientPage::StateNoSourceOpenOnThePatientPage",
-          "initial": true
-        },
-        {
-          "caption": "Source open on the patient page.Citation preview on the patient page",
-          "variant": "RegionPhysicianSessionSignedInScreenPatientPageSourcePaneOnThePatientPage::StateSourceOpenOnThePatientPageCitationPreviewOnThePatientPage",
-          "initial": false
-        },
-        {
-          "caption": "Source open on the patient page.Loading the source on the patient page",
-          "variant": "RegionPhysicianSessionSignedInScreenPatientPageSourcePaneOnThePatientPage::StateSourceOpenOnThePatientPageLoadingTheSourceOnThePatientPage",
-          "initial": false
-        },
-        {
-          "caption": "Source open on the patient page.Source text shown on the patient page",
-          "variant": "RegionPhysicianSessionSignedInScreenPatientPageSourcePaneOnThePatientPage::StateSourceOpenOnThePatientPageSourceTextShownOnThePatientPage",
-          "initial": false
-        },
-        {
-          "caption": "Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
-          "variant": "RegionPhysicianSessionSignedInScreenPatientPageSourcePaneOnThePatientPage::StateSourceOpenOnThePatientPagePreviewKeptOnThePatientPageSourceCouldnTLoadWithRetry",
-          "initial": false
-        },
-        {
-          "caption": "Source open on the patient page.Preview only on the patient page, no qualified source text",
-          "variant": "RegionPhysicianSessionSignedInScreenPatientPageSourcePaneOnThePatientPage::StateSourceOpenOnThePatientPagePreviewOnlyOnThePatientPageNoQualifiedSourceText",
           "initial": false
         }
       ]
@@ -3655,48 +3575,6 @@
           "initial": false
         }
       ]
-    },
-    {
-      "caption": "sidebar preference",
-      "field": "region_sidebar_preference",
-      "type": "RegionSidebarPreference",
-      "instance": {
-        "template": "Panel",
-        "key": "sidebar"
-      },
-      "states": [
-        {
-          "caption": "sidebar expanded",
-          "variant": "RegionSidebarPreference::StateSidebarExpanded",
-          "initial": true
-        },
-        {
-          "caption": "sidebar collapsed",
-          "variant": "RegionSidebarPreference::StateSidebarCollapsed",
-          "initial": false
-        }
-      ]
-    },
-    {
-      "caption": "schedule preference",
-      "field": "region_schedule_preference",
-      "type": "RegionSchedulePreference",
-      "instance": {
-        "template": "Panel",
-        "key": "schedule"
-      },
-      "states": [
-        {
-          "caption": "schedule expanded",
-          "variant": "RegionSchedulePreference::StateScheduleExpanded",
-          "initial": true
-        },
-        {
-          "caption": "schedule collapsed",
-          "variant": "RegionSchedulePreference::StateScheduleCollapsed",
-          "initial": false
-        }
-      ]
     }
   ],
   "events": [
@@ -4058,7 +3936,7 @@
           ],
           "enter": {
             "Physician session/Signed in/Screen": [
-              "Patient page"
+              "Patient page.Source pane on the patient page.No source open on the patient page"
             ]
           }
         },
@@ -4080,7 +3958,7 @@
           },
           "enter": {
             "Physician session/Signed in/Screen": [
-              "Patient page"
+              "Patient page.Source pane on the patient page.No source open on the patient page"
             ]
           }
         },
@@ -4350,14 +4228,14 @@
       "transitions": [
         {
           "region": "Physician session/Signed in/Screen",
-          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Citation preview in the conversation",
-          "to": "Conversation.Source pane in the conversation.Source open in the conversation.Loading the source in the conversation",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
           "guard": null
         },
         {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Citation preview on the patient page",
-          "to": "Source open on the patient page.Loading the source on the patient page",
+          "region": "Physician session/Signed in/Screen",
+          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Citation preview in the conversation",
+          "to": "Conversation.Source pane in the conversation.Source open in the conversation.Loading the source in the conversation",
           "guard": null
         },
         {
@@ -4383,14 +4261,14 @@
       "transitions": [
         {
           "region": "Physician session/Signed in/Screen",
-          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Loading the source in the conversation",
-          "to": "Conversation.Source pane in the conversation.Source open in the conversation.Source text shown in the conversation",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
           "guard": null
         },
         {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Loading the source on the patient page",
-          "to": "Source open on the patient page.Source text shown on the patient page",
+          "region": "Physician session/Signed in/Screen",
+          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Loading the source in the conversation",
+          "to": "Conversation.Source pane in the conversation.Source open in the conversation.Source text shown in the conversation",
           "guard": null
         },
         {
@@ -4416,14 +4294,14 @@
       "transitions": [
         {
           "region": "Physician session/Signed in/Screen",
-          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Loading the source in the conversation",
-          "to": "Conversation.Source pane in the conversation.Source open in the conversation.Preview kept in the conversation, source couldn't load, with Retry",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
           "guard": null
         },
         {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Loading the source on the patient page",
-          "to": "Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "region": "Physician session/Signed in/Screen",
+          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Loading the source in the conversation",
+          "to": "Conversation.Source pane in the conversation.Source open in the conversation.Preview kept in the conversation, source couldn't load, with Retry",
           "guard": null
         },
         {
@@ -4449,14 +4327,14 @@
       "transitions": [
         {
           "region": "Physician session/Signed in/Screen",
-          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Loading the source in the conversation",
-          "to": "Conversation.Source pane in the conversation.Source open in the conversation.Preview only in the conversation, no qualified source text",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
           "guard": null
         },
         {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Loading the source on the patient page",
-          "to": "Source open on the patient page.Preview only on the patient page, no qualified source text",
+          "region": "Physician session/Signed in/Screen",
+          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Loading the source in the conversation",
+          "to": "Conversation.Source pane in the conversation.Source open in the conversation.Preview only in the conversation, no qualified source text",
           "guard": null
         },
         {
@@ -4490,14 +4368,14 @@
       "transitions": [
         {
           "region": "Physician session/Signed in/Screen",
-          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Preview kept in the conversation, source couldn't load, with Retry",
-          "to": "Conversation.Source pane in the conversation.Source open in the conversation.Loading the source in the conversation",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
           "guard": null
         },
         {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
-          "to": "Source open on the patient page.Loading the source on the patient page",
+          "region": "Physician session/Signed in/Screen",
+          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Preview kept in the conversation, source couldn't load, with Retry",
+          "to": "Conversation.Source pane in the conversation.Source open in the conversation.Loading the source in the conversation",
           "guard": null
         },
         {
@@ -4521,6 +4399,36 @@
       "intent": "The pane closes; the surface stays.",
       "needs": null,
       "transitions": [
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "guard": null
+        },
         {
           "region": "Physician session/Signed in/Screen",
           "from": "Conversation.Source pane in the conversation.Source open in the conversation.Citation preview in the conversation",
@@ -4549,36 +4457,6 @@
           "region": "Physician session/Signed in/Screen",
           "from": "Conversation.Source pane in the conversation.Source open in the conversation.Preview only in the conversation, no qualified source text",
           "to": "Conversation.Source pane in the conversation.No source open in the conversation",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Citation preview on the patient page",
-          "to": "No source open on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Loading the source on the patient page",
-          "to": "No source open on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Source text shown on the patient page",
-          "to": "No source open on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
-          "to": "No source open on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Preview only on the patient page, no qualified source text",
-          "to": "No source open on the patient page",
           "guard": null
         },
         {
@@ -4639,6 +4517,555 @@
           "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
           "from": "Source open in Updates.Preview only in Updates, no qualified source text",
           "to": "No source open in Updates",
+          "guard": null
+        }
+      ]
+    },
+    {
+      "label": "open a citation in the patient summary",
+      "function": "event_open_a_citation_in_the_patient_summary",
+      "cause": "you",
+      "intent": "A citation in the summary opens its preview on the page.",
+      "needs": {
+        "not": false,
+        "states": {
+          "Physician session/Signed in/Sign-in state": [
+            "Signed in to the practice"
+          ],
+          "Access to the patient": [
+            "Clinical access"
+          ],
+          "Physician session/Signed in/Screen": [
+            "Patient page.Source pane on the patient page.No source open on the patient page",
+            "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+            "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+            "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+            "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
+            "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page"
+          ]
+        },
+        "reason": "sources are clinical content"
+      },
+      "transitions": [
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "to": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "to": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
+          "to": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
+          "from": "Source open in the reader.Citation preview in the reader",
+          "to": "No source open in the reader",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
+          "from": "Source open in the reader.Loading the source in the reader",
+          "to": "No source open in the reader",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
+          "from": "Source open in the reader.Source text shown in the reader",
+          "to": "No source open in the reader",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
+          "from": "Source open in the reader.Preview kept in the reader, source couldn't load, with Retry",
+          "to": "No source open in the reader",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
+          "from": "Source open in the reader.Preview only in the reader, no qualified source text",
+          "to": "No source open in the reader",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
+          "from": "Source open in Updates.Citation preview in Updates",
+          "to": "No source open in Updates",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
+          "from": "Source open in Updates.Loading the source in Updates",
+          "to": "No source open in Updates",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
+          "from": "Source open in Updates.Source text shown in Updates",
+          "to": "No source open in Updates",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
+          "from": "Source open in Updates.Preview kept in Updates, source couldn't load, with Retry",
+          "to": "No source open in Updates",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
+          "from": "Source open in Updates.Preview only in Updates, no qualified source text",
+          "to": "No source open in Updates",
+          "guard": null
+        }
+      ]
+    },
+    {
+      "label": "go to a source from Sources",
+      "function": "event_go_to_a_source_from_sources",
+      "cause": "you",
+      "intent": "A row in the patient page's Sources opens that source's first citation (PX 2026-09-17).",
+      "needs": {
+        "not": false,
+        "states": {
+          "Physician session/Signed in/Sign-in state": [
+            "Signed in to the practice"
+          ],
+          "Access to the patient": [
+            "Clinical access"
+          ],
+          "Physician session/Signed in/Screen": [
+            "Patient page.Source pane on the patient page.No source open on the patient page",
+            "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+            "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+            "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+            "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
+            "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page"
+          ]
+        },
+        "reason": "sources are clinical content"
+      },
+      "transitions": [
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "to": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "to": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
+          "to": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
+          "from": "Source open in the reader.Citation preview in the reader",
+          "to": "No source open in the reader",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
+          "from": "Source open in the reader.Loading the source in the reader",
+          "to": "No source open in the reader",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
+          "from": "Source open in the reader.Source text shown in the reader",
+          "to": "No source open in the reader",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
+          "from": "Source open in the reader.Preview kept in the reader, source couldn't load, with Retry",
+          "to": "No source open in the reader",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
+          "from": "Source open in the reader.Preview only in the reader, no qualified source text",
+          "to": "No source open in the reader",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
+          "from": "Source open in Updates.Citation preview in Updates",
+          "to": "No source open in Updates",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
+          "from": "Source open in Updates.Loading the source in Updates",
+          "to": "No source open in Updates",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
+          "from": "Source open in Updates.Source text shown in Updates",
+          "to": "No source open in Updates",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
+          "from": "Source open in Updates.Preview kept in Updates, source couldn't load, with Retry",
+          "to": "No source open in Updates",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
+          "from": "Source open in Updates.Preview only in Updates, no qualified source text",
+          "to": "No source open in Updates",
+          "guard": null
+        }
+      ]
+    },
+    {
+      "label": "open a citation in the reader",
+      "function": "event_open_a_citation_in_the_reader",
+      "cause": "you",
+      "intent": "A citation opens its preview in the reader's pane; opening evidence never clears attention.",
+      "needs": {
+        "not": false,
+        "states": {
+          "Physician session/Signed in/Sign-in state": [
+            "Signed in to the practice"
+          ],
+          "Access to the patient": [
+            "Clinical access"
+          ],
+          "Physician session/Signed in/Reader": [
+            "Reader open"
+          ]
+        },
+        "reason": "sources are clinical content"
+      },
+      "transitions": [
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Citation preview in the conversation",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Loading the source in the conversation",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Source text shown in the conversation",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Preview kept in the conversation, source couldn't load, with Retry",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Preview only in the conversation, no qualified source text",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
+          "from": "No source open in the reader",
+          "to": "Source open in the reader.Citation preview in the reader",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
+          "from": "Source open in the reader.Citation preview in the reader",
+          "to": "Source open in the reader.Citation preview in the reader",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
+          "from": "Source open in the reader.Loading the source in the reader",
+          "to": "Source open in the reader.Citation preview in the reader",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
+          "from": "Source open in the reader.Source text shown in the reader",
+          "to": "Source open in the reader.Citation preview in the reader",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
+          "from": "Source open in the reader.Preview kept in the reader, source couldn't load, with Retry",
+          "to": "Source open in the reader.Citation preview in the reader",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
+          "from": "Source open in the reader.Preview only in the reader, no qualified source text",
+          "to": "Source open in the reader.Citation preview in the reader",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
+          "from": "Source open in Updates.Citation preview in Updates",
+          "to": "No source open in Updates",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
+          "from": "Source open in Updates.Loading the source in Updates",
+          "to": "No source open in Updates",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
+          "from": "Source open in Updates.Source text shown in Updates",
+          "to": "No source open in Updates",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
+          "from": "Source open in Updates.Preview kept in Updates, source couldn't load, with Retry",
+          "to": "No source open in Updates",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
+          "from": "Source open in Updates.Preview only in Updates, no qualified source text",
+          "to": "No source open in Updates",
+          "guard": null
+        }
+      ]
+    },
+    {
+      "label": "open a citation in Updates",
+      "function": "event_open_a_citation_in_updates",
+      "cause": "you",
+      "intent": "A citation in an update opens its preview.",
+      "needs": {
+        "not": false,
+        "states": {
+          "Physician session/Signed in/Sign-in state": [
+            "Signed in to the practice"
+          ],
+          "Access to the patient": [
+            "Clinical access"
+          ],
+          "Physician session/Signed in/Updates panel/Updates open/Updates view": [
+            "Reading an update.Update read.Couldn't load the update, with Retry",
+            "Reading an update.Update read.Loading the update",
+            "Reading an update.Update read.Showing the update",
+            "Reading an update.Update read.Showing the update, with one quiet line and Retry"
+          ]
+        },
+        "reason": "sources are clinical content"
+      },
+      "transitions": [
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Citation preview in the conversation",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Loading the source in the conversation",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Source text shown in the conversation",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Preview kept in the conversation, source couldn't load, with Retry",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Preview only in the conversation, no qualified source text",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
+          "from": "Source open in the reader.Citation preview in the reader",
+          "to": "No source open in the reader",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
+          "from": "Source open in the reader.Loading the source in the reader",
+          "to": "No source open in the reader",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
+          "from": "Source open in the reader.Source text shown in the reader",
+          "to": "No source open in the reader",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
+          "from": "Source open in the reader.Preview kept in the reader, source couldn't load, with Retry",
+          "to": "No source open in the reader",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
+          "from": "Source open in the reader.Preview only in the reader, no qualified source text",
+          "to": "No source open in the reader",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
+          "from": "No source open in Updates",
+          "to": "Source open in Updates.Citation preview in Updates",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
+          "from": "Source open in Updates.Citation preview in Updates",
+          "to": "Source open in Updates.Citation preview in Updates",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
+          "from": "Source open in Updates.Loading the source in Updates",
+          "to": "Source open in Updates.Citation preview in Updates",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
+          "from": "Source open in Updates.Source text shown in Updates",
+          "to": "Source open in Updates.Citation preview in Updates",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
+          "from": "Source open in Updates.Preview kept in Updates, source couldn't load, with Retry",
+          "to": "Source open in Updates.Citation preview in Updates",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
+          "from": "Source open in Updates.Preview only in Updates, no qualified source text",
+          "to": "Source open in Updates.Citation preview in Updates",
           "guard": null
         }
       ]
@@ -4768,307 +5195,6 @@
       ]
     },
     {
-      "label": "open a citation in the reader",
-      "function": "event_open_a_citation_in_the_reader",
-      "cause": "you",
-      "intent": "A citation opens its preview in the reader's pane; opening evidence never clears attention.",
-      "needs": {
-        "not": false,
-        "states": {
-          "Physician session/Signed in/Sign-in state": [
-            "Signed in to the practice"
-          ],
-          "Access to the patient": [
-            "Clinical access"
-          ],
-          "Physician session/Signed in/Reader": [
-            "Reader open"
-          ]
-        },
-        "reason": "sources are clinical content"
-      },
-      "transitions": [
-        {
-          "region": "Physician session/Signed in/Screen",
-          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Citation preview in the conversation",
-          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen",
-          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Loading the source in the conversation",
-          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen",
-          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Source text shown in the conversation",
-          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen",
-          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Preview kept in the conversation, source couldn't load, with Retry",
-          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen",
-          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Preview only in the conversation, no qualified source text",
-          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Citation preview on the patient page",
-          "to": "No source open on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Loading the source on the patient page",
-          "to": "No source open on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Source text shown on the patient page",
-          "to": "No source open on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
-          "to": "No source open on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Preview only on the patient page, no qualified source text",
-          "to": "No source open on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
-          "from": "No source open in the reader",
-          "to": "Source open in the reader.Citation preview in the reader",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
-          "from": "Source open in the reader.Citation preview in the reader",
-          "to": "Source open in the reader.Citation preview in the reader",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
-          "from": "Source open in the reader.Loading the source in the reader",
-          "to": "Source open in the reader.Citation preview in the reader",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
-          "from": "Source open in the reader.Source text shown in the reader",
-          "to": "Source open in the reader.Citation preview in the reader",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
-          "from": "Source open in the reader.Preview kept in the reader, source couldn't load, with Retry",
-          "to": "Source open in the reader.Citation preview in the reader",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
-          "from": "Source open in the reader.Preview only in the reader, no qualified source text",
-          "to": "Source open in the reader.Citation preview in the reader",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
-          "from": "Source open in Updates.Citation preview in Updates",
-          "to": "No source open in Updates",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
-          "from": "Source open in Updates.Loading the source in Updates",
-          "to": "No source open in Updates",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
-          "from": "Source open in Updates.Source text shown in Updates",
-          "to": "No source open in Updates",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
-          "from": "Source open in Updates.Preview kept in Updates, source couldn't load, with Retry",
-          "to": "No source open in Updates",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
-          "from": "Source open in Updates.Preview only in Updates, no qualified source text",
-          "to": "No source open in Updates",
-          "guard": null
-        }
-      ]
-    },
-    {
-      "label": "open a citation in Updates",
-      "function": "event_open_a_citation_in_updates",
-      "cause": "you",
-      "intent": "A citation in an update opens its preview.",
-      "needs": {
-        "not": false,
-        "states": {
-          "Physician session/Signed in/Sign-in state": [
-            "Signed in to the practice"
-          ],
-          "Access to the patient": [
-            "Clinical access"
-          ],
-          "Physician session/Signed in/Updates panel/Updates open/Updates view": [
-            "Reading an update.Update read.Couldn't load the update, with Retry",
-            "Reading an update.Update read.Loading the update",
-            "Reading an update.Update read.Showing the update",
-            "Reading an update.Update read.Showing the update, with one quiet line and Retry"
-          ]
-        },
-        "reason": "sources are clinical content"
-      },
-      "transitions": [
-        {
-          "region": "Physician session/Signed in/Screen",
-          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Citation preview in the conversation",
-          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen",
-          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Loading the source in the conversation",
-          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen",
-          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Source text shown in the conversation",
-          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen",
-          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Preview kept in the conversation, source couldn't load, with Retry",
-          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen",
-          "from": "Conversation.Source pane in the conversation.Source open in the conversation.Preview only in the conversation, no qualified source text",
-          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Citation preview on the patient page",
-          "to": "No source open on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Loading the source on the patient page",
-          "to": "No source open on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Source text shown on the patient page",
-          "to": "No source open on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
-          "to": "No source open on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Preview only on the patient page, no qualified source text",
-          "to": "No source open on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
-          "from": "Source open in the reader.Citation preview in the reader",
-          "to": "No source open in the reader",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
-          "from": "Source open in the reader.Loading the source in the reader",
-          "to": "No source open in the reader",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
-          "from": "Source open in the reader.Source text shown in the reader",
-          "to": "No source open in the reader",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
-          "from": "Source open in the reader.Preview kept in the reader, source couldn't load, with Retry",
-          "to": "No source open in the reader",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
-          "from": "Source open in the reader.Preview only in the reader, no qualified source text",
-          "to": "No source open in the reader",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
-          "from": "No source open in Updates",
-          "to": "Source open in Updates.Citation preview in Updates",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
-          "from": "Source open in Updates.Citation preview in Updates",
-          "to": "Source open in Updates.Citation preview in Updates",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
-          "from": "Source open in Updates.Loading the source in Updates",
-          "to": "Source open in Updates.Citation preview in Updates",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
-          "from": "Source open in Updates.Source text shown in Updates",
-          "to": "Source open in Updates.Citation preview in Updates",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
-          "from": "Source open in Updates.Preview kept in Updates, source couldn't load, with Retry",
-          "to": "Source open in Updates.Citation preview in Updates",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
-          "from": "Source open in Updates.Preview only in Updates, no qualified source text",
-          "to": "Source open in Updates.Citation preview in Updates",
-          "guard": null
-        }
-      ]
-    },
-    {
       "label": "open the patient",
       "function": "event_open_the_patient",
       "cause": "you",
@@ -5086,7 +5212,7 @@
         {
           "region": "Physician session/Signed in/Screen",
           "from": "Today",
-          "to": "Patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
           "guard": {
             "not": false,
             "states": {
@@ -5100,7 +5226,7 @@
         {
           "region": "Physician session/Signed in/Screen",
           "from": "Patient identity only",
-          "to": "Patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
           "guard": {
             "not": false,
             "states": {
@@ -5114,7 +5240,7 @@
         {
           "region": "Physician session/Signed in/Screen",
           "from": "That patient is not available",
-          "to": "Patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
           "guard": {
             "not": false,
             "states": {
@@ -5170,7 +5296,7 @@
         {
           "region": "Physician session/Signed in/Screen",
           "from": "Conversation.Source pane in the conversation.No source open in the conversation",
-          "to": "Patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
           "guard": {
             "not": false,
             "states": {
@@ -5184,7 +5310,7 @@
         {
           "region": "Physician session/Signed in/Screen",
           "from": "Conversation.Source pane in the conversation.Source open in the conversation.Citation preview in the conversation",
-          "to": "Patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
           "guard": {
             "not": false,
             "states": {
@@ -5198,7 +5324,7 @@
         {
           "region": "Physician session/Signed in/Screen",
           "from": "Conversation.Source pane in the conversation.Source open in the conversation.Loading the source in the conversation",
-          "to": "Patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
           "guard": {
             "not": false,
             "states": {
@@ -5212,7 +5338,7 @@
         {
           "region": "Physician session/Signed in/Screen",
           "from": "Conversation.Source pane in the conversation.Source open in the conversation.Source text shown in the conversation",
-          "to": "Patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
           "guard": {
             "not": false,
             "states": {
@@ -5226,7 +5352,7 @@
         {
           "region": "Physician session/Signed in/Screen",
           "from": "Conversation.Source pane in the conversation.Source open in the conversation.Preview kept in the conversation, source couldn't load, with Retry",
-          "to": "Patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
           "guard": {
             "not": false,
             "states": {
@@ -5240,7 +5366,7 @@
         {
           "region": "Physician session/Signed in/Screen",
           "from": "Conversation.Source pane in the conversation.Source open in the conversation.Preview only in the conversation, no qualified source text",
-          "to": "Patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
           "guard": {
             "not": false,
             "states": {
@@ -5361,7 +5487,7 @@
         {
           "region": "Physician session/Signed in/Screen",
           "from": "Today",
-          "to": "Patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
           "guard": {
             "not": false,
             "states": {
@@ -5374,8 +5500,78 @@
         },
         {
           "region": "Physician session/Signed in/Screen",
-          "from": "Patient page",
-          "to": "Patient page",
+          "from": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "guard": {
+            "not": false,
+            "states": {
+              "Access to the patient": [
+                "Clinical access"
+              ]
+            },
+            "reason": "you land where your access allows; identity only never shows clinical content (CT-012, PX-047)"
+          }
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "guard": {
+            "not": false,
+            "states": {
+              "Access to the patient": [
+                "Clinical access"
+              ]
+            },
+            "reason": "you land where your access allows; identity only never shows clinical content (CT-012, PX-047)"
+          }
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "guard": {
+            "not": false,
+            "states": {
+              "Access to the patient": [
+                "Clinical access"
+              ]
+            },
+            "reason": "you land where your access allows; identity only never shows clinical content (CT-012, PX-047)"
+          }
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "guard": {
+            "not": false,
+            "states": {
+              "Access to the patient": [
+                "Clinical access"
+              ]
+            },
+            "reason": "you land where your access allows; identity only never shows clinical content (CT-012, PX-047)"
+          }
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "guard": {
+            "not": false,
+            "states": {
+              "Access to the patient": [
+                "Clinical access"
+              ]
+            },
+            "reason": "you land where your access allows; identity only never shows clinical content (CT-012, PX-047)"
+          }
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
           "guard": {
             "not": false,
             "states": {
@@ -5389,7 +5585,7 @@
         {
           "region": "Physician session/Signed in/Screen",
           "from": "Patient identity only",
-          "to": "Patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
           "guard": {
             "not": false,
             "states": {
@@ -5403,7 +5599,7 @@
         {
           "region": "Physician session/Signed in/Screen",
           "from": "That patient is not available",
-          "to": "Patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
           "guard": {
             "not": false,
             "states": {
@@ -5472,7 +5668,77 @@
         },
         {
           "region": "Physician session/Signed in/Screen",
-          "from": "Patient page",
+          "from": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "to": "That patient is not available",
+          "guard": {
+            "not": false,
+            "states": {
+              "Access to the patient": [
+                "Cannot see the patient"
+              ]
+            },
+            "reason": "you land where your access allows; identity only never shows clinical content (CT-012, PX-047)"
+          }
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "That patient is not available",
+          "guard": {
+            "not": false,
+            "states": {
+              "Access to the patient": [
+                "Cannot see the patient"
+              ]
+            },
+            "reason": "you land where your access allows; identity only never shows clinical content (CT-012, PX-047)"
+          }
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "That patient is not available",
+          "guard": {
+            "not": false,
+            "states": {
+              "Access to the patient": [
+                "Cannot see the patient"
+              ]
+            },
+            "reason": "you land where your access allows; identity only never shows clinical content (CT-012, PX-047)"
+          }
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "to": "That patient is not available",
+          "guard": {
+            "not": false,
+            "states": {
+              "Access to the patient": [
+                "Cannot see the patient"
+              ]
+            },
+            "reason": "you land where your access allows; identity only never shows clinical content (CT-012, PX-047)"
+          }
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "That patient is not available",
+          "guard": {
+            "not": false,
+            "states": {
+              "Access to the patient": [
+                "Cannot see the patient"
+              ]
+            },
+            "reason": "you land where your access allows; identity only never shows clinical content (CT-012, PX-047)"
+          }
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
           "to": "That patient is not available",
           "guard": {
             "not": false,
@@ -5501,7 +5767,7 @@
         {
           "region": "Physician session/Signed in/Screen",
           "from": "Conversation.Source pane in the conversation.No source open in the conversation",
-          "to": "Patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
           "guard": {
             "not": false,
             "states": {
@@ -5515,7 +5781,7 @@
         {
           "region": "Physician session/Signed in/Screen",
           "from": "Conversation.Source pane in the conversation.Source open in the conversation.Citation preview in the conversation",
-          "to": "Patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
           "guard": {
             "not": false,
             "states": {
@@ -5529,7 +5795,7 @@
         {
           "region": "Physician session/Signed in/Screen",
           "from": "Conversation.Source pane in the conversation.Source open in the conversation.Loading the source in the conversation",
-          "to": "Patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
           "guard": {
             "not": false,
             "states": {
@@ -5543,7 +5809,7 @@
         {
           "region": "Physician session/Signed in/Screen",
           "from": "Conversation.Source pane in the conversation.Source open in the conversation.Source text shown in the conversation",
-          "to": "Patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
           "guard": {
             "not": false,
             "states": {
@@ -5557,7 +5823,7 @@
         {
           "region": "Physician session/Signed in/Screen",
           "from": "Conversation.Source pane in the conversation.Source open in the conversation.Preview kept in the conversation, source couldn't load, with Retry",
-          "to": "Patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
           "guard": {
             "not": false,
             "states": {
@@ -5571,7 +5837,7 @@
         {
           "region": "Physician session/Signed in/Screen",
           "from": "Conversation.Source pane in the conversation.Source open in the conversation.Preview only in the conversation, no qualified source text",
-          "to": "Patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
           "guard": {
             "not": false,
             "states": {
@@ -5844,7 +6110,37 @@
         },
         {
           "region": "Physician session/Signed in/Screen",
-          "from": "Patient page",
+          "from": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
           "to": "Conversation.Source pane in the conversation.No source open in the conversation",
           "guard": null
         },
@@ -5930,7 +6226,37 @@
       "transitions": [
         {
           "region": "Physician session/Signed in/Screen",
-          "from": "Patient page",
+          "from": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
           "to": "Conversation.Source pane in the conversation.No source open in the conversation",
           "guard": null
         },
@@ -6019,7 +6345,37 @@
         },
         {
           "region": "Physician session/Signed in/Screen",
-          "from": "Patient page",
+          "from": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
           "to": "Conversation.Source pane in the conversation.No source open in the conversation",
           "guard": null
         },
@@ -6125,7 +6481,37 @@
         },
         {
           "region": "Physician session/Signed in/Screen",
-          "from": "Patient page",
+          "from": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
           "to": "Conversation.Source pane in the conversation.No source open in the conversation",
           "guard": null
         },
@@ -6255,7 +6641,37 @@
         },
         {
           "region": "Physician session/Signed in/Screen",
-          "from": "Patient page",
+          "from": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
           "to": "Conversation.Source pane in the conversation.No source open in the conversation",
           "guard": null
         },
@@ -6385,7 +6801,37 @@
         },
         {
           "region": "Physician session/Signed in/Screen",
-          "from": "Patient page",
+          "from": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
           "to": "Conversation.Source pane in the conversation.No source open in the conversation",
           "guard": null
         },
@@ -6515,7 +6961,37 @@
         },
         {
           "region": "Physician session/Signed in/Screen",
-          "from": "Patient page",
+          "from": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
           "to": "Conversation.Source pane in the conversation.No source open in the conversation",
           "guard": null
         },
@@ -6645,7 +7121,37 @@
         },
         {
           "region": "Physician session/Signed in/Screen",
-          "from": "Patient page",
+          "from": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
           "to": "Conversation.Source pane in the conversation.No source open in the conversation",
           "guard": null
         },
@@ -6775,7 +7281,37 @@
         },
         {
           "region": "Physician session/Signed in/Screen",
-          "from": "Patient page",
+          "from": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
           "to": "Conversation.Source pane in the conversation.No source open in the conversation",
           "guard": null
         },
@@ -6905,7 +7441,37 @@
         },
         {
           "region": "Physician session/Signed in/Screen",
-          "from": "Patient page",
+          "from": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
           "to": "Conversation.Source pane in the conversation.No source open in the conversation",
           "guard": null
         },
@@ -7032,7 +7598,37 @@
         },
         {
           "region": "Physician session/Signed in/Screen",
-          "from": "Patient page",
+          "from": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
           "to": "Conversation.Source pane in the conversation.No source open in the conversation",
           "guard": null
         },
@@ -7149,7 +7745,37 @@
       "transitions": [
         {
           "region": "Physician session/Signed in/Screen",
-          "from": "Patient page",
+          "from": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "Conversation.Source pane in the conversation.No source open in the conversation",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
           "to": "Conversation.Source pane in the conversation.No source open in the conversation",
           "guard": null
         },
@@ -7316,7 +7942,37 @@
         },
         {
           "region": "Physician session/Signed in/Screen",
-          "from": "Patient page",
+          "from": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "to": "Today",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "Today",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Today",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "to": "Today",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "Today",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
           "to": "Today",
           "guard": null
         },
@@ -7439,7 +8095,37 @@
         },
         {
           "region": "Physician session/Signed in/Screen",
-          "from": "Patient page",
+          "from": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "to": "Patient identity only",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "Patient identity only",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "Patient identity only",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "to": "Patient identity only",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "Patient identity only",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
           "to": "Patient identity only",
           "guard": null
         },
@@ -7834,7 +8520,37 @@
         },
         {
           "region": "Physician session/Signed in/Screen",
-          "from": "Patient page",
+          "from": "Patient page.Source pane on the patient page.No source open on the patient page",
+          "to": "That patient is not available",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+          "to": "That patient is not available",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+          "to": "That patient is not available",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page",
+          "to": "That patient is not available",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+          "to": "That patient is not available",
+          "guard": null
+        },
+        {
+          "region": "Physician session/Signed in/Screen",
+          "from": "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
           "to": "That patient is not available",
           "guard": null
         },
@@ -8206,7 +8922,7 @@
         {
           "region": "Physician session/Signed in/Screen",
           "from": "Patient identity only",
-          "to": "Patient page",
+          "to": "Patient page.Source pane on the patient page.No source open on the patient page",
           "guard": null
         },
         {
@@ -8219,350 +8935,6 @@
           "region": "Access to the patient",
           "from": "Identity only",
           "to": "Clinical access",
-          "guard": null
-        }
-      ]
-    },
-    {
-      "label": "open Basis",
-      "function": "event_open_basis",
-      "cause": "you",
-      "intent": "You open what the patient summary rests on and its limits.",
-      "needs": {
-        "not": false,
-        "states": {
-          "Physician session/Signed in/Sign-in state": [
-            "Signed in to the practice"
-          ]
-        },
-        "reason": "commands need an active session"
-      },
-      "transitions": [
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Basis and limitations",
-          "from": "Basis closed",
-          "to": "Basis open",
-          "guard": null
-        }
-      ]
-    },
-    {
-      "label": "go to a source from Sources",
-      "function": "event_go_to_a_source_from_sources",
-      "cause": "you",
-      "intent": "A Sources row opens that source's first citation, revealing Basis first if it sits there (PX 2026-09-17).",
-      "needs": {
-        "not": false,
-        "states": {
-          "Physician session/Signed in/Sign-in state": [
-            "Signed in to the practice"
-          ],
-          "Access to the patient": [
-            "Clinical access"
-          ],
-          "Physician session/Signed in/Screen/Patient page/Sources list": [
-            "Sources open"
-          ]
-        },
-        "reason": "sources are clinical content"
-      },
-      "transitions": [
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Basis and limitations",
-          "from": "Basis closed",
-          "to": "Basis open",
-          "guard": null,
-          "optional": true,
-          "intent": "may reveal Basis first"
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Sources list",
-          "from": "Sources open",
-          "to": "Sources closed",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "No source open on the patient page",
-          "to": "Source open on the patient page.Citation preview on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Citation preview on the patient page",
-          "to": "Source open on the patient page.Citation preview on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Loading the source on the patient page",
-          "to": "Source open on the patient page.Citation preview on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Source text shown on the patient page",
-          "to": "Source open on the patient page.Citation preview on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
-          "to": "Source open on the patient page.Citation preview on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Preview only on the patient page, no qualified source text",
-          "to": "Source open on the patient page.Citation preview on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
-          "from": "Source open in the reader.Citation preview in the reader",
-          "to": "No source open in the reader",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
-          "from": "Source open in the reader.Loading the source in the reader",
-          "to": "No source open in the reader",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
-          "from": "Source open in the reader.Source text shown in the reader",
-          "to": "No source open in the reader",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
-          "from": "Source open in the reader.Preview kept in the reader, source couldn't load, with Retry",
-          "to": "No source open in the reader",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
-          "from": "Source open in the reader.Preview only in the reader, no qualified source text",
-          "to": "No source open in the reader",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
-          "from": "Source open in Updates.Citation preview in Updates",
-          "to": "No source open in Updates",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
-          "from": "Source open in Updates.Loading the source in Updates",
-          "to": "No source open in Updates",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
-          "from": "Source open in Updates.Source text shown in Updates",
-          "to": "No source open in Updates",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
-          "from": "Source open in Updates.Preview kept in Updates, source couldn't load, with Retry",
-          "to": "No source open in Updates",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
-          "from": "Source open in Updates.Preview only in Updates, no qualified source text",
-          "to": "No source open in Updates",
-          "guard": null
-        }
-      ]
-    },
-    {
-      "label": "close Basis",
-      "function": "event_close_basis",
-      "cause": "you",
-      "intent": "You close Basis.",
-      "needs": {
-        "not": false,
-        "states": {
-          "Physician session/Signed in/Sign-in state": [
-            "Signed in to the practice"
-          ]
-        },
-        "reason": "commands need an active session"
-      },
-      "transitions": [
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Basis and limitations",
-          "from": "Basis open",
-          "to": "Basis closed",
-          "guard": null
-        }
-      ]
-    },
-    {
-      "label": "open Sources",
-      "function": "event_open_sources",
-      "cause": "you",
-      "intent": "You open the list of sources Coda read.",
-      "needs": {
-        "not": false,
-        "states": {
-          "Physician session/Signed in/Sign-in state": [
-            "Signed in to the practice"
-          ]
-        },
-        "reason": "commands need an active session"
-      },
-      "transitions": [
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Sources list",
-          "from": "Sources closed",
-          "to": "Sources open",
-          "guard": null
-        }
-      ]
-    },
-    {
-      "label": "close Sources",
-      "function": "event_close_sources",
-      "cause": "you",
-      "intent": "You close Sources.",
-      "needs": {
-        "not": false,
-        "states": {
-          "Physician session/Signed in/Sign-in state": [
-            "Signed in to the practice"
-          ]
-        },
-        "reason": "commands need an active session"
-      },
-      "transitions": [
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Sources list",
-          "from": "Sources open",
-          "to": "Sources closed",
-          "guard": null
-        }
-      ]
-    },
-    {
-      "label": "open a citation in the patient summary",
-      "function": "event_open_a_citation_in_the_patient_summary",
-      "cause": "you",
-      "intent": "A citation in the summary opens its preview on the page.",
-      "needs": {
-        "not": false,
-        "states": {
-          "Physician session/Signed in/Sign-in state": [
-            "Signed in to the practice"
-          ],
-          "Access to the patient": [
-            "Clinical access"
-          ],
-          "Physician session/Signed in/Screen": [
-            "Patient page"
-          ]
-        },
-        "reason": "sources are clinical content"
-      },
-      "transitions": [
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "No source open on the patient page",
-          "to": "Source open on the patient page.Citation preview on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Citation preview on the patient page",
-          "to": "Source open on the patient page.Citation preview on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Loading the source on the patient page",
-          "to": "Source open on the patient page.Citation preview on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Source text shown on the patient page",
-          "to": "Source open on the patient page.Citation preview on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
-          "to": "Source open on the patient page.Citation preview on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-          "from": "Source open on the patient page.Preview only on the patient page, no qualified source text",
-          "to": "Source open on the patient page.Citation preview on the patient page",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
-          "from": "Source open in the reader.Citation preview in the reader",
-          "to": "No source open in the reader",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
-          "from": "Source open in the reader.Loading the source in the reader",
-          "to": "No source open in the reader",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
-          "from": "Source open in the reader.Source text shown in the reader",
-          "to": "No source open in the reader",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
-          "from": "Source open in the reader.Preview kept in the reader, source couldn't load, with Retry",
-          "to": "No source open in the reader",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Reader/Reader open/Source pane in the reader",
-          "from": "Source open in the reader.Preview only in the reader, no qualified source text",
-          "to": "No source open in the reader",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
-          "from": "Source open in Updates.Citation preview in Updates",
-          "to": "No source open in Updates",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
-          "from": "Source open in Updates.Loading the source in Updates",
-          "to": "No source open in Updates",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
-          "from": "Source open in Updates.Source text shown in Updates",
-          "to": "No source open in Updates",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
-          "from": "Source open in Updates.Preview kept in Updates, source couldn't load, with Retry",
-          "to": "No source open in Updates",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Updates panel/Updates open/Source pane in Updates",
-          "from": "Source open in Updates.Preview only in Updates, no qualified source text",
-          "to": "No source open in Updates",
           "guard": null
         }
       ]
@@ -18333,7 +18705,12 @@
                 "Conversation.Source pane in the conversation.Source open in the conversation.Preview kept in the conversation, source couldn't load, with Retry",
                 "Conversation.Source pane in the conversation.Source open in the conversation.Preview only in the conversation, no qualified source text",
                 "Conversation.Source pane in the conversation.Source open in the conversation.Source text shown in the conversation",
-                "Patient page"
+                "Patient page.Source pane on the patient page.No source open on the patient page",
+                "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+                "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+                "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+                "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
+                "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page"
               ]
             },
             "reason": "only a chat composer takes dictation here; patient search keeps its own control"
@@ -18353,7 +18730,12 @@
                 "Conversation.Source pane in the conversation.Source open in the conversation.Preview kept in the conversation, source couldn't load, with Retry",
                 "Conversation.Source pane in the conversation.Source open in the conversation.Preview only in the conversation, no qualified source text",
                 "Conversation.Source pane in the conversation.Source open in the conversation.Source text shown in the conversation",
-                "Patient page"
+                "Patient page.Source pane on the patient page.No source open on the patient page",
+                "Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page",
+                "Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page",
+                "Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry",
+                "Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text",
+                "Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page"
               ]
             },
             "reason": "only a chat composer takes dictation here; patient search keeps its own control"
@@ -34866,102 +35248,6 @@
           "guard": null
         }
       ]
-    },
-    {
-      "label": "collapse the sidebar",
-      "function": "event_collapse_the_sidebar",
-      "cause": "you",
-      "intent": "You collapse the sidebar; the choice is remembered for you (M8).",
-      "needs": {
-        "not": false,
-        "states": {
-          "Physician session/Signed in/Sign-in state": [
-            "Signed in to the practice"
-          ]
-        },
-        "reason": "commands need an active session"
-      },
-      "family": "collapse the {panel}",
-      "transitions": [
-        {
-          "region": "sidebar preference",
-          "from": "sidebar expanded",
-          "to": "sidebar collapsed",
-          "guard": null
-        }
-      ]
-    },
-    {
-      "label": "expand the sidebar",
-      "function": "event_expand_the_sidebar",
-      "cause": "you",
-      "intent": "You expand the sidebar; the choice is remembered for you (M8).",
-      "needs": {
-        "not": false,
-        "states": {
-          "Physician session/Signed in/Sign-in state": [
-            "Signed in to the practice"
-          ]
-        },
-        "reason": "commands need an active session"
-      },
-      "family": "expand the {panel}",
-      "transitions": [
-        {
-          "region": "sidebar preference",
-          "from": "sidebar collapsed",
-          "to": "sidebar expanded",
-          "guard": null
-        }
-      ]
-    },
-    {
-      "label": "collapse the schedule",
-      "function": "event_collapse_the_schedule",
-      "cause": "you",
-      "intent": "You collapse the schedule; the choice is remembered for you (M8).",
-      "needs": {
-        "not": false,
-        "states": {
-          "Physician session/Signed in/Sign-in state": [
-            "Signed in to the practice"
-          ]
-        },
-        "reason": "commands need an active session"
-      },
-      "family": "collapse the {panel}",
-      "transitions": [
-        {
-          "region": "schedule preference",
-          "from": "schedule expanded",
-          "to": "schedule collapsed",
-          "guard": null
-        }
-      ]
-    },
-    {
-      "label": "expand the schedule",
-      "function": "event_expand_the_schedule",
-      "cause": "you",
-      "intent": "You expand the schedule; the choice is remembered for you (M8).",
-      "needs": {
-        "not": false,
-        "states": {
-          "Physician session/Signed in/Sign-in state": [
-            "Signed in to the practice"
-          ]
-        },
-        "reason": "commands need an active session"
-      },
-      "family": "expand the {panel}",
-      "transitions": [
-        {
-          "region": "schedule preference",
-          "from": "schedule collapsed",
-          "to": "schedule expanded",
-          "guard": null
-        }
-      ]
     }
   ],
   "rules": [
@@ -34979,7 +35265,7 @@
       "sentence": "The shell shows one source pane at a time.",
       "states": [
         "Source open in the reader",
-        "Source open on the patient page"
+        "Patient page.Source pane on the patient page.Source open on the patient page"
       ],
       "function": "rule_one_pane_rd_pg"
     },
@@ -34997,7 +35283,7 @@
       "sentence": "The shell shows one source pane at a time.",
       "states": [
         "Source open in Updates",
-        "Source open on the patient page"
+        "Patient page.Source pane on the patient page.Source open on the patient page"
       ],
       "function": "rule_one_pane_up_pg"
     },
@@ -35268,39 +35554,6 @@
         "state": "Signed in"
       },
       "function": "rule_scope_physician_session_signed_in_screen"
-    },
-    {
-      "name": "Physician session/Signed in/Screen/Patient page/Basis and limitations scope",
-      "sentence": "Physician session/Signed in/Screen/Patient page/Basis and limitations is (not in Patient page) exactly when Physician session/Signed in/Screen is not in Patient page.",
-      "kind": "scope",
-      "region": "Physician session/Signed in/Screen/Patient page/Basis and limitations",
-      "scope": {
-        "region": "Physician session/Signed in/Screen",
-        "state": "Patient page"
-      },
-      "function": "rule_scope_physician_session_signed_in_screen_patient_page_basis_and_limitations"
-    },
-    {
-      "name": "Physician session/Signed in/Screen/Patient page/Sources list scope",
-      "sentence": "Physician session/Signed in/Screen/Patient page/Sources list is (not in Patient page) exactly when Physician session/Signed in/Screen is not in Patient page.",
-      "kind": "scope",
-      "region": "Physician session/Signed in/Screen/Patient page/Sources list",
-      "scope": {
-        "region": "Physician session/Signed in/Screen",
-        "state": "Patient page"
-      },
-      "function": "rule_scope_physician_session_signed_in_screen_patient_page_sources_list"
-    },
-    {
-      "name": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page scope",
-      "sentence": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page is (not in Patient page) exactly when Physician session/Signed in/Screen is not in Patient page.",
-      "kind": "scope",
-      "region": "Physician session/Signed in/Screen/Patient page/Source pane on the patient page",
-      "scope": {
-        "region": "Physician session/Signed in/Screen",
-        "state": "Patient page"
-      },
-      "function": "rule_scope_physician_session_signed_in_screen_patient_page_source_pane_on_the_patient_page"
     },
     {
       "name": "Physician session/Signed in/Reader scope",

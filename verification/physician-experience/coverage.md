@@ -16,6 +16,13 @@ starting list for the UI program.
 the state needs (yes), need a server or wire change first (no), or don't apply
 (n/a). **Where in the app** names the owner by component, not line number.
 
+Presentation is the app's, not the graph's (decisions.md, Behavior, not
+presentation), so it has no rows here. Its known gaps: the orb has no hover or
+pinned preview and updates carry no content to preview; the patient page has no
+Basis, since PatientWorkspaceResponse has no basis or limitations field; and it
+has no Sources list, since ConnectedSource carries no source names. Sidebar and
+schedule collapse are built and remembered per physician (M8, panels.rs).
+
 Sign-in's page states are in [sign-in.mmd](sign-in.mmd), which is connected to
 the graph by its own map; this file covers the graph's states.
 
@@ -58,7 +65,12 @@ check prints the current counts.
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | Today | built | TodaySurface, TodayRows (physician-app lib.rs) | yes | Heading with need-you count, rows with a Needs you now mark for urgency now, and the quiet copy when empty. |
-| Patient page | built | PatientSurface, ReadNotice (physician-app lib.rs); answer_to (physician-app shell.rs) | yes | Opening the patient… shows whenever the patient being opened hasn't answered yet; the last patient's page never stands in for the next. |
+| Patient page.Source pane on the patient page.No source open on the patient page | built | PatientSurface Patient summary, CitationChip (physician-app lib.rs) | yes | Summary prose with numbered citation chips and no pane open. Opening the patient… shows whenever the patient being opened hasn't answered yet; the last patient's page never stands in for the next. |
+| Patient page.Source pane on the patient page.Source open on the patient page.Citation preview on the patient page | built | CitationChip, ReaderDialog, source_reading (physician-app lib.rs); citation_inspection (physician-app shell.rs) | yes | Shown as a modal sharing the reader's single slot, so it replaces any open reading, and it has no Expand. |
+| Patient page.Source pane on the patient page.Source open on the patient page.Loading the source on the patient page | missing |  | no | No Expand and no source fetch; the client has no source endpoint. |
+| Patient page.Source pane on the patient page.Source open on the patient page.Source text shown on the patient page | missing |  | no | No qualified source text, only the preview on the citation segment. |
+| Patient page.Source pane on the patient page.Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry | missing |  | no | No source load, so no failure or Retry. |
+| Patient page.Source pane on the patient page.Source open on the patient page.Preview only on the patient page, no qualified source text | partial | citation_inspection (physician-app shell.rs), ReaderDialog (physician-app lib.rs) | no | Every preview is preview-only but nothing says so; SOURCE_UNAVAILABLE shows only when the preview prose itself is empty. |
 | Conversation.Source pane in the conversation.No source open in the conversation | partial | PatientSurface Conversation section, FormattedMessage (physician-app lib.rs) | no | The conversation is a section of the patient page, not its own screen, and its answers carry no citations, so no source can open. |
 | Conversation.Source pane in the conversation.Source open in the conversation.Citation preview in the conversation | missing |  | no | Conversation turns render through FormattedMessage with no citation chips; wire ChatTurn carries only text/authored_text. |
 | Conversation.Source pane in the conversation.Source open in the conversation.Loading the source in the conversation | missing |  | no | Conversation turns render through FormattedMessage with no citation chips; wire ChatTurn carries only text/authored_text. |
@@ -67,31 +79,6 @@ check prints the current counts.
 | Conversation.Source pane in the conversation.Source open in the conversation.Preview only in the conversation, no qualified source text | missing |  | no | Conversation turns render through FormattedMessage with no citation chips; wire ChatTurn carries only text/authored_text. |
 | Patient identity only | built | PatientSurface clinic-demographic card (physician-app lib.rs) | yes | Driven by clinic_demographic membership, since the wire has no separate access level; admins get Assign to panel. |
 | That patient is not available | built | PatientSurface gone branch, workspace resource 404 handling (physician-app lib.rs) | yes | Shows That patient is not available. with Go to Today on any 404, but an open reader for that patient is not closed. |
-
-## Physician session/Signed in/Screen/Patient page/Basis and limitations
-
-| State | Status | Where in the app | Server data | Note |
-| --- | --- | --- | --- | --- |
-| Basis closed | missing |  | no | No Basis control; PatientWorkspaceResponse has no basis or limitations field. |
-| Basis open | missing |  | no | No Basis control; PatientWorkspaceResponse has no basis or limitations field. |
-
-## Physician session/Signed in/Screen/Patient page/Sources list
-
-| State | Status | Where in the app | Server data | Note |
-| --- | --- | --- | --- | --- |
-| Sources closed | missing |  | no | No Sources control; only a Records as of line in the summary meta. |
-| Sources open | missing |  | no | No list of sources read; ConnectedSource carries only pull state and times, no source names. |
-
-## Physician session/Signed in/Screen/Patient page/Source pane on the patient page
-
-| State | Status | Where in the app | Server data | Note |
-| --- | --- | --- | --- | --- |
-| No source open on the patient page | built | PatientSurface Patient summary, CitationChip (physician-app lib.rs) | yes | Summary prose with numbered citation chips and no pane open. |
-| Source open on the patient page.Citation preview on the patient page | built | CitationChip, ReaderDialog, source_reading (physician-app lib.rs); citation_inspection (physician-app shell.rs) | yes | Shown as a modal sharing the reader's single slot, so it replaces any open reading, and it has no Expand. |
-| Source open on the patient page.Loading the source on the patient page | missing |  | no | No Expand and no source fetch; the client has no source endpoint. |
-| Source open on the patient page.Source text shown on the patient page | missing |  | no | No qualified source text, only the preview on the citation segment. |
-| Source open on the patient page.Preview kept on the patient page, source couldn't load, with Retry | missing |  | no | No source load, so no failure or Retry. |
-| Source open on the patient page.Preview only on the patient page, no qualified source text | partial | citation_inspection (physician-app shell.rs), ReaderDialog (physician-app lib.rs) | no | Every preview is preview-only but nothing says so; SOURCE_UNAVAILABLE shows only when the preview prose itself is empty. |
 
 ## Physician session/Signed in/Reader
 
@@ -976,17 +963,3 @@ check prints the current counts.
 | --- | --- | --- | --- | --- |
 | New to you | missing |  | no | The Today row's live-dot shows on every row, and the wire has no seen state. |
 | Opened by you, unchanged since | missing |  | no | No seen state, and opening isn't recorded. |
-
-## sidebar preference
-
-| State | Status | Where in the app | Server data | Note |
-| --- | --- | --- | --- | --- |
-| sidebar expanded | built | PhysicianShell sidebar collapse buttons (physician-app lib.rs); panels.rs | yes | Remembered per physician in this browser's localStorage. |
-| sidebar collapsed | built | PhysicianShell has-collapsed-sidebar (physician-app lib.rs); panels.rs | yes | Remembered per physician in this browser's localStorage. |
-
-## schedule preference
-
-| State | Status | Where in the app | Server data | Note |
-| --- | --- | --- | --- | --- |
-| schedule expanded | built | ScheduleRail (physician-app lib.rs); panels.rs | yes | Remembered per physician and shared by Today and the patient page. |
-| schedule collapsed | built | ScheduleRail collapsed tile (physician-app lib.rs); panels.rs | yes | Remembered per physician and shared by Today and the patient page. |
