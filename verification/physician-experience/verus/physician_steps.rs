@@ -310,27 +310,6 @@ pub proof fn preserves_event_the_schedule_finds_no_calendar(s: State, t: State)
 pub proof fn preserves_event_the_practice_connects_a_calendar(s: State, t: State)
     requires inductive(s), ensures event_the_practice_connects_a_calendar(s, t) ==> inductive(t),
 {}
-pub proof fn preserves_event_hover_or_focus_the_orb(s: State, t: State)
-    requires inductive(s), ensures event_hover_or_focus_the_orb(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_leave_the_orb_preview(s: State, t: State)
-    requires inductive(s), ensures event_leave_the_orb_preview(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_click_the_orb(s: State, t: State)
-    requires inductive(s), ensures event_click_the_orb(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_close_the_orb_preview(s: State, t: State)
-    requires inductive(s), ensures event_close_the_orb_preview(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_press_escape_on_the_orb_preview(s: State, t: State)
-    requires inductive(s), ensures event_press_escape_on_the_orb_preview(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_collapse_coda(s: State, t: State)
-    requires inductive(s), ensures event_collapse_coda(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_open_coda(s: State, t: State)
-    requires inductive(s), ensures event_open_coda(s, t) ==> inductive(t),
-{}
 pub proof fn preserves_event_the_search_shows_a_saved_copy(s: State, t: State)
     requires inductive(s), ensures event_the_search_shows_a_saved_copy(s, t) ==> inductive(t),
 {}
@@ -1990,13 +1969,6 @@ pub proof fn every_event_preserves_inductive(s: State, t: State)
     preserves_event_retry_the_schedule(s, t);
     preserves_event_the_schedule_finds_no_calendar(s, t);
     preserves_event_the_practice_connects_a_calendar(s, t);
-    preserves_event_hover_or_focus_the_orb(s, t);
-    preserves_event_leave_the_orb_preview(s, t);
-    preserves_event_click_the_orb(s, t);
-    preserves_event_close_the_orb_preview(s, t);
-    preserves_event_press_escape_on_the_orb_preview(s, t);
-    preserves_event_collapse_coda(s, t);
-    preserves_event_open_coda(s, t);
     preserves_event_the_search_shows_a_saved_copy(s, t);
     preserves_event_the_search_loads(s, t);
     preserves_event_the_search_loads_in_part(s, t);

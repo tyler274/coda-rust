@@ -18,6 +18,13 @@ Linear, then the settled docs, then mockups.
 - **Communication standard (2026-10-24).** Coda never sends on its own. Only the
   exact words a physician approved go out: sent by the physician, or by Coda on
   their behalf and shown as sent by Coda for them (PM:160, 992).
+- **Behavior, not presentation (2026-10-26).** Layout, open and close, hover
+  and paging belong to the surface map and the app, not the graph, as in
+  Duet's. The graph keeps what the physician can do, what Coda does, and what
+  is guaranteed; a guarantee that lived in a screen detail stays as a plain
+  rule:
+  - Previewing updates from the orb never navigates or clears attention; only
+    opening one does. Collapsing Coda to the orb is presentation.
 - **Ideal state, not infrastructure (2026-10-24).** The graph is the ideal
   behavior of the full product for any user: what they see and how things act and
   work for them. It leaves out runtime capacity, retries, timeouts, interruptions,

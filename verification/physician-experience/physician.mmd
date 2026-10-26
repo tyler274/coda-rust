@@ -29,13 +29,6 @@ stateDiagram-v2
 %% event close Basis | by you | needs SIn | reason: commands need an active session | You close Basis.
 %% event open Sources | by you | needs SIn | reason: commands need an active session | You open the list of sources Coda read.
 %% event close Sources | by you | needs SIn | reason: commands need an active session | You close Sources.
-%% event collapse Coda | by you | needs SIn | reason: commands need an active session | Coda shrinks to the orb; the workspace stays mounted.
-%% event open Coda | by you | needs SIn | reason: commands need an active session | Coda opens again where it was.
-%% event hover or focus the orb | by you | needs SIn | reason: commands need an active session | The orb previews what Coda is doing; hovering never navigates or clears attention.
-%% event leave the orb preview | by you | The preview closes when you move away.
-%% event click the orb | by you | needs SIn | reason: commands need an active session | The preview stays open until you close it.
-%% event close the orb preview | by you | needs SIn | reason: commands need an active session | You close the pinned preview.
-%% event press Escape on the orb preview | by you | The preview closes.
 %% event open all updates | by you | needs SIn | reason: commands need an active session | Coda opens on Updates, the record of everything Coda did.
 %% event open find patient | by you | needs SIn | reason: commands need an active session | You open the roster search.
 %% event close find patient | by you | needs SIn | reason: commands need an active session | You close the search.
@@ -106,7 +99,7 @@ stateDiagram-v2
 %% event open the work that raised the concern | by you | needs SIn, AClin, RConcern | reason: commands need an active session and clinical access | From a concern you open the work that raised it.
 %% event close the reader | by you | You close the reader and are exactly where you were.
 %% event open Updates | by you | needs SIn | reason: commands need an active session | You open the day's log of everything Coda did.
-%% event open an update from the orb | by you | needs SIn, AClin | reason: commands need an active session; an update about a patient is clinical content | From the orb preview you open one update; Coda opens on it.
+%% event open an update from the orb | by you | needs SIn, AClin | reason: commands need an active session; an update about a patient is clinical content | From the orb you open one update; Coda opens on it. Previewing updates there never navigates or clears attention; only opening one does (PX).
 %% event open the reply | by you | needs SIn, AClin, MROpen | reason: replies are clinical content; only open reply work has a card | You open the reply card from Today, Updates or Past work (Review reply, patient-messaging.md:1128); opening is yours alone, per exact version, and asserts no clinical review (px.md:140, 317).
 %% event open the {row} that couldn't restart | by you | needs SIn, AClin, LShown@{key} | reason: clinical content; only a row on Today opens | You open the row; it stays on Today with Done; opening is yours alone, per exact version, and asserts no clinical review (px.md:140, 317).
 %% event discuss what you're reading | by you | needs SIn, AClin, ROpen | reason: Discuss belongs to the item open in the reader, which is clinical content | The reader's one primary action opens or returns to that item's exact anchored conversation in this patient, keeping other drafts (px.md:514, 695).
@@ -605,31 +598,6 @@ stateDiagram-v2
           RdFailed --> ScOff : the schedule finds no calendar
           ScOff --> RdLoading : the practice connects a calendar
           RdFailed --> RdLoading : midnight passes
-        }
-        --
-        %% PX "Collapse Coda": the orb keeps the mounted workspace; hover never navigates or clears
-        %% attention.
-        state "Coda window" as Window {
-          [*] --> WinOpen
-          state "Coda open" as WinOpen
-          state "Collapsed to the orb" as WinOrb {
-            [*] --> WinOrbOnly
-            state "Orb only" as WinOrbOnly
-            state "Orb preview shown" as WinPreview
-            state "Orb preview pinned" as WinPinned
-            WinOrbOnly --> WinPreview : hover or focus the orb
-            WinPreview --> WinOrbOnly : leave the orb preview
-            WinPreview --> WinPinned : click the orb
-            WinOrbOnly --> WinPinned : click the orb
-            WinPinned --> WinOrbOnly : close the orb preview
-            WinPreview --> WinOrbOnly : press Escape on the orb preview
-            WinPinned --> WinOrbOnly : press Escape on the orb preview
-          }
-          WinPreview --> WinOpen : open an update from the orb
-          WinPinned --> WinOpen : open an update from the orb
-          WinOpen --> WinOrb : collapse Coda
-          WinOrb --> WinOpen : open Coda
-          WinOrb --> WinOpen : open all updates
         }
         --
         %% PX "Find patient": one server-side roster search, 50 at a time; every roster patient stays

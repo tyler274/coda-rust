@@ -204,15 +204,6 @@ check prints the current counts.
 | Couldn't load the schedule, with Retry | built | TodaySurface and PatientSurface ScheduleRail, ReadNotice (physician-app lib.rs) | yes | A failed first read shows the rail with Coda couldn’t load the schedule. and Try again. |
 | No calendar, no schedule area | built | TodaySurface (physician-app lib.rs); shows_today_schedule (physician-app shell.rs) | yes | No rail when the calendar state is unavailable or absent, though unavailable conflates a down calendar with none. |
 
-## Physician session/Signed in/Coda window
-
-| State | Status | Where in the app | Server data | Note |
-| --- | --- | --- | --- | --- |
-| Coda open | built | PhysicianShell glass-app shell, Collapse Coda button (physician-app lib.rs) | yes |  |
-| Collapsed to the orb.Orb only | built | PhysicianShell coda-restore button (physician-app lib.rs) | yes | Orb with the logo; the shell stays mounted but hidden. |
-| Collapsed to the orb.Orb preview shown | missing |  | no | No hover or focus preview on the orb, and updates carry no content to preview. |
-| Collapsed to the orb.Orb preview pinned | missing |  | no | No pinned preview or opening an update from the orb. |
-
 ## Physician session/Signed in/Find patient
 
 | State | Status | Where in the app | Server data | Note |

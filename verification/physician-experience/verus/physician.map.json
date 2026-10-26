@@ -1,9 +1,9 @@
 {
   "format": 1,
   "module": "physician",
-  "chart_sha256": "f04afd35eab056ce34d6b993918f759fb199eaa2cdc0611c2ea836483aba1cb1",
-  "generated_sha256": "2b375b651f7efa2284828a175f195e8ea1c7ed640f5e6c89b051ca6ed9af817d",
-  "steps_sha256": "7467ad596a8aeba8102347d3a525092dadaed2a56f51ba9ab587ff17acd49183",
+  "chart_sha256": "c4669098afffc9924f86ab62208c7db4c92d546d0fb88558e1d9b0ee75afd6b7",
+  "generated_sha256": "aece544f658319684c8c59ae511c065c0e513bfa391d77e888ecd2d1677d8a4e",
+  "steps_sha256": "b1acaae7b14163625752db08d6153d66659295816c3a2a6e57db2980b8e9117e",
   "semantics": "pstack broadcast events; pre-state guards; nondeterministic choices; stuttering allowed; parallel parts follow their parent's post-state, and exit wins",
   "regions": [
     {
@@ -732,43 +732,6 @@
         {
           "caption": "No calendar, no schedule area",
           "variant": "RegionPhysicianSessionSignedInScheduleRead::StateNoCalendarNoScheduleArea",
-          "initial": false
-        }
-      ]
-    },
-    {
-      "caption": "Physician session/Signed in/Coda window",
-      "field": "region_physician_session_signed_in_coda_window",
-      "type": "RegionPhysicianSessionSignedInCodaWindow",
-      "scope": {
-        "region": "Physician session",
-        "state": "Signed in"
-      },
-      "inactive": "(not in Signed in)",
-      "states": [
-        {
-          "caption": "(not in Signed in)",
-          "variant": "RegionPhysicianSessionSignedInCodaWindow::StateNotInSignedIn",
-          "initial": false
-        },
-        {
-          "caption": "Coda open",
-          "variant": "RegionPhysicianSessionSignedInCodaWindow::StateCodaOpen",
-          "initial": true
-        },
-        {
-          "caption": "Collapsed to the orb.Orb only",
-          "variant": "RegionPhysicianSessionSignedInCodaWindow::StateCollapsedToTheOrbOrbOnly",
-          "initial": false
-        },
-        {
-          "caption": "Collapsed to the orb.Orb preview shown",
-          "variant": "RegionPhysicianSessionSignedInCodaWindow::StateCollapsedToTheOrbOrbPreviewShown",
-          "initial": false
-        },
-        {
-          "caption": "Collapsed to the orb.Orb preview pinned",
-          "variant": "RegionPhysicianSessionSignedInCodaWindow::StateCollapsedToTheOrbOrbPreviewPinned",
           "initial": false
         }
       ]
@@ -9313,24 +9276,6 @@
           "from": "Updates closed",
           "to": "Updates open",
           "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Coda window",
-          "from": "Collapsed to the orb.Orb only",
-          "to": "Coda open",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Coda window",
-          "from": "Collapsed to the orb.Orb preview shown",
-          "to": "Coda open",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Coda window",
-          "from": "Collapsed to the orb.Orb preview pinned",
-          "to": "Coda open",
-          "guard": null
         }
       ]
     },
@@ -9338,7 +9283,7 @@
       "label": "open an update from the orb",
       "function": "event_open_an_update_from_the_orb",
       "cause": "you",
-      "intent": "From the orb preview you open one update; Coda opens on it.",
+      "intent": "From the orb you open one update; Coda opens on it. Previewing updates there never navigates or clears attention; only opening one does (PX).",
       "needs": {
         "not": false,
         "states": {
@@ -9385,18 +9330,6 @@
           "region": "Physician session/Signed in/Updates panel/Updates open/Updates view",
           "from": "Reading an update.Update read.Couldn't load the update, with Retry",
           "to": "Reading an update.Update read.Loading the update",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Coda window",
-          "from": "Collapsed to the orb.Orb preview shown",
-          "to": "Coda open",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Coda window",
-          "from": "Collapsed to the orb.Orb preview pinned",
-          "to": "Coda open",
           "guard": null
         },
         {
@@ -10543,175 +10476,6 @@
           "region": "Physician session/Signed in/Schedule read",
           "from": "No calendar, no schedule area",
           "to": "Loading the schedule",
-          "guard": null
-        }
-      ]
-    },
-    {
-      "label": "hover or focus the orb",
-      "function": "event_hover_or_focus_the_orb",
-      "cause": "you",
-      "intent": "The orb previews what Coda is doing; hovering never navigates or clears attention.",
-      "needs": {
-        "not": false,
-        "states": {
-          "Physician session/Signed in/Sign-in state": [
-            "Signed in to the practice"
-          ]
-        },
-        "reason": "commands need an active session"
-      },
-      "transitions": [
-        {
-          "region": "Physician session/Signed in/Coda window",
-          "from": "Collapsed to the orb.Orb only",
-          "to": "Collapsed to the orb.Orb preview shown",
-          "guard": null
-        }
-      ]
-    },
-    {
-      "label": "leave the orb preview",
-      "function": "event_leave_the_orb_preview",
-      "cause": "you",
-      "intent": "The preview closes when you move away.",
-      "needs": null,
-      "transitions": [
-        {
-          "region": "Physician session/Signed in/Coda window",
-          "from": "Collapsed to the orb.Orb preview shown",
-          "to": "Collapsed to the orb.Orb only",
-          "guard": null
-        }
-      ]
-    },
-    {
-      "label": "click the orb",
-      "function": "event_click_the_orb",
-      "cause": "you",
-      "intent": "The preview stays open until you close it.",
-      "needs": {
-        "not": false,
-        "states": {
-          "Physician session/Signed in/Sign-in state": [
-            "Signed in to the practice"
-          ]
-        },
-        "reason": "commands need an active session"
-      },
-      "transitions": [
-        {
-          "region": "Physician session/Signed in/Coda window",
-          "from": "Collapsed to the orb.Orb preview shown",
-          "to": "Collapsed to the orb.Orb preview pinned",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Coda window",
-          "from": "Collapsed to the orb.Orb only",
-          "to": "Collapsed to the orb.Orb preview pinned",
-          "guard": null
-        }
-      ]
-    },
-    {
-      "label": "close the orb preview",
-      "function": "event_close_the_orb_preview",
-      "cause": "you",
-      "intent": "You close the pinned preview.",
-      "needs": {
-        "not": false,
-        "states": {
-          "Physician session/Signed in/Sign-in state": [
-            "Signed in to the practice"
-          ]
-        },
-        "reason": "commands need an active session"
-      },
-      "transitions": [
-        {
-          "region": "Physician session/Signed in/Coda window",
-          "from": "Collapsed to the orb.Orb preview pinned",
-          "to": "Collapsed to the orb.Orb only",
-          "guard": null
-        }
-      ]
-    },
-    {
-      "label": "press Escape on the orb preview",
-      "function": "event_press_escape_on_the_orb_preview",
-      "cause": "you",
-      "intent": "The preview closes.",
-      "needs": null,
-      "transitions": [
-        {
-          "region": "Physician session/Signed in/Coda window",
-          "from": "Collapsed to the orb.Orb preview shown",
-          "to": "Collapsed to the orb.Orb only",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Coda window",
-          "from": "Collapsed to the orb.Orb preview pinned",
-          "to": "Collapsed to the orb.Orb only",
-          "guard": null
-        }
-      ]
-    },
-    {
-      "label": "collapse Coda",
-      "function": "event_collapse_coda",
-      "cause": "you",
-      "intent": "Coda shrinks to the orb; the workspace stays mounted.",
-      "needs": {
-        "not": false,
-        "states": {
-          "Physician session/Signed in/Sign-in state": [
-            "Signed in to the practice"
-          ]
-        },
-        "reason": "commands need an active session"
-      },
-      "transitions": [
-        {
-          "region": "Physician session/Signed in/Coda window",
-          "from": "Coda open",
-          "to": "Collapsed to the orb.Orb only",
-          "guard": null
-        }
-      ]
-    },
-    {
-      "label": "open Coda",
-      "function": "event_open_coda",
-      "cause": "you",
-      "intent": "Coda opens again where it was.",
-      "needs": {
-        "not": false,
-        "states": {
-          "Physician session/Signed in/Sign-in state": [
-            "Signed in to the practice"
-          ]
-        },
-        "reason": "commands need an active session"
-      },
-      "transitions": [
-        {
-          "region": "Physician session/Signed in/Coda window",
-          "from": "Collapsed to the orb.Orb only",
-          "to": "Coda open",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Coda window",
-          "from": "Collapsed to the orb.Orb preview shown",
-          "to": "Coda open",
-          "guard": null
-        },
-        {
-          "region": "Physician session/Signed in/Coda window",
-          "from": "Collapsed to the orb.Orb preview pinned",
-          "to": "Coda open",
           "guard": null
         }
       ]
@@ -35669,17 +35433,6 @@
         "state": "Signed in"
       },
       "function": "rule_scope_physician_session_signed_in_schedule_read"
-    },
-    {
-      "name": "Physician session/Signed in/Coda window scope",
-      "sentence": "Physician session/Signed in/Coda window is (not in Signed in) exactly when Physician session is not in Signed in.",
-      "kind": "scope",
-      "region": "Physician session/Signed in/Coda window",
-      "scope": {
-        "region": "Physician session",
-        "state": "Signed in"
-      },
-      "function": "rule_scope_physician_session_signed_in_coda_window"
     },
     {
       "name": "Physician session/Signed in/Find patient scope",
