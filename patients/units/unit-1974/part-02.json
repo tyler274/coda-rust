@@ -1,0 +1,1107 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001974",
+   "events": [
+    {
+     "id": "2020-02-18a",
+     "kind": "office_visit",
+     "start": "2020-02-18T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diarrhea, weight loss, joint pains",
+     "state": {
+      "weight_kg": 90.6,
+      "labs": {
+       "Hemoglobin A1c": 7.4
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "medications": [
+      {
+       "drug_text": "ibuprofen 400 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth as needed for joint pain",
+       "dose": {
+        "value": 400,
+        "unit": "mg"
+       },
+       "frequency": "PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Joint pain"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2020-02-18T15:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "gi-referral-2020",
+       "action": "placed",
+       "order": "Gastroenterology referral",
+       "category": "referral",
+       "to": "Gastroenterology",
+       "reason": "Chronic diarrhea with weight loss"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-02-18T15:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diarrhea and weight loss",
+       "author": "PCP",
+       "date": "2020-02-18T16:05",
+       "body": "Texted last week about his stomach; booked in.\nSince around November: crampy belly pain that comes and goes, and loose stools most days. Stools are bulky, greasy-looking, hard to flush, smell much worse than usual. No blood, no black stools. No fever. Appetite ok but he has lost weight without trying (scale here is about 10 lb under his usual). Also achy joints over the same stretch: knees, then wrists, then shoulders, moving around; never swollen or red. Taking ibuprofen 400 mg here and there for the joints, which helps some. No new meds, no travel, no antibiotics. Metformin dose unchanged for years.\nExam: thinner in the face. BP/HR as charted, afebrile. Abd soft, nondistended, mildly tender diffusely without guarding, no mass, normal bowel sounds. Joints: full range, no effusion or warmth at knees, wrists or shoulders.\nA1c 7.4.\nA/P: chronic steatorrhea-type diarrhea with weight loss and migratory arthralgias. Needs GI evaluation, probably scope. Referral placed, marked soon. Ok to keep ibuprofen as needed for now, with food. Recheck weight at next visit. Call if blood in stool or fevers."
+      }
+     ]
+    },
+    {
+     "id": "2020-03-24a",
+     "kind": "portal_message",
+     "start": "2020-03-24T09:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "GI appointment postponed",
+       "author": "patient",
+       "date": "2020-03-24T09:30",
+       "body": "The GI office called to cancel my April appointment because of the virus. They put me on a list for May. Still the same with my stomach, not worse. Is that ok to wait?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "Re: GI appointment postponed",
+       "author": "PCP",
+       "date": "2020-03-24T12:15",
+       "body": "Ok to wait as long as things aren't getting worse. If you see blood, run a fever, or keep losing weight quickly, let me know and I'll push them. Stay well."
+      }
+     ]
+    },
+    {
+     "id": "2020-05-08a",
+     "kind": "specialist_visit",
+     "start": "2020-05-08T09:00",
+     "service": "Gastroenterology",
+     "reason": "Chronic diarrhea, abdominal pain, weight loss",
+     "conditions": [
+      {
+       "label": "Whipple disease",
+       "icd10": "K90.81",
+       "action": "diagnosed",
+       "onset": "2019-11-01"
+      }
+     ],
+     "state": {
+      "weight_kg": 88.4,
+      "labs": {
+       "Hemoglobin": 12.1,
+       "Albumin": 3.2
+      }
+     },
+     "vitals": {
+      "bp": [
+       130,
+       85
+      ]
+     },
+     "measure": [
+      "hr",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-05-08T08:30",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 12.1
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 7.0
+        },
+        {
+         "test": "Platelets",
+         "value": 250
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-05-08T08:30",
+       "results": [
+        {
+         "test": "Fasting Glucose",
+         "value": 160
+        }
+       ]
+      },
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2020-05-08T08:30",
+       "results": [
+        {
+         "test": "Albumin",
+         "value": 3.2
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-05-08T08:30",
+       "results": [
+        {
+         "test": "Erythrocyte Sedimentation Rate",
+         "value": 50
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-05-08T08:30",
+       "results": [
+        {
+         "test": "Tissue Transglutaminase IgA",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2020-05-08T10:15",
+       "issued": "2020-05-12T14:00",
+       "text": "Specimen: small bowel (duodenal) mucosal biopsies, multiple fragments. Microscopic: the lamina propria contains numerous foamy macrophages. The macrophage cytoplasm is strongly positive on periodic acid-Schiff stain with diastase resistance. No granulomas. No dysplasia or malignancy.",
+       "conclusion": "Duodenal mucosa with PAS-positive macrophages in the lamina propria, consistent with Whipple disease in the clinical setting."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office consultation, comprehensive",
+       "performed": "2020-05-08T09:00"
+      },
+      {
+       "procedure": "Upper endoscopy with biopsy",
+       "performed": "2020-05-08T10:15"
+      }
+     ],
+     "orders": [
+      {
+       "id": "gi-referral-2020",
+       "action": "done",
+       "date": "2020-05-08T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gastroenterology consultation and endoscopy",
+       "author": "gastroenterology",
+       "date": "2020-05-13T10:00",
+       "body": "Thank you for referring Mr. Levine, 56, seen 05/08/2020.\n\nHe describes half a year of on-and-off abdominal pain with chronic diarrhea that is bulky, oily and foul-smelling, and about 15 pounds of weight loss. He also has wandering joint pain affecting knees, wrists and shoulders, with no swelling or redness that he has noticed. Background: hypertension, type 2 diabetes, hyperlipidemia, nonobstructive coronary disease on medical therapy. Medications: metformin 1000 mg BID, lisinopril 20 mg, atorvastatin 40 mg, metoprolol succinate 50 mg, ibuprofen 400 mg as needed. NKDA. Never smoker; drinks socially on weekends.\n\nExam: afebrile, BP 130/85. Generalized nontender lymphadenopathy. Abdomen soft.\n\nLabs: Hgb 12.1, WBC 7.0, platelets 250, fasting glucose 160, albumin 3.2, ESR 50. Tissue transglutaminase antibody negative.\n\nEGD same day: biopsies of the small bowel taken. Pathology (05/12): periodic acid-Schiff positive macrophages in the lamina propria.\n\nImpression: Whipple disease, with malabsorption, weight loss, arthralgias and lymphadenopathy.\n\nPlan:\n1. Ceftriaxone 2 g IV once daily for 14 days. Home infusion arranged; PICC placement Monday 05/11.\n2. Then trimethoprim-sulfamethoxazole DS one tablet twice daily for 12 months. We will send the prescription.\n3. Weekly CBC/BMP while on IV therapy through the infusion company.\n4. GI follow-up in about a year with repeat endoscopy and biopsies.\nPlease continue his other care. Contact our office with questions."
+      }
+     ]
+    },
+    {
+     "id": "2020-05-13a",
+     "kind": "outside_records",
+     "start": "2020-05-13T15:00",
+     "medications": [
+      {
+       "drug_text": "ceftriaxone 2000 MG Injection",
+       "action": "historical",
+       "sig": "2 g IV once daily for 14 days via PICC",
+       "dose": {
+        "value": 2000,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Intravenous",
+       "course": "short",
+       "reason": "Whipple disease"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Home infusion start of care",
+       "author": "home infusion",
+       "date": "2020-05-13T15:00",
+       "body": "Notice of start of care. Patient: Kurt Levine. PICC placed 05/11/2020, right basilic vein, tip position confirmed. Ceftriaxone 2 g IV every 24 hours, start 05/11/2020, stop date 05/24/2020. Nursing visit weekly for dressing change and labs; results to ordering gastroenterologist with copy to PCP. Allergies: NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2020-05-20a",
+     "kind": "telehealth_visit",
+     "start": "2020-05-20T11:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Check-in on new diagnosis",
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2020-05-20T11:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video check-in",
+       "author": "PCP",
+       "date": "2020-05-20T11:55",
+       "body": "Video from home. Reviewed GI letter and path with him: Whipple disease. He'd never heard of it; explained it's a rare bacterial infection of the gut lining that responds to a long antibiotic course. Day 10 of IV ceftriaxone through the PICC, infusion nurse comes weekly. Already a little less diarrhea. No rash, no fever, arm with the line looks fine on camera.\nNext step is the oral antibiotic for a year once the IV course ends on the 24th. Will keep an eye on his potassium and kidney function with the Bactrim plus lisinopril.\nWorking from home. Wife is helping with the infusions schedule. Questions answered."
+      }
+     ]
+    },
+    {
+     "id": "2020-05-26a",
+     "kind": "pharmacy",
+     "start": "2020-05-26T10:10",
+     "medications": [
+      {
+       "drug": "sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily for 12 months",
+       "dose": {
+        "value": 1,
+        "unit": "tablet"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Whipple disease"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Medication Refill",
+       "title": "Fill history update",
+       "author": "MA",
+       "date": "2020-05-26T10:10",
+       "body": "Fill notice from pharmacy: trimethoprim-sulfamethoxazole DS, #60, prescribed by gastroenterology, filled 5/25. Med list updated. PICC removed by infusion nurse 5/25 per patient's text."
+      }
+     ]
+    },
+    {
+     "id": "2020-06-10a",
+     "kind": "lab_only",
+     "start": "2020-06-10T07:40",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-06-10T07:40",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Sodium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-06-10T07:40",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      }
+     ],
+     "state": {
+      "labs": {
+       "Hemoglobin": 12.6
+      }
+     },
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2020-06-10T07:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Labs on Bactrim",
+       "author": "PCP",
+       "date": "2020-06-11T08:20",
+       "body": "Two weeks into TMP-SMX with lisinopril. Potassium and creatinine fine. Hgb creeping up. Repeat with his July visit. Pt notified by portal."
+      }
+     ]
+    },
+    {
+     "id": "2020-07-22a",
+     "kind": "office_visit",
+     "start": "2020-07-22T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up; chest pressure with exertion",
+     "state": {
+      "weight_kg": 89.8,
+      "labs": {
+       "Hemoglobin": 13.2,
+       "Albumin": 3.7,
+       "Hemoglobin A1c": 7.5
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2020-07-22T15:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2020-07-22T15:20",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-07-22T15:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2020-07-22T16:00",
+       "text": "Normal sinus rhythm, rate 72. Normal axis. PR, QRS and QT intervals normal. No ST elevation or depression. No pathologic Q waves. T waves upright in the lateral leads.",
+       "conclusion": "Normal sinus rhythm. No acute ST-T changes."
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-referral-2020",
+       "action": "placed",
+       "order": "Cardiology referral",
+       "category": "referral",
+       "to": "Cardiology",
+       "reason": "Exertional chest pressure, known nonobstructive CAD"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-07-22T15:40"
+      },
+      {
+       "procedure": "Electrocardiogram, 12-lead, with interpretation",
+       "performed": "2020-07-22T16:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up, new exertional chest pressure",
+       "author": "PCP",
+       "date": "2020-07-22T16:35",
+       "body": "Bowels much better on the Bactrim, formed stools most days, eating well, weight up a little. Joints quieter.\n\nNew: about 6 weeks of a pressure in the middle of his chest when he walks the hill on his street or carries groceries up from the car. Goes away within a few minutes of stopping. No radiation, no sweats, none at rest or at night. No palpitations, no syncope. Has not tried anything for it.\n\nExam: BP/HR as charted. Heart regular, no murmur. Lungs clear. No edema.\nECG in office: sinus, normal, no ischemic changes.\n\nA/P:\n1. Exertional chest pressure in a man with known nonobstructive CAD, diabetes, HTN, family history: sounds like angina. Cardiology referral, urgent slot requested. Continue metoprolol and atorvastatin. If it comes on at rest or doesn't settle with stopping, call 911.\n2. Whipple disease on TMP-SMX: improving. Labs today.\n3. T2DM: A1c 7.8, a bit up while he's been sick. No change today.\nFollow-up after cardiology."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-10a",
+     "kind": "specialist_visit",
+     "start": "2020-09-10T13:00",
+     "service": "Cardiology",
+     "reason": "Exertional chest pain",
+     "conditions": [
+      {
+       "label": "Angina pectoris",
+       "action": "diagnosed",
+       "onset": "2020-06-10",
+       "note": "Stable angina; 70% LAD stenosis; medical management by patient preference"
+      }
+     ],
+     "vitals": {
+      "bp": [
+       138,
+       86
+      ],
+      "hr": 78
+     },
+     "reports": [
+      {
+       "study": "Exercise stress test",
+       "performed": "2020-09-10T11:00",
+       "text": "Standard Bruce protocol. Resting ECG sinus rhythm without ST abnormality. Exercised to a high workload and stopped for chest pressure and fatigue. At peak exercise, horizontal ST-segment depression developed in the anterior leads, resolving in recovery. No arrhythmia. Blood pressure response appropriate.",
+       "conclusion": "Positive for ischemia: anterior ST depression at a high workload, with typical chest pressure."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office consultation, comprehensive",
+       "performed": "2020-09-10T13:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-referral-2020",
+       "action": "done",
+       "date": "2020-09-10T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology consultation",
+       "author": "cardiology",
+       "date": "2020-09-24T09:30",
+       "body": "Re: Kurt Levine. Seen 09/10/2020.\nThree months of worsening central chest pressure on inclines, relieved by rest. Hx nonobstructive CAD (cath 2015), HTN, T2DM, HLD; recently treated for Whipple disease, on TMP-SMX. Meds: metformin, lisinopril, atorvastatin, metoprolol succinate 50 mg, ibuprofen PRN. NKDA. FH: father MI at 62.\nBP 138/86, HR 78. Exam unremarkable.\nExercise test same day: anterior ST depression at high workload, reproducing his pressure.\nCoronary angiography 09/17/2020 (right radial): 70% stenosis of the left anterior descending artery; no other significant lesions.\nAssessment: stable angina due to coronary artery disease.\nPlan: We discussed revascularization versus medical therapy. He is hesitant about a stent and prefers to try medications; this is a reasonable approach for stable symptoms. Metoprolol succinate 50 mg is his tolerated dose (fatigue on higher doses previously). Continue atorvastatin 40 mg. Return in 6 months or sooner if symptoms worsen."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-14a",
+     "kind": "nurse_visit",
+     "start": "2020-10-14T08:00",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2020-10-14T08:05"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-10-14T08:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Influenza vaccine",
+       "author": "RN",
+       "date": "2020-10-14T08:10",
+       "body": "Curbside flu vaccine per clinic protocol, masked. Given L deltoid. Tolerated well."
+      }
+     ]
+    },
+    {
+     "id": "2020-12-09a",
+     "kind": "office_visit",
+     "start": "2020-12-09T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes, angina, Whipple follow-up",
+     "state": {
+      "weight_kg": 92.6,
+      "labs": {
+       "Hemoglobin": 14.2,
+       "Albumin": 4.1,
+       "Hemoglobin A1c": 7.2,
+       "Low Density Lipoprotein": 78
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2020-12-09T15:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2020-12-09T15:30",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2020-12-09T15:30",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-12-09T15:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-12-09T16:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2020-12-09T16:40",
+       "body": "Cardiology letter reviewed: 70% LAD lesion on angiogram, he chose meds over a stent. Still gets the chest pressure on steep hills, stops and it passes. Nothing at rest.\nGut: normal stools now, weight back up most of the way. Joint aches gone; hasn't needed ibuprofen much. On Bactrim BID, no rash.\nExam: BP/HR as charted. Heart regular, no murmur. Lungs clear. No edema. Feet normal.\nLabs: Hgb back to normal, albumin normal. A1c 7.2. LDL 78.\nA/P: stable angina on medical therapy per cardiology; Whipple disease responding; DM/HTN/HLD stable. Continue all. Labs again in 3-4 months. Reminded about the COVID vaccine once his group is eligible."
+      }
+     ]
+    },
+    {
+     "id": "2021-01-11a",
+     "kind": "telephone",
+     "start": "2021-01-11T09:05",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed lab appointment",
+       "author": "front desk",
+       "date": "2021-01-11T09:05",
+       "body": "Pt did not come to the 8:00 lab draw for his Bactrim monitoring. Called; he forgot, snowed in. Rebooked for after his cardiology visit in March, ok per PCP."
+      }
+     ]
+    },
+    {
+     "id": "2021-03-01a",
+     "kind": "specialist_visit",
+     "start": "2021-03-01T10:20",
+     "service": "Cardiology",
+     "reason": "Angina follow-up",
+     "vitals": {
+      "bp": [
+       132,
+       84
+      ],
+      "hr": 78
+     },
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2021-03-01T10:10",
+       "text": "Sinus rhythm, rate 78. Normal intervals. No ST elevation. No new Q waves. Compared with prior tracings, no significant change.",
+       "conclusion": "Sinus rhythm, unchanged from prior."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-03-01T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology follow-up",
+       "author": "cardiology",
+       "date": "2021-04-07T11:00",
+       "body": "Follow-up 03/01/2021, stable angina, 70% LAD, medically managed. Taking metformin, lisinopril, atorvastatin and metoprolol as prescribed. Angina continues despite metoprolol at his tolerated dose and now limits moderate exertion.\nBP 132/84, HR 78. No JVD, lungs clear, no edema; no evidence of heart failure. ECG: no change from prior.\nPlan: add ranolazine ER for refractory angina; no contraindication identified. Addendum 03/16: prior authorization denied by his plan. Continue current regimen; revisit revascularization at next visit if he is open to it. Return 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2021-03-04a",
+     "kind": "pharmacy",
+     "start": "2021-03-04T14:20",
+     "documents": [
+      {
+       "type": "Medication Refill",
+       "title": "Rejected claim notice",
+       "author": "MA",
+       "date": "2021-03-04T14:20",
+       "body": "Pharmacy called: new Rx for ranolazine ER from cardiology rejected by insurance, prior authorization required. Told them the prescriber is cardiology; pharmacy will send the PA request there. Not on our med list."
+      }
+     ]
+    },
+    {
+     "id": "2021-03-18a",
+     "kind": "portal_message",
+     "start": "2021-03-18T19:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Heart pill not covered",
+       "author": "patient",
+       "date": "2021-03-18T19:40",
+       "body": "Heads up, the heart doctor wanted to add a new pill for the chest pressure (ranolazine) but my insurance turned it down even after their office sent the paperwork. They said to keep doing what I'm doing for now. The pressure still stops me on hills and when I'm carrying anything heavy."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Re: Heart pill not covered",
+       "author": "PCP",
+       "date": "2021-03-19T08:10",
+       "body": "Thanks for telling me. I'll look for the cardiology note. Keep taking the metoprolol and atorvastatin, pace yourself on hills, and if the pressure ever comes at rest or lasts more than a few minutes, call 911. Let's talk at your April visit."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-14a",
+     "kind": "telehealth_visit",
+     "start": "2021-04-14T12:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.1
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-04-12T07:45",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-04-12T07:45",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-04-12T07:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-03-17T10:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-04-07T10:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2021-04-14T12:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video follow-up",
+       "author": "PCP",
+       "date": "2021-04-14T12:25",
+       "body": "Video visit, pt at his desk at work.\nCardiology note in: ranolazine recommended, PA denied. He's frustrated but managing; avoids the steep part of his walk. No rest symptoms.\nGI: fine, 11 months into Bactrim, GI follow-up and repeat scope booked for June.\nGot both Pfizer doses at the state site (3/17, 4/7), second one made him tired for a day.\nLabs Monday: A1c 6.8, K and creatinine normal, CBC normal.\nPlan: no changes. Physical in June."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-02a",
+     "kind": "specialist_visit",
+     "start": "2021-06-02T08:30",
+     "service": "Gastroenterology",
+     "reason": "Whipple disease follow-up",
+     "procedures": [
+      {
+       "procedure": "Upper endoscopy with biopsy",
+       "performed": "2021-06-02T08:30"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet",
+       "action": "stop",
+       "reason": "12-month course complete"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gastroenterology follow-up",
+       "author": "gastroenterology",
+       "date": "2021-06-09T13:00",
+       "body": "Brief update on Mr. Levine. Seen 06/02/2021 with repeat EGD. He has completed 12 months of trimethoprim-sulfamethoxazole after the induction ceftriaxone. No diarrhea, abdominal pain or joint pain; weight back to baseline. Repeat duodenal biopsies: no PAS-positive macrophages. Antibiotic stopped. Please let us know if diarrhea, weight loss or joint symptoms return. No routine GI follow-up needed."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-16a",
+     "kind": "annual_physical",
+     "start": "2021-06-16T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "weight_kg": 94.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-06-16T07:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2021-06-16T07:50",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-06-16T07:50",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-06-16T07:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-06-16T07:50",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2021-06-16T08:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2021-06-16T09:10",
+       "body": "Annual. GI letter in: Whipple treated, repeat biopsies clear, Bactrim done.\nAngina: unchanged, predictable with hills and heavy carrying, settles with rest.\nNew-ish: over the past year, two or three times his right knee got hot and puffy for a few days. Took ibuprofen and it went away each time. None now.\nMeds: metformin 1000 BID, lisinopril 20, atorvastatin 40, metoprolol succ 50, ibuprofen 400 prn. NKDA.\nExam: well. BP/HR as charted. Heart regular, no murmur. Lungs clear. Abdomen soft. Knees: no effusion, no warmth, full ROM. No tophi seen. Feet: normal sensation and pulses.\nA/P:\n- Recurrent self-limited knee swelling: could be gout. Call or text me the day it flares so we can tap it and check crystals.\n- CAD/stable angina: continue meds; cardiology following.\n- T2DM, HTN, HLD: labs today.\n- Whipple disease: treated, off antibiotics.\n- Prevention: COVID series done, flu in fall, colon screening due 2024."
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Whipple disease",
+       "icd10": "K90.81",
+       "action": "resolved",
+       "note": "Treated 2020-21; repeat biopsies clear"
+      }
+     ]
+    },
+    {
+     "id": "2021-08-11a",
+     "kind": "outside_records",
+     "start": "2021-08-11T10:30",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Optometry diabetic eye exam",
+       "author": "optometry",
+       "date": "2021-08-11T10:30",
+       "body": "Diabetic eye exam 08/05/2021. No diabetic retinopathy OU on dilated exam, macula flat and dry. Lenses clear. Follow up 12 months."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-13a",
+     "kind": "nurse_visit",
+     "start": "2021-10-13T07:50",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-13T07:55"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-13T07:55"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Influenza vaccine",
+       "author": "MA",
+       "date": "2021-10-13T08:00",
+       "body": "Flu vaccine IM L arm. He plans to get his COVID booster at the pharmacy later this month."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-23a",
+     "kind": "portal_message",
+     "start": "2021-10-23T08:15",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Knee again",
+       "author": "patient",
+       "date": "2021-10-23T08:15",
+       "body": "Right knee blew up overnight. Swollen on the front, red and hot, hurts to bend it or walk. Worst one yet. No fall or anything. You said to tell you when it happened."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Call back re: knee",
+       "author": "PCP",
+       "date": "2021-10-23T09:00",
+       "body": "Called pt. Swelling over the front of the right knee since this morning, red and hot, painful with movement. No fever or chills, no injury, no bites, no break in the skin. Able to walk with a limp. Rheumatology has a Monday urgent slot that can aspirate and send fluid; booked 10/25. Until then ice, elevate, ibuprofen 400 with food. If fever, spreading redness or he can't bear weight, go to the ED."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-25a",
+     "kind": "specialist_visit",
+     "start": "2021-10-25T10:40",
+     "service": "Rheumatology",
+     "reason": "Right knee pain and swelling",
+     "conditions": [
+      {
+       "label": "Gout",
+       "action": "diagnosed",
+       "onset": "2020-10-01",
+       "note": "Right prepatellar bursitis with tophaceous aspirate"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "colchicine 0.6 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily until flare resolves",
+       "dose": {
+        "value": 0.6,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Gout flare"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-10-25T11:20",
+       "results": [
+        {
+         "test": "Uric Acid",
+         "value": 9.2
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-10-25T11:20",
+       "results": [
+        {
+         "test": "Erythrocyte Sedimentation Rate",
+         "value": 50
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-10-25T11:20",
+       "results": [
+        {
+         "test": "C Reactive Protein",
+         "value": 25
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-10-25T11:05",
+       "results": [
+        {
+         "test": "Bursal fluid white blood cells",
+         "loinc": "26466-3",
+         "unit": "/uL",
+         "value": 18000
+        },
+        {
+         "test": "Fluid granulocytes (neutrophils)",
+         "loinc": "26522-3",
+         "unit": "%",
+         "value": 90
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Knee X-ray",
+       "performed": "2021-10-25T11:30",
+       "text": "Right knee, three views. Prepatellar soft tissue swelling. Punched-out erosions with overhanging edges of cortical bone. Joint spaces preserved. No fracture. No chondrocalcinosis.",
+       "conclusion": "Erosions with overhanging edges, compatible with gout. Prepatellar soft tissue swelling."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office consultation, comprehensive",
+       "performed": "2021-10-25T10:40"
+      },
+      {
+       "procedure": "Arthrocentesis or injection, major joint",
+       "performed": "2021-10-25T11:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology consultation",
+       "author": "rheumatology",
+       "date": "2021-10-27T15:30",
+       "body": "Urgent visit 10/25/2021, right knee.\nTwo days of severe right knee pain and swelling, worse with movement, red and warm. Denies trauma or insect bite. Similar but milder episodes over the past year settled with NSAIDs. PMH: HTN, T2DM, HLD, CAD with stable angina (medical management), Whipple disease treated 2020-21. Meds: metformin, lisinopril, atorvastatin, metoprolol, ibuprofen PRN. NKDA.\nExam: swollen, erythematous, tender prepatellar region of the right knee, ROM limited by pain. Bursal aspiration: yellowish fluid with white flecks.\nFluid WBC 18,000/µL, 90% PMNs. Serum uric acid 9.2, ESR 50, CRP 25.\nRight knee radiographs: punched-out erosions with overhanging cortical edges.\nAssessment: gout with prepatellar bursitis; chronic changes on film.\nPlan: colchicine 0.6 mg twice daily until the flare settles. Return in 4 weeks to begin urate-lowering therapy."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-23a",
+     "kind": "telephone",
+     "start": "2021-11-23T13:10",
+     "medications": [
+      {
+       "drug": "allopurinol 100 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 100,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Gout"
+      },
+      {
+       "drug": "colchicine 0.6 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily for 6 months (flare prevention)",
+       "dose": {
+        "value": 0.6,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Gout flare prophylaxis"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Rheumatology follow-up per patient",
+       "author": "RN",
+       "date": "2021-11-23T13:10",
+       "body": "Pt called after rheumatology visit yesterday. Knee back to normal. Rheum started allopurinol 100 mg daily and colchicine 0.6 mg once daily to prevent flares; fax from their office confirms and asks PCP to titrate allopurinol to uric acid under 6. Med list updated. Uric acid with his January visit."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,577 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002724",
+   "events": [
+    {
+     "id": "2023-01-10a",
+     "kind": "portal_message",
+     "start": "2023-01-10T19:48",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Question about ursodiol",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Gallbladder pill",
+       "author": "patient",
+       "date": "2023-01-10T19:48",
+       "body": "The GI doctor started me on ursodiol for the gallstones. Is it ok with my metformin and thyroid pill? Also, is it normal that it's so expensive? The pharmacy said they needed something from insurance."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Gallbladder pill",
+       "author": "PCP",
+       "date": "2023-01-11T07:20",
+       "body": "No problem with metformin. Take your levothyroxine on its own in the morning as you do now, and the ursodiol with meals. I added it to your list. For the cost, the GI office handles the prior authorization since they prescribed it; I'll have our nurse nudge them."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Prior authorization",
+       "author": "RN",
+       "date": "2023-01-12T10:05",
+       "body": "Called GI office re: ursodiol PA. They submitted 1/9, approved this morning. Pt informed, picking up today."
+      }
+     ]
+    },
+    {
+     "id": "2023-02-21a",
+     "kind": "office_visit",
+     "start": "2023-02-21T15:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Right heel pain",
+     "conditions": [
+      {
+       "label": "Plantar fasciitis, unspecified foot",
+       "action": "diagnosed",
+       "onset": "2023-01-02",
+       "note": "right"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg",
+      "height_cm"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-02-21T15:50"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ortho-referral",
+       "action": "placed",
+       "order": "Orthopedics referral",
+       "category": "referral",
+       "to": "Orthopedics & Sports Medicine",
+       "reason": "right plantar heel pain"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-02-21T16:40",
+       "body": "CC: R heel pain x 2 months.\nHPI: Started after New Year. Worst with the very first steps out of bed - sharp, pulling under the heel and sometimes along the arch. Loosens after she walks a few minutes and she can get through the day with mild ache, but it comes back after she sits and gets up again (lunch, end of reading group). She is on her feet all day in the classroom on a tile floor. No injury. No fevers, no other joints, no numbness. GI saw her in December for gallstones, on ursodiol since, the after-meal discomfort is much better.\nMeds: metformin, levothyroxine, ursodiol, MVI, ibuprofen prn (uses it some for the heel).\nExam: BMI 31. R foot: point tender over the medial calcaneal tuberosity. No swelling, redness or warmth. Heel cord nontender. Normal sensation and pulses.\nA: Right plantar fasciitis.\nP: Calf and plantar fascia stretching sheet, frozen water bottle roll, supportive shoes with a firm heel counter (no flats in class), avoid barefoot at home. Ibuprofen with food as needed, sparingly. Referral to sports medicine since she'd like someone to look at it if not better in a few weeks."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-21a",
+     "kind": "specialist_visit",
+     "start": "2023-03-21T13:20",
+     "service": "Orthopedics & Sports Medicine",
+     "reason": "Right foot pain",
+     "reports": [
+      {
+       "study": "Foot X-ray",
+       "performed": "2023-03-21T13:05",
+       "issued": "2023-03-21T15:30",
+       "text": "Right foot, three views. Bones are normally mineralized. Small plantar calcaneal spur. No fracture or dislocation. Joint spaces preserved. No soft tissue abnormality.",
+       "conclusion": "Small plantar calcaneal spur. Otherwise normal right foot."
+      }
+     ],
+     "orders": [
+      {
+       "id": "ortho-referral",
+       "action": "done",
+       "date": "2023-03-21T13:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Sports Medicine Evaluation",
+       "author": "orthopedics",
+       "date": "2023-03-24T08:30",
+       "body": "Orthopedics & Sports Medicine\nVisit: 03/21/2023\n\nThank you for sending Ms. Pomeroy, 47, with type 2 diabetes, obesity and hypothyroidism, for right plantar foot pain of about three months that has been getting worse. Her pain is most intense with her first morning steps and when she stands after sitting. She teaches and stands for most of the school day, which aggravates it.\n\nMedications: metformin 1000 mg BID, levothyroxine 100 mcg daily, multivitamin, ibuprofen as needed.\nAllergies: NKDA. Social: never smoker, no alcohol.\n\nExam: tenderness to palpation along the anterior plantar calcaneus. Pain reproduced with passive dorsiflexion of the toes (windlass). No swelling. Neurovascularly intact.\n\nImaging: right foot radiographs today demonstrate a small calcaneal spur, no fracture.\n\nAssessment: right plantar fasciitis; small calcaneal spur, incidental to symptoms.\n\nPlan: continue daily stretching and supportive footwear; over-the-counter arch support; ice; anti-inflammatory as needed with food. Return in 6 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-04a",
+     "kind": "specialist_visit",
+     "start": "2023-05-04T14:00",
+     "service": "Orthopedics & Sports Medicine",
+     "reason": "Right heel pain follow-up",
+     "orders": [
+      {
+       "id": "pt-foot",
+       "action": "placed",
+       "order": "Physical therapy referral",
+       "category": "referral",
+       "to": "Physical Therapy",
+       "reason": "right plantar fasciitis"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Sports Medicine Follow-up",
+       "author": "orthopedics",
+       "date": "2023-05-08T10:15",
+       "body": "Orthopedics & Sports Medicine follow-up, 05/04/2023\n\nMs. Pomeroy, now 48, returns for right heel pain present since about early January, roughly four months. Still worst in the morning and after rest, eases somewhat once she has walked a bit, and is worse at the end of long standing days. Over-the-counter acetaminophen and ibuprofen have given her little relief.\n\nMeds: metformin, levothyroxine, multivitamin, ibuprofen as needed. NKDA.\n\nExam: tender at the anteromedial right calcaneus. Passive dorsiflexion of the toes provokes heel pain. Ankle dorsiflexion and plantar flexion full and painless. No swelling.\n\nImaging: prior radiographs reviewed, calcaneal spur.\n\nAssessment: right plantar fasciitis, persistent despite home care.\n\nPlan: dorsiflexion night splint; silicone heel cushions in work shoes; formal physical therapy for stretching and strengthening. If not improving in 3 months we can discuss an injection. Follow up as needed."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-18a",
+     "kind": "specialist_visit",
+     "start": "2023-05-18T16:15",
+     "service": "Physical Therapy",
+     "reason": "Plantar fasciitis",
+     "procedures": [
+      {
+       "procedure": "Physical therapy evaluation, low complexity",
+       "performed": "2023-05-18T16:15"
+      }
+     ],
+     "orders": [
+      {
+       "id": "pt-foot",
+       "action": "done",
+       "date": "2023-05-18T16:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Physical Therapy Initial Evaluation",
+       "author": "physical therapy",
+       "date": "2023-05-22T12:00",
+       "body": "PT Initial Evaluation 5/18/23. Dx: R plantar fasciitis.\nSubjective: heel pain since January, 6/10 first steps, 2/10 later in the day. Goal: get through a teaching day without pain.\nObjective: tender medial plantar heel. Windlass reproduces pain. Gait normal after warm-up.\nAssessment: findings consistent with the referral diagnosis.\nPlan: 1x/week x 6 weeks: calf/plantar fascia stretching, intrinsic strengthening, eccentric heel raises, taping trial, HEP. Night splint as prescribed."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-20a",
+     "kind": "office_visit",
+     "start": "2023-06-20T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "appointment": "cancelled"
+    },
+    {
+     "id": "2023-06-20b",
+     "kind": "telephone",
+     "start": "2023-06-20T08:02",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Reschedule",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Cancellation",
+       "author": "front desk",
+       "date": "2023-06-20T08:02",
+       "body": "Pt called, field day at school ran late plans changed, can't make 3:30 today. Rescheduled to August before school starts. Labs can be done that day."
+      }
+     ]
+    },
+    {
+     "id": "2023-07-05a",
+     "kind": "outside_records",
+     "start": "2023-07-05T09:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "PT discharge summary and eye exam",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Physical therapy discharge summary",
+       "author": "physical therapy",
+       "date": "2023-07-05T09:10",
+       "body": "Discharge after 6 visits (5/18-6/27/23). Morning heel pain now 1/10, none later in the day. Doing her home program on her own. Goals met."
+      },
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2023-07-05T09:12",
+       "body": "Exam date 06/29/2023. Dilated fundus exam both eyes: no diabetic retinopathy, no macular edema. Vision stable with glasses. Next exam in one year."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-24a",
+     "kind": "office_visit",
+     "start": "2023-08-24T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.0
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-08-24T11:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.0
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-08-24T11:00",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2023-08-24T10:30"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-08-24T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2023-08-24T11:20",
+       "body": "Rescheduled from June. Summer was good, walked most mornings now that her heel is better. Finished PT in late June.\nUrsodiol TID - admits she misses the lunchtime dose most school days, better in summer. No belly pain since spring.\nMetformin, levo unchanged.\nExam: weight same. Heart and lungs normal. R heel nontender.\nA1c and BMP drawn. Physical next month."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-25a",
+     "kind": "portal_message",
+     "start": "2023-08-25T13:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "A1c",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "A1c",
+       "author": "PCP",
+       "date": "2023-08-25T13:10",
+       "body": "A1c 7.0, right at the line and a touch higher than last year. Not changing meds; let's see where it is in the winter. Kidney function normal."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-21a",
+     "kind": "annual_physical",
+     "start": "2023-09-21T15:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "conditions": [
+      {
+       "label": "Plantar fasciitis, unspecified foot",
+       "action": "resolved"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 3
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-09-21T16:30",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-09-21T16:30",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-09-21T16:30",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        },
+        {
+         "test": "Fecal Immunochemical Test",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2023-09-21T15:45"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-09-21T16:30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2023",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "routine screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2023-09-21T17:10",
+       "body": "48 y/o F, yearly exam.\nInterval: gallstones dx Dec, on ursodiol, no further pain episodes. R plantar fasciitis - PT, night splint, cushions; pain gone since July. Uses the night splint occasionally.\nCurrent meds: metformin 1000 BID, levothyroxine 100 mcg, ursodiol 250 TID, multivitamin, ibuprofen rarely.\nROS: neg. Weight stable.\nExam: Well. Thyroid nonpalpable. Heart: regular, S1S2, no murmur. Lungs clear. Abd soft, NT, no masses. Breasts symmetric, no masses. Feet: intact sensation, pulses good, R heel now nontender. Skin ok.\nPHQ-9: 3.\nAssessment/plan:\n- Plantar fasciitis R: resolved, keep stretching.\n- Cholelithiasis on ursodiol: GI repeat US due December.\n- DM2: A1c last month 7.0. UACR, lipids today.\n- Hypothyroid: TSH.\n- HM: FIT returned, mammogram order (due), flu/COVID next month. Colonoscopy vs FIT again discussed, staying with FIT."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-12a",
+     "kind": "nurse_visit",
+     "start": "2023-10-12T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2023-10-12T15:35"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-12T15:37"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-12T15:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Immunizations",
+       "author": "MA",
+       "date": "2023-10-12T15:52",
+       "body": "Fall vaccines: influenza IM left arm, 2023-24 COVID (Pfizer) IM right arm. VIS reviewed. Observed 15 min, no issues."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-02a",
+     "kind": "imaging",
+     "start": "2023-11-02T16:00",
+     "service": "Breast Imaging",
+     "reason": "Screening mammogram",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2023-11-02T16:00",
+       "issued": "2023-11-03T08:45",
+       "text": "Bilateral screening mammogram with tomosynthesis, compared to 2022 and 2020. Scattered fibroglandular tissue. No suspicious findings in either breast. Benign-appearing bilateral axillary nodes.",
+       "conclusion": "BI-RADS 1. Negative."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2023",
+       "action": "done",
+       "date": "2023-11-02T16:00"
+      }
+     ]
+    },
+    {
+     "id": "2023-11-14a",
+     "kind": "office_visit",
+     "start": "2023-11-14T15:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Urinary leakage",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2023-11-14T16:00",
+       "results": [
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Nitrite",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Blood",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Glucose",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-11-14T15:45"
+      }
+     ],
+     "orders": [
+      {
+       "id": "gyn-referral",
+       "action": "placed",
+       "order": "Gynecology referral",
+       "category": "referral",
+       "to": "Obstetrics & Gynecology",
+       "reason": "urinary incontinence"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-11-14T16:35",
+       "body": "Brought up at the end of a text last week, came in to discuss. About 6 months of leaking urine. Two kinds: a little with coughs and sneezes, and more bothersome, a sudden need to go that she can't always hold - has wet herself a few times before making it to the bathroom, once in the hall at school. Wears a liner daily now. No burning, no blood, not getting up at night to void. Drinks 2 coffees and a diet soda most days.\n3 vaginal deliveries. Mom had prolapse.\nDipstick UA in office negative.\nExam: abdomen soft, no suprapubic tenderness.\nA: Urinary incontinence, mixed symptoms, urge seems to predominate. UA negative.\nP: Referral to gyn (urogyn-trained provider there). Meanwhile cut back caffeine, try to space fluids. Bladder diary sheet given to bring to that appointment."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-12a",
+     "kind": "specialist_visit",
+     "start": "2023-12-12T09:45",
+     "service": "Gastroenterology",
+     "reason": "Cholelithiasis follow-up",
+     "medications": [
+      {
+       "drug_text": "ursodiol 250 MG Oral Tablet",
+       "sig": "Take 1 tablet by mouth three times daily with meals",
+       "dose": {
+        "value": 250,
+        "unit": "mg"
+       },
+       "frequency": "TID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Gallstones not dissolved after one year",
+       "action": "stop"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Right upper quadrant ultrasound",
+       "performed": "2023-12-12T08:50",
+       "issued": "2023-12-12T10:30",
+       "text": "Right upper quadrant ultrasound, compared to 12/21/2022. Liver normal in size and echotexture. Gallbladder again contains multiple small shadowing stones, not significantly changed in number or size. Gallbladder wall normal thickness. No pericholecystic fluid. Common bile duct 4 mm. Right kidney unremarkable.",
+       "conclusion": "Persistent cholelithiasis, essentially unchanged. No cholecystitis or ductal dilation."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gastroenterology Follow-up",
+       "author": "gastroenterology",
+       "date": "2023-12-15T11:20",
+       "body": "Gastroenterology follow-up, 12/12/2023\n\nMs. Pomeroy returns after one year of ursodiol 250 mg three times daily for gallstones. She has had no further postprandial pain since early in the year. She sometimes missed the midday dose during the school year.\n\nAllergies: NKDA. Medications: metformin, levothyroxine, ursodiol, multivitamin, ibuprofen as needed.\n\nExam: anicteric, abdomen soft and nontender.\n\nUltrasound today: multiple small gallstones persist, essentially unchanged from a year ago. No wall thickening, normal bile duct.\n\nImpression: cholelithiasis, now asymptomatic; no response to oral dissolution therapy.\n\nPlan: ursodiol discontinued, since a further year is unlikely to help. I again recommended elective laparoscopic cholecystectomy; she would rather not have surgery while she has no symptoms, and that is a reasonable choice. She will contact her primary physician or us for recurrent pain, fever, jaundice, dark urine or pale stools. Follow up as needed."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-18a",
+     "kind": "portal_message",
+     "start": "2023-12-18T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Med list update",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "GI letter",
+       "author": "PCP",
+       "date": "2023-12-18T07:30",
+       "body": "Got the GI letter. Since the stones didn't shrink they stopped the ursodiol - I've taken it off your list. Agree surgery can wait while you feel well; just let me know right away if the pain comes back or you notice yellowing."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: GI letter",
+       "author": "patient",
+       "date": "2023-12-18T21:02",
+       "body": "Ok thanks. Honestly glad to be done with 3 pills a day. Gyn appt is the 27th."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

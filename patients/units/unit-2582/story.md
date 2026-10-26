@@ -1,0 +1,37 @@
+# unit-2582 story (August Pratt)
+
+- 2023-08-28 telephone: calls to join the practice, TRICARE Prime Remote (P)
+- 2023-09-12 establish care: new-patient preventive visit, labs, HIV/HCV, flu shot (A1, P)
+- 2023-09-14 portal: results normal (P)
+- 2023-09-20 outside records: Army immunization record (P)
+- 2024-04-09 office visit: no-show for a scheduled check-in (P)
+- 2024-10-08 annual physical, flu and COVID vaccines (P)
+- 2025-03-01 hospital admission to 2025-03-10: gunshot wound, hemorrhagic shock with coagulopathy (S, R1, R3, A2)
+- 2025-03-11 portal: patient tells the practice; RN transition call (P)
+- 2025-03-12 outside records: ED record received (S, A2)
+- 2025-03-18 office visit: post-hospital, Hgb 11.2 (A2)
+- 2025-04-02 outside records: discharge summary received, problem list updated (A2)
+- 2025-04-08 telephone: duty-status form (P)
+- 2025-05-13 office visit: recovered, Hgb 14.3, shock resolved (A2, R2)
+- 2025-08-30 hospital admission to 2025-09-08: submersion, ARDS (S, R1, R4, A3)
+- 2025-09-03 outside records: ED record received (S)
+- 2025-09-15 outside records: discharge summary received (A3)
+- 2025-09-16 office visit: post-discharge, pulmonology referral (A4)
+- 2025-10-14 nurse visit: flu vaccine (P)
+- 2025-11-19 specialist visit: pulmonology, normal PFTs (A4)
+- 2026-01-09 portal: patient mentions the lung visit; records request (P)
+- 2026-01-14 outside records: pulmonology letter received, ARDS resolved (A4, R2)
+- 2026-03-10 annual physical (P)
+- 2026-07-24 hospital admission to 2026-08-04: collision, pelvic fracture, fat embolism syndrome (S, A5)
+- 2026-07-28 portal: patient writes from hospital (P)
+- 2026-07-29 outside records: ED record received (S)
+- 2026-08-04 pharmacy: enoxaparin and oxycodone fills (A5)
+- 2026-08-05 telephone: RN transition call (P)
+- 2026-08-07 office visit: post-discharge, Hgb 11.7, list updated (A5)
+- 2026-08-20 portal: oxycodone done; second records request (A5, P)
+- 2026-09-04 booked follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00002582 on 2026-08-07. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

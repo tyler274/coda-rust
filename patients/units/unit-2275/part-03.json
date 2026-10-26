@@ -1,0 +1,91 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002275",
+      "events": [
+        {
+          "id": "2026-02-08a",
+          "kind": "ed_visit",
+          "start": "2026-02-08T15:25",
+          "end": "2026-02-08T21:10",
+          "service": "Emergency Medicine",
+          "reason": "Worsening shortness of breath for a week",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-02-08T15:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-02-08T15:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2026-02-08T15:50", "results": [{"test": "N-terminal Pro-B-Type Natriuretic Peptide", "value": 2850}, {"test": "Troponin I, High Sensitivity", "value": 9}]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 1 view", "performed": "2026-02-08T16:05", "text": "PORTABLE AP CHEST\nIndication: dyspnea, history of heart failure.\nFindings: The cardiac silhouette is enlarged. Pulmonary vascular markings are increased, with subtle perihilar haziness. No focal consolidation. No pneumothorax. No acute osseous abnormality.", "conclusion": "Cardiomegaly with pulmonary vascular congestion and subtle perihilar haziness, consistent with interstitial edema in the setting of heart failure."}
+          ]
+        },
+        {
+          "id": "2026-02-08b",
+          "kind": "hospital_admission",
+          "start": "2026-02-08T21:10",
+          "end": "2026-02-11T12:00",
+          "service": "Hospital Medicine",
+          "reason": "Acute decompensated heart failure",
+          "measure": ["bp", "hr", "spo2", "weight_kg"]
+        },
+        {
+          "id": "2026-02-09a",
+          "kind": "outside_records",
+          "start": "2026-02-09T08:15",
+          "reason": "Emergency department record",
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2026-02-09T08:15", "body": "Regional hospital emergency department -- visit 2026-02-08. Received by fax.\n\nCC: shortness of breath, getting worse over about a week.\n\nHPI: 70-year-old man with hypertension, coronary disease with stable angina, obesity and heart failure (hospitalized for it about a year ago), accompanied by his daughter. Breathing has worsened gradually through the week; he is more fatigued and some nights has slept sitting up in his recliner. Eating less. Denies chest pain, cough, fever or recent illness. Has not seen a doctor in several months. Lives alone.\n\nMeds (per patient/daughter): lisinopril 10 mg daily, hydrochlorothiazide 25 mg daily, metoprolol succinate 50 mg daily, aspirin 81 mg daily, atorvastatin 40 mg daily, nitroglycerin 0.4 mg SL prn.\nAllergies: NKDA.\nPSH: appendectomy.\nFH: father MI at 64; mother HTN, stroke; brother T2DM.\n\nExam: Tired-appearing, mildly dyspneic, talking in short phrases. Heart regular rate and rhythm, apical impulse displaced laterally. Breath sounds decreased at both bases with crackles. No wheezes. No lower extremity edema. No JVD.\n\nResults: NT-proBNP 2850 pg/mL. hs-troponin I 9 ng/L. BMP and CBC unremarkable.\nCXR: enlarged heart, increased pulmonary vascular markings, subtle perihilar haziness.\n\nED course: furosemide 40 mg IV given with some improvement in work of breathing.\n\nImpression: acute decompensated heart failure.\nDisposition: admitted to hospital medicine.\n\nEmergency Medicine"}
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "outside_records",
+          "start": "2026-02-12T10:40",
+          "reason": "Hospital discharge summary",
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital Discharge Summary", "author": "hospital medicine", "date": "2026-02-12T10:40", "body": "Regional hospital, hospital medicine. Admitted 2026-02-08 via the ED, discharged 2026-02-11.\n\nDiagnosis: acute decompensated heart failure; underlying heart failure with preserved ejection fraction from hypertensive heart disease (echo 2/2025 LVEF 55-60%).\nOther: hypertension, coronary artery disease with stable angina, obesity.\n\nCourse: Presented with a week of progressive dyspnea and orthopnea. NT-proBNP 2850, troponin not elevated, chest film with vascular congestion. Treated with IV furosemide with good diuresis; breathing returned to baseline and he was walking the hall on room air by day 3. Renal function and potassium stable through diuresis.\n\nDischarge medications:\n- NEW: furosemide 20 mg by mouth daily\n- lisinopril 10 mg daily\n- hydrochlorothiazide 25 mg daily\n- metoprolol succinate 50 mg daily\n- aspirin 81 mg daily\n- atorvastatin 40 mg daily\n- nitroglycerin 0.4 mg SL as needed\nAllergies: NKDA.\n\nInstructions: daily weights, low-salt diet, take medications every day.\nFollow-up: primary care within 1 week (patient to call); cardiology clinic in 2-4 weeks.\n\nHospital Medicine"},
+            {"type": "Outside Records", "title": "Filing Note", "author": "RN", "date": "2026-02-12T11:05", "body": "ED record and discharge summary scanned, routed to PCP. Hospital asks PCP f/u within a week -- front desk to call him."}
+          ]
+        },
+        {
+          "id": "2026-02-13a",
+          "kind": "telephone",
+          "start": "2026-02-13T09:20",
+          "reason": "Post-hospital follow-up scheduling",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Scheduling Call", "author": "front desk", "date": "2026-02-13T09:20", "body": "Called to set up hospital follow-up with PCP, offered 2/17 or 2/19. Voicemail, asked him to call back."}
+          ]
+        },
+        {
+          "id": "2026-02-18a",
+          "kind": "telephone",
+          "start": "2026-02-18T16:00",
+          "reason": "Post-hospital follow-up",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Telephone Note", "author": "RN", "date": "2026-02-18T16:00", "body": "Second try to reach pt after hospitalization. His daughter answered his phone -- she is staying with him this week. Says he is resting, breathing 'a lot better,' weighing himself. She will have him call to book; gave direct nurse line. Reviewed reasons to call or go back to the ED. No appointment made."}
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "pharmacy",
+          "start": "2026-04-21T08:40",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill Request", "author": "MA", "date": "2026-04-21T08:40", "body": "Electronic request: lisinopril 10, HCTZ 25, atorvastatin 40. Last OV 5/16/25 -- no visit since hospital stay. \n\nPCP: 30-day supply each. Needs an appointment for further refills; front desk please reach out."},
+            {"type": "Telephone Encounter", "title": "Call Attempt", "author": "front desk", "date": "2026-04-21T13:15", "body": "Left VM re: needing an appointment before next refill."}
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "pharmacy",
+          "start": "2026-07-28T09:00",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill Request", "author": "MA", "date": "2026-07-28T09:00", "body": "Pharmacy request: metoprolol succinate 50, lisinopril 10, HCTZ 25, atorvastatin 40. Still not seen since May 2025.\n\nPCP: bridged 30 days. Front desk -- please call and book him; daughter is OK to speak with per our last call."}
+          ]
+        }
+      ]
+    }
+  ]
+}

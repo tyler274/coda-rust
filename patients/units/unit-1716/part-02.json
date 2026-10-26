@@ -1,0 +1,238 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001716",
+      "events": [
+        {
+          "id": "2021-02-26a",
+          "kind": "portal_message",
+          "start": "2021-02-26T19:30",
+          "reason": "COVID vaccine record",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-02-24T15:30"}],
+          "documents": [
+            {"type": "Patient Message", "title": "Got my first COVID shot", "author": "patient", "date": "2021-02-26T19:30",
+             "body": "Teachers opened up this week so I got dose 1 of Pfizer on Wednesday at the regional clinic. Photo of the card attached. Sore arm and tired Thursday, fine now. Second one is booked for March 17. Do I need to skip my prednisone around it?"},
+            {"type": "Patient Message", "title": "RE: Got my first COVID shot", "author": "PCP", "date": "2021-02-27T08:50",
+             "body": "Great news. Added to your record. No - keep every medicine exactly as you take it now, including the prednisone. Send a picture after dose 2 and I'll add that too."}
+          ]
+        },
+        {
+          "id": "2021-03-19a",
+          "kind": "portal_message",
+          "start": "2021-03-19T17:05",
+          "reason": "COVID vaccine record",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-17T16:10"}],
+          "documents": [
+            {"type": "Patient Message", "title": "Dose 2 done", "author": "patient", "date": "2021-03-19T17:05",
+             "body": "Card attached. Fever and chills the night of, gone by the next afternoon."},
+            {"type": "Patient Message", "title": "RE: Dose 2 done", "author": "MA", "date": "2021-03-20T09:12",
+             "body": "Thanks Wendy, dose 2 is entered in your chart. That reaction is common and expected after the second dose."}
+          ]
+        },
+        {
+          "id": "2021-05-11a",
+          "kind": "office_visit",
+          "start": "2021-05-11T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, chronic conditions",
+          "state": {"labs": {"Hemoglobin": 11.1, "Ferritin": 15}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2021-05-11T16:20", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "White Blood Cells"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-05-11T16:20", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Iron Studies", "collected": "2021-05-11T16:20", "results": [{"test": "Ferritin"}, {"test": "Transferrin Saturation"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2021-05-11T15:45"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2021-05-11T16:40",
+             "body": "S: First in-person visit in over a year. Fully vaccinated. GI and rheum both by video this year, no changes. Main thing: nosebleeds have been more frequent since the winter, now about weekly, and a couple took a long time to stop. Takes iron daily. No black stools, no heavy periods.\nO: vitals as charted. Anterior septum without active bleeding. Lungs clear. Abdomen soft.\nA/P: Nosebleeds more often - humidifier at night, saline gel to nares, pressure technique reviewed. CBC/iron today; continue ferrous sulfate. If they keep picking up we should look into why. Asthma, SLE, Crohn's stable. RTC fall."},
+            {"type": "Result Note", "title": "Lab review", "author": "PCP", "date": "2021-05-12T12:15",
+             "body": "Hgb 11 range, ferritin low-normal. Same as before. Continue iron. Portal note sent."}
+          ]
+        },
+        {
+          "id": "2021-06-22a",
+          "kind": "outside_records",
+          "start": "2021-06-22T10:30",
+          "reason": "Ophthalmology letter received",
+          "documents": [
+            {"type": "Consult Note", "title": "Hydroxychloroquine retinal screening", "author": "ophthalmology", "date": "2021-06-22T10:30",
+             "body": "Outside ophthalmology - exam 06/15/2021 (delayed from February).\nOn hydroxychloroquine 200 mg daily. Acuity 20/20 OU. Fundus normal OU. 10-2 fields full. OCT macula without parafoveal changes.\nImpression: no hydroxychloroquine toxicity. Annual screening."}
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "office_visit",
+          "start": "2021-09-14T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "More frequent nosebleeds",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-09-14T16:30", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-09-14T16:25"}],
+          "orders": [{"id": "pulm-ref-2021", "action": "placed", "order": "Pulmonology referral", "category": "referral", "to": "Pulmonology", "reason": "Recurrent epistaxis with blood-streaked sputum; family history of nosebleeds"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-09-14T15:40"},
+            {"procedure": "Immunization administration", "performed": "2021-09-14T16:25"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - Epistaxis", "author": "PCP", "date": "2021-09-14T16:55",
+             "body": "S: Nosebleeds are now several times a week, worse over the past year. Twice this summer she went to urgent care because pressure did not stop it after 30+ minutes; both times it settled there without packing being left in. Humidifier and saline gel have not changed much. New: every so often she coughs up a little blood-streaked spit in the morning. No actual cough, no shortness of breath, no chest pain. No fever. Her dad has had nosebleeds all his life, and a cousin on his side too.\nO: vitals as charted. Afebrile. Nares: dried blood left anterior septum, no active bleeding. Oropharynx clear. Lungs clear to auscultation. Heart RRR.\nA/P:\n1. Recurrent epistaxis, increasing, with family history on father's side and occasional blood-streaked sputum. I want this looked at with an eye to an inherited vascular cause and the lungs. Referral to pulmonology placed; she'd like the group closest to school. CBC today.\n2. Iron deficiency anemia - continue iron.\n3. Flu vaccine today.\nReturn after pulmonology."}
+          ]
+        },
+        {
+          "id": "2021-09-15a",
+          "kind": "portal_message",
+          "start": "2021-09-15T13:20",
+          "reason": "Lab result and referral",
+          "documents": [
+            {"type": "Patient Message", "title": "Blood count and referral", "author": "RN", "date": "2021-09-15T13:20",
+             "body": "Hi Wendy, your blood count is about where it has been, no worse. The pulmonology office has the referral; their first opening is December 27. We put you on their cancellation list."}
+          ]
+        },
+        {
+          "id": "2021-11-02a",
+          "kind": "nurse_visit",
+          "start": "2021-11-02T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID booster",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-11-02T15:55"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-11-02T15:55"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization", "author": "RN", "date": "2021-11-02T16:15",
+             "body": "Pfizer booster 0.3 mL IM right deltoid. Eligible given immunosuppression. Observed 15 minutes, no reaction. Asked when pulmonology is - still 12/27, no cancellation spot yet."}
+          ]
+        },
+        {
+          "id": "2022-01-20a",
+          "kind": "outside_records",
+          "start": "2022-01-20T11:45",
+          "reason": "Pulmonology consult letter received",
+          "conditions": [
+            {"label": "Hereditary hemorrhagic telangiectasia", "action": "diagnosed", "onset": "2021-12-27", "note": "Clinical diagnosis at pulmonology: recurrent epistaxis, mucosal telangiectasias, affected first-degree relative"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-12-27T10:15", "results": [{"test": "Hemoglobin", "value": 11.2}, {"test": "Platelets", "value": 250}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2021-12-27T10:15", "results": [{"test": "Prothrombin Time-International Normalized Ratio", "value": 1.0}]},
+            {"panel": null, "collected": "2021-12-27T10:15", "results": [{"test": "Activated partial thromboplastin time", "loinc": "3173-2", "unit": "s", "value": 30}]}
+          ],
+          "orders": [{"id": "pulm-ref-2021", "action": "done", "date": "2022-01-20T11:45"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology consultation", "author": "pulmonology", "date": "2022-01-20T11:45",
+             "body": "Outside pulmonology group - new consultation, date of service 12/27/2021. Faxed 01/20/2022.\n\nReason for referral: recurrent epistaxis, occasional blood-tinged sputum.\n\nHistory: 32-year-old woman with Crohn's disease, SLE and mild intermittent asthma. Nosebleeds since childhood; over the last year they have become much more frequent, several per week, and on occasion she has needed medical care to stop them. She has noticed occasional blood in her sputum. She denies cough and dyspnea. Her father and a paternal cousin have the same problem.\n\nMedications: mesalamine 1.2 g TID, hydroxychloroquine 200 mg daily, prednisone 10 mg daily, albuterol 90 mcg 2 puffs q4-6h PRN, ferrous sulfate 325 mg daily. NKDA. Never smoker.\n\nExam: comfortable, SpO2 normal on room air. Several small red to violaceous telangiectasias on the lips and buccal mucosa. Chest clear bilaterally, no bruits over the lung fields. No clubbing or cyanosis.\n\nData: hemoglobin 11.2 g/dL, platelets 250 K/uL, INR 1.0, PTT 30 s.\n\nAssessment: recurrent spontaneous epistaxis, mucocutaneous telangiectasias and a first-degree relative with the same picture meet clinical criteria for hereditary hemorrhagic telangiectasia (Osler-Weber-Rendu). Coagulation is normal. Mild anemia consistent with chronic blood loss.\n\nPlan: transthoracic echocardiogram with agitated saline to screen for pulmonary arteriovenous malformation. Continue oral iron. Nasal moisturization. Genetic counseling information given. We will forward the echo result."}
+          ]
+        },
+        {
+          "id": "2022-01-31a",
+          "kind": "outside_records",
+          "start": "2022-01-31T09:40",
+          "reason": "Echocardiogram report received",
+          "reports": [
+            {"study": "Transthoracic echocardiogram", "performed": "2022-01-25T09:00", "text": "Indication: hereditary hemorrhagic telangiectasia, screening for intrapulmonary shunt. Left ventricle normal in size with normal wall thickness and systolic function, estimated LVEF 60-65%. Normal diastolic filling. Right ventricle normal size and function. Atria normal. Valves structurally normal without significant regurgitation. Estimated RVSP normal. No pericardial effusion. Agitated saline contrast injected at rest and with Valsalva maneuver: no bubbles seen in the left heart at any cycle.", "conclusion": "Normal echocardiogram. Negative agitated-saline study; no evidence of intracardiac or intrapulmonary shunt."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Echo reviewed", "author": "PCP", "date": "2022-01-31T12:30",
+             "body": "Bubble echo negative, no lung AVM shunt. Pulm letter arrived last week - HHT diagnosis. Visit already booked 2/8 to go over it."}
+          ]
+        },
+        {
+          "id": "2022-02-08a",
+          "kind": "office_visit",
+          "start": "2022-02-08T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Review pulmonology findings",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2022-02-08T16:20"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-02-08T16:22"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-02-08T15:45"},
+            {"procedure": "Immunization administration", "performed": "2022-02-08T16:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit - HHT", "author": "PCP", "date": "2022-02-08T16:50",
+             "body": "S: Here to go over pulmonology. She was relieved there is a name for the nosebleeds. Bubble echo negative. Says her father has since been told by his own doctor that he likely has the same thing. Nosebleeds still several a week. Occasional streaky sputum unchanged. No dyspnea.\nO: vitals as charted. Small telangiectasias on the lower lip. Lungs clear.\nA/P:\n1. Hereditary hemorrhagic telangiectasia, newly diagnosed by pulmonology (clinical criteria). Added to problem list; family history updated (father HHT). Bubble echo negative. Continue nasal moisturization; iron. We'll watch hemoglobin every 6 months.\n2. Immunizations: on chronic prednisone and hydroxychloroquine, so she qualifies for pneumococcal and shingles vaccines now. PCV20 and Shingrix #1 today; Shingrix #2 in 2-6 months.\n3. SLE/Crohn's: stable per specialists.\nRTC 4-6 months."}
+          ]
+        },
+        {
+          "id": "2022-04-12a",
+          "kind": "nurse_visit",
+          "start": "2022-04-12T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-04-12T15:55"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-04-12T15:55"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization", "author": "RN", "date": "2022-04-12T16:10",
+             "body": "Shingrix dose 2, 0.5 mL IM left deltoid. After dose 1 she had a sore arm and felt achy for a day. Series complete."}
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "lab_only",
+          "start": "2022-06-14T07:55",
+          "reason": "Monitoring labs",
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2022-06-14T07:55", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-06-14T07:55", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Lab review", "author": "PCP", "date": "2022-06-15T07:40",
+             "body": "Hgb stable, mild anemia unchanged. Renal and hepatic panel normal on mesalamine/HCQ. No changes."}
+          ]
+        },
+        {
+          "id": "2022-07-12a",
+          "kind": "outside_records",
+          "start": "2022-07-12T10:10",
+          "reason": "Ophthalmology letter received",
+          "documents": [
+            {"type": "Consult Note", "title": "Hydroxychloroquine retinal screening", "author": "ophthalmology", "date": "2022-07-12T10:10",
+             "body": "Outside ophthalmology - exam 07/06/2022. Hydroxychloroquine 200 mg daily, about 3 mg/kg. Acuity 20/20 OU. Normal fundi. Fields full. OCT normal. No toxicity. Return 1 year."}
+          ]
+        },
+        {
+          "id": "2022-08-30a",
+          "kind": "outside_records",
+          "start": "2022-08-30T14:25",
+          "reason": "Gastroenterology letter received",
+          "documents": [
+            {"type": "Consult Note", "title": "Gastroenterology follow-up letter", "author": "gastroenterology", "date": "2022-08-30T14:25",
+             "body": "Outside gastroenterology - office follow-up 08/23/2022. Crohn's disease in clinical remission on mesalamine 1.2 g TID. Formed stools, no bleeding, no perianal complaints. Weight stable. Abdomen benign. Note new HHT diagnosis from pulmonology. Plan: continue current therapy, CBC and CMP via PCP. Return 1 year."}
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "annual_physical",
+          "start": "2022-10-18T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2022-10-18T16:35", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-10-18T16:35", "results": [{"test": "Creatinine"}, {"test": "Albumin"}]},
+            {"panel": "Iron Studies", "collected": "2022-10-18T16:35", "results": [{"test": "Ferritin"}]},
+            {"panel": "Urinalysis", "collected": "2022-10-18T16:35", "results": [{"test": "Urine Protein"}, {"test": "Urine Blood"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-18T16:25"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-18T16:27"}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2022-10-18T15:45"},
+            {"procedure": "Immunization administration", "performed": "2022-10-18T16:25"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-10-18T17:05",
+             "body": "ANNUAL EXAM\n\nNew class this year, 24 kids, likes them. Mood good, PHQ-9 2. Walking most evenings.\nHHT: nosebleeds still a few a week, shorter since she started the nightly gel. No urgent care trips since last year. Sputum streaks rare.\nCrohn's: GI in August, remission. Lupus: rheum in spring, quiet. Asthma: albuterol a few times this year.\nMeds unchanged. NKDA.\n\nExam: vitals as charted. Lip telangiectasias unchanged. Heart regular, no murmur. Chest clear. Abdomen soft, nontender. Skin no rash. No synovitis. No edema.\n\nPrevention: Pap 2019 normal, due 2024. Pneumococcal and shingles complete. Flu and bivalent COVID booster today. HCQ eye exam July, normal.\nLabs today: CBC, CMP, ferritin, UA.\nA/P: stable. Continue all. RTC about 4 months, labs before."},
+            {"type": "Result Note", "title": "Lab review", "author": "PCP", "date": "2022-10-19T13:05",
+             "body": "Hgb ~11, ferritin low-normal, renal fine, UA negative. Continue iron. Released."}
+          ]
+        }
+      ]
+    }
+  ]
+}

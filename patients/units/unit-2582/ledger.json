@@ -1,0 +1,2128 @@
+{
+  "unit": "unit-2582",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002582",
+      "given": "August",
+      "family": "Pratt",
+      "birth_date": "2002-12-06",
+      "address_line": "118 Plain St, Easthampton, MA 01027",
+      "phone": "+1-201-555-0175",
+      "email": "august.pratt@example.test",
+      "marital_status": "single",
+      "summary": "Healthy active-duty Army infantryman who joined in 2023 at 20. Over 17 months he survives a gunshot wound with hemorrhagic shock and coagulopathy, a lake submersion with ARDS, and a high-speed collision with an unstable pelvic fracture and fat embolism syndrome; the last discharge summary has not arrived as of today.",
+      "events": [
+        {
+          "id": "2023-08-28a",
+          "kind": "telephone",
+          "start": "2023-08-28T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "date": "2023-08-28T10:20",
+              "author": "front desk",
+              "body": "Caller is a 20 y/o man asking to become a patient. Active duty Army, lives in Easthampton, nearest military clinic is far enough that he is on TRICARE Prime Remote and was told to pick a local PCM. Confirmed we accept TRICARE for outside services and explained the membership piece; he is fine with it. No current meds, no health problems he knows of. New patient physical booked 9/12 at 8:40. Asked him to bring or upload his shot record from the Army if he can get it."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              135,
+              80
+            ],
+            "hr": 70,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 96,
+            "weight_kg": 80.1,
+            "height_cm": 180.1
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-09-12T09:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 292
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.29
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 84
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 63
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 27
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-12T09:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 119
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-12T09:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 168
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 115
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 98
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 121
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T09:15",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T09:15",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "U.S. Army infantryman, active duty"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social use, 1-2 drinks weekly"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2023-09-12T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-12T09:15"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-12T09:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-12T09:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "date": "2023-09-12T08:40",
+              "author": "PCP",
+              "body": "20 y/o M establishing care. Infantry, active duty, assigned locally and covered under TRICARE Prime Remote, so we are his PCM for anything off post. Says he has never really had a doctor since basic; just the unit physicals.\n\nPMH: none. No hospitalizations, no surgeries. Meds: none, no supplements. Allergies: none to drugs.\nFamily: nothing he knows of on either side.\nSocial: single, lives alone in Easthampton. Never smoked or vaped. 1-2 beers a week, socially. No drugs. Runs and rucks for work, lifts 3x/wk.\nROS: negative across the board.\n\nExam: well, fit-appearing young man. Vitals as charted. HEENT normal, TMs clear. Neck supple, no nodes or thyroid enlargement. Heart RRR, no murmurs. Lungs clear. Abdomen soft, nontender, no organomegaly. Skin without concerning lesions. Ext without edema, full ROM. Neuro grossly intact.\n\nA/P\n- Healthy adult, preventive care. Baseline CBC, CMP, lipids. One-time HIV and hep C screening, he agrees.\n- Immunizations: flu today. Will look at the Army record when it comes in for the rest.\n- PHQ-2 0. AUDIT-C low.\n- Return yearly or as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 80.4,
+            "height_cm": 180.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T16:05",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "date": "2023-09-14T16:05",
+              "author": "PCP",
+              "body": "Hi August, everything from Tuesday came back normal: blood counts, kidney and liver numbers, cholesterol, and the HIV and hepatitis C screens were both negative. Nothing to do. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-20a",
+          "kind": "outside_records",
+          "start": "2023-09-20T11:30",
+          "reason": "immunization record",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Military Immunization Record (received)",
+              "date": "2023-09-20T11:30",
+              "author": "front desk",
+              "body": "Army immunization record uploaded by patient to the portal and scanned to chart. Shows childhood series complete, HPV series complete, meningococcal conjugate and hepatitis B series complete, tetanus booster current at accession. Forwarded to PCP for review."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Records Review",
+              "date": "2023-09-21T07:50",
+              "author": "PCP",
+              "body": "Reviewed Army shot record. Up to date for his age apart from yearly flu, which he got here. Nothing further needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-09a",
+          "kind": "office_visit",
+          "start": "2024-04-09T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "check-in",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-04-09b",
+          "kind": "telephone",
+          "start": "2024-04-09T16:40",
+          "reason": "missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Appointment",
+              "date": "2024-04-09T16:40",
+              "author": "front desk",
+              "body": "Pt did not come to 3:20 appt. Left VM. He texted back that he was in the field all week and forgot to cancel. Nothing urgent per pt; will just come for his physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "annual_physical",
+          "start": "2024-10-08T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              121,
+              74
+            ],
+            "hr": 82,
+            "rr": 18,
+            "temp_c": 36.4,
+            "spo2": 98,
+            "weight_kg": 81.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-08T08:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 269
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.85
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-10-08T08:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-08T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-08T08:35"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-08T08:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T08:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-10-08T08:00",
+              "author": "PCP",
+              "body": "Yearly visit. 21 y/o, active duty infantry. Feels great, no complaints. Passed his unit PT test last month. Sleeping ok. Still no tobacco, a couple of drinks a week at most.\nMeds none. NKDA.\n\nExam: vitals as charted. Healthy-appearing. Eyes, ears, throat normal. No adenopathy. Cardiac regular without murmur. Lungs clear throughout. Abd soft, benign. Skin clear. Extremities normal, no edema. Neuro normal.\n\nA/P: well adult.\n- CBC and BMP for his unit's paperwork, he asked.\n- Flu and updated COVID shot today, left and right arm.\n- PHQ-2 negative.\n- Back next fall."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2024-10-09T13:10",
+              "author": "RN",
+              "body": "Your blood count and chemistry panel from yesterday are normal. A printed copy is at the front desk if your unit needs it."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-01a",
+          "kind": "hospital_admission",
+          "start": "2025-03-01T22:47",
+          "end": "2025-03-10T13:30",
+          "service": "Emergency Medicine; Trauma Surgery",
+          "reason": "gunshot wound to the abdomen",
+          "medications": [
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for severe pain",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "postoperative pain"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-03-01T22:49",
+              "bp": [
+                76,
+                42
+              ],
+              "hr": 134
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-03-01T22:55",
+              "resulted": "2025-03-01T23:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 131
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.29
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 28.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-03-01T22:55",
+              "resulted": "2025-03-01T23:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.9
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 23.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-01T22:55",
+              "resulted": "2025-03-01T23:20",
+              "results": [
+                {
+                  "test": "Fibrinogen",
+                  "loinc": "3255-7",
+                  "unit": "mg/dL",
+                  "value": 112
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-01T22:55",
+              "resulted": "2025-03-01T23:20",
+              "results": [
+                {
+                  "test": "Lactate",
+                  "value": 6.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-03-10T05:40",
+              "resulted": "2025-03-10T06:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.09
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 27.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 271
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-03-10T05:40",
+              "resulted": "2025-03-10T06:50",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.1
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 13.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-03-01T22:47"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-03-02T03:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-03-10T12:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-03-01T23:20"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "portal_message",
+          "start": "2025-03-11T08:12",
+          "reason": "recent hospitalization",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Was in the hospital",
+              "date": "2025-03-11T08:12",
+              "author": "patient",
+              "body": "Hey doc, wanted you to know I got shot in the stomach on the 1st and was in the trauma unit for about 10 days. They operated and I'm home since yesterday. They gave me pain pills and told me to see my regular doctor in a week or two. Do I need to send you anything?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Was in the hospital",
+              "date": "2025-03-11T09:30",
+              "author": "PCP",
+              "body": "August, I'm so sorry, and glad you're home. We'll request the records from the trauma center ourselves. Our nurse will call you today, and let's see you next week. If you get fever, worsening belly pain, vomiting, redness or drainage at the incision, or feel faint, go to the ED."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11b",
+          "kind": "telephone",
+          "start": "2025-03-11T11:45",
+          "reason": "post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "date": "2025-03-11T11:45",
+              "author": "RN",
+              "body": "Called pt 1 day after discharge from outside trauma admission (GSW abdomen, laparotomy per pt). Says he is sore but walking around the apartment. Eating soft foods, BMs returning. No fever. Incision has staples, dry dressing, no drainage. Taking oxycodone/APAP about twice a day. Staples out at trauma clinic next week. A buddy from his unit is staying with him for a few days. F/u here 3/18 booked. Records request faxed to trauma center for ED record, op note and discharge summary."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-12a",
+          "kind": "outside_records",
+          "start": "2025-03-12T14:20",
+          "reason": "ED record received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Trauma Center Emergency Department Record (received)",
+              "date": "2025-03-12T14:20",
+              "author": "emergency medicine",
+              "body": "REGIONAL TRAUMA CENTER — EMERGENCY DEPARTMENT\nDate of service: 03/01/2025, arrival 22:47 by ALS\n\nCC: Gunshot wound, abdomen.\n\nHPI: 22-year-old male, active-duty soldier, brought in by EMS with a single gunshot wound to the abdomen. Medics describe a large volume of blood at the scene. On arrival he is drowsy and only barely rouses to voice.\n\nAllergies: no known drug allergies. Meds: none. Social: never smoker, light social drinker, Army infantry. FH noncontributory.\n\nPrimary survey / exam: airway maintained but GCS declining. BP 76/42, HR 134. Pale, sweaty, extremities cold, pulses thready, capillary refill delayed. Neck veins flat. Breath sounds equal and clear on both sides. Heart sounds normal, no muffling. Abdomen with wound as above.\n\nLabs: Hgb 9.8, plt 131, INR 1.9, fibrinogen 112, lactate 6.8.\n\nED course: rapid sequence intubation. Two large-bore lines placed, warmed fluid resuscitation started and massive transfusion protocol activated (PRBC, plasma, platelets). Tranexamic acid given. Tdap given. Trauma surgery at bedside; taken directly to the OR.\n\nImpression: hemorrhagic shock from penetrating abdominal trauma with acute traumatic coagulopathy.\nDisposition: OR, then surgical ICU. Critical care time 52 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "office_visit",
+          "start": "2025-03-18T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "vitals": {
+            "bp": [
+              111,
+              72
+            ],
+            "hr": 75,
+            "rr": 18,
+            "temp_c": 36.4,
+            "spo2": 96,
+            "weight_kg": 74.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-03-18T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 313
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.74
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-03-18T10:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 3
+            },
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-03-18T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-03-18T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-03-18T10:00",
+              "author": "PCP",
+              "body": "22M seen after a 3/1-3/10 trauma admission elsewhere. ED record in hand: GSW to abdomen, hemorrhagic shock with coagulopathy, intubated, massive transfusion, straight to OR. Op note and discharge summary not received yet, requested.\n\nPer pt: ex lap, in the ICU a few days, tube out on day 2. Staples came out at the trauma clinic yesterday. Finished the oxycodone/APAP over the weekend, now plain Tylenol once or twice a day. Eating normally, BMs normal, no fever. Walking 20 min a day. Tired. Sleeping ok. Unit has him on convalescent leave.\n\nExam: vitals as charted, down about 6 kg from his fall weight. Alert, comfortable. Mild pallor. Heart regular, no murmur. Lungs clear. Abdomen: long midline incision closed, steri-strips, no erythema, drainage or hernia; appropriately tender around it, soft otherwise, BS present. Small healed puncture marks at the old line sites. No calf tenderness.\n\nA/P\n1. S/p exploratory laparotomy for GSW with hemorrhagic shock and coagulopathy. Recovering well. CBC/BMP today. Acetaminophen as needed. No lifting over 10 lb until trauma surgery clears him.\n2. Anemia after hemorrhage, expected; recheck count.\n3. PHQ-2 1. He says he is handling it; knows he can message.\nRTC 6-8 wk."
+            },
+            {
+              "type": "Result Note",
+              "title": "CBC Result",
+              "date": "2025-03-19T08:05",
+              "author": "PCP",
+              "body": "Hgb 11.2, up from 9.3 at discharge per pt's papers. Kidney function and potassium fine. Message sent. Recheck at next visit."
+            }
+          ],
+          "state": {
+            "weight_kg": 74.6,
+            "labs": {
+              "Hemoglobin": 11.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-02a",
+          "kind": "outside_records",
+          "start": "2025-04-02T15:40",
+          "reason": "discharge summary received",
+          "conditions": [
+            {
+              "label": "Traumatic hemorrhagic shock with acute coagulopathy",
+              "action": "diagnosed",
+              "onset": "2025-03-01",
+              "note": "gunshot wound to abdomen; exploratory laparotomy 3/2025",
+              "icd10": "T79.4XXA"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Trauma Surgery Discharge Summary (received)",
+              "date": "2025-04-02T15:40",
+              "author": "trauma surgery",
+              "body": "REGIONAL TRAUMA CENTER — TRAUMA SURGERY DISCHARGE SUMMARY\nAdmitted 03/01/2025. Discharged 03/10/2025.\n\nPrincipal diagnosis: hemorrhagic shock secondary to penetrating gunshot wound of the abdomen, with acute traumatic coagulopathy.\nProcedure: emergent exploratory laparotomy with control of hemorrhage, 03/01-03/02/2025.\n\nCourse: Arrived in shock (BP 76/42, HR 134) with INR 1.9, fibrinogen 112, lactate 6.8. Intubated in the ED, massive transfusion protocol with balanced products and tranexamic acid. Bleeding controlled at laparotomy. Admitted to the surgical ICU, where a pulmonary artery catheter was placed to guide resuscitation. Coagulopathy corrected with products. Extubated hospital day 2. PA catheter removed day 3. Diet advanced, ambulating independently. Wound clean.\n\nDischarge labs: Hgb 9.3, INR 1.1.\nAllergies: NKDA.\nDischarge medications: acetaminophen-oxycodone 325/5 mg 1 tab q6h prn severe pain, #20, no refills. Acetaminophen as needed.\nFollow-up: trauma clinic for staple removal in 1 week; primary care in 1-2 weeks. No heavy lifting 6 weeks."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "date": "2025-04-03T07:40",
+              "author": "PCP",
+              "body": "Discharge summary finally in after second request. Hemorrhagic shock with coagulopathy added to the problem list; ex lap 3/2025 added to surgical history. Nothing new vs. what pt told us. Trauma clinic note from 3/17 still not here."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "telephone",
+          "start": "2025-04-08T13:15",
+          "reason": "duty status paperwork",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Form Request",
+              "date": "2025-04-08T13:15",
+              "author": "front desk",
+              "body": "Pt called, his unit needs a civilian provider statement on his current activity limits for his profile. Dropping the form off tomorrow. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Form Completed",
+              "date": "2025-04-10T17:20",
+              "author": "PCP",
+              "body": "Completed the unit's temporary profile form: no lifting over 10 lb and no ruck/PT until cleared by trauma surgery and reassessed here mid-May. Copy scanned. Pt picking up."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "office_visit",
+          "start": "2025-05-13T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after abdominal surgery",
+          "conditions": [
+            {
+              "label": "Traumatic hemorrhagic shock with acute coagulopathy",
+              "action": "resolved",
+              "onset": "2025-03-01",
+              "icd10": "T79.4XXA"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              119,
+              74
+            ],
+            "hr": 78,
+            "rr": 16,
+            "spo2": 99,
+            "weight_kg": 79.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-13T14:25",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 268
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-05-13T14:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-05-13T14:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-05-13T14:00",
+              "author": "PCP",
+              "body": "S: 10 weeks out from ex lap for GSW. Says trauma surgery cleared him last week to go back to full activity (no letter from them yet; he showed me the clearance on his phone). Back running, no pain, no meds. Energy back. Appetite good, weight coming back.\n\nO: vitals as charted, weight up ~4 kg. Looks well, color good. Abd: healed midline scar, no hernia with cough, nontender. Heart and lungs normal.\n\nA/P: recovered from hemorrhagic shock/coagulopathy after abdominal GSW. Hgb normal today, 14.3. Marking the shock resolved; laparotomy stays in surgical hx. Returned his profile form with no limits. Physical in the fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 78.9,
+            "labs": {
+              "Hemoglobin": 14.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-30a",
+          "kind": "hospital_admission",
+          "start": "2025-08-30T16:58",
+          "end": "2025-09-08T11:00",
+          "service": "Emergency Medicine; Medical Intensive Care",
+          "reason": "submersion, unresponsive",
+          "vitals": [
+            {
+              "time": "2025-08-30T17:00",
+              "bp": [
+                110,
+                70
+              ],
+              "hr": 102,
+              "rr": 8,
+              "temp_c": 35.6,
+              "spo2": 85
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-08-30T17:20",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.25
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 50
+                },
+                {
+                  "test": "Oxygen partial pressure in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 60
+                },
+                {
+                  "test": "Bicarbonate in Arterial blood",
+                  "loinc": "1960-4",
+                  "unit": "mmol/L",
+                  "value": 24
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-08-30T17:35",
+              "text": "Portable AP chest. Endotracheal tube tip about 4 cm above the carina. Enteric tube courses below the diaphragm. Bilateral diffuse airspace opacities. Heart size normal. No pneumothorax. No effusion.",
+              "conclusion": "Bilateral diffuse airspace opacities. Lines and tubes in good position.",
+              "issued": "2025-08-30T17:55"
+            },
+            {
+              "study": "CT head without contrast",
+              "performed": "2025-08-30T18:10",
+              "text": "No intracranial hemorrhage, mass effect or midline shift. Gray-white differentiation preserved. Ventricles and sulci normal for age. Calvarium intact.",
+              "conclusion": "No acute intracranial abnormality.",
+              "issued": "2025-08-30T18:40"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-08-30T16:58"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-08-30T21:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-09-08T10:00"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-03a",
+          "kind": "outside_records",
+          "start": "2025-09-03T09:50",
+          "reason": "ED record received",
+          "conditions": [
+            {
+              "label": "Acute respiratory distress syndrome",
+              "action": "diagnosed",
+              "onset": "2025-08-30",
+              "note": "refractory hypoxemia after nonfatal submersion",
+              "icd10": "J80"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Emergency Department Record (received)",
+              "date": "2025-09-03T09:50",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN NOTE\nDate of service: 08/30/2025, 16:58\n\nCC: Pulled from lake, unresponsive.\n\nHPI: 22-year-old man. Friends on shore say he was last seen swimming about 20 minutes before he was found under the water and brought out. Bystander and EMS support en route. History of abdominal gunshot wound with laparotomy six months ago, recovered.\n\nAllergies: NKDA. Meds: none. Social: never smoker, occasional alcohol, Army infantry.\n\nExam on arrival: unresponsive, GCS 8. Temp 35.6 C, BP 110/70, HR 102, RR 8 and shallow, SpO2 85% on room air. Crackles throughout both lung fields. Pink frothy secretions in the oropharynx. Healed midline laparotomy scar.\n\nABG on 100% FiO2: pH 7.25 / PaCO2 50 / PaO2 60 / HCO3 24.\nPortable CXR: bilateral diffuse airspace opacities.\nCT head: no acute abnormality.\n\nCourse: intubated for airway protection and hypoxemia. Lung-protective settings, PEEP titrated up. Persistent severe hypoxemia despite FiO2 1.0.\n\nImpression: drowning-related acute respiratory distress syndrome with refractory hypoxemia.\nDisposition: medical ICU."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "date": "2025-09-03T12:30",
+              "author": "PCP",
+              "body": "ED note from Saturday: near-drowning, ARDS, intubated, in the ICU. Added ARDS to the problem list. Called the ICU for an update; he is still on the vent and proned. Will follow."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-15a",
+          "kind": "outside_records",
+          "start": "2025-09-15T16:10",
+          "reason": "discharge summary received",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Medical ICU Discharge Summary (received)",
+              "date": "2025-09-15T16:10",
+              "author": "critical care",
+              "body": "DISCHARGE SUMMARY — MEDICAL INTENSIVE CARE\nAdmit 08/30/2025, discharge 09/08/2025.\n\nDiagnosis: ARDS with refractory hypoxemia following nonfatal submersion.\n\nHospital course: Intubated in the ED. Low tidal volume ventilation with high PEEP; prone positioning for several sessions given P/F ratio near 60 on FiO2 1.0. Oxygenation improved over the following days, and he was extubated on hospital day 5 to nasal cannula, then weaned to room air. CT head on admission normal. No neurologic deficits on recovery; mental status at baseline. Ambulating independently at discharge.\n\nDischarge exam: SpO2 96% on room air. Lungs clear. Neuro intact.\nAllergies: NKDA.\nDischarge medications: none.\nFollow-up: primary care within 1-2 weeks; consider pulmonary follow-up with lung function testing."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "office_visit",
+          "start": "2025-09-16T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ICU stay",
+          "vitals": {
+            "bp": [
+              129,
+              78
+            ],
+            "hr": 68,
+            "rr": 17,
+            "temp_c": 36.2,
+            "spo2": 97,
+            "weight_kg": 75.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-16T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 312
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-09-16T09:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 100
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 119
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-09-16T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-16T09:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "lung function after ARDS"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ICU Visit",
+              "date": "2025-09-16T09:20",
+              "author": "PCP",
+              "body": "Here 8 days after discharge from a 10-day ICU stay for ARDS after a near-drowning on 8/30 (records reviewed, intubated, proned, extubated day 5). Second critical admission this year; the gunshot was in March.\n\nHe remembers going in for a swim and then waking up in the ICU. Breathing feels back to normal now, walking and doing stairs fine, no cough to speak of. No headaches, memory feels ok to him. Not back at work yet, on leave until cleared.\n\nExam: vitals as charted, SpO2 97% RA, weight 75 kg (lost ~4 kg in hospital). Alert, oriented, conversational, good recall of the visit. Lungs clear to the bases, good air movement. Heart regular. Neuro: CN intact, strength and gait normal.\n\nA/P\n1. ARDS after submersion, recovering, lungs clear today. Pulmonology referral for PFTs given the severity; TRICARE auth submitted.\n2. Neuro: intact, CT head was normal.\n3. Mood: PHQ-9 3. Says he's ok, sleeping fine.\n4. CBC/BMP.\nLetter for unit: no duty until pulmonary eval. RTC after pulm."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab Result",
+              "date": "2025-09-17T11:00",
+              "author": "RN",
+              "body": "Called pt: CBC and BMP normal per PCP. Pulmonology referral approved by TRICARE, they will call him to schedule."
+            }
+          ],
+          "state": {
+            "weight_kg": 75.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Influenza Vaccine",
+              "date": "2025-10-14T16:35",
+              "author": "RN",
+              "body": "Flu vaccine 0.5 mL IM left deltoid. Screening questions negative, no prior reactions. VIS reviewed. Tolerated, left after 15 min. Pt says he has the lung appointment next month."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "specialist_visit",
+          "start": "2025-11-19T13:00",
+          "service": "Pulmonology",
+          "reason": "lung function after ARDS",
+          "reports": [
+            {
+              "study": "Spirometry",
+              "performed": "2025-11-19T13:20",
+              "text": "Good effort, acceptable and repeatable maneuvers. FVC, FEV1 and FEV1/FVC within normal limits. No obstruction or restriction pattern. DLCO, corrected for hemoglobin, within normal limits.",
+              "conclusion": "Normal spirometry and diffusing capacity.",
+              "issued": "2025-11-19T14:00"
+            },
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-11-19T12:40",
+              "text": "Lungs are clear. No consolidation, effusion or pneumothorax. Heart and mediastinum normal. Bones intact.",
+              "conclusion": "Normal chest.",
+              "issued": "2025-11-19T13:05"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office consultation, comprehensive",
+              "performed": "2025-11-19T13:00"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-09a",
+          "kind": "portal_message",
+          "start": "2026-01-09T19:44",
+          "reason": "pulmonology visit",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lung doctor",
+              "date": "2026-01-09T19:44",
+              "author": "patient",
+              "body": "Forgot to tell you I saw the lung specialist back in November. They did the breathing tests and an x-ray and said everything was normal and I don't need to go back. My unit wants something in writing from you that I'm good."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lung doctor",
+              "date": "2026-01-10T09:15",
+              "author": "PCP",
+              "body": "Great news. We never got their letter, so we'll ask for it Monday and I'll do your paperwork as soon as it's in."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request",
+              "date": "2026-01-12T10:05",
+              "author": "front desk",
+              "body": "Faxed request to outside pulmonology for 11/19/25 consult note and PFT report. Their office says it was signed but never routed to us."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-14a",
+          "kind": "outside_records",
+          "start": "2026-01-14T14:30",
+          "reason": "pulmonology consult received",
+          "conditions": [
+            {
+              "label": "Acute respiratory distress syndrome",
+              "action": "resolved",
+              "onset": "2025-08-30",
+              "icd10": "J80"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "done",
+              "date": "2026-01-14T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology Consultation (received)",
+              "date": "2026-01-14T14:30",
+              "author": "pulmonology",
+              "body": "PULMONARY MEDICINE CLINIC — CONSULTATION\nDate of visit: 11/19/2025\nReferred by: primary care, for lung function after ARDS.\n\nThank you for sending this 22-year-old active-duty soldier, seen about 11 weeks after an ICU admission for ARDS following a submersion event in late August (intubated, prone ventilation, extubated day 5). Earlier this year he had a laparotomy for an abdominal gunshot wound. He reports no shortness of breath, cough or exercise limitation; he has resumed running. Never smoker.\nAllergies: NKDA. Medications: none.\n\nExam: well-appearing, unlabored. SpO2 98% on room air at rest and with a hallway walk. Lungs clear throughout. Heart regular. No clubbing or edema.\n\nChest radiograph today: clear lungs.\nPFTs today: spirometry normal, DLCO normal.\n\nImpression: full recovery of lung function after drowning-associated ARDS.\nPlan: no pulmonary follow-up needed; return as needed. He may resume full duty from a pulmonary standpoint."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "date": "2026-01-15T07:55",
+              "author": "PCP",
+              "body": "Pulm letter from 11/19 arrived after our request. Normal PFTs and CXR, cleared. ARDS marked resolved. Duty clearance letter written and sent to pt through the portal."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "annual_physical",
+          "start": "2026-03-10T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              126,
+              77
+            ],
+            "hr": 70,
+            "rr": 18,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 80.7
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-03-10T08:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 174
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 123
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 125
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-10T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 314
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.73
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-03-10T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-03-10T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-03-10T08:20",
+              "author": "PCP",
+              "body": "23 y/o for his yearly. Rough 2025: abdominal GSW with hemorrhagic shock in March (ex lap), then ARDS after a near-drowning in August. Both fully recovered; pulm cleared him with normal PFTs. Back on full duty since January and running 5 miles again. No complaints today.\nMeds: none. NKDA. Never smoker. Drinks 1-2 a week.\n\nExam: vitals as charted, weight back to baseline. Well-appearing. HEENT normal. Neck no nodes. Heart RRR, no murmur. Lungs clear. Abdomen: well-healed midline scar, no hernia, nontender. Skin otherwise clear. Extremities and neuro normal.\n\nA/P\n- Well adult. Lipids and CBC today.\n- Surgical hx: ex lap 2025. Problem list: no active problems.\n- PHQ-9 2, AUDIT-C 2. Discussed how the past year has been; he says he is doing well and has people to talk to.\n- Up to date on vaccines; flu next fall.\nSee in a year."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2026-03-11T12:20",
+              "author": "PCP",
+              "body": "August, cholesterol and blood counts are normal. Your hemoglobin is right where it was before last year. See you next spring."
+            }
+          ],
+          "state": {
+            "weight_kg": 80.1
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-24a",
+          "kind": "hospital_admission",
+          "start": "2026-07-24T21:12",
+          "end": "2026-08-04T14:00",
+          "service": "Emergency Medicine; Trauma Surgery; Orthopedic Surgery",
+          "reason": "high-speed motor vehicle collision",
+          "vitals": [
+            {
+              "time": "2026-07-24T21:14",
+              "bp": [
+                100,
+                60
+              ],
+              "hr": 110,
+              "rr": 28,
+              "spo2": 89
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-07-24T21:40",
+              "resulted": "2026-07-24T21:55",
+              "results": [
+                {
+                  "test": "Oxygen partial pressure in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 60
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-24T21:30",
+              "resulted": "2026-07-24T21:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.11
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 280
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2026-07-24T21:35",
+              "text": "Portable AP chest. Bilateral diffuse infiltrates. Heart size normal. No pneumothorax. No displaced rib fracture. No pleural effusion.",
+              "conclusion": "Bilateral diffuse infiltrates.",
+              "issued": "2026-07-24T21:55"
+            },
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2026-07-24T22:05",
+              "text": "Fractures of the pelvic ring with an unstable pattern; pelvic binder in place. Liver, spleen, kidneys and pancreas without injury. No free intraperitoneal air. Postsurgical change of prior midline laparotomy. Bladder intact.",
+              "conclusion": "Unstable pelvic ring fracture. No solid-organ injury.",
+              "issued": "2026-07-24T22:40"
+            },
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-07-24T22:00",
+              "text": "No intracranial hemorrhage or mass effect. No skull fracture. Ventricles and sulci normal.",
+              "conclusion": "No acute intracranial findings.",
+              "issued": "2026-07-24T22:25"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-07-24T21:12"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-07-25T01:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-08-04T12:30"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "portal_message",
+          "start": "2026-07-28T13:02",
+          "reason": "in the hospital",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "In the hospital again",
+              "date": "2026-07-28T13:02",
+              "author": "patient",
+              "body": "Hi, typing from my phone in the hospital. Car crash Friday night, broke my pelvis and they said fat got into my lungs. Was in the ICU on oxygen but out now. They fixed the pelvis yesterday. Not sure when I go home. Just letting you know."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: In the hospital again",
+              "date": "2026-07-28T15:40",
+              "author": "PCP",
+              "body": "Thank you for telling us, August. Glad you're out of the ICU. We'll get the records. When they discharge you, message us and we'll see you within the week."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-29a",
+          "kind": "outside_records",
+          "start": "2026-07-29T10:25",
+          "reason": "ED record received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Emergency Department Record (received)",
+              "date": "2026-07-29T10:25",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT — PHYSICIAN DOCUMENTATION\nDate of service: 07/24/2026, 21:12\n\nCC: Pelvic pain and shortness of breath after highway-speed MVC.\n\nHPI: 23-year-old male driver brought in after a high-speed collision, complaining of severe pain in the pelvis and difficulty breathing. Past history of abdominal gunshot wound with laparotomy (2025) and ARDS after submersion (2025), both recovered. Takes no medications.\nAllergies: NKDA. Social: never smoker, occasional alcohol, active-duty Army.\n\nExam: BP 100/60, HR 110, RR 28, SpO2 89% on room air. Anxious and confused, not fully oriented. Pelvis unstable to gentle compression; binder applied. Crackles in both lungs. Petechiae across the chest and in both axillae. Healed midline abdominal scar.\n\nABG: PaO2 60 mmHg. Hgb 12.4.\nCXR: bilateral diffuse infiltrates.\nCT head: negative. CT abdomen/pelvis: unstable pelvic ring fracture, no solid-organ injury.\n\nImpression: fat embolism syndrome with hypoxemia; unstable pelvic ring fracture.\nPlan: high-flow oxygen, trauma ICU, orthopedic surgery for fixation."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "date": "2026-07-29T12:10",
+              "author": "PCP",
+              "body": "ED record in from 7/24: MVC, unstable pelvic fracture, fat embolism syndrome. Still inpatient per his message. Will update the chart at the post-discharge visit when the summary comes."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-04a",
+          "kind": "pharmacy",
+          "start": "2026-08-04T17:45",
+          "reason": "new outside prescriptions filled",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Fill Notification",
+              "date": "2026-08-05T08:30",
+              "author": "MA",
+              "body": "Pharmacy fill history shows 2 new Rxs filled 8/4 from the hospital: enoxaparin 40 mg/0.4 mL syringes, daily x 28 days, and oxycodone-acetaminophen 5/325, #20. No discharge paperwork received yet. Flagged for RN call."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-05a",
+          "kind": "telephone",
+          "start": "2026-08-05T10:40",
+          "reason": "post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "date": "2026-08-05T10:40",
+              "author": "RN",
+              "body": "Called pt, discharged yesterday afternoon after pelvic fixation. Using a walker, toe-touch only on the injured side per ortho. Doing his own enoxaparin shots, nurse taught him in the hospital. Breathing fine, no chest pain, confusion gone. Pain 4/10, oxycodone at night only. Has no discharge papers with him except the med list, which matches the fills. Booked with PCP Fri 8/7. Discharge summary requested from the hospital."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-07a",
+          "kind": "office_visit",
+          "start": "2026-08-07T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-hospital visit after pelvic fracture",
+          "conditions": [
+            {
+              "label": "Fat embolism syndrome",
+              "action": "diagnosed",
+              "onset": "2026-07-24",
+              "icd10": "T79.1XXA"
+            },
+            {
+              "label": "Unstable pelvic ring fracture",
+              "action": "diagnosed",
+              "onset": "2026-07-24",
+              "note": "operative fixation 7/27/2026",
+              "icd10": "S32.811A"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "enoxaparin sodium 40 MG in 0.4 ML Prefilled Syringe",
+              "action": "historical",
+              "sig": "Inject 40 mg under the skin once daily for 4 weeks",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Subcutaneous",
+              "course": "short",
+              "reason": "thromboprophylaxis after pelvic fracture"
+            },
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for severe pain",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "pelvic fracture pain"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              82
+            ],
+            "hr": 69,
+            "rr": 17,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 76.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-08-07T11:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 273
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.85
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-08-07T11:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.8
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 100
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-08-07T11:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-07T11:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2026-08-07T11:00",
+              "author": "PCP",
+              "body": "23M, third major trauma admission in 17 months. 7/24-8/4 admission elsewhere after a high-speed MVC: unstable pelvic ring fracture and fat embolism syndrome (hypoxemia, confusion, petechial rash). ED record reviewed. ICU on high-flow O2, never intubated. Pelvic fixation 7/27 per pt. Discharge summary not here yet.\n\nNow: walker, toe-touch weight bearing on the injured side. Pain 4/10, worst getting in and out of the car; oxycodone/APAP at bedtime most nights. Enoxaparin daily, no missed doses, some bruising at the injection sites. Breathing normal. No chest pain, no leg swelling. Thinking clear; says the confusion lasted a couple of days. Rash gone. On convalescent leave.\n\nExam: vitals as charted, SpO2 97% RA, weight down 4 kg since March. Alert, oriented x3, appropriate. Skin: no petechiae; small bruises on abdomen at injection sites. Lungs clear throughout. Heart regular, no murmur. Calves soft and nontender, no asymmetry. Pelvic incisions not examined, dressings clean and dry per pt, ortho managing.\n\nA/P\n1. Fat embolism syndrome, improving; lungs and mentation back to normal today. Adding to problem list.\n2. Unstable pelvic ring fracture s/p fixation. Enoxaparin 40 mg daily x 4 wk from discharge (through about 9/1) and oxycodone/APAP prn added as outside meds. Ortho owns weight bearing and the hardware.\n3. Post-hemorrhage anemia check: CBC/BMP today.\n4. PHQ-9 4. Talked about three bad injuries in a row; he wants to focus on rehab for now.\n5. Discharge summary requested again.\nRTC 4 wk."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab Result",
+              "date": "2026-08-08T09:30",
+              "author": "PCP",
+              "body": "Hgb 11.7, a bit low after the injury and surgery, expected. Platelets fine on enoxaparin. Kidney function normal. Will recheck at the next visit."
+            }
+          ],
+          "state": {
+            "weight_kg": 76.0,
+            "labs": {
+              "Hemoglobin": 11.7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute respiratory distress syndrome|J80": {
+        "code": "J80",
+        "display": "Acute respiratory distress syndrome",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Fat embolism syndrome|T79.1XXA": {
+        "code": "T79.1XXA",
+        "display": "Fat embolism (traumatic), initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Traumatic hemorrhagic shock with acute coagulopathy|T79.4XXA": {
+        "code": "T79.4XXA",
+        "display": "Traumatic shock, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Unstable pelvic ring fracture|S32.811A": {
+        "code": "S32.811A",
+        "display": "Multiple fractures of pelvis with unstable disruption of pelvic ring, initial encounter for closed fracture",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "enoxaparin sodium 40 MG in 0.4 ML Prefilled Syringe": {
+        "code": "854235",
+        "display": "0.4 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
+        "ingredient": "enoxaparin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Bicarbonate in Arterial blood": {
+        "code": "1960-4",
+        "display": "Bicarbonate [Moles/volume] in Arterial blood",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Carbon dioxide partial pressure in Arterial blood": {
+        "code": "2019-8",
+        "display": "Carbon dioxide [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Fibrinogen": {
+        "code": "3255-7",
+        "display": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Oxygen partial pressure in Arterial blood": {
+        "code": "2703-7",
+        "display": "Oxygen [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH of Arterial blood": {
+        "code": "2744-1",
+        "display": "pH of Arterial blood",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

@@ -1,0 +1,436 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002232",
+      "events": [
+        {
+          "id": "2018-01-22a",
+          "kind": "pharmacy",
+          "start": "2018-01-22T15:30",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2018-01-20T11:00"}],
+          "documents": [
+            {"type": "Immunization Record", "title": "Outside immunization: zoster dose 1", "author": "MA", "date": "2018-01-22T15:30",
+             "body": "Pharmacy notification received: recombinant zoster vaccine dose 1 given 01/20/2018. Entered in immunization history. Dose 2 due in 2-6 months."}
+          ]
+        },
+        {
+          "id": "2018-02-12a",
+          "kind": "office_visit",
+          "start": "2018-02-12T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2018-02-12T09:45", "results": [{"test": "Hemoglobin A1c", "value": 7.2}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2018-02-12T09:45", "results": [{"test": "Creatinine"}]},
+            {"panel": "Urinalysis", "collected": "2018-02-12T09:45", "results": [{"test": "Urine Blood", "text": "1+"}, {"test": "Urine Red Blood Cells", "value": 8}, {"test": "Urine Protein", "text": "Trace"}, {"test": "Urine Leukocyte Esterase", "text": "Negative"}, {"test": "Urine Nitrite", "text": "Negative"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2018-02-12T09:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes follow-up", "author": "PCP", "date": "2018-02-12T09:55",
+             "body": "Doing fine. First shingles shot done at pharmacy last month, sore arm only. No urinary burning, no visible blood, no flank pain. Nocturia x2 as always.\nExam: vitals as charted. Abdomen benign, no CVA tenderness. Neuro nonfocal.\nPlan: A1c, BMP, and routine urinalysis (due; last one was at intake). Continue meds."},
+            {"type": "Result Note", "title": "Urinalysis result", "author": "PCP", "date": "2018-02-13T12:15",
+             "body": "UA shows blood 1+, 8 RBC/hpf, no infection signs. Former smoker, 67. Repeat UA in 3-4 weeks; if still positive needs a hematuria workup. Note he cannot have CT contrast. MA to schedule."}
+          ]
+        },
+        {
+          "id": "2018-03-05a",
+          "kind": "lab_only",
+          "start": "2018-03-05T08:15",
+          "conditions": [{"label": "Microscopic hematuria", "action": "diagnosed", "onset": "2018-02-12"}],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2018-03-05T08:15", "results": [{"test": "Urine Blood", "text": "1+"}, {"test": "Urine Red Blood Cells", "value": 6}, {"test": "Urine Leukocyte Esterase", "text": "Negative"}, {"test": "Urine Nitrite", "text": "Negative"}]}
+          ],
+          "orders": [
+            {"id": "renal-us-2018", "action": "placed", "order": "Renal ultrasound", "category": "imaging", "reason": "microscopic hematuria; iodinated contrast anaphylaxis"},
+            {"id": "uro-ref-2018", "action": "placed", "order": "Urology referral", "category": "referral", "to": "Urology", "reason": "persistent microscopic hematuria, former smoker"}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Repeat urinalysis", "author": "PCP", "date": "2018-03-05T16:40",
+             "body": "Repeat UA again 1+ blood, 6 RBC/hpf, no infection. Persistent microscopic hematuria in a 67 y/o former smoker. Renal ultrasound instead of CT urogram (contrast anaphylaxis) and urology referral for cystoscopy. Called pt, he understands; no visible blood."}
+          ]
+        },
+        {
+          "id": "2018-03-14a",
+          "kind": "imaging",
+          "start": "2018-03-14T10:30",
+          "reports": [
+            {"study": "Renal ultrasound", "performed": "2018-03-14T10:30",
+             "text": "Indication: microscopic hematuria.\nRight kidney 10.9 cm, left kidney 11.2 cm. Normal cortical echogenicity and thickness. No hydronephrosis, stone or solid mass on either side. Bladder adequately distended with smooth wall and no intraluminal lesion. Prostate appears enlarged, indenting the bladder base.",
+             "conclusion": "Normal kidneys. Enlarged prostate. No renal or bladder mass seen."}
+          ],
+          "orders": [{"id": "renal-us-2018", "action": "done", "date": "2018-03-14T10:30"}],
+          "documents": [
+            {"type": "Result Note", "title": "Renal ultrasound result", "author": "PCP", "date": "2018-03-15T09:05",
+             "body": "Kidneys normal, no mass or stone. Prostate enlarged, as expected with his BPH. Keep urology appointment for cystoscopy."}
+          ]
+        },
+        {
+          "id": "2018-04-27a",
+          "kind": "outside_records",
+          "start": "2018-04-27T11:50",
+          "orders": [{"id": "uro-ref-2018", "action": "done", "date": "2018-04-27T11:50"}],
+          "conditions": [{"label": "Microscopic hematuria", "action": "resolved", "note": "cystoscopy without bladder lesion; attributed to BPH"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Urology consultation and cystoscopy", "author": "urology", "date": "2018-04-27T11:50",
+             "body": "OUTSIDE UROLOGY GROUP — Consultation and procedure note, 04/20/2018\nReason: persistent microscopic hematuria. 67M, former smoker (25 pk-yr, quit 2010), BPH on tamsulosin. Renal ultrasound from PCP reviewed: normal kidneys, enlarged prostate. CT urography avoided because of contrast anaphylaxis.\nAllergies: sulfonamide antibiotics (hives), iodinated contrast (anaphylaxis).\nProcedure: Flexible diagnostic cystoscopy under local anesthetic. Urethra normal. Prostate with enlarged, coapting lateral lobes. Bladder mucosa normal throughout with no tumor, stone, or diverticulum. Ureteral orifices normal in position with clear efflux.\nImpression: Microscopic hematuria, no bladder pathology. Likely related to prostatic enlargement.\nPlan: Continue tamsulosin. Repeat UA with routine care; return for any visible blood.\nUrologist"}
+          ]
+        },
+        {
+          "id": "2018-06-11a",
+          "kind": "office_visit",
+          "start": "2018-06-11T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2018-06-11T14:05", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2018-06-11T14:05", "results": [{"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2018-06-11T13:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes follow-up", "author": "PCP", "date": "2018-06-11T14:10",
+             "body": "Cystoscopy in April was clean per urology letter; hematuria attributed to the prostate. No gross blood since.\nDiabetes and BP fine at home. Back pain unchanged.\nExam: unremarkable today, neuro nonfocal, feet intact.\nPlan: labs, no changes. Second shingles dose due next month at pharmacy."}
+          ]
+        },
+        {
+          "id": "2018-07-16a",
+          "kind": "pharmacy",
+          "start": "2018-07-16T16:05",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2018-07-14T10:30"}],
+          "documents": [
+            {"type": "Immunization Record", "title": "Outside immunization: zoster dose 2", "author": "MA", "date": "2018-07-16T16:05",
+             "body": "Pharmacy reports recombinant zoster dose 2 given 07/14/2018. Series complete."}
+          ]
+        },
+        {
+          "id": "2018-09-24a",
+          "kind": "annual_physical",
+          "start": "2018-09-24T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2018-09-24T09:40", "results": [{"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2018-09-24T09:40", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": "CBC with Differential", "collected": "2018-09-24T09:40", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2018-09-24T09:40", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2018-09-24T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2018-09-24T09:50",
+             "body": "AWV. No falls, independent, drives. PHQ-2 0. Memory: no concerns from him or wife.\nEye exam: optometry letter not received this year; he says he went in August and was told no diabetes changes. Requested.\nVaccines: zoster series complete; flu at October clinic.\nMeds/allergies reviewed and unchanged. Exam normal apart from chronic back findings.\nLabs today; A1c deferred to November so it lines up with his pain clinic's request for kidney numbers."}
+          ]
+        },
+        {
+          "id": "2018-10-09a",
+          "kind": "nurse_visit",
+          "start": "2018-10-09T14:15",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, high-dose, trivalent", "date": "2018-10-09T14:17"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2018-10-09T14:17"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Influenza vaccine", "author": "RN", "date": "2018-10-09T14:25",
+             "body": "Flu vaccine high-dose given IM right deltoid. No adverse reaction observed."}
+          ]
+        },
+        {
+          "id": "2018-11-08a",
+          "kind": "lab_only",
+          "start": "2018-11-08T08:05",
+          "state": {"labs": {"Hemoglobin A1c": 7.2, "Creatinine": 1.33}},
+          "labs": [
+            {"panel": null, "collected": "2018-11-08T08:05", "results": [{"test": "Hemoglobin A1c", "value": 7.2}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2018-11-08T08:05", "results": [{"test": "Creatinine", "value": 1.33}, {"test": "Estimated Glomerular Filtration Rate (Creatinine)", "value": 58}]}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Lab results", "author": "PCP", "date": "2018-11-08T17:20",
+             "body": "A1c 7.2, creatinine 1.33, eGFR 58: stable CKD 3a. Copy faxed to pain clinic per their request before his November visit."}
+          ]
+        },
+        {
+          "id": "2018-12-10a",
+          "kind": "outside_records",
+          "start": "2018-12-10T10:45",
+          "documents": [
+            {"type": "Consult Note", "title": "Pain management follow-up, 11/23/2018", "author": "pain management", "date": "2018-12-10T10:45",
+             "body": "OUTSIDE PAIN MANAGEMENT CLINIC — Follow-up note, 11/23/2018\nSubjective: Scheduled visit for chronic lumbar stenosis pain. He feels the morphine ER 60 mg twice a day is no longer holding him; pain most days 6-7/10. No falls or injury. No new weakness, numbness, or bladder or bowel change.\nMeds: morphine ER 60 mg q12h, morphine IR 15 mg q4h prn, metformin, lisinopril, HCTZ, tamsulosin, atorvastatin, aspirin 81.\nAllergies: sulfonamide antibiotics (hives); iodinated contrast (anaphylaxis).\nVitals: BP 142/88, HR 78, RR 16.\nExam: Tender over the lower lumbar spine and paraspinals, skin without redness or warmth. Strength, sensation and reflexes in the legs normal; gait normal.\nData: PCP labs 11/08: A1c 7.2%, eGFR 58.\nAssessment: Lumbar spinal stenosis, pain suboptimally controlled on morphine; reduced kidney function.\nPlan: We talked through rotating from morphine to a different long-acting opioid that is handled better with reduced kidney function, with a calculated conversion. He prefers to stay on his current medicine for now rather than switch. Morphine regimen continued unchanged; activity pacing and home exercise reviewed. Return 3 months.\nPain management physician"}
+          ]
+        },
+        {
+          "id": "2019-01-14a",
+          "kind": "portal_message",
+          "start": "2019-01-14T20:11",
+          "documents": [
+            {"type": "Patient Message", "title": "Pain pills", "author": "patient", "date": "2019-01-14T20:11",
+             "body": "The pain clinic is closed for the long weekend and I have 3 days of the long acting left. Can you call one in?"},
+            {"type": "Patient Message", "title": "RE: Pain pills", "author": "RN", "date": "2019-01-15T08:40",
+             "body": "Hi Mr. Mayhew, under your pain clinic agreement only they can prescribe the morphine. We called their office this morning and they are sending it today. Please let us know if it is not at the pharmacy by tomorrow."}
+          ]
+        },
+        {
+          "id": "2019-03-18a",
+          "kind": "office_visit",
+          "start": "2019-03-18T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "neck pain, shock-like sensations, walking difficulty",
+          "conditions": [{"label": "Neck pain", "action": "diagnosed", "onset": "2018-12-15"}],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "orders": [{"id": "neuro-ref-2019", "action": "placed", "order": "Neurology referral", "category": "referral", "to": "Neurology", "reason": "neck pain with Lhermitte-type symptoms and gait change; cervical spondylosis"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-03-18T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Neck pain and gait", "author": "PCP", "date": "2019-03-18T11:20",
+             "body": "S: About 3 months of worsening neck pain. When he bends his head down he gets an electric jolt down his back. Walking feels harder, 'like my legs don't listen.' Different from his usual lumbar pain. No falls, no bladder change, no trauma.\nO: Vitals as charted. Neck flexion reproduces the shock sensation. Grip seems weaker than I recall; knee reflexes brisk. Gait slightly wide. Exam otherwise as before.\nA/P: Neck pain with shock sensations on flexion and gait change in a man with known cervical spondylosis: concern for cervical cord compression. Neurology referral, urgent slot requested; they will order MRI (no contrast needed; gadolinium not the same as his iodine allergy, but they can decide). Return precautions for weakness, falls or bladder change."}
+          ]
+        },
+        {
+          "id": "2019-05-20a",
+          "kind": "office_visit",
+          "start": "2019-05-20T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up, fasting labs",
+          "state": {"labs": {"Low Density Lipoprotein": 130, "High Density Lipoprotein": 40, "Triglycerides": 200}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2019-05-20T08:35", "results": [{"test": "Hemoglobin A1c", "value": 7.2}, {"test": "Fasting Glucose", "value": 156}, {"test": "Microalbumin/Creatinine Ratio"}]},
+            {"panel": "Lipid Panel", "collected": "2019-05-20T08:35", "results": [{"test": "Total Cholesterol", "value": 210}, {"test": "High Density Lipoprotein", "value": 40}, {"test": "Low Density Lipoprotein", "value": 130}, {"test": "Triglycerides", "value": 200}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2019-05-20T08:35", "results": [{"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-05-20T08:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes follow-up", "author": "PCP", "date": "2019-05-20T09:00",
+             "body": "Neurology appointment is 6/4; neck jolts continue, walking no worse. No falls.\nDiabetes: no lows. Fasting today.\nExam: vitals as charted. Feet: monofilament intact.\nPlan: A1c, fasting glucose, lipids, BMP, urine albumin. Will send to neurology ahead of the visit."},
+            {"type": "Result Note", "title": "Fasting labs", "author": "PCP", "date": "2019-05-21T15:30",
+             "body": "A1c 7.2, fasting glucose 156. Lipids: total 210, HDL 40, LDL 130, TG 200. Kidney function unchanged. Results forwarded to neurology. Continue current meds."}
+          ]
+        },
+        {
+          "id": "2019-06-17a",
+          "kind": "outside_records",
+          "start": "2019-06-17T14:00",
+          "conditions": [{"label": "Cervical spondylotic myelopathy", "icd10": "M47.12", "action": "diagnosed", "onset": "2019-06-04"}],
+          "orders": [{"id": "neuro-ref-2019", "action": "done", "date": "2019-06-17T14:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology consultation, 06/04/2019", "author": "neurology", "date": "2019-06-17T14:00",
+             "body": "OUTSIDE NEUROLOGY — Consultation letter, visit 06/04/2019\n\nDear colleague,\nThank you for referring Mr. Mayhew, 68, with half a year of increasing neck pain, a harder time walking, and shock-like sensations running down his back whenever he flexes his neck. This began roughly six months after his last pain-clinic review of his lumbar stenosis. He has hypertension and type 2 diabetes.\nMedications: metformin 1000 mg BID, lisinopril 20 mg, HCTZ 12.5 mg, tamsulosin 0.4 mg qhs, morphine ER 60 mg BID, morphine IR 15 mg q4h prn, atorvastatin 40 mg, aspirin 81 mg.\nAllergies: sulfonamide antibiotics (hives), iodinated contrast (anaphylaxis).\n\nExamination: Wasting of the intrinsic hand muscles bilaterally with reduced grip. Biceps and triceps jerks reduced. Knee jerks 3+, with sustained clonus at both ankles. Right plantar response extensor; left flexor.\n\nRecent labs from your office: A1c 7.2%, fasting glucose 156, total cholesterol 210, HDL 40, LDL 130, triglycerides 200.\n\nMRI cervical spine without contrast (06/04/2019): multilevel degenerative disease with disc-osteophyte complexes narrowing the spinal canal at several levels.\n\nImpression: Cervical spondylotic myelopathy, multilevel.\nPlan: Referral to spine surgery to discuss decompression. Fall precautions. Neurology follow-up after the surgical opinion.\n\nNeurologist"}
+          ]
+        },
+        {
+          "id": "2019-08-05a",
+          "kind": "outside_records",
+          "start": "2019-08-05T09:30",
+          "documents": [
+            {"type": "Consult Note", "title": "Spine surgery consultation, 07/22/2019", "author": "spine surgery", "date": "2019-08-05T09:30",
+             "body": "OUTSIDE SPINE SURGERY — Consultation, 07/22/2019\nReferred by neurology for cervical spondylotic myelopathy. 69M with neck pain, gait difficulty and flexion-induced shocks; MRI with multilevel degenerative canal narrowing. Exam today consistent with the neurology findings: hand intrinsic wasting, hyperreflexia in the legs with ankle clonus.\nAllergies: sulfonamide antibiotics, iodinated contrast.\nDiscussion: We reviewed multilevel posterior decompression versus nonoperative management with close surveillance, including risks of surgery at his age with diabetes and chronic opioid use, and the risk of progression without surgery. After discussion with his wife he prefers nonoperative care for now.\nPlan: Nonoperative management. Physical therapy for balance and gait. Avoid neck manipulation. Neurology to follow; return to us for any decline in hand function, walking or bladder control.\nSpine surgeon"}
+          ]
+        },
+        {
+          "id": "2019-08-26a",
+          "kind": "outside_records",
+          "start": "2019-08-26T11:20",
+          "conditions": [{"label": "Age-related cataract", "action": "diagnosed", "onset": "2019-08-19", "note": "left eye"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Diabetic eye examination", "author": "optometry", "date": "2019-08-26T11:20",
+             "body": "OPTOMETRY — Diabetic eye exam, 08/19/2019\nComplaint: left eye vision hazier, glare with night driving.\nVA cc 20/25 OD, 20/50 OS. IOP 15/15. Dilated exam: no diabetic retinopathy OU. Left nuclear cataract, visually significant; right early lens change.\nImpression: Left cataract; no diabetic retinopathy.\nPlan: Referred to ophthalmology for cataract evaluation. Return 1 year.\nOptometrist"}
+          ]
+        },
+        {
+          "id": "2019-09-23a",
+          "kind": "annual_physical",
+          "start": "2019-09-23T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-09-23T09:50", "results": [{"test": "Creatinine"}]},
+            {"panel": "CBC with Differential", "collected": "2019-09-23T09:50", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2019-09-23T09:50", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2019-09-23T09:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2019-09-23T10:00",
+             "body": "AWV. Big year: neurology diagnosed cervical myelopathy in June; spine surgeon offered surgery, he chose not to for now. Doing PT twice a week for balance; uses a cane outdoors. No falls. Still drives short distances in daylight; left eye hazy, cataract surgery consult pending.\nPHQ-2 1 (frustrated with his neck). Independent in self-care; wife does more of the driving.\nMeds and allergies unchanged. Fall-risk counseling: night lights, grab bar in shower.\nExam: hand intrinsic wasting noted; brisk knee jerks. Rest as charted.\nLabs today. Flu next month."}
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T15:20",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, high-dose, trivalent", "date": "2019-10-08T15:22"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-08T15:22"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Influenza vaccine", "author": "MA", "date": "2019-10-08T15:30",
+             "body": "High-dose flu shot given left deltoid. Came with wife; walked in with a cane. No issues."}
+          ]
+        },
+        {
+          "id": "2019-12-09a",
+          "kind": "office_visit",
+          "start": "2019-12-09T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2019-12-09T13:45", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2019-12-09T13:45", "results": [{"test": "Creatinine"}]}
+          ],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 6}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-12-09T13:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes follow-up", "author": "PCP", "date": "2019-12-09T13:50",
+             "body": "Finished PT, doing the home program. Neck shocks less frequent. Back pain still 6/10, pain clinic unchanged. Cataract surgery being scheduled by ophthalmology for next year.\nExam: vitals as charted, gait cautious with cane, no edema.\nPlan: A1c and BMP. Continue current regimen."}
+          ]
+        },
+        {
+          "id": "2020-02-10a",
+          "kind": "office_visit",
+          "start": "2020-02-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.3, "Creatinine": 1.36}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2020-02-10T09:25", "results": [{"test": "Hemoglobin A1c", "value": 7.3}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2020-02-10T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes follow-up", "author": "PCP", "date": "2020-02-10T09:30",
+             "body": "Winter has kept him inside more; less walking. Diet the same. No hypoglycemia.\nExam: as charted.\nA1c today. If creeping up, focus on activity before adding a drug. Next visit late spring."},
+            {"type": "Result Note", "title": "A1c result", "author": "PCP", "date": "2020-02-11T08:50",
+             "body": "A1c 7.3, a touch higher than usual. Reasonable for him. No changes."}
+          ]
+        },
+        {
+          "id": "2020-04-20a",
+          "kind": "telehealth_visit",
+          "start": "2020-04-20T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "check-in, refills",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2020-04-20T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Telephone-video check-in", "author": "PCP", "date": "2020-04-20T11:25",
+             "body": "Video visit, pt at home with wife, identity verified. Staying home during the pandemic; wife does the shopping. Feels okay; some headaches lately he blames on screen time and being cooped up. Pain clinic doing phone visits. Refills sent for metformin, lisinopril, HCTZ, tamsulosin, atorvastatin (90 days). Will see in person when routine visits reopen; call sooner for anything new."}
+          ]
+        },
+        {
+          "id": "2020-05-19a",
+          "kind": "office_visit",
+          "start": "2020-05-19T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blurred vision, headaches, dizziness, tingling",
+          "state": {"labs": {"Hemoglobin": 10.2, "Mean Corpuscular Volume": 89, "Creatinine": 1.4, "Calcium": 9.2, "Total Protein": 9.8, "Albumin": 3.2}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2020-05-19T10:40", "results": [{"test": "Hemoglobin", "value": 10.2}, {"test": "Mean Corpuscular Volume", "value": 89}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-05-19T10:40", "results": [{"test": "Creatinine", "value": 1.4}, {"test": "Calcium", "value": 9.2}, {"test": "Total Protein", "value": 9.8}, {"test": "Albumin", "value": 3.2}]},
+            {"panel": null, "collected": "2020-05-19T10:40", "resulted": "2020-05-21T11:30", "results": [{"test": "Monoclonal Protein Spike", "value": 3.4}]}
+          ],
+          "orders": [{"id": "spep-2020", "action": "placed", "order": "Serum protein electrophoresis with immunofixation", "category": "lab", "reason": "elevated total protein, anemia"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, high MDM", "performed": "2020-05-19T10:00"},
+            {"procedure": "Venipuncture", "performed": "2020-05-19T10:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Blurred vision, headaches, dizziness", "author": "PCP", "date": "2020-05-19T10:50",
+             "body": "S: Two months of blurry vision in both eyes (not just the cataract eye), dull headaches most days, spells of dizziness lasting minutes, and pins and needles in the hands and feet. Not the same as his neck shocks. No new weakness, no speech trouble, no falls. No fevers, no night sweats.\nO: Vitals as charted. Conjunctivae pale. Undilated fundi hard to see. Neuro: reduced light touch in the feet and hands in a stocking-glove pattern; strength unchanged from his baseline; speech normal. Heart regular, lungs clear.\nA/P: New symptom cluster with pallor. Not typical for TIA (no focal deficit, constant over weeks). Check CBC, CMP; add protein electrophoresis if total protein is high. Low threshold for ED if focal symptoms. Will call with results."},
+            {"type": "Result Note", "title": "Initial labs", "author": "PCP", "date": "2020-05-19T17:45",
+             "body": "Hgb 10.2, MCV 89 (new normocytic anemia). Creatinine 1.4, calcium 9.2. Total protein 9.8 with albumin 3.2: big globulin gap. Added SPEP/immunofixation to today's sample."}
+          ]
+        },
+        {
+          "id": "2020-05-21a",
+          "kind": "telephone",
+          "start": "2020-05-21T13:10",
+          "orders": [
+            {"id": "spep-2020", "action": "done", "date": "2020-05-21T11:30"},
+            {"id": "heme-ref-2020", "action": "placed", "order": "Hematology-oncology referral, urgent", "category": "referral", "to": "Hematology-Oncology", "reason": "monoclonal protein 3.4 g/dL, anemia, possible hyperviscosity symptoms"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Results call: monoclonal protein", "author": "PCP", "date": "2020-05-21T13:10",
+             "body": "Called pt and wife. SPEP shows a monoclonal spike, 3.4 g/dL in the gamma region; immunofixation typing to follow. Together with the anemia, high protein and his vision and headache symptoms, I am worried about a blood protein disorder that can thicken the blood. Spoke directly with hematology-oncology on call; they will see him 6/5, sooner if symptoms worsen. Told them to go to the ED for confusion, worsening vision, bleeding, or severe headache. Wife mentioned his uncle had 'a blood protein cancer.' They understand."}
+          ]
+        },
+        {
+          "id": "2020-06-12a",
+          "kind": "outside_records",
+          "start": "2020-06-12T10:15",
+          "conditions": [{"label": "Waldenström macroglobulinemia", "icd10": "C88.00", "action": "diagnosed", "onset": "2020-06-05"}],
+          "orders": [{"id": "heme-ref-2020", "action": "done", "date": "2020-06-12T10:15"}],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2020-06-05T14:30", "issued": "2020-06-10T16:00",
+             "text": "Specimen: Bone marrow aspirate and core biopsy, right posterior iliac crest.\nMicroscopic: Hypercellular marrow with an interstitial and nodular infiltrate of small lymphocytes, many with plasmacytoid features, admixed with plasma cells. Trilineage hematopoiesis present but reduced. Flow cytometry: monotypic B-cell population with lambda light chain restriction. Molecular: MYD88 L265P mutation detected.",
+             "conclusion": "Lymphoplasmacytic lymphoma involving bone marrow, consistent with Waldenström macroglobulinemia in the setting of an IgM lambda paraprotein."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Hematology-oncology consultation, 06/05/2020", "author": "hematology-oncology", "date": "2020-06-12T10:15",
+             "body": "OUTSIDE CANCER CENTER, HEMATOLOGY-ONCOLOGY — New patient consultation, 06/05/2020\n\nReferred for monoclonal protein and anemia. 69M with cervical myelopathy and lumbar stenosis (followed by neurology and pain management), HTN and T2DM on metformin and lisinopril. Two months of blurred vision, headaches, dizzy spells, and tingling in hands and feet.\nAllergies: sulfonamide antibiotics (hives), iodinated contrast (anaphylaxis).\nFamily history: maternal uncle with Waldenström macroglobulinemia.\n\nExam: Pale conjunctivae. Fundoscopy shows engorged retinal veins bilaterally. Diminished light-touch sensation in a stocking-glove distribution.\n\nData: PCP labs 05/19: Hgb 10.2, MCV 89, creatinine 1.4, calcium 9.2, total protein 9.8, albumin 3.2, M-spike 3.4 g/dL (gamma). Today: IgM 4,850 mg/dL; immunofixation IgM lambda; serum viscosity elevated at 4.8 cP. Bone marrow biopsy performed today (report attached).\n\nAssessment: Waldenström macroglobulinemia with symptomatic hyperviscosity and anemia.\nPlan: Plasma exchange as soon as arranged, then bendamustine plus rituximab every 28 days for six cycles. Hold off on any rituximab until IgM is lowered. Will keep you updated.\nHematology-oncology physician"}
+          ]
+        },
+        {
+          "id": "2020-06-26a",
+          "kind": "outside_records",
+          "start": "2020-06-26T15:00",
+          "documents": [
+            {"type": "Consult Note", "title": "Hematology-oncology treatment update", "author": "hematology-oncology", "date": "2020-06-26T15:00",
+             "body": "OUTSIDE CANCER CENTER — Treatment update\nPlasma exchange completed 06/08 and 06/09/2020 through a temporary catheter, tolerated well. Headaches and blurred vision much improved by the second session. Cycle 1 bendamustine-rituximab given 06/22-06/23/2020. Antiemetic and infusion precautions per our protocol. Next cycle 07/20. Please continue his usual medications; no metformin change needed at current kidney function.\nHematology-oncology nurse practitioner"}
+          ]
+        },
+        {
+          "id": "2020-08-17a",
+          "kind": "office_visit",
+          "start": "2020-08-17T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up during chemotherapy",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": null, "collected": "2020-08-17T10:55", "results": [{"test": "Hemoglobin A1c", "value": 7.3}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2020-08-17T10:55", "results": [{"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2020-08-17T10:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up during treatment for WM", "author": "PCP", "date": "2020-08-17T11:05",
+             "body": "Masked visit with wife. Three cycles of bendamustine-rituximab done; tired for a few days after each. Headaches and vision much better since the plasma exchange. Tingling in the feet persists. No infections.\nExam: vitals as charted. Mild pallor. Lungs clear, no edema. Stocking-glove sensory loss unchanged.\nA/P:\n1. WM on treatment: cancer center following CBCs.\n2. Diabetes: A1c and BMP today.\n3. Neuropathy symptoms: likely from the paraprotein and/or diabetes; foot care reviewed.\n4. Cataract surgery set for October.\nFlu shot this fall: okay per oncology timing; will coordinate."}
+          ]
+        },
+        {
+          "id": "2020-10-20a",
+          "kind": "outside_records",
+          "start": "2020-10-20T09:40",
+          "conditions": [{"label": "Age-related cataract", "action": "resolved", "note": "left cataract extracted 2020-10-13"}],
+          "procedures": [{"procedure": "Cataract extraction with intraocular lens", "performed": "2020-10-13T08:00"}],
+          "documents": [
+            {"type": "Operative Note", "title": "Left cataract extraction, 10/13/2020", "author": "ophthalmology", "date": "2020-10-20T09:40",
+             "body": "OUTSIDE OPHTHALMOLOGY SURGERY CENTER — Operative summary\nProcedure: Phacoemulsification of left cataract with posterior chamber intraocular lens implantation.\nAnesthesia: topical with monitored sedation. No iodinated agents used.\nFindings: Dense nuclear cataract OS. Lens placed in the capsular bag. No complications.\nPost-op: drops per handout; day-1 check satisfactory, VA OS 20/40 uncorrected.\nOphthalmologist"}
+          ]
+        },
+        {
+          "id": "2020-10-26a",
+          "kind": "nurse_visit",
+          "start": "2020-10-26T14:00",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, high-dose, quadrivalent", "date": "2020-10-26T14:02"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-26T14:02"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Influenza vaccine", "author": "RN", "date": "2020-10-26T14:10",
+             "body": "Cancer center ok'd flu vaccine between cycles. High-dose quadrivalent given IM left deltoid. Masked, screened at door. Tolerated."}
+          ]
+        },
+        {
+          "id": "2020-11-16a",
+          "kind": "telehealth_visit",
+          "start": "2020-11-16T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "procedures": [{"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2020-11-16T15:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video visit: diabetes", "author": "PCP", "date": "2020-11-16T15:25",
+             "body": "Video, at home, wife present. Last chemo cycle due this month. Eye surgery went well; left eye much clearer. August A1c was steady and creatinine unchanged. Home sugars 120s-150s fasting. No lows.\nNo changes. Will see in person after he finishes treatment. Refills sent."}
+          ]
+        }
+      ]
+    }
+  ]
+}

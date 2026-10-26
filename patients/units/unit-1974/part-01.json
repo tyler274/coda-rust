@@ -1,0 +1,801 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001974",
+   "given": "Kurt",
+   "family": "Levine",
+   "birth_date": "1963-12-28",
+   "address_line": "112 Pomeroy Lane",
+   "phone": "+1-413-555-0140",
+   "email": "kurt.levine@example.test",
+   "marital_status": "married",
+   "summary": "Office administrator in Amherst with hypertension, type 2 diabetes, hyperlipidemia and coronary disease who joined in 2017. Whipple disease in 2020, then stable angina on medical therapy, gout, a VT arrest-level event with ICD, acute mitral regurgitation repaired, a subdural hematoma evacuated, and a late MI with shock liver in 2025. Sparse outside records.",
+   "events": [
+    {
+     "id": "2017-06-05a",
+     "kind": "telephone",
+     "start": "2017-06-05T10:20",
+     "reason": "New patient inquiry",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient intake call",
+       "author": "front desk",
+       "date": "2017-06-05T10:20",
+       "body": "Caller is looking for a new primary care doctor; his previous physician retired this spring. Explained the membership and that labs, imaging and specialists still go through his PPO. He is on four daily medications and says he has \"sugar, pressure, cholesterol and a heart thing.\" Booked new patient visit 6/14 at 8:40, fasting labs same morning. Records release form emailed for the old practice."
+      }
+     ]
+    },
+    {
+     "id": "2017-06-14a",
+     "kind": "establish_care",
+     "start": "2017-06-14T08:40",
+     "end": "2017-06-14T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Establish care",
+     "conditions": [
+      {
+       "label": "Essential hypertension",
+       "action": "history",
+       "onset": "2009-01-01"
+      },
+      {
+       "label": "Type 2 diabetes mellitus without complications",
+       "action": "history",
+       "onset": "2011-01-01"
+      },
+      {
+       "label": "Hyperlipidemia",
+       "action": "history",
+       "onset": "2009-01-01"
+      },
+      {
+       "label": "Coronary artery disease",
+       "action": "history",
+       "onset": "2015-01-01",
+       "note": "Nonobstructive disease at outside catheterization 2015"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily with meals",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Type 2 diabetes"
+      },
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension"
+      },
+      {
+       "drug": "atorvastatin 40 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hyperlipidemia, coronary disease"
+      },
+      {
+       "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 50,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Coronary disease, hypertension"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "state": {
+      "bp": [
+       134,
+       82
+      ],
+      "weight_kg": 95.2,
+      "height_cm": 180.0,
+      "labs": {
+       "Hemoglobin A1c": 7.3,
+       "Low Density Lipoprotein": 84,
+       "Creatinine": 1.08,
+       "Microalbumin/Creatinine Ratio": 11,
+       "Glucose": 146
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2017-06-14T08:15",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2017-06-14T08:15",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2017-06-14T08:15",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2017-06-14T08:15",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2017-06-14T08:15",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2017-06-14T08:15",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2017-06-14T08:15",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 3
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "Social, 2-3 drinks on weekends"
+      },
+      {
+       "item": "Occupation",
+       "value": "Office administrator"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2017-06-14T08:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "History and Physical",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2017-06-14T09:40",
+       "body": "53M here to establish. Prior PCP retired; records requested.\n\nPMH: HTN about 8 yrs. T2DM about 6 yrs, always on metformin alone, never on insulin. High cholesterol. Coronary disease: had a stress test in 2015 that was \"borderline\" and then a cath at an outside hospital, told he had some plaque but nothing that needed a stent. Kept on metoprolol and atorvastatin since. No chest pain now; walks the dog most evenings without trouble.\nPSH: diagnostic cardiac cath 2015. No operations.\nMeds: metformin 1000 BID, lisinopril 20, atorvastatin 40, metoprolol succinate 50. Says he tried a higher metoprolol dose once and felt washed out, so went back to 50.\nAllergies: NKDA.\nFH: father had a heart attack at 62. Mother with type 2 diabetes. One brother on BP pills.\nSH: married, office administrator for a property management company. Never smoked. 2-3 drinks on weekends, none weekdays. No other substances.\n\nROS: no chest pain, dyspnea, palpitations, edema. No polyuria. No numbness in the feet. GI normal. Joints fine.\n\nExam: well, pleasant. BP 134/82. BMI about 29. HEENT normal. Neck supple, no bruit, no nodes. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Ext: no edema, pedal pulses 2+. Monofilament intact both feet, skin intact, no calluses.\n\nA/P:\n1. HTN: at goal-ish on lisinopril. Continue.\n2. T2DM: A1c, BMP, urine microalbumin today. Continue metformin. Eye exam due; he has an optometrist in town.\n3. HLD / CAD, nonobstructive per his account: continue atorva 40 and metoprolol. Will review cath report when records come.\n4. Health maintenance: says colonoscopy at 50 was clean. Hep C and HIV screening offered and done today. Flu shot in the fall.\nRTC 6 months, sooner as needed. Gave him the practice cell for texts."
+      }
+     ]
+    },
+    {
+     "id": "2017-06-16a",
+     "kind": "portal_message",
+     "start": "2017-06-16T16:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2017-06-16T16:05",
+       "body": "Hi Kurt, labs from Wednesday are back. A1c 7.8, which is reasonable and fine to keep working on with diet and walking. Kidney function and potassium normal. LDL is under 100 on the atorvastatin. Urine protein screen normal. Hep C and HIV screens negative. No changes for now."
+      }
+     ]
+    },
+    {
+     "id": "2017-06-26a",
+     "kind": "outside_records",
+     "start": "2017-06-26T11:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records from prior primary care practice",
+       "author": "outside primary care",
+       "date": "2017-06-26T11:00",
+       "body": "Records received by fax, 38 pages. Summary for chart:\n- Cardiac catheterization 2015 at a regional hospital after an equivocal exercise test: mild nonobstructive coronary artery disease, no lesion requiring intervention. Medical therapy recommended.\n- Screening colonoscopy 2014: normal to the cecum, no polyps, repeat in 10 years.\n- Medication list matches what patient reported.\n- A1c values 2014-2016 ranged roughly 7.0-7.6.\nScanned to media. Reviewed by PCP."
+      }
+     ]
+    },
+    {
+     "id": "2017-10-18a",
+     "kind": "nurse_visit",
+     "start": "2017-10-18T07:50",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2017-10-18T07:55"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2017-10-18T07:55"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Influenza vaccine",
+       "author": "RN",
+       "date": "2017-10-18T08:05",
+       "body": "Seasonal influenza vaccine given, 0.5 mL IM left arm. Screening questions negative. VIS reviewed. Tolerated well, left before work."
+      }
+     ]
+    },
+    {
+     "id": "2017-12-13a",
+     "kind": "office_visit",
+     "start": "2017-12-13T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.1
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2017-12-13T15:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2017-12-13T15:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2017-12-13T16:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes follow-up",
+       "author": "PCP",
+       "date": "2017-12-13T16:30",
+       "body": "Six month check. Doing fine, busy end of year at work. Taking everything. Checks sugars a few times a week, fasting 130s-150s. No lows.\nExam: BP and weight as charted. Heart regular. Lungs clear. Feet: no lesions, sensation intact.\nA1c 7.4 today, a touch better. BMP fine.\nPlan: same meds. He'd like to cut back on the holiday sweets; we talked about it briefly. Optometry letter still not in, he'll schedule. Return June for physical."
+      }
+     ]
+    },
+    {
+     "id": "2018-03-07a",
+     "kind": "pharmacy",
+     "start": "2018-03-07T09:12",
+     "documents": [
+      {
+       "type": "Medication Refill",
+       "title": "Refill request, 90-day supply",
+       "author": "MA",
+       "date": "2018-03-07T09:12",
+       "body": "Pharmacy fax for 90-day fills of metformin, lisinopril, atorvastatin and metoprolol succinate. All current, last visit 12/2017. Sent per protocol with 1 refill each."
+      }
+     ]
+    },
+    {
+     "id": "2018-06-20a",
+     "kind": "annual_physical",
+     "start": "2018-06-20T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "weight_kg": 94.6
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2018-06-20T07:55",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2018-06-20T07:55",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2018-06-20T07:55",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2018-06-20T07:55",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2018-06-20T08:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2018-06-20T09:05",
+       "body": "Annual exam. No new problems. Walking about 30 min most days. No chest discomfort with exertion, no claudication, no palpitations. Mood good.\nMeds unchanged, taking reliably. NKDA.\nExam: NAD. BP as charted. Fundi not well seen. Neck no bruit. Heart regular, no murmur. Lungs clear. Abd soft. No edema. Feet: pulses intact, monofilament normal.\nLabs today: lipids, CMP, A1c, urine ACR.\nPrevention: colonoscopy 2014 normal, next 2024. Shingrix discussed; he wants to wait until fall with the flu shot. Tdap due next year per records.\nA/P: HTN, T2DM, HLD, nonobstructive CAD all stable. Continue current regimen. Eye exam scheduled for August."
+      }
+     ]
+    },
+    {
+     "id": "2018-06-22a",
+     "kind": "portal_message",
+     "start": "2018-06-22T12:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Physical labs",
+       "author": "PCP",
+       "date": "2018-06-22T12:40",
+       "body": "Labs look good. A1c steady around 7, cholesterol well controlled, kidneys and liver normal, no protein in the urine. Keep doing what you're doing."
+      }
+     ]
+    },
+    {
+     "id": "2018-08-09a",
+     "kind": "outside_records",
+     "start": "2018-08-09T14:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Optometry diabetic eye exam",
+       "author": "optometry",
+       "date": "2018-08-09T14:00",
+       "body": "Dilated diabetic eye examination 08/03/2018. Visual acuity 20/25 OD, 20/20 OS with correction. Anterior segments unremarkable. Dilated fundus exam: no diabetic retinopathy either eye, no macular edema. Recommend annual follow-up."
+      }
+     ]
+    },
+    {
+     "id": "2018-10-17a",
+     "kind": "nurse_visit",
+     "start": "2018-10-17T07:45",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2018-10-17T07:50"
+      },
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2018-10-17T07:52"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2018-10-17T07:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Flu and Shingrix #1",
+       "author": "RN",
+       "date": "2018-10-17T08:00",
+       "body": "Flu vaccine L deltoid, Shingrix dose 1 R deltoid. Counseled he may feel achy for a day or two after the shingles shot. Dose 2 due in 2-6 months, recall set for February."
+      }
+     ]
+    },
+    {
+     "id": "2018-12-12a",
+     "kind": "office_visit",
+     "start": "2018-12-12T16:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.0
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2018-12-12T15:55",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2018-12-12T15:55",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2018-12-12T16:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2018-12-12T16:45",
+       "body": "Routine 6-month DM/HTN visit. Arm was sore for a day after Shingrix, otherwise no issue. No complaints. Home sugars fine.\nBP ok. Weight stable. Foot check normal.\nA1c 7.0. Continue metformin, lisinopril, atorvastatin, metoprolol. Physical in June."
+      }
+     ]
+    },
+    {
+     "id": "2019-02-20a",
+     "kind": "nurse_visit",
+     "start": "2019-02-20T07:40",
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2019-02-20T07:45"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-02-20T07:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Shingrix #2",
+       "author": "RN",
+       "date": "2019-02-20T07:55",
+       "body": "Second Shingrix dose IM R deltoid. Series complete. No reactions observed."
+      }
+     ]
+    },
+    {
+     "id": "2019-06-19a",
+     "kind": "annual_physical",
+     "start": "2019-06-19T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "weight_kg": 94.1,
+      "labs": {
+       "Low Density Lipoprotein": 88
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2019-06-19T07:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2019-06-19T07:50",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2019-06-19T07:50",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-06-19T07:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-06-19T07:50",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2019-06-19T09:00"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2019-06-19T08:20"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-06-19T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2019-06-19T09:10",
+       "body": "Well visit. Feels well. Coaching his nephew's softball team this summer. No exertional symptoms. No GI complaints. Sleeping ok.\nMeds/allergies reviewed, unchanged. NKDA.\nExam: unremarkable; BP as charted, heart regular without murmur, lungs clear, abdomen benign, no edema, diabetic foot exam normal.\nA/P: chronic problems stable. Labs drawn. Tdap given today (last one more than 10 years ago per records). Shingrix complete. Colon screening due 2024.\nFollow-up December."
+      }
+     ]
+    },
+    {
+     "id": "2019-08-14a",
+     "kind": "outside_records",
+     "start": "2019-08-14T13:30",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Optometry diabetic eye exam",
+       "author": "optometry",
+       "date": "2019-08-14T13:30",
+       "body": "Annual diabetic eye exam 08/09/2019. Corrected acuity 20/20 each eye. Dilated exam shows no retinopathy and no macular edema OU. Mild presbyopia, new reading Rx given. Return 1 year."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-16a",
+     "kind": "nurse_visit",
+     "start": "2019-10-16T07:45",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2019-10-16T07:50"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-10-16T07:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Influenza vaccine",
+       "author": "MA",
+       "date": "2019-10-16T07:58",
+       "body": "Flu shot given L deltoid. No prior reactions. Patient left in good condition."
+      }
+     ]
+    },
+    {
+     "id": "2019-12-04a",
+     "kind": "office_visit",
+     "start": "2019-12-04T16:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2019-12-04T16:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-12-04T16:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2019-12-04T16:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "DM/HTN check",
+       "author": "PCP",
+       "date": "2019-12-04T17:05",
+       "body": "Here for his semiannual check. Tired from a stretch of long days at work, otherwise no complaints offered. Taking meds.\nBP fine, weight about the same. Exam: heart regular, lungs clear, feet ok.\nA1c pending at time of note; BMP normal.\nPlan: continue. See in about 6 months."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

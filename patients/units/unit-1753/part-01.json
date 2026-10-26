@@ -1,0 +1,169 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001753",
+      "given": "Leah",
+      "family": "Gagnon",
+      "birth_date": "1996-09-20",
+      "address_line": "27 Ashfield Lane",
+      "phone": "+1-978-555-0130",
+      "email": "leah.gagnon@example.test",
+      "marital_status": "single",
+      "summary": "Healthy young woman, a student then graduate student on a parent's plan, with the practice since 2017. Her chart is a run of sexually transmitted infections seen mostly at an outside gynecology office and an emergency department: early syphilis, chlamydial cervicitis, primary genital herpes and three episodes of disseminated gonococcal infection, with outside records that arrive late or not at all.",
+      "events": [
+        {
+          "id": "2017-08-09a",
+          "kind": "telephone",
+          "start": "2017-08-09T14:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient inquiry", "author": "front desk", "date": "2017-08-09T14:20",
+             "body": "Caller is a 20 y/o college student home in Greenfield for the rest of the summer. A family member suggested the practice; she has not had a regular doctor since aging out of her pediatrician. Membership packet emailed. New patient visit booked 8/22 at 10:00. Asked her to bring her insurance card (she is on a parent's plan) and any vaccine paperwork she can find."}
+          ]
+        },
+        {
+          "id": "2017-08-22a",
+          "kind": "establish_care",
+          "start": "2017-08-22T10:00",
+          "end": "2017-08-22T10:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 60.0, "height_cm": 165.0, "bp": [112, 70]},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social use (1-2 drinks per week)"},
+            {"item": "Occupation", "value": "Student"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Preventive visit, new patient, 18-39", "performed": "2017-08-22T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2017-08-22T10:50",
+             "body": "NEW PATIENT\n\nLeah is 20 and starting her junior year at college in the fall. Comes in to set up primary care now that she is too old for her pediatric office. Feels well. No complaints today.\n\nPMH: none. No hospitalizations. No surgeries.\nMeds: none. No supplements.\nAllergies: no known drug allergies.\nGyn: menarche at 12, cycles regular about every 28 days. Never pregnant. Has not had a pelvic exam or Pap yet.\nFamily: mother has hypothyroidism; father has high blood pressure. No other family history she knows of.\nSocial: full-time student, lives with her parents in Greenfield between semesters. Never smoked. Drinks socially, 1-2 drinks most weeks. No drug use.\n\nROS: negative across systems.\n\nExam: well-appearing young woman. Vitals as charted. HEENT normal, thyroid not enlarged. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender. Skin clear. No lymphadenopathy.\n\nA/P\n1. Health maintenance, age 20. Healthy. Pap due at 21; will do it at next year's physical. Asked her to have her pediatric office send the immunization record so we can see where the HPV and meningococcal series landed. Flu shot when it arrives this fall.\n2. Counseled on safer sex and contraception options; she is not currently sexually active and would like to revisit it later.\n\nReturn in one year, sooner as needed."}
+          ]
+        },
+        {
+          "id": "2017-09-06a",
+          "kind": "outside_records",
+          "start": "2017-09-06T09:15",
+          "reason": "pediatric immunization record",
+          "immunizations": [
+            {"vaccine": "MMR", "date": "1997-09-24T10:00"},
+            {"vaccine": "Varicella", "date": "1997-09-24T10:00"},
+            {"vaccine": "MMR", "date": "2001-10-02T10:00"},
+            {"vaccine": "Varicella", "date": "2001-10-02T10:00"},
+            {"vaccine": "Tdap", "date": "2008-10-06T15:30"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2008-10-06T15:30"},
+            {"vaccine": "HPV, quadrivalent", "date": "2008-10-06T15:30"},
+            {"vaccine": "HPV, quadrivalent", "date": "2008-12-08T15:30"},
+            {"vaccine": "HPV, quadrivalent", "date": "2009-04-13T15:30"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2013-08-19T11:00"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Pediatric Immunization Record", "author": "pediatrics", "date": "2017-09-06T09:15",
+             "body": "Immunization history faxed from the patient's former pediatric office at the request of the family.\n\nChildhood primary series complete per state schedule. MMR x2 (1997, 2001). Varicella x2 (1997, 2001). Tdap 10/2008. MenACWY 10/2008 with booster 8/2013. HPV quadrivalent 3-dose series completed 4/2009.\n\nAbstracted into the immunization record by MA 9/6/17."}
+          ]
+        },
+        {
+          "id": "2017-10-13a",
+          "kind": "nurse_visit",
+          "start": "2017-10-13T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2017-10-13T16:15"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2017-10-13T16:15"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Influenza Vaccine", "author": "RN", "date": "2017-10-13T16:25",
+             "body": "Here on her way back to campus for the weekend. Screening questions negative; no egg or vaccine reactions in the past. Quadrivalent flu 0.5 mL IM left deltoid. VIS reviewed. Observed briefly, no reaction."}
+          ]
+        },
+        {
+          "id": "2018-09-27a",
+          "kind": "annual_physical",
+          "start": "2018-09-27T08:30",
+          "end": "2018-09-27T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2018-09-27T09:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2018-09-27T09:10", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2018-09-27T09:10", "results": [
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"},
+              {"test": "Chlamydia trachomatis NAAT", "text": "Not detected"},
+              {"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"}
+            ]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2018-09-27T09:00", "issued": "2018-10-01T13:00",
+             "text": "Specimen: cervical, liquid-based. Satisfactory for evaluation; endocervical/transformation zone component present.",
+             "conclusion": "Negative for intraepithelial lesion or malignancy."}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2018-09-27T08:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2018-09-27T09:25",
+             "body": "ANNUAL PHYSICAL\n\nNow 22, senior year. Doing well, busy with a thesis. Became sexually active this past year, one partner at a time, condoms most of the time. No pelvic pain, discharge or sores. Periods regular. No meds.\n\nSocial: no tobacco. Alcohol a couple of drinks a week at most.\nFamily: unchanged (mother hypothyroid, father hypertension).\n\nROS negative.\n\nExam: vitals as charted. Well appearing. Thyroid normal. Heart and lungs normal. Abdomen benign. Pelvic: normal external genitalia, vagina and cervix without lesions, scant normal physiologic secretions. Bimanual without tenderness or masses. Pap and swab collected.\n\nA/P\n1. Preventive care. First Pap today. Gonorrhea/chlamydia NAAT, HIV and hepatitis C screening sent as routine for her age. Basic labs.\n2. Contraception: content with condoms for now; reviewed that the pill, ring, implant and IUD are all options whenever she wants to talk about them.\n3. Flu vaccine declined today, says she will get it on campus.\n\nOne year."},
+            {"type": "Result Note", "title": "Results", "author": "PCP", "date": "2018-10-02T12:40",
+             "body": "Pap negative. HIV, hepatitis C, gonorrhea and chlamydia all negative. CBC and chemistries normal. Released to portal with a short note."}
+          ]
+        },
+        {
+          "id": "2018-10-02a",
+          "kind": "portal_message",
+          "start": "2018-10-02T12:45",
+          "reason": "results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your physical results", "author": "PCP", "date": "2018-10-02T12:45",
+             "body": "Hi Leah, everything from your physical came back normal: the Pap, the infection screening and the blood work. Next Pap would be due in three years. Have a good semester."},
+            {"type": "Patient Message", "title": "RE: Your physical results", "author": "patient", "date": "2018-10-02T19:02",
+             "body": "Thank you!! That's a relief."}
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "annual_physical",
+          "start": "2019-09-10T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed appointment", "author": "front desk", "date": "2019-09-10T16:05",
+             "body": "No-show for 3:30 physical. Left voicemail on cell to rebook. Patient texted back at 4:40 that she had orientation for her graduate program and forgot; rebooked 9/26."}
+          ]
+        },
+        {
+          "id": "2019-09-26a",
+          "kind": "annual_physical",
+          "start": "2019-09-26T08:00",
+          "end": "2019-09-26T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "social": [{"item": "Occupation", "value": "Graduate student"}],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [
+            {"panel": null, "collected": "2019-09-26T08:40", "results": [
+              {"test": "Chlamydia trachomatis NAAT", "text": "Not detected"},
+              {"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"}
+            ]}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2019-09-26T08:40"},
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-09-26T08:40"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2019-09-26T08:00"},
+            {"procedure": "Immunization administration", "performed": "2019-09-26T08:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2019-09-26T08:55",
+             "body": "ANNUAL PHYSICAL\n\nFinished college in May and has just started a graduate program; still on a parent's insurance. Feels well. A little more stress with the new program, sleeping fine. Not in a relationship right now; sexual partners since last year, uses condoms most of the time. No symptoms.\n\nNo meds. NKDA. Never smoker. Social drinker.\n\nExam: vitals as charted. Normal general exam; heart, lungs, abdomen unremarkable.\n\nA/P\n1. Preventive: urine NAAT for gonorrhea and chlamydia. Pap not due until 2021.\n2. Tdap today (last one 2008). Flu shot today.\n3. Mood fine, PHQ-2 of 1.\n\nNext physical in a year."}
+          ]
+        }
+      ]
+    }
+  ]
+}

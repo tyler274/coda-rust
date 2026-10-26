@@ -1,0 +1,354 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001745",
+      "events": [
+        {
+          "id": "2025-01-06a",
+          "kind": "telephone",
+          "start": "2025-01-06T15:10",
+          "reason": "post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2025-01-06T15:10",
+              "body": "Discharge summary from L&D received today. Called pt: home since Friday with the baby boy. Bleeding like a heavy period and slowing. Lightheaded getting up fast the first two days, better now. Taking labetalol, iron and prenatal. No headache, vision changes or chest pain. Booked with PCP 1/14 for CBC and BP. Told her to call or go to the ED for soaking a pad an hour, fainting or fever."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "office_visit",
+          "start": "2025-01-14T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after delivery and postpartum hemorrhage",
+          "conditions": [
+            {
+              "label": "Postpartum hemorrhage",
+              "icd10": "O72.1",
+              "action": "resolved",
+              "onset": "2024-12-31"
+            }
+          ],
+          "state": {
+            "weight_kg": 86.0,
+            "bp": [
+              132,
+              84
+            ],
+            "labs": {
+              "Hemoglobin": 9.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-01-14T10:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.4
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-01-14T09:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-01-14T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-01-14T10:20",
+              "body": "Two weeks after delivery. Admitted 12/31 with a placental abruption at 38 weeks, vacuum-assisted vaginal birth of a healthy boy, then a postpartum hemorrhage from atony treated with massage and uterotonics. Summary reviewed.\nNow: lochia light. Fatigue, mild lightheadedness on stairs, improving. No chest pain, palpitations or dyspnea. Taking ferrous sulfate daily, tolerating it. Labetalol 200 BID. Bottle feeding.\nSleep broken, mood up and down but enjoying the baby. PHQ-9 6. Partner off work for two weeks.\nSmoking: back to a pack.\n\nBP ok. HR normal. Pale conjunctivae. Lungs clear. Fundus firm, below umbilicus. No calf tenderness.\n\nA/P\n1. Acute posthemorrhagic anemia: Hgb pending today. Continue iron 325 daily, recheck in about 3 months.\n2. PPH, resolved.\n3. Chronic HTN, controlled on labetalol.\n4. Mood: watch closely; she'll message if worse. Rescreen at next visit.\n5. Tobacco: counseled."
+            },
+            {
+              "type": "Result Note",
+              "title": "CBC",
+              "author": "PCP",
+              "date": "2025-01-14T15:30",
+              "body": "Hgb 9.4. Heading the right direction for two weeks out. Continue iron."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "office_visit",
+          "start": "2025-04-08T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "anemia and blood pressure follow-up",
+          "conditions": [
+            {
+              "label": "Acute posthemorrhagic anemia",
+              "icd10": "D62",
+              "action": "resolved",
+              "onset": "2024-12-31"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "stop",
+              "reason": "hemoglobin recovered"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 12.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-08T13:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.0
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-04-08T13:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-04-08T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-04-08T13:25",
+              "body": "Three months postpartum. Energy much better, no lightheadedness. Back at work part time. Mood good, PHQ-9 3.\nBP on labetalol fine. Albuterol rarely.\n\nA/P: Posthemorrhagic anemia, CBC today. If normal stop iron. HTN controlled. Physical in June."
+            },
+            {
+              "type": "Result Note",
+              "title": "CBC",
+              "author": "PCP",
+              "date": "2025-04-08T17:00",
+              "body": "Hgb 12.0. Recovered. Messaged her to stop the iron."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-28a",
+          "kind": "hospital_admission",
+          "start": "2025-12-28T16:50",
+          "end": "2026-01-20T13:00",
+          "service": "Emergency Medicine",
+          "reason": "severe abdominal pain and dizziness after high-speed motor vehicle collision",
+          "conditions": [],
+          "medications": [],
+          "vitals": [
+            {
+              "time": "2025-12-28T16:55",
+              "bp": [
+                85,
+                50
+              ],
+              "hr": 120,
+              "rr": 22
+            },
+            {
+              "time": "2025-12-28T17:20",
+              "bp": [
+                75,
+                45
+              ]
+            },
+            {
+              "time": "2025-12-28T20:50",
+              "bp": [
+                95,
+                60
+              ],
+              "hr": 122,
+              "rr": 28,
+              "spo2": 88
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-12-28T17:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "loinc": "718-7",
+                  "unit": "g/dL",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-28T17:00",
+              "results": [
+                {
+                  "test": "Prothrombin time",
+                  "loinc": "5902-2",
+                  "unit": "s",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-28T20:55",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.32
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 48
+                },
+                {
+                  "test": "Oxygen partial pressure in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 58
+                },
+                {
+                  "test": "Bicarbonate in Arterial blood",
+                  "loinc": "1960-4",
+                  "unit": "mmol/L",
+                  "value": 24
+                },
+                {
+                  "test": "Lactate",
+                  "value": 3.2
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2025-12-28T17:05",
+              "text": "Focused assessment with sonography for trauma, bedside. Free fluid in the abdomen. Gravid uterus.",
+              "conclusion": "Positive FAST: free intra-abdominal fluid."
+            },
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-12-28T21:10",
+              "text": "Portable AP. Endotracheal tube in place. Bilateral alveolar infiltrates. No pneumothorax.",
+              "conclusion": "Bilateral alveolar infiltrates."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary (outside)",
+              "author": "trauma surgery",
+              "date": "2026-01-22T11:00",
+              "body": "Regional trauma center. Admitted 12/28/2025, discharged 01/20/2026.\n31 y/o G7 at 22w0d, uncomplicated pregnancy to date, restrained driver in a high-speed collision with airbag deployment. Arrived awake with severe abdominal pain and dizziness. PMH chronic HTN on labetalol, asthma, cervical insufficiency, prior abruption with PPH, prior ectopic s/p L salpingectomy, prior cesarean. NKDA. Smoker 1 ppd x 10 yrs.\nBP 85/50, HR 120, RR 22, dropping to 75/45 despite crystalloid. Cool and clammy. Diffuse abdominal tenderness, uterine contractions, small amount of vaginal bleeding. FHT 140.\nHgb 9.0, PT 14. FAST positive for free abdominal fluid.\nHemorrhagic shock with acute coagulopathy: massive transfusion protocol. Became increasingly short of breath and confused, intubated in the ED. Exploratory laparotomy: splenic laceration with hemoperitoneum, splenectomy. Uterus not entered.\nTo ICU about 4 hours after the collision: BP 95/60, HR 122, RR 28 on the vent, SpO2 88% on FiO2 1.0. Diffuse bilateral crackles. ABG on 100%: pH 7.32, PaCO2 48, PaO2 58, HCO3 24. Lactate 3.2. CXR bilateral alveolar infiltrates.\nARDS with refractory hypoxemia: lung-protective ventilation, prone positioning. Oxygenation improved over the following week; extubated 01/07. Contractions settled early; OB followed daily, fetal checks reassuring throughout.\nDischarged home 01/20 on room air.\nDischarge meds: labetalol 200 mg BID, ferrous sulfate 325 mg daily, acetaminophen 500 mg 1-2 tabs q6h PRN, prenatal vitamin, albuterol PRN.\nNeeds post-splenectomy vaccines through PCP. Follow up: PCP 1 week, OB 1 week, trauma clinic 2 weeks, pulmonary 6-8 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "specialist_visit",
+          "start": "2026-03-10T09:30",
+          "service": "Pulmonary & Critical Care",
+          "reason": "follow-up after ARDS",
+          "orders": [],
+          "reports": [
+            {
+              "study": "Spirometry",
+              "performed": "2026-03-10T09:45",
+              "text": "Good effort, acceptable and reproducible. FEV1, FVC and FEV1/FVC within normal limits. No obstruction or restriction pattern.",
+              "conclusion": "Normal spirometry."
+            },
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2026-03-10T10:20",
+              "text": "PA and lateral with abdominal shielding. Lungs clear. No effusion or pneumothorax. Heart size normal.",
+              "conclusion": "No acute cardiopulmonary findings. Prior infiltrates have cleared."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary Consultation (outside)",
+              "author": "pulmonology",
+              "date": "2026-03-13T15:00",
+              "body": "Outpatient pulmonary clinic, visit 03/10/2026. Thank you for the referral.\n31F, now about 32 weeks pregnant, seen ten weeks after ARDS following trauma with hemorrhagic shock (ventilated, proned, extubated 01/07). Background mild intermittent asthma on albuterol PRN; current smoker.\nShe reports no dyspnea at her usual activity now, climbs stairs without stopping. No cough or wheeze.\nResting SpO2 normal on room air. Lungs clear throughout. No clubbing.\nSpirometry normal. Chest radiograph clear; the infiltrates have resolved.\nImpression: recovered from ARDS with normal lung function. No further pulmonary follow-up needed. Smoking cessation strongly advised. Return as needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T08:20",
+          "appointment": "booked",
+          "reason": "annual physical with Pap"
+        }
+      ]
+    }
+  ]
+}

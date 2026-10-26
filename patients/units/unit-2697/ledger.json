@@ -1,0 +1,4127 @@
+{
+  "unit": "unit-2697",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002697",
+      "given": "Bernice",
+      "family": "Merrill",
+      "birth_date": "1965-11-08",
+      "address_line": "27 Bardwell Hollow Road",
+      "phone": "+1-603-555-0144",
+      "email": "bernice.merrill@example.test",
+      "marital_status": "single",
+      "summary": "Librarian with controlled hypertension, obesity, bilateral knee osteoarthritis and reflux with a hiatal hernia who develops an estrogen-secreting adult granulosa cell tumor of the ovary in 2023, recurs twice despite chemotherapy, and has a progestin-treated grade 1 endometrial cancer before definitive surgery in April 2026. Primary care follows her blood pressure, joints and prevention around the oncology care.",
+      "events": [
+        {
+          "id": "2019-09-24a",
+          "kind": "telephone",
+          "start": "2019-09-24T10:40",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2019-09-24T10:52",
+              "author": "front desk",
+              "body": "Caller would like to establish with the practice. Has been with another primary care office for years, says she wants a doctor she can text when something comes up instead of waiting three weeks for a callback. Membership explained, agreement emailed. Records release faxed to her previous office. New patient visit booked 10/8 at 8:30, asked to bring medication bottles and any recent lab printouts."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "establish_care",
+          "start": "2019-10-08T08:30",
+          "end": "2019-10-08T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2012-06-01",
+              "note": "on two agents, controlled"
+            },
+            {
+              "label": "Obesity, unspecified",
+              "action": "diagnosed",
+              "onset": "2010-01-01"
+            },
+            {
+              "label": "Asymptomatic menopausal state",
+              "action": "diagnosed",
+              "onset": "2017-05-01",
+              "note": "menopause at 51, never on HRT",
+              "icd10": "Z78.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              137,
+              78
+            ],
+            "hr": 55,
+            "temp_c": 36.4,
+            "spo2": 96,
+            "weight_kg": 84.8,
+            "height_cm": 163.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-10-08T09:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 83
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 66
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-10-08T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 232
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.58
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-10-08T09:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 193
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 107
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 65
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 107
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-10-08T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Does not drink alcohol"
+            },
+            {
+              "item": "Occupation",
+              "value": "Librarian"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2019-10-08T08:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-10-08T09:25"
+            },
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-08T09:26"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2019-10-08T11:10",
+              "author": "PCP",
+              "body": "New patient, 53F, transferring from a group practice where she'd seen a different covering clinician nearly every visit. Main standing issue is blood pressure, on HCTZ 25 mg qAM and amlodipine 5 mg for roughly seven years. Home cuff numbers she brought in a notebook run mostly 120s-130s over high 70s-low 80s. No headaches, chest discomfort, dyspnea, palpitations or ankle swelling. Weight has been a long-running frustration; tried a commercial program twice, lost and regained.\n\nGYN: menopause 2017 at 51, a year or so of hot flashes that settled on their own, never took hormones. No bleeding since. Never pregnant. No gyn surgery, no surgery of any kind.\nPMH: HTN, obesity. PSH: none.\nMeds: HCTZ 25 daily, amlodipine 5 daily. No supplements.\nAllergies: no known drug allergies.\nFH: nobody in the family with cancer, heart disease or blood clots that she knows of.\nSH: reference librarian at a public library, a lot of time on her feet and up and down at the stacks. Has never smoked. Doesn't drink at all.\n\nExam: well appearing. BP and vitals per flowsheet. Neck supple, no thyromegaly. Heart RRR, no murmur. Lungs clear. Abdomen obese, soft, nontender. Legs without edema. Skin unremarkable.\n\nA/P\n1. Hypertension - controlled on current regimen. Continue both. CMP for K and creatinine on the thiazide.\n2. Obesity, BMI ~32 - talked about realistic goals, walking most days. Will revisit.\n3. Postmenopausal, no HRT, no bleeding. Asked her to call for any spotting at all.\n4. Health maintenance - lipids, A1c, TSH, CBC; one-time hep C and HIV screen (she agreed). Tdap and flu today. Prior office is sending colonoscopy, Pap and mammogram records. PHQ-2 negative.\nRTC 6 mo or sooner."
+            }
+          ],
+          "state": {
+            "bp": [
+              128,
+              80
+            ],
+            "weight_kg": 85.5,
+            "height_cm": 163.0,
+            "labs": {
+              "Hemoglobin A1c": 5.3,
+              "Thyroid Stimulating Hormone": 1.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2019-10-10a",
+          "kind": "portal_message",
+          "start": "2019-10-10T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2019-10-10T16:05",
+              "author": "PCP",
+              "body": "Hi Bernice, everything from Tuesday came back fine. Kidney function and potassium are right where they should be on the water pill, blood count and thyroid normal, A1c in the normal range, cholesterol acceptable for now. Hepatitis C and HIV screens negative. Nothing to change. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-21a",
+          "kind": "outside_records",
+          "start": "2019-10-21T13:20",
+          "reason": "prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2019-10-21T13:20",
+              "author": "MA",
+              "body": "41 pages received from previous PCP office and filed to media. Abstracted for the chart:\n- Screening colonoscopy 05/2018: normal to the cecum, good prep, no polyps. Repeat in 10 years.\n- Cervical cytology with HPV co-test 03/2018: negative for intraepithelial lesion or malignancy, HPV not detected.\n- Screening mammogram 02/2019: BI-RADS 1, negative.\n- Medication list matches ours (HCTZ 25, amlodipine 5). No allergies listed.\n- Office BPs 2016-2019 mostly 120s-130s/70s-80s.\nHealth maintenance updated. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2020-02-12a",
+          "kind": "nurse_visit",
+          "start": "2020-02-12T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "shingles vaccine",
+          "vitals": {
+            "bp": [
+              123,
+              79
+            ],
+            "hr": 64
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-02-12T15:38"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2020-02-12T15:38"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Shingrix #1",
+              "date": "2020-02-12T15:50",
+              "author": "RN",
+              "body": "Here for first recombinant zoster dose. No prior shingles vaccine, no fever today. Given IM L deltoid, VIS reviewed. Warned arm may be sore and she may feel run down for a day. Observed 15 min, fine. Dose 2 due in 2-6 months, she will book at the desk. BP rechecked per flowsheet."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2020-03-05a",
+          "kind": "imaging",
+          "start": "2020-03-05T09:10",
+          "reason": "screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2020-03-05T09:10",
+              "text": "Bilateral digital screening mammogram with tomosynthesis. Comparison 02/2019. The breasts are scattered fibroglandular density. No suspicious mass, architectural distortion or suspicious calcifications. Skin and nipples unremarkable.",
+              "conclusion": "BI-RADS 1: Negative. Routine annual screening."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Screening Mammogram",
+              "date": "2020-03-06T08:00",
+              "author": "radiology",
+              "body": "Outside breast imaging center report received and filed. BI-RADS 1, negative. Annual screening recommended."
+            }
+          ]
+        },
+        {
+          "id": "2020-04-14a",
+          "kind": "telehealth_visit",
+          "start": "2020-04-14T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-04-14T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit - Hypertension",
+              "date": "2020-04-14T11:30",
+              "author": "PCP",
+              "body": "Converted to video given the shutdown. She is home; library is closed and she is doing some remote cataloguing. Home BP log for the past 3 weeks, morning readings 118-134 / 72-84. Taking both pills every day, no dizziness, no swelling. Walking the neighborhood loop daily now that she isn't commuting. Feels fine otherwise.\n\nA/P: HTN at goal on HCTZ 25 + amlodipine 5. No change. Refills sent as 90-day supplies. Second Shingrix when we're doing in-person shots again. Fall physical."
+            }
+          ]
+        },
+        {
+          "id": "2020-05-27a",
+          "kind": "pharmacy",
+          "start": "2020-05-27T09:15",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill request",
+              "date": "2020-05-27T09:15",
+              "author": "MA",
+              "body": "Pharmacy fax requesting 90-day supplies of hydrochlorothiazide 25 mg and amlodipine 5 mg with 3 refills. Last BP visit 4/14, at goal. Approved per protocol, sent."
+            }
+          ]
+        },
+        {
+          "id": "2020-06-23a",
+          "kind": "nurse_visit",
+          "start": "2020-06-23T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "second shingles vaccine",
+          "vitals": {
+            "bp": [
+              134,
+              86
+            ],
+            "hr": 58,
+            "weight_kg": 85.2
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-06-23T14:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2020-06-23T14:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Shingrix #2",
+              "date": "2020-06-23T14:25",
+              "author": "RN",
+              "body": "Masked, screened at door. Second recombinant zoster dose given IM R deltoid. Said the first one gave her a sore arm and an early night, nothing more. Series complete, entered in immunization record. BP and weight per flowsheet, BP in range."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-10-20a",
+          "kind": "annual_physical",
+          "start": "2020-10-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              131,
+              82
+            ],
+            "hr": 65,
+            "temp_c": 36.9,
+            "spo2": 100,
+            "weight_kg": 85.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-10-20T08:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 64
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-10-20T08:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 194
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 107
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 63
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 122
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 131
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-10-20T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2020-10-20T08:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-20T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-10-20T10:05",
+              "author": "PCP",
+              "body": "Annual exam, 54F. Back at the library part time with limited hours. Feels well. Daily walks continued through the summer, weight about the same. Occasional stiffness getting up from a chair, nothing she wants worked up. No postmenopausal bleeding. No chest pain or breathlessness on hills.\n\nMeds: HCTZ 25, amlodipine 5. NKDA.\n\nExam: BP per flowsheet, at goal. HEENT normal. Thyroid not enlarged. Heart regular, no murmur. Lungs clear bilaterally. Breasts: no masses, no axillary nodes. Abdomen soft, obese, no organomegaly. Extremities without edema. Skin no concerning lesions.\n\nPlan:\n- HTN controlled, continue.\n- Labs: CMP, lipids, A1c.\n- Screening: colonoscopy 2018 normal, next 2028. Mammogram March, normal, next spring. Pap/HPV 2018 negative, next due 2023.\n- Vaccines: flu today. Shingrix complete. Tdap 2019.\n- PHQ-2 0.\nFollow-up spring for BP."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-03-26a",
+          "kind": "portal_message",
+          "start": "2021-03-26T19:42",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-04T13:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-25T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID shots",
+              "date": "2021-03-26T19:42",
+              "author": "patient",
+              "body": "Got my second Pfizer shot yesterday at the pharmacy clinic, the first was March 4th. Library staff were eligible this round. Sending a photo of my card so you have it. Arm is sore, otherwise fine."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: COVID shots",
+              "date": "2021-03-29T09:10",
+              "author": "MA",
+              "body": "Thanks Bernice, both doses entered in your chart from the card photo."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-07a",
+          "kind": "imaging",
+          "start": "2021-04-07T10:30",
+          "reason": "screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2021-04-07T10:30",
+              "text": "Bilateral screening mammogram with tomosynthesis compared with 03/2020 and 02/2019. Scattered fibroglandular tissue. No mass, distortion or suspicious calcification in either breast.",
+              "conclusion": "BI-RADS 1: Negative. Annual screening."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Screening Mammogram",
+              "date": "2021-04-08T08:00",
+              "author": "radiology",
+              "body": "Breast imaging report received. Negative, BI-RADS 1. Next screening in one year."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-06a",
+          "kind": "office_visit",
+          "start": "2021-09-06T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "bilateral knee pain",
+          "conditions": [
+            {
+              "label": "Bilateral primary osteoarthritis of knee",
+              "action": "diagnosed",
+              "onset": "2020-09-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 to 2 tablets by mouth up to three times daily as needed for knee pain. Max 3,000 mg per day.",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "TID PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "knee osteoarthritis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              77
+            ],
+            "hr": 54,
+            "weight_kg": 85.0
+          },
+          "reports": [
+            {
+              "study": "Knee X-ray",
+              "performed": "2021-09-06T11:20",
+              "text": "Bilateral knees, standing AP, lateral and sunrise views. No fracture or dislocation. Joint space narrowing in both knees, most apparent medially, with subchondral sclerosis and marginal osteophytes. No joint effusion. Soft tissues unremarkable.",
+              "conclusion": "Degenerative changes of both knees consistent with osteoarthritis."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-09-06T10:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "knee-xr-2021",
+              "action": "placed",
+              "order": "Knee X-ray, bilateral",
+              "category": "imaging",
+              "reason": "knee pain"
+            },
+            {
+              "id": "knee-xr-2021",
+              "action": "done",
+              "date": "2021-09-06T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Knee Pain",
+              "date": "2021-09-06T12:40",
+              "author": "PCP",
+              "body": "S: Both knees have been bothering her for about a year and are clearly getting worse. Stiffest first thing in the morning and when she stands after a long stretch at the reference desk; loosens up once she has been moving a while. No fall, twist or injury she can recall. No locking, no giving way. Nothing tried yet beyond a heating pad. Opened the office today, holiday hours, because she has the day off.\n\nMeds: HCTZ 25, amlodipine 5. NKDA.\n\nO: BMI 32 (wt per flowsheet). Knees: neither red nor warm. Bony enlargement palpable at both joints, tender along the joint lines bilaterally. No effusion on either side. Full flexion and extension but painful at the end of range both ways. Ligaments stable. Gait slightly stiff. Hips move freely without pain.\n\nStanding knee films done downstairs today: bilateral joint space loss with sclerosis under the joint surfaces and osteophytes. Read as OA.\n\nA/P: Bilateral knee osteoarthritis.\n- Acetaminophen 500 mg, 1-2 tabs up to TID as needed. Would rather avoid regular ibuprofen/naproxen with her blood pressure.\n- Quad strengthening handout, low-impact activity (pool, bike), weight loss would take load off the joints - every pound counts several times over at the knee.\n- Ortho or PT if not improving.\nBP fine today."
+            }
+          ],
+          "state": {
+            "weight_kg": 85.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "annual_physical",
+          "start": "2021-10-19T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              125,
+              88
+            ],
+            "hr": 70,
+            "temp_c": 36.5,
+            "spo2": 99,
+            "weight_kg": 84.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-10-19T09:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 63
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-10-19T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.56
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-10-19T09:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 191
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 111
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 95
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 130
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-10-19T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2021-10-19T08:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T08:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-10-19T08:56"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-10-19T10:30",
+              "author": "PCP",
+              "body": "55F, yearly exam. Knees: acetaminophen most mornings takes the edge off, still stiff after sitting. Started water aerobics once a week. BP checks at home fine. No bleeding. No new concerns.\n\nMeds: HCTZ 25 daily, amlodipine 5 daily, acetaminophen PRN. NKDA.\n\nExam: Vitals per flowsheet. Pleasant, well. Thyroid normal. Heart regular, no murmurs. Lungs clear. Breasts without mass, nodes negative. Abdomen soft, nontender. Knees with bony enlargement and some crepitus, no effusion. No edema.\n\nPlan: HTN controlled - continue. OA - continue current approach. Labs CMP/CBC/lipids/A1c. Flu shot and COVID booster today (L and R arm). Mammogram due April. Colonoscopy 2028. Pap/HPV due 2023. Follow up in 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-01-18a",
+          "kind": "office_visit",
+          "start": "2022-01-18T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "heartburn and regurgitation",
+          "vitals": {
+            "bp": [
+              116,
+              83
+            ],
+            "hr": 59,
+            "weight_kg": 83.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-01-18T15:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2022",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "reflux symptoms with regurgitation"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Reflux",
+              "date": "2022-01-18T16:30",
+              "author": "PCP",
+              "body": "S: Since late summer, burning high in the belly and sour fluid in the back of her throat after big meals, a few evenings a week. Belching more. Worst if she lies down on the couch soon after dinner, and at work when she bends to reshelve the bottom rows. Swallowing fine, no vomiting blood, no black stools. Weight down a few pounds, she says on purpose (smaller portions since the holidays). Tried an antacid tablet now and then.\n\nO: Vitals per flowsheet. Abdomen soft, minimally tender in the epigastrium, no mass.\n\nA/P: Reflux-type symptoms, about 5 months, with regurgitation and postural triggers. She asked to see GI rather than just start a pill; reasonable. Referral placed. In the meantime smaller evening meals, nothing for 3 hours before bed, wedge pillow."
+            }
+          ],
+          "state": {
+            "weight_kg": 82.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-02-25a",
+          "kind": "specialist_visit",
+          "start": "2022-02-25T13:00",
+          "service": "Gastroenterology",
+          "reason": "reflux and regurgitation",
+          "conditions": [
+            {
+              "label": "Hiatal hernia",
+              "action": "diagnosed",
+              "onset": "2022-02-25",
+              "icd10": "K44.9"
+            },
+            {
+              "label": "Gastroesophageal reflux disease without esophagitis",
+              "action": "diagnosed",
+              "onset": "2021-08-15"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "omeprazole 20 MG Delayed Release Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth daily, 30 minutes before breakfast",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "GERD with hiatal hernia"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              78
+            ],
+            "hr": 78,
+            "temp_c": 37.0
+          },
+          "orders": [
+            {
+              "id": "gi-referral-2022",
+              "action": "done",
+              "date": "2022-02-25T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "date": "2022-03-01T10:15",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY CONSULTATION\nDate of visit: 02/25/2022\nReferred by: primary care, for reflux symptoms\n\nDear colleague,\n\nI met Ms. Merrill, 56, today. For roughly half a year she has had on-and-off epigastric burning and an acid taste with regurgitation, mostly after a large meal. She describes more belching than usual and food seeming to rise back up if she reclines within an hour or so of eating. Her job as a librarian has her stooping to low shelves and that reliably brings it on. She has no trouble swallowing solids or liquids, has not vomited blood and has not lost weight unintentionally.\n\nHistory: hypertension, well controlled; obesity; knee osteoarthritis. No operations. Medications: hydrochlorothiazide 25 mg daily, amlodipine 5 mg daily, acetaminophen as needed. Allergies: none known. Never smoker, no alcohol. No family history of cancer.\n\nExam: BMI 31. Temp 37.0 C (98.6 F), BP 130/78, pulse 78. Abdomen with mild epigastric tenderness, no rebound or guarding, no masses. Heart and lungs normal.\n\nBarium swallow (performed earlier this week at our imaging suite): a portion of the gastric fundus together with the gastroesophageal junction lies above the diaphragm, with contrast filling a small saccular pouch in the lower chest. Esophageal motility otherwise normal; no stricture or mass. No reflux of contrast to the upper esophagus during the study.\n\nImpression: sliding hiatal hernia with typical gastroesophageal reflux symptoms; no alarm features.\n\nPlan:\n1. Omeprazole 20 mg once daily, 30 minutes before breakfast.\n2. Smaller meals, avoid eating within 3 hours of lying down, elevate the head of the bed, squat rather than bend at the waist when possible. Weight reduction will help.\n3. Endoscopy not needed now given the absence of alarm features; would reconsider if symptoms persist on therapy.\n4. Follow up with us as needed.\n\nThank you for this referral.\nGastroenterology"
+            }
+          ],
+          "state": {
+            "weight_kg": 82.4
+          }
+        },
+        {
+          "id": "2022-03-02a",
+          "kind": "portal_message",
+          "start": "2022-03-02T20:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "GI visit",
+              "date": "2022-03-02T20:14",
+              "author": "patient",
+              "body": "Just so you know, the GI doctor said I have a small hiatal hernia and put me on omeprazole every morning. Only a few days in and the evenings are already quieter. Do you need anything from me?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: GI visit",
+              "date": "2022-03-03T08:20",
+              "author": "PCP",
+              "body": "Got their letter, thanks. Omeprazole is on your list now. Keep up the before-bed rules too. If you're still having breakthrough in a couple of months, tell me."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-20a",
+          "kind": "imaging",
+          "start": "2022-04-20T08:40",
+          "reason": "screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-04-20T08:40",
+              "text": "Screening tomosynthesis of both breasts, compared with 04/2021 and 03/2020. Scattered areas of fibroglandular density. No suspicious mass, calcification or distortion. Stable appearance.",
+              "conclusion": "BI-RADS 1: Negative."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Screening Mammogram",
+              "date": "2022-04-21T08:10",
+              "author": "radiology",
+              "body": "Breast imaging center report filed: negative, BI-RADS 1. Return in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-24a",
+          "kind": "office_visit",
+          "start": "2022-05-24T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure and reflux follow-up",
+          "vitals": {
+            "bp": [
+              132,
+              75
+            ],
+            "hr": 73,
+            "weight_kg": 82.6
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-05-24T12:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 100
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-05-24T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Follow-up",
+              "date": "2022-05-24T12:15",
+              "author": "PCP",
+              "body": "Interval: GI saw her in February, small sliding hiatal hernia on barium study, started omeprazole 20 every morning. Reflux now rare, maybe once in two weeks after a heavy restaurant meal. Bed wedge helps. Knees unchanged, acetaminophen a few days a week. Pool once a week.\n\nBP per flowsheet, at goal. Weight a bit lower than last fall. Heart regular, lungs clear, no edema.\n\nA/P: HTN controlled on HCTZ/amlodipine - BMP for potassium. GERD with hiatal hernia - good response, continue omeprazole. OA - stable. Annual in October."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-08-09a",
+          "kind": "pharmacy",
+          "start": "2022-08-09T10:05",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill - omeprazole",
+              "date": "2022-08-09T10:05",
+              "author": "MA",
+              "body": "Pharmacy requested renewal of omeprazole 20 mg (original Rx from GI, 3 months). Patient using daily with good effect per May note. 90-day supply with 3 refills sent under PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-25a",
+          "kind": "annual_physical",
+          "start": "2022-10-25T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              126,
+              76
+            ],
+            "hr": 62,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 82.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-10-25T08:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-10-25T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 263
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.56
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-10-25T08:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 209
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 118
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 66
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 126
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 143
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-25T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-10-25T08:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-25T08:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-25T08:46"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-10-25T09:55",
+              "author": "PCP",
+              "body": "56F annual. Reflux quiet on omeprazole. Knees a little worse this year - stairs at the library annex are the problem, and she has been taking acetaminophen nearly daily. Wonders whether she should see someone about them. No bleeding since menopause. Mood good.\n\nMeds: HCTZ 25, amlodipine 5, omeprazole 20, acetaminophen PRN. NKDA.\n\nExam: vitals per flowsheet. Neck no nodes, thyroid normal. Cardiac RRR, no murmur. Lungs clear. Breast exam unremarkable. Abdomen soft, non-tender. Knees: bony enlargement both sides, crepitus, no warmth or effusion. No pedal edema.\n\nPlan:\n- HTN at goal, continue.\n- GERD/hiatal hernia controlled, continue PPI.\n- Knee OA - told her to give it the winter; if still limiting by January we'll get her to orthopedics.\n- Labs today. Flu + bivalent COVID booster given.\n- Mammogram April. Pap/HPV due next year. Colonoscopy 2028."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-01-17a",
+          "kind": "office_visit",
+          "start": "2023-01-17T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "knee pain worse",
+          "vitals": {
+            "bp": [
+              133,
+              72
+            ],
+            "hr": 65,
+            "weight_kg": 81.6
+          },
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-01-17T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-referral-2023",
+              "action": "placed",
+              "order": "Orthopedics referral",
+              "category": "referral",
+              "to": "Orthopedics & Sports Medicine",
+              "reason": "bilateral knee osteoarthritis, worsening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Knees",
+              "date": "2023-01-17T09:45",
+              "author": "PCP",
+              "body": "Knees still giving her trouble, pain 6/10 by the end of a shift. Same pattern as before - mornings and after sitting through a long meeting, better once warmed up. No injury. Acetaminophen most days, helps some. Has kept up the pool. No swelling episodes.\n\nKnees: bony prominence, crepitus, no effusion, no warmth. BP per flowsheet, fine.\n\nA/P: Bilateral knee OA, progressing symptomatically despite acetaminophen and exercise. Referred to orthopedics/sports medicine for further options. Continue acetaminophen; avoid regular oral NSAIDs with her BP."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-02-23a",
+          "kind": "specialist_visit",
+          "start": "2023-02-23T14:20",
+          "service": "Orthopedics & Sports Medicine",
+          "reason": "bilateral knee pain",
+          "medications": [
+            {
+              "drug": "diclofenac sodium 0.01 MG/MG Topical Gel",
+              "action": "start",
+              "sig": "Apply 4 g to each affected knee up to four times daily as needed",
+              "dose": {
+                "value": 4,
+                "unit": "g"
+              },
+              "frequency": "QID PRN",
+              "route": "Topical",
+              "course": "chronic",
+              "reason": "knee osteoarthritis"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Knee X-ray",
+              "performed": "2023-02-23T14:00",
+              "text": "Weight-bearing AP, lateral and Merchant views of both knees, compared with 09/2021. Bilateral joint space narrowing with subchondral sclerosis and osteophyte formation at the joint margins. No fracture, loose body or effusion. Alignment maintained.",
+              "conclusion": "Bilateral knee osteoarthritis."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-referral-2023",
+              "action": "done",
+              "date": "2023-02-23T14:20"
+            },
+            {
+              "id": "pt-referral-2023",
+              "action": "placed",
+              "order": "Physical therapy referral",
+              "category": "referral",
+              "to": "Physical Therapy",
+              "reason": "bilateral knee osteoarthritis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedics & Sports Medicine Consultation",
+              "date": "2023-02-27T11:00",
+              "author": "orthopedics",
+              "body": "ORTHOPAEDICS & SPORTS MEDICINE - NEW CONSULT\nVisit date: 02/23/2023\nReason: bilateral knee pain, referred by her primary care physician\n\nHPI: 57-year-old librarian. Both knees have been getting gradually worse for about two years. They are at their worst in the morning and after long periods seated and ease with gentle activity. No trauma. Her PCP evaluated the knees in September 2021 with radiographs. She uses acetaminophen and does water exercise.\n\nPMH: hypertension, obesity, GERD with hiatal hernia. PSH: none. Meds: hydrochlorothiazide, amlodipine 5 mg, omeprazole, acetaminophen PRN. Allergies: NKDA. Social: never smoker, no alcohol.\n\nExam: knees without erythema or warmth. Bony enlargement at the joint margins bilaterally. Crepitus with flexion and extension. No effusion. Ligamentously stable. Neurovascularly intact distally.\n\nImaging: weight-bearing films today show joint space narrowing, subchondral sclerosis and osteophytes in both knees.\n\nAssessment: bilateral knee osteoarthritis.\n\nPlan:\n- Formal physical therapy for quadriceps and hip strengthening.\n- Diclofenac 1% gel to the knees up to four times a day as needed; topical route keeps systemic exposure low given her blood pressure.\n- Continue acetaminophen and weight management.\n- Injections can be considered later if needed.\n- Return as needed.\n\nOrthopaedics & Sports Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2023-03-09a",
+          "kind": "outside_records",
+          "start": "2023-03-09T16:00",
+          "reason": "physical therapy evaluation",
+          "orders": [
+            {
+              "id": "pt-referral-2023",
+              "action": "done",
+              "date": "2023-03-07T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Physical Therapy Initial Evaluation",
+              "date": "2023-03-09T16:00",
+              "author": "physical therapy",
+              "body": "OUTPATIENT PHYSICAL THERAPY - INITIAL EVALUATION\nDate: 03/07/2023\nDx: bilateral knee OA\n\nSubjective: knee pain with prolonged sitting and stairs, morning stiffness. Goal: get through a full workday and climb the annex stairs without stopping.\nObjective: knee ROM 0-125 bilaterally, end-range discomfort. Quad strength 4/5 bilat, hip abductors 4-/5. Sit-to-stand x5 slowed. Gait mildly antalgic on stairs.\nAssessment: deficits in LE strength and endurance consistent with knee OA.\nPlan: 2x/week for 6 weeks, home exercise program issued (quad sets, straight leg raises, clamshells, step-ups), activity pacing.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-25a",
+          "kind": "imaging",
+          "start": "2023-04-25T09:50",
+          "reason": "screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-04-25T09:50",
+              "text": "Bilateral screening tomosynthesis compared with prior studies through 04/2022. Breast tissue is scattered fibroglandular. No new mass, suspicious calcification or architectural distortion.",
+              "conclusion": "BI-RADS 1: Negative."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Screening Mammogram",
+              "date": "2023-04-26T08:00",
+              "author": "radiology",
+              "body": "Mammogram report received from the breast center. BI-RADS 1. Annual screening."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-06a",
+          "kind": "annual_physical",
+          "start": "2023-06-06T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2023-06-06T08:35",
+              "author": "front desk",
+              "body": "No-show for 8:00 physical. Called, she had it on her calendar for next week and apologized. Rebooked 6/20."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "annual_physical",
+          "start": "2023-06-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              119,
+              80
+            ],
+            "hr": 52,
+            "temp_c": 36.4,
+            "spo2": 98,
+            "weight_kg": 79.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-06-20T08:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 16
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-06-20T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 240
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.54
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-06-20T08:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 202
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 117
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 106
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 138
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-06-20T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-06-20T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-06-20T09:50",
+              "author": "PCP",
+              "body": "57F, physical (rescheduled from 6/6). Finished six weeks of PT in April and kept the home exercises; diclofenac gel before work, acetaminophen less often now. Reflux controlled. Down a few more pounds with the PT and walking. No vaginal bleeding. Sleeping fine.\n\nMeds: HCTZ 25, amlodipine 5, omeprazole 20, diclofenac 1% gel PRN, acetaminophen PRN. NKDA.\n\nExam: vitals per flowsheet, BP at goal. HEENT ok. Heart RRR. Lungs clear. Breasts no masses. Abdomen soft, nontender, no masses felt. Knees crepitus, no effusion. Skin fine.\n\nPlan: continue all. Labs today. Pap/HPV due this fall - she'd like it at a separate visit, will schedule. Mammogram April normal. Flu and updated COVID in the fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 80.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-08-14a",
+          "kind": "portal_message",
+          "start": "2023-08-14T07:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Bleeding",
+              "date": "2023-08-14T07:12",
+              "author": "patient",
+              "body": "This is a little embarrassing. For the past several weeks I've had bleeding like a period again - one stretch was heavy, then nothing for a few weeks, then it started again Saturday. I haven't had anything like this since 2017. Some crampy pressure low down too. Is this something you want to see me for?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Bleeding",
+              "date": "2023-08-14T08:05",
+              "author": "PCP",
+              "body": "Not embarrassing at all, and yes - any bleeding after menopause needs to be looked at. Can you come Wednesday at 10? I'll get you to gynecology quickly after that."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-16a",
+          "kind": "office_visit",
+          "start": "2023-08-16T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "postmenopausal bleeding",
+          "conditions": [
+            {
+              "label": "Postmenopausal bleeding",
+              "action": "diagnosed",
+              "onset": "2023-07-01"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              68
+            ],
+            "hr": 68,
+            "temp_c": 36.5,
+            "weight_kg": 79.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-16T10:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 278
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.44
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-08-16T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral-2023",
+              "action": "placed",
+              "order": "Gynecology referral, urgent",
+              "category": "referral",
+              "to": "Obstetrics & Gynecology",
+              "reason": "postmenopausal bleeding"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Postmenopausal Bleeding",
+              "date": "2023-08-16T11:05",
+              "author": "PCP",
+              "body": "S: Bleeding episodes since roughly early July: a heavy few days, then several weeks of nothing, then another bout starting last weekend. She thought at first her periods were coming back. Dull pelvic ache with it. LMP before this was 2017; no HRT ever. No fevers. No urinary symptoms. Weight steady.\n\nO: Vitals per flowsheet. Abdomen soft, mild lower abdominal tenderness, no mass I can feel through the abdominal wall. Deferred pelvic exam to gynecology, who can see her next week and will do ultrasound in the same visit.\n\nA/P: Postmenopausal bleeding. Needs endometrial evaluation and pelvic imaging. Urgent gyn referral placed, appointment 8/24. CBC today to check she isn't losing too much. Told her to call or text if the bleeding soaks more than a pad an hour or she feels faint."
+            },
+            {
+              "type": "Result Note",
+              "title": "CBC result",
+              "date": "2023-08-17T12:20",
+              "author": "PCP",
+              "body": "Hemoglobin normal, no anemia from the bleeding. Messaged patient."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "specialist_visit",
+          "start": "2023-08-24T09:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "postmenopausal bleeding",
+          "vitals": {
+            "bp": [
+              135,
+              85
+            ]
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-08-24T10:30",
+              "results": [
+                {
+                  "test": "Estradiol",
+                  "loinc": "2243-4",
+                  "unit": "pg/mL",
+                  "value": 450
+                },
+                {
+                  "test": "Follicle Stimulating Hormone",
+                  "value": 7.2
+                },
+                {
+                  "test": "Luteinizing Hormone",
+                  "loinc": "10501-5",
+                  "unit": "mIU/mL",
+                  "value": 3.1
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2023-08-24T10:00",
+              "text": "Transabdominal and transvaginal pelvic ultrasound. Uterus anteverted, normal in size. Left ovary replaced by a 5.0 cm mass with mixed solid and cystic components. Right ovary normal in size and appearance. No free fluid.",
+              "conclusion": "5 cm solid and cystic left ovarian mass."
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral-2023",
+              "action": "done",
+              "date": "2023-08-24T09:30"
+            },
+            {
+              "id": "gynonc-referral-2023",
+              "action": "placed",
+              "order": "Gynecologic oncology referral",
+              "category": "referral",
+              "to": "Gynecologic Oncology",
+              "reason": "left ovarian mass with estrogen excess"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Consultation",
+              "date": "2023-08-28T09:00",
+              "author": "gynecology",
+              "body": "GYNECOLOGY CONSULTATION\nDate of service: 08/24/2023\nReferring: primary care, urgent, for postmenopausal bleeding\n\nMs. Merrill is a 57-year-old G0 who went through menopause in 2017 and has had several weeks of irregular bleeding: heavy episodes separated by weeks with none. She also notes pelvic discomfort. She denies significant weight loss, fevers or night sweats. Hypertension and osteoarthritis are her main medical problems; she has never had surgery and never used hormone therapy.\n\nMedications: hydrochlorothiazide 25 mg, amlodipine 5 mg, omeprazole 20 mg, topical diclofenac, acetaminophen. Allergies: NKDA. Family history: no gynecologic or other cancers.\n\nExam: BP 135/85. BMI 30. External genitalia and vagina normal; small amount of dark blood in the vault. Cervix normal. Bimanual: a mobile mass is palpable in the left adnexa. Uterus not enlarged.\n\nLabs today: estradiol 450 pg/mL (lab reference 12-233), FSH 7.2 mIU/mL (3.5-12.5), LH 3.1 mIU/mL (2.4-12.6). In a woman six years past menopause these are far from expected: estradiol strikingly high and the gonadotropins suppressed.\n\nTransvaginal ultrasound today: 5 cm left ovarian mass with both solid and cystic elements.\n\nImpression: postmenopausal bleeding with a complex left adnexal mass and biochemical estrogen excess, concerning for a hormonally active malignant ovarian neoplasm (sex cord-stromal type most likely).\n\nPlan: referred to gynecologic oncology for surgical management; appointment secured for 09/06. Discussed findings with patient, who understands.\n\nObstetrics & Gynecology"
+            }
+          ],
+          "state": {
+            "weight_kg": 79.7
+          }
+        },
+        {
+          "id": "2023-09-06a",
+          "kind": "specialist_visit",
+          "start": "2023-09-06T13:30",
+          "service": "Gynecologic Oncology",
+          "reason": "left ovarian mass",
+          "orders": [
+            {
+              "id": "gynonc-referral-2023",
+              "action": "done",
+              "date": "2023-09-06T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic Oncology Consultation",
+              "date": "2023-09-08T15:20",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY - NEW PATIENT\nDate: 09/06/2023\n\n57-year-old postmenopausal woman, nulligravid, referred by gynecology for a 5 cm complex left ovarian mass found during evaluation of postmenopausal bleeding, with estradiol 450 and suppressed FSH/LH. Comorbidities: hypertension, obesity, GERD with hiatal hernia, knee osteoarthritis. No prior abdominal surgery. NKDA. Never smoker.\n\nExam: well-appearing. Abdomen obese, soft, nontender, no palpable mass or ascites. Pelvic: left adnexal fullness, mobile; right adnexa unremarkable.\n\nAssessment: hormonally active left ovarian neoplasm, presumed malignant.\n\nPlan: laparoscopic left salpingo-oophorectomy with peritoneal washings and staging biopsies, with frozen section, scheduled 09/19/2023. Risks, benefits and recovery discussed and consent obtained. Pre-op labs per our protocol.\n\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "hospital_admission",
+          "start": "2023-09-19T06:30",
+          "end": "2023-09-20T11:00",
+          "service": "Gynecologic Oncology",
+          "reason": "laparoscopic left salpingo-oophorectomy",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary",
+              "date": "2023-09-21T09:40",
+              "author": "gynecologic oncology",
+              "body": "REGIONAL HOSPITAL - DISCHARGE SUMMARY\nAdmitted: 09/19/2023  Discharged: 09/20/2023\nService: Gynecologic Oncology\n\nProcedure 09/19/2023: laparoscopic left salpingo-oophorectomy, peritoneal washings, omental and peritoneal biopsies. Findings: 5 cm smooth, intact left ovarian mass; right ovary, fallopian tube and uterus grossly normal; no ascites; upper abdomen, diaphragm and bowel surfaces without visible disease. Frozen section: sex cord-stromal tumor. Uterus and right adnexa left in place. EBL 50 mL. No complications.\n\nCourse: overnight observation, pain controlled with oral analgesia, tolerating diet and ambulating, voiding. Discharged home POD 1.\n\nDischarge medications: home medications unchanged (hydrochlorothiazide 25 mg daily, amlodipine 5 mg daily, omeprazole 20 mg daily, acetaminophen as needed). Allergies: NKDA.\n\nFollow-up: final pathology to be reviewed by phone; post-op visit in gynecologic oncology in 2 weeks. Lifting limit 10 lb for 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "outside_records",
+          "start": "2023-09-26T14:10",
+          "reason": "surgical pathology",
+          "conditions": [
+            {
+              "label": "Malignant neoplasm of ovary",
+              "action": "diagnosed",
+              "onset": "2023-08-24",
+              "note": "adult granulosa cell tumor, left ovary, FIGO IA"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-09-19T09:15",
+              "text": "A. Left ovary and fallopian tube: adult granulosa cell tumor, 5.0 cm, confined to the ovary; capsule intact, no surface involvement. Fallopian tube without tumor. B. Peritoneal washings: negative for malignant cells. C. Omental biopsy: no tumor. D. Peritoneal biopsies (pelvic, paracolic): no tumor.",
+              "conclusion": "Adult granulosa cell tumor of the left ovary, FIGO stage IA.",
+              "issued": "2023-09-25T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Surgical pathology - left salpingo-oophorectomy",
+              "date": "2023-09-26T14:10",
+              "author": "pathology",
+              "body": "Pathology report from the hospital received and filed to the chart. Adult granulosa cell tumor, left ovary, 5.0 cm, capsule intact; washings and biopsies negative; FIGO IA. Problem list updated. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-28a",
+          "kind": "telephone",
+          "start": "2023-09-28T17:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call to patient",
+              "date": "2023-09-28T17:45",
+              "author": "PCP",
+              "body": "Called her after seeing the pathology. She had already heard from gyn onc: granulosa cell tumor, confined to the ovary, no further treatment for now, surveillance with exams and estradiol levels. Incisions fine, mild soreness, off everything but acetaminophen. Bleeding has stopped. She sounded relieved and tired. Will see her in two weeks for a check and her flu shot."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "office_visit",
+          "start": "2023-10-10T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-operative check",
+          "conditions": [
+            {
+              "label": "Postmenopausal bleeding",
+              "action": "resolved"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              69
+            ],
+            "hr": 66,
+            "temp_c": 36.7,
+            "weight_kg": 80.2
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-10-10T14:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T15:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T15:06"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - After Surgery",
+              "date": "2023-10-10T15:30",
+              "author": "PCP",
+              "body": "Three weeks after laparoscopic left salpingo-oophorectomy for what proved to be an adult granulosa cell tumor, stage IA. Saw gyn onc last week, incisions healed, plan is surveillance every 3 months to start, with exam and estradiol. No bleeding since surgery. Back at work part days. Some worry, understandably; PHQ-2 1, sleeping ok.\n\nVitals per flowsheet. Port sites healed. Abdomen soft, nontender. No edema.\n\nA/P\n1. Adult granulosa cell tumor, left ovary, IA - s/p LSO 9/19. Surveillance with gyn onc. Postmenopausal bleeding resolved after surgery.\n2. HTN - at goal, continue.\n3. GERD/hiatal hernia, OA - stable.\n4. Flu and updated COVID today. Pap/HPV: gyn onc will be examining her; we'll do the screening Pap at her next physical.\nRTC 4-6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "specialist_visit",
+          "start": "2023-12-12T10:00",
+          "service": "Gynecologic Oncology",
+          "reason": "surveillance",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-12-12T10:30",
+              "results": [
+                {
+                  "test": "Estradiol",
+                  "loinc": "2243-4",
+                  "unit": "pg/mL",
+                  "value": 14
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic Oncology Follow-up",
+              "date": "2023-12-14T13:00",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY - SURVEILLANCE\nDate: 12/12/2023\nDiagnosis: adult granulosa cell tumor, left ovary, FIGO IA, s/p laparoscopic LSO and staging 09/19/2023.\n\nInterval: no bleeding, no pain, appetite normal.\nMeds: HCTZ, amlodipine, omeprazole, acetaminophen, topical diclofenac. NKDA.\nExam: abdomen soft, incisions well healed. Pelvic: cervix normal, uterus small, no adnexal mass on either side.\nLabs: estradiol 14 pg/mL, back in the postmenopausal range.\n\nImpression: no evidence of disease.\nPlan: surveillance exam and estradiol every 3 months for the first two years.\n\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "office_visit",
+          "start": "2024-02-13T13:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "abdominal pain, bloating, weight loss",
+          "vitals": {
+            "bp": [
+              126,
+              86
+            ],
+            "hr": 68,
+            "temp_c": 36.5,
+            "weight_kg": 76.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-02-13T13:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.7
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-02-13T13:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 241
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.48
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-02-13T13:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2024",
+              "action": "placed",
+              "order": "Gastroenterology referral, urgent",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "abdominal pain, change in bowel habit, rectal bleeding, weight loss"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Abdominal Symptoms",
+              "date": "2024-02-13T14:20",
+              "author": "PCP",
+              "body": "S: About three months of low abdominal pain that has slowly gotten worse, with bloating and feeling full after a few bites. Bowels have changed - constipated now, which is new for her, and a few times bright red blood on the paper or in the bowl. Down about 10 pounds since the fall without trying. No fever. No vomiting. Reflux quiet. Last gyn onc check in December was clear and estradiol normal.\n\nO: Wt per flowsheet, 10 lb below October. Abdomen soft, not distended, mildly tender throughout the lower abdomen, no guarding. Rectal deferred to GI.\n\nA/P: Lower abdominal pain, early satiety, new constipation, hematochezia and unintended weight loss in a woman five months out from an ovarian granulosa cell tumor. Needs GI evaluation and the pelvis re-imaged. Urgent GI referral (2/27). Messaged her gyn oncologist so they are aware ahead of her next surveillance visit. CMP and CBC today."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab result",
+              "date": "2024-02-14T11:40",
+              "author": "PCP",
+              "body": "CBC and CMP normal - no anemia, albumin and liver tests fine. Patient told via portal."
+            }
+          ],
+          "state": {
+            "weight_kg": 75.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-27a",
+          "kind": "specialist_visit",
+          "start": "2024-02-27T10:40",
+          "service": "Gastroenterology",
+          "reason": "abdominal pain, weight loss, hematochezia",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-02-27T11:30",
+              "results": [
+                {
+                  "test": "Cancer Antigen 125",
+                  "loinc": "10334-1",
+                  "unit": "U/mL",
+                  "value": 250
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2024-02-27T12:15",
+              "text": "Transvaginal pelvic ultrasound. Left ovary surgically absent. Complex right adnexal mass measuring 6.0 cm with solid and cystic components. Uterus normal in size. No free fluid.",
+              "conclusion": "6 cm complex right adnexal mass."
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2024",
+              "action": "done",
+              "date": "2024-02-27T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "date": "2024-03-01T09:30",
+              "author": "gastroenterology",
+              "body": "GASTROENTEROLOGY - CONSULT NOTE\nDate of visit: 02/27/2024\n\nMs. Merrill, now 58, last saw us in 2022 for reflux with a hiatal hernia, which remains controlled on omeprazole. She returns on her PCP's referral with progressive lower abdominal pain, bloating and early satiety over three months, a 10-pound unintended weight loss, new constipation and occasional hematochezia. No fever, nausea or vomiting. Her ovarian granulosa cell tumor was diagnosed about five months ago (laparoscopic left salpingo-oophorectomy 09/2023, stage IA).\n\nMeds: hydrochlorothiazide 25 mg, amlodipine 5 mg, omeprazole 20 mg, acetaminophen, topical diclofenac. NKDA. Never smoker, no alcohol. No family history of GI or gynecologic cancers.\n\nExam: abdomen soft, not distended, mildly tender diffusely, no rebound or guarding. Pelvic exam reveals a fixed, irregular pelvic mass.\n\nCA-125 today 250 U/mL (reference 0-35). Same-day transvaginal ultrasound: 6 cm complex adnexal mass on the right with solid and cystic areas.\n\nImpression: her symptoms are most likely explained by recurrent pelvic disease.\n\nPlan: I have spoken directly with her gynecologic oncologist, who will see her next week. Further GI workup deferred pending their evaluation. Continue omeprazole.\n\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-05a",
+          "kind": "specialist_visit",
+          "start": "2024-03-05T14:00",
+          "service": "Gynecologic Oncology",
+          "reason": "recurrent ovarian tumor",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic Oncology Follow-up",
+              "date": "2024-03-07T12:10",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY\nDate: 03/05/2024\n\nAdult granulosa cell tumor, left ovary, IA, s/p laparoscopic LSO 09/19/2023. Now with three months of pelvic pain, bloating, early satiety, constipation and 10 lb weight loss. GI evaluation 02/27: fixed irregular pelvic mass, CA-125 250, 6 cm complex right adnexal mass on ultrasound.\n\nPSH: laparoscopic left salpingo-oophorectomy with staging, 09/2023. Meds: HCTZ 25, amlodipine 5, omeprazole 20, acetaminophen, diclofenac gel. NKDA.\n\nExam: abdomen soft, mildly tender in the lower quadrants. Pelvic: firm, fixed right adnexal mass.\n\nImpression: recurrent disease in the right adnexa.\n\nPlan: carboplatin AUC 5 and paclitaxel 175 mg/m2 every 21 days for six cycles at our infusion center, starting 03/14/2024. Chemotherapy teaching completed; antiemetics and premedications per protocol from our pharmacy. Labs before each cycle. Reassess with exam, CA-125 and ultrasound after cycle 6.\n\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-21a",
+          "kind": "telephone",
+          "start": "2024-03-21T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Check-in after first chemo",
+              "date": "2024-03-21T11:30",
+              "author": "RN",
+              "body": "Called per PCP to check in one week after cycle 1. Tired for three days, some queasiness controlled with the oncology antiemetics, eating small meals. No fever. Aware to call the oncology triage line for temp 100.4 or higher. Taking her BP meds. Has taken leave from work through the summer. Has rides arranged to infusions. No needs from us right now."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-30a",
+          "kind": "telehealth_visit",
+          "start": "2024-04-30T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "check-in during chemotherapy",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2024-04-30T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit - During Chemotherapy",
+              "date": "2024-04-30T16:35",
+              "author": "PCP",
+              "body": "Video, she is at home. Three cycles of carboplatin/paclitaxel done. Fatigue the week after each, hair thinning, tingling fingertips that oncology is watching. Pelvic pain is less. Bowels better with fiber. Home BP 112-128/68-78; some lightheadedness standing quickly in the days after infusion. Eating less.\n\nA/P: Recurrent granulosa cell tumor on chemo - managed by gyn onc. HTN - running lower with less intake; continue both agents for now but told her she may skip the HCTZ on a day she is lightheaded or not drinking well, and to text me readings under 100 systolic. GERD controlled. Mammogram is due in May; fine to go ahead between cycles."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "imaging",
+          "start": "2024-05-21T08:20",
+          "reason": "screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-05-21T08:20",
+              "text": "Bilateral screening tomosynthesis, compared with prior exams through 04/2023. Scattered fibroglandular density. No suspicious findings in either breast.",
+              "conclusion": "BI-RADS 1: Negative."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Screening Mammogram",
+              "date": "2024-05-22T08:00",
+              "author": "radiology",
+              "body": "Breast center report received. BI-RADS 1, negative."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-06a",
+          "kind": "specialist_visit",
+          "start": "2024-08-06T09:00",
+          "service": "Gynecologic Oncology",
+          "reason": "end of treatment assessment",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-08-06T09:30",
+              "results": [
+                {
+                  "test": "Cancer Antigen 125",
+                  "loinc": "10334-1",
+                  "unit": "U/mL",
+                  "value": 17
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2024-08-06T10:00",
+              "text": "Transvaginal ultrasound. Uterus normal in size with a thin endometrial stripe. Left ovary surgically absent. Right adnexa without mass; the previously seen complex mass is no longer identified. No free fluid.",
+              "conclusion": "No adnexal mass."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic Oncology - End of Treatment",
+              "date": "2024-08-08T14:00",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY\nDate: 08/06/2024\n\nRecurrent adult granulosa cell tumor (right adnexa), s/p six cycles carboplatin/paclitaxel completed 06/27/2024. Tolerated with fatigue and mild fingertip neuropathy, improving. Pelvic pain resolved; bowels back to normal; appetite returning.\n\nExam: abdomen soft, nontender. Pelvic: no palpable adnexal mass.\nCA-125 17 U/mL. Ultrasound today: no adnexal mass.\n\nImpression: complete clinical response.\nPlan: surveillance every 3 months with exam and labs.\n\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "office_visit",
+          "start": "2024-09-17T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              139,
+              84
+            ],
+            "hr": 69,
+            "spo2": 98,
+            "weight_kg": 77.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-09-17T11:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-17T11:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 267
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.48
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-09-17T10:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-17T11:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-17T11:01"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Follow-up",
+              "date": "2024-09-17T11:30",
+              "author": "PCP",
+              "body": "First in-person visit since chemo. Gyn onc in August: complete response, CA-125 17, ultrasound clear. Back at the library full time since Labor Day. Energy most of the way back, fingertip tingling nearly gone. Appetite back, has regained some weight. Hasn't needed to skip HCTZ in months.\n\nMeds: HCTZ 25, amlodipine 5, omeprazole 20, acetaminophen PRN, diclofenac gel PRN. NKDA.\n\nBP per flowsheet, back at goal. Heart regular. Lungs clear. Abdomen soft, nontender. No edema. Knees unchanged.\n\nA/P: HTN controlled - continue. Recurrent granulosa cell tumor in remission after chemo - gyn onc surveillance. Counts and BMP today to make sure everything has recovered. Flu and COVID today. PHQ-2 0. Physical in February; Pap due then."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab result",
+              "date": "2024-09-18T13:00",
+              "author": "PCP",
+              "body": "Blood counts recovered to normal; kidney function and potassium fine."
+            }
+          ],
+          "state": {
+            "weight_kg": 77.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "specialist_visit",
+          "start": "2024-11-19T11:20",
+          "service": "Gynecologic Oncology",
+          "reason": "surveillance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic Oncology Surveillance",
+              "date": "2024-11-21T10:00",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY - SURVEILLANCE\nDate: 11/19/2024\n\nRecurrent adult granulosa cell tumor, in complete response after carboplatin/paclitaxel (completed 06/2024). Feels well, no pain, no bleeding, no bowel change.\nExam: abdomen soft, no mass. Pelvic: no palpable mass; uterus normal size.\nPlan: continue surveillance every 3 months.\nAllergies: NKDA.\n\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "pharmacy",
+          "start": "2024-12-10T09:30",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill request",
+              "date": "2024-12-10T09:30",
+              "author": "MA",
+              "body": "Pharmacy e-request: hydrochlorothiazide 25 mg, amlodipine 5 mg, omeprazole 20 mg, 90 days each. Seen 9/17, BP at goal, BMP normal. Sent with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-04a",
+          "kind": "annual_physical",
+          "start": "2025-02-04T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "conditions": [
+            {
+              "label": "Postmenopausal bleeding",
+              "action": "diagnosed",
+              "onset": "2025-01-05"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              83
+            ],
+            "hr": 72,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 79.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-02-04T09:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-04T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 236
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.54
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-02-04T09:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 200
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 114
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 63
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 117
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 137
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-04T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2025-02-04T09:05",
+              "text": "Liquid-based cervical cytology. Specimen adequate, transformation zone component present. Negative for intraepithelial lesion or malignancy. Endometrial cells present in a woman 45 years of age or older. High-risk HPV: not detected.",
+              "conclusion": "NILM; endometrial cells present; HPV negative.",
+              "issued": "2025-02-10T15:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-02-04T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-02-04T10:20",
+              "author": "PCP",
+              "body": "59F, annual. Overall feeling well, working full time. Mentions light spotting off and on for about a month - not much, no pain. Has not had any bleeding since the 2023 surgery until this. Next gyn onc surveillance visit is in March. Reflux quiet. Knees same; gel helps.\n\nMeds: HCTZ 25, amlodipine 5, omeprazole 20, acetaminophen PRN, diclofenac gel PRN. NKDA.\n\nExam: BP per flowsheet, at goal. Heart regular, no murmur. Lungs clear. Breasts without masses or nodes. Abdomen soft, no mass. Pelvic: normal external genitalia, small amount of old blood at the os, cervix appears normal; Pap with HPV collected. Bimanual: uterus not enlarged, no adnexal mass. Knees crepitus. No edema.\n\nPlan:\n1. Spotting after menopause, history of granulosa cell tumor - Pap/HPV done today as screening was due. Will speak to gyn onc and push for an earlier gynecology look and endometrial sampling rather than waiting for March.\n2. HTN at goal - continue, labs.\n3. Health maintenance: mammogram May 2024 normal, next May. Colonoscopy 2028. Vaccines up to date for season."
+            }
+          ],
+          "state": {
+            "weight_kg": 79.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "portal_message",
+          "start": "2025-02-11T12:30",
+          "orders": [
+            {
+              "id": "gyn-referral-2025",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Obstetrics & Gynecology",
+              "reason": "postmenopausal spotting, endometrial cells on Pap"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Pap result",
+              "date": "2025-02-11T12:30",
+              "author": "PCP",
+              "body": "Bernice, the Pap itself showed no abnormal cervical cells and HPV was negative. It did show endometrial cells - cells from the lining of the uterus - which in someone past menopause, together with the spotting, means the lining needs to be sampled. Gynecology has an opening March 3 and I've sent the referral. Your other labs were all fine."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your Pap result",
+              "date": "2025-02-11T18:02",
+              "author": "patient",
+              "body": "Thank you. I'll be there on the 3rd. Trying not to read too much into it."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-03a",
+          "kind": "specialist_visit",
+          "start": "2025-03-03T13:40",
+          "service": "Obstetrics & Gynecology",
+          "reason": "postmenopausal spotting",
+          "vitals": {
+            "bp": [
+              132,
+              86
+            ]
+          },
+          "orders": [
+            {
+              "id": "gyn-referral-2025",
+              "action": "done",
+              "date": "2025-03-03T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Consultation",
+              "date": "2025-03-05T08:45",
+              "author": "gynecology",
+              "body": "GYNECOLOGY\nDate of visit: 03/03/2025\n\nReferred for intermittent vaginal spotting for two months, painless, found at her annual exam; Pap 02/04/2025 with endometrial cells present (NILM, HPV negative). She had no bleeding from her 2023 surgery until this. History of adult granulosa cell tumor: laparoscopic left salpingo-oophorectomy 09/2023 (IA), right adnexal recurrence treated with carboplatin/paclitaxel in 2024 with complete response. Also hypertension, obesity, osteoarthritis, hiatal hernia. Never used hormone therapy. No family history of cancer.\n\nMeds: hydrochlorothiazide 25 mg, amlodipine 5 mg, omeprazole 20 mg, acetaminophen, diclofenac gel. NKDA.\n\nExam: BP 132/86. BMI 30. Uterus normal in size, without masses or tenderness. Adnexa not palpable. Cervix normal.\nMost recent mammogram (05/2024) normal.\n\nProcedure: office endometrial biopsy with a pipelle after informed consent; adequate tissue obtained, tolerated well.\n\nPlan: will call with pathology and coordinate with her gynecologic oncologist.\n\nObstetrics & Gynecology"
+            }
+          ],
+          "state": {
+            "weight_kg": 79.7
+          }
+        },
+        {
+          "id": "2025-03-10a",
+          "kind": "outside_records",
+          "start": "2025-03-10T15:30",
+          "reason": "endometrial biopsy pathology",
+          "conditions": [
+            {
+              "label": "Malignant neoplasm of endometrium",
+              "action": "diagnosed",
+              "onset": "2025-03-03",
+              "note": "endometrioid adenocarcinoma, FIGO grade 1"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-03-03T14:05",
+              "text": "Endometrium, pipelle biopsy: endometrioid adenocarcinoma, FIGO grade 1, in a background of proliferative-pattern endometrium. Specimen adequate.",
+              "conclusion": "Endometrioid adenocarcinoma, FIGO grade 1.",
+              "issued": "2025-03-07T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Endometrial biopsy pathology",
+              "date": "2025-03-10T15:30",
+              "author": "pathology",
+              "body": "Endometrial biopsy report from gynecology filed. Endometrioid adenocarcinoma, FIGO grade 1. Added to problem list. Patient already informed by gynecology, gyn onc appointment 3/20. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-20a",
+          "kind": "specialist_visit",
+          "start": "2025-03-20T10:30",
+          "service": "Gynecologic Oncology",
+          "reason": "endometrial carcinoma",
+          "medications": [
+            {
+              "drug_text": "megestrol acetate 40 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (80 mg) by mouth twice daily",
+              "dose": {
+                "value": 80,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "endometrial carcinoma, grade 1"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic Oncology Consultation",
+              "date": "2025-03-21T16:00",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY\nDate: 03/20/2025\n\nNew diagnosis: grade 1 endometrioid adenocarcinoma on endometrial biopsy 03/03/2025, in the setting of a known estrogen-producing adult granulosa cell tumor (left ovary 2023, right adnexal recurrence 2024, complete response to chemotherapy). PSH: laparoscopic LSO and staging 09/2023.\n\nExam today: abdomen soft. Pelvic: uterus normal size, mobile; no adnexal mass.\n\nDiscussion: recommended total hysterectomy with removal of the right adnexa as definitive treatment. After a long conversation she does not want another operation at this point and prefers hormonal treatment with close sampling. Grade 1 disease makes a progestin approach reasonable; we went over the chance of persistence and the need to proceed to surgery if it fails.\n\nPlan:\n- Megestrol acetate 80 mg by mouth twice daily.\n- Repeat endometrial sampling in about 6 months.\n- Continue granulosa surveillance every 3 months.\n- Reviewed side effects including fluid retention, appetite increase and clot risk; call with any leg swelling or breathlessness.\nAllergies: NKDA.\n\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-24a",
+          "kind": "telephone",
+          "start": "2025-03-24T12:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP call",
+              "date": "2025-03-24T12:30",
+              "author": "PCP",
+              "body": "Spoke with her about the endometrial cancer and the gyn onc plan. She chose megestrol over surgery for now and feels settled with the decision; knows surgery is the backup. Added megestrol to her list. Reviewed: watch BP and weight, leg swelling. She'll send home BP readings in a month. Mammogram due May."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "imaging",
+          "start": "2025-05-20T09:00",
+          "reason": "screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-05-20T09:00",
+              "text": "Bilateral screening tomosynthesis compared with 05/2024 and earlier. Scattered fibroglandular density. No suspicious mass, calcification or distortion.",
+              "conclusion": "BI-RADS 1: Negative."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Screening Mammogram",
+              "date": "2025-05-21T08:00",
+              "author": "radiology",
+              "body": "Mammogram report filed, BI-RADS 1."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "office_visit",
+          "start": "2025-06-10T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              136,
+              79
+            ],
+            "hr": 63,
+            "weight_kg": 81.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-10T15:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.69
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 100
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-06-10T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Hypertension",
+              "date": "2025-06-10T15:45",
+              "author": "PCP",
+              "body": "On megestrol 80 mg BID since late March. Appetite up, weight up about 3 lb. Spotting stopped within a few weeks. No leg swelling, no breathlessness. Home BP readings 120s-130s/70s-80s. Gyn onc surveillance in May unremarkable per her. Reflux ok. Knees ok.\n\nBP per flowsheet. Heart regular, lungs clear, calves soft and nontender, no edema.\n\nA/P: HTN controlled on HCTZ/amlodipine - BMP today. Endometrial cancer on progestin, gyn onc following. Granulosa cell tumor surveillance ongoing. Flu shot in the fall. Follow-up 6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 81.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "specialist_visit",
+          "start": "2025-08-26T11:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "bleeding and increasing abdominal girth",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-26T11:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.15
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-26T11:40",
+              "results": [
+                {
+                  "test": "Cancer Antigen 125",
+                  "loinc": "10334-1",
+                  "unit": "U/mL",
+                  "value": 35
+                },
+                {
+                  "test": "Estradiol",
+                  "loinc": "2243-4",
+                  "unit": "pg/mL",
+                  "value": 450
+                },
+                {
+                  "test": "Follicle Stimulating Hormone",
+                  "value": 7.1
+                },
+                {
+                  "test": "Luteinizing Hormone",
+                  "loinc": "10501-5",
+                  "unit": "mIU/mL",
+                  "value": 6.9
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2025-08-26T12:10",
+              "text": "Transvaginal and transabdominal ultrasound. Left ovary surgically absent. Solid right ovarian mass with internal vascular flow. Uterus normal in size. No free fluid.",
+              "conclusion": "Solid vascular right ovarian mass."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Follow-up",
+              "date": "2025-08-28T09:15",
+              "author": "gynecology",
+              "body": "GYNECOLOGY\nDate of visit: 08/26/2025\n\n59-year-old seen for ongoing oncologic surveillance. History: adult granulosa cell tumor (left ovary, LSO 09/2023), right adnexal recurrence with complete response to carboplatin/paclitaxel in 2024; grade 1 endometrioid endometrial carcinoma on megestrol since 03/2025. Menopause eight years ago. Bleeding has returned recently, irregular, and over the last few months her abdomen has gotten bigger with a feeling of pressure in the pelvis. No significant weight loss, fevers or night sweats.\n\nMeds: hydrochlorothiazide, amlodipine 5 mg, omeprazole, megestrol 80 mg twice daily, acetaminophen, diclofenac gel. NKDA. No family history of cancer.\n\nExam: abdomen distended; palpable nontender mass in the lower abdomen. Pelvic: a 10 cm mobile, smooth, firm mass arising from the pelvis.\n\nLabs: hemoglobin 12.5 g/dL, platelets 250 K/uL, CA-125 35 U/mL (normal under 35), estradiol 450 pg/mL (postmenopausal range under 20), FSH 7.1 mIU/mL (postmenopausal 25.8-134.8), LH 6.9 mIU/mL (postmenopausal 7.7-58.5).\n\nTransvaginal ultrasound: solid ovarian mass with internal blood flow.\n\nImpression: findings consistent with a second recurrence of the estrogen-secreting granulosa cell tumor.\nPlan: expedited return to gynecologic oncology (seen 09/04). Continue megestrol until then.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-04a",
+          "kind": "specialist_visit",
+          "start": "2025-09-04T13:00",
+          "service": "Gynecologic Oncology",
+          "reason": "recurrent granulosa cell tumor",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic Oncology Follow-up",
+              "date": "2025-09-05T17:10",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY\nDate: 09/04/2025\n\nSecond recurrence of adult granulosa cell tumor: 10 cm solid right ovarian mass, estradiol 450 (08/26). Prior: LSO 09/2023 (IA); right adnexal recurrence 02/2024, complete response to six cycles carboplatin/paclitaxel ending 06/2024. Also grade 1 endometrioid endometrial carcinoma on megestrol since 03/2025.\n\nExam: abdomen distended, firm lower abdominal mass, nontender.\n\nPlan: after discussion she agrees to resume chemotherapy - carboplatin AUC 5 and paclitaxel 175 mg/m2 every 21 days for six cycles, starting 09/11/2025, given the prior response more than 12 months ago. Continue megestrol for the endometrium. Reassess after cycle 6; surgery remains on the table and she understands it may be needed.\nAllergies: NKDA.\n\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "portal_message",
+          "start": "2025-09-16T21:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Back on chemo",
+              "date": "2025-09-16T21:05",
+              "author": "patient",
+              "body": "Wanted you to hear it from me - the tumor came back and I started the same chemo again last Thursday. I know the routine this time. Should I get my flu shot before the next round or wait?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Back on chemo",
+              "date": "2025-09-17T07:50",
+              "author": "PCP",
+              "body": "I'm sorry, Bernice. Thank you for telling me. Yes to the flu shot - best timed between cycles, about a week before the next one. The nurse can do it here and check your blood pressure at the same time. Front desk will reach out."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine and BP check",
+          "vitals": {
+            "bp": [
+              130,
+              81
+            ],
+            "hr": 61,
+            "temp_c": 36.6,
+            "weight_kg": 81.2
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T09:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T09:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T09:31"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2025-10-14T09:50",
+              "author": "RN",
+              "body": "Between chemo cycles 2 and 3, oncology okayed vaccines this week. Afebrile. Flu (L arm) and current COVID (R arm) given, VIS reviewed, waited 15 min, no reaction. BP in range today. Reports fatigue but eating. Reminded to use oncology triage line for fever."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "telehealth_visit",
+          "start": "2025-11-18T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "check-in during chemotherapy",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-11-18T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2025-11-18T12:55",
+              "author": "PCP",
+              "body": "Video from home. Four cycles done. Tolerating about like last year - tired, some nausea the first days, neuropathy has not come back much. Abdomen still feels full; oncology says the mass has not grown. Home BP 116-130/70-80. Still on megestrol. No leg swelling.\n\nA/P: HTN controlled, continue. Oncology care per gyn onc. GERD fine on omeprazole. Will see her after chemo finishes."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-27a",
+          "kind": "specialist_visit",
+          "start": "2026-01-27T14:30",
+          "service": "Gynecologic Oncology",
+          "reason": "end of treatment assessment",
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2026-01-27T15:00",
+              "text": "Transvaginal and transabdominal ultrasound. Left ovary surgically absent. Solid right ovarian mass with internal vascularity, approximately 10 cm, similar in size to 08/2025. Uterus normal in size. No free fluid.",
+              "conclusion": "Right ovarian mass, about 10 cm, unchanged."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic Oncology - End of Treatment",
+              "date": "2026-01-29T11:00",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY\nDate: 01/27/2026\n\nSecond recurrence of adult granulosa cell tumor, right ovary. Six cycles carboplatin/paclitaxel completed 01/08/2026. Also grade 1 endometrioid endometrial carcinoma on megestrol 80 mg twice daily since 03/2025.\n\nTolerated chemotherapy with fatigue and nausea, no admissions.\nExam: firm lower abdominal mass, nontender, similar to September.\nUltrasound: solid right ovarian mass about 10 cm, essentially unchanged.\n\nImpression: stable disease without meaningful response this time.\nPlan: gynecology to repeat endometrial sampling as planned; return in about six weeks to discuss surgery.\nAllergies: NKDA.\n\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-02a",
+          "kind": "specialist_visit",
+          "start": "2026-03-02T10:10",
+          "service": "Obstetrics & Gynecology",
+          "reason": "irregular bleeding, pelvic mass follow-up",
+          "vitals": {
+            "bp": [
+              135,
+              85
+            ]
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-02T10:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.34
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-02T10:50",
+              "results": [
+                {
+                  "test": "Estradiol",
+                  "loinc": "2243-4",
+                  "unit": "pg/mL",
+                  "text": "Elevated"
+                },
+                {
+                  "test": "Testosterone, Total",
+                  "text": "Normal"
+                },
+                {
+                  "test": "Cancer Antigen 125",
+                  "loinc": "10334-1",
+                  "unit": "U/mL",
+                  "text": "Normal"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2026-03-02T11:20",
+              "text": "Transvaginal ultrasound. Left ovary surgically absent. Solid right ovarian mass measuring 10 cm with internal blood flow. Endometrium thickened. Uterus normal in size. No free fluid.",
+              "conclusion": "10 cm solid vascular right ovarian mass; thickened endometrium."
+            },
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-03-02T11:45",
+              "text": "Endometrium, pipelle biopsy: thickened endometrium with progestin-related stromal changes. No hyperplasia with atypia. No evidence of malignancy.",
+              "conclusion": "No malignancy.",
+              "issued": "2026-03-06T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Follow-up",
+              "date": "2026-03-09T08:30",
+              "author": "gynecology",
+              "body": "GYNECOLOGY\nDate of visit: 03/02/2026\n\nFollow-up of known recurrent ovarian granulosa cell tumor and grade 1 endometrial carcinoma on megestrol. Irregular uterine bleeding for about six months, abdomen continuing to enlarge, a full feeling in the pelvis and occasional pelvic pain. Finished chemotherapy in January.\n\nPSH: laparoscopic left salpingo-oophorectomy with staging 09/2023. Meds: hydrochlorothiazide 25 mg daily, amlodipine 5 mg daily, megestrol 80 mg twice daily, omeprazole, acetaminophen, diclofenac gel. NKDA. No family history of cancer.\n\nExam: BP 135/85. Palpable nontender mass in the lower abdomen. Pelvic: firm, irregularly shaped mass arising from the pelvis. Breasts: mild tenderness on both sides, no discrete mass, no nipple discharge.\n\nLabs: hemoglobin 13.2 g/dL, platelets 250 K/uL; estradiol elevated; testosterone normal; CA-125 normal.\nTransvaginal ultrasound: 10 cm solid ovarian mass with internal blood flow.\n\nProcedure: endometrial biopsy for the bleeding. Pathology (final 03/06): thickened endometrium, no evidence of malignancy - the carcinoma has not persisted on progestin.\n\nPlan: results sent to gynecologic oncology, appointment 03/12 to plan surgery.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-12a",
+          "kind": "specialist_visit",
+          "start": "2026-03-12T09:40",
+          "service": "Gynecologic Oncology",
+          "reason": "surgical planning",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic Oncology - Surgical Planning",
+              "date": "2026-03-13T14:15",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY\nDate: 03/12/2026\n\nRecurrent adult granulosa cell tumor, 10 cm right ovarian mass, stable after second-line carboplatin/paclitaxel; ongoing estrogen production with bleeding and breast tenderness. Endometrial biopsy 03/02: no malignancy on megestrol.\n\nShe is now ready for surgery. Plan: exploratory laparotomy, total abdominal hysterectomy, right salpingo-oophorectomy and resection of the pelvic mass, scheduled 04/07/2026. Consent signed. Requesting pre-operative medical evaluation from her primary care physician.\nAllergies: NKDA.\n\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-26a",
+          "kind": "office_visit",
+          "start": "2026-03-26T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pre-operative evaluation",
+          "vitals": {
+            "bp": [
+              130,
+              82
+            ],
+            "hr": 59,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 81.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-26T09:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-26T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 267
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-26T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Pre-operative Evaluation",
+              "date": "2026-03-26T10:10",
+              "author": "PCP",
+              "body": "Pre-op evaluation requested by gyn onc for laparotomy, TAH, RSO and resection of pelvic mass on 4/7.\n\nFunctional capacity: climbs two flights at the library without stopping, walks 30 minutes, >4 METs. No chest pain, dyspnea, orthopnea, palpitations or syncope. No personal or family bleeding or clotting history. Prior anesthesia (2023 laparoscopy) uneventful. Never smoker.\n\nMeds: HCTZ 25, amlodipine 5, omeprazole 20, megestrol 80 BID, acetaminophen PRN, diclofenac gel PRN. NKDA.\n\nExam: vitals per flowsheet, BP at goal. Airway unremarkable. Heart RRR, no murmur. Lungs clear. Abdomen with firm lower abdominal mass, nontender. Calves soft, no edema.\n\nA/P: 60F, low-risk patient for elevated-risk surgery. HTN controlled. RCRI 0. No further cardiac testing needed.\n- Hold HCTZ the morning of surgery; take amlodipine and omeprazole with a sip of water.\n- Megestrol per surgical team (carries VTE risk; they will advise when to stop and plan prophylaxis).\n- BMP, CBC today; letter to surgeon."
+            },
+            {
+              "type": "Letter",
+              "title": "Pre-operative clearance letter",
+              "date": "2026-03-27T09:00",
+              "author": "PCP",
+              "body": "To the gynecologic oncology surgical team: I saw Ms. Merrill on 03/26/2026 for pre-operative evaluation. Blood pressure is controlled on hydrochlorothiazide and amlodipine; no cardiopulmonary symptoms; good functional capacity; RCRI 0. CBC and BMP are within normal limits. She is medically optimized for the planned procedure. I've advised holding hydrochlorothiazide the morning of surgery; megestrol timing and thromboprophylaxis I've left to you. Allergies: none known. Please call with any questions. Primary care physician"
+            }
+          ],
+          "state": {
+            "weight_kg": 81.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-07a",
+          "kind": "hospital_admission",
+          "start": "2026-04-07T06:00",
+          "end": "2026-04-10T12:30",
+          "service": "Gynecologic Oncology",
+          "reason": "laparotomy, hysterectomy, right salpingo-oophorectomy",
+          "medications": [
+            {
+              "drug_text": "megestrol acetate 40 MG Oral Tablet",
+              "action": "stop",
+              "reason": "definitive surgery"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary",
+              "date": "2026-04-13T10:20",
+              "author": "gynecologic oncology",
+              "body": "REGIONAL HOSPITAL - DISCHARGE SUMMARY\nAdmitted 04/07/2026, discharged 04/10/2026\nService: Gynecologic Oncology\n\nDiagnoses: recurrent adult granulosa cell tumor, right ovary; grade 1 endometrioid endometrial carcinoma treated with megestrol.\n\nProcedure 04/07/2026: exploratory laparotomy (low midline), total abdominal hysterectomy, right salpingo-oophorectomy, resection of the pelvic mass. Findings: 10 cm solid right ovarian mass, mobile, removed intact; uterus normal size; no ascites; no visible disease elsewhere in the abdomen or pelvis. No complications.\n\nCourse: mechanical and pharmacologic VTE prophylaxis in hospital; diet advanced POD 1; ambulating; pain controlled on oral acetaminophen by POD 2; voiding. Incision clean.\n\nDischarge medications: megestrol STOPPED. Continue hydrochlorothiazide 25 mg daily, amlodipine 5 mg daily, omeprazole 20 mg daily, acetaminophen as needed.\nAllergies: NKDA.\n\nFollow-up: gynecologic oncology in 2 weeks for incision check and pathology review; no lifting over 10 lb for 6 weeks; PCP visit within 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "outside_records",
+          "start": "2026-04-14T13:45",
+          "reason": "surgical pathology",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-04-07T10:30",
+              "text": "A. Uterus and cervix, total hysterectomy: endometrium with progestin-related changes; no residual carcinoma. Myometrium and cervix unremarkable. B. Right ovary and fallopian tube with mass: adult granulosa cell tumor, recurrent, 10.4 cm, capsule intact; completely resected, margins negative. Fallopian tube without tumor.",
+              "conclusion": "Recurrent adult granulosa cell tumor, right ovary, 10.4 cm, completely resected. No residual endometrial carcinoma.",
+              "issued": "2026-04-13T17:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Surgical pathology - hysterectomy and right salpingo-oophorectomy",
+              "date": "2026-04-14T13:45",
+              "author": "pathology",
+              "body": "Hospital pathology report received and filed. Recurrent adult granulosa cell tumor of the right ovary, 10.4 cm, margins negative; hysterectomy without residual endometrial carcinoma. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "office_visit",
+          "start": "2026-04-21T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-hospital follow-up",
+          "conditions": [
+            {
+              "label": "Acquired absence of uterus and cervix",
+              "action": "diagnosed",
+              "onset": "2026-04-07"
+            },
+            {
+              "label": "Postmenopausal bleeding",
+              "action": "resolved"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 61,
+            "temp_c": 36.5,
+            "weight_kg": 78.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-21T11:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.67
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-21T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - After Hospital",
+              "date": "2026-04-21T12:05",
+              "author": "PCP",
+              "body": "Two weeks after laparotomy with TAH, RSO and resection of the right ovarian mass (4/7-4/10). Pathology: recurrent adult granulosa cell tumor 10.4 cm, completely removed, margins negative; no cancer left in the uterus. Megestrol stopped at discharge. Her gyn onc incision check is next week.\n\nPain mild, acetaminophen twice a day. Eating normally, bowels moving. No bleeding. No leg swelling or breathlessness. Walking the hallway and the street a bit farther each day.\n\nVitals per flowsheet, afebrile, BP at goal. Midline incision healing, no redness or drainage. Abdomen soft, appropriately tender near the incision. Calves soft and nontender.\n\nA/P\n1. Recurrent granulosa cell tumor s/p resection; endometrial carcinoma s/p hysterectomy, no residual. Gyn onc surveillance. Updated problem list: s/p hysterectomy; postmenopausal bleeding resolved.\n2. HTN - continue HCTZ and amlodipine.\n3. CBC today after surgery.\n4. Return to work per surgeon, likely late May."
+            },
+            {
+              "type": "Result Note",
+              "title": "CBC result",
+              "date": "2026-04-22T09:15",
+              "author": "PCP",
+              "body": "CBC normal after surgery. Sent to patient."
+            }
+          ],
+          "state": {
+            "weight_kg": 79.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "specialist_visit",
+          "start": "2026-06-09T10:20",
+          "service": "Gynecologic Oncology",
+          "reason": "post-operative surveillance",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-06-09T10:50",
+              "results": [
+                {
+                  "test": "Estradiol",
+                  "loinc": "2243-4",
+                  "unit": "pg/mL",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic Oncology Follow-up",
+              "date": "2026-06-11T09:40",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY\nDate: 06/09/2026\n\nTwo months after laparotomy, total abdominal hysterectomy, right salpingo-oophorectomy and resection of recurrent adult granulosa cell tumor (10.4 cm, margins negative); no residual endometrial carcinoma in the uterus. Recovered well and back at work. No bleeding, no pain, appetite good.\n\nMeds: hydrochlorothiazide, amlodipine, omeprazole, acetaminophen as needed. NKDA.\nExam: incision well healed. Abdomen soft, no mass. Pelvic: vaginal cuff intact, no mass.\nEstradiol 9 pg/mL.\n\nImpression: no evidence of disease.\nPlan: surveillance every 3 to 4 months with exam and estradiol; imaging if symptoms or a rising estradiol.\n\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "pharmacy",
+          "start": "2026-07-14T09:45",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill request",
+              "date": "2026-07-14T09:45",
+              "author": "MA",
+              "body": "90-day renewals requested for hydrochlorothiazide 25 mg, amlodipine 5 mg and omeprazole 20 mg. BMP March normal. Sent; BP visit already booked 8/19."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "office_visit",
+          "start": "2026-08-19T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              133,
+              81
+            ],
+            "hr": 68,
+            "spo2": 97,
+            "weight_kg": 79.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-08-19T14:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-08-19T14:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 255
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.39
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-08-19T14:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 191
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 109
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 110
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 131
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-08-19T14:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Hypertension",
+              "date": "2026-08-19T15:00",
+              "author": "PCP",
+              "body": "Routine BP visit. Doing well four months after surgery; gyn onc in June found no evidence of disease, estradiol 9. Back at work since late May, walking evenings again. Knees about the same, gel before long shifts. Reflux quiet on omeprazole. No bleeding. Mood good, PHQ-2 0. Weight a little down since stopping megestrol.\n\nMeds: HCTZ 25 daily, amlodipine 5 daily, omeprazole 20 daily, acetaminophen PRN, diclofenac 1% gel PRN. NKDA.\n\nVitals per flowsheet, BP at goal. Heart regular, no murmur. Lungs clear. Abdomen soft, healed midline scar, no mass. Knees crepitus, no effusion. No edema.\n\nA/P\n1. HTN controlled - continue both. BMP today.\n2. Granulosa cell tumor and endometrial carcinoma, treated - gyn onc surveillance, next visit in September.\n3. GERD/hiatal hernia - continue omeprazole.\n4. Knee OA - stable.\n5. CBC and lipids with today's draw. Physical in November; flu and COVID then or sooner at the pharmacy. Mammogram was due in May - she'll book it now that surgery recovery is behind her."
+            }
+          ],
+          "state": {
+            "weight_kg": 79.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-20a",
+          "kind": "portal_message",
+          "start": "2026-08-20T17:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2026-08-20T17:20",
+              "author": "PCP",
+              "body": "Hi Bernice - yesterday's labs look good. Potassium and kidney function normal, blood counts normal, cholesterol fine. No changes. See you in November."
+            }
+          ]
+        },
+        {
+          "id": "2026-11-10a",
+          "kind": "annual_physical",
+          "start": "2026-11-10T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Asymptomatic menopausal state|Z78.0": {
+        "code": "Z78.0",
+        "display": "Asymptomatic menopausal state",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hiatal hernia|K44.9": {
+        "code": "K44.9",
+        "display": "Diaphragmatic hernia without obstruction or gangrene",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "megestrol acetate 40 MG Oral Tablet": {
+        "code": "860221",
+        "display": "megestrol acetate 40 MG Oral Tablet",
+        "ingredient": "megestrol",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Cancer Antigen 125": {
+        "code": "10334-1",
+        "display": "Cancer Ag 125 [Units/volume] in Serum or Plasma",
+        "unit": "U/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Estradiol": {
+        "code": "2243-4",
+        "display": "Estradiol (E2) [Mass/volume] in Serum or Plasma",
+        "unit": "pg/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Luteinizing Hormone": {
+        "code": "10501-5",
+        "display": "Lutropin [Units/volume] in Serum or Plasma",
+        "unit": "mIU/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

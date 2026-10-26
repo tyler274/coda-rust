@@ -1,0 +1,480 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002671",
+      "events": [
+        {
+          "id": "2025-06-09a",
+          "kind": "portal_message",
+          "start": "2025-06-09T06:12",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "shortness of breath with exertion",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Getting Winded",
+              "author": "patient",
+              "date": "2025-06-09T06:12",
+              "body": "Morning. Probably nothing but since around January I get out of breath way faster than I used to, mostly hauling spools of wire up a ladder or taking stairs on a job. Sometimes there's a pressure/ache in the middle of my chest with it that goes away if I stop. It's been creeping up, not getting better. Haven't passed out or anything. Worth coming in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Getting Winded",
+              "author": "PCP",
+              "date": "2025-06-09T07:31",
+              "body": "Yes, I'd like to examine you. I have 4:15 tomorrow open, it's yours if that works. Until then, no heavy lifting or ladder work if you can delegate it. If the chest pain comes on at rest, lasts more than a few minutes, or you feel faint, call 911 rather than waiting for me."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "office_visit",
+          "start": "2025-06-10T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "exertional dyspnea and chest pain",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-10T16:50",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-10T16:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-10T16:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "exertional dyspnea and chest pain with systolic murmur"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-06-10T16:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-06-10T16:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-06-10T16:15",
+              "body": "S: 35M, see portal message. Since roughly January his exercise tolerance has dropped. Gets short of breath carrying material up ladders and on flights of stairs, which never bothered him before. Mid-chest pressure comes with it at times, eases within a minute or two of stopping. Gradually worse over these ~5 months. Never lost consciousness, no racing or skipped beats. No cough, fever, or leg swelling. No new meds or supplements. Still never smoked.\n\nO: vitals as charted. Comfortable at rest, speaking full sentences. Lungs clear throughout. Cardiac: regular rhythm; there is a coarse systolic murmur best at the left sternal border, and when he bears down it gets clearly louder. Not appreciated on prior exams. JVP not elevated. No edema. Radial pulses equal.\n\nA/P: exertional dyspnea and chest pain in a 35-year-old with a systolic murmur that increases with Valsalva. That behavior points toward dynamic outflow obstruction rather than a fixed valve lesion; this needs an echo and a cardiologist.\n- Referral to cardiology placed, marked urgent; staff to call for the soonest slot.\n- CBC, BMP, TSH today to rule out anemia, thyroid, electrolyte contributors.\n- Hold off on heavy exertion and hot attics until he's been seen. Stay well hydrated on site.\n- ED for rest pain, fainting or near-fainting."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.7
+            }
+          }
+        },
+        {
+          "id": "2025-06-11a",
+          "kind": "portal_message",
+          "start": "2025-06-11T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2025-06-11T13:20",
+              "body": "Your bloodwork from yesterday is normal: no anemia, thyroid fine, kidney function and electrolytes fine. So the answer is more likely the heart murmur, which is what cardiology will sort out. Our referral coordinator is working on the appointment."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-13a",
+          "kind": "telephone",
+          "start": "2025-06-13T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "referral scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral Scheduled",
+              "author": "front desk",
+              "date": "2025-06-13T10:05",
+              "body": "Cardiology could not do sooner than 7/18 (Fri) 1:30 pm; echo will be done the same afternoon at their office. Pt notified by phone and agreeable, asked to be put on their cancellation list. Referral, last note and labs faxed over."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-18a",
+          "kind": "specialist_visit",
+          "start": "2025-07-18T13:30",
+          "service": "Cardiology",
+          "reason": "exertional dyspnea and chest pain, murmur",
+          "conditions": [
+            {
+              "label": "Obstructive hypertrophic cardiomyopathy",
+              "icd10": "I42.1",
+              "action": "diagnosed",
+              "onset": "2025-07-18"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth once daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "obstructive hypertrophic cardiomyopathy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              85
+            ],
+            "hr": 78
+          },
+          "measure": [
+            "spo2",
+            "weight_kg"
+          ],
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-07-18T14:20",
+              "issued": "2025-07-18T17:00",
+              "text": "Indication: exertional dyspnea, chest pain, systolic murmur. Technically adequate study, sinus rhythm.\nLeft ventricle: normal cavity size. Asymmetric hypertrophy of the septum; interventricular septum 19 mm in diastole, posterior wall 10 mm. Normal systolic function, LVEF 65% by visual estimate. No regional wall motion abnormality.\nMitral valve: systolic anterior motion of the anterior leaflet with leaflet-septal contact. Structurally normal leaflets otherwise.\nLVOT: continuous-wave Doppler shows a late-peaking profile with a peak resting gradient of 55 mmHg.\nRight ventricle normal in size and function. Aortic valve trileaflet, opens normally. Atria not enlarged. No pericardial effusion. IVC normal with normal respiratory variation.",
+              "conclusion": "Asymmetric septal hypertrophy with systolic anterior motion of the mitral valve and resting LVOT gradient of 55 mmHg, consistent with obstructive hypertrophic cardiomyopathy. Preserved LV systolic function."
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral",
+              "action": "done",
+              "date": "2025-07-18T13:30"
+            },
+            {
+              "id": "holter-48h",
+              "action": "placed",
+              "order": "48-hour Holter monitor",
+              "category": "procedure",
+              "to": "Cardiology",
+              "reason": "risk assessment, obstructive HCM"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Consultation",
+              "author": "cardiology",
+              "date": "2025-07-23T09:40",
+              "body": "Outside cardiology group. Date of visit 07/18/2025. Received by fax 07/23/2025.\n\nThank you for referring Mr. Ryan, a 35-year-old electrical contractor, for exertional breathlessness and chest discomfort.\n\nHPI: Over about six months his symptoms with exertion have steadily progressed: dyspnea on ladders and stairs with anterior chest pain that settles with rest. He has had no syncope and no palpitations. He reports no relatives who died suddenly.\n\nPMH: none prior. PSH: tonsillectomy (age 8), knee arthroscopy (age 28).\nMedications: none. Allergies: NKDA.\nFamily: father hypertension (62), mother hypothyroidism (60). No known cardiomyopathy, sudden death or early coronary disease in the family.\nSocial: never smoker, 1-2 beers on weekends, electrical contractor.\n\nExam: BP 130/85, HR 78. Well-appearing. JVP normal. Carotid upstrokes brisk. A harsh crescendo-decrescendo systolic murmur at the left sternal border that intensifies with Valsalva and diminishes with squatting. Lungs clear. No edema.\n\nEcho today (full report attached): asymmetric septal hypertrophy, septum 19 mm, with SAM of the mitral valve and a resting LVOT gradient of 55 mmHg. LVEF 65%.\n\nImpression: hypertrophic cardiomyopathy with resting outflow obstruction, symptomatic.\n\nPlan:\n1. Start metoprolol succinate 50 mg once daily.\n2. 48-hour Holter for arrhythmia screening as part of risk assessment.\n3. Keep well hydrated, especially in summer heat on job sites; avoid very strenuous or heavy isometric exertion. Avoid vasodilators and diuretics where possible; please contact us before starting any new BP medicine.\n4. HCM is often inherited; we recommend screening echocardiograms for his parents and any siblings or children.\n5. Return in about one year with repeat echo, sooner for syncope, palpitations or worsening symptoms.\n\nAllergies: NKDA. Med list at close of visit: metoprolol succinate 50 mg daily.\n\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-29a",
+          "kind": "imaging",
+          "start": "2025-07-29T08:30",
+          "end": "2025-07-31T08:30",
+          "service": "Cardiology",
+          "reason": "48-hour ambulatory monitoring",
+          "reports": [
+            {
+              "study": "Holter monitor",
+              "performed": "2025-07-29T08:30",
+              "issued": "2025-08-04T15:10",
+              "text": "48-hour continuous recording, hookup 07/29/2025, analyzable data throughout. Patient on metoprolol succinate 50 mg daily.\nUnderlying rhythm sinus throughout, with appropriate rate variation with activity and sleep.\nNo nonsustained or sustained ventricular tachycardia. No atrial fibrillation or flutter. No pauses. No high-grade AV block.\nDiary: two entries for breathlessness at work; both correspond to sinus rhythm.",
+              "conclusion": "Sinus rhythm throughout. No nonsustained ventricular tachycardia and no atrial fibrillation."
+            }
+          ],
+          "orders": [
+            {
+              "id": "holter-48h",
+              "action": "done",
+              "date": "2025-07-31T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Holter Report Received",
+              "author": "front desk",
+              "date": "2025-08-05T09:15",
+              "body": "Holter report from the cardiology group (hookup 7/29/2025) received by fax and scanned. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "office_visit",
+          "start": "2025-08-12T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after cardiology",
+          "state": {
+            "hr": 61
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-08-12T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-08-12T16:30",
+              "body": "Follow-up after his cardiology consult. Echo confirmed obstructive HCM: ASH with SAM, resting LVOT gradient 55, EF 65%. On metoprolol succinate 50 mg since 7/18. Holter 7/29: sinus throughout, no NSVT, no AF.\n\nHe's taking it every morning, no missed doses. Breathing on the ladders somewhat better than in June, not back to normal. Chest pain less often. No lightheadedness, no fainting. Has been drinking more water on site and handing off the heaviest carries to his crew.\n\nVitals as charted, rate lower on the beta-blocker as expected. Murmur unchanged at LSB. Lungs clear. No edema.\n\nA/P: obstructive hypertrophic cardiomyopathy, on metoprolol, symptoms improved somewhat.\n- Continue metoprolol succinate 50 mg daily. We'll handle 90-day refills.\n- Talked about why dehydration, big meals before exertion, and alcohol binges can make the obstruction worse; he's fine sticking with a couple of beers.\n- He'll let his parents know about the screening echo recommendation; they're with a different doctor.\n- Flagged in chart: avoid nitrates/vasodilators and diuretics without talking to cardiology.\n- Physical in the fall; cardiology again next July."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "annual_physical",
+          "start": "2025-10-14T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-14T08:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-14T08:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T08:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-14T08:42"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-10-14T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-14T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-10-14T08:00",
+              "body": "35M for yearly exam.\n\nInterval: obstructive HCM diagnosed by cardiology in July, on metoprolol succinate 50 mg. Says he's been steady since the summer, still gets winded faster than before on the worst climbs but manages by pacing himself. No fainting, no palpitations.\n\nMeds: metoprolol succinate 50 mg daily. NKDA.\nSocial: unchanged, never smoker, weekend beer.\n\nExam: vitals as charted. Well. HEENT normal. Neck supple. Systolic murmur LSB as before. Lungs clear. Abdomen soft. No edema. Skin normal.\n\nA/P:\n1. HOCM on beta-blocker, stable. Continue metoprolol. Cardiology follow-up with echo planned for July 2026.\n2. Health maintenance: lipids and CMP today. PHQ-2 0. Flu and COVID vaccines given today. Tdap 2023. Hep C and HIV screens done 2023.\n3. Next physical in a year."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-16a",
+          "kind": "portal_message",
+          "start": "2025-10-16T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical Labs",
+              "author": "PCP",
+              "date": "2025-10-16T12:10",
+              "body": "Cholesterol, kidney, liver and sugar results from Tuesday all normal. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "portal_message",
+          "start": "2026-01-20T20:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Metoprolol Refill",
+              "author": "patient",
+              "date": "2026-01-20T20:35",
+              "body": "Down to my last few metoprolol. Can you send 90 days to the usual pharmacy? Thanks."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Metoprolol Refill",
+              "author": "RN",
+              "date": "2026-01-21T08:50",
+              "body": "Done, 90 tablets with 3 refills of metoprolol succinate 50 mg, one daily, per the physician. Should be ready this afternoon."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "telehealth_visit",
+          "start": "2026-03-17T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "worsening exertional symptoms",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2026-03-17T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2026-03-17T12:30",
+              "body": "Video, he's in his truck on lunch break, identity confirmed.\n\nObstructive HCM on metoprolol succinate 50 mg. After the summer improvement, since about New Year the breathlessness on climbs has been coming back and the chest ache on exertion is more frequent again. Still stops and it passes. No fainting or near-fainting, no palpitations. Taking the metoprolol daily. Not drinking more, no new meds, no decongestants.\n\nNo exam today beyond appearance: comfortable, conversing easily, no distress.\n\nA/P: HOCM with gradually returning exertional symptoms on a beta-blocker.\n- His cardiology recheck with echo is booked for July. Will ask our RN to see whether cardiology can move it up.\n- No change to metoprolol from our end; dose decisions with cardiology.\n- Reviewed hydration, avoiding heavy lifting and hot crawl spaces, and that any fainting or rest pain means 911.\n- He'd rather keep working through the busy season; understands the precautions."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "office_visit",
+          "start": "2026-05-19T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "HCM follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-07-22a",
+          "kind": "specialist_visit",
+          "start": "2026-07-22T10:00",
+          "service": "Cardiology",
+          "reason": "annual HCM follow-up with echo",
+          "medications": [],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-07-22T09:15",
+              "issued": "2026-07-22T15:30",
+              "text": "Indication: obstructive hypertrophic cardiomyopathy, annual follow-up, progressive exertional symptoms. Sinus rhythm. Adequate windows.\nLeft ventricle: normal cavity size. Asymmetric septal hypertrophy, interventricular septum 19 mm, posterior wall 10 mm, unchanged from 07/2025. LVEF 65%. No wall motion abnormality.\nMitral valve: systolic anterior motion of the anterior leaflet.\nLVOT: late-peaking dagger-shaped Doppler envelope, peak resting gradient 60 mmHg.\nRight heart normal. Aortic valve normal. Atria normal in size. No pericardial effusion.",
+              "conclusion": "Asymmetric septal hypertrophy with mitral systolic anterior motion; resting LVOT gradient 60 mmHg (55 mmHg in 07/2025). Normal LV systolic function."
+            }
+          ],
+          "orders": [
+            {
+              "id": "hcm-center",
+              "action": "placed",
+              "order": "Hypertrophic cardiomyopathy center referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "symptomatic obstructive HCM on beta-blocker; discuss cardiac myosin inhibitor or septal reduction"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up",
+              "author": "cardiology",
+              "date": "2026-07-27T11:20",
+              "body": "Outside cardiology group. Date of visit 07/22/2026. Received by fax 07/27/2026.\n\nMr. Ryan is back a year after we diagnosed obstructive HCM. Over the past six months his exertional dyspnea and chest pain have progressed again despite metoprolol succinate 50 mg, and he now notices the breathlessness is worse when he lies flat. No syncope.\n\nMedications: metoprolol succinate 50 mg daily. Allergies: NKDA.\n\nExam: vitals in the attached flowsheet. A harsh systolic murmur that becomes louder with Valsalva. Lungs clear. No peripheral edema.\n\nEcho today (report attached): persistent asymmetric septal hypertrophy with SAM; resting gradient 60 mmHg; LVEF 65%.\n\nImpression: symptomatic obstructive hypertrophic cardiomyopathy, progressing on beta-blocker.\n\nPlan:\n1. Increase metoprolol succinate to 100 mg once daily (new prescription sent; stop the 50 mg tablets).\n2. Referral to a dedicated hypertrophic cardiomyopathy center to discuss next-line options, including a cardiac myosin inhibitor or septal reduction therapy.\n3. Continue hydration and activity precautions.\n4. We will see him after the HCM center evaluation.\n\nCardiology"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

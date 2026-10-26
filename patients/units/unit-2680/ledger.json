@@ -1,0 +1,439 @@
+{
+  "unit": "unit-2680",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00002680/2025-09-10a: allergen \"Tree and grass pollens (seasonal)\" not in catalog (text only)",
+    "MRN00002680/2025-09-10a: allergen \"Dust mites\" not in catalog (text only)"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002680",
+      "given": "Logan",
+      "family": "Wright",
+      "birth_date": "2003-11-08",
+      "address_line": "27 Laurelwood Drive",
+      "phone": "+1-978-555-0175",
+      "email": "logan.wright@example.test",
+      "marital_status": "single",
+      "summary": "Healthy 21-year-old biology student with spring allergic rhinitis who joins the practice in September 2025 with a years-long recurring elbow rash. Dermatology diagnoses atopic dermatitis in November 2025 and steps up to triamcinolone in July 2026; both letters reach the practice late.",
+      "events": [
+        {
+          "id": "2025-08-19a",
+          "kind": "telephone",
+          "start": "2025-08-19T14:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "date": "2025-08-19T14:20",
+              "author": "front desk",
+              "body": "Caller is a 21 y/o college student, home for the summer, heading back for junior year. Parents' PPO. Has not had a regular doctor since he aged out of his pediatrician. Mentions spring allergies and \"a rash on my elbows that won't quit.\" Membership agreement emailed. New patient physical scheduled 9/10 at 9:00 (before his afternoon lab section). Asked him to bring his vaccine card and list of OTC meds. Records release for pediatric office sent with the welcome packet."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-10a",
+          "kind": "establish_care",
+          "start": "2025-09-10T09:00",
+          "end": "2025-09-10T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical; recurring rash on elbows",
+          "conditions": [
+            {
+              "label": "Allergic rhinitis due to pollen",
+              "action": "history",
+              "onset": "2015-04-01",
+              "note": "Seasonal, worst in spring; also reacts to dust mites"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "cetirizine hydrochloride 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth once daily as needed during allergy season",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Seasonal allergic rhinitis"
+            },
+            {
+              "drug": "fluticasone propionate 0.05 MG/ACTUAT Metered Dose Nasal Spray",
+              "action": "historical",
+              "sig": "2 sprays in each nostril once daily during spring months",
+              "dose": {
+                "value": 2,
+                "unit": "spray"
+              },
+              "frequency": "DAILY",
+              "route": "Nasal",
+              "course": "chronic",
+              "reason": "Seasonal allergic rhinitis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Tree and grass pollens (seasonal)",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Dust mites",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "No known drug allergies",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              80
+            ],
+            "hr": 66,
+            "rr": 17,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 73.8,
+            "height_cm": 178.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-10T09:45",
+              "resulted": "2025-09-11T07:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.24
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 256
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-10T09:45",
+              "resulted": "2025-09-11T07:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.04
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-10T09:45",
+              "resulted": "2025-09-11T07:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 155
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 46
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 105
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 88
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 109
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-10T09:45",
+              "resulted": "2025-09-11T13:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-10T09:45",
+              "resulted": "2025-09-11T13:10",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional, 1-2 drinks on weekends"
+            },
+            {
+              "item": "Occupation",
+              "value": "University student (junior, biology major)"
+            },
+            {
+              "item": "Electronic cigarette status",
+              "value": "Never used"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2025-09-10T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-10T09:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "Recurrent pruritic rash of antecubital fossae"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "date": "2025-09-10T09:00",
+              "author": "PCP",
+              "body": "21 y/o M establishing care. Junior at the university, biology. Last saw a doctor for a sports physical in high school.\n\nCONCERNS\n1. Rash, both inner elbows, on and off \"for years, maybe since middle school.\" Itches, he scratches it raw at night sometimes. Flares some seasons more than others and seems worse right after showers. Has tried a few drugstore creams (can't recall names), they take the edge off but don't clear it. No fever, no weight loss, nothing new he's been taking.\n2. Spring allergies: sneezing, stuffy nose April-June. Uses cetirizine 10 mg as needed in season and fluticasone nasal 2 sprays each side daily in spring. Fine right now.\n\nPMH: seasonal allergic rhinitis.\nPSH: wisdom teeth out at 18.\nMeds: cetirizine prn (seasonal), fluticasone nasal (spring).\nAllergies: tree/grass pollen, dust mites. NKDA.\nFH: Mom had eczema as a kid. Dad has hay fever and asthma. Younger brother gets seasonal allergies.\nSH: lives in an off-campus apartment with two roommates during the year, at his parents' in summer. Never smoked, never vaped. Couple of drinks on a weekend night, not every weekend. No drug use.\n\nROS otherwise negative.\n\nEXAM\nVitals as charted. Well appearing.\nHEENT: TMs clear. Nasal turbinates pink, not boggy today. Oropharynx clear.\nNeck: supple, no nodes, thyroid not enlarged.\nHeart RRR, no murmur. Lungs clear, no wheeze.\nAbd soft, nontender.\nSkin: red patches in both antecubital fossae with linear scratch marks and some thickening of the skin. No weeping, no crusting, not tender. No similar areas elsewhere that I see.\nNeuro grossly intact.\n\nA/P\n- Recurrent itchy rash, antecubital fossae, longstanding. Looks eczematous to me, and with his family history atopy is the leading thought, but it has never been formally evaluated. Referred to dermatology. Fragrance-free moisturizer in the meantime.\n- Seasonal allergic rhinitis: stable, keep current regimen.\n- Health maintenance: CBC, CMP, lipids. HIV and hep C screening once, he agreed. PHQ-2 0. Childhood/adolescent vaccines per pediatric records being requested; flu and COVID when the fall supply comes in.\n- Physical next September."
+            }
+          ],
+          "state": {
+            "weight_kg": 73.2,
+            "height_cm": 178.0,
+            "labs": {
+              "Low Density Lipoprotein": 88
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-09-11a",
+          "kind": "portal_message",
+          "start": "2025-09-11T16:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "date": "2025-09-11T16:05",
+              "author": "PCP",
+              "body": "Hi Logan, your blood work from yesterday is all normal: blood counts, kidney and liver tests, sugar, and cholesterol. HIV and hepatitis C screens were negative. Nothing to do. The dermatology referral went out this morning; their office should reach out to schedule. If you haven't heard in two weeks, let us know."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "nurse_visit",
+          "start": "2025-10-08T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-08T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-08T16:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-08T16:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2025-10-08T16:30",
+              "author": "RN",
+              "body": "In after class for vaccines. Feeling well, no fever. Screening questions negative. Flu vaccine 0.5 mL IM to the left arm; 2025-26 COVID vaccine IM to the right arm. Stayed 15 min, tolerated both. Pediatric records arrived last week: childhood series complete, Tdap, HPV and meningococcal doses given in adolescence. Pt asked about his dermatology appointment; it is set for November 3."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-22a",
+          "kind": "outside_records",
+          "start": "2026-01-22T13:15",
+          "reason": "Dermatology consultation received",
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "done",
+              "date": "2026-01-22T13:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Consultation (outside), visit of 2025-11-03",
+              "date": "2026-01-22T13:15",
+              "author": "dermatology",
+              "body": "OUTSIDE DERMATOLOGY GROUP\nNew patient consultation\nDate of visit: November 3, 2025\nPatient: Logan Wright, 21-year-old male\nReferred by: primary care\n\nReason for referral: intermittent pruritic eruption, several years.\n\nHistory: Mr. Wright describes a rash at both elbow creases that has waxed and waned for several years. He notes seasonal worsening and flares following baths or showers. Several nonprescription creams have helped only slightly. He reports no fevers or weight loss and has started no new medications.\n\nPast history: seasonal allergic rhinitis. Wisdom tooth extraction at 18.\nMedications: cetirizine 10 mg daily as needed in allergy season; fluticasone nasal spray, 2 sprays per nostril daily in spring.\nAllergies: seasonal tree and grass pollen; dust mite. No known drug allergies.\nFamily history: mother with childhood atopic dermatitis; father with allergic rhinitis and asthma; younger brother with seasonal allergies.\nSocial: never smoker, occasional alcohol on weekends, undergraduate studying biology.\n\nExamination: Bilateral antecubital fossae with several ill-defined erythematous patches, excoriations and mild lichenification. No exudate, no tenderness. Clinical photographs obtained for our record.\n\nData: routine laboratory studies from his primary care office (09/2025) reviewed and normal.\n\nImpression: Atopic dermatitis, flexural, in a young man with personal and family atopy.\n\nPlan:\n1. Fragrance-free emollient (cream or ointment) twice daily and after bathing.\n2. Brief lukewarm showers; pat dry; mild cleanser.\n3. Hydrocortisone 1% cream twice daily to active patches during flares, up to 2 weeks per flare.\n4. Return as needed or sooner for persistent flares.\n\nThank you for this referral.\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "outside_records",
+          "start": "2026-08-19T14:30",
+          "reason": "Dermatology follow-up note received",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Follow-up (outside), visit of 2026-07-06",
+              "date": "2026-08-19T14:30",
+              "author": "dermatology",
+              "body": "OUTSIDE DERMATOLOGY GROUP\nFollow-up visit\nDate of visit: July 6, 2026\nPatient: Logan Wright, 22-year-old male\n\nInterval history: Seen here in November 2025 for flexural eczema. Over the past several months he has had ongoing itch. Flares are worst in winter and after hot showers. Over-the-counter and hydrocortisone creams help partially, but the rash keeps recurring in the same spots. No recent travel, no new medications, no ill contacts.\n\nProblems: atopic dermatitis; seasonal allergic rhinitis (spring).\nMedications: hydrocortisone 1% cream as needed; emollient; cetirizine 10 mg as needed in season; fluticasone nasal spray in spring.\nAllergies: seasonal tree and grass pollen; dust mite. NKDA.\nFamily history: atopy in both parents and a brother (see prior note).\nSocial: never smoker; alcohol occasionally on weekends; college biology student.\n\nExamination: Erythematous patches with excoriation at both antecubital fossae. No pustules, no vesicles, no drainage. Remainder of the skin examination normal; well appearing. Clinical photographs updated.\n\nData: CBC and metabolic panel from primary care (09/2025) unremarkable.\n\nImpression: Atopic dermatitis, recurrent at the same flexural sites, incompletely controlled with low-potency steroid.\n\nPlan:\n1. Stop hydrocortisone. Triamcinolone 0.1% cream twice daily to elbow patches during flares, maximum 2 consecutive weeks.\n2. Continue daily emollient and bathing measures.\n3. Return in about 3 months.\n\nDermatology"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {}
+}

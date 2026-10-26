@@ -1,0 +1,357 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002186",
+      "events": [
+        {
+          "id": "2026-01-20a",
+          "kind": "portal_message",
+          "start": "2026-01-20T10:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lung CT appointment",
+              "author": "front desk",
+              "date": "2026-01-20T10:02",
+              "body": "Hi Mr. Lewandowski, your yearly lung screening CT is due. Imaging has an opening February 13 at 8:15 - shall we book it?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lung CT appointment",
+              "author": "patient",
+              "date": "2026-01-20T13:47",
+              "body": "Yes book it. Thanks"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-11a",
+          "kind": "pharmacy",
+          "start": "2026-02-11T09:05",
+          "medications": [
+            {
+              "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Tachycardia during hospital stay; prescribed at hospital discharge"
+            },
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (40 mg) by mouth daily to complete 5 days, last dose 2/11",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "COPD exacerbation"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Fill notification",
+              "author": "pharmacy",
+              "date": "2026-02-11T09:05",
+              "body": "Community pharmacy fill notification. Filled 2/10/2026 for Joseph Lewandowski, prescriber: hospital discharge (hospitalist).\n- Metoprolol succinate ER 50 mg, 1 tablet daily, #30\n- Prednisone 20 mg, 2 tablets daily to complete course, #4\nNote: patient also has an active metoprolol succinate ER 25 mg daily prescription from your office, last filled 1/2026."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Call to patient re pharmacy notice",
+              "author": "RN",
+              "date": "2026-02-11T11:20",
+              "body": "Pharmacy notice shows new hospital prescriptions; we had no word of an admission. Called pt, no answer, voicemail left asking him to call back about his medicines and which metoprolol to take. Flagged for PCP. Hospital records requested."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "ed_visit",
+          "start": "2026-02-12T13:30",
+          "end": "2026-02-12T21:15",
+          "service": "Emergency Medicine",
+          "reason": "Dizziness and fatigue after hospital discharge",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease with acute exacerbation",
+              "action": "diagnosed",
+              "onset": "2026-02-05",
+              "note": "5-day admission 2/5-2/10/2026 at an outside hospital"
+            },
+            {
+              "label": "Beta-blocker toxicity",
+              "icd10": "T44.7X1A",
+              "action": "diagnosed",
+              "onset": "2026-02-11",
+              "note": "taking new 50 mg and old 25 mg metoprolol succinate together"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
+              "action": "stop",
+              "reason": "Beta-blocker toxicity; resume prior 25 mg dose only"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-02-12T13:41",
+              "bp": [
+                95,
+                60
+              ],
+              "hr": 48,
+              "rr": 20
+            },
+            {
+              "time": "2026-02-12T20:50",
+              "hr": 64
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-12T13:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-12T13:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-02-12T13:48",
+              "text": "Sinus bradycardia at 48 beats per minute. PR interval normal; no AV block. Old infarct pattern. No acute ST-T changes.",
+              "conclusion": "Sinus bradycardia without heart block."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-02-12T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2026-02-13T08:40",
+              "body": "Regional hospital emergency department. Visit 2/12/2026. Received by fax 2/13/2026.\n\nCC: lightheaded, wiped out.\nHPI: 69M discharged from our medical floor 2/10 after 5 days for a COPD flare, treated with oral prednisone, tiotropium and nebulized bronchodilators. Metoprolol was increased in hospital for runs of tachycardia; went home with new prescriptions filled at his own pharmacy. Over the last two days he has felt dizzy on standing and exhausted. On review of his bottles at the bedside, he has been taking the new metoprolol succinate 50 mg tablet each morning and also his old 25 mg tablet - 'I thought the new one was extra.' No syncope, chest pain, or worsening breathing.\nPMH: COPD group C, CAD with LAD stent and prior MIs, mitral repair with ring 10/2024, postoperative cardiogenic shock 6/2025, HTN, HLD. Right THA 6/2025.\nMeds: aspirin 81, atorvastatin 40, metoprolol succinate as above, tiotropium, albuterol PRN, prednisone (last dose due 2/11).\nAllergies: NKDA.\n\nVitals on arrival: BP 95/60, HR 48, RR 20.\nExam: alert, conversant. Bradycardic, regular. Lungs without wheeze or crackles. No edema. Neuro nonfocal. Otherwise unremarkable.\nECG: sinus bradycardia, no AV block, no acute changes.\nLabs: Na 140, K 4.2, creatinine 1.0, glucose 98, hemoglobin 14.\n\nImpression: beta-blocker toxicity from unintended duplicate metoprolol dosing after discharge.\nCourse: metoprolol held. Monitored on telemetry; no intervention needed. HR 64 and orthostatic symptoms resolved by evening.\nDisposition: home. Take metoprolol succinate 25 mg only, restarting tomorrow; discard the 50 mg tablets. See PCP this week."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-13a",
+          "kind": "telephone",
+          "start": "2026-02-13T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED call",
+              "author": "RN",
+              "date": "2026-02-13T09:30",
+              "body": "ED fax reviewed with PCP. Reached pt. Feels steadier this morning. Took ONE metoprolol 25 mg today as instructed. 50 mg bottle is in a bag to bring to his visit. Teach-back done: one metoprolol, the 25. He had not called back about our voicemail because he 'figured it was about the CT.' Lung CT for today cancelled, will rebook after recovery. PCP visit Tuesday 2/17."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "office_visit",
+          "start": "2026-02-17T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-ED visit, medication reconciliation",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease with acute exacerbation",
+              "action": "resolved"
+            },
+            {
+              "label": "Beta-blocker toxicity",
+              "icd10": "T44.7X1A",
+              "action": "resolved"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-02-17T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED visit",
+              "author": "PCP",
+              "date": "2026-02-17T11:05",
+              "body": "Two hospital contacts in a week, neither of which we were told about at the time: 5-day COPD admission 2/5-2/10 (we learned from a pharmacy fill notice 2/11 - no discharge summary yet), then ED 2/12 for dizziness/fatigue with HR 48, BP 95/60. ED record received 2/13: he'd been taking the new 50 mg metoprolol succinate plus his old 25 mg.\n\nToday: dizziness gone since Friday. Energy coming back. Breathing back to his usual; finished prednisone 2/11. Using albuterol once or twice a day this week, tapering off. No chest pain, no syncope.\n\nBag of bottles reviewed one by one: aspirin 81, atorvastatin 40, metoprolol succinate 25, tiotropium, albuterol. The 50 mg metoprolol bottle (27 tablets left) taken out of his supply; he agreed to drop it in the pharmacy disposal bin. Updated printed med list given; pillbox refilled in the room with him.\n\nExam: vitals per flowsheet. Lungs: prolonged expiration, scattered end-expiratory wheeze, no crackles. Heart regular. No edema.\n\nA/P\n1. Beta-blocker toxicity from duplicate metoprolol - resolved. Metoprolol succinate 25 mg daily only. Asked pharmacy to inactivate the 50 mg prescription.\n2. COPD exacerbation requiring admission - recovered. Continue tiotropium, albuterol PRN. Discharge summary requested again.\n3. CAD/HTN - stable.\nRebook the lung screening CT for spring. RTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "telephone",
+          "start": "2026-03-17T15:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records follow-up",
+              "author": "front desk",
+              "date": "2026-03-17T15:10",
+              "body": "Still no discharge summary for 2/5-2/10 admission. Called hospital HIM: told the summary 'is not showing as signed' yet. Third request faxed. ED record from 2/12 already on file."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-10a",
+          "kind": "imaging",
+          "start": "2026-04-10T08:15",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2026-04-10T08:15",
+              "text": "Indication: annual lung cancer screening, former smoker. Comparison: 1/10/2025.\nTechnique: low-dose helical CT without contrast.\nFindings: No pulmonary nodule. Mild upper-lobe emphysema, unchanged. No consolidation or effusion. Sternal wires and mitral annuloplasty ring. LAD stent with coronary calcification. Heart size normal. No adenopathy.",
+              "conclusion": "Lung-RADS 1: negative. Continue annual screening."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "portal_message",
+          "start": "2026-04-14T09:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lung CT",
+              "author": "PCP",
+              "date": "2026-04-14T09:25",
+              "body": "Lung screening CT is negative again. Nothing new since last year."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "office_visit",
+          "start": "2026-05-19T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD, hypertension and CAD follow-up",
+          "state": {
+            "labs": {
+              "Hemoglobin": 15.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-05-19T13:35",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-19T13:35",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-05-19T13:35",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-19T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2026-05-19T13:50",
+              "body": "Three months after the February admission and ED visit. No more dizziness. One metoprolol a day - showed me the pillbox. Breathing at baseline, albuterol a few times a week. Walking again, hip feels great. Cardiology moved his winter visit to September because of the admission. February discharge summary never came despite three requests; not chasing further.\nNo chest pain, orthopnea or edema.\nExam: lungs with prolonged expiration, no crackles. Heart regular. No edema.\nA/P: COPD group C - stable on tiotropium + PRN albuterol. CAD/mitral repair - stable on aspirin, atorvastatin 40, metoprolol succinate 25. BP fine. CMP, CBC, lipids today. Wellness visit in September."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

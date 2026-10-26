@@ -1,0 +1,260 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002804",
+      "given": "Jennifer",
+      "family": "Esposito",
+      "birth_date": "1978-10-02",
+      "address_line": "41 Spring Grove Lane",
+      "phone": "+1-646-555-0199",
+      "email": "jennifer.esposito@example.test",
+      "marital_status": "married",
+      "summary": "Office administrator with long-standing constipation and colonic diverticulosis who joined in 2023. In 2025 she had an ED visit for sigmoid diverticulitis and an August admission for necrotizing pancreatitis; in February 2026 she bled from isolated gastric varices due to portal vein thrombosis and is now on apixaban and nadolol under hepatology.",
+      "events": [
+        {
+          "id": "2023-08-22a",
+          "kind": "telephone",
+          "start": "2023-08-22T10:40",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "author": "front desk",
+              "date": "2023-08-22T10:40",
+              "body": "Caller is a 44 y/o woman moving her care here from her previous internist, who retired this summer. Membership agreement emailed and signed back same afternoon. New patient visit scheduled 9/12 at 8:30. Release signed for records from prior office; faxed request today. Asked her to bring her bottles or a list, she says it is all over-the-counter bowel stuff."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-05a",
+          "kind": "outside_records",
+          "start": "2023-09-05T14:15",
+          "reason": "prior practice records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "front desk",
+              "date": "2023-09-05T14:15",
+              "body": "Received by fax, 38 pages, scanned to chart. Summary for the provider:\n- Colonoscopy 03/2021 (outside gastroenterology), done for chronic constipation and intermittent small amounts of blood on the tissue with hard stools. Findings: scattered sigmoid diverticula, no polyps, no masses, good prep, cecum reached. Recommendation: repeat in 10 years.\n- Pap with HPV co-test 10/2020: negative for intraepithelial lesion, HPV negative.\n- Screening mammogram 10/2022: no evidence of malignancy, BI-RADS 1.\n- Tdap 05/2019. COVID primary series 2021 (Moderna, 2 doses).\n- Medication list: polyethylene glycol, psyllium, docusate. No prescriptions.\n- Allergies: none recorded."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T08:30",
+          "end": "2023-09-12T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient visit, establish care",
+          "conditions": [
+            {"label": "Chronic constipation", "action": "history", "onset": "2012-06-01", "note": "long-standing, controlled on OTC regimen"},
+            {"label": "Diverticulosis of colon", "action": "history", "onset": "2021-03-09", "note": "sigmoid, colonoscopy 03/2021"}
+          ],
+          "medications": [
+            {"drug": "polyethylene glycol 3350 17000 MG Powder for Oral Solution", "action": "historical", "sig": "Mix 17 g in 8 oz of liquid and drink once daily", "dose": {"value": 17, "unit": "g"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "chronic constipation"},
+            {"drug_text": "psyllium 3.4 G Powder for Oral Suspension", "action": "historical", "sig": "Mix 3.4 g (1 rounded teaspoon) in 8 oz of water and drink once daily", "dose": {"value": 3.4, "unit": "g"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "chronic constipation"},
+            {"drug_text": "docusate sodium 100 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth twice daily", "dose": {"value": 100, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "chronic constipation"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 68.0, "height_cm": 165.0, "labs": {"Hemoglobin A1c": 5.1, "Thyroid Stimulating Hormone": 1.7, "Lipase": 31}},
+          "vitals": {"weight_kg": 68.0, "height_cm": 165.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-09-12T09:35", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-12T09:35", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-12T09:35", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-09-12T09:35", "results": [{"test": "Hemoglobin A1c"}, {"test": "Thyroid Stimulating Hormone"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Does not drink alcohol"},
+            {"item": "Occupation", "value": "Office administrator"}
+          ],
+          "procedures": [{"procedure": "Preventive visit, new patient, 40-64", "performed": "2023-09-12T08:30"}, {"procedure": "Venipuncture", "performed": "2023-09-12T09:35"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-09-12T08:30",
+              "body": "NEW PATIENT — establish care\n\n44 y/o woman, office administrator at a property management firm, transferring after her internist retired. Feels well. Main ongoing issue is constipation going back more than a decade: hard stools every 2-3 days without her regimen, near-daily and soft with it. Takes Miralax 17 g daily, psyllium 3.4 g daily, docusate 100 mg twice a day. Every so often sees a streak of bright blood on the paper after a hard stool; none in recent months. That prompted a colonoscopy in 2021 (records reviewed): sigmoid diverticula, no polyps. No abdominal pain, weight stable, no night symptoms.\n\nPMH: chronic constipation; diverticulosis (sigmoid).\nPSH: none.\nMeds: as above, all OTC.\nAllergies: none to medications.\nFH: mother has diverticulosis; sister had a DVT; father with type 2 diabetes.\nSH: never smoked, does not drink, no drug use. Walks at lunch most days.\nGYN: periods regular. Pap/HPV 2020 negative. Mammogram 10/2022 normal.\n\nExam: well-appearing, NAD. HEENT unremarkable. Neck supple, no thyromegaly. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, normal bowel sounds, no masses or organomegaly. No edema. Skin without rashes. Mood and affect normal.\n\nA/P\n1. Chronic constipation — well controlled on current regimen; continue. Fluids, keep up the fiber.\n2. Diverticulosis — reviewed; next colonoscopy 2031.\n3. Health maintenance — CBC, CMP, lipids, A1c (father with T2DM), TSH. One-time HCV and HIV screening, she agrees. Mammogram due 10/2023, order placed. Pap due 2025. Tdap current. Flu and COVID boosters at a nurse visit in October.\n\nReturn in a year for a physical, sooner as needed. She has my cell for anything that comes up."
+            }
+          ],
+          "orders": [
+            {"id": "mammo-2023", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "routine breast cancer screening"}
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T16:05",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2023-09-14T16:05",
+              "body": "Hi Jennifer — all of Tuesday's bloodwork came back normal: blood counts, kidney and liver function, cholesterol, sugar (A1c) and thyroid. The hepatitis C and HIV screens were negative, and those don't need repeating. The mammogram order is in; radiology scheduling should reach out. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-06a",
+          "kind": "nurse_visit",
+          "start": "2023-10-06T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza and COVID vaccination",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-06T11:25"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-06T11:27"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-06T11:25"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccine administration",
+              "author": "RN",
+              "date": "2023-10-06T11:20",
+              "body": "Screening questions negative; no prior vaccine reactions. Flu vaccine 0.5 mL IM to left arm, 2023-24 COVID (Pfizer) 0.3 mL IM to right arm. VIS sheets offered. Observed 15 min, no reaction. Vaccine record updated and state registry submitted."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "imaging",
+          "start": "2023-11-08T07:50",
+          "reason": "screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-11-08T07:50",
+              "text": "BILATERAL SCREENING MAMMOGRAM WITH TOMOSYNTHESIS. Comparison: 10/2022 outside study. The breasts are heterogeneously dense, which may lower the sensitivity of mammography. No suspicious mass, architectural distortion or suspicious calcifications in either breast. Skin and axillae unremarkable.",
+              "conclusion": "No mammographic evidence of malignancy. BI-RADS 1, negative. Routine screening in 1 year."
+            }
+          ],
+          "orders": [{"id": "mammo-2023", "action": "done", "date": "2023-11-08T07:50"}]
+        },
+        {
+          "id": "2024-02-07a",
+          "kind": "portal_message",
+          "start": "2024-02-07T20:12",
+          "reason": "question about fiber supplement",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Psyllium question",
+              "author": "patient",
+              "date": "2024-02-07T20:12",
+              "body": "Quick one — my sister says I shouldn't take the psyllium at the same time as everything else in the morning. Does it matter? I just dump it all together with coffee."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Psyllium question",
+              "author": "PCP",
+              "date": "2024-02-08T07:48",
+              "body": "Good question. Fiber can slow absorption of some pills, but nothing you take right now is affected, so mixing them is fine. Just make sure there's a full glass of water with the psyllium. If you ever start a prescription, give it a couple of hours' space from the fiber."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "telehealth_visit",
+          "start": "2024-04-16T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "constipation follow-up",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2024-04-16T12:10"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2024-04-16T12:10",
+              "body": "Video from her office, ID verified. Checking in on bowels after a few weeks over the winter when she ran out of psyllium and things slowed down. Back on the full regimen since early March: soft BM most days, no straining, no blood, no pain. Appetite fine.\n\nImpression: chronic constipation, back at baseline once regimen resumed. Continue PEG 17 g, psyllium, docusate. Physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "annual_physical",
+          "start": "2024-09-17T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-17T08:45", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-09-17T08:45", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-17T08:45", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-09-17T08:45", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-09-17T08:00"}, {"procedure": "Venipuncture", "performed": "2024-09-17T08:45"}],
+          "orders": [{"id": "mammo-2024", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "annual screening"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-17T08:00",
+              "body": "Annual exam, 45F. Interval: one stretch of slow bowels over the winter while off psyllium, fine since. Busy season at work; sleeping OK. No GI bleeding, no abdominal pain, no weight change. Periods regular.\n\nMeds: PEG 17 g daily, psyllium 3.4 g daily, docusate 100 mg BID. NKDA.\n\nROS otherwise negative.\nExam: vitals as recorded. Well appearing. Eyes, ears, throat normal. Thyroid not enlarged. Heart regular, no murmur. Lungs clear. Breasts without masses, no axillary nodes. Abdomen soft, nontender, no mass. No edema. Skin: no concerning lesions.\n\nA/P\n- Health maintenance: CBC, BMP, lipids, A1c today. Mammogram order renewed. Colonoscopy 2021, next 2031. Pap/HPV due fall 2025. PHQ-2 negative.\n- Chronic constipation: stable on regimen.\n- Diverticulosis: no symptoms.\nFlu and COVID shots at a nurse visit next month."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-19a",
+          "kind": "portal_message",
+          "start": "2024-09-19T12:30",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical labs reviewed",
+              "author": "PCP",
+              "date": "2024-09-19T12:30",
+              "body": "Labs from 9/17 reviewed: counts, chemistries, lipids and A1c all within normal range. Released to portal with a short note to patient. No action."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-03a",
+          "kind": "nurse_visit",
+          "start": "2024-10-03T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza and COVID vaccination",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-03T16:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-03T16:47"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-03T16:45"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccine administration",
+              "author": "MA",
+              "date": "2024-10-03T16:40",
+              "body": "Came after work. 2024-25 flu (0.5 mL IM, L deltoid) and 2024-25 COVID Pfizer (0.3 mL IM, R deltoid). Last year's shots gave her a tired evening, nothing more. Tolerated today, observed 15 min, left feeling fine."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "imaging",
+          "start": "2024-11-19T08:10",
+          "reason": "screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-11-19T08:10",
+              "text": "Digital screening mammography with tomosynthesis, both breasts. Compared with 11/2023 and 10/2022. Heterogeneously dense tissue. No new or suspicious mass, distortion or calcification. Stable appearance.",
+              "conclusion": "Negative. BI-RADS 1. Annual screening recommended."
+            }
+          ],
+          "orders": [{"id": "mammo-2024", "action": "done", "date": "2024-11-19T08:10"}]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,461 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001745",
+      "events": [
+        {
+          "id": "2023-01-10a",
+          "kind": "office_visit",
+          "start": "2023-01-10T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure and asthma in pregnancy",
+          "conditions": [
+            {"label": "Cervical insufficiency in pregnancy, second trimester", "icd10": "O34.32", "action": "diagnosed", "onset": "2022-12-28", "note": "cervical length 25 mm at 20 weeks, no funneling"}
+          ],
+          "medications": [
+            {"drug_text": "progesterone 200 MG Oral Capsule", "action": "historical", "sig": "Insert 1 capsule vaginally at bedtime until 36 weeks", "dose": {"value": 200, "unit": "mg"}, "frequency": "QHS", "route": "Vaginal", "course": "chronic", "reason": "cervical insufficiency"}
+          ],
+          "state": {"weight_kg": 85.2},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "orders": [
+            {"id": "ob-referral-2022b", "action": "done", "date": "2023-01-10T14:00"}
+          ],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-01-10T14:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-01-10T14:30",
+              "body": "22 weeks today by LMP 8/10. Being followed by the high-risk OB group. Saw them 12/28 for her 20-week visit: she says the cervix was closed, and the ultrasound measured it at 25 mm with no funneling. They told her that's on the short side given her history, called it cervical insufficiency, and started vaginal progesterone 200 mg nightly to continue until 36 weeks. No letter from them yet; requested.\nNo bleeding, discharge, cramping or leakage. Feeling movement. Worried about a repeat of last year but trying to stay positive.\nLabetalol 200 BID, taking reliably. Asthma quiet. Smoking about half a pack; she's trying.\n\nBP at goal. Lungs clear. Gravid abdomen, nontender.\n\nA/P\n1. Chronic HTN in pregnancy, controlled on labetalol. OB co-managing.\n2. Cervical insufficiency, on progesterone per OB. Added to list.\n3. Tobacco: congratulated on cutting back, encouraged to keep going.\n4. Asthma stable.\nSee her after delivery unless something comes up."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-25a",
+          "kind": "hospital_admission",
+          "start": "2023-02-25T21:30",
+          "end": "2023-02-28T12:00",
+          "service": "Emergency Medicine",
+          "reason": "fever, right flank pain and nausea in pregnancy",
+          "conditions": [
+            {"label": "Acute pyelonephritis in pregnancy, third trimester", "icd10": "O23.03", "action": "diagnosed", "onset": "2023-02-24"}
+          ],
+          "medications": [
+            {"drug": "cephalexin 500 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth four times daily to complete 14 days of antibiotics", "dose": {"value": 500, "unit": "mg"}, "frequency": "QID", "route": "Oral", "course": "short", "reason": "pyelonephritis"}
+          ],
+          "vitals": [
+            {"time": "2023-02-25T21:35", "bp": [106, 66], "hr": 112, "temp_c": 38.7}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2023-02-25T21:50", "results": [
+              {"test": "Urine nitrite by test strip", "loinc": "5802-4", "text": "Positive"},
+              {"test": "Urine leukocytes by microscopy", "loinc": "5821-4", "text": "Pyuria"},
+              {"test": "Urine Bacteria", "loinc": "25145-4", "text": "Present"}
+            ]}
+          ],
+          "reports": [
+            {"study": "Renal ultrasound", "performed": "2023-02-25T23:10", "text": "Both kidneys imaged. Mild right hydronephrosis. Left kidney without hydronephrosis. No perinephric collection. Bladder partially distended. Gravid uterus noted.", "conclusion": "Mild right-sided hydronephrosis."}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary (outside)",
+              "author": "obstetrics",
+              "date": "2023-03-02T10:20",
+              "body": "Regional hospital, antepartum unit. Admitted 02/25/2023 via ED, discharged 02/28/2023.\n28 y/o G4P1 at 28w3d presented with a day of fever, chills, R flank pain and nausea, after several days of dysuria and urgency she assumed were from pregnancy. Pain started in the low back and moved up toward the flank. Bacteriuria screen sent in the first trimester was never followed up.\nOn arrival T 38.7, HR 112, BP 106/66. Looked unwell. R CVA tenderness, abdomen without rebound or guarding.\nUA nitrite positive with pyuria and bacteriuria. Renal US: mild R hydronephrosis.\nNST reactive.\nDx: acute pyelonephritis in pregnancy.\nCourse: IV ceftriaxone, afebrile within 36 hours, tolerating PO. Fetal status reassuring throughout.\nDischarge meds: cephalexin 500 mg QID to complete 14 days total; continue labetalol 200 mg BID, vaginal progesterone nightly, prenatal vitamin.\nFollow up with OB in 1 week and with PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-07a",
+          "kind": "office_visit",
+          "start": "2023-03-07T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after hospital stay",
+          "conditions": [
+            {"label": "Acute pyelonephritis in pregnancy, third trimester", "icd10": "O23.03", "action": "resolved", "onset": "2023-02-24"}
+          ],
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-03-07T11:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-03-07T11:25",
+              "body": "Hospital 2/25-2/28 for right pyelonephritis at 28 weeks, discharge summary reviewed. Finishing cephalexin, two days left. No fever since discharge, flank pain gone, urinating normally. Baby moving well; saw OB Friday.\nStill on labetalol and nightly progesterone.\n\nAfebrile. BP fine. No CVA tenderness. Lungs clear.\n\nA/P: Pyelonephritis in pregnancy, clinically resolved on antibiotics. Finish course. Told her to call the same day for burning, fever or flank pain, and that OB will likely recheck her urine. HTN controlled."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "pharmacy",
+          "start": "2023-04-11T09:40",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy refill request: labetalol",
+              "author": "MA",
+              "date": "2023-04-11T09:40",
+              "body": "Electronic refill request, labetalol 200 mg BID, 90 days. Seen 3/7. Approved per protocol, 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-22a",
+          "kind": "portal_message",
+          "start": "2023-05-22T21:05",
+          "reason": "delivery update",
+          "conditions": [
+            {"label": "Pregnant state", "icd10": "Z33.1", "action": "resolved", "onset": "2022-08-24"},
+            {"label": "Cervical insufficiency in pregnancy, second trimester", "icd10": "O34.32", "action": "resolved", "onset": "2022-12-28"}
+          ],
+          "medications": [
+            {"drug_text": "progesterone 200 MG Oral Capsule", "action": "stop", "reason": "stopped at 36 weeks per OB"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Baby is here",
+              "author": "patient",
+              "date": "2023-05-22T21:05",
+              "body": "Just wanted to let you know I had the baby on the 12th, vaginal delivery at 39 weeks, no c-section this time. Healthy and home with us. OB stopped the progesterone at 36 weeks like they planned. When should I come see you?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Baby is here",
+              "author": "PCP",
+              "date": "2023-05-23T08:10",
+              "body": "Wonderful news, congratulations to all of you. Keep taking the labetalol. Front desk will reach out to book a visit about 6 weeks out so we can check your pressure."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-27a",
+          "kind": "office_visit",
+          "start": "2023-06-27T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "postpartum blood pressure check",
+          "state": {"weight_kg": 83.4, "bp": [134, 86]},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-06-27T13:20"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-06-27T13:45",
+              "body": "Six and a half weeks after a term vaginal delivery 5/12. Postpartum check with OB done last week, she says all fine. Bottle feeding. Baby in the car seat at the visit, sleeping.\nLabetalol 200 BID continued postpartum. No headaches or visual change.\nBack to a pack a day. Tired. Mood ok, PHQ-9 4.\n\nBP mildly above where I'd like. Lungs clear. No edema.\n\nA/P: Chronic HTN, borderline today, new baby and short sleep. Keep labetalol, recheck at physical. Tobacco: counseled, particularly about smoke around the baby; she smokes outside. Physical in September with Pap."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"bp": [130, 82]},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-19T08:50", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-19T08:50", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-19T08:50", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": "Urinalysis", "collected": "2023-09-19T08:50", "results": [{"test": "Urine Protein"}, {"test": "Urine Leukocyte Esterase"}, {"test": "Urine Nitrite"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2023-09-19T08:40", "issued": "2023-09-25T14:00", "text": "Specimen adequate, transformation zone present. Negative for intraepithelial lesion or malignancy.", "conclusion": "NILM."}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-09-19T08:20"},
+            {"procedure": "Venipuncture", "performed": "2023-09-19T08:50"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-09-19T09:05",
+              "body": "29F physical. Four-month-old and the older one at home; back at work since August.\nMeds: labetalol 200 BID, albuterol PRN (used twice this summer), prenatal vitamin, which she keeps taking. No hospital visits since the February pyelo.\nSmokes 1 ppd. No alcohol. Periods back, irregular so far. Partner, one partner.\nROS negative.\n\nExam: well appearing. Neck supple, no thyromegaly. Lungs clear. RRR. Breasts deferred, no complaints. Pelvic: normal external genitalia, cervix without lesion, Pap obtained. No edema.\nPHQ-9 2.\n\nA/P\n- HTN at goal today on labetalol.\n- Asthma mild intermittent.\n- Tobacco use: discussed again. She'll call if she wants help.\n- HM: Pap today. Fasting labs. Flu and COVID shots at a nurse visit in October."
+            },
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2023-09-20T10:40",
+              "body": "CBC, CMP, lipids, UA normal. Pap pending."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "portal_message",
+          "start": "2023-09-26T12:10",
+          "reason": "Pap result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Pap result",
+              "author": "PCP",
+              "date": "2023-09-26T12:10",
+              "body": "Your Pap smear is normal. Next one is due in three years. Your other labs from the physical were normal as well."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T17:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-17T17:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-17T17:06"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-17T17:05"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines",
+              "author": "RN",
+              "date": "2023-10-17T17:20",
+              "body": "Flu vaccine L arm and 2023-24 COVID vaccine R arm. No prior reactions. VIS sheets given. Observed 15 minutes, no problems."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-23a",
+          "kind": "hospital_admission",
+          "start": "2023-12-23T03:10",
+          "end": "2023-12-24T14:00",
+          "service": "Emergency Medicine",
+          "reason": "sudden severe lower abdominal pain",
+          "conditions": [
+            {"label": "Ruptured left tubal ectopic pregnancy with hemodynamic instability", "icd10": "O00.102", "action": "diagnosed", "onset": "2023-12-22"}
+          ],
+          "vitals": [
+            {"time": "2023-12-23T03:15", "bp": [90, 60], "hr": 120, "temp_c": 37.2}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2023-12-23T03:30", "results": [
+              {"test": "Hemoglobin", "loinc": "718-7", "unit": "g/dL", "value": 9.2},
+              {"test": "Choriogonadotropin.beta subunit", "loinc": "21198-7", "unit": "m[IU]/mL", "value": 3500}
+            ]}
+          ],
+          "reports": [
+            {"study": "Pelvic ultrasound", "performed": "2023-12-23T04:00", "text": "Transvaginal technique. No intrauterine gestational sac. Complex mass in the left adnexa separate from the ovary. Free fluid in the pelvis. Right adnexa unremarkable.", "conclusion": "Empty uterus with complex left adnexal mass and pelvic free fluid, consistent with ruptured left ectopic pregnancy in this clinical setting."}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "ED and Operative Note (outside)",
+              "author": "gynecology",
+              "date": "2023-12-28T09:15",
+              "body": "Regional hospital. Visit 12/23/2023, discharged 12/24.\n29F, LMP about 6 weeks ago with a history of irregular cycles, woke with sudden severe lower abdominal pain, 6 hours before arrival. One partner, no contraception. History: chronic HTN on labetalol, asthma, cervical insufficiency with prior 18-week loss, cesarean 2020, vaginal delivery 05/2023.\nBP 90/60, HR 120, T 37.2. Pale and anxious. Diffuse tenderness with rebound and guarding; cervical motion tenderness.\nHgb 9.2. hCG 3500.\nTVUS: no IUP, complex L adnexal mass, pelvic free fluid.\nTaken to the OR emergently: laparoscopy showed a ruptured left tubal ectopic with hemoperitoneum, left salpingectomy performed. Right tube normal in appearance.\nRecovered well, discharged POD1 tolerating diet. A positive, no RhIG.\nF/u gyn 2 weeks, PCP for blood count."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-04a",
+          "kind": "office_visit",
+          "start": "2024-01-04T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after surgery",
+          "conditions": [
+            {"label": "Ruptured left tubal ectopic pregnancy with hemodynamic instability", "icd10": "O00.102", "action": "resolved", "onset": "2023-12-22"}
+          ],
+          "state": {"labs": {"Hemoglobin": 10.6}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-01-04T11:00", "results": [{"test": "Hemoglobin", "value": 10.6}, {"test": "Hematocrit"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-01-04T10:40"},
+            {"procedure": "Venipuncture", "performed": "2024-01-04T11:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-01-04T11:10",
+              "body": "Twelve days after laparoscopic left salpingectomy for a ruptured ectopic (outside note reviewed). Incisions healing, mild soreness at the umbilical site, off pain medicine. Light spotting stopped. Tired but eating fine, walking.\nShaken by it, says her partner is too. They are not sure about more pregnancies; I pointed out the right tube was normal and that the gyn team is the best place for that conversation.\nLabetalol continued through the admission.\n\nBP at goal. HR normal. Three small laparoscopic incisions healing well. Abd soft, mildly tender at the umbilicus only.\n\nA/P: S/p left salpingectomy for ruptured ectopic, recovering. CBC today. Gyn f/u next week as planned."
+            },
+            {
+              "type": "Result Note",
+              "title": "CBC",
+              "author": "PCP",
+              "date": "2024-01-04T16:20",
+              "body": "Hgb 10.6, up from 9.2 at the hospital. Iron-rich diet, recheck at her March visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "office_visit",
+          "start": "2024-03-12T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure and asthma follow-up",
+          "state": {"labs": {"Hemoglobin": 12.5}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-03-12T16:00", "results": [{"test": "Hemoglobin"}, {"test": "Hematocrit"}]}
+          ],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2024-03-12T15:40"},
+            {"procedure": "Venipuncture", "performed": "2024-03-12T16:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-03-12T16:05",
+              "body": "Routine HTN/asthma visit, recheck of blood count after the December surgery. Feels back to normal. Gyn visit in January went fine.\nInhaler about once a week through February with a cold going around the office, now rarely.\nStill a pack a day. Asked again about quitting aids, she wants to try on her own first.\n\nBP ok. Lungs clear, no wheeze.\n\nA/P: HTN controlled on labetalol 200 BID. Asthma mild intermittent. Repeat CBC. Tobacco, counseled. Follow up 6 months."
+            },
+            {
+              "type": "Result Note",
+              "title": "CBC",
+              "author": "PCP",
+              "date": "2024-03-13T08:30",
+              "body": "Hemoglobin normal again. Portal message sent."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-10a",
+          "kind": "portal_message",
+          "start": "2024-05-10T19:30",
+          "reason": "positive pregnancy test",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive again",
+              "author": "patient",
+              "date": "2024-05-10T19:30",
+              "body": "Positive test tonight. LMP April 9. Honestly scared after the ectopic. Can someone see me fast?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive again",
+              "author": "PCP",
+              "date": "2024-05-10T20:45",
+              "body": "I'm glad you wrote. Any one-sided pain, shoulder pain, fainting or heavy bleeding means the ED tonight, don't wait. Otherwise I'll see you on video Monday morning and get OB to do an early ultrasound."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-13a",
+          "kind": "telehealth_visit",
+          "start": "2024-05-13T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new pregnancy",
+          "conditions": [
+            {"label": "Pregnant state", "icd10": "Z33.1", "action": "diagnosed", "onset": "2024-04-23", "note": "LMP 2024-04-09"}
+          ],
+          "orders": [
+            {"id": "ob-referral-2024", "action": "placed", "order": "Obstetrics referral", "category": "referral", "to": "Obstetrics & Gynecology", "reason": "pregnancy about 5 weeks; prior ectopic with left salpingectomy; cervical insufficiency; chronic hypertension"}
+          ],
+          "procedures": [{"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2024-05-13T08:20"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2024-05-13T08:40",
+              "body": "At home, kids at daycare. About 5 weeks by LMP 4/9. No pain, no bleeding.\nPrior: cesarean 2020, 18-wk loss 2021, early miscarriage 2022, term vaginal birth 2023, L ectopic with salpingectomy 12/2023.\nMeds: labetalol 200 BID, prenatal vitamin, albuterol PRN.\nPlan: urgent OB referral for early ultrasound to confirm location; I called the OB office and they have her Thursday. ED precautions repeated. Smoking: about a pack, asked her again to cut down."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "office_visit",
+          "start": "2024-08-20T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "telephone",
+          "start": "2024-08-21T09:05",
+          "reason": "missed appointment",
+          "orders": [
+            {"id": "ob-referral-2024", "action": "done", "date": "2024-08-21T09:05"}
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "author": "front desk",
+              "date": "2024-08-21T09:05",
+              "body": "Called re: missed visit yesterday. Pt apologized, forgot with the kids. She is seeing OB every few weeks, about 19 weeks now, pregnancy going well, OB is checking her BP. She'd rather hold the BP visit until after the baby. Told her the doctor is fine with that while OB is following; flu shot in the fall here."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-22T16:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-22T16:35"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Influenza vaccine",
+              "author": "RN",
+              "date": "2024-10-22T16:40",
+              "body": "28 weeks pregnant. Flu vaccine given R deltoid. No reaction."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-31a",
+          "kind": "hospital_admission",
+          "start": "2024-12-31T06:20",
+          "end": "2025-01-03T11:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "abdominal pain and vaginal bleeding at term",
+          "conditions": [
+            {"label": "Placental abruption, third trimester", "icd10": "O45.93", "action": "diagnosed", "onset": "2024-12-31"},
+            {"label": "Postpartum hemorrhage", "icd10": "O72.1", "action": "diagnosed", "onset": "2024-12-31", "note": "uterine atony after vacuum-assisted vaginal delivery"},
+            {"label": "Acute posthemorrhagic anemia", "icd10": "D62", "action": "diagnosed", "onset": "2024-12-31"},
+            {"label": "Pregnant state", "icd10": "Z33.1", "action": "resolved", "onset": "2024-04-23"},
+            {"label": "Placental abruption, third trimester", "icd10": "O45.93", "action": "resolved", "onset": "2024-12-31"}
+          ],
+          "medications": [
+            {"drug": "ferrous sulfate 325 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 325, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "anemia after postpartum hemorrhage"}
+          ],
+          "vitals": [
+            {"time": "2024-12-31T06:25", "bp": [155, 100], "hr": 98, "temp_c": 37.2},
+            {"time": "2024-12-31T16:05", "bp": [90, 60], "hr": 110}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2024-12-31T06:40", "results": [
+              {"test": "Hemoglobin", "loinc": "718-7", "unit": "g/dL", "value": 9.8}
+            ]}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary (outside)",
+              "author": "obstetrics",
+              "date": "2025-01-06T13:40",
+              "body": "Regional hospital labor and delivery. Admitted 12/31/2024, discharged 01/03/2025.\n30 y/o at 38w0d with chronic HTN on labetalol, asthma, cervical insufficiency with prior 18-week loss, prior cesarean x1, prior vaginal birth, L salpingectomy for ectopic, presented with an hour of sudden severe abdominal pain and dark vaginal bleeding. No trauma or fall.\nBP 155/100, HR 98, T 37.2. Abdomen tense and tender, uterus firm and irritable. FHT 140. Speculum: moderate dark red blood, cervix closed, no placental tissue seen. Hgb 9.8 on arrival; coags within normal limits.\nAssessment: placental abruption. Fetal tracing reassuring; she went into labor that morning and labored with close monitoring. Prolonged second stage, vacuum-assisted vaginal delivery of a healthy boy. Placenta delivered intact.\nShortly after, brisk bleeding with a boggy enlarged uterus; BP 90/60, HR 110, pale and anxious. Bimanual massage, second IV line, uterotonics; bleeding controlled. Postpartum hemorrhage with acute blood loss anemia.\nRemainder of stay uncomplicated. Pressures managed on home labetalol.\nDischarge meds: labetalol 200 mg BID, ferrous sulfate 325 mg daily, prenatal vitamin, albuterol PRN.\nFollow up: PCP within 2 weeks for blood count; OB 6 weeks."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

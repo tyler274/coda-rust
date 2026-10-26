@@ -1,0 +1,435 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002241",
+      "given": "Lawrence",
+      "family": "Leary",
+      "birth_date": "1956-05-18",
+      "address_line": "57 Cabot Street, Apt 3",
+      "phone": "+1-603-555-0127",
+      "email": "lawrence.leary@example.test",
+      "marital_status": "single",
+      "summary": "Retired postal worker with poorly controlled type 2 diabetes, hypertension on hydrochlorothiazide alone, PAD, CKD 3b and BPH who joins in 2022. Over four years: bleeding cecal angiodysplasia, metastatic prostate cancer on ADT, right metatarsal osteomyelitis, left CRVO, acalculous cholecystitis, left below-knee amputation for nonrevascularizable gangrene, and a repaired type A aortic dissection.",
+      "events": [
+        {
+          "id": "2022-08-02a",
+          "kind": "telephone",
+          "start": "2022-08-02T10:14",
+          "reason": "New patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient call", "author": "front desk", "date": "2022-08-02T10:14", "body": "Mr. Leary called asking to transfer his primary care here. Says his old office is hard to get through to and he has several things going on (sugar, pressure, kidneys). Membership explained, he is fine with it. Scheduled new patient visit 8/16 at 9:00. Records release mailed to him for his prior practice. Asked him to bring all pill bottles."}
+          ]
+        },
+        {
+          "id": "2022-08-16a",
+          "kind": "establish_care",
+          "start": "2022-08-16T09:00",
+          "end": "2022-08-16T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {"label": "Type 2 diabetes mellitus with hyperglycemia", "action": "history", "note": "poorly controlled per prior practice"},
+            {"label": "Essential hypertension", "action": "history"},
+            {"label": "Hyperlipidemia", "action": "history"},
+            {"label": "Peripheral arterial disease", "action": "history"},
+            {"label": "Chronic kidney disease, stage 3b", "action": "history"},
+            {"label": "Benign prostatic hyperplasia with lower urinary tract symptoms", "action": "history"}
+          ],
+          "medications": [
+            {"drug": "metformin hydrochloride 1000 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with meals", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Type 2 diabetes"},
+            {"drug": "hydrochlorothiazide 25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hyperlipidemia"},
+            {"drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth at bedtime", "dose": {"value": 0.4, "unit": "mg"}, "frequency": "QHS", "route": "Oral", "course": "chronic", "reason": "BPH"},
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "PAD"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [158, 96], "weight_kg": 98.0, "height_cm": 175.0, "labs": {"Creatinine": 1.7, "Hemoglobin A1c": 7.2}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "Occupation", "value": "Retired postal worker"},
+            {"item": "History of alcohol use", "value": "1-2 drinks per month"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2022-08-16T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2022-08-16T10:05", "body": "66 y/o retired postal carrier, establishing care. Coming from a prior practice; records release signed, request sent.\n\nPMH (per pt and his bottles): type 2 DM for years, told it was not well controlled; HTN; high cholesterol; PAD (had a leg circulation test at the old office, does not remember results); CKD stage 3, followed by labs only; BPH on tamsulosin.\nPSH: cataract surgery both eyes; laparoscopic inguinal hernia repair. Years not recalled.\nMeds: metformin 1000 BID, HCTZ 25 daily, atorvastatin 40, tamsulosin 0.4 qhs, ASA 81. Takes them most days.\nAllergies: none known.\nFH: father MI at 68, also HTN, and prostate cancer at 70. Mother T2DM, stroke at 72. Brother HTN and lipids.\nSH: lives alone, apartment, single. Quit cigarettes ~10 yrs ago, 30 pack-yrs before that. Drinks maybe once or twice a month. Not much exercise; mostly TV and errands since retiring.\n\nROS: no chest pain, no dyspnea, no claudication he admits to, no urinary trouble beyond the usual night trip or two. Feels fine.\n\nExam: vitals as charted, BP up today. Well appearing, heavy set. HEENT: pseudophakic both eyes. Neck supple. Heart RRR, no murmur. Lungs clear. Abd obese, soft. Ext: no edema; feet warm, skin intact. Did not do full foot exam today - next visit.\n\nA/P:\n- HTN: above goal today on HCTZ alone. Recheck at next visit with fasting labs.\n- T2DM: no recent A1c in hand. Fasting labs next visit.\n- CKD 3: BMP with the labs.\n- Lipids: fasting panel.\n- PAD, BPH: continue current meds.\n- Health maintenance: will review once old records arrive (colonoscopy, vaccines). PHQ-2 negative.\nRTC 4 wks, come fasting."}
+          ]
+        },
+        {
+          "id": "2022-08-26a",
+          "kind": "outside_records",
+          "start": "2022-08-26T14:30",
+          "reason": "Prior practice records received",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care practice", "author": "outside primary care", "date": "2022-08-26T14:30", "body": "Records received from patient's previous primary care office (34 pages, scanned).\n\nSummary of relevant contents:\n- Problem list: type 2 diabetes mellitus; hypertension; hyperlipidemia; peripheral arterial disease; chronic kidney disease stage 3b; benign prostatic hyperplasia.\n- Medications: metformin 1000 mg BID, hydrochlorothiazide 25 mg daily, atorvastatin 40 mg daily, tamsulosin 0.4 mg nightly, aspirin 81 mg daily.\n- Allergies: NKDA.\n- Ankle-brachial index (prior vascular lab): right 0.85, left 0.72. Left lower than right.\n- Screening colonoscopy 2018: normal to the cecum, no polyps; repeat interval 10 years.\n- Surgical: bilateral cataract extraction; laparoscopic inguinal herniorrhaphy.\n- Former smoker.\n\nScanned to chart. Reviewed by PCP."}
+          ]
+        },
+        {
+          "id": "2022-09-12a",
+          "kind": "office_visit",
+          "start": "2022-09-12T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up, fasting labs",
+          "conditions": [
+            {"label": "Type 2 diabetes mellitus with diabetic polyneuropathy", "action": "diagnosed", "onset": "2022-09-12", "note": "reduced vibration sense both feet"}
+          ],
+          "vitals": {"bp": [162, 98]},
+          "measure": ["hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2022-09-12T08:10", "results": [
+              {"test": "Total Cholesterol", "value": 210},
+              {"test": "Low Density Lipoprotein", "value": 130},
+              {"test": "High Density Lipoprotein", "value": 40},
+              {"test": "Triglycerides", "value": 250}
+            ]},
+            {"panel": null, "collected": "2022-09-12T08:10", "results": [
+              {"test": "Hemoglobin A1c", "value": 7.2}
+            ]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-09-12T08:10", "results": [
+              {"test": "Glucose", "value": 146}, {"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}, {"test": "Blood Urea Nitrogen"}
+            ]},
+            {"panel": null, "collected": "2022-09-12T08:10", "results": [
+              {"test": "Microalbumin/Creatinine Ratio"}
+            ]}
+          ],
+          "state": {"labs": {"Microalbumin/Creatinine Ratio": 52, "Low Density Lipoprotein": 130, "Total Cholesterol": 210, "High Density Lipoprotein": 40, "Triglycerides": 250, "Glucose": 150}},
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-09-12T08:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up: Hypertension", "author": "PCP", "date": "2022-09-12T09:20", "body": "S: Here for BP check and the fasting labs we talked about. No complaints at all. No headache, chest pain, vision change. Has not been checking BP at home.\n\nO: BP 162/98 on arrival and 162/98 again on my recheck after 5 min seated. BMI 32. Gen NAD. Heart regular, no murmur. Lungs clear. Abd soft. Ext no edema.\nFoot exam: skin intact, no calluses or ulcers, DP pulses faint bilaterally, monofilament felt at most sites, vibration sense decreased at both great toes and ankles.\nLabs this AM: fasting glucose 146, A1c 7.2. TC 210, LDL 130, HDL 40, TG 250. BMP/UACR pending at time of visit.\n\nA/P:\n1. HTN, above goal on HCTZ 25. Wants to try home readings before anything else. Cuff technique reviewed; bring a log in 2-3 months.\n2. T2DM, A1c 7.2 on metformin. Diet discussed.\n3. Diabetic peripheral neuropathy - new on exam today (decreased vibration). Daily foot checks, proper shoes.\n4. Lipids on atorvastatin 40 - continue.\n5. CKD 3b - follow BMP.\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "portal_message",
+          "start": "2022-09-14T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2022-09-14T16:40", "body": "Mr. Leary - your kidney numbers are in the same range as your old office reported (stage 3 kidney disease, stable). There is a small amount of protein in the urine, which we will keep an eye on. Sugar average 7.2. Nothing to change today. Please do start that blood pressure log. - your PCP"},
+            {"type": "Patient Message", "title": "RE: Your lab results", "author": "patient", "date": "2022-09-14T19:02", "body": "ok thanks. bought the cuff at the drugstore"}
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T11:00",
+          "reason": "Vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2022-10-04T11:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-04T11:08"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-04T11:05"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization visit", "author": "RN", "date": "2022-10-04T11:20", "body": "High-dose flu given L arm, bivalent COVID booster given R arm. Screening questions negative. VIS sheets provided. Tolerated both; observed 15 minutes, left ambulatory. AAA screening ultrasound and lung screening CT orders reviewed with him; he will call central scheduling."}
+          ],
+          "orders": [
+            {"id": "aaa-us", "action": "placed", "order": "Abdominal aortic aneurysm screening ultrasound", "category": "imaging", "reason": "male former smoker 65-75"},
+            {"id": "ldct-2022", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "30 pack-years, quit about 10 years"}
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "imaging",
+          "start": "2022-10-20T13:30",
+          "reason": "AAA screening",
+          "reports": [
+            {"study": "Abdominal ultrasound", "performed": "2022-10-20T13:30", "text": "Limited abdominal ultrasound for aortic aneurysm screening. The abdominal aorta is visualized from the diaphragmatic hiatus to the bifurcation and is of normal caliber throughout, with no focal dilatation. Common iliac arteries normal in caliber. Bowel gas limits views of the pancreas, not the target of this exam.", "conclusion": "No abdominal aortic aneurysm."}
+          ],
+          "orders": [{"id": "aaa-us", "action": "done", "date": "2022-10-20T13:30"}]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "imaging",
+          "start": "2022-11-08T10:15",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2022-11-08T10:15", "text": "Low-dose noncontrast CT of the chest. Lungs clear without nodules, consolidation or effusion. Airways patent. No mediastinal or hilar adenopathy. Heart size normal. Scattered coronary artery calcifications. Visualized upper abdomen unremarkable.", "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."}
+          ],
+          "orders": [{"id": "ldct-2022", "action": "done", "date": "2022-11-08T10:15"}]
+        },
+        {
+          "id": "2022-12-08a",
+          "kind": "office_visit",
+          "start": "2022-12-08T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "BP and diabetes follow-up",
+          "state": {"bp": [156, 94]},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2022-12-08T14:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up visit", "author": "PCP", "date": "2022-12-08T14:40", "body": "Brought a home log, about 3 weeks of morning readings, mostly in the 150s over 90s. Feels well. Taking HCTZ daily. No side effects.\nExam: BP as charted. Heart regular, lungs clear, no edema. Feet intact.\nAAA screen and LDCT both negative, reviewed with him.\nPlan: continue HCTZ 25 and other meds unchanged. Salt and walking discussed - he says he will try to get out more. Wellness visit in January, A1c then."}
+          ]
+        },
+        {
+          "id": "2023-01-11a",
+          "kind": "annual_physical",
+          "start": "2023-01-11T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": null, "collected": "2023-01-11T09:10", "results": [
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"},
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"},
+              {"test": "Hemoglobin A1c"}
+            ]}
+          ],
+          "state": {"labs": {"Hemoglobin A1c": 7.4}},
+          "immunizations": [{"vaccine": "Pneumococcal conjugate PCV20", "date": "2023-01-11T10:10"}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, initial", "performed": "2023-01-11T09:30"},
+            {"procedure": "Immunization administration", "performed": "2023-01-11T10:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit (initial)", "author": "PCP", "date": "2023-01-11T10:20", "body": "Initial Medicare AWV.\nFunctional: independent with all daily activities, drives, manages his own pills and money. No falls in the past year. Hearing ok. Vision fine with readers since cataract surgery.\nCognition: 3-word recall and clock draw normal.\nMood: PHQ-2 0.\nAdvance directives: none on file; HCP form given, he will think about who to name.\n\nScreening/prevention: colonoscopy 2018 normal (prior records). AAA US 10/2022 negative. LDCT 11/2022 Lung-RADS 1. Hep C and HIV screening sent today. Flu and COVID were given in October. PCV20 given today. Shingrix discussed - wants to space it out, maybe next year. Tdap: no record; will check the state registry.\nDiabetic eye exam: due; told to book with his optometrist.\n\nVitals as charted. Exam: heart regular, lungs clear, abd soft, no edema; feet without lesions, reduced vibration as before.\n\nPlan: as above. Follow-up for BP/DM in ~4-5 months."}
+          ]
+        },
+        {
+          "id": "2023-02-27a",
+          "kind": "office_visit",
+          "start": "2023-02-27T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Dark red stools",
+          "conditions": [],
+          "state": {"labs": {"Hemoglobin": 10.4, "Mean Corpuscular Volume": 92}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-02-27T15:50", "resulted": "2023-02-27T18:30", "results": [{"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}, {"test": "Platelets"}, {"test": "White Blood Cells"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-02-27T15:50", "results": [{"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}, {"test": "Potassium"}]}
+          ],
+          "orders": [
+            {"id": "gi-referral", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "intermittent maroon stools, anemia"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-02-27T15:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Acute visit: maroon stools", "author": "PCP", "date": "2023-02-27T16:15", "body": "Texted this morning about dark stools; came in this afternoon.\nS: Since sometime around September he has had stools that are dark maroon now and then - a few days of it, then normal for weeks. Did not think much of it until it happened twice last week. No abdominal pain, no vomiting, appetite normal, weight steady. No lightheadedness. On aspirin 81, no NSAIDs.\nO: vitals as charted, not orthostatic. Abd soft, nontender. Deferred rectal - going straight to GI.\nCBC drawn here.\nA/P: intermittent lower/mid GI bleeding, hemodynamically fine. GI referral sent as urgent; asked the front desk to get him in within a few weeks. Go to the ED for heavy bleeding, fainting or racing heart.\n\nAddendum 18:40: Hgb 10.1, MCV normal range. Called pt - asymptomatic. Discussed with GI office by phone, they have a slot 3/15."}
+          ]
+        },
+        {
+          "id": "2023-03-15a",
+          "kind": "specialist_visit",
+          "start": "2023-03-15T10:30",
+          "service": "Gastroenterology",
+          "reason": "Intermittent maroon stools",
+          "conditions": [
+            {"label": "Anemia, unspecified", "action": "diagnosed", "onset": "2023-02-27"}
+          ],
+          "vitals": {"bp": [145, 90], "hr": 78},
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-03-15T11:15", "results": [{"test": "Hemoglobin", "value": 10.2}, {"test": "Mean Corpuscular Volume", "value": 92}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-03-15T11:15", "results": [{"test": "Blood Urea Nitrogen", "value": 29}, {"test": "Creatinine", "value": 2.1}]}
+          ],
+          "orders": [
+            {"id": "gi-referral", "action": "done", "date": "2023-03-15T10:30"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gastroenterology consultation", "author": "gastroenterology", "date": "2023-03-16T09:00", "body": "Outpatient Gastroenterology - Consultation Letter\nRe: Lawrence Leary, DOB 05/18/1956\nDate of visit: 03/15/2023\n\nThank you for sending Mr. Leary, a 66-year-old man with type 2 diabetes that has not been well controlled, hypertension and stage 3 CKD, seen today for maroon-colored stools.\n\nHistory: For roughly six months he has had episodes of maroon stool, separated by stretches of normal stool. He has no abdominal pain and reports no loss of weight or appetite.\n\nMedications: metformin 1000 mg twice daily, hydrochlorothiazide 25 mg daily, atorvastatin 40 mg daily, tamsulosin 0.4 mg at night, aspirin 81 mg daily.\nAllergies: NKDA.\nSocial: retired postal worker, former smoker (30 pack-years, quit ~10 years ago), rare alcohol.\nFamily: father MI and prostate cancer; mother diabetes and stroke; brother hypertension.\n\nExam: BP 145/90, HR 78. Abdomen soft, nontender, nondistended, no masses or organomegaly. Rectal: maroon stool present in the vault, no mass.\n\nLabs today: hemoglobin 10.2 g/dL, MCV 92 fL, BUN 29 mg/dL, creatinine 2.1 mg/dL.\n\nImpression: intermittent bleeding with maroon stool and a normocytic anemia, suspicious for a right-colon source; the BUN and creatinine are above his baseline.\n\nPlan: colonoscopy as soon as can be arranged with a split prep; we have him on the schedule for 03/28. He should continue his medications. Please repeat a BMP in a few weeks.\n\nGastroenterology"}
+          ]
+        },
+        {
+          "id": "2023-03-28a",
+          "kind": "procedure_visit",
+          "start": "2023-03-28T07:45",
+          "end": "2023-03-28T10:30",
+          "service": "Gastroenterology — Endoscopy",
+          "reason": "Colonoscopy for GI bleeding",
+          "conditions": [
+            {"label": "Angiodysplasia of cecum with hemorrhage", "icd10": "K55.21", "action": "diagnosed", "onset": "2023-03-28"}
+          ],
+          "medications": [
+            {"drug": "ferrous sulfate 325 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 325, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Anemia after GI blood loss"}
+          ],
+          "procedures": [{"procedure": "Colonoscopy with ablation of lesions", "performed": "2023-03-28T08:30"}],
+          "documents": [
+            {"type": "Procedure Note", "title": "Colonoscopy report", "author": "gastroenterology", "date": "2023-03-28T09:10", "body": "Endoscopy Unit - Colonoscopy Report\nPatient: Lawrence Leary   DOB 05/18/1956\nIndication: intermittent maroon stools, anemia.\nSedation: monitored anesthesia care.\nPrep: good (split dose).\n\nFindings:\n- The scope was advanced to the cecum, identified by the appendiceal orifice and ileocecal valve. Terminal ileum briefly intubated, normal.\n- Cecum: several small, flat, red vascular lesions consistent with angiodysplasia. No active bleeding at the time of exam. Each was treated with argon plasma coagulation.\n- Remainder of the colon normal to the rectum. No polyps, no diverticula, no masses. No blood elsewhere in the colon.\n- Retroflexion in the rectum normal.\n\nImpression: cecal angiodysplasia, the likely source of his maroon stools, treated with APC.\n\nRecommendations: ferrous sulfate 325 mg daily for 3 months; CBC in 2 to 3 weeks with his primary care. Call for recurrent maroon or black stools. Allergies: NKDA.\n\nGastroenterology"}
+          ]
+        },
+        {
+          "id": "2023-04-13a",
+          "kind": "office_visit",
+          "start": "2023-04-13T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after colonoscopy",
+          "state": {"labs": {"Hemoglobin": 11.6, "Creatinine": 1.7}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-04-13T10:20", "results": [{"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-04-13T10:20", "results": [{"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}, {"test": "Potassium"}, {"test": "Sodium"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-04-13T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up: GI bleed", "author": "PCP", "date": "2023-04-13T11:10", "body": "Colonoscopy 3/28 showed cecal angiodysplasia, treated with APC (report scanned). On iron daily - some dark stools from the iron, otherwise none of the maroon color since the procedure. Mild constipation.\nExam: BP as charted. Conjunctivae a little pale. Heart regular, lungs clear. Abd benign.\nLabs today: Hgb improving; creatinine back to his usual 1.7 range, BUN down.\nPlan: finish 3 months of iron. Repeat CBC in June. Push fluids/fiber for the constipation."}
+          ]
+        },
+        {
+          "id": "2023-05-09a",
+          "kind": "pharmacy",
+          "start": "2023-05-09T09:12",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request", "author": "MA", "date": "2023-05-09T09:12", "body": "Pharmacy fax: 90-day refills requested for metformin 1000 mg, HCTZ 25 mg, atorvastatin 40 mg, tamsulosin 0.4 mg. Last seen 4/13. Sent per protocol, PCP cosign."}
+          ]
+        },
+        {
+          "id": "2023-06-23a",
+          "kind": "office_visit",
+          "start": "2023-06-23T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and BP follow-up",
+          "medications": [
+            {"drug": "ferrous sulfate 325 MG Oral Tablet", "action": "stop", "reason": "3-month course complete"}
+          ],
+          "state": {"labs": {"Hemoglobin": 12.6, "Hemoglobin A1c": 7.6, "Glucose": 160}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-06-23T08:30", "results": [{"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}]},
+            {"panel": null, "collected": "2023-06-23T08:30", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-06-23T08:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-06-23T08:50"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes / HTN follow-up", "author": "PCP", "date": "2023-06-23T09:30", "body": "No more bleeding. Finished his iron last week - stopping it. Feels more energetic.\nDM: A1c drifted up a bit. Admits more snacking. Taking metformin.\nHTN: home readings still 150s/90s.\nExam: vitals as charted. Heart regular, no murmur. Lungs clear. Feet: skin intact, no calluses, vibration down at toes, faint DP pulses.\nPlan: iron off. Meds otherwise unchanged. Diet review again. Eye exam - he has an appointment next month. RTC ~3 months."}
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "outside_records",
+          "start": "2023-07-18T13:00",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {"type": "Outside Records", "title": "Diabetic eye examination report", "author": "optometry", "date": "2023-07-18T13:00", "body": "Diabetic Eye Exam - Report to Primary Care\nPatient: Lawrence Leary\nDilated fundus examination both eyes. Posterior chamber IOLs well positioned OU. Optic nerves healthy, cup-to-disc 0.3 OU. Maculae flat. Vessels normal caliber. No hemorrhages, exudates or neovascularization.\nAssessment: no diabetic retinopathy OU. Pseudophakia OU.\nRecommend: repeat dilated exam in 12 months.\nOptometry"}
+          ]
+        },
+        {
+          "id": "2023-08-28a",
+          "kind": "office_visit",
+          "start": "2023-08-28T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Low back pain",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": null, "collected": "2023-08-28T14:20", "resulted": "2023-08-29T15:10", "results": [{"test": "Prostate Specific Antigen", "value": 22}]}
+          ],
+          "reports": [
+            {"study": "Lumbar spine X-ray", "performed": "2023-08-28T15:00", "text": "AP and lateral views of the lumbar spine. Five lumbar-type vertebral bodies with normal alignment. Vertebral body heights maintained, no fracture. Several focal sclerotic lesions are present within the lumbar vertebral bodies. Disc spaces preserved. SI joints unremarkable.", "conclusion": "Several focal sclerotic lesions in the lumbar spine. Correlation with PSA and further evaluation recommended."}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-08-28T13:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Acute visit: back pain", "author": "PCP", "date": "2023-08-28T14:25", "body": "S: Low back ache going on since around March. Constant, dull, in the middle of the low back. Worse at night, sometimes wakes him. Tylenol and the store-brand ibuprofen do nothing. No fall, no lifting injury. No leg weakness or numbness beyond his usual feet, no bowel or bladder change. Urine stream is his usual.\nO: vitals as charted, afebrile. Tender over the lumbar spinous processes. No skin changes or masses over the back. Strength 5/5 legs, reflexes symmetric, SLR negative.\nA/P: subacute low back pain, night pain and age make me want to look further. Family hx of prostate cancer in father. PSA today and lumbar films. Avoid the ibuprofen with his kidneys - tylenol only. Will call with results."}
+          ]
+        },
+        {
+          "id": "2023-08-30a",
+          "kind": "telephone",
+          "start": "2023-08-30T08:45",
+          "reason": "Results: PSA and lumbar X-ray",
+          "conditions": [
+            {"label": "Elevated prostate specific antigen", "action": "diagnosed", "onset": "2023-08-29"}
+          ],
+          "orders": [
+            {"id": "uro-referral", "action": "placed", "order": "Urology referral", "category": "referral", "to": "Urology", "reason": "PSA 22, sclerotic lumbar lesions"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Results call", "author": "PCP", "date": "2023-08-30T08:45", "body": "Called pt with results. PSA 22. Lumbar films with several sclerotic spots in the vertebrae. Explained this raises concern for prostate cancer that may have reached the bone, and that we need urology to examine and likely biopsy. He was quiet but asked good questions; mentioned his father. Urgent urology referral placed; staff to call him with a date. Continue tylenol for pain. He has my cell for anything before then."}
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "specialist_visit",
+          "start": "2023-09-14T14:00",
+          "service": "Urology",
+          "reason": "Elevated PSA, back pain",
+          "labs": [
+            {"panel": null, "collected": "2023-09-14T14:45", "results": [
+              {"test": "Calcium", "value": 9.2},
+              {"test": "Alkaline Phosphatase", "value": 140},
+              {"test": "Hemoglobin", "value": 13.2}
+            ]}
+          ],
+          "orders": [
+            {"id": "uro-referral", "action": "done", "date": "2023-09-14T14:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Urology consultation", "author": "urology", "date": "2023-09-15T08:30", "body": "Urology Consultation\nPatient: Lawrence Leary, 67 y/o M\nVisit: 09/14/2023\nReferred by primary care for a PSA of 22 and sclerotic lumbar lesions.\n\nHPI: He describes six months of low back pain, a steady dull ache that is worse at night and unrelieved by over-the-counter analgesics. No trauma. He has known BPH on tamsulosin. History also notes diabetes, hypertension and a recent evaluation for GI bleeding.\n\nMeds: metformin, hydrochlorothiazide 25 mg, atorvastatin 40 mg, tamsulosin 0.4 mg qhs, aspirin 81 mg.\nAllergies: NKDA.\nFamily history: father with prostate cancer at age 70 and MI at 68.\n\nExam: Lumbar spine tender to palpation; no overlying skin change or mass. Motor strength intact; sensation without new deficit. DRE: prostate enlarged, firm and nodular.\n\nData: PSA 22 ng/mL (08/2023). Lumbar spine radiographs: several focal sclerotic lesions. Today: calcium 9.2 mg/dL, alkaline phosphatase 140 U/L, hemoglobin 13.2 g/dL.\n\nAssessment: suspected prostate cancer with possible osseous involvement.\n\nPlan: transperineal prostate biopsy, whole-body bone scan and CT of the abdomen and pelvis, which we are scheduling. Will forward results.\n\nUrology"}
+          ]
+        },
+        {
+          "id": "2023-10-05a",
+          "kind": "procedure_visit",
+          "start": "2023-10-05T09:00",
+          "service": "Urology",
+          "reason": "Prostate biopsy",
+          "conditions": [
+            {"label": "Elevated prostate specific antigen", "action": "resolved", "note": "explained by biopsy-proven prostate cancer"},
+            {"label": "Malignant neoplasm of prostate", "action": "diagnosed", "onset": "2023-10-05"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2023-10-05T09:30", "issued": "2023-10-09T14:00", "text": "Specimens: prostate needle cores, 12 sites (right and left base, mid, apex, lateral and medial).\nMicroscopic: prostatic adenocarcinoma, acinar type, involving 7 of 12 cores. Predominant pattern 4 with pattern 3.\nNo intraductal carcinoma identified.", "conclusion": "Prostatic adenocarcinoma, Gleason score 4+3=7 (Grade Group 3), present in 7 of 12 cores."}
+          ],
+          "documents": [
+            {"type": "Procedure Note", "title": "Transperineal prostate biopsy", "author": "urology", "date": "2023-10-05T10:00", "body": "Procedure: transperineal ultrasound-guided prostate biopsy under local anesthesia, 12 cores. Indication: PSA 22, abnormal DRE. Tolerated well, minimal bleeding. Allergies: NKDA. Discharged home. Pathology to follow; will forward to oncology and PCP.\n\nAddendum 10/9: pathology shows prostate adenocarcinoma, Gleason 4+3=7, 7 of 12 cores. Discussed with patient by phone. Bone scan and CT are next week.\nUrology"}
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "imaging",
+          "start": "2023-10-10T08:00",
+          "reason": "Prostate cancer staging",
+          "conditions": [
+            {"label": "Secondary malignant neoplasm of bone", "icd10": "C79.51", "action": "diagnosed", "onset": "2023-10-10"}
+          ],
+          "reports": [
+            {"study": "Whole body bone scan", "loinc": "39818-0", "performed": "2023-10-10T11:30", "text": "Whole-body planar imaging 3 hours after IV Tc-99m MDP. Focal increased radiotracer uptake in the L2 and L4 vertebral bodies, matching the sclerotic lesions on recent radiographs. No other abnormal uptake in the axial or appendicular skeleton. Expected renal and bladder activity.", "conclusion": "Osseous metastatic disease at L2 and L4. No other skeletal sites."},
+            {"study": "CT abdomen and pelvis with contrast", "performed": "2023-10-10T08:00", "text": "Liver, spleen, pancreas and adrenals normal. Gallbladder unremarkable. Kidneys symmetric without hydronephrosis. Prostate enlarged. Bladder normal. No pelvic, retroperitoneal or mesenteric lymphadenopathy. No ascites. Sclerotic foci in L2 and L4 vertebral bodies. Abdominal aorta normal caliber with calcified plaque.", "conclusion": "No lymphadenopathy or visceral metastatic disease. Sclerotic L2 and L4 lesions, as on bone scan."}
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "specialist_visit",
+          "start": "2023-10-24T13:00",
+          "service": "Medical Oncology",
+          "reason": "New metastatic prostate cancer",
+          "medications": [
+            {"drug_text": "leuprolide acetate 22.5 MG Injection", "action": "historical", "sig": "22.5 mg IM every 12 weeks, given at oncology", "dose": {"value": 22.5, "unit": "mg"}, "frequency": "every 12 weeks", "route": "Intramuscular", "course": "chronic", "reason": "Metastatic prostate cancer"},
+            {"drug_text": "enzalutamide 40 MG Oral Tablet", "action": "historical", "sig": "Take 4 tablets (160 mg) by mouth daily", "dose": {"value": 160, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Metastatic prostate cancer"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Medical oncology consultation", "author": "oncology", "date": "2023-10-25T09:00", "body": "Medical Oncology - New Patient Consultation\nPatient: Lawrence Leary, 67-year-old man\nDiagnosis: prostatic adenocarcinoma, Gleason 4+3=7 (Grade Group 3), 7/12 cores; PSA 22; bone scan with lesions at L2 and L4 only; CT abdomen/pelvis without nodal or visceral disease.\nStage: metastatic hormone-sensitive prostate cancer, low volume.\n\nHistory: low back pain since spring, worse at night. Comorbid type 2 diabetes, hypertension, PAD, CKD 3b, BPH, treated cecal angiodysplasia.\nMeds: metformin 1000 mg BID, HCTZ 25 mg, atorvastatin 40 mg, tamsulosin 0.4 mg, aspirin 81 mg.\nAllergies: NKDA.\n\nExam: ECOG 1. Lumbar spine tender. No neurologic deficit.\n\nPlan discussed at length: androgen deprivation with leuprolide 22.5 mg IM every 12 weeks plus enzalutamide 160 mg daily. First leuprolide injection given today in clinic; enzalutamide prescription sent to specialty pharmacy. Expected effects reviewed (hot flashes, fatigue, bone and metabolic effects). PSA every 3 months; visits every 6 months with interval labs.\n\nMedical Oncology"}
+          ]
+        },
+        {
+          "id": "2023-10-27a",
+          "kind": "pharmacy",
+          "start": "2023-10-27T11:30",
+          "reason": "Prior authorization",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Specialty pharmacy call", "author": "MA", "date": "2023-10-27T11:30", "body": "Specialty pharmacy called asking us to confirm his current med list for a drug-interaction review on enzalutamide (prior auth is through oncology and was approved). Faxed current list. No interacting meds flagged. Enzalutamide added to our med list as an oncology prescription."}
+          ]
+        },
+        {
+          "id": "2023-11-09a",
+          "kind": "office_visit",
+          "start": "2023-11-09T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after prostate cancer diagnosis",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2023-11-09T10:40"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-11-09T10:42"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-11-09T10:00"},
+            {"procedure": "Immunization administration", "performed": "2023-11-09T10:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up visit", "author": "PCP", "date": "2023-11-09T10:50", "body": "Checking in after the cancer diagnosis. Biopsy Gleason 4+3, spread to two spots in the low back on bone scan, no nodes or organ involvement. Oncology started leuprolide shots and enzalutamide 10/24. He is taking the pills; a few hot flashes already. Back ache maybe a little less.\nMood: understandably shaken, sleeping ok. PHQ-2 1. Says he is a 'one day at a time' kind of person.\nExam: vitals as charted. Lumbar mild tenderness. Heart regular. Lungs clear. No edema.\nPlan: med list updated with oncology drugs. Flu and COVID given. Rest of meds same. Next labs and visit with his wellness visit in Feb."}
+          ]
+        }
+      ]
+    }
+  ]
+}

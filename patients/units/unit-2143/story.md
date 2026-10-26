@@ -1,0 +1,35 @@
+# unit-2143 story (Lloyd Jacobs, MRN00002143)
+
+- 2023-09-05 telephone: asks to become a patient after his prior doctor retired; new-patient slot booked (P)
+- 2023-09-12 establish_care: healthy 54-year-old, no meds, NKDA, FH father ILD / mother RA; screening labs, HCV and HIV (A1, P)
+- 2023-09-14 portal_message: labs normal (P)
+- 2023-09-21 outside_records: prior practice records; colonoscopy 2019 normal, Tdap 2019 (P)
+- 2023-10-19 nurse_visit: influenza and updated COVID vaccines (P)
+- 2024-03-06 portal_message: asks about shingles vaccine; told to get it at his physical (P)
+- 2024-06-11 annual_physical: well, no breathing complaints; Shingrix 1; labs (P)
+- 2024-06-13 portal_message: labs normal (P)
+- 2024-10-17 nurse_visit: Shingrix 2, influenza, COVID (P)
+- 2024-12-06 portal_message: winded on stairs, cough not going away; visit booked (A2)
+- 2024-12-10 office_visit: 5 months dyspnea and dry cough, SpO2 95%, bibasilar crackles; CBC/BMP; X-ray ordered; pulmonary referral (A2)
+- 2024-12-12 imaging: chest X-ray subtle basal interstitial pattern (S, R2)
+- 2024-12-13 telephone: PCP calls with the result, referral expedited (A2)
+- 2025-01-23 specialist_visit: pulmonary consult; 6MWT 94% to 88%; HRCT honeycombing; PFT TLC reduced, no obstruction; ANA/RF/CCP negative; IPF (S, A3, A4); letter received 2025-01-29
+- 2025-01-30 telephone: PCP reviews the diagnosis with him; IPF on the problem list (S)
+- 2025-02-27 specialist_visit: pulmonary follow-up; nintedanib 150 mg BID, ambulatory O2 2 L/min (A5, A6); letter received 2025-03-04
+- 2025-03-06 pharmacy: specialty pharmacy asks for clinic notes for nintedanib authorization; sent (P)
+- 2025-04-16 office_visit: IPF follow-up; SpO2 94%; CMP; PCV20 (P)
+- 2025-04-17 portal_message: CMP normal (P)
+- 2025-06-24 office_visit cancelled (P)
+- 2025-07-24 specialist_visit: pulmonary; FVC 61%, DLCO 44%; transplant referral (A3, A7); letter received 2025-07-29
+- 2025-09-18 specialist_visit: transplant center evaluation begins, asks for screening and vaccine records (A7); letter received 2025-09-23
+- 2025-09-25 telephone: RN books a visit to finish the transplant center forms (P)
+- 2025-10-31 office_visit: LAST SEEN; IPF follow-up; SpO2 93%; flu and COVID; CBC, CMP, lipids, A1c (P)
+- 2025-11-04 portal_message: results normal; screening and vaccine summary faxed to the transplant center (P)
+- 2025-12-11 specialist_visit: transplant center; FVC 55%, DLCO 38%; accepted as candidate (A3, A7); letter received 2025-12-16
+- 2026-01-22 specialist_visit: listed for bilateral lung transplant (A7); letter received 2026-01-27
+- 2026-05-19 hospital_admission: bilateral lung transplant, uneventful; discharged 2026-06-02 on tacrolimus, mycophenolate, prednisone; nintedanib stopped (S, R1); summary received 2026-06-05
+- 2026-06-09 portal_message: home, transplant team runs his medicines; PCP replies (P)
+- 2026-07-20 specialist_visit: transplant pulmonary clinic; fever, dyspnea, cough; source vitals and labs; CMV PCR positive; CXR diffuse infiltrates; CMV pneumonitis (S, R4)
+- 2026-07-20 hospital_admission: IV ganciclovir, discharged 2026-07-27 on valganciclovir 900 mg BID (A8); summary received 2026-07-30
+- 2026-08-13 specialist_visit: transplant clinic; SpO2 95%, CMV PCR below quantitation; valganciclovir continues (A8); letter received 2026-08-18
+- 2026-08-20 portal_message: asks about flu shot; inactivated is fine, timing via transplant team (P)

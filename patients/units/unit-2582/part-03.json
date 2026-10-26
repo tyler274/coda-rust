@@ -1,0 +1,454 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002582",
+   "events": [
+    {
+     "id": "2026-01-09a",
+     "kind": "portal_message",
+     "start": "2026-01-09T19:44",
+     "reason": "pulmonology visit",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lung doctor",
+       "author": "patient",
+       "date": "2026-01-09T19:44",
+       "body": "Forgot to tell you I saw the lung specialist back in November. They did the breathing tests and an x-ray and said everything was normal and I don't need to go back. My unit wants something in writing from you that I'm good."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Lung doctor",
+       "author": "PCP",
+       "date": "2026-01-10T09:15",
+       "body": "Great news. We never got their letter, so we'll ask for it Monday and I'll do your paperwork as soon as it's in."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Records Request",
+       "author": "front desk",
+       "date": "2026-01-12T10:05",
+       "body": "Faxed request to outside pulmonology for 11/19/25 consult note and PFT report. Their office says it was signed but never routed to us."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-14a",
+     "kind": "outside_records",
+     "start": "2026-01-14T14:30",
+     "reason": "pulmonology consult received",
+     "conditions": [
+      {
+       "label": "Acute respiratory distress syndrome",
+       "icd10": "J80",
+       "action": "resolved",
+       "onset": "2025-08-30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "pulm-referral",
+       "action": "done",
+       "date": "2026-01-14T14:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Pulmonology Consultation (received)",
+       "author": "pulmonology",
+       "date": "2026-01-14T14:30",
+       "body": "PULMONARY MEDICINE CLINIC — CONSULTATION\nDate of visit: 11/19/2025\nReferred by: primary care, for lung function after ARDS.\n\nThank you for sending this 22-year-old active-duty soldier, seen about 11 weeks after an ICU admission for ARDS following a submersion event in late August (intubated, prone ventilation, extubated day 5). Earlier this year he had a laparotomy for an abdominal gunshot wound. He reports no shortness of breath, cough or exercise limitation; he has resumed running. Never smoker.\nAllergies: NKDA. Medications: none.\n\nExam: well-appearing, unlabored. SpO2 98% on room air at rest and with a hallway walk. Lungs clear throughout. Heart regular. No clubbing or edema.\n\nChest radiograph today: clear lungs.\nPFTs today: spirometry normal, DLCO normal.\n\nImpression: full recovery of lung function after drowning-associated ARDS.\nPlan: no pulmonary follow-up needed; return as needed. He may resume full duty from a pulmonary standpoint."
+      },
+      {
+       "type": "Progress Notes",
+       "title": "Outside Records Review",
+       "author": "PCP",
+       "date": "2026-01-15T07:55",
+       "body": "Pulm letter from 11/19 arrived after our request. Normal PFTs and CXR, cleared. ARDS marked resolved. Duty clearance letter written and sent to pt through the portal."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-10a",
+     "kind": "annual_physical",
+     "start": "2026-03-10T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual physical",
+     "state": {
+      "weight_kg": 80.1
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 2
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 2
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2026-03-10T08:50",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-03-10T08:50",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2026-03-10T08:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-03-10T08:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2026-03-10T08:20",
+       "body": "23 y/o for his yearly. Rough 2025: abdominal GSW with hemorrhagic shock in March (ex lap), then ARDS after a near-drowning in August. Both fully recovered; pulm cleared him with normal PFTs. Back on full duty since January and running 5 miles again. No complaints today.\nMeds: none. NKDA. Never smoker. Drinks 1-2 a week.\n\nExam: vitals as charted, weight back to baseline. Well-appearing. HEENT normal. Neck no nodes. Heart RRR, no murmur. Lungs clear. Abdomen: well-healed midline scar, no hernia, nontender. Skin otherwise clear. Extremities and neuro normal.\n\nA/P\n- Well adult. Lipids and CBC today.\n- Surgical hx: ex lap 2025. Problem list: no active problems.\n- PHQ-9 2, AUDIT-C 2. Discussed how the past year has been; he says he is doing well and has people to talk to.\n- Up to date on vaccines; flu next fall.\nSee in a year."
+      },
+      {
+       "type": "Result Note",
+       "title": "Lab Results",
+       "author": "PCP",
+       "date": "2026-03-11T12:20",
+       "body": "August, cholesterol and blood counts are normal. Your hemoglobin is right where it was before last year. See you next spring."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-24a",
+     "kind": "hospital_admission",
+     "start": "2026-07-24T21:12",
+     "end": "2026-08-04T14:00",
+     "service": "Emergency Medicine; Trauma Surgery; Orthopedic Surgery",
+     "reason": "high-speed motor vehicle collision",
+     "vitals": [
+      {
+       "time": "2026-07-24T21:14",
+       "bp": [
+        100,
+        60
+       ],
+       "hr": 110,
+       "rr": 28,
+       "spo2": 89
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2026-07-24T21:40",
+       "results": [
+        {
+         "test": "Oxygen partial pressure in Arterial blood",
+         "loinc": "2703-7",
+         "unit": "mm[Hg]",
+         "value": 60
+        }
+       ],
+       "resulted": "2026-07-24T21:55"
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-07-24T21:30",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 12.4
+        }
+       ],
+       "resulted": "2026-07-24T21:55"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 1 view",
+       "performed": "2026-07-24T21:35",
+       "text": "Portable AP chest. Bilateral diffuse infiltrates. Heart size normal. No pneumothorax. No displaced rib fracture. No pleural effusion.",
+       "conclusion": "Bilateral diffuse infiltrates.",
+       "issued": "2026-07-24T21:55"
+      },
+      {
+       "study": "CT abdomen and pelvis with contrast",
+       "performed": "2026-07-24T22:05",
+       "text": "Fractures of the pelvic ring with an unstable pattern; pelvic binder in place. Liver, spleen, kidneys and pancreas without injury. No free intraperitoneal air. Postsurgical change of prior midline laparotomy. Bladder intact.",
+       "conclusion": "Unstable pelvic ring fracture. No solid-organ injury.",
+       "issued": "2026-07-24T22:40"
+      },
+      {
+       "study": "CT head without contrast",
+       "performed": "2026-07-24T22:00",
+       "text": "No intracranial hemorrhage or mass effect. No skull fracture. Ventricles and sulci normal.",
+       "conclusion": "No acute intracranial findings.",
+       "issued": "2026-07-24T22:25"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2026-07-24T21:12"
+      },
+      {
+       "procedure": "Initial hospital inpatient care",
+       "performed": "2026-07-25T01:00"
+      },
+      {
+       "procedure": "Hospital discharge day management, 30 minutes or less",
+       "performed": "2026-08-04T12:30"
+      }
+     ]
+    },
+    {
+     "id": "2026-07-28a",
+     "kind": "portal_message",
+     "start": "2026-07-28T13:02",
+     "reason": "in the hospital",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "In the hospital again",
+       "author": "patient",
+       "date": "2026-07-28T13:02",
+       "body": "Hi, typing from my phone in the hospital. Car crash Friday night, broke my pelvis and they said fat got into my lungs. Was in the ICU on oxygen but out now. They fixed the pelvis yesterday. Not sure when I go home. Just letting you know."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: In the hospital again",
+       "author": "PCP",
+       "date": "2026-07-28T15:40",
+       "body": "Thank you for telling us, August. Glad you're out of the ICU. We'll get the records. When they discharge you, message us and we'll see you within the week."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-29a",
+     "kind": "outside_records",
+     "start": "2026-07-29T10:25",
+     "reason": "ED record received",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Emergency Department Record (received)",
+       "author": "emergency medicine",
+       "date": "2026-07-29T10:25",
+       "body": "EMERGENCY DEPARTMENT — PHYSICIAN DOCUMENTATION\nDate of service: 07/24/2026, 21:12\n\nCC: Pelvic pain and shortness of breath after highway-speed MVC.\n\nHPI: 23-year-old male driver brought in after a high-speed collision, complaining of severe pain in the pelvis and difficulty breathing. Past history of abdominal gunshot wound with laparotomy (2025) and ARDS after submersion (2025), both recovered. Takes no medications.\nAllergies: NKDA. Social: never smoker, occasional alcohol, active-duty Army.\n\nExam: BP 100/60, HR 110, RR 28, SpO2 89% on room air. Anxious and confused, not fully oriented. Pelvis unstable to gentle compression; binder applied. Crackles in both lungs. Petechiae across the chest and in both axillae. Healed midline abdominal scar.\n\nABG: PaO2 60 mmHg. Hgb 12.4.\nCXR: bilateral diffuse infiltrates.\nCT head: negative. CT abdomen/pelvis: unstable pelvic ring fracture, no solid-organ injury.\n\nImpression: fat embolism syndrome with hypoxemia; unstable pelvic ring fracture.\nPlan: high-flow oxygen, trauma ICU, orthopedic surgery for fixation."
+      },
+      {
+       "type": "Progress Notes",
+       "title": "Outside Records Review",
+       "author": "PCP",
+       "date": "2026-07-29T12:10",
+       "body": "ED record in from 7/24: MVC, unstable pelvic fracture, fat embolism syndrome. Still inpatient per his message. Will update the chart at the post-discharge visit when the summary comes."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-04a",
+     "kind": "pharmacy",
+     "start": "2026-08-04T17:45",
+     "reason": "new outside prescriptions filled",
+     "documents": [
+      {
+       "type": "Pharmacy Note",
+       "title": "Fill Notification",
+       "author": "MA",
+       "date": "2026-08-05T08:30",
+       "body": "Pharmacy fill history shows 2 new Rxs filled 8/4 from the hospital: enoxaparin 40 mg/0.4 mL syringes, daily x 28 days, and oxycodone-acetaminophen 5/325, #20. No discharge paperwork received yet. Flagged for RN call."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-05a",
+     "kind": "telephone",
+     "start": "2026-08-05T10:40",
+     "reason": "post-discharge call",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Post-Discharge Call",
+       "author": "RN",
+       "date": "2026-08-05T10:40",
+       "body": "Called pt, discharged yesterday afternoon after pelvic fixation. Using a walker, toe-touch only on the injured side per ortho. Doing his own enoxaparin shots, nurse taught him in the hospital. Breathing fine, no chest pain, confusion gone. Pain 4/10, oxycodone at night only. Has no discharge papers with him except the med list, which matches the fills. Booked with PCP Fri 8/7. Discharge summary requested from the hospital."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-07a",
+     "kind": "office_visit",
+     "start": "2026-08-07T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "post-hospital visit after pelvic fracture",
+     "conditions": [
+      {
+       "label": "Fat embolism syndrome",
+       "icd10": "T79.1XXA",
+       "action": "diagnosed",
+       "onset": "2026-07-24"
+      },
+      {
+       "label": "Unstable pelvic ring fracture",
+       "icd10": "S32.811A",
+       "action": "diagnosed",
+       "onset": "2026-07-24",
+       "note": "operative fixation 7/27/2026"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "enoxaparin sodium 40 MG in 0.4 ML Prefilled Syringe",
+       "action": "historical",
+       "sig": "Inject 40 mg under the skin once daily for 4 weeks",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Subcutaneous",
+       "course": "short",
+       "reason": "thromboprophylaxis after pelvic fracture"
+      },
+      {
+       "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth every 6 hours as needed for severe pain",
+       "dose": {
+        "value": 1,
+        "unit": "tablet"
+       },
+       "frequency": "Q6H PRN",
+       "route": "Oral",
+       "course": "short",
+       "reason": "pelvic fracture pain"
+      }
+     ],
+     "state": {
+      "weight_kg": 76.0,
+      "labs": {
+       "Hemoglobin": 11.7
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "vitals": {
+      "spo2": 97
+     },
+     "surveys": [
+      {
+       "survey": "Pain severity (0-10)",
+       "value": 4
+      },
+      {
+       "survey": "PHQ-9 total score",
+       "value": 4
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-08-07T11:35",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 11.7
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-08-07T11:35",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Sodium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2026-08-07T11:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-08-07T11:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-Hospital Visit",
+       "author": "PCP",
+       "date": "2026-08-07T11:00",
+       "body": "23M, third major trauma admission in 17 months. 7/24-8/4 admission elsewhere after a high-speed MVC: unstable pelvic ring fracture and fat embolism syndrome (hypoxemia, confusion, petechial rash). ED record reviewed. ICU on high-flow O2, never intubated. Pelvic fixation 7/27 per pt. Discharge summary not here yet.\n\nNow: walker, toe-touch weight bearing on the injured side. Pain 4/10, worst getting in and out of the car; oxycodone/APAP at bedtime most nights. Enoxaparin daily, no missed doses, some bruising at the injection sites. Breathing normal. No chest pain, no leg swelling. Thinking clear; says the confusion lasted a couple of days. Rash gone. On convalescent leave.\n\nExam: vitals as charted, SpO2 97% RA, weight down 4 kg since March. Alert, oriented x3, appropriate. Skin: no petechiae; small bruises on abdomen at injection sites. Lungs clear throughout. Heart regular, no murmur. Calves soft and nontender, no asymmetry. Pelvic incisions not examined, dressings clean and dry per pt, ortho managing.\n\nA/P\n1. Fat embolism syndrome, improving; lungs and mentation back to normal today. Adding to problem list.\n2. Unstable pelvic ring fracture s/p fixation. Enoxaparin 40 mg daily x 4 wk from discharge (through about 9/1) and oxycodone/APAP prn added as outside meds. Ortho owns weight bearing and the hardware.\n3. Post-hemorrhage anemia check: CBC/BMP today.\n4. PHQ-9 4. Talked about three bad injuries in a row; he wants to focus on rehab for now.\n5. Discharge summary requested again.\nRTC 4 wk."
+      },
+      {
+       "type": "Result Note",
+       "title": "Lab Result",
+       "author": "PCP",
+       "date": "2026-08-08T09:30",
+       "body": "Hgb 11.7, a bit low after the injury and surgery, expected. Platelets fine on enoxaparin. Kidney function normal. Will recheck at the next visit."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

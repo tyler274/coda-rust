@@ -1,0 +1,261 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001701",
+      "given": "Denise",
+      "family": "Chapman",
+      "birth_date": "1994-06-07",
+      "address_line": "48 Lyman Street, Apt 2",
+      "phone": "+1-518-555-0111",
+      "email": "denise.chapman@example.test",
+      "marital_status": "married",
+      "summary": "Young woman with longstanding epilepsy (irregular levetiracetam), mild persistent asthma and secondary amenorrhea who joins in 2019, develops SLE with arthropathy in 2021, then class IV lupus nephritis after stopping medicines for cost, two episodes of status epilepticus, a medically managed type B aortic dissection with a bicuspid valve and dilated root, and a traumatic subdural hematoma with herniation needing craniotomy after a car crash.",
+      "events": [
+        {
+          "id": "2019-09-24a",
+          "kind": "telephone",
+          "start": "2019-09-24T10:12",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient call", "author": "front desk", "date": "2019-09-24T10:12", "body": "Caller is looking for a new primary care doctor; says her old office kept moving her to whoever was free and she never saw the same person twice. Works retail, schedule changes week to week, asked whether texting the office is really an option. Explained membership and that labs, specialists and pharmacy still go through her own coverage or self-pay. She is currently uninsured and understands those costs are separate. New patient visit booked for 10/8 at 9:00. Release signed for prior office and her neurologist's office; records request sent."}
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "establish_care",
+          "start": "2019-10-08T09:00",
+          "end": "2019-10-08T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient visit",
+          "conditions": [
+            {"label": "Epilepsy", "action": "history", "note": "longstanding; on levetiracetam, followed by outside neurology in the past"},
+            {"label": "Mild persistent asthma", "action": "history"},
+            {"label": "Secondary amenorrhea", "icd10": "N91.1", "action": "history", "note": "evaluated at prior practice"}
+          ],
+          "medications": [
+            {"drug": "levetiracetam 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Epilepsy"},
+            {"drug_text": "fluticasone propionate 0.044 MG/ACTUAT Metered Dose Inhaler", "action": "historical", "sig": "Inhale 2 puffs twice daily; rinse mouth after", "dose": {"value": 88, "unit": "mcg"}, "frequency": "BID", "route": "Inhalation", "course": "chronic", "reason": "Asthma"},
+            {"drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler", "action": "historical", "sig": "Inhale 2 puffs every 4 hours as needed for wheezing", "dose": {"value": 180, "unit": "mcg"}, "frequency": "Q4H PRN", "route": "Inhalation", "course": "chronic", "reason": "Asthma"}
+          ],
+          "allergies": [
+            {"substance": "Sulfonamide antibiotics", "reaction": "Rash", "severity": "moderate", "criticality": "low", "type": "allergy"}
+          ],
+          "state": {"weight_kg": 55.2, "height_cm": 152.4},
+          "vitals": {"height_cm": 152.4},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Occasional social use, 1-2 drinks per month"},
+            {"item": "Occupation", "value": "Retail sales associate"}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-10-08T10:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-10-08T10:10", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2019-10-08T10:10", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2019-10-08T09:20", "results": [{"test": "Pregnancy Test, Urine", "text": "Negative"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-08T10:00"},
+            {"vaccine": "Tdap", "date": "2019-10-08T10:00"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2019-10-08T09:00"},
+            {"procedure": "Immunization administration", "performed": "2019-10-08T10:00"},
+            {"procedure": "Venipuncture", "performed": "2019-10-08T10:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2019-10-08T10:40", "body": "25 y/o woman establishing care. Wants one doctor who knows her.\n\nSeizures: has had epilepsy for years, on levetiracetam 500 mg BID. Honest that she misses doses, mostly the evening one when she closes at the store. Last seen by a neurologist a while back; old office refilled it since. No seizure she can recall in recent months but not certain.\nAsthma: fluticasone 44, two puffs twice a day, plus albuterol when wheezy. Uses rescue inhaler a couple of times a month, more with colds. No ED visits for asthma.\nPeriods: none for a long time; was looked at by her last office for missed periods. Never been pregnant.\n\nAllergy: sulfa antibiotics, blotchy rash.\nPSH: none.\nFH: mother has lupus. Mom's sister has rheumatoid arthritis. Father on BP medicine. Paternal grandfather had seizures.\nSH: married, lives with husband. Retail sales associate. Never smoked. A drink or so once or twice a month. No drugs.\n\nExam: well appearing, petite. Vitals as recorded. HEENT unremarkable. Lungs clear, no wheeze. Heart regular. Abdomen soft, nontender. Joints without swelling. Skin clear. Neuro grossly nonfocal, gait normal.\n\nA/P\n1. Epilepsy - continue levetiracetam 500 BID; talked through phone alarms and a weekly pill box. Will get her neurology records.\n2. Asthma, mild persistent - controlled on low-dose inhaled steroid. Refills sent.\n3. Secondary amenorrhea - records from prior office pending; urine hCG negative today.\n4. Health maintenance - flu and Tdap given today. HIV and hep C screening, CBC, CMP drawn. Pap was done last year per her, will confirm on records.\nRTC 4 months or sooner. Text or call anytime."},
+            {"type": "Patient Instructions", "title": "After Visit Summary", "author": "PCP", "date": "2019-10-08T10:45", "body": "Keep taking levetiracetam 500 mg morning and evening. Set two phone alarms. Keep your fluticasone twice daily and rinse after. We will call with your blood test results. Next visit in about 4 months."}
+          ]
+        },
+        {
+          "id": "2019-10-11a",
+          "kind": "portal_message",
+          "start": "2019-10-11T16:20",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your results", "author": "PCP", "date": "2019-10-11T16:20", "body": "Hi Ms. Chapman - your blood count, kidney and liver tests are normal. HIV and hepatitis C screens were negative. Nothing to change. Good to meet you."}
+          ]
+        },
+        {
+          "id": "2019-10-22a",
+          "kind": "outside_records",
+          "start": "2019-10-22T11:00",
+          "reason": "prior records received",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care office", "author": "outside primary care", "date": "2019-10-22T11:00", "body": "Received 34 pages from prior primary care practice. Problem list: epilepsy, mild persistent asthma, amenorrhea. Medications: levetiracetam 500 mg twice daily, fluticasone 44 mcg inhaler 2 puffs twice daily, albuterol as needed. Allergy: sulfa (rash). Cervical cytology 2018: negative for intraepithelial lesion. Prior neurology letter (several years old): generalized epilepsy, on levetiracetam, adherence discussed. Amenorrhea visit note: urine pregnancy test negative, follow-up advised. Scanned to chart."}
+          ]
+        },
+        {
+          "id": "2020-01-06a",
+          "kind": "portal_message",
+          "start": "2020-01-06T20:41",
+          "reason": "patient update",
+          "conditions": [
+            {"label": "Pleurisy", "icd10": "R09.1", "action": "history", "onset": "2019-12-10", "note": "seen at an outside urgent care; settled"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Went to urgent care", "author": "patient", "date": "2020-01-06T20:41", "body": "Just so you know, before Christmas I had a sharp pain on the side of my chest when I breathed in. Couldn't get in anywhere so I went to an urgent care near work. They said pleurisy. It went away after about a week. I feel ok now."},
+            {"type": "Patient Message", "title": "Re: Went to urgent care", "author": "PCP", "date": "2020-01-07T08:15", "body": "Thanks for letting us know, glad it settled. Next time text me first, we can usually see you the same day. If it comes back, or you get short of breath, call right away. I'll go over it with you at your February visit."}
+          ]
+        },
+        {
+          "id": "2020-02-19a",
+          "kind": "office_visit",
+          "start": "2020-02-19T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up asthma and seizures",
+          "conditions": [{"label": "Pleurisy", "icd10": "R09.1", "action": "resolved"}],
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2020-02-19T08:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2020-02-19T09:15", "body": "F/u. Pleurisy episode in Dec resolved, no recurrence, no chest pain now. Asthma fine through the winter, albuterol maybe twice a month. Seizures: none she knows of. Using the pill box, still misses some evening doses, maybe once a week.\nExam: lungs clear, heart RRR, no rub. No joint swelling.\nA/P: asthma controlled, continue. Epilepsy on LEV 500 BID, adherence better; keep at it. Neurology records still outstanding, re-requested. RTC 6 mo."}
+          ]
+        },
+        {
+          "id": "2020-04-23a",
+          "kind": "telehealth_visit",
+          "start": "2020-04-23T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "medication refills",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2020-04-23T13:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2020-04-23T13:55", "body": "Video. She is working reduced hours at the store. Asthma quiet, no rescue inhaler in the past month. No seizures. Wanted 90-day supplies to cut pharmacy trips and cost. Sent levetiracetam and fluticasone x90 days with refills, albuterol x1. Reviewed when to call. Physical in the fall."}
+          ]
+        },
+        {
+          "id": "2020-10-14a",
+          "kind": "annual_physical",
+          "start": "2020-10-14T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2020-10-14T09:50", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2020-10-14T09:50", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2020-10-14T09:30", "issued": "2020-10-20T14:00", "text": "Specimen adequate; endocervical/transformation zone component present. Negative for intraepithelial lesion or malignancy.", "conclusion": "NILM."}
+          ],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-14T09:45"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2020-10-14T09:00"},
+            {"procedure": "Immunization administration", "performed": "2020-10-14T09:45"},
+            {"procedure": "Venipuncture", "performed": "2020-10-14T09:50"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2020-10-14T09:40", "body": "Annual. Feels well. Back to full hours since summer. Asthma controlled, no oral steroids this year. No seizures reported; husband hasn't noticed any either. Still amenorrheic, no change.\nROS otherwise negative.\nExam: vitals as charted. HEENT normal. Thyroid not enlarged. Lungs clear. Heart RRR. Abdomen benign. Pelvic: external normal, cervix normal, Pap collected. Skin no rashes. Joints full ROM, no swelling. Neuro normal.\nPHQ-9 3.\nA/P: well visit. Pap today. Flu shot given. Lipids and BMP. Continue LEV, fluticasone, prn albuterol. RTC 6 months."},
+            {"type": "Result Note", "title": "Pap and labs", "author": "PCP", "date": "2020-10-21T08:30", "body": "Pap normal. Lipids and kidney function normal. Portal message sent."}
+          ]
+        },
+        {
+          "id": "2020-11-17a",
+          "kind": "pharmacy",
+          "start": "2020-11-17T11:05",
+          "reason": "refill request",
+          "documents": [
+            {"type": "Refill Request", "title": "Levetiracetam refill", "author": "MA", "date": "2020-11-17T11:05", "body": "Pharmacy fax for levetiracetam 500 mg. Last 90-day fill was 7/24, so she is a few weeks behind on fills. Refill approved per protocol; flagged to PCP re adherence."}
+          ]
+        },
+        {
+          "id": "2021-05-25a",
+          "kind": "portal_message",
+          "start": "2021-05-25T19:02",
+          "reason": "vaccine record",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-20T12:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-05-11T12:00"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "COVID shots", "author": "patient", "date": "2021-05-25T19:02", "body": "Got both my Pfizer shots at the pharmacy, pic of the card attached. Arm was sore after the second one, that's it."},
+            {"type": "Telephone Encounter", "title": "Immunization entry", "author": "MA", "date": "2021-05-26T09:10", "body": "Vaccine card reviewed; doses 4/20 and 5/11 entered as historical."}
+          ]
+        },
+        {
+          "id": "2021-06-24a",
+          "kind": "office_visit",
+          "start": "2021-06-24T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2021-06-24T16:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2021-06-24T16:30", "body": "Routine. Spring pollen bumped her albuterol use for a few weeks, settled. No seizures. Takes LEV most days now; says the evening dose is the one that slips.\nExam: lungs clear, no wheeze. Heart regular.\nA/P: asthma - mild persistent, controlled; continue. Epilepsy - continue LEV. Flu shot in fall. RTC 4-6 months."}
+          ]
+        },
+        {
+          "id": "2021-10-27a",
+          "kind": "office_visit",
+          "start": "2021-10-27T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "joint pain and facial rash",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-27T09:05"}],
+          "orders": [
+            {"id": "rheum-referral", "action": "placed", "order": "Rheumatology referral", "category": "referral", "to": "Rheumatology", "reason": "inflammatory arthritis with photosensitive malar rash; mother with lupus"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-10-27T08:20"},
+            {"procedure": "Immunization administration", "performed": "2021-10-27T09:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - joint pain, rash", "author": "PCP", "date": "2021-10-27T09:10", "body": "Texted Monday about sore knees and wrists, seen today.\n\nS: About five weeks of aching and swelling in both knees and both wrists. Stiff and worst first thing in the morning, loosens up as the day goes on, which makes opening the store hard. More tired than usual. Red rash across her cheeks and nose that flares when she is outside in the sun. No fevers. No chest pain like last time. Mom has lupus and she is worried.\n\nO: Both wrists and both knees puffy and tender, not hot, not red. Full but painful ROM. Erythematous rash over the malar areas and bridge of nose, sparing the nasolabial folds. Lungs clear. Heart regular. No oral ulcers seen.\n\nA/P: symmetric inflammatory arthritis plus photosensitive malar rash, prior pleurisy, strong family history - concerning for SLE. Referred to rheumatology, asked them to see her soon and do the serologic workup there since she is self-pay and they will need their own panel anyway. Sun protection. Flu shot given. Will call her when appointment set."}
+          ]
+        },
+        {
+          "id": "2021-11-02a",
+          "kind": "telephone",
+          "start": "2021-11-02T14:25",
+          "reason": "referral scheduling",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Rheumatology appointment", "author": "front desk", "date": "2021-11-02T14:25", "body": "Rheumatology office called back: first new-patient opening 12/20, put on cancellation list. Pt informed. Gave her the number for the hospital financial counselor for the self-pay labs; she will call."}
+          ]
+        },
+        {
+          "id": "2021-12-20a",
+          "kind": "specialist_visit",
+          "start": "2021-12-20T10:30",
+          "service": "Rheumatology",
+          "reason": "evaluation of joint pain and photosensitive rash",
+          "conditions": [
+            {"label": "Systemic lupus erythematosus", "action": "diagnosed", "onset": "2021-09-20"},
+            {"label": "Systemic lupus erythematosus with arthropathy", "icd10": "M32.19", "action": "diagnosed", "onset": "2021-09-20"}
+          ],
+          "medications": [
+            {"drug": "prednisone 20 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily with breakfast", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Systemic lupus erythematosus"},
+            {"drug": "hydroxychloroquine sulfate 200 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 200, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Systemic lupus erythematosus"}
+          ],
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-12-20T11:20", "resulted": "2021-12-20T15:00", "results": [{"test": "Hemoglobin", "value": 11.2}, {"test": "White Blood Cells", "value": 3.8}, {"test": "Platelets", "value": 120}]},
+            {"panel": null, "collected": "2021-12-20T11:20", "resulted": "2021-12-22T12:00", "results": [
+              {"test": "Erythrocyte Sedimentation Rate", "value": 50},
+              {"test": "Antinuclear Antibodies", "text": "Positive, titer 1:640"},
+              {"test": "dsDNA antibody", "loinc": "5130-0", "unit": "[IU]/mL", "text": "Positive"},
+              {"test": "Smith antibody", "loinc": "5355-3", "unit": "", "text": "Positive"},
+              {"test": "Complement C3", "loinc": "4485-9", "unit": "mg/dL", "value": 62},
+              {"test": "Complement C4", "loinc": "4498-2", "unit": "mg/dL", "value": 7}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Rheumatology Consultation", "author": "rheumatology", "date": "2021-12-23T09:00", "body": "Outside Rheumatology Clinic - New Patient Consultation\nDate of service: 12/20/2021\nReferred by: primary care\nAllergies: sulfonamide antibiotics (rash)\n\nReason: polyarthralgia with swelling, facial rash.\n\nHistory: 27-year-old woman with three months of pain and swelling of the knees and wrists. Morning predominance with improvement as the day goes on. Newer fatigue. Facial rash brought out by sun. Background of mild asthma and a pleurisy episode roughly two years back. Epilepsy on levetiracetam, adherence imperfect. Amenorrhea. Mother with SLE; maternal aunt with RA.\n\nCurrent medicines: levetiracetam 500 mg bid, fluticasone inhaler, albuterol prn.\n\nExam: Bilateral knee and wrist effusions/synovial swelling with tenderness; no significant warmth or erythema. Malar erythema across both cheeks and the nasal bridge. No alopecia. Heart and lungs unremarkable.\n\nData: Hgb 11.2, WBC 3.8, platelets 120 K. ESR 50. ANA positive 1:640. Anti-dsDNA positive. Anti-Smith positive. C3 and C4 both low.\n\nImpression: Systemic lupus erythematosus with inflammatory arthropathy, malar rash, cytopenias and hypocomplementemia.\n\nPlan:\n- Prednisone 20 mg daily.\n- Hydroxychloroquine 200 mg twice daily.\n- Strict sun protection.\n- Labs with PCP in about 3 months including urinalysis and creatinine.\n- Return here in 4 months.\nThank you for the referral."}
+          ],
+          "orders": [
+            {"id": "rheum-referral", "action": "done", "date": "2021-12-20T10:30"}
+          ]
+        },
+        {
+          "id": "2021-12-28a",
+          "kind": "telephone",
+          "start": "2021-12-28T12:40",
+          "reason": "review of rheumatology plan",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call re lupus diagnosis", "author": "PCP", "date": "2021-12-28T12:40", "body": "Called her after reading the rheumatology letter. She has started prednisone 20 and hydroxychloroquine; filled both at the discount price, still a stretch. Joints a little better already. Explained steroid side effects to watch for (sleep, appetite, mood, BP). Will see her in 2 weeks to check BP and go over everything in person. Lupus, SLE arthropathy added to list."}
+          ]
+        }
+      ]
+    }
+  ]
+}

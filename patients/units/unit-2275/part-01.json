@@ -1,0 +1,270 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002275",
+      "given": "Frederick",
+      "family": "Sheehan",
+      "birth_date": "1955-12-28",
+      "address_line": "212 Linden Crest Rd, Apt 3",
+      "phone": "+1-646-555-0100",
+      "email": "frederick.sheehan@example.test",
+      "marital_status": "divorced",
+      "summary": "Retired long-haul trucker with hypertension, medically managed coronary disease with stable angina and obesity who joined in 2022 as a heavy smoker, quit in 2024, and was admitted in 2025 with hypertensive heart failure (preserved EF). Last seen May 2025; a February 2026 ED visit and admission for decompensated heart failure reach the chart only as records.",
+      "events": [
+        {
+          "id": "2022-09-13a",
+          "kind": "establish_care",
+          "start": "2022-09-13T09:20",
+          "end": "2022-09-13T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "diagnosed", "note": "long-standing, brought from prior practice"},
+            {"label": "Coronary artery disease", "action": "diagnosed", "note": "medically managed by outside cardiology"},
+            {"label": "Angina pectoris", "action": "diagnosed", "note": "chronic stable angina"},
+            {"label": "Nicotine dependence, cigarettes", "action": "diagnosed", "note": "40 pack-years, still smoking"}
+          ],
+          "medications": [
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"},
+            {"drug": "hydrochlorothiazide 25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"},
+            {"drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "coronary artery disease, hypertension"},
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "coronary artery disease"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "coronary artery disease"},
+            {"drug_text": "nitroglycerin 0.4 MG Sublingual Tablet", "action": "historical", "sig": "Dissolve 1 tablet under the tongue every 5 minutes as needed for chest pain, up to 3 doses", "dose": {"value": 0.4, "unit": "mg"}, "frequency": "PRN", "route": "Sublingual", "course": "chronic", "reason": "angina"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"bp": [152, 90], "weight_kg": 106.0, "height_cm": 178.0, "labs": {"Low Density Lipoprotein": 140, "High Density Lipoprotein": 40, "Total Cholesterol": 210, "Triglycerides": 150, "Hemoglobin A1c": 5.6, "Microalbumin/Creatinine Ratio": 12}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-13T10:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-13T10:20", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-09-13T10:20", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2022-09-13T10:20", "results": [{"test": "Hemoglobin A1c"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 5}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"},
+            {"item": "History of alcohol use", "value": "2-3 beers nightly"},
+            {"item": "Occupation", "value": "Retired long-haul truck driver"},
+            {"item": "Housing status", "value": "Lives alone"}
+          ],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2022-09-13T10:10"},
+            {"vaccine": "Tdap", "date": "2022-09-13T10:12"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2022-09-13T09:20"},
+            {"procedure": "Venipuncture", "performed": "2022-09-13T10:20"}
+          ],
+          "orders": [
+            {"id": "ldct-2022", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "40 pack-year current smoker"},
+            {"id": "records-prior-pcp", "action": "placed", "order": "Request records from prior primary care practice", "category": "referral", "to": "Prior primary care practice", "reason": "continuity of care"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2022-09-13T10:40", "body": "66 y/o man transferring care. Former PCP retired; he wants one doctor he can actually reach.\n\nHPI: Here mostly to get his prescriptions under one roof. Long history of high blood pressure, on three agents for years. Coronary disease known to an outside cardiology group, who he sees about once a year; gets chest tightness only with heavy exertion (carrying groceries up the stairs fast, shoveling) maybe once every month or two, settles with rest, has used a nitro tablet a handful of times this year. No rest pain, no pain lasting more than a few minutes. No dyspnea, no orthopnea, no ankle swelling. Admits he doesn't always remember the evening routine but takes everything once a day in the morning.\n\nPMH: hypertension; coronary artery disease with chronic stable angina (details with cardiology, records requested).\nPSH: appendectomy at about 25.\nMeds: lisinopril 10 daily, HCTZ 25 daily, metoprolol succinate 50 daily, ASA 81, atorvastatin 40, NTG 0.4 SL prn.\nAllergies: none known.\nFH: father had an MI at 64. Mother had high blood pressure and a stroke. One brother with type 2 diabetes.\nSH: drove long-haul for decades, now retired. Lives alone; one daughter. Still smoking close to a pack a day, roughly 40 pack-years total. 2-3 beers most nights. Cooks for himself, lots of deli meat, frozen dinners, canned soup.\n\nROS: negative except as above.\n\nExam: BP elevated today (see vitals), recheck similar. Obese. Well-appearing. No JVD. Heart RRR, no murmur. Lungs clear, no wheeze. Abdomen soft, healed RLQ scar. No edema, pedal pulses 2+.\n\nScreens: PHQ-2 0. AUDIT-C 5 -- discussed cutting back, he is not interested in a change right now.\n\nA/P:\n1. HTN -- above goal today. He reports missed evening habits but the meds are all daily; continue current regimen, home cuff readings please, nurse BP check with flu shot next month.\n2. CAD / stable angina -- stable pattern. Continue ASA, statin, beta blocker, NTG prn. Lipids today. Records from cardiology.\n3. Tobacco -- 40 pk-yr, smoking now. Strongly advised quitting; declines patches or medication for now, \"I'll do it my own way.\" Eligible for annual low-dose CT; ordered.\n4. Health maintenance -- CMP, CBC, lipids, A1c (brother diabetic), one-time hep C and HIV screens. PCV20 and Tdap given today. Colonoscopy per old records, requesting.\n\nRTC about 3 months."},
+            {"type": "Progress Notes", "title": "Vaccine Administration", "author": "MA", "date": "2022-09-13T10:14", "body": "PCV20 0.5 mL IM left deltoid, Tdap 0.5 mL IM right deltoid. VIS given. Tolerated, observed 15 min, no reaction."}
+          ]
+        },
+        {
+          "id": "2022-09-15a",
+          "kind": "portal_message",
+          "start": "2022-09-15T16:05",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Communication", "title": "Your lab results", "author": "PCP", "date": "2022-09-15T16:05", "body": "Hi Mr. Sheehan, your blood work is back. Kidney function, liver tests, blood counts and sugar (A1c) all look fine, and the hep C and HIV screens are negative. Your LDL (bad cholesterol) is in the 140s on the atorvastatin, which is higher than we'd want for someone with heart disease. Taking it every day matters, and cutting down on processed meats will help. We'll go over it at your next visit."}
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "outside_records",
+          "start": "2022-09-27T11:30",
+          "reason": "Records from prior primary care practice",
+          "orders": [{"id": "records-prior-pcp", "action": "done", "date": "2022-09-27T11:30"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Prior Primary Care Records (scanned)", "author": "front desk", "date": "2022-09-27T11:30", "body": "84 pages received by fax from prior primary care office.\n\nSummary abstracted by RN: Problem list hypertension, coronary artery disease, stable angina. Medication list matches current (lisinopril 10, HCTZ 25, metoprolol succinate 50, aspirin 81, atorvastatin 40, SL nitroglycerin). No drug allergies listed. Screening colonoscopy 2018: normal, no polyps, repeat in 10 years. Appendectomy remote. Cardiology correspondence on file confirms medical management of stable angina. Indexed to chart."}
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot, blood pressure check",
+          "measure": ["bp", "hr"],
+          "immunizations": [{"vaccine": "Influenza, high-dose, quadrivalent", "date": "2022-10-18T14:10"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit", "author": "RN", "date": "2022-10-18T14:20", "body": "High-dose flu vaccine given L deltoid, tolerated. BP rechecked after 5 min seated, see vitals; still above goal. Did not bring home readings, says his cuff 'needs batteries.' Reminded to take meds same time each morning. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "imaging",
+          "start": "2022-11-08T08:40",
+          "reason": "Lung cancer screening",
+          "orders": [{"id": "ldct-2022", "action": "done", "date": "2022-11-08T08:40"}],
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2022-11-08T08:40", "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING (baseline)\nIndication: 66-year-old current smoker, 40 pack-years.\nTechnique: Low-dose helical CT of the chest without contrast.\nFindings: No pulmonary nodules. Central airways patent. No consolidation or effusion. Heart size normal. No mediastinal or hilar adenopathy. Visualized upper abdomen unremarkable.", "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."}
+          ]
+        },
+        {
+          "id": "2022-11-10a",
+          "kind": "portal_message",
+          "start": "2022-11-10T09:15",
+          "reason": "CT result",
+          "documents": [
+            {"type": "Patient Communication", "title": "Lung screening CT result", "author": "PCP", "date": "2022-11-10T09:15", "body": "Your screening CT showed no spots on the lungs -- good news. We repeat it every year while you qualify. Quitting smoking is still the single best thing you can do for your lungs and heart; the offer for help stands whenever you want it."}
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "office_visit",
+          "start": "2022-12-06T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure and heart follow-up",
+          "state": {"bp": [146, 88]},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2022-12-06T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2022-12-06T11:10", "body": "S: f/u HTN/CAD. Brought a few cuff readings on a scrap of paper, 140s/80s. Angina unchanged, one episode in Oct walking fast in the cold, gone with rest, no nitro needed. Still ~1 ppd. Beer unchanged.\nO: BP still above goal. Heart RRR. Lungs clear. No edema.\nA/P: HTN improving with more regular dosing; continue lisinopril/HCTZ/metoprolol. CAD stable. LDL 140 reviewed, reinforced daily statin. Smoking: precontemplative, brief counseling again. RTC 6 mo, sooner prn."}
+          ]
+        },
+        {
+          "id": "2023-02-14a",
+          "kind": "nurse_visit",
+          "start": "2023-02-14T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingles vaccine dose 1",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-02-14T13:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit", "author": "RN", "date": "2023-02-14T13:45", "body": "Shingrix #1 IM R deltoid. Warned about sore arm and a day of feeling run down. Dose 2 booked for May."}
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "pharmacy",
+          "start": "2023-03-21T08:50",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill Request", "author": "MA", "date": "2023-03-21T08:50", "body": "Pharmacy fax: lisinopril 10, HCTZ 25, metoprolol succ 50, atorvastatin 40 -- 90-day supply each. Last OV 12/2022. Pended for PCP.\n\nPCP: approved x 90 days with 1 refill each."}
+          ]
+        },
+        {
+          "id": "2023-04-20a",
+          "kind": "outside_records",
+          "start": "2023-04-20T15:00",
+          "reason": "Cardiology letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology Follow-up Letter", "author": "cardiology", "date": "2023-04-20T15:00", "body": "Outside cardiology group -- office follow-up, date of visit 2023-04-11.\n\nDear Doctor,\nYour patient returns for annual review of coronary artery disease with chronic stable angina. He describes exertional chest tightness only with heavy effort, infrequent, relieved by rest; sublingual nitroglycerin used rarely. No rest symptoms, no syncope or palpitations.\nExam: regular rhythm, no murmur, lungs clear, no edema.\nMedications: lisinopril 10 mg, hydrochlorothiazide 25 mg, metoprolol succinate 50 mg, aspirin 81 mg, atorvastatin 40 mg, nitroglycerin 0.4 mg SL prn. Allergies: NKDA.\nImpression: stable angina, unchanged. Continue current medical therapy. Smoking cessation strongly advised.\nFollow-up in one year.\n\nCardiology"}
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "nurse_visit",
+          "start": "2023-05-16T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingles vaccine dose 2",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-05-16T13:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit", "author": "RN", "date": "2023-05-16T13:40", "body": "Shingrix #2 given L deltoid. Series complete. Had a sore arm only after the first one."}
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "office_visit",
+          "start": "2023-06-13T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "state": {"bp": [144, 88]},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-06-13T09:00"}],
+          "orders": [{"id": "aaa-us-2023", "action": "placed", "order": "Abdominal aortic ultrasound, screening", "category": "imaging", "reason": "male 65-75 with smoking history"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2023-06-13T09:30", "body": "Here for 6 mo check. Saw cardiology in April -- letter reviewed, no changes. Chest tightness rare. Still smoking about a pack a day. Ankles fine. Sleeping flat.\n\nBP still above goal today. Weight about the same. Heart regular, no murmur; chest clear; legs without swelling.\n\nImpression/Plan\n- HTN, not at goal but closer. Continue regimen, home log.\n- CAD/angina stable per cardiology.\n- Smoking: advised again; not ready to set a quit date, still no meds.\n- AAA screen (ever-smoker, 67) -- US ordered.\n- AWV in Sept with fasting labs."}
+          ]
+        },
+        {
+          "id": "2023-07-11a",
+          "kind": "imaging",
+          "start": "2023-07-11T10:15",
+          "reason": "Abdominal aortic aneurysm screening",
+          "orders": [{"id": "aaa-us-2023", "action": "done", "date": "2023-07-11T10:15"}],
+          "reports": [
+            {"study": "Abdominal ultrasound", "performed": "2023-07-11T10:15", "text": "ULTRASOUND ABDOMINAL AORTA, SCREENING\nIndication: 67-year-old male, smoking history.\nFindings: The abdominal aorta is visualized from the diaphragm to the bifurcation. Maximal anteroposterior diameter 2.1 cm (proximal), 1.9 cm (mid), 1.8 cm (distal). Common iliac arteries normal caliber. No aneurysmal dilatation.", "conclusion": "Normal caliber abdominal aorta. No abdominal aortic aneurysm."}
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-19T08:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-19T08:40", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-19T08:40", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2023-09-19T08:40", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 5}],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "immunizations": [{"vaccine": "Influenza, high-dose, trivalent", "date": "2023-09-19T09:20"}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, initial", "performed": "2023-09-19T08:30"},
+            {"procedure": "Venipuncture", "performed": "2023-09-19T08:40"}
+          ],
+          "orders": [{"id": "ldct-2023", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "annual screening, 40 pack-years"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2023-09-19T09:30", "body": "Initial annual wellness visit.\n\nHealth risk assessment reviewed. Independent in all ADLs/IADLs, drives, no falls in the past year, hearing and vision adequate by his report (reading glasses). No memory concerns raised by him or on conversation. Advance directive: none; daughter would be his decision-maker, packet given.\n\nInterval: no hospital or ER visits. Angina rare. Still smoking, about a pack a day. Beer 2-3 most evenings, AUDIT-C 5, counseled. PHQ-2 0.\n\nExam: well, obese. BP still above goal. Heart RRR without murmur, lungs clear, abdomen benign, no edema.\n\nPrevention:\n- Colonoscopy 2018 normal, next 2028.\n- AAA US July -- normal.\n- LDCT due Nov, ordered.\n- Pneumococcal, Tdap, Shingrix done. Flu today. Updated COVID shot next month in nurse clinic.\n\nLabs today: CMP, lipids, CBC, A1c, urine microalbumin.\n\nPlan: continue all meds; f/u 3 mo for BP."}
+          ]
+        },
+        {
+          "id": "2023-09-22a",
+          "kind": "portal_message",
+          "start": "2023-09-22T12:40",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Communication", "title": "Results from your wellness visit", "author": "PCP", "date": "2023-09-22T12:40", "body": "Labs look about the same as last year. Kidneys, liver, blood counts and A1c are normal and there is no protein in the urine. LDL still around 140. Keep taking the atorvastatin daily -- we can talk about the cholesterol at your December visit."}
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID vaccine",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2023-10-17T15:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit", "author": "RN", "date": "2023-10-17T15:15", "body": "2023-24 COVID vaccine (Moderna) IM L deltoid. No prior reactions. Tolerated."}
+          ]
+        },
+        {
+          "id": "2023-11-07a",
+          "kind": "imaging",
+          "start": "2023-11-07T09:10",
+          "reason": "Lung cancer screening",
+          "orders": [{"id": "ldct-2023", "action": "done", "date": "2023-11-07T09:10"}],
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2023-11-07T09:10", "text": "LDCT LUNG SCREENING, annual\nComparison: 2022-11-08.\nFindings: Lungs without nodules or masses. No consolidation, effusion or pneumothorax. Airways patent. Cardiac size normal. No adenopathy.", "conclusion": "Lung-RADS 1. Negative. Annual LDCT in 12 months."}
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "office_visit",
+          "start": "2023-12-12T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-12-13a",
+          "kind": "telephone",
+          "start": "2023-12-13T09:30",
+          "reason": "Missed appointment",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed Appointment Call", "author": "front desk", "date": "2023-12-13T09:30", "body": "Called re: missed BP f/u yesterday. Pt says he forgot. Will call back after the holidays to reschedule."}
+          ]
+        }
+      ]
+    }
+  ]
+}

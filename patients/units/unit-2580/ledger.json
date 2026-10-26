@@ -1,0 +1,4731 @@
+{
+  "unit": "unit-2580",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002580",
+      "given": "Rowan",
+      "family": "Sears",
+      "birth_date": "1995-07-29",
+      "address_line": "27 Meadowbrook Lane, Apt 2",
+      "phone": "+1-518-555-0118",
+      "email": "rowan.sears@example.test",
+      "marital_status": "single",
+      "summary": "Graduate student and Army Reservist with primary sclerosing cholangitis on ursodiol who joins in 2019. Extensive ulcerative colitis in 2022 and pemphigus vulgaris in 2023 (prednisone, rituximab), then acute pulmonary histoplasmosis after caving in 2025 and visceral leishmaniasis after a desert deployment later that year. Outside records arrive unevenly.",
+      "events": [
+        {
+          "id": "2019-08-29a",
+          "kind": "telephone",
+          "start": "2019-08-29T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "date": "2019-08-29T10:20",
+              "author": "front desk",
+              "body": "Caller is a 24 y/o grad student who moved into the area for his program and wants a primary care doctor he can reach between visits. Says he has a liver condition (PSC) followed by a GI group and takes ursodiol. Membership and insurance info reviewed (university student plan, also has TRICARE Reserve Select through the Army Reserve). New patient visit booked 9/10 at 8:40. Records release sent to his email for the prior GI office and the university health service."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "establish_care",
+          "start": "2019-09-10T08:40",
+          "end": "2019-09-10T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care; primary sclerosing cholangitis",
+          "conditions": [
+            {
+              "label": "Primary sclerosing cholangitis",
+              "action": "history",
+              "onset": "2018-08-01",
+              "note": "Diagnosed at an outside GI group after abnormal liver tests; MRCP-confirmed. Followed by GI/hepatology."
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ursodiol 300 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth three times daily",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Primary sclerosing cholangitis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              80
+            ],
+            "hr": 65,
+            "rr": 18,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 71.7,
+            "height_cm": 177.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-09-10T09:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 37
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 48
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 234
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 122
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-09-10T09:35",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 228
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-09-10T09:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 170
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 46
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 103
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 104
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-10T09:35",
+              "results": [
+                {
+                  "test": "Gamma Glutamyl Transferase",
+                  "value": 190
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-10T09:35",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-10T09:35",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-10T09:35",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Reactive (immune)"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Rare, 1-2 drinks per month; limits alcohol because of liver disease"
+            },
+            {
+              "item": "Occupation",
+              "value": "Graduate student; U.S. Army Reserve"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2019-09-10T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2019-09-10T09:50",
+              "author": "PCP",
+              "body": "24M here to establish. Started a doctoral program this fall, also drills one weekend a month with an Army Reserve unit.\n\nPSC: found about a year ago when routine labs showed high liver enzymes; MRCP at the GI group he was seeing confirmed sclerosing cholangitis. Has been on ursodiol 300 mg three times a day since. He sees GI/hepatology yearly with an MRCP, next due in November. No itching, jaundice, RUQ pain or fevers. Bowels normal, no blood. Told he has no colitis that anyone knows of.\n\nMeds: ursodiol 300 mg TID.\nAllergies: none to medications.\nPMH: as above. PSH: none.\nFH: mother has rheumatoid arthritis. A maternal uncle has ulcerative colitis.\nSH: single, lives in an apartment with a roommate. Never used tobacco. Drinks maybe once or twice a month at most because of the liver. No drugs. Immunizations largely done through the Army (hep A/B series, Tdap) and college; will send copy.\n\nROS: negative in detail.\n\nExam: well-appearing, thin. Vitals as charted. No scleral icterus. Oropharynx clear. Neck supple, no nodes. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no hepatosplenomegaly. Skin without jaundice, excoriations or rash. No edema.\n\nA/P:\n1. Primary sclerosing cholangitis on ursodiol. Baseline CMP, GGT, CBC today. Will get prior GI notes and MRCP report. Keep yearly hepatology follow-up. Alcohol minimal, fine.\n2. Health maintenance: HIV and hep C screening today; HBsAb to document immunity given liver disease. Lipids once. Flu shot when this season's supply comes in. PHQ-2 negative.\nReturn in a year for a physical, labs every 6 months or so between GI visits."
+            }
+          ],
+          "state": {
+            "weight_kg": 72.5,
+            "height_cm": 178.0,
+            "labs": {
+              "Alanine Aminotransferase": 50,
+              "Alkaline Phosphatase": 240,
+              "Aspartate Aminotransferase": 40,
+              "Gamma Glutamyl Transferase": 180
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2019-09-12a",
+          "kind": "portal_message",
+          "start": "2019-09-12T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2019-09-12T16:05",
+              "author": "PCP",
+              "body": "Hi Rowan, your labs are back. Alkaline phosphatase and GGT are up and ALT sits at the top of normal, which is the usual pattern with PSC and fits what your GI group has been seeing. Bilirubin, albumin, kidney function, blood counts and platelets are all normal. Cholesterol is fine. HIV and hepatitis C screens were negative, and your hepatitis B antibody shows you are immune from the Army series. Nothing to change. Bring the November GI letter up with me when it comes."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-08T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-08T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2019-10-08T16:45",
+              "author": "RN",
+              "body": "Flu vaccine 0.5 mL IM to left deltoid. Screening questions negative, no prior reactions. VIS reviewed. Tolerated well, left after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2019-11-12a",
+          "kind": "specialist_visit",
+          "start": "2019-11-12T13:00",
+          "service": "Gastroenterology and Hepatology",
+          "reason": "Primary sclerosing cholangitis follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hepatology Follow-up Letter",
+              "date": "2019-11-19T09:00",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology and hepatology group. Date of visit 11/12/2019.\n\nThank you for following Mr. Sears with us. He is a 24-year-old graduate student with primary sclerosing cholangitis diagnosed last year, here for his yearly review.\n\nHe feels well. No pruritus, jaundice, fevers or abdominal pain. Bowel habits are normal without bleeding. Taking ursodiol 300 mg three times daily.\nAllergies: NKDA.\n\nExam: anicteric, abdomen soft and nontender, no palpable liver edge or spleen.\n\nMRCP this month: multifocal stricturing and beading of the intrahepatic and extrahepatic bile ducts, unchanged from last year; no dominant stricture, no mass. Liver and spleen normal in size.\nLabs: alkaline phosphatase and GGT elevated in his usual range; bilirubin normal; CA 19-9 within normal limits.\n\nImpression: PSC, stable.\nPlan: continue ursodiol at current dose. Repeat MRCP and CA 19-9 in a year. Liver panel every six months with you would be helpful. Should he develop rectal bleeding or a change in bowel habit, please send him back sooner, given the association with colitis."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-03a",
+          "kind": "pharmacy",
+          "start": "2020-03-03T11:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2020-03-03T11:10",
+              "author": "MA",
+              "body": "Pharmacy fax for ursodiol 300 mg caps, #270, 90-day. Last LFTs September, GI saw him November. Pended to PCP, approved with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2020-04-07a",
+          "kind": "portal_message",
+          "start": "2020-04-07T20:42",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Form for my Reserve unit",
+              "date": "2020-04-07T20:42",
+              "author": "patient",
+              "body": "Hi, my unit is doing medical readiness updates remotely since drills are off for now. They want a provider to sign a short form listing my conditions and meds. I uploaded it. No rush, I think the deadline is end of the month."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Form for my Reserve unit",
+              "date": "2020-04-09T12:15",
+              "author": "PCP",
+              "body": "Signed and uploaded back to your portal documents. I listed PSC and the ursodiol, nothing else. Stay well."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "annual_physical",
+          "start": "2020-09-22T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              129,
+              76
+            ],
+            "hr": 74,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 72.1
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2020-09-22T09:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 43
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 47
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 241
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-09-22T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 263
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.93
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-09-22T09:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.05
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-09-22T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-09-22T10:05",
+              "author": "PCP",
+              "body": "Masked visit. Year has been strange with classes remote but he's healthy. Teaching a lab section by video. Reserve drills partly virtual.\n\nPSC: GI letter from last November reviewed: MRCP stable, CA 19-9 normal. No itch, jaundice or abdominal pain. Stools normal. Taking ursodiol three times a day, occasionally misses the midday dose.\nMeds: ursodiol 300 mg TID. NKDA.\nSocial: no tobacco, rare drink. Running a few times a week.\n\nExam: vitals as charted. Anicteric. Thyroid normal. Heart regular, lungs clear. Abdomen soft, no organomegaly. Skin clear. Mood good, PHQ-2 is 1.\n\nA/P: healthy 25M with stable PSC. LFTs, CBC, BMP today. Flu vaccine in two weeks when the nurse clinic opens. GI annual visit next month. Physical again in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-06T15:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-06T15:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2020-10-06T15:35",
+              "author": "RN",
+              "body": "Seasonal flu vaccine given IM, right deltoid. Afebrile, no COVID symptoms on screening. Observed 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-20a",
+          "kind": "specialist_visit",
+          "start": "2020-10-20T10:30",
+          "service": "Gastroenterology and Hepatology",
+          "reason": "Primary sclerosing cholangitis follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hepatology Follow-up Letter",
+              "date": "2020-10-28T14:00",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology and hepatology group. Visit 10/20/2020.\n\nRowan returns for annual PSC review. Asymptomatic. No change in bowel habit. Medication: ursodiol 300 mg TID. NKDA.\n\nExam benign, anicteric, no hepatosplenomegaly.\n\nMRCP 10/2020: biliary pattern of PSC with multifocal strictures and segmental dilation, stable compared with 2019. No dominant stricture. No mass or new findings.\nCA 19-9 normal. Liver enzymes at his baseline per your September labs.\n\nAssessment: stable PSC without progression.\nPlan: continue ursodiol; annual MRCP and CA 19-9; six-monthly liver tests in primary care. Will see him in a year."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-16a",
+          "kind": "lab_only",
+          "start": "2021-03-16T07:50",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2021-03-16T07:50",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 36
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 55
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 236
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-03-16T07:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 270
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.22
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.5
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2021-03-17T08:30",
+              "author": "PCP",
+              "body": "Rowan, your liver tests look like your usual PSC numbers, with no rise in bilirubin. Blood counts and platelets normal. Next set in the fall with your physical."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-20a",
+          "kind": "portal_message",
+          "start": "2021-05-20T19:15",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-13T14:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-04T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID shots",
+              "date": "2021-05-20T19:15",
+              "author": "patient",
+              "body": "Got both Pfizer doses at the campus vaccine clinic (April 13 and May 4). Photo of the card attached so you have it."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: COVID shots",
+              "date": "2021-05-21T09:05",
+              "author": "MA",
+              "body": "Thanks! Both doses entered in your immunization record from the card."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-21a",
+          "kind": "annual_physical",
+          "start": "2021-09-21T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              118,
+              69
+            ],
+            "hr": 75,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 72.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-21T09:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.03
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 233
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 51
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 38
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-21T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-09-21T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-09-21T09:15",
+              "author": "PCP",
+              "body": "S: 26M, PSC, yearly exam. Back on campus. Did a two-week annual training with his Reserve unit in July without problems. Feels well. No pruritus, jaundice, fevers, weight change or GI bleeding. Fully vaccinated for COVID in the spring.\nMeds: ursodiol 300 mg three times daily. Allergies: NKDA.\n\nO: vitals as charted. Sclerae white. Lungs clear, heart regular. Abdomen nontender, no organomegaly. No rash.\n\nA/P:\n- PSC, stable on ursodiol. CMP and CBC today. Hepatology visit next month.\n- Prevention: flu shot at nurse clinic in October. PHQ-2 negative. HIV/HCV done 2019.\nRTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-12T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-12T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2021-10-12T16:25",
+              "author": "RN",
+              "body": "Flu vaccine IM left deltoid, lot and expiration in the immunization record. No issues during the wait."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-09a",
+          "kind": "portal_message",
+          "start": "2021-11-09T13:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "GI visit",
+              "date": "2021-11-09T13:40",
+              "author": "PCP",
+              "body": "Hi Rowan, did your yearly visit with the liver group happen in October? We haven't received a letter yet."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: GI visit",
+              "date": "2021-11-09T21:02",
+              "author": "patient",
+              "body": "Yes, went on the 19th. MRI was the same as before, they said everything was stable and to keep the ursodiol. I'll ask them to send the note."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2021-11-10T10:30",
+              "author": "front desk",
+              "body": "Request for the October 2021 hepatology office note and MRCP report faxed to the outside GI group with the patient's signed release on file."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-18a",
+          "kind": "lab_only",
+          "start": "2022-01-18T08:05",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2022-01-18T08:05",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 39
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 48
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 242
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-01-18T08:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 229
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.12
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2022-01-19T12:40",
+              "author": "PCP",
+              "body": "Liver numbers are in your usual range for PSC and bilirubin is normal. Blood count normal. We still don't have the October note from the liver group; we'll keep asking."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-11a",
+          "kind": "portal_message",
+          "start": "2022-07-11T22:18",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood in stool",
+              "date": "2022-07-11T22:18",
+              "author": "patient",
+              "body": "I should have written sooner. Since around February I've had loose stools with blood in them, with cramping, and it's gotten more frequent. Thought it was stress from quals. I've dropped about 10 pounds and the last couple of months I run low fevers some evenings. Can I come in this week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Blood in stool",
+              "date": "2022-07-12T07:10",
+              "author": "PCP",
+              "body": "Thanks for telling me. Please come in today, 10:20 is open. If you have heavy bleeding, dizziness or a high fever before then, go to the ED."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-12a",
+          "kind": "office_visit",
+          "start": "2022-07-12T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Bloody diarrhea, weight loss",
+          "vitals": {
+            "bp": [
+              128,
+              73
+            ],
+            "hr": 61,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 68.3
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-07-12T11:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Platelets",
+                  "value": 229
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.73
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 56
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 33
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-07-12T11:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 248
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 52
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 41
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-07-12T11:05",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 24
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-07-12T11:05",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 46
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-07-12T14:30",
+              "resulted": "2022-07-13T16:00",
+              "results": [
+                {
+                  "test": "Clostridioides difficile toxin genes, stool PCR",
+                  "loinc": "54067-4",
+                  "text": "Not detected"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-07-12T14:30",
+              "resulted": "2022-07-15T09:30",
+              "results": [
+                {
+                  "test": "Stool culture",
+                  "loinc": "625-4",
+                  "text": "No enteric pathogens isolated"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-07-12T10:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2022",
+              "action": "placed",
+              "order": "Gastroenterology referral, urgent",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "Bloody diarrhea with weight loss in a patient with PSC"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-07-12T11:30",
+              "author": "PCP",
+              "body": "CC: blood in stool for months.\n\nHPI: 26M with PSC. About five months of loose stools, now 5-6 a day, mixed with blood, and crampy lower abdominal pain that eases after a BM. Urgency, sometimes wakes at night. Weight down about 10 lb since winter. Low-grade evening temps to the high 99s-100 for roughly two months. Tired. No travel, no antibiotics, no sick contacts, no NSAIDs. No itch or jaundice.\nMeds: ursodiol 300 mg TID. NKDA.\nFH: maternal uncle with ulcerative colitis.\n\nExam: vitals as charted, weight 68.5 kg (72-73 last year). Tired-looking but not toxic. Anicteric. Abdomen soft, tender in the left lower quadrant, no guarding or rebound, no mass. No hepatosplenomegaly. Rectal exam deferred to GI.\n\nA/P: subacute bloody diarrhea with weight loss and low-grade fevers in a young man with PSC: inflammatory bowel disease is the leading concern, infection to exclude first.\n- C. diff PCR and stool culture.\n- CBC with diff, CMP, CRP, ESR today.\n- Urgent GI referral; called the GI group and they can do a consult with colonoscopy in about four weeks, sooner if a cancellation opens.\n- Return or call for heavier bleeding, fever over 101, lightheadedness."
+            }
+          ],
+          "state": {
+            "weight_kg": 68.5,
+            "labs": {
+              "C Reactive Protein": 24,
+              "Erythrocyte Sedimentation Rate": 45,
+              "Hemoglobin": 11.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-07-15a",
+          "kind": "portal_message",
+          "start": "2022-07-15T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your results",
+              "date": "2022-07-15T12:10",
+              "author": "PCP",
+              "body": "Rowan, the stool tests found no infection, including C. diff. Your hemoglobin is low at around 11 (it was normal in January) and the inflammation markers CRP and sed rate are up, which fits inflamed bowel. Liver tests are at your usual baseline. Keep the GI appointment on August 9; they have you on their cancellation list too. Let me know if the bleeding picks up."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your results",
+              "date": "2022-07-15T18:44",
+              "author": "patient",
+              "body": "OK thanks. About the same, not worse."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-09a",
+          "kind": "specialist_visit",
+          "start": "2022-08-09T08:00",
+          "end": "2022-08-09T11:30",
+          "service": "Gastroenterology and Hepatology",
+          "reason": "Bloody diarrhea; colonoscopy",
+          "conditions": [
+            {
+              "label": "Extensive ulcerative colitis (pancolitis)",
+              "action": "diagnosed",
+              "onset": "2022-02-01",
+              "icd10": "K51.00"
+            },
+            {
+              "label": "Anemia, unspecified",
+              "action": "diagnosed",
+              "onset": "2022-07-01",
+              "note": "Normocytic; anemia of chronic inflammation"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "mesalamine 1200 MG Delayed Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 4 tablets (4.8 g) by mouth once daily with food",
+              "dose": {
+                "value": 4800,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Extensive ulcerative colitis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              131,
+              72
+            ],
+            "hr": 71,
+            "temp_c": 36.5,
+            "weight_kg": 68.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-09T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 228
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-09T08:10",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 24
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-09T08:10",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 45
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2022-08-09T10:30",
+              "text": "Specimens: colon biopsies, cecum, ascending, transverse, descending, sigmoid and rectum (6 jars). All segments: colonic mucosa with active inflammation, cryptitis and crypt abscesses. No granulomas. No dysplasia. No viral cytopathic change.",
+              "conclusion": "Active colitis with crypt abscesses in all segments sampled, rectum to cecum. Negative for dysplasia.",
+              "issued": "2022-08-12T15:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy with biopsy",
+              "performed": "2022-08-09T10:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2022",
+              "action": "done",
+              "date": "2022-08-09T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation and Colonoscopy",
+              "date": "2022-08-16T10:00",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology and hepatology group. Date of service 08/09/2022.\n\nReferred by his primary care physician for bloody stools. Known to us with PSC.\n\nHistory: half a year of bloody diarrhea with intermittent cramps, about ten pounds lost, and low-grade fevers over the last two months. Infectious stool studies at your office were negative.\nMedications: ursodiol 300 mg three times daily. Allergies: NKDA.\nFamily history: mother with rheumatoid arthritis; maternal uncle with ulcerative colitis.\nSocial: never smoker; alcohol rarely, one or two drinks a month because of his liver; graduate student and Army Reservist.\n\nExam: fatigued-appearing. Abdomen tender in the left lower quadrant, no rebound, no guarding. Rectal: stool streaked with blood.\n\nLabs today: hemoglobin 11.2 g/dL, MCV 86 fL, CRP 24 mg/L, ESR 45 mm/hr.\n\nColonoscopy (same day): inflamed, ulcerated mucosa beginning at the rectum and continuing without skip areas to the cecum. Ileum normal. Biopsies taken throughout. Pathology: active inflammation with crypt abscesses, no dysplasia.\n\nImpression: ulcerative colitis, extensive (pancolitis), moderately active, in the setting of PSC. Normocytic anemia from active inflammation and blood loss.\n\nPlan:\n1. Mesalamine 4.8 g once daily (Lialda 1.2 g x 4).\n2. Continue ursodiol.\n3. Recheck CBC and CRP at follow-up in about three months.\n4. Because PSC with colitis carries higher colorectal cancer risk, he will need surveillance colonoscopy with biopsies every year from now on.\n5. Return sooner if bleeding worsens or fevers rise."
+            }
+          ],
+          "state": {
+            "weight_kg": 68.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "office_visit",
+          "start": "2022-08-23T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up ulcerative colitis",
+          "vitals": {
+            "bp": [
+              125,
+              72
+            ],
+            "hr": 62,
+            "temp_c": 36.8,
+            "weight_kg": 67.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-08-23T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-08-23T16:20",
+              "author": "PCP",
+              "body": "Follow-up after GI. Colonoscopy 8/9 showed pancolitis, biopsies with crypt abscesses, so ulcerative colitis, extensive. On mesalamine 4.8 g daily for 10 days. Says stools down to 3-4 a day with less blood already. Fevers stopped last week. Tolerating the pills, no headache or rash.\n\nExam: vitals as charted, afebrile. Abdomen mildly tender LLQ, much less than before.\n\nA/P:\n- Extensive UC, new, on mesalamine per GI. Added to list. Will watch creatinine yearly while on mesalamine. GI rechecks in November.\n- Anemia, normocytic, from active colitis: GI rechecking CBC at follow-up.\n- PSC: ursodiol unchanged. Surveillance colonoscopy now yearly per GI.\nTalked about his uncle's UC and that his own course may be quite different. Message me with a flare: more blood, more than 6 stools a day, fevers."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-08-30a",
+          "kind": "pharmacy",
+          "start": "2022-08-30T09:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization",
+              "date": "2022-08-30T09:15",
+              "author": "MA",
+              "body": "Pharmacy says the student plan wants a PA for brand Lialda 1.2 g. GI wrote the script but pharmacy faxed us as PCP of record. Called GI office, they are submitting it. Patient has samples through the end of next week. Pt informed via portal."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization update",
+              "date": "2022-09-02T14:00",
+              "author": "MA",
+              "body": "PA approved for 12 months, generic mesalamine DR 1.2 g covered. Pharmacy filling today."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-04T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-04T16:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-04T16:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunizations",
+              "date": "2022-10-04T16:25",
+              "author": "RN",
+              "body": "Flu IM left arm, bivalent COVID booster IM right arm. Feeling well, bowels settled per pt. No reactions during observation."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-15a",
+          "kind": "specialist_visit",
+          "start": "2022-11-15T14:00",
+          "service": "Gastroenterology and Hepatology",
+          "reason": "Ulcerative colitis and PSC follow-up",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-11-15T14:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 232
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.21
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-11-15T14:10",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Follow-up Letter",
+              "date": "2022-11-22T11:30",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology and hepatology group. Visit 11/15/2022.\n\nUlcerative colitis (pancolitis) diagnosed in August, here three months into mesalamine. Bleeding stopped within the first month. Now one or two formed stools daily, no urgency, no nocturnal stools. Weight back up to 71 kg. No fevers.\nMedications: mesalamine 4.8 g daily; ursodiol 300 mg three times daily. NKDA.\n\nExam: well, abdomen soft and nontender.\nLabs: hemoglobin 12.6, CRP normal.\n\nAssessment: clinical remission on mesalamine. Anemia improving. PSC stable; MRCP and CA 19-9 this autumn unchanged and normal respectively.\nPlan: continue mesalamine at 4.8 g daily as maintenance. First surveillance colonoscopy August 2023. Review in six months."
+            }
+          ],
+          "state": {
+            "weight_kg": 71.0,
+            "labs": {
+              "C Reactive Protein": 2,
+              "Erythrocyte Sedimentation Rate": 9,
+              "Hemoglobin": 12.6
+            }
+          }
+        },
+        {
+          "id": "2023-01-24a",
+          "kind": "annual_physical",
+          "start": "2023-01-24T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              135,
+              72
+            ],
+            "hr": 74,
+            "temp_c": 37.1,
+            "spo2": 97,
+            "weight_kg": 71.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-01-24T09:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 247
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 48
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 39
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-01-24T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Platelets",
+                  "value": 248
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.04
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-01-24T09:10",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.013
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.5
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-01-24T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-01-24T09:30",
+              "author": "PCP",
+              "body": "27M. Problems: PSC, extensive UC (dx 8/2022) in remission on mesalamine, anemia.\n\nInterval: UC quiet since the fall, 1-2 formed BMs a day, no blood. Back running. Passed his qualifying exams in December. Reserve drills monthly.\nMeds: mesalamine 1.2 g x4 daily, ursodiol 300 mg TID. NKDA.\n\nExam: vitals as charted, weight steady. Anicteric. Mouth normal. Heart and lungs normal. Abdomen soft, nontender, no organomegaly. Skin clear.\nPHQ-9: 3.\n\nA/P:\n- UC in remission: continue mesalamine. Creatinine and UA today for mesalamine kidney monitoring.\n- PSC: LFTs today; GI follows with yearly MRCP.\n- Anemia: CBC today; was 12.6 in November.\n- Vaccines: flu and bivalent COVID done in October.\nNext physical in a year; labs again in summer."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-03-29a",
+          "kind": "portal_message",
+          "start": "2023-03-29T21:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mouth sores and blisters",
+              "date": "2023-03-29T21:30",
+              "author": "patient",
+              "body": "For about a week I've had really sore spots inside my cheeks and on the roof of my mouth, it hurts to eat. Now I have blisters on my chest and a couple on my back that pop and leave raw patches. I switched soap thinking it was that but it's getting worse. No fever. Could I be seen?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Mouth sores and blisters",
+              "date": "2023-03-30T07:20",
+              "author": "PCP",
+              "body": "Yes, come in at 11:00 today."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-30a",
+          "kind": "office_visit",
+          "start": "2023-03-30T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Oral erosions and blistering rash",
+          "vitals": {
+            "bp": [
+              122,
+              73
+            ],
+            "hr": 74,
+            "temp_c": 36.5,
+            "weight_kg": 70.6
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-03-30T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral-2023",
+              "action": "placed",
+              "order": "Dermatology referral, urgent",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "Oral erosions and flaccid blisters, concern for autoimmune blistering disease"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-03-30T11:45",
+              "author": "PCP",
+              "body": "About a week of painful mouth sores, then blisters on the chest and back that break easily and leave raw areas. Changed soaps and detergent, no help. No fever, joint pain, eye symptoms or new meds; mesalamine and ursodiol unchanged for months. UC quiet.\n\nExam: afebrile. Shallow erosions on both buccal mucosae and the soft palate. Several flaccid blisters on the anterior chest with surrounding redness and a few crusted erosions; two smaller erosions on the upper back. No target lesions. Eyes and genitals not involved per pt.\n\nA/P: oral erosions with flaccid bullae, worry for an autoimmune blistering disease such as pemphigus. Needs dermatology with biopsy this week. Called the outside dermatology group, seen 4/6. Salt-water rinses and soft diet meanwhile; petrolatum and nonstick dressings for raw areas. Call if spreading fast, fever, or trouble eating or drinking."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-06a",
+          "kind": "specialist_visit",
+          "start": "2023-04-06T09:20",
+          "service": "Dermatology",
+          "reason": "Oral erosions and blistering eruption",
+          "conditions": [
+            {
+              "label": "Pemphigus vulgaris",
+              "action": "diagnosed",
+              "onset": "2023-03-23"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 3 tablets (60 mg) by mouth every morning; taper per dermatology schedule",
+              "dose": {
+                "value": 60,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pemphigus vulgaris"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-04-06T10:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 254
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.16
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-04-06T10:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 43
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 55
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 241
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-04-06T10:00",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-04-06T09:50",
+              "text": "A. Skin, left anterior chest, perilesional, punch biopsy (H&E): intraepidermal blister with suprabasal acantholysis; basal keratinocytes retained along the dermal-epidermal junction. Sparse superficial dermal inflammatory infiltrate. B. Skin, left anterior chest, perilesional, punch biopsy for direct immunofluorescence: intercellular IgG and C3 deposition within the epidermis. IgA, IgM and fibrinogen negative.",
+              "conclusion": "Suprabasal acantholytic blister with intercellular IgG and C3, diagnostic of pemphigus vulgaris.",
+              "issued": "2023-04-11T13:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Punch skin biopsy, single lesion",
+              "performed": "2023-04-06T09:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral-2023",
+              "action": "done",
+              "date": "2023-04-06T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Consultation",
+              "date": "2023-06-13T10:00",
+              "author": "dermatology",
+              "body": "Outside dermatology group. Date of service 04/06/2023. Received after records request.\n\nReason for referral: oral sores and blisters.\n\nHistory: 27-year-old man with PSC and extensive ulcerative colitis diagnosed last August. Two weeks of painful oral erosions and a blistering eruption on the chest and back that has kept worsening even after he stopped using new soaps and detergents. He denies fever, joint pain and recent travel.\nMedications: ursodiol 300 mg three times daily. Allergies: NKDA.\nFamily history: rheumatoid arthritis in his mother, ulcerative colitis in a maternal uncle.\nSocial: graduate student.\n\nExam: several flaccid bullae and erosions on red bases across the anterior chest. Light traction on skin beside the lesions extends the erosions and raises new ones (Nikolsky positive). Shallow erosions of the buccal mucosa and soft palate. Conjunctivae and genitals spared.\n\nLabs: unremarkable apart from mild anemia. Hepatitis B surface antigen negative.\nBiopsy (H&E and DIF, left chest): suprabasal acantholysis; intercellular IgG and C3 on DIF.\n\nAssessment: pemphigus vulgaris, mucocutaneous.\nPlan:\n1. Prednisone 60 mg daily, then taper over about five months guided by response.\n2. Rituximab 1000 mg IV x 2, two weeks apart, at our infusion center (4/20 and 5/4). Hepatitis B screen negative. Recommend pneumococcal vaccination before the first dose if not done.\n3. Continue saline rinses; bland emollient to erosions.\n4. Follow up in three months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 12.4
+            }
+          }
+        },
+        {
+          "id": "2023-04-10a",
+          "kind": "portal_message",
+          "start": "2023-04-10T08:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Dermatology update",
+              "date": "2023-04-10T08:55",
+              "author": "patient",
+              "body": "Derm called with the biopsy: pemphigus vulgaris. I'm on prednisone 60 mg a day and they're setting up rituximab infusions on 4/20 and 5/4. They said I should get a pneumonia shot before the first infusion. Can I do that with you?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Dermatology update",
+              "date": "2023-04-10T13:20",
+              "author": "PCP",
+              "body": "Sorry you're dealing with this on top of everything. We haven't gotten their note yet, so thank you for the details. I see the prednisone fill from the pharmacy and added it to your list. Nurse visit Wednesday for the pneumococcal vaccine (PCV20), well before 4/20. Take the prednisone in the morning with food."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Med list update",
+              "date": "2023-04-10T13:30",
+              "author": "MA",
+              "body": "Prednisone 20 mg tabs, 60 mg daily, prescribed by outside dermatology, filled 4/6 per pharmacy fill history. Entered on med list as outside prescription. PCV20 nurse visit booked 4/12."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-12a",
+          "kind": "nurse_visit",
+          "start": "2023-04-12T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pneumococcal vaccine before rituximab",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-04-12T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-04-12T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2023-04-12T15:50",
+              "author": "RN",
+              "body": "PCV20 0.5 mL IM left deltoid ahead of planned rituximab. Pt reports mouth a bit less sore on prednisone. Waited 15 min, fine."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-05a",
+          "kind": "portal_message",
+          "start": "2023-05-05T17:10",
+          "medications": [
+            {
+              "drug_text": "rituximab 10 MG/ML Injection",
+              "action": "historical",
+              "sig": "1000 mg IV, two doses two weeks apart (4/20/2023 and 5/4/2023), given at dermatology infusion center",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "Pemphigus vulgaris"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Infusions done",
+              "date": "2023-05-05T17:10",
+              "author": "patient",
+              "body": "Second rituximab infusion was yesterday, both went OK. Mouth is healing and the chest spots are crusting over. Prednisone is down a bit already per their schedule."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Infusions done",
+              "date": "2023-05-05T19:02",
+              "author": "PCP",
+              "body": "Good to hear. I've noted both infusions in your chart. Let me know about any fevers in the next few months, since rituximab lowers your defenses for a while."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-06a",
+          "kind": "telephone",
+          "start": "2023-06-06T11:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2023-06-06T11:40",
+              "author": "front desk",
+              "body": "No consult note received from the outside dermatology group for the 4/6 visit. Called their records line, request plus release faxed for the consult note and biopsy report. They will send within a week."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "specialist_visit",
+          "start": "2023-07-18T13:30",
+          "service": "Dermatology",
+          "reason": "Pemphigus vulgaris follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Follow-up",
+              "date": "2023-07-25T09:00",
+              "author": "dermatology",
+              "body": "Outside dermatology group. Visit 07/18/2023.\n\nPemphigus vulgaris, three months after diagnosis. Rituximab 1 g given 4/20 and 5/4. Prednisone tapered from 60 mg and now at 10 mg daily.\nNo new blisters for six weeks. Eating normally.\nExam: oral mucosa healed. Chest and back show healed erosions with postinflammatory pink macules only. Nikolsky negative.\nMedications: prednisone 10 mg daily, ursodiol 300 mg three times daily. NKDA.\n\nAssessment: pemphigus vulgaris in remission on minimal therapy.\nPlan: continue taper by 2.5 mg every two weeks, off by late September. Reassess in nine months, sooner with any new lesion."
+            }
+          ],
+          "state": {
+            "weight_kg": 74.0
+          }
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "specialist_visit",
+          "start": "2023-08-22T09:00",
+          "service": "Gastroenterology and Hepatology",
+          "reason": "Surveillance colonoscopy, PSC with ulcerative colitis",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-08-22T09:45",
+              "text": "Random surveillance biopsies, right, transverse, left colon and rectum, separately labeled: colonic mucosa with mild chronic changes without active inflammation. No dysplasia in any specimen.",
+              "conclusion": "Quiescent colitis. Negative for dysplasia.",
+              "issued": "2023-08-25T12:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy with biopsy",
+              "performed": "2023-08-22T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Surveillance Colonoscopy and PSC Review",
+              "date": "2023-08-31T10:00",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology and hepatology group. Procedure and clinic 08/22/2023.\n\nIndication: surveillance in PSC with extensive ulcerative colitis.\nColonoscopy: good prep, to the cecum and terminal ileum. Mucosa healed throughout without ulceration or friability. No polyps or raised lesions. Segmental random biopsies taken.\nPathology: quiescent colitis, no dysplasia.\n\nPSC: annual MRCP stable, no dominant stricture or mass. CA 19-9 normal. Liver tests at baseline.\nMedications on our list: mesalamine 4.8 g daily, ursodiol 300 mg three times daily. NKDA.\n\nPlan: continue mesalamine and ursodiol. Next colonoscopy and MRCP in about a year."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "lab_only",
+          "start": "2023-09-12T07:45",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2023-09-12T07:45",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 38
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 48
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 240
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-12T07:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 241
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.29
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-09-12T07:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2023-09-13T09:10",
+              "author": "PCP",
+              "body": "Liver tests stable for you. Hemoglobin is still a little below normal, same as spring. Kidney function and sugar fine on the prednisone. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "nurse_visit",
+          "start": "2023-10-03T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-03T16:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-03T16:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-03T16:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunizations",
+              "date": "2023-10-03T17:00",
+              "author": "RN",
+              "body": "Flu (L deltoid) and 2023-24 COVID (R deltoid) given. Pt states he finished the steroid taper last week. Observed, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "annual_physical",
+          "start": "2024-01-09T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Taper completed late September 2023 per patient and dermatology"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              83
+            ],
+            "hr": 71,
+            "temp_c": 37.1,
+            "spo2": 97,
+            "weight_kg": 72.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-01-09T09:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 230
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 49
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 41
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-01-09T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 265
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.54
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-01-09T09:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 169
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 99
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 115
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-01-09T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-01-09T09:25",
+              "author": "PCP",
+              "body": "28M for yearly exam.\n\nActive: PSC (ursodiol), extensive UC in remission (mesalamine), pemphigus vulgaris (rituximab x2 spring 2023, prednisone taper), mild anemia.\n\nMed reconciliation: prednisone still on our list from April. He finished the taper in the last week of September and has taken none since; removed today. Current: mesalamine 1.2 g x4 daily, ursodiol 300 mg TID. NKDA.\n\nInterval: skin and mouth clear since summer. UC quiet, colonoscopy in August clean per GI letter. Dissertation work going well. Reserve drills monthly, annual training planned.\n\nExam: vitals as charted, weight back to 72.5. No oral erosions. Skin with a few faint pink macules on the chest, no blisters. Heart, lungs normal. Abdomen benign, no organomegaly.\nPHQ-9: 2.\n\nA/P:\n- Pemphigus vulgaris, in remission off prednisone; derm follow-up in April.\n- UC/PSC stable on mesalamine and ursodiol. CMP, CBC today.\n- Anemia: CBC today.\n- Lipids once more for baseline after a steroid course.\n- Vaccines current for the season (flu/COVID 10/2023, PCV20 4/2023).\nRTC 1 yr; labs again in June."
+            }
+          ],
+          "state": {
+            "weight_kg": 72.5,
+            "labs": {
+              "Hemoglobin": 13.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "specialist_visit",
+          "start": "2024-04-16T10:40",
+          "service": "Dermatology",
+          "reason": "Pemphigus vulgaris follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Follow-up",
+              "date": "2024-04-23T15:10",
+              "author": "dermatology",
+              "body": "Outside dermatology group. Visit 04/16/2024.\n\nPemphigus vulgaris, one year from diagnosis. Rituximab 1 g x 2 in April/May 2023; prednisone discontinued late September 2023. No oral or skin lesions since last summer.\nExam: oral mucosa intact. Trunk clear apart from faint residual dyspigmentation. Nikolsky negative.\nMedications per patient: ursodiol, mesalamine. NKDA.\n\nAssessment: complete remission off therapy.\nPlan: no maintenance therapy at this point. Return at the first sign of mouth sores or blisters; we would consider retreatment then. Routine visit in one year or as needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "lab_only",
+          "start": "2024-06-11T08:10",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-06-11T08:10",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 38
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 47
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 250
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-06-11T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 270
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.34
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "June labs",
+              "date": "2024-06-12T11:50",
+              "author": "PCP",
+              "body": "Rowan, liver numbers unchanged, platelets normal, hemoglobin about 13, slightly under the normal line for men but better than last year. Nothing to do. See you in the winter."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "specialist_visit",
+          "start": "2024-08-20T08:30",
+          "service": "Gastroenterology and Hepatology",
+          "reason": "Surveillance colonoscopy, PSC with ulcerative colitis",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-08-20T09:15",
+              "text": "Segmental random colonic biopsies (cecum/ascending, transverse, descending/sigmoid, rectum): colonic mucosa with mild architectural chronicity, no active inflammation. Negative for dysplasia.",
+              "conclusion": "Quiescent colitis, all segments. No dysplasia.",
+              "issued": "2024-08-23T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy with biopsy",
+              "performed": "2024-08-20T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Surveillance Colonoscopy and PSC Review",
+              "date": "2024-09-03T09:30",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology and hepatology group. 08/20/2024.\n\nSurveillance colonoscopy for PSC-associated pancolitis. Cecum reached, ileum intubated. Mucosa healed and featureless without erosions; no polyps or visible lesions. Random biopsies by segment: quiescent colitis, no dysplasia.\nPSC: MRCP this summer unchanged from 2023, no dominant stricture or mass; CA 19-9 within normal limits.\nMeds: mesalamine 4.8 g daily, ursodiol 300 mg three times daily. NKDA.\nPlan: continue current therapy; colonoscopy and MRCP next summer."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T16:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T16:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunizations",
+              "date": "2024-10-08T16:35",
+              "author": "RN",
+              "body": "2024-25 flu vaccine L deltoid and 2024-25 COVID vaccine R deltoid. No complaints. Observed 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "pharmacy",
+          "start": "2025-01-14T10:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization renewal",
+              "date": "2025-01-14T10:00",
+              "author": "MA",
+              "body": "Mesalamine DR 1.2 g PA expired with the new plan year. Renewal submitted with GI notes from 8/2024 (UC in remission on therapy). Pt has 10 days left."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PA approved",
+              "date": "2025-01-16T15:20",
+              "author": "MA",
+              "body": "Renewal approved through 1/2026. Pharmacy notified, 90-day fill going out."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "annual_physical",
+          "start": "2025-02-11T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2025-02-11T09:30",
+              "author": "front desk",
+              "body": "No-show for 8:40 physical. Left voicemail and portal message to reschedule."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Missed appointment",
+              "date": "2025-02-11T19:10",
+              "author": "patient",
+              "body": "So sorry, I had a drill weekend that got extended and completely forgot. I'll book once my spring schedule settles."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-04-03a",
+          "kind": "ed_visit",
+          "start": "2025-04-03T18:40",
+          "end": "2025-04-03T23:55",
+          "service": "Emergency Medicine",
+          "reason": "Fever, cough and malaise for 10 days",
+          "vitals": [
+            {
+              "time": "2025-04-03T18:50",
+              "bp": [
+                124,
+                76
+              ],
+              "hr": 102,
+              "rr": 20,
+              "temp_c": 38.4,
+              "spo2": 95
+            },
+            {
+              "time": "2025-04-03T22:30",
+              "bp": [
+                118,
+                72
+              ],
+              "hr": 90,
+              "rr": 18,
+              "temp_c": 37.6,
+              "spo2": 96
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-04-03T19:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Platelets",
+                  "value": 278
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.98
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-04-03T19:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.07
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 232
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 54
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 40
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-03T19:20",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 320
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-04-03T19:40",
+              "text": "PA and lateral views. Both hila are enlarged and lobulated, consistent with bilateral hilar lymphadenopathy. Patchy reticulonodular opacities in both lungs. No pleural effusion. No pneumothorax. Heart size normal.",
+              "conclusion": "Bilateral hilar lymphadenopathy with patchy reticulonodular infiltrates."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-04-03T18:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-04-04T08:15",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Seen 04/03/2025.\n\nChief complaint: fever, cough and feeling unwell for 10 days.\n\nHPI: 29-year-old man with primary sclerosing cholangitis on ursodiol, ulcerative colitis, and pemphigus vulgaris. Two weeks ago he came back from camping in the Mississippi River valley, where he went into caves and poked around old barns. Since then, steadily more tired, some weight loss, intermittent chest discomfort, fevers and a cough. No hemoptysis. No sick contacts. No known lung disease.\nMeds: ursodiol 300 mg TID. Allergies: NKDA.\nFamily: mother RA, maternal uncle UC.\nSocial: never smoker, alcohol 1-2 drinks a month because of his liver, grad student and Army Reservist.\n\nExam: febrile and tachycardic on arrival, nontoxic. Scattered ulcers in the mouth. Tender cervical lymph nodes. Diminished breath sounds with fine crackles at both bases. Heart regular. Abdomen soft, nontender.\n\nResults: mild normocytic anemia. LDH 320, elevated. Chest x-ray with bilateral hilar adenopathy and patchy reticulonodular infiltrates.\nSputum collected for fungal culture.\n\nMDM: subacute febrile illness with hilar adenopathy and nodular infiltrates after cave and barn exposure in an endemic area; endemic mycosis, most likely histoplasmosis, leads. Not hypoxic, tolerating oral intake. Discussed with infectious disease on call, who will see him in clinic within the week for antigen testing and treatment decision.\n\nDisposition: discharged home. Acetaminophen for fever. Return for shortness of breath, chest pain, confusion or inability to keep fluids down. Follow up with PCP."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.5,
+            "labs": {
+              "Hemoglobin": 12.1
+            }
+          }
+        },
+        {
+          "id": "2025-04-07a",
+          "kind": "office_visit",
+          "start": "2025-04-07T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, fever and cough",
+          "vitals": {
+            "bp": [
+              123,
+              69
+            ],
+            "hr": 73,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 70.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-04-07T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-04-07T14:00",
+              "author": "PCP",
+              "body": "ED follow-up. Seen 4/3 for 10 days of fever, cough and malaise after a camping trip in the Mississippi River valley exploring caves and barns. CXR with bilateral hilar adenopathy and reticulonodular infiltrates, LDH elevated, Hb mildly low; sputum fungal culture pending. ED record received 4/4.\n\nToday: still tired, cough a bit less, evening fevers to about 100. Eating OK. No dyspnea at rest.\nExam: vitals as charted. Mouth with a few small shallow ulcers. Small tender anterior cervical nodes. Fine crackles at both bases. Abdomen benign.\n\nA/P: probable acute pulmonary histoplasmosis. Prior rituximab in 2023 lowers my threshold to treat. ID appointment confirmed for Wednesday 4/9. Will ask for the culture result to come here too. Return/ED for breathing trouble. Off drills until cleared."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-09a",
+          "kind": "specialist_visit",
+          "start": "2025-04-09T10:00",
+          "service": "Infectious Disease",
+          "reason": "Suspected pulmonary histoplasmosis",
+          "conditions": [
+            {
+              "label": "Acute pulmonary histoplasmosis capsulati",
+              "action": "diagnosed",
+              "onset": "2025-03-24",
+              "icd10": "B39.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "itraconazole 100 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 2 capsules (200 mg) by mouth three times daily for 3 days, then 2 capsules (200 mg) twice daily with food",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Acute pulmonary histoplasmosis"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-04-09T10:30",
+              "resulted": "2025-04-10T16:00",
+              "results": [
+                {
+                  "test": "Histoplasma capsulatum antigen, urine",
+                  "loinc": "44524-7",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-04-09T10:30",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 41
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 48
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 259
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Consultation",
+              "date": "2025-04-11T12:00",
+              "author": "infectious disease",
+              "body": "Outside infectious disease clinic. Seen 04/09/2025.\n\nReferred from the ED for fever, cough, hilar adenopathy and reticulonodular infiltrates after caving and barn exploration in the Mississippi River valley in mid-March. History of PSC on ursodiol, ulcerative colitis on mesalamine, and pemphigus vulgaris treated with rituximab in 2023 and prednisone through September 2023, now off therapy.\nAllergies: NKDA.\n\nExam: tired, temp 37.9. Few shallow oral ulcers. Tender cervical nodes. Bibasilar fine crackles.\n\nData: ED chest film as described. Urine Histoplasma antigen sent today returned positive. Sputum fungal culture from the ED is in progress.\n\nAssessment: acute pulmonary histoplasmosis, moderate, with prior B-cell depletion.\nPlan:\n1. Itraconazole 200 mg three times daily for 3 days, then 200 mg twice daily, planned 6 weeks total. Take with food; avoid acid suppressants.\n2. Liver panel at baseline (today) and in two weeks given PSC; can be drawn at his PCP's office.\n3. Follow up in 6 weeks with a repeat chest film.\n4. Not fit for drills or field duty until cleared."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-24a",
+          "kind": "lab_only",
+          "start": "2025-04-24T07:55",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-04-24T07:55",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 40
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 49
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 241
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Liver tests on itraconazole",
+              "date": "2025-04-24T17:30",
+              "author": "PCP",
+              "body": "Rowan, liver panel two weeks into itraconazole is the same as your usual PSC numbers, no bilirubin rise. Copy sent to ID. How are the fevers?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Liver tests on itraconazole",
+              "date": "2025-04-24T20:12",
+              "author": "patient",
+              "body": "Gone since last weekend. Still a little cough. Energy coming back."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "specialist_visit",
+          "start": "2025-05-20T09:30",
+          "service": "Infectious Disease",
+          "reason": "Histoplasmosis follow-up",
+          "conditions": [
+            {
+              "label": "Acute pulmonary histoplasmosis capsulati",
+              "action": "resolved",
+              "icd10": "B39.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "itraconazole 100 MG Oral Capsule",
+              "action": "stop",
+              "reason": "Six-week course complete; last dose 5/21/2025"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-04-03T21:00",
+              "resulted": "2025-04-30T11:00",
+              "results": [
+                {
+                  "test": "Fungal culture, sputum",
+                  "loinc": "580-1",
+                  "text": "Histoplasma capsulatum isolated"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-05-20T09:10",
+              "text": "PA and lateral. Hilar contours smaller than on 04/03/2025. Previously seen reticulonodular opacities have largely cleared. No effusion. Heart size normal.",
+              "conclusion": "Improving bilateral hilar lymphadenopathy and clearing infiltrates."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Follow-up",
+              "date": "2025-05-23T10:45",
+              "author": "infectious disease",
+              "body": "Outside infectious disease clinic. Visit 05/20/2025.\n\nAcute pulmonary histoplasmosis, six weeks into itraconazole. Fevers ended in mid-April, cough gone, energy normal. Mouth ulcers healed. Liver tests on treatment were at his PSC baseline.\nSputum culture from the ED grew Histoplasma capsulatum.\nChest x-ray today: hilar nodes smaller, infiltrates mostly cleared.\n\nAssessment: histoplasmosis, clinically resolved.\nPlan: finish itraconazole tomorrow (5/21) and stop. No suppressive therapy. If he needs immunosuppression again, as with retreatment of pemphigus, please let us know first. He is cleared for duty from our standpoint; he mentions an upcoming deployment."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-22a",
+          "kind": "portal_message",
+          "start": "2025-05-22T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Deploying soon",
+              "date": "2025-05-22T12:30",
+              "author": "patient",
+              "body": "ID cleared me and I finished the itraconazole. My unit is deploying at the end of the month and I'll be gone until around mid-September. Could you send 90-day refills of the mesalamine and ursodiol with extra, and a printout of my problem list and meds for the battalion surgeon?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Deploying soon",
+              "date": "2025-05-22T16:45",
+              "author": "PCP",
+              "body": "Done: mesalamine and ursodiol sent as 90-day fills with a vacation override for a second fill. Summary letter with your problems, medications and specialists' contacts is in your documents tab. Stay safe and check in when you're home. If you get fevers, sores that won't heal, or bloody stools while away, get seen there."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Vacation supply",
+              "date": "2025-05-23T09:20",
+              "author": "MA",
+              "body": "Called pharmacy re: early fills for deployment. Insurance override approved for mesalamine and ursodiol. Pt picking up tomorrow."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-06a",
+          "kind": "office_visit",
+          "start": "2025-10-06T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, fevers, non-healing forearm sore",
+          "vitals": {
+            "bp": [
+              113,
+              69
+            ],
+            "hr": 71,
+            "rr": 18,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 69.8
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-10-06T14:40",
+              "resulted": "2025-10-06T18:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 1.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Platelets",
+                  "value": 101
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.98
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 26.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 33
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-06T14:40",
+              "resulted": "2025-10-06T18:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 247
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 84
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2025-10-06T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-10-06T15:00",
+              "author": "PCP",
+              "body": "Texted this morning, worked in this afternoon.\n\nHPI: home from a deployment in the Middle East in mid-September (months of patrols in remote desert, lots of insect bites, sleeping outdoors). About three weeks of fatigue, feeling feverish on and off, malaise that is getting worse, poor appetite, and weakness. Weight about the same. Also a sore on the right forearm from the deployment that has not healed with bandages and ointment. No cough, no diarrhea or blood, no new mouth sores or blisters. Took his meds throughout.\n\nExam: tired-looking. Vitals as charted. Anicteric. No oral lesions. Lungs clear. Abdomen soft; liver edge felt just below the costal margin and spleen tip palpable on inspiration. Right forearm: about 1.5 cm ulcer with raised, firm rolled border and clean base. No lymphangitic streaking.\n\nA/P: subacute fever and malaise with hepatosplenomegaly and a chronic ulcer after desert deployment with heavy insect exposure. Worried about leishmaniasis, visceral and cutaneous; also relapse or dissemination of histoplasmosis, malaria, and other infection. Stat CBC with diff and CMP today. Will call tonight with results; likely needs admission for workup.\n\nAddendum 18:45: WBC 1.8 with ANC 1.0, Hb 9.0, platelets 101; AST and ALT mildly above his baseline. Called patient. Spoke with the hospitalist at the regional hospital; direct admission to medicine tomorrow morning, bed confirmed for 8 am. ID notified. Told him to go to the ED tonight instead if fever climbs or he feels worse."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.0,
+            "labs": {
+              "Alanine Aminotransferase": 85,
+              "Aspartate Aminotransferase": 75,
+              "Hemoglobin": 9.1,
+              "Platelets": 85,
+              "White Blood Cells": 2.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "hospital_admission",
+          "start": "2025-10-07T08:10",
+          "end": "2025-10-12T13:00",
+          "service": "Hospital Medicine",
+          "reason": "Pancytopenia, fever, hepatosplenomegaly after deployment",
+          "conditions": [
+            {
+              "label": "Visceral leishmaniasis",
+              "action": "diagnosed",
+              "onset": "2025-09-16",
+              "icd10": "B55.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "amphotericin B liposomal 50 MG Injection",
+              "action": "start",
+              "sig": "210 mg (3 mg/kg) IV once daily on days 1-5, then on days 14 and 21",
+              "dose": {
+                "value": 210,
+                "unit": "mg"
+              },
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "Visceral leishmaniasis"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-10-07T08:30",
+              "bp": [
+                112,
+                68
+              ],
+              "hr": 98,
+              "rr": 18,
+              "temp_c": 38.3,
+              "spo2": 97,
+              "weight_kg": 70.0
+            },
+            {
+              "time": "2025-10-09T08:00",
+              "bp": [
+                116,
+                70
+              ],
+              "hr": 88,
+              "rr": 16,
+              "temp_c": 37.4,
+              "spo2": 98
+            },
+            {
+              "time": "2025-10-12T08:00",
+              "bp": [
+                118,
+                74
+              ],
+              "hr": 76,
+              "rr": 16,
+              "temp_c": 36.8,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-10-07T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 85
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.97
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 27.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 34
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-07T09:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 243
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 80
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-07T09:05",
+              "results": [
+                {
+                  "test": "Plasmodium Antigen, Rapid",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-07T09:05",
+              "resulted": "2025-10-12T09:05",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days (2 of 2 sets)"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-07T11:00",
+              "resulted": "2025-10-08T15:00",
+              "results": [
+                {
+                  "test": "Histoplasma capsulatum antigen, urine",
+                  "loinc": "44524-7",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-10T06:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-12T06:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 76
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.09
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 27.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-10-07T15:30",
+              "text": "Skin, right forearm, edge of ulcer, 4 mm punch biopsy. Dermis with a dense mixed infiltrate rich in histiocytes. Giemsa stain highlights numerous small intracellular round to oval organisms within histiocytes. Fungal stain (GMS) negative. Addendum 10/10: Leishmania PCR performed on paraffin tissue is positive, Leishmania donovani complex.",
+              "conclusion": "Dermal histiocytic infiltrate with intracellular round and oval organisms on Giemsa; Leishmania PCR positive (L. donovani complex).",
+              "issued": "2025-10-09T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-10-07T10:00"
+            },
+            {
+              "procedure": "Punch skin biopsy, single lesion",
+              "performed": "2025-10-07T15:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-10-12T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2025-11-06T10:20",
+              "author": "hospital medicine",
+              "body": "Regional hospital, medicine service. Admitted 10/07/2025, discharged 10/12/2025. Received by fax after request.\n\nReason for admission: three weeks of fatigue, subjective fevers and worsening malaise, plus a forearm lesion that has not healed with local wound care; referred directly by PCP for pancytopenia.\n\nHistory: 30-year-old man with PSC, ulcerative colitis, pemphigus vulgaris, and histoplasmosis treated in the spring. Returned recently from military service in the Middle East with months of patrols in remote desert terrain; frequent insect bites; no animal exposures and no freshwater swimming. Poor appetite and generalized weakness, no weight loss.\nHome meds: ursodiol 300 mg TID, mesalamine 4.8 g daily. NKDA.\n\nExam on admission: tired, febrile to 38.3. Mild hepatosplenomegaly. Right forearm ulcer, 1.5 cm, with raised borders.\n\nKey results: hemoglobin 9.1 g/dL, WBC 2,200/mm3, platelets 85,000/mm3. Liver enzymes mildly elevated. Blood cultures negative. Rapid malaria antigen negative. Urine Histoplasma antigen negative. Forearm punch biopsy: intracellular round and oval organisms within histiocytes on Giemsa; Leishmania PCR positive, L. donovani complex.\n\nDiagnosis: visceral leishmaniasis, with a cutaneous lesion at the right forearm.\n\nHospital course: ID consulted. Liposomal amphotericin B 3 mg/kg (210 mg) daily started 10/7, days 1 through 5 given inpatient with saline loading. Creatinine and potassium stayed normal. Fevers broke on day 3. Counts stable to slightly improved at discharge.\n\nDischarge plan: remaining doses on day 14 (10/20) and day 21 (10/27) at the hospital outpatient infusion center. Continue home medications. CBC and BMP with each infusion. ID clinic in about 6 weeks, with monitoring for relapse over the next 6 to 12 months. PCP follow-up within a week. Return for fever, bleeding or bruising."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "portal_message",
+          "start": "2025-10-08T19:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update from the hospital",
+              "date": "2025-10-08T19:40",
+              "author": "patient",
+              "body": "Got admitted yesterday as planned. They biopsied the arm sore and started IV amphotericin. ID thinks it's leishmaniasis, waiting on more tests. Feeling a little better today."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Update from the hospital",
+              "date": "2025-10-09T07:30",
+              "author": "PCP",
+              "body": "Thanks for keeping me posted. I'll follow along with the team. Book a visit with me within a week of discharge."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-16a",
+          "kind": "office_visit",
+          "start": "2025-10-16T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, visceral leishmaniasis",
+          "vitals": {
+            "bp": [
+              129,
+              76
+            ],
+            "hr": 63,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 70.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-16T11:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 77
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 25.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-16T11:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-10-16T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-10-16T11:30",
+              "author": "PCP",
+              "body": "Seen after admission 10/7-10/12 at the regional hospital. Discharge summary not yet received; history from patient, his discharge paperwork, and the ID team by phone.\n\nDx: visceral leishmaniasis (forearm biopsy with intracellular organisms on Giemsa, Leishmania PCR positive). Liposomal amphotericin B days 1-5 done inpatient; days 14 and 21 scheduled 10/20 and 10/27.\n\nSince home: no fevers for a week. Appetite returning. Still tires easily. No bleeding or bruising. Forearm ulcer smaller.\nMeds: ursodiol 300 mg TID, mesalamine 4.8 g daily, liposomal amphotericin B per ID. NKDA.\n\nExam: vitals as charted, afebrile. Spleen tip still palpable. Right forearm ulcer about 1 cm, clean, border flatter.\n\nA/P:\n- Visceral leishmaniasis on treatment. CBC and BMP today (amphotericin). ID follow-up in December.\n- PSC/UC: continue ursodiol and mesalamine; UC quiet.\n- Anemia: worse with VL; follow counts.\n- Flu and COVID vaccines after the amphotericin course.\nWill request discharge summary."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-28a",
+          "kind": "portal_message",
+          "start": "2025-10-28T09:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Last infusion",
+              "date": "2025-10-28T09:15",
+              "author": "patient",
+              "body": "Last amphotericin dose went in yesterday, day 21. Labs they drew were fine per the infusion nurse. Feeling much more like myself."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Last infusion",
+              "date": "2025-10-28T12:40",
+              "author": "PCP",
+              "body": "Great. Nurse visit next week for flu and COVID shots. I'll see the ID letter in December."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-30a",
+          "kind": "telephone",
+          "start": "2025-10-30T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2025-10-30T10:05",
+              "author": "front desk",
+              "body": "Discharge summary for 10/7-10/12 admission still not received. Called hospital HIM, faxed request. Told 5-7 business days."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "nurse_visit",
+          "start": "2025-11-04T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-11-04T16:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-11-04T16:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-11-04T16:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunizations",
+              "date": "2025-11-04T16:40",
+              "author": "RN",
+              "body": "Afebrile today. Flu vaccine L arm, 2025-26 COVID vaccine R arm. Tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "specialist_visit",
+          "start": "2025-12-09T14:20",
+          "service": "Infectious Disease",
+          "reason": "Visceral leishmaniasis follow-up",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-12-09T14:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 4.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 176
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 34
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 2.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-12-09T14:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 50
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 41
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 239
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Follow-up",
+              "date": "2025-12-12T09:00",
+              "author": "infectious disease",
+              "body": "Outside infectious disease clinic. Visit 12/09/2025.\n\nVisceral leishmaniasis (L. donovani complex) treated with liposomal amphotericin B 3 mg/kg on days 1-5, 14 and 21, completed 10/27. Feels well, eating normally, no fevers.\nExam: spleen not palpable; liver edge not felt. Right forearm: healed, flat hypopigmented scar.\nLabs: hemoglobin 11.8, WBC 4.1, platelets 176. Renal function normal. Transaminases back to his PSC baseline.\n\nAssessment: good early response.\nPlan: CBC in four months and see him then to finish relapse surveillance. Return for fever, weight loss or cytopenias."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 50,
+              "Aspartate Aminotransferase": 40,
+              "Hemoglobin": 11.8,
+              "Platelets": 176,
+              "White Blood Cells": 4.1
+            }
+          }
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "portal_message",
+          "start": "2026-01-06T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Colonoscopy timing",
+              "date": "2026-01-06T20:15",
+              "author": "patient",
+              "body": "GI wants to do the colonoscopy I skipped last summer while I was away. They have February 10. Is it OK to do that so soon after everything in the fall?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Colonoscopy timing",
+              "date": "2026-01-07T08:20",
+              "author": "PCP",
+              "body": "Yes, your December counts were recovering well and it's due. Go ahead with the 10th."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "specialist_visit",
+          "start": "2026-02-10T08:00",
+          "service": "Gastroenterology and Hepatology",
+          "reason": "Surveillance colonoscopy, PSC with ulcerative colitis",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-02-10T08:45",
+              "text": "Random biopsies, four colonic segments and rectum: colonic mucosa with features of chronic, inactive colitis. No active inflammation. No dysplasia.",
+              "conclusion": "Chronic inactive colitis. Negative for dysplasia.",
+              "issued": "2026-02-13T11:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy with biopsy",
+              "performed": "2026-02-10T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Surveillance Colonoscopy and PSC Review",
+              "date": "2026-02-19T13:15",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology and hepatology group. 02/10/2026.\n\nOverdue surveillance (deferred during his deployment and autumn illness). Interval visceral leishmaniasis treated with liposomal amphotericin in October; histoplasmosis treated last spring.\nColonoscopy: complete to the ileum; healed mucosa throughout, no polyps or raised lesions. Segmental random biopsies show inactive colitis, no dysplasia.\nPSC: MRCP in January stable compared with 2024, no dominant stricture or mass. CA 19-9 normal. Liver enzymes at his baseline on your last panel.\nMeds: mesalamine 4.8 g daily, ursodiol 300 mg three times daily. NKDA.\nPlan: unchanged. Colonoscopy and MRCP again in a year."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "pharmacy",
+          "start": "2026-02-24T09:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization",
+              "date": "2026-02-24T09:40",
+              "author": "MA",
+              "body": "Annual PA for mesalamine DR 1.2 g due again with the student plan. Submitted with the 2/2026 GI letter. Approved same day through 2/2027."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "specialist_visit",
+          "start": "2026-04-14T13:00",
+          "service": "Infectious Disease",
+          "reason": "Visceral leishmaniasis, end of relapse surveillance",
+          "conditions": [
+            {
+              "label": "Visceral leishmaniasis",
+              "action": "resolved",
+              "icd10": "B55.0"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-04-14T12:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 4.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 197
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.44
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 33
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 2.5
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Follow-up",
+              "date": "2026-04-17T10:30",
+              "author": "infectious disease",
+              "body": "Outside infectious disease clinic. Visit 04/14/2026.\n\nSix months after liposomal amphotericin B for visceral leishmaniasis. No fevers, sweats or weight loss. Back to full activity and Reserve drills.\nExam: no hepatosplenomegaly. Right forearm scar healed and stable.\nCBC: hemoglobin 13.4, white count and platelets normal.\n\nAssessment: visceral leishmaniasis, cured, without relapse. Prior histoplasmosis without recurrence.\nPlan: discharged from routine ID follow-up. Relapse can occur late, particularly with future immunosuppression; please re-refer for fever, cytopenias or an enlarging spleen, and let us know before any rituximab or steroids."
+            }
+          ],
+          "state": {
+            "weight_kg": 72.0,
+            "labs": {
+              "Hemoglobin": 13.4
+            }
+          }
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "annual_physical",
+          "start": "2026-06-09T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              119,
+              72
+            ],
+            "hr": 70,
+            "temp_c": 37.2,
+            "spo2": 96,
+            "weight_kg": 71.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-09T09:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 248
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 51
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 41
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-06-09T09:05",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.019
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.3
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-06-09T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-06-09T09:35",
+              "author": "PCP",
+              "body": "30M yearly exam, first since early 2024 (missed the 2025 one, then the spring histoplasmosis and the fall leishmaniasis).\n\nProblem list reviewed: PSC on ursodiol; extensive UC in remission on mesalamine (surveillance colonoscopy 2/2026 without dysplasia); pemphigus vulgaris in remission off therapy since 2023; anemia, now nearly resolved (Hb 13.4 in April); histoplasmosis 2025, resolved; visceral leishmaniasis 2025, cured per ID in April.\nMeds: mesalamine 1.2 g x4 daily, ursodiol 300 mg TID. NKDA.\n\nInterval: feels well. Defending his dissertation in the fall. Reserve drills resumed; no deployment planned. Alcohol rare. No tobacco.\n\nExam: vitals as charted. Anicteric. Mouth clear. Lungs clear. Heart regular. Abdomen soft, no hepatosplenomegaly. Right forearm well-healed flat scar. Skin otherwise clear.\nPHQ-9 2, AUDIT-C 1.\n\nA/P:\n- PSC/UC stable; CMP and UA today, LFT/CBC again in August.\n- Pemphigus in remission. ID asks to be told before any future rituximab or steroids; noted at top of the problem list.\n- Vaccines: flu and COVID in the fall; PCV20 done 2023.\nRTC September."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute pulmonary histoplasmosis capsulati|B39.0": {
+        "code": "B39.0",
+        "display": "Acute pulmonary histoplasmosis capsulati",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Extensive ulcerative colitis (pancolitis)|K51.00": {
+        "code": "K51.00",
+        "display": "Ulcerative (chronic) pancolitis without complications",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Visceral leishmaniasis|B55.0": {
+        "code": "B55.0",
+        "display": "Visceral leishmaniasis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "amphotericin B liposomal 50 MG Injection": {
+        "code": "967385",
+        "display": "amphotericin B liposomal 50 MG Injection",
+        "ingredient": "amphotericin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "itraconazole 100 MG Oral Capsule": {
+        "code": "311204",
+        "display": "itraconazole 100 MG Oral Capsule",
+        "ingredient": "itraconazole",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "rituximab 10 MG/ML Injection": {
+        "code": "1657862",
+        "display": "10 ML rituximab 10 MG/ML Injection",
+        "ingredient": "rituximab",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "ursodiol 300 MG Oral Capsule": {
+        "code": "858747",
+        "display": "ursodiol 300 MG Oral Capsule",
+        "ingredient": "ursodiol",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Clostridioides difficile toxin genes, stool PCR": {
+        "code": "54067-4",
+        "display": "Clostridioides difficile toxin genes [Presence] in Stool by NAA with probe detection",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Fungal culture, sputum": {
+        "code": "580-1",
+        "display": "Fungus identified in Specimen by Culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Histoplasma capsulatum antigen, urine": {
+        "code": "44524-7",
+        "display": "Histoplasma capsulatum Ag [Presence] in Urine by Immunoassay",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Lactate dehydrogenase": {
+        "code": "2532-0",
+        "display": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Stool culture": {
+        "code": "625-4",
+        "display": "Bacteria identified in Stool by Culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

@@ -1,0 +1,399 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001701",
+      "events": [
+        {
+          "id": "2022-01-12a",
+          "kind": "office_visit",
+          "start": "2022-01-12T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up new lupus diagnosis",
+          "state": {"bp": [144, 92], "weight_kg": 56.4},
+          "vitals": {"bp": [144, 92]},
+          "measure": ["hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "immunizations": [{"vaccine": "Pneumococcal conjugate PCV20", "date": "2022-01-12T09:10"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-01-12T08:30"},
+            {"procedure": "Immunization administration", "performed": "2022-01-12T09:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up - SLE", "author": "PCP", "date": "2022-01-12T09:15", "body": "Three weeks into prednisone 20 and hydroxychloroquine 200 bid from rheumatology. Knees and wrists much better, morning stiffness down to 20 minutes. Rash fading; wearing a hat at the bus stop. Hungry all the time, sleeping a bit worse. Taking LEV, she thinks better than before since she now has a pill box with the new pills in it too.\n\nExam: BP 144/92, repeat similar. Wrists with minimal residual puffiness, knees no effusion. Faint malar erythema. Lungs clear, heart regular.\n\nA/P\n1. SLE with arthropathy - responding. Continue per rheum. Labs in March for them.\n2. Elevated BP on prednisone - recheck in 4 weeks; low-salt advice.\n3. Immunosuppressed - PCV20 given today.\n4. Epilepsy, asthma - unchanged."}
+          ]
+        },
+        {
+          "id": "2022-02-10a",
+          "kind": "office_visit",
+          "start": "2022-02-10T17:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure recheck",
+          "conditions": [
+            {"label": "Secondary hypertension", "icd10": "I15.9", "action": "diagnosed", "onset": "2022-01-12"}
+          ],
+          "medications": [
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Secondary hypertension"}
+          ],
+          "state": {"bp": [146, 90]},
+          "vitals": {"bp": [146, 90]},
+          "measure": ["hr", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-02-10T17:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "BP recheck", "author": "PCP", "date": "2022-02-10T17:25", "body": "BP still up, 146/90 today, and high on the pharmacy kiosk twice last week. On prednisone 20, with lupus. No headache, no chest pain, no swelling. Home salt intake reviewed, eats a lot of takeout on shift.\nAssessment: secondary hypertension in setting of steroids and SLE. Starting lisinopril 10 mg daily. BMP with the March labs. Recheck 3 months."}
+          ]
+        },
+        {
+          "id": "2022-03-07a",
+          "kind": "portal_message",
+          "start": "2022-03-07T21:18",
+          "reason": "facial bumps",
+          "orders": [
+            {"id": "derm-referral", "action": "placed", "order": "Dermatology referral", "category": "referral", "to": "Dermatology", "reason": "papular facial eruption on prednisone"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Bumps on my face", "author": "patient", "date": "2022-03-07T21:18", "body": "For about a week I've had little red bumps on my cheeks and forehead, they're sore when I touch them. Not like the lupus rash. Is this from the prednisone? I have to be at work with customers all day and it's embarrassing."},
+            {"type": "Patient Message", "title": "Re: Bumps on my face", "author": "PCP", "date": "2022-03-08T07:50", "body": "Could well be from the prednisone. I've put in a dermatology referral so they can look and treat it. Also - your rheumatology labs are due, I put the orders in. Can you come by Wednesday morning for the draw?"}
+          ]
+        },
+        {
+          "id": "2022-03-09a",
+          "kind": "lab_only",
+          "start": "2022-03-09T07:45",
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2022-03-09T07:45", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-03-09T07:45", "results": [{"test": "Creatinine", "value": 0.9}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2022-03-09T07:45", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 18}, {"test": "C Reactive Protein", "value": 2.0}]},
+            {"panel": "Urinalysis", "collected": "2022-03-09T07:50", "results": [{"test": "Urine Protein", "text": "Negative"}, {"test": "Urine Blood", "text": "Negative"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2022-03-09T07:45"}],
+          "documents": [
+            {"type": "Result Note", "title": "Labs for rheumatology", "author": "PCP", "date": "2022-03-09T16:40", "body": "CBC now normal. ESR 18, CRP 2.0. Creatinine 0.9, potassium fine on lisinopril. UA clean. Copy faxed to rheumatology and dermatology. Pt notified via portal."}
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "specialist_visit",
+          "start": "2022-03-22T14:15",
+          "service": "Dermatology",
+          "reason": "facial papules",
+          "conditions": [
+            {"label": "Drug-induced acne (steroid acne)", "icd10": "L70.8", "action": "diagnosed", "onset": "2022-03-01"}
+          ],
+          "medications": [
+            {"drug_text": "clindamycin phosphate 10 MG/ML Topical Gel", "action": "start", "sig": "Apply a thin layer to affected areas of face twice daily", "frequency": "BID", "route": "Topical", "course": "short", "reason": "Steroid acne"}
+          ],
+          "orders": [{"id": "derm-referral", "action": "done", "date": "2022-03-22T14:15"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Dermatology Consultation", "author": "dermatology", "date": "2022-03-25T10:30", "body": "Outside Dermatology - Consultation\nDate of service: 3/22/2022\nAllergies: sulfa antibiotics (rash)\n\n27-year-old woman with SLE, on prednisone 20 mg daily since her rheumatology visit in December. Three weeks of a worsening eruption of small, red, tender bumps over the cheeks and forehead. Denies blackheads. Denies deep painful lumps.\n\nExam: Many uniform small papules across the cheeks and forehead. No open or closed comedones. No cysts or nodules. No scarring. Background malar erythema is faint.\n\nLabs provided by PCP (3/9): CBC normal, ESR 18, CRP 2.0, creatinine 0.9, urinalysis normal.\n\nAssessment: Steroid-induced acne (monomorphic papular eruption).\n\nPlan: Clindamycin 1% gel twice daily. Gentle non-comedogenic cleanser and moisturizer, mineral sunscreen daily. Expect improvement as steroid dose comes down; will defer dosing to rheumatology. Return as needed."}
+          ]
+        },
+        {
+          "id": "2022-04-20a",
+          "kind": "specialist_visit",
+          "start": "2022-04-20T09:45",
+          "service": "Rheumatology",
+          "reason": "lupus follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Rheumatology Follow-up", "author": "rheumatology", "date": "2022-04-22T13:00", "body": "Outside Rheumatology Clinic - Follow-up\nDate of service: 4/20/2022\n\nSLE with arthritis, malar rash, cytopenias. On prednisone 20 mg daily and hydroxychloroquine 200 mg bid since December. Joints feel near normal; no morning stiffness beyond a few minutes. Facial rash quiet. Steroid acne being treated by dermatology. BP managed by PCP on lisinopril.\n\nExam: no synovitis in hands, wrists or knees. Scattered small papules on cheeks. No oral ulcers.\n\nMarch labs (PCP) reviewed: blood counts recovered, ESR 18, creatinine and urine normal.\n\nPlan: continue current regimen for now. Labs with PCP every 3 months. Follow up in 6 months, sooner if symptoms return."}
+          ]
+        },
+        {
+          "id": "2022-05-11a",
+          "kind": "office_visit",
+          "start": "2022-05-11T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "BP follow-up",
+          "state": {"bp": [128, 82], "weight_kg": 57.6},
+          "vitals": {"bp": [128, 82]},
+          "measure": ["hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-05-11T08:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2022-05-11T08:00"},
+            {"procedure": "Venipuncture", "performed": "2022-05-11T08:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "BP follow-up", "author": "PCP", "date": "2022-05-11T08:25", "body": "On lisinopril 10, BP 128/82. No cough, no dizziness. Joints good, rash quiet, face bumps settling with the gel. Gained a little weight on prednisone. Money is tight - between the inhaler and four other pills she's spending more than she can most months. Gave her the discount card info again and the pharmacy's cash price list.\nA/P: HTN controlled, continue. Lupus per rheum. BMP today. RTC 2 months."}
+          ]
+        },
+        {
+          "id": "2022-07-18a",
+          "kind": "office_visit",
+          "start": "2022-07-18T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-08-09a",
+          "kind": "telephone",
+          "start": "2022-08-09T11:20",
+          "reason": "missed visit outreach",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Outreach after missed visit", "author": "MA", "date": "2022-08-09T11:20", "body": "Third attempt to reach pt after the 7/18 no-show. Voicemail left asking her to call or text to reschedule; also sent portal message. Pharmacy notes no fills of prednisone, hydroxychloroquine or lisinopril since early June. PCP aware."},
+            {"type": "Telephone Encounter", "title": "Note", "author": "PCP", "date": "2022-08-09T13:05", "body": "Texted her directly as well. No reply yet. Will keep trying."}
+          ]
+        },
+        {
+          "id": "2022-12-15a",
+          "kind": "ed_visit",
+          "start": "2022-12-15T18:40",
+          "end": "2022-12-15T23:55",
+          "service": "Emergency Medicine",
+          "reason": "leg swelling and foamy urine",
+          "conditions": [
+            {"label": "Lupus nephritis", "icd10": "M32.14", "action": "diagnosed", "onset": "2022-12-01"}
+          ],
+          "medications": [
+            {"drug": "prednisone 20 MG Oral Tablet", "action": "stop", "reason": "patient stopped about June 2022 because of cost"},
+            {"drug": "hydroxychloroquine sulfate 200 MG Oral Tablet", "action": "stop", "reason": "patient stopped about June 2022 because of cost"},
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "stop", "reason": "patient stopped about June 2022 because of cost"},
+            {"drug": "prednisone 20 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Lupus nephritis"}
+          ],
+          "vitals": {"bp": [148, 92]},
+          "state": {"labs": {"Blood Urea Nitrogen": 31}},
+          "measure": ["hr", "rr", "temp_c", "spo2"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-12-15T19:10", "results": [{"test": "Creatinine", "value": 2.1}]},
+            {"panel": "Urinalysis", "collected": "2022-12-15T19:20", "results": [{"test": "Urine Protein", "text": "4+"}, {"test": "Urine Blood", "text": "Large"}, {"test": "Urine Red Blood Cells", "text": "Many, dysmorphic; red cell casts present"}]},
+            {"panel": null, "collected": "2022-12-15T19:10", "resulted": "2022-12-16T11:00", "results": [
+              {"test": "Complement C3", "loinc": "4485-9", "unit": "mg/dL", "value": 48},
+              {"test": "Complement C4", "loinc": "4498-2", "unit": "mg/dL", "value": 5},
+              {"test": "dsDNA antibody", "loinc": "5130-0", "unit": "[IU]/mL", "text": "Positive, elevated titer"}
+            ]}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2022-12-16T08:00", "body": "Regional Emergency Department - Physician Record\nDate of service: 12/15/2022\nAllergies: sulfonamide antibiotics (rash)\n\nCC: legs swollen, urine foamy.\n\nHPI: 28F with SLE diagnosed about a year ago, then steroid acne. Several days of swelling in both legs and frothy urine, new tiredness, mild joint aches. Says she stopped all her lupus and blood pressure pills around six months ago because she could not afford them. Still taking her seizure medicine most days and her inhalers.\n\nExam: BP 148/92. Pitting edema both lower legs. Lungs clear. No rash on face beyond faint papules.\n\nResults: creatinine 2.1. Urine 4+ protein, dysmorphic red cells and red cell casts. Complement C3 and C4 low. Anti-dsDNA elevated.\n\nImpression: Active lupus nephritis.\n\nDisposition: Discussed with on-call nephrology. Restart prednisone 20 mg daily. Outpatient renal biopsy being arranged to determine class. Follow up with PCP within the week. Return for decreased urine, shortness of breath or worsening swelling."}
+          ]
+        },
+        {
+          "id": "2022-12-20a",
+          "kind": "office_visit",
+          "start": "2022-12-20T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit",
+          "conditions": [
+            {"label": "Drug-induced acne (steroid acne)", "icd10": "L70.8", "action": "resolved"},
+            {"label": "Patient's intentional underdosing of medication regimen due to financial hardship", "icd10": "Z91.120", "action": "diagnosed", "onset": "2022-06-01"}
+          ],
+          "medications": [
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Secondary hypertension; proteinuria"}
+          ],
+          "state": {"bp": [142, 90], "weight_kg": 58.9},
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-12-20T09:00"}],
+          "orders": [
+            {"id": "neph-referral", "action": "placed", "order": "Nephrology referral", "category": "referral", "to": "Nephrology", "reason": "lupus nephritis, biopsy pending"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, high MDM", "performed": "2022-12-20T08:15"},
+            {"procedure": "Immunization administration", "performed": "2022-12-20T09:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-ED visit - lupus nephritis", "author": "PCP", "date": "2022-12-20T09:05", "body": "First time I've seen her since May. ED record from 12/15 reviewed.\n\nS: Stopped prednisone, hydroxychloroquine and lisinopril in June when the money ran out; didn't want to tell us. Kept LEV, misses some. Legs started swelling early this month, urine bubbly. Restarted prednisone 20 from the ED Friday. Face bumps gone since summer. Joints a little achy.\n\nO: BP elevated. 2+ pitting edema to mid-shin bilaterally. Lungs clear. Heart regular. Skin: no acne, no malar rash.\n\nData: Cr 2.1, 4+ protein, dysmorphic RBC and casts, low C3/C4, dsDNA up.\n\nA/P\n1. Lupus nephritis, new - biopsy is being set up for 12/29. Restart lisinopril 10 for BP and protein. Nephrology referral placed today. Strict return precautions.\n2. Medication underdosing due to cost - long talk, no judgment. Connected with our care coordinator for hospital free-care application and manufacturer programs. Asked her to text me before she ever stops a pill again.\n3. Steroid acne - resolved.\n4. HTN - restart lisinopril as above.\n5. Flu shot today.\nSee her again right after nephrology."}
+          ]
+        },
+        {
+          "id": "2022-12-29a",
+          "kind": "procedure_visit",
+          "start": "2022-12-29T07:30",
+          "end": "2022-12-29T15:00",
+          "service": "Nephrology",
+          "reason": "renal biopsy",
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2022-12-29T09:10", "issued": "2023-01-04T15:00", "text": "Specimen: kidney, left, percutaneous core biopsy (2 cores). Light microscopy, immunofluorescence and electron microscopy performed. Findings consistent with diffuse proliferative lupus nephritis with immune-complex deposits.", "conclusion": "Lupus nephritis, ISN/RPS class IV."}
+          ],
+          "documents": [
+            {"type": "Procedure Note", "title": "Renal Biopsy", "author": "nephrology", "date": "2022-12-30T10:00", "body": "Outside Nephrology - Procedure Note\nDate of service: 12/29/2022\nUltrasound-guided percutaneous left renal biopsy, two cores. No immediate complications. Post-procedure observation 6 hours, hemoglobin stable, discharged home. Pathology to follow; clinic visit 1/5."}
+          ]
+        },
+        {
+          "id": "2023-01-05a",
+          "kind": "specialist_visit",
+          "start": "2023-01-05T13:00",
+          "service": "Nephrology",
+          "reason": "lupus nephritis",
+          "medications": [
+            {"drug_text": "mycophenolate mofetil 500 MG Oral Tablet", "action": "start", "sig": "Take 2 tablets (1000 mg) by mouth twice daily", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Lupus nephritis class IV"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2023-01-05T13:20", "results": [{"test": "Pregnancy Test, Urine", "text": "Negative"}]}
+          ],
+          "orders": [{"id": "neph-referral", "action": "done", "date": "2023-01-05T13:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Nephrology Consultation", "author": "nephrology", "date": "2023-01-06T16:10", "body": "Outside Nephrology - Consultation\nDate of service: 1/5/2023\nAllergies: sulfonamide antibiotics\n\n28-year-old with SLE, presenting in December with nephrotic-range proteinuria, active sediment and creatinine 2.1 after six months off therapy. Biopsy 12/29: class IV lupus nephritis.\n\nMeds: prednisone 20 mg daily (restarted 12/15), lisinopril 10 mg daily (restarted 12/20), levetiracetam 500 mg bid, inhalers. Hydroxychloroquine not resumed - cost.\n\nExam: edema improving, 1+ at ankles.\n\nUrine pregnancy test negative today. Amenorrheic; counseled that mycophenolate must not be taken in pregnancy.\n\nAssessment: Class IV lupus nephritis.\n\nPlan:\n- Mycophenolate mofetil 1000 mg twice daily; manufacturer assistance application started in clinic today.\n- Continue prednisone 20 mg daily and lisinopril 10 mg.\n- CBC, CMP, urinalysis every 4-6 weeks via PCP to start.\n- Return 3 months."}
+          ]
+        },
+        {
+          "id": "2023-01-17a",
+          "kind": "telephone",
+          "start": "2023-01-17T10:05",
+          "reason": "medication assistance",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Mycophenolate assistance", "author": "RN", "date": "2023-01-17T10:05", "body": "Care coordinator heard from the manufacturer program: approved for 12 months, first shipment to her home this week. Pt had a starter supply from nephrology and has not missed any doses. Free-care application also submitted for hospital-based labs."}
+          ]
+        },
+        {
+          "id": "2023-02-16a",
+          "kind": "office_visit",
+          "start": "2023-02-16T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lupus nephritis follow-up",
+          "state": {"bp": [130, 84], "labs": {"Creatinine": 1.4, "Blood Urea Nitrogen": 22}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-02-16T08:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-02-16T08:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Albumin"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Urinalysis", "collected": "2023-02-16T08:45", "results": [{"test": "Urine Protein", "text": "2+"}, {"test": "Urine Blood", "text": "Moderate"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-02-16T08:10"},
+            {"procedure": "Venipuncture", "performed": "2023-02-16T08:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up - lupus nephritis", "author": "PCP", "date": "2023-02-16T08:35", "body": "Six weeks on mycophenolate, no GI upset. Prednisone 20 and lisinopril daily, using the pill box for all of it. Swelling almost gone. Urine less foamy.\nExam: BP better. Trace ankle edema. Lungs clear.\nA/P: lupus nephritis improving clinically. Labs today and forwarded to nephrology. Epilepsy - no events. Asthma fine. RTC 4 months, labs between per nephrology."},
+            {"type": "Result Note", "title": "Lab review", "author": "PCP", "date": "2023-02-17T07:55", "body": "Creatinine coming down. Urine still 2+ protein, expected at this stage. Counts ok on mycophenolate. Sent to nephrology; portal note to pt."}
+          ]
+        },
+        {
+          "id": "2023-03-22a",
+          "kind": "specialist_visit",
+          "start": "2023-03-22T10:00",
+          "service": "Rheumatology",
+          "reason": "lupus follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Rheumatology Follow-up", "author": "rheumatology", "date": "2023-03-24T12:00", "body": "Outside Rheumatology Clinic - Follow-up\nDate of service: 3/22/2023\n\nSeen after a gap; interval class IV lupus nephritis (biopsy 12/2022) now under nephrology on mycophenolate 1 g bid plus prednisone 20 mg. Joints quiet; no rash; no oral ulcers. Hydroxychloroquine remains off for cost; she is not ready to add another monthly bill.\n\nExam: no synovitis. Skin clear.\n\nPlan: continue per nephrology. Coordinate labs through PCP. Rheumatology follow-up in about a year, sooner with joint or skin symptoms."}
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "lab_only",
+          "start": "2023-04-11T07:40",
+          "state": {"labs": {"Creatinine": 1.1, "Blood Urea Nitrogen": 18}},
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-04-11T07:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-04-11T07:40", "results": [{"test": "Creatinine"}, {"test": "Albumin"}]},
+            {"panel": "Urinalysis", "collected": "2023-04-11T07:45", "results": [{"test": "Urine Protein", "text": "1+"}, {"test": "Urine Blood", "text": "Small"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2023-04-11T07:40"}],
+          "documents": [
+            {"type": "Result Note", "title": "Monitoring labs", "author": "PCP", "date": "2023-04-11T15:30", "body": "Nephrology monitoring labs. Creatinine better again, urine protein down to 1+. CBC fine. Copy to nephrology."}
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "office_visit",
+          "start": "2023-06-12T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up",
+          "state": {"bp": [126, 80], "labs": {"Creatinine": 1.0, "Blood Urea Nitrogen": 15}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-06-12T17:00", "results": [{"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-06-12T17:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Urinalysis", "collected": "2023-06-12T17:05", "results": [{"test": "Urine Protein", "text": "Trace"}, {"test": "Urine Blood", "text": "Negative"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-06-12T16:40"},
+            {"procedure": "Venipuncture", "performed": "2023-06-12T17:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2023-06-12T17:10", "body": "Doing well. No swelling. Taking mycophenolate, prednisone, lisinopril daily. LEV - honestly still forgets the evening one some nights when she closes; we moved it to 8 pm with an alarm. No seizures she knows of.\nBP at goal. No edema. Lungs clear.\nA/P: lupus nephritis responding. HTN controlled. Epilepsy - adherence plan as above. Labs today. Physical in the fall."}
+          ]
+        },
+        {
+          "id": "2023-08-29a",
+          "kind": "ed_visit",
+          "start": "2023-08-29T21:05",
+          "end": "2023-08-30T11:30",
+          "service": "Emergency Medicine",
+          "reason": "prolonged seizure",
+          "conditions": [
+            {"label": "Generalized tonic-clonic status epilepticus", "icd10": "G40.901", "action": "diagnosed", "onset": "2023-08-29"}
+          ],
+          "vitals": [
+            {"time": "2023-08-29T21:08", "bp": [145, 90], "hr": 110, "rr": 22, "spo2": 96}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-08-29T21:15", "results": [
+              {"test": "Sodium", "value": 140}, {"test": "Potassium", "value": 4.2}, {"test": "Chloride", "value": 102}, {"test": "Bicarbonate", "value": 24}, {"test": "Glucose", "value": 98}, {"test": "Creatinine", "value": 0.9}
+            ]}
+          ],
+          "state": {"labs": {"Creatinine": 0.9, "Blood Urea Nitrogen": 14}},
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2023-08-31T09:00", "body": "Regional Emergency Department - Physician Record\nDate of service: 8/29/2023\nAllergies: sulfonamide antibiotics\n\nCC: seizure, not waking up.\n\nHPI: 29-year-old woman with epilepsy and SLE (lupus nephritis on mycophenolate and prednisone). Husband describes a generalized shaking seizure at home lasting about seven minutes; she has not come back to her normal self since. He says she takes her seizure medicine on and off.\n\nExam on arrival: BP 145/90, HR 110, RR 22, SpO2 96% on room air. Drowsy, withdraws and groans to pain, GCS 10. No tongue laceration noted. No focal limb weakness evident.\n\nIV access obtained, labs sent: Na 140, K 4.2, Cl 102, HCO3 24, glucose 98, creatinine 0.9.\n\nCourse: Lorazepam IV and levetiracetam IV load given. No further convulsions. Held overnight in the ED observation unit; GCS 15 by 06:00 and at baseline per husband.\n\nDiagnosis: Generalized tonic-clonic status epilepticus in known epilepsy; missed doses.\n\nDisposition: Discharged home 8/30 on levetiracetam 500 mg twice daily. No driving per state rules. Neurology follow-up; PCP within 1 week."}
+          ]
+        },
+        {
+          "id": "2023-09-06a",
+          "kind": "office_visit",
+          "start": "2023-09-06T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after seizure",
+          "conditions": [
+            {"label": "Generalized tonic-clonic status epilepticus", "icd10": "G40.901", "action": "resolved"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "orders": [
+            {"id": "neuro-referral", "action": "placed", "order": "Neurology referral", "category": "referral", "to": "Neurology", "reason": "status epilepticus, adherence"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-09-06T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-ED visit - status epilepticus", "author": "PCP", "date": "2023-09-06T11:35", "body": "ED record from 8/29 reviewed. Seven-minute generalized seizure, slow to wake, treated and observed overnight; fine by morning.\n\nShe is back to normal, sore muscles for two days. Admits she'd missed a few days of LEV that week, ran out and waited for payday. Husband was with her today. He is going to keep the refill dates on his phone too.\n\nExam: alert, oriented, speech normal. Strength and gait normal. BP fine.\n\nA/P\n1. Status epilepticus, resolved; epilepsy on LEV 500 BID. Pharmacy set to auto-refill; told her to text us when she is down to a week of pills. No driving for six months from 8/29 - she takes the bus to work. Referral back to neurology - it has been years.\n2. Lupus nephritis - creatinine 0.9 in the ED, nice. Nephrology visit next month.\n3. Asthma - fine."}
+          ]
+        },
+        {
+          "id": "2023-09-27a",
+          "kind": "specialist_visit",
+          "start": "2023-09-27T15:00",
+          "service": "Neurology",
+          "reason": "epilepsy after status epilepticus",
+          "orders": [{"id": "neuro-referral", "action": "done", "date": "2023-09-27T15:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology Consultation", "author": "neurology", "date": "2023-09-29T11:40", "body": "Outside Neurology - Consultation\nDate of service: 9/27/2023\n\n29-year-old with longstanding generalized epilepsy on levetiracetam 500 mg twice daily, seen after an episode of generalized convulsive status on 8/29 in the setting of missed doses. Also SLE with lupus nephritis on mycophenolate and prednisone.\n\nNo events since. No mood side effects from levetiracetam. Neurological exam normal.\n\nAssessment: Generalized epilepsy; breakthrough status attributable to nonadherence rather than failure of the drug.\n\nPlan: Keep levetiracetam 500 mg twice daily; dose is adequate when taken. Adherence plan reviewed with patient and husband (alarms, blister packs, refill synchronization). Seizure first aid reviewed with husband. No driving until 6 months seizure-free. Follow up in 1 year or sooner with any event."}
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "specialist_visit",
+          "start": "2023-10-17T13:30",
+          "service": "Nephrology",
+          "reason": "lupus nephritis follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Nephrology Follow-up", "author": "nephrology", "date": "2023-10-19T09:20", "body": "Outside Nephrology - Follow-up\nDate of service: 10/17/2023\n\nClass IV lupus nephritis, ten months into mycophenolate 1 g bid with prednisone 20 mg and lisinopril 10 mg. Creatinine back to 0.9 (ED, August). Urine protein down to trace, sediment bland. No edema. Brief ED stay in August for a seizure; no renal issue.\n\nAssessment: Complete renal response.\n\nPlan: Continue mycophenolate 1 g twice daily, prednisone 20 mg daily and lisinopril 10 mg. Labs every 3 months with PCP. Return 6 months."}
+          ]
+        },
+        {
+          "id": "2023-11-09a",
+          "kind": "annual_physical",
+          "start": "2023-11-09T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2023-11-09T09:45", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": "CBC with Differential", "collected": "2023-11-09T09:45", "results": [{"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-11-09T09:45", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Urinalysis", "collected": "2023-11-09T09:50", "results": [{"test": "Urine Protein", "text": "Negative"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2023-11-09T09:30", "issued": "2023-11-16T13:00", "text": "Specimen adequate, transformation zone present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.", "conclusion": "NILM, HPV negative."}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-11-09T09:40"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-11-09T09:42"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-11-09T09:00"},
+            {"procedure": "Immunization administration", "performed": "2023-11-09T09:40"},
+            {"procedure": "Venipuncture", "performed": "2023-11-09T09:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-11-09T09:50", "body": "Annual. Feels the best she has in a while. No seizures since August; husband checks the pill box at night. Mycophenolate shipments arriving. Prednisone 20 daily - has a rounder face, she notices. Asthma quiet. Still no periods, unchanged for years.\nROS negative otherwise.\nExam: vitals as charted. Lungs clear. Heart RRR. Abdomen soft. No edema. Skin clear. Joints normal. Pelvic normal; Pap with HPV collected (immunosuppressed - will screen more often).\nPHQ-9 4.\nA/P: well visit. Pap/HPV, lipids, monitoring labs. Flu and updated COVID given. Continue all meds. RTC 3 months."}
+          ]
+        }
+      ]
+    }
+  ]
+}

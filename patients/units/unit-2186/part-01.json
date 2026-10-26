@@ -1,0 +1,274 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002186",
+      "given": "Joseph",
+      "family": "Lewandowski",
+      "birth_date": "1956-07-08",
+      "address_line": "212 Rocky Hill Road",
+      "phone": "+1-617-555-0174",
+      "email": "joseph.lewandowski@example.test",
+      "marital_status": "divorced",
+      "summary": "Retired long-haul trucker with COPD group C, hypertension, hyperlipidemia and CAD after a 2019 LAD stent, who joins in late 2022 right after quitting a 50 pack-year habit. In October 2024 a papillary muscle rupture after an acute MI needs emergent mitral repair; in June 2025 he has cardiogenic shock after a right hip replacement; in February 2026 he takes old and new metoprolol together after a COPD admission and lands in the ED bradycardic.",
+      "events": [
+        {
+          "id": "2022-10-31a",
+          "kind": "telephone",
+          "start": "2022-10-31T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "author": "front desk",
+              "date": "2022-10-31T10:20",
+              "body": "Caller: Joseph Lewandowski, 66. Retired, says his old doctor's office went to a call-center model and he could never get through. Heard about us from a neighbor. Has heart and lung problems, sees an outside cardiologist once a year. Membership explained, agreement emailed. New patient slot booked 11/9 at 9:00. Records release signed by e-sign; request sent to prior primary care office for last 5 years of notes, labs, imaging and PFTs. Asked him to bring all pill bottles and inhalers."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-09a",
+          "kind": "establish_care",
+          "start": "2022-11-09T09:00",
+          "end": "2022-11-09T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {"label": "Chronic obstructive pulmonary disease", "action": "history", "onset": "2016-01-01", "note": "GOLD group C per prior practice; spirometry done there"},
+            {"label": "Essential hypertension", "action": "history", "onset": "2012-01-01"},
+            {"label": "Hyperlipidemia", "action": "history", "onset": "2012-01-01"},
+            {"label": "Coronary artery disease", "action": "history", "onset": "2019-03-01"},
+            {"label": "Old myocardial infarction", "action": "history", "onset": "2019-03-01", "note": "2019, treated with LAD drug-eluting stent at an outside hospital"},
+            {"label": "Presence of coronary artery stent", "action": "history", "onset": "2019-03-01", "note": "LAD, drug-eluting"},
+            {"label": "History of tobacco dependence", "action": "history", "onset": "2022-10-01", "note": "50 pack-years, quit October 2022"}
+          ],
+          "medications": [
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Coronary artery disease"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hyperlipidemia"},
+            {"drug": "24 HR metoprolol succinate 25 MG Extended Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Coronary artery disease; hypertension"},
+            {"drug_text": "tiotropium 0.018 MG Inhalation Powder", "action": "historical", "sig": "Inhale contents of 1 capsule once daily via inhaler device", "dose": {"value": 18, "unit": "mcg"}, "frequency": "DAILY", "route": "Inhalation", "course": "chronic", "reason": "COPD"},
+            {"drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler", "action": "historical", "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheezing or shortness of breath", "dose": {"value": 2, "unit": "puff"}, "frequency": "Q4-6H PRN", "route": "Inhalation", "course": "chronic", "reason": "COPD"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"bp": [128, 78], "hr": 64, "spo2": 95, "weight_kg": 93.0, "height_cm": 178.0, "labs": {"Low Density Lipoprotein": 84}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-11-09T09:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-11-09T09:50", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2022-11-09T09:50", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2022-11-09T09:50", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 1}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "Occupation", "value": "Retired long-haul truck driver"},
+            {"item": "History of alcohol use", "value": "Occasional, 1-2 drinks per month"}
+          ],
+          "immunizations": [{"vaccine": "Influenza, high-dose, quadrivalent", "date": "2022-11-09T10:00"}],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2022-11-09T09:00"}],
+          "orders": [{"id": "ldct-2023", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "50 pack-years, quit 10/2022"}],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-11-09T10:40",
+              "body": "66M here to establish. Drove a long-haul rig for about 35 years, retired at 64. Former practice hard to reach; wants one doctor who picks up.\n\nLungs: COPD, told 'group C' by his old PCP, had breathing tests there years ago. On tiotropium every morning and albuterol, which he uses maybe 2-3x a week, more in cold weather. Has had flares needing prednisone in the past, none this year. Walks the loop around his block most days, winded on hills.\n\nHeart: MI in 2019, taken to the cath lab at an outside hospital and got a stent in the LAD. Sees an outside cardiologist yearly. No angina since. On aspirin, atorvastatin 40, metoprolol succinate 25.\n\nBP: told high years ago, managed on the metoprolol.\n\nAlso had a bronchoscopy with a lung wash 'when I was in the hospital once' - can't remember the year or why. Will look for it in old records.\n\nTobacco: about 50 pack-years. Quit last month, cold turkey, after his brother pushed him. No patches or gum. No cravings he can't manage. Alcohol: a drink or so a month. No drugs.\nAllergies: none to medicines.\nFamily: father died at 61 of a heart attack. Mother alive, high blood pressure and osteoporosis, in her late 80s. Older brother had bypass surgery for blockages.\nSocial: divorced, lives by himself, independent with everything, still drives.\n\nROS: chronic exertional dyspnea at baseline, occasional morning cough with clear sputum. No chest pain, palpitations, orthopnea, ankle swelling, fevers or weight loss.\n\nExam: vitals in flowsheet. Comfortable, talking in full sentences. No JVD. Heart regular, normal S1 S2, no murmur. Lungs with mildly prolonged expiration, scattered faint end-expiratory wheeze, no crackles. Abdomen benign. Legs without edema, pulses 2+.\nPHQ-2 0. AUDIT-C 1.\n\nA/P\n1. COPD, group C per prior records - stable on tiotropium plus PRN albuterol. Inhaler technique reviewed, good. Will get spirometry values from old office.\n2. CAD s/p MI 2019 with LAD DES - asymptomatic. Continue aspirin, atorvastatin 40, metoprolol.\n3. HTN - at goal today.\n4. Hyperlipidemia - lipids today.\n5. Former smoker, quit 10/2022, 50 pk-yr - congratulated. Eligible for annual lung screening; low-dose CT ordered for January.\n6. Health maintenance: CMP, CBC, lipids; one-time hep C and HIV screens. High-dose flu vaccine given today. Will check old records for colonoscopy and vaccine history.\nRTC 4 months."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-10a",
+          "kind": "portal_message",
+          "start": "2022-11-10T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2022-11-10T16:05",
+              "body": "Joseph - your labs from yesterday look good. Kidney and liver tests normal, blood counts normal. LDL cholesterol is 88 on the atorvastatin. Hepatitis C and HIV screens were negative. Nothing to change. -Your PCP"
+            }
+          ]
+        },
+        {
+          "id": "2022-11-21a",
+          "kind": "outside_records",
+          "start": "2022-11-21T11:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records received",
+              "author": "front desk",
+              "date": "2022-11-21T11:30",
+              "body": "Received by fax from prior primary care office, 64 pages, scanned to media.\n\nPCP review summary:\n- COPD diagnosed with spirometry at that office; PFT report itself not included, only a note saying obstruction confirmed and GOLD group C assigned after two prednisone-treated flares in one year.\n- 2019 hospital discharge summary: acute MI, cardiac cath with drug-eluting stent to the LAD. Uncomplicated.\n- Separate older inpatient note references a diagnostic bronchoscopy with bronchoalveolar lavage during that stay; indication and results not in the packet.\n- Screening colonoscopy 2018, normal, repeat in 10 years.\n- Last flu shot 2021. Pneumococcal and shingles vaccines: no record.\n- Med list matches what he brought.\nNo allergies listed."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "pharmacy",
+          "start": "2022-12-06T14:10",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Tiotropium prior authorization",
+              "author": "MA",
+              "date": "2022-12-06T14:10",
+              "body": "Pharmacy fax: Part D plan requires PA for tiotropium capsule inhaler for 2023 plan year. PA form completed with COPD dx, GOLD group C, prior exacerbations, on maintenance therapy since prior practice. Submitted via portal. Approved 12/8 through 12/31/2023, pharmacy notified."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-13a",
+          "kind": "imaging",
+          "start": "2023-01-13T08:30",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2023-01-13T08:30",
+              "text": "Indication: annual lung cancer screening, 66-year-old former smoker, 50 pack-years, quit 2022. Baseline exam.\nTechnique: low-dose helical CT of the chest without contrast.\nFindings: No pulmonary nodules. Mild centrilobular emphysema in the upper lobes. Airways patent. No consolidation or effusion. Heart size normal; coronary stent in the LAD with coronary artery calcification. Mediastinal and hilar nodes not enlarged. Visualized upper abdomen unremarkable. No suspicious osseous lesion.",
+              "conclusion": "Lung-RADS 1: negative. Continue annual screening with LDCT in 12 months."
+            }
+          ],
+          "orders": [{"id": "ldct-2023", "action": "done", "date": "2023-01-13T08:30"}]
+        },
+        {
+          "id": "2023-01-17a",
+          "kind": "portal_message",
+          "start": "2023-01-17T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lung screening CT",
+              "author": "PCP",
+              "date": "2023-01-17T12:40",
+              "body": "Your screening CT came back clear - no spots on the lungs. It shows the emphysema we already know about and your heart stent. We'll repeat it every January while you qualify."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-07a",
+          "kind": "office_visit",
+          "start": "2023-03-07T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD and blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2023-03-07T14:50"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-03-07T14:52"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-03-07T14:20"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2023-03-07T15:05",
+              "body": "S: Four-month check. Still off cigarettes, about 5 months now. Gained a couple pounds and doesn't mind. Breathing at his usual; got through the winter without a flare, albuterol a few times a week. Taking everything daily. No chest pain with yard work or stairs.\nO: Vitals per flowsheet. Lungs with faint scattered expiratory wheeze, good air movement. Heart RRR, no murmur. No edema.\nA/P: COPD stable on tiotropium + PRN albuterol. CAD quiet. BP fine on metoprolol. Tdap and first Shingrix today; second Shingrix in 2-6 months, nurse visit. Wellness visit in September."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-25a",
+          "kind": "nurse_visit",
+          "start": "2023-05-25T10:00",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-05-25T10:05"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-05-25T10:05"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Shingrix dose 2",
+              "author": "RN",
+              "date": "2023-05-25T10:20",
+              "body": "Second Shingrix given IM left arm. Had a sore arm and felt run down for a day after dose 1, nothing more. Observed 15 min, fine. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "imaging",
+          "start": "2023-06-13T13:00",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2023-06-13T13:00",
+              "text": "Indication: one-time abdominal aortic aneurysm screening, male former smoker age 66.\nLimited abdominal aorta exam. The abdominal aorta is visualized from the diaphragm to the bifurcation. Maximum anteroposterior diameter 2.1 cm proximal, 1.9 cm distal. No aneurysmal dilatation. Common iliac arteries normal caliber.",
+              "conclusion": "Normal caliber abdominal aorta. No abdominal aortic aneurysm."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-14a",
+          "kind": "portal_message",
+          "start": "2023-06-14T09:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Aorta ultrasound",
+              "author": "PCP",
+              "date": "2023-06-14T09:15",
+              "body": "The aorta ultrasound was normal - no aneurysm. This is a one-time screen, so no need to repeat it."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "annual_physical",
+          "start": "2023-09-12T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-12T09:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-12T09:20", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-12T09:20", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2023-09-12T09:25"},
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-09-12T09:27"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2023-09-12T09:29"}
+          ],
+          "procedures": [{"procedure": "Annual wellness visit, initial", "performed": "2023-09-12T08:40"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2023-09-12T09:45",
+              "body": "First wellness visit with us.\nFunctional: independent ADLs/IADLs, drives, does his own shopping and cooking. No falls. Hearing and vision screen fine; uses readers.\nCognition: 3-word recall 3/3, clock normal.\nMood: PHQ-2 0.\nSafety: smoke and CO detectors, seat belt always.\nTobacco: still quit, about 11 months. Proud of it.\nAdvance directive: names his brother as health care proxy, form given to complete.\n\nChronic: COPD steady, no flares this year. Heart: no angina; saw his cardiologist in the spring, no changes. BP fine.\nExam: lungs with mild expiratory wheeze, heart regular no murmur, no edema.\n\nPlan: CMP, CBC, lipids. PCV20, high-dose flu and updated COVID today. Colonoscopy 2018 normal, due 2028. LDCT again in January. AAA screen done in June, normal. Next visit spring."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T17:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from your wellness visit",
+              "author": "PCP",
+              "date": "2023-09-14T17:30",
+              "body": "All normal again, LDL still in the 80s. Keep doing what you're doing."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-28a",
+          "kind": "telephone",
+          "start": "2023-11-28T11:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "author": "MA",
+              "date": "2023-11-28T11:45",
+              "body": "Pt asked to move atorvastatin and metoprolol to 90-day supplies to save on copays. Both sent as 90-day with 3 refills per PCP standing order. Pt aware."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1319 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001974",
+      "events": [
+        {
+          "id": "2023-12-13a",
+          "kind": "portal_message",
+          "start": "2023-12-13T18:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Surgeon visit",
+              "author": "patient",
+              "date": "2023-12-13T18:20",
+              "body": "Saw the heart surgeon today, he's happy with the incision and the valve looks good on the echo. Can drive again starting next week."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Surgeon visit",
+              "author": "PCP",
+              "date": "2023-12-14T07:50",
+              "body": "Great news. See you in February for the diabetes visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-21a",
+          "kind": "office_visit",
+          "start": "2024-02-21T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {
+            "weight_kg": 94.0,
+            "labs": {
+              "Hemoglobin A1c": 7.0,
+              "Creatinine": 1.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-21T15:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-02-21T15:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "colonoscopy-2024",
+              "action": "placed",
+              "order": "Screening colonoscopy referral",
+              "category": "procedure",
+              "to": "Gastroenterology",
+              "reason": "Average-risk colorectal cancer screening, last 2014"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-02-21T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2024-02-21T16:40",
+              "body": "Three months out from the valve repair, back at work full time. Breathing normal. Angina: still on hills, same as before surgery. No palpitations or ICD shocks.\nDM: A1c 7.0. Gout quiet.\nExam: BP/HR as charted. Sternotomy well healed. Heart regular, soft flow sound at most, no clear murmur. Lungs clear. No edema. Feet normal.\nPlan: continue meds. Colonoscopy is due (2014 normal), referral sent; he'll need cardiology's okay for sedation, which he says they gave at his last visit. Physical in June."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-17a",
+          "kind": "procedure_visit",
+          "start": "2024-04-17T08:00",
+          "service": "Gastroenterology",
+          "reason": "Screening colonoscopy",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2024-04-17T08:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "colonoscopy-2024",
+              "action": "done",
+              "date": "2024-04-17T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Colonoscopy report",
+              "author": "gastroenterology",
+              "date": "2024-04-19T10:00",
+              "body": "Screening colonoscopy 04/17/2024 under monitored anesthesia care. ICD in place; no device reprogramming required. Prep good. Cecum reached, appendiceal orifice and ileocecal valve photographed. Withdrawal time 9 minutes. No polyps, no masses. Impression: normal screening colonoscopy. Recommend repeat in 10 years."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "annual_physical",
+          "start": "2024-06-12T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "labs": {
+              "Low Density Lipoprotein": 82
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-06-12T07:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-06-12T07:50",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-06-12T07:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-12T07:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-12T07:50",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-12T07:50",
+              "results": [
+                {
+                  "test": "Uric Acid"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-06-12T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-06-12T09:10",
+              "body": "Annual. Doing well. Colonoscopy in April normal, next 2034. Device clinic remote checks normal. Cardiology saw him in spring after the valve repair, echo fine per pt.\nAngina: unchanged pattern. No gout attacks in more than two years.\nMeds: metformin 1000 BID, lisinopril 20, atorvastatin 40, metoprolol succinate 50, allopurinol 300, ibuprofen 400 prn. NKDA.\nExam: BP/HR as charted. Heart regular. Lungs clear. Abd soft. No edema. Feet: intact.\nA/P: all chronic problems stable. Annual labs today. Vaccines in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-14a",
+          "kind": "portal_message",
+          "start": "2024-06-14T13:15",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Annual labs",
+              "author": "PCP",
+              "date": "2024-06-14T13:15",
+              "body": "Kurt, your labs: A1c steady, cholesterol in range on atorvastatin, uric acid at goal, kidney function at your usual level, no protein in the urine, blood counts normal."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-14a",
+          "kind": "outside_records",
+          "start": "2024-08-14T15:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Optometry diabetic eye exam",
+              "author": "optometry",
+              "date": "2024-08-14T15:00",
+              "body": "Diabetic eye exam 08/08/2024: no retinopathy in either eye on dilated exam. Glasses Rx updated. Return in one year."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "nurse_visit",
+          "start": "2024-10-09T07:45",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-09T07:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-09T07:52"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-09T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Fall vaccines",
+              "author": "RN",
+              "date": "2024-10-09T08:00",
+              "body": "2024-25 flu vaccine left deltoid and 2024-25 COVID vaccine right deltoid. No reaction during observation."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-31a",
+          "kind": "ed_visit",
+          "start": "2024-10-31T19:40",
+          "end": "2024-10-31T23:30",
+          "service": "Emergency Medicine",
+          "reason": "Severe headache and left-sided weakness",
+          "conditions": [
+            {
+              "label": "Acute nontraumatic subdural hematoma",
+              "icd10": "I62.01",
+              "action": "diagnosed",
+              "onset": "2024-10-31",
+              "note": "Right-sided with midline shift; evacuated by craniotomy"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-10-31T19:45",
+              "bp": [
+                190,
+                110
+              ],
+              "hr": 88
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2024-10-31T20:05",
+              "text": "Acute right-sided subdural hematoma along the cerebral convexity with mass effect and leftward midline shift, with subfalcine herniation. No other intracranial hemorrhage. No skull fracture. Basal cisterns patent.",
+              "conclusion": "Acute right subdural hematoma with midline shift and subfalcine herniation."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-10-31T19:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2024-11-05T10:20",
+              "body": "ED 10/31/2024.\n60M, CAD, HTN, DM, ICD for VT, mitral repair 2023. Sudden severe throbbing right-sided headache this evening; wife reports he has become more confused over the last hour. Left leg weakness.\nVS: BP 190/110, HR 88, afebrile.\nNeuro: decreased strength left lower extremity, left upper extremity strength preserved. Face symmetric. Pupils equal and reactive.\nCT head noncontrast: right subdural hematoma with midline shift.\nNeurosurgery consulted emergently; to OR for evacuation. Admitted to neurosurgery ICU."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-01a",
+          "kind": "telephone",
+          "start": "2024-11-01T09:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Wife calling from hospital",
+              "author": "RN",
+              "date": "2024-11-01T09:10",
+              "body": "Wife called. Last night he had a sudden bad headache, got confused and his left leg was weak. CT showed bleeding around the brain on the right; neurosurgeons operated overnight to remove it. He is awake this morning and talking, in the ICU. She'll keep us posted. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP call",
+              "author": "PCP",
+              "date": "2024-11-01T13:30",
+              "body": "Called wife. Craniotomy overnight for a right subdural. He's waking up and recognizing family. Offered to help with anything after discharge; will see him within a week or two of getting home."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-13a",
+          "kind": "office_visit",
+          "start": "2024-11-13T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after craniotomy",
+          "state": {
+            "weight_kg": 92.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-11-13T13:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-11-13T13:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "pt-2024",
+              "action": "placed",
+              "order": "Outpatient physical therapy referral",
+              "category": "referral",
+              "to": "Physical Therapy",
+              "reason": "Left leg weakness after subdural hematoma evacuation"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2024-11-13T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "author": "PCP",
+              "date": "2024-11-13T14:50",
+              "body": "Came with wife. Discharged 11/7 after emergency right craniotomy 10/31-11/1 for an acute subdural. We have the ED record and CT report only. Home medications unchanged at discharge.\nNow: headache much better. Left leg still weaker than the right, using a cane outdoors. No new confusion; wife says he's himself. No seizures.\nExam: BP/HR as charted. Scalp incision right side clean with staples out, no drainage. Alert, oriented x3, speech normal. Left leg weaker than the right; arms full strength and equal. Gait slow with cane.\nA/P: acute right SDH s/p evacuation, recovering. PT referral for left leg strength and gait. Neurosurgery follow-up with repeat CT in January. No driving until neurosurgery clears. BP at his usual level today on the same meds. Med rec done."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-04a",
+          "kind": "telephone",
+          "start": "2024-12-04T10:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "PT update",
+              "author": "RN",
+              "date": "2024-12-04T10:00",
+              "body": "Outreach call. Pt doing PT twice a week, says the leg is getting stronger, walking around the house without the cane. No headaches. Reminded about neurosurgery visit in January."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-29a",
+          "kind": "telephone",
+          "start": "2025-01-29T11:20",
+          "conditions": [
+            {
+              "label": "Acute nontraumatic subdural hematoma",
+              "icd10": "I62.01",
+              "action": "resolved",
+              "note": "Resolved on CT 2025-01-22"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pt-2024",
+              "action": "done",
+              "date": "2025-01-29T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Neurosurgery follow-up per patient",
+              "author": "PCP",
+              "date": "2025-01-29T11:20",
+              "body": "Pt called. Saw neurosurgery 1/22 with a repeat head CT: the blood collection is gone. Leg strength back to normal, PT discharged him. Cleared to drive. Updated problem list. Will see him in February as planned."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-19a",
+          "kind": "office_visit",
+          "start": "2025-02-19T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {
+            "weight_kg": 93.6,
+            "labs": {
+              "Hemoglobin A1c": 6.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-02-19T15:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-19T15:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-19T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "DM follow-up",
+              "author": "PCP",
+              "date": "2025-02-19T16:35",
+              "body": "Recovered from the subdural; neurosurgery discharged him, CT clear. Walking normally, back at work. No headaches.\nAngina unchanged. No palpitations.\nExam: BP/HR as charted. Neuro: strength 5/5 throughout, gait normal. Heart regular. Lungs clear. Feet normal.\nA1c 6.8, best in a while.\nPlan: continue meds. Physical in June."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-14a",
+          "kind": "office_visit",
+          "start": "2025-05-14T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure check",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-05-15a",
+          "kind": "portal_message",
+          "start": "2025-05-15T08:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed appointment",
+              "author": "patient",
+              "date": "2025-05-15T08:30",
+              "body": "Sorry I missed yesterday, quarter-end at work and it slipped my mind. Can we just fold the BP check into my physical in June?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Missed appointment",
+              "author": "front desk",
+              "date": "2025-05-15T09:40",
+              "body": "No problem, you're booked for June 11 at 8:20 with fasting labs at 7:50."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-11a",
+          "kind": "annual_physical",
+          "start": "2025-06-11T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "weight_kg": 94.5,
+            "labs": {
+              "Low Density Lipoprotein": 89
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-06-11T07:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-06-11T07:50",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-06-11T07:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-11T07:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-11T07:50",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-11T07:50",
+              "results": [
+                {
+                  "test": "Uric Acid"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-06-11T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-06-11T09:15",
+              "body": "Annual. Feeling well. Angina pattern unchanged over years: hills, heavy carrying, settles with rest. No ICD shocks; remote checks normal. No gout. No neuro symptoms since recovery.\nMeds: metformin 1000 BID, lisinopril 20, atorvastatin 40, metoprolol succinate 50, allopurinol 300, ibuprofen 400 prn. NKDA.\nExam: BP/HR as charted. Heart regular, no murmur. Lungs clear. Abd soft. Neuro nonfocal. Feet ok.\nA/P: stable. Annual labs. Fall vaccines. Colonoscopy up to date."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-13a",
+          "kind": "outside_records",
+          "start": "2025-08-13T14:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Optometry diabetic eye exam",
+              "author": "optometry",
+              "date": "2025-08-13T14:30",
+              "body": "Annual diabetic exam 08/07/2025. No diabetic retinopathy. Mild cataract changes OU, not affecting vision. See in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "nurse_visit",
+          "start": "2025-10-08T07:45",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-08T07:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-08T07:52"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-08T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Fall vaccines",
+              "author": "MA",
+              "date": "2025-10-08T08:00",
+              "body": "Flu vaccine L deltoid, COVID vaccine R deltoid. Tolerated."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-05a",
+          "kind": "hospital_admission",
+          "start": "2025-11-05T15:30",
+          "end": "2025-11-14T12:00",
+          "service": "Critical Care",
+          "reason": "Weakness and confusion after syncope",
+          "conditions": [
+            {
+              "label": "Acute subendocardial myocardial infarction",
+              "icd10": "I21.4",
+              "action": "diagnosed",
+              "onset": "2025-11-02",
+              "note": "Late presentation; LAD occlusion; no intervention"
+            },
+            {
+              "label": "Cardiogenic shock",
+              "icd10": "R57.0",
+              "action": "diagnosed",
+              "onset": "2025-11-02"
+            },
+            {
+              "label": "Acute liver failure",
+              "icd10": "K72.00",
+              "action": "diagnosed",
+              "onset": "2025-11-04",
+              "note": "Ischemic hepatitis"
+            },
+            {
+              "label": "Acute kidney injury",
+              "icd10": "N17.9",
+              "action": "diagnosed",
+              "onset": "2025-11-04"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-11-05T15:35",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 110
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-05T15:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 11.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-11-05T15:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 2500
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 2200
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 3.5
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 120
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-05T15:50",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "text": "Elevated"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-11-06T05:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.1
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-11-05T15:40",
+              "text": "Sinus tachycardia. Nonspecific ST-segment and T-wave changes. No ST elevation.",
+              "conclusion": "Sinus tachycardia with nonspecific ST and T wave changes."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-11-06T11:00",
+              "text": "LV normal in size. LVEF 45% by biplane Simpson. Anterior wall hypokinesis. Mitral annuloplasty ring well seated with trace mitral regurgitation. RV normal. Device lead in the right heart. No pericardial effusion.",
+              "conclusion": "LVEF 45% with anterior wall hypokinesis. Well-seated mitral ring, trace MR."
+            }
+          ],
+          "medications": [
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Coronary artery disease, myocardial infarction"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-11-05T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary",
+              "author": "critical care",
+              "date": "2025-11-17T09:00",
+              "body": "Admitted 11/05/2025 to the ICU, discharged 11/14/2025. Hepatology consulted.\nPresentation: 61M with CAD (LAD disease on medical therapy), VT with ICD, mitral repair 2023, HTN, T2DM, gout, history of Whipple disease, brought in by his wife after 2 days of increasing weakness and confusion. Three days earlier he had severe chest pain and passed out at home but declined to come in.\nOn arrival: afebrile, BP 90/60, HR 110. Disoriented to time and place. Jaundiced. Abdomen soft, mild RUQ tenderness, no rebound or guarding.\nLabs: Hgb 13.2, WBC 11.0, plt 250; creatinine 1.9 (baseline 1.2); AST 2500, ALT 2200, total bilirubin 3.5, alk phos 120. Troponin elevated. INR peaked 2.1 on 11/06.\nECG: nonspecific ST-T changes.\nDiagnoses: late-presenting myocardial infarction with cardiogenic shock; acute (ischemic) liver failure; acute kidney injury.\nCourse: norepinephrine for 2 days, then weaned. Echo: LVEF 45%, anterior hypokinesis, mitral ring well seated with trace MR. ICD interrogation: no ventricular arrhythmias, no therapies. Once stable, coronary angiography showed occlusion of the LAD at the site of his known lesion; completed infarct, no intervention. Mental status cleared as perfusion improved. Transaminases, bilirubin and INR trended down daily; creatinine 1.3 at discharge.\nDischarge medications: START aspirin 81 mg daily. Metformin and lisinopril were held during the stay and RESUMED at discharge. Continue atorvastatin 40 mg, metoprolol succinate 50 mg, allopurinol 300 mg, ibuprofen as needed.\nFollow-up: PCP within 1 week with hepatic panel and BMP; cardiology 6-8 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-07a",
+          "kind": "telephone",
+          "start": "2025-11-07T08:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Wife calling",
+              "author": "RN",
+              "date": "2025-11-07T08:50",
+              "body": "Wife called to let us know he's been in the ICU since Wednesday. He'd had chest pain and fainted at home on Sunday and refused to go in; by Wednesday he was weak and confused and she called an ambulance. Told it was a heart attack that dropped his blood pressure and affected his liver and kidneys. Improving, more alert today. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP call",
+              "author": "PCP",
+              "date": "2025-11-07T12:40",
+              "body": "Spoke with wife, gave support. Asked her to bring discharge papers to the follow-up visit; we'll arrange it for the week after he's home with labs the same day."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "office_visit",
+          "start": "2025-11-19T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "conditions": [
+            {
+              "label": "Acute subendocardial myocardial infarction",
+              "icd10": "I21.4",
+              "action": "resolved"
+            },
+            {
+              "label": "Cardiogenic shock",
+              "icd10": "R57.0",
+              "action": "resolved"
+            }
+          ],
+          "state": {
+            "weight_kg": 90.4,
+            "labs": {
+              "Aspartate Aminotransferase": 96,
+              "Alanine Aminotransferase": 240,
+              "Bilirubin, Total": 1.6,
+              "Creatinine": 1.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-11-19T13:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-19T13:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-11-19T13:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-11-19T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "author": "PCP",
+              "date": "2025-11-19T14:55",
+              "body": "With wife. Summary reviewed: late MI with cardiogenic shock, shock liver and AKI; LAD now occluded, no stent; EF 45%. ICD showed no arrhythmia. Aspirin added; metformin and lisinopril back on at discharge.\nNow: tired, walking around the house and short trips outside. No chest pain at rest. Thinking clearly, per wife. Yellow color gone. Appetite returning.\nExam: BP/HR as charted. Sclerae anicteric. Alert, oriented. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. No edema.\nLabs today: AST/ALT and bilirubin much lower than at admission, creatinine 1.3.\nA/P:\n1. Recent MI, shock resolved: aspirin 81 daily, continue metoprolol and atorvastatin 40. Cardiology follow-up in January.\n2. Ischemic acute liver injury: improving, recheck hepatic panel in 3 weeks.\n3. AKI: creatinine near baseline; BMP with next labs.\nMed rec done; list updated."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-10a",
+          "kind": "lab_only",
+          "start": "2025-12-10T07:40",
+          "state": {
+            "labs": {
+              "Aspartate Aminotransferase": 36,
+              "Alanine Aminotransferase": 58,
+              "Bilirubin, Total": 0.9,
+              "Creatinine": 1.2
+            }
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-12-10T07:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-10T07:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-10T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Liver and kidney recheck",
+              "author": "PCP",
+              "date": "2025-12-10T15:20",
+              "body": "Liver enzymes nearly normal, bilirubin normal, creatinine back to his baseline. Portal message sent. Repeat at January visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-14a",
+          "kind": "office_visit",
+          "start": "2026-01-14T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after MI and liver injury",
+          "conditions": [
+            {
+              "label": "Acute liver failure",
+              "icd10": "K72.00",
+              "action": "resolved"
+            },
+            {
+              "label": "Acute kidney injury",
+              "icd10": "N17.9",
+              "action": "resolved"
+            },
+            {
+              "label": "Old myocardial infarction",
+              "action": "diagnosed",
+              "onset": "2025-11-02"
+            }
+          ],
+          "state": {
+            "weight_kg": 91.6,
+            "labs": {
+              "Aspartate Aminotransferase": 24,
+              "Alanine Aminotransferase": 29,
+              "Hemoglobin A1c": 7.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-01-14T15:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-14T15:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-14T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2026-01-14T16:40",
+              "body": "Two months after the MI. Energy improving, back to part days at work from home. No chest pain at rest. Exertional pressure on hills, same as before. No faints, no ICD shocks.\nExam: BP/HR as charted. Heart regular. Lungs clear. No edema. Not jaundiced.\nLabs: liver tests normal now, creatinine 1.2 (baseline). A1c 6.8.\nA/P: acute liver failure and AKI resolved. Old MI on the problem list. Continue aspirin, metoprolol succinate 50, atorvastatin 40, lisinopril 20, metformin, allopurinol. Cardiology visit next week."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "specialist_visit",
+          "start": "2026-01-21T09:40",
+          "service": "Cardiology",
+          "reason": "Post-MI follow-up",
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-21T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up",
+              "author": "cardiology",
+              "date": "2026-01-28T11:10",
+              "body": "Seen 01/21/2026 after the November admission for a late-presenting LAD infarct with cardiogenic shock and ischemic liver injury, treated medically. Recovering. Stable exertional angina, no rest pain, no syncope. Device check: normal function, no arrhythmias. Exam without heart failure signs. Continue aspirin 81, metoprolol succinate 50, atorvastatin 40, lisinopril 20. Return 6 months; device clinic remote monitoring continues."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-25a",
+          "kind": "pharmacy",
+          "start": "2026-02-25T11:00",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "90-day refills",
+              "author": "MA",
+              "date": "2026-02-25T11:00",
+              "body": "Refill request for metformin, lisinopril, atorvastatin, metoprolol succinate and allopurinol, 90 days each. Seen in January. Sent per protocol. Aspirin is over the counter."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-15a",
+          "kind": "office_visit",
+          "start": "2026-04-15T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {
+            "weight_kg": 92.3
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-15T15:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-15T15:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-15T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "DM / CAD follow-up",
+              "author": "PCP",
+              "date": "2026-04-15T16:35",
+              "body": "Back at work full time since March. Walks most evenings on flat ground; hills still bring on the chest pressure, eases with rest. No rest symptoms, no faints.\nHome sugars 120s-150s fasting.\nExam: BP/HR as charted. Heart regular. Lungs clear. No edema. Feet: monofilament intact, pulses present.\nA1c drawn today. BMP.\nPlan: same regimen. Physical in June."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-17a",
+          "kind": "annual_physical",
+          "start": "2026-06-17T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "labs": {
+              "Low Density Lipoprotein": 80
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-17T07:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-06-17T07:50",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-06-17T07:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-17T07:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-17T07:50",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-17T07:50",
+              "results": [
+                {
+                  "test": "Uric Acid"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2026-06-17T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2026-06-17T09:15",
+              "body": "Annual. Feels mostly back to himself since the winter. Exertional angina unchanged in pattern. No ICD shocks. No gout flares. Neuro symptoms none. Bowels normal.\nMeds: aspirin 81, metformin 1000 BID, lisinopril 20, atorvastatin 40, metoprolol succinate 50, allopurinol 300, ibuprofen 400 prn. NKDA.\nPHQ-9 3: some worry about his heart, no depression; he's coping.\nExam: BP/HR as charted. Heart regular, no murmur. Lungs clear. Abd soft. No edema. Neuro nonfocal. Feet normal.\nA/P: CAD with old MI and stable angina, VT with ICD, mitral repair, HTN, T2DM, HLD, gout: stable. Annual labs today. Vaccines this fall. Diabetes visit in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "outside_records",
+          "start": "2026-08-19T13:40",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Optometry diabetic eye exam",
+              "author": "optometry",
+              "date": "2026-08-19T13:40",
+              "body": "Dilated diabetic exam 08/13/2026: no diabetic retinopathy OU. Early cataracts stable. Annual recall."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-16a",
+          "kind": "office_visit",
+          "start": "2026-09-16T16:00",
+          "reason": "Diabetes and blood pressure follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}
