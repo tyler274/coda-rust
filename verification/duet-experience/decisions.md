@@ -371,6 +371,38 @@ map; Page and state inventory), with later decisions winning.
 - A Plan deleted while you have it open stays open and says it was removed;
   going back returns to Today (ui-surface-map.md, Plan; Dev 2026-10-26).
 
+## The thread (step 10)
+
+- Duet is thread and message first: what Duet says, it says as a message in
+  the conversation, and Today pins what matters from it. Only Today's own
+  status (Still building context, Quiet, Couldn't check) is not a message
+  (Dev 2026-10-26, replacing north-star.md's Today-first insights).
+- A review's findings post as one Duet message, and Today pins them. A quiet
+  day and a review that couldn't finish show on Today only, never in the
+  thread (Dev 2026-10-26).
+- Today's Couldn't check has Retry, which runs the daily look again under the
+  same consent, AI switch and Terms as any run (Dev 2026-10-26).
+- Duet's own messages wait while it is replying to you and post right after
+  the reply ends. A message from you still steers and goes ahead of anything
+  waiting (Dev 2026-10-26).
+- Reminders and Check-ins deliver as messages. With AI off they pass
+  undelivered, as follow-through already says.
+- Your practice's news posts in the thread. With AI off it posts as fixed
+  product text, never AI wording, and links to Today for the details
+  (Dev 2026-10-26).
+- Unseen is one account-wide fact: reading a message on any device marks it
+  seen everywhere and clears the notification waiting on your phone
+  (Dev 2026-10-26).
+- Each message alerts once, like texting, while Duet is in the background and
+  alerts are allowed on that phone; a review's findings are one message, so
+  they buzz once (Dev 2026-10-26). Replies, a reply that couldn't finish and
+  your practice's news alert wherever alerts are allowed (Dev 2026-10-26);
+  so do Reminders and Check-ins, since you asked for them (Dev 2026-10-26).
+  What Duet noticed on its own alerts only once you turn on its one
+  switch, which follows your account. A shared phone alerts for whoever is
+  signed in. Lock-screen text is generic (north-star.md, Notifications;
+  Dev 2026-10-26).
+
 ## Open, to add later
 
 - **Pausing reviews while you're away (Dev 2026-10-25).** coda-app paused
@@ -388,7 +420,5 @@ map; Page and state inventory), with later decisions winning.
 - The app-update gate (G1, G2): release compatibility.
 - Follow-through caps (three per reply, twenty open) and retry budgets (D3):
   bounds, not behavior.
-- A newer message holding a Check-in until the chat is quiet (D2): scheduling;
-  the Check-in still delivers once.
 - Switching a portal vendor off (B8) and the import retry budget: operations
   and bounds. Existing connections stay listed and can always be disconnected.
