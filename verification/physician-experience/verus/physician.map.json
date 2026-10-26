@@ -1,9 +1,9 @@
 {
   "format": 1,
   "module": "physician",
-  "chart_sha256": "22a339b7331b9d7d478905b22bffdf32e48bb6dae747f7d30971beab77357431",
-  "generated_sha256": "7029a18340db03068aa5f3871e47c314b4484f47fec70cc466cdcf8783df4981",
-  "steps_sha256": "97746942cbca88ba8979129542ae6e42325f83b1fb0597114c03baef1fcb97ab",
+  "chart_sha256": "fa0ca349dac5f14a133841ceb5b98908ad53d0b5f166e675fa7be8e0578edd3d",
+  "generated_sha256": "b2f8dd88066481f2473e83a6d6c5a3d847b443ffb19195120a221df82d20f3ef",
+  "steps_sha256": "ab072033908e088ef89fda1fbf57751b7542bc82c39a2f22a79430d5e733a885",
   "semantics": "pstack broadcast events; pre-state guards; nondeterministic choices; stuttering allowed; parallel parts follow their parent's post-state, and exit wins",
   "regions": [
     {
@@ -25396,18 +25396,26 @@
       "label": "the patient joins and consents",
       "function": "event_the_patient_joins_and_consents",
       "cause": "the patient through Duet",
-      "intent": "Duet owns joining and consent; connected means sharing.",
+      "intent": "Duet owns joining and consent; connected means sharing, so everything the patient already shares arrives with the join, on a first join and on joining again.",
       "needs": {
         "not": false,
         "states": {
           "Practice connection": [
+            "Invited.Invitation couldn't be delivered, with Resend",
             "Invited.Invitation sent.No reminder yet",
-            "Invited.Invitation sent.Reminder sent"
+            "Invited.Invitation sent.Reminder sent",
+            "Invited.Sending the invitation"
           ]
         },
-        "reason": "only a delivered invitation can be accepted"
+        "reason": "any invitation the practice still holds open can be accepted, even while it is being resent (Dev 2026-10-25)"
       },
       "transitions": [
+        {
+          "region": "Practice connection",
+          "from": "Invited.Sending the invitation",
+          "to": "Connected",
+          "guard": null
+        },
         {
           "region": "Practice connection",
           "from": "Invited.Invitation sent.No reminder yet",
@@ -25418,6 +25426,177 @@
           "region": "Practice connection",
           "from": "Invited.Invitation sent.Reminder sent",
           "to": "Connected",
+          "guard": null
+        },
+        {
+          "region": "Practice connection",
+          "from": "Invited.Invitation couldn't be delivered, with Resend",
+          "to": "Connected",
+          "guard": null
+        },
+        {
+          "region": "Coda's work: initial understanding/initial understanding: lifecycle",
+          "from": "initial understanding in hand.initial understanding stalled.initial understanding waiting for the next opportunity, with Try again",
+          "to": "initial understanding in hand.initial understanding active.initial understanding owed, waiting to start",
+          "guard": {
+            "not": false,
+            "states": {
+              "Initial understanding": [
+                "Initial understanding not finished"
+              ]
+            },
+            "reason": "until the initial understanding finishes, news goes into it rather than a patient review"
+          }
+        },
+        {
+          "region": "Coda's work: initial understanding/initial understanding: lifecycle",
+          "from": "initial understanding in hand.initial understanding stalled.initial understanding couldn't finish, with Try again",
+          "to": "initial understanding in hand.initial understanding active.initial understanding owed, waiting to start",
+          "guard": {
+            "not": false,
+            "states": {
+              "Initial understanding": [
+                "Initial understanding not finished"
+              ]
+            },
+            "reason": "until the initial understanding finishes, news goes into it rather than a patient review"
+          }
+        },
+        {
+          "region": "Coda's work: initial understanding/initial understanding: lifecycle",
+          "from": "initial understanding not in hand.No initial understanding owed",
+          "to": "initial understanding in hand.initial understanding active.initial understanding owed, waiting to start",
+          "guard": {
+            "not": false,
+            "states": {
+              "Initial understanding": [
+                "Initial understanding not finished"
+              ]
+            },
+            "reason": "until the initial understanding finishes, news goes into it rather than a patient review"
+          }
+        },
+        {
+          "region": "Coda's work: initial understanding/initial understanding: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: initial understanding/initial understanding: lifecycle": [
+                "initial understanding in hand.initial understanding active.Coda is working on the initial understanding.Showing the current step",
+                "initial understanding in hand.initial understanding active.Coda is working on the initial understanding.Working, no step shown"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: patient review/patient review: lifecycle",
+          "from": "patient review in hand.patient review stalled.patient review waiting for the next opportunity, with Try again",
+          "to": "patient review in hand.patient review active.patient review owed, waiting to start",
+          "guard": {
+            "not": false,
+            "states": {
+              "Initial understanding": [
+                "Initial understanding finished"
+              ]
+            },
+            "reason": "after the initial understanding, news starts a patient review"
+          }
+        },
+        {
+          "region": "Coda's work: patient review/patient review: lifecycle",
+          "from": "patient review in hand.patient review stalled.patient review couldn't finish, with Try again",
+          "to": "patient review in hand.patient review active.patient review owed, waiting to start",
+          "guard": {
+            "not": false,
+            "states": {
+              "Initial understanding": [
+                "Initial understanding finished"
+              ]
+            },
+            "reason": "after the initial understanding, news starts a patient review"
+          }
+        },
+        {
+          "region": "Coda's work: patient review/patient review: lifecycle",
+          "from": "patient review not in hand.No patient review owed",
+          "to": "patient review in hand.patient review active.patient review owed, waiting to start",
+          "guard": {
+            "not": false,
+            "states": {
+              "Initial understanding": [
+                "Initial understanding finished"
+              ]
+            },
+            "reason": "after the initial understanding, news starts a patient review"
+          }
+        },
+        {
+          "region": "Coda's work: patient review/patient review: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: patient review/patient review: lifecycle": [
+                "patient review in hand.patient review active.Coda is working on the patient review.Showing the current step",
+                "patient review in hand.patient review active.Coda is working on the patient review.Working, no step shown"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: visit preparation/visit preparation: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: visit preparation/visit preparation: lifecycle": [
+                "visit preparation in hand.visit preparation active.Coda is working on the visit preparation.Showing the current step",
+                "visit preparation in hand.visit preparation active.Coda is working on the visit preparation.Working, no step shown"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: asked reply/asked reply: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: asked reply/asked reply: lifecycle": [
+                "asked reply in hand.asked reply active.Coda is working on the asked reply.Showing the current step",
+                "asked reply in hand.asked reply active.Coda is working on the asked reply.Working, no step shown"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: answer/answer: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: answer/answer: lifecycle": [
+                "answer in hand.answer active.Coda is working on the answer.Showing the current step",
+                "answer in hand.answer active.Coda is working on the answer.Working, no step shown"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Follow-up",
+          "from": "Cancelled.Cancelled, nothing new since",
+          "to": "Cancelled.Cancelled, new information since",
           "guard": null
         }
       ]
@@ -25668,6 +25847,239 @@
           "region": "Follow-up",
           "from": "Cancelled.Cancelled, nothing new since",
           "to": "Cancelled.Cancelled, new information since",
+          "guard": null
+        }
+      ]
+    },
+    {
+      "label": "the patient sends For my doctor",
+      "function": "event_the_patient_sends_for_my_doctor",
+      "cause": "the patient through Duet",
+      "intent": "The patient's own For my doctor arrives, linked to them like a message from a known sender; Coda's agents read it and judge whether a physician needs to see it (Dev 2026-10-26).",
+      "needs": {
+        "not": false,
+        "states": {
+          "Practice connection": [
+            "Connected"
+          ]
+        },
+        "reason": "a patient sends only to the practice they're connected to"
+      },
+      "transitions": [
+        {
+          "region": "Practice connection",
+          "from": "Connected",
+          "to": "Connected",
+          "guard": null
+        },
+        {
+          "region": "Coda's work: initial understanding/initial understanding: lifecycle",
+          "from": "initial understanding in hand.initial understanding stalled.initial understanding waiting for the next opportunity, with Try again",
+          "to": "initial understanding in hand.initial understanding active.initial understanding owed, waiting to start",
+          "guard": {
+            "not": false,
+            "states": {
+              "Initial understanding": [
+                "Initial understanding not finished"
+              ]
+            },
+            "reason": "until the initial understanding finishes, news goes into it rather than a patient review"
+          }
+        },
+        {
+          "region": "Coda's work: initial understanding/initial understanding: lifecycle",
+          "from": "initial understanding in hand.initial understanding stalled.initial understanding couldn't finish, with Try again",
+          "to": "initial understanding in hand.initial understanding active.initial understanding owed, waiting to start",
+          "guard": {
+            "not": false,
+            "states": {
+              "Initial understanding": [
+                "Initial understanding not finished"
+              ]
+            },
+            "reason": "until the initial understanding finishes, news goes into it rather than a patient review"
+          }
+        },
+        {
+          "region": "Coda's work: initial understanding/initial understanding: lifecycle",
+          "from": "initial understanding not in hand.No initial understanding owed",
+          "to": "initial understanding in hand.initial understanding active.initial understanding owed, waiting to start",
+          "guard": {
+            "not": false,
+            "states": {
+              "Initial understanding": [
+                "Initial understanding not finished"
+              ]
+            },
+            "reason": "until the initial understanding finishes, news goes into it rather than a patient review"
+          }
+        },
+        {
+          "region": "Coda's work: initial understanding/initial understanding: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: initial understanding/initial understanding: lifecycle": [
+                "initial understanding in hand.initial understanding active.Coda is working on the initial understanding.Showing the current step",
+                "initial understanding in hand.initial understanding active.Coda is working on the initial understanding.Working, no step shown"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: patient review/patient review: lifecycle",
+          "from": "patient review in hand.patient review stalled.patient review waiting for the next opportunity, with Try again",
+          "to": "patient review in hand.patient review active.patient review owed, waiting to start",
+          "guard": {
+            "not": false,
+            "states": {
+              "Initial understanding": [
+                "Initial understanding finished"
+              ]
+            },
+            "reason": "after the initial understanding, news starts a patient review"
+          }
+        },
+        {
+          "region": "Coda's work: patient review/patient review: lifecycle",
+          "from": "patient review in hand.patient review stalled.patient review couldn't finish, with Try again",
+          "to": "patient review in hand.patient review active.patient review owed, waiting to start",
+          "guard": {
+            "not": false,
+            "states": {
+              "Initial understanding": [
+                "Initial understanding finished"
+              ]
+            },
+            "reason": "after the initial understanding, news starts a patient review"
+          }
+        },
+        {
+          "region": "Coda's work: patient review/patient review: lifecycle",
+          "from": "patient review in hand.patient review stalled.patient review waiting for the next opportunity, with Try again",
+          "to": "patient review in hand.patient review active.patient review owed, waiting to start",
+          "guard": null
+        },
+        {
+          "region": "Coda's work: patient review/patient review: lifecycle",
+          "from": "patient review in hand.patient review stalled.patient review couldn't finish, with Try again",
+          "to": "patient review in hand.patient review active.patient review owed, waiting to start",
+          "guard": null
+        },
+        {
+          "region": "Coda's work: patient review/patient review: lifecycle",
+          "from": "patient review not in hand.No patient review owed",
+          "to": "patient review in hand.patient review active.patient review owed, waiting to start",
+          "guard": {
+            "not": false,
+            "states": {
+              "Initial understanding": [
+                "Initial understanding finished"
+              ]
+            },
+            "reason": "after the initial understanding, news starts a patient review"
+          }
+        },
+        {
+          "region": "Coda's work: patient review/patient review: lifecycle",
+          "from": "patient review not in hand.No patient review owed",
+          "to": "patient review in hand.patient review active.patient review owed, waiting to start",
+          "guard": null
+        },
+        {
+          "region": "Coda's work: patient review/patient review: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: patient review/patient review: lifecycle": [
+                "patient review in hand.patient review active.Coda is working on the patient review.Showing the current step",
+                "patient review in hand.patient review active.Coda is working on the patient review.Working, no step shown"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: visit preparation/visit preparation: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: visit preparation/visit preparation: lifecycle": [
+                "visit preparation in hand.visit preparation active.Coda is working on the visit preparation.Showing the current step",
+                "visit preparation in hand.visit preparation active.Coda is working on the visit preparation.Working, no step shown"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: asked reply/asked reply: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: asked reply/asked reply: lifecycle": [
+                "asked reply in hand.asked reply active.Coda is working on the asked reply.Showing the current step",
+                "asked reply in hand.asked reply active.Coda is working on the asked reply.Working, no step shown"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Coda's work: answer/answer: news while working",
+          "from": "Nothing new since it started",
+          "to": "Something new arrived since it started",
+          "guard": {
+            "not": false,
+            "states": {
+              "Coda's work: answer/answer: lifecycle": [
+                "answer in hand.answer active.Coda is working on the answer.Showing the current step",
+                "answer in hand.answer active.Coda is working on the answer.Working, no step shown"
+              ]
+            },
+            "reason": "only news that arrives while the work runs is news it missed"
+          }
+        },
+        {
+          "region": "Follow-up",
+          "from": "Cancelled.Cancelled, nothing new since",
+          "to": "Cancelled.Cancelled, new information since",
+          "guard": null
+        }
+      ]
+    },
+    {
+      "label": "the practice's visit reaches the patient's Duet",
+      "function": "event_the_practice_s_visit_reaches_the_patient_s_duet",
+      "cause": "the practice schedule",
+      "intent": "A visit already on the schedule when the patient joins shows in their Duet; nothing changes here.",
+      "needs": {
+        "not": false,
+        "states": {
+          "Practice connection": [
+            "Connected"
+          ],
+          "Visit": [
+            "Visit ahead.Scheduled, not yet in preparation range",
+            "Visit ahead.Upcoming, in preparation range"
+          ]
+        },
+        "reason": "the schedule reaches only a connected patient's Duet, and only for a visit still ahead (ENG-169)"
+      },
+      "transitions": [
+        {
+          "region": "Practice connection",
+          "from": "Connected",
+          "to": "Connected",
           "guard": null
         }
       ]

@@ -1549,6 +1549,12 @@ pub proof fn preserves_event_the_patient_leaves_the_practice(s: State, t: State)
 pub proof fn preserves_event_a_shared_duet_record_arrives(s: State, t: State)
     requires inductive(s), ensures event_a_shared_duet_record_arrives(s, t) ==> inductive(t),
 {}
+pub proof fn preserves_event_the_patient_sends_for_my_doctor(s: State, t: State)
+    requires inductive(s), ensures event_the_patient_sends_for_my_doctor(s, t) ==> inductive(t),
+{}
+pub proof fn preserves_event_the_practice_s_visit_reaches_the_patient_s_duet(s: State, t: State)
+    requires inductive(s), ensures event_the_practice_s_visit_reaches_the_patient_s_duet(s, t) ==> inductive(t),
+{}
 pub proof fn preserves_event_coda_finishes_the_initial_understanding(s: State, t: State)
     requires inductive(s), ensures event_coda_finishes_the_initial_understanding(s, t) ==> inductive(t),
 {}
@@ -2403,6 +2409,8 @@ pub proof fn every_event_preserves_inductive(s: State, t: State)
     preserves_event_the_patient_s_account_is_deleted(s, t);
     preserves_event_the_patient_leaves_the_practice(s, t);
     preserves_event_a_shared_duet_record_arrives(s, t);
+    preserves_event_the_patient_sends_for_my_doctor(s, t);
+    preserves_event_the_practice_s_visit_reaches_the_patient_s_duet(s, t);
     preserves_event_coda_finishes_the_initial_understanding(s, t);
     preserves_event_a_tool_call_starts_in_the_initial_understanding(s, t);
     preserves_event_the_next_model_call_starts_in_the_initial_understanding(s, t);

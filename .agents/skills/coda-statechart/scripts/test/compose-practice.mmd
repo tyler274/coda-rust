@@ -1,0 +1,27 @@
+stateDiagram-v2
+%% The practice's side of one connection, for the compose fixture.
+%% events declared
+%% event invite the patient | by you | needs PNone | reason: only a patient not connected is invited | You invite the patient.
+%% event the patient joins | by the patient through the app | needs PInvited | reason: only an invited patient joins | The patient joins from the app.
+%% event a record arrives | by the patient through the app | needs PConn | reason: connected means sharing | Something new the patient shares arrives.
+%% event new records arrive | by the records source | The practice's own chart has new records.
+state "Practice" as App {
+  state "Connection" as Conn {
+    [*] --> PNone
+    state "Not connected" as PNone
+    state "Invited" as PInvited
+    state "Connected" as PConn
+    PNone --> PInvited : invite the patient
+    PInvited --> PConn : the patient joins
+    PConn --> PConn : a record arrives
+  }
+  --
+  state "Work" as Work {
+    [*] --> Idle
+    state "Idle" as Idle
+    state "Owed" as Owed
+    Idle --> Owed : a record arrives
+    Idle --> Idle : new records arrive
+  }
+  %% never OwedOnlyFromSharing: Owed & Not connected -- Shared records arrive only while connected.
+}

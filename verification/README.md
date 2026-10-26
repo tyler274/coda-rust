@@ -68,6 +68,7 @@ manual data refinements and implementation connections separately.
 | Folder | Spec |
 | --- | --- |
 | [physician-experience](physician-experience/README.md) | The physician web app's ideal behavior as one statechart, with its Verus model and proof. |
+| [connected-care](connected-care/README.md) | How Duet and the physician web app meet: one composition of both graphs through shared events, with the rules that span them. |
 
 ## How the skills fit
 
@@ -127,7 +128,7 @@ scripts before extending the port; retain useful behavior and explain adaptation
 | Consequential formal properties, atomicity mapping, negative controls and source revisions | Verus, design before code, explicit refinement boundaries and dependency-aware mutations. |
 | Mermaid parser, hierarchy flattening, event/guard semantics and user-facing traces | Verus generation with editable induction proofs; shortest finite-chart search over the same representation. |
 | Subcommand CLI with per-command help, ways-in, chart comparison and graph analysis (compared with upstream 00d5dec on 2026-10-23) | `statechart.mjs` with `verus`, `check`, `trace`, `rules`, `compare`, `flat`, `query`, `lint`, `against` and `coverage`; `rules` checks each rule on a sound cone of regions for charts too large to exhaust. |
-| Top-level parallel regions only; upstream 00d5dec still refuses nested regions | Nested parallel regions with Harel entry, exit-wins and scope rules; templates with instances; declared events with cause, needs, families and groups; UML `/ effect` and optional `may` reactions; optional reasons on limits. All expand to the same flat model before any backend. |
+| Top-level parallel regions only; upstream 00d5dec still refuses nested regions | Nested parallel regions with Harel entry, exit-wins and scope rules; templates with instances; declared events with cause, needs, families and groups; UML `/ effect` and optional `may` reactions; optional reasons on limits; compositions that join separate charts through shared events, with rules across them. All expand to the same flat model before any backend. |
 
 Finite-chart search is not arbitrary Verus counterexample extraction, temporal model
 checking or reverse translation of arbitrary code. The

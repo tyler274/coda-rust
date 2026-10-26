@@ -168,6 +168,9 @@ Commands:
   query   ways in and out of a state, who reacts to an event, a region summary
   lint    unreachable states, dead edges, and event-declaration problems
 
+CHART may be a composition: %% compose lines join separate charts through shared
+events (references/compiler.md, Compositions); verus and check take one chart.
+
 ${more()}
 
 Exit: 0 success, completed search or no findings; 1 violation, findings, invalid
