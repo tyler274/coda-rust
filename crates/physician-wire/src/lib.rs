@@ -869,7 +869,7 @@ pub struct PatientInvitationResponse {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-/// One consented Duet record ingested into a patient workspace (`ENG-51`).
+/// One physician-entered preview record, retaining the legacy Duet wire shape.
 pub struct DuetIngestedRecordWire {
     /// Stable record identifier in Duet.
     pub record_id: String,
@@ -879,7 +879,7 @@ pub struct DuetIngestedRecordWire {
     pub content_hash: String,
     /// Canonical source identity used for cross-source deduplication.
     pub source_identity: String,
-    /// Provenance string shown to the physician (always includes `"via the patient's Duet"`).
+    /// Ingestion-owner attribution shown to the physician: `"Physician-entered preview"`.
     pub provenance: String,
     /// Record category.
     pub category: String,
@@ -890,12 +890,12 @@ pub struct DuetIngestedRecordWire {
     /// Recorded timestamp or date string.
     pub recorded_at: String,
     #[serde(default)]
-    /// Whether this record originated as a patient-approved Luna note (`ENG-52`).
+    /// False for physician-entered preview records; input cannot establish patient approval.
     pub patient_approved_note: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-/// The Duet sync route's answer after ingesting consented Duet records (`ENG-51`).
+/// The legacy Duet sync route's answer after ingesting physician preview records.
 pub struct DuetSyncResponse {
     /// The patient workspace id.
     pub patient_workspace_id: String,

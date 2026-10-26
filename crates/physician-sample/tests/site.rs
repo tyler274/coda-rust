@@ -82,6 +82,52 @@ async fn the_recorded_practice_is_visible() {
             && !workspace.contains("Visit preparation failed. No new briefing was completed."),
         "the workspace did not match the React patient page:\n{workspace}"
     );
+    // Exercise the legacy preview ingress through the running server, then
+    // verify what the physician sees in the compiled client. Submitted source
+    // and approval claims must not become patient-origin attribution.
+    let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
+    let http = reqwest::Client::new();
+    let workspace_url = format!("http://{address}/patient-workspaces/{patient}");
+    let invitation: serde_json::Value = http
+        .post(format!("{workspace_url}/invite"))
+        .send()
+        .await
+        .unwrap()
+        .error_for_status()
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    http.post(format!("http://{address}/patient-invitations/accept"))
+        .json(&serde_json::json!({"token": invitation["token"], "duet_account_id": "synthetic-preview-account"}))
+        .send().await.unwrap().error_for_status().unwrap();
+    http.put(format!("{workspace_url}/consent"))
+        .json(&serde_json::json!({"duet_account_id": "synthetic-preview-account", "consent_version": "v1"}))
+        .send().await.unwrap().error_for_status().unwrap();
+    http.post(format!("{workspace_url}/duet-sync"))
+        .json(&serde_json::json!({"items": [{
+            "record_id": "synthetic-preview", "revision_cursor": "revision-1",
+            "content_hash": "synthetic-content", "source_identity": "synthetic-source",
+            "origin_label": "via the patient's Duet", "patient_approved_note": true,
+            "category": "clinical_note", "title": "Preview source attribution",
+            "summary": "Synthetic content entered through the physician preview.",
+            "recorded_at": "2026-10-25"
+        }]}))
+        .send()
+        .await
+        .unwrap()
+        .error_for_status()
+        .unwrap();
+    let preview = dump_dom(&chrome, &format!("http://{address}/?patient={patient}")).await;
+    assert!(
+        preview.contains("Preview records") && preview.contains("Physician-entered preview"),
+        "{preview}"
+    );
+    assert!(
+        !preview.contains("Patient-shared records") && !preview.contains("via the patient's Duet"),
+        "{preview}"
+    );
+
     // `?chat=` opens a conversation the recorded workspace does not list.
     let chat = dump_dom(
         &chrome,

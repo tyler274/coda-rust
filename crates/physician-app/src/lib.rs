@@ -3070,8 +3070,8 @@ fn PatientSurface(
                 }
             }
             if !shared_records.is_empty() {
-                section { class: "patient-section", aria_label: "Patient-shared records",
-                    h2 { "Patient-shared records" }
+                section { class: "patient-section", aria_label: "Preview records",
+                    h2 { "Preview records" }
                     for record in shared_records {
                         article { class: "today-row",
                             strong { "{record.title}" }
