@@ -90,6 +90,19 @@ pub fn check(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> (Vec<Strin
                 if seed.booked { "wants" } else { "has no" }
             ));
         }
+        // after the last visit outside care arrives as records, and the practice's lists
+        // stand as that visit left them
+        for e in &p.events {
+            let lists =
+                !(e.conditions.is_empty() && e.medications.is_empty() && e.allergies.is_empty());
+            if e.start.date() > seen && e.appointment.is_none() && lists {
+                errors.push(format!(
+                    "{mrn}/{}: after last_seen {seen} the practice's lists do not change; its \
+                     conditions, medications and allergies belong in its records' text",
+                    e.id
+                ));
+            }
+        }
         let birth = seed.birth_date.0;
         let tl = Timeline::new(p);
         let mut recorded: HashSet<&str> = HashSet::new();
