@@ -95,7 +95,7 @@ def run_status(thread, needs_input=False):
 
 def thread_root_payload(title, timestamp, status, owner, availability):
     started = f'Started {timestamp:%a, %b %-d · %-I:%M %p %Z}'
-    instructions = f'Reply here to contribute, or send `stop` to interrupt. Workstation owner: <@{owner}>.'
+    instructions = f'Mention the agent in a reply to contribute, or send `stop` to interrupt. Workstation owner: <@{owner}>.'
     observed = f'Last observed: {status}'
     return {
         'text': f'{title}\n{started}\n\n{observed}\n\n{instructions}\n\n{availability}',

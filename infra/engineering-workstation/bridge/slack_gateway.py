@@ -23,6 +23,7 @@ from deployment_config import load_gateway_config
 from workstation_connector import RemoteCodex
 from github_mcp import serve_github
 from github_access import serve_credentials
+from slack_mcp import serve_slack
 from with_doppler import fetch
 
 
@@ -52,6 +53,14 @@ def gateway_server(socket, state_directory, web, config, ingress, connect_latest
     connection_lock = threading.Lock()
 
     def connected(connection):
+        if connection.request.path == '/slack':
+            try:
+                serve_slack(connection, web, config)
+            except Exception as error:
+                logging.warning('Slack history connection ended (%s)', type(error).__name__)
+            finally:
+                connection.close()
+            return
         if connection.request.path == '/github/credential' and config.get('github', {}).get('repository'):
             try:
                 serve_credentials(connection, config)

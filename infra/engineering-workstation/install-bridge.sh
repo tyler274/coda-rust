@@ -12,7 +12,7 @@ install -d -m 700 "$bridge_dir" "$HOME/.config/systemd/user"
 python3 -m venv "$bridge_dir/.venv"
 "$bridge_dir/.venv/bin/pip" install --disable-pip-version-check -r "$recipe_dir/bridge/requirements.txt"
 for module in codex_rpc desktop-codex desktop_with_keyring native_codex start_desktop \
-    deployment_config with_doppler workstation_connector github_mcp github_access; do
+    deployment_config with_doppler workstation_connector mcp_transport github_mcp github_access slack_mcp slack_history; do
   install -m 600 "$recipe_dir/bridge/$module.py" "$bridge_dir/"
 done
 install -m 600 "$1" "$bridge_dir/workstation-config.json"

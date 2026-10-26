@@ -21,7 +21,7 @@ install -d -m 700 -o coda-gateway -g coda-gateway /var/lib/coda-agent-gateway
 python3 -m venv /opt/coda-agent-gateway/.venv
 /opt/coda-agent-gateway/.venv/bin/pip install --disable-pip-version-check -r "$recipe_dir/bridge/requirements.txt"
 for module in codex_rpc deployment_config with_doppler slack_bridge slack_gateway \
-    slack_render workstation_connector github_mcp github_access; do
+    slack_render slack_history slack_mcp mcp_transport workstation_connector github_mcp github_access; do
   install -m 644 "$recipe_dir/bridge/$module.py" /opt/coda-agent-gateway/
 done
 install -m 640 -o root -g coda-gateway "$1" /opt/coda-agent-gateway/gateway-config.json

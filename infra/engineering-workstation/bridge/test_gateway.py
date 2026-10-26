@@ -41,13 +41,26 @@ class ScriptedSlack(Slack):
     def conversations_replies(self, **request):
         if request.get('limit') == 1:
             return super().conversations_replies(**request)
-        return {'messages': [event for event in self.history if event['ts'] > request['oldest']
-                             and (event['ts'] == request['ts'] or event.get('thread_ts') == request['ts'])]}
+        messages = sorted((event for event in self.history
+                           if event['ts'] > request.get('oldest', '0')
+                           and event['ts'] <= request.get('latest', '9999999999')
+                           and (event['ts'] == request['ts'] or event.get('thread_ts') == request['ts'])),
+                          key=lambda event: event['ts'])
+        return self.page(messages, request)
 
     def conversations_history(self, **request):
-        messages = sorted((event for event in self.history if event['ts'] > request['oldest']
+        messages = sorted((dict(event) for event in self.history if event['ts'] > request.get('oldest', '0')
                            and event.get('thread_ts') in (None, event['ts'])),
                           key=lambda event: event['ts'], reverse=True)
+        for message in messages:
+            replies = [event for event in self.history if event.get('thread_ts') == message['ts']
+                       and event['ts'] != message['ts']]
+            if replies:
+                message.update(reply_count=len(replies), latest_reply=max(event['ts'] for event in replies))
+        return self.page(messages, request)
+
+    @staticmethod
+    def page(messages, request):
         offset = int(request.get('cursor') or '0')
         return {'messages': messages[offset:offset + 1],
                 'response_metadata': {'next_cursor': str(offset + 1) if offset + 1 < len(messages) else ''}}
@@ -86,6 +99,7 @@ class ScriptedNative:
         if method == 'turn/start':
             self.threads[params['threadId']]['turns'].append(
                 {'id': 'continued-turn', 'status': 'inProgress', 'items': []})
+            return {'turn': self.threads[params['threadId']]['turns'][-1]}
         return {'turn': {'id': 'continued-turn'}}
 
     def reply(self, ident, result):
@@ -118,12 +132,16 @@ class GatewayTests(unittest.TestCase):
                 cleanup.callback(connection.close)
                 return native, connection, worker
 
-            # Both mentions arrive while the worker is offline. The fake Slack
-            # endpoint returns newest first on separate pages, like its API.
-            first = {'type': 'message', 'channel': CHANNEL, 'ts': '200.0',
+            # A mention in a thread whose root predates gateway setup must be
+            # discovered after reconnect, with paginated prior discussion.
+            root = {'type': 'message', 'channel': CHANNEL, 'ts': '050.0',
+                    'user': 'UFIRST', 'text': 'The chosen baseline is Tuesday.'}
+            context = {**root, 'ts': '060.0', 'thread_ts': root['ts'],
+                       'user': 'USECOND', 'text': 'Compare the two runner configurations.'}
+            first = {'type': 'message', 'channel': CHANNEL, 'ts': '200.0', 'thread_ts': root['ts'],
                      'user': 'UFIRST', 'text': '<@UAGENT> First request'}
-            second = {**first, 'ts': '201.0', 'user': 'USECOND', 'text': '<@UAGENT> Second request'}
-            web.history.extend([first, second])
+            second = {**root, 'ts': '201.0', 'user': 'USECOND', 'text': '<@UAGENT> Second request'}
+            web.history.extend([root, context, first, second])
             native, connection, worker = connect()
             for index, person in ((1, 'UFIRST'), (2, 'USECOND')):
                 method, params = native.calls.get(timeout=5)
@@ -131,26 +149,31 @@ class GatewayTests(unittest.TestCase):
                 method, params = native.calls.get(timeout=5)
                 self.assertEqual((method, params['threadId']), ('turn/start', f'native-created-{index}'))
                 self.assertIn(f'<@{person}>', params['input'][0]['text'])
+                if index == 1:
+                    self.assertIn('The chosen baseline is Tuesday.', params['input'][0]['text'])
+                    self.assertIn('Compare the two runner configurations.', params['input'][0]['text'])
             self.assertTrue(web.await_posts(2))
-            self.assertEqual({message['thread_ts'] for message in web.messages}, {'200.0', '201.0'})
-            self.assertTrue(all(message['ts'] not in ('200.0', '201.0') for message in web.updates))
+            self.assertEqual({message['thread_ts'] for message in web.messages}, {root['ts'], '201.0'})
+            self.assertTrue(all(message['ts'] not in (root['ts'], '201.0') for message in web.updates))
             self.assertEqual(first['text'], '<@UAGENT> First request')
             connection.close()
             worker.join(timeout=5)
             self.assertFalse(worker.is_alive())
 
-            reply = {**first, 'ts': '202.0', 'thread_ts': '200.0', 'user': 'UTEAMMATE', 'text': 'Also this'}
-            web.history.append(reply)
+            quiet = {**first, 'ts': '202.0', 'user': 'UTEAMMATE', 'text': 'Dev, the release can wait.'}
+            reply = {**quiet, 'ts': '203.0', 'text': '<@UAGENT> Also this'}
+            web.history.extend([quiet, reply])
             native, connection, worker = connect()
             method, params = native.calls.get(timeout=5)
             self.assertEqual((method, params['threadId']), ('turn/steer', 'native-created-1'))
             self.assertIn('<@UTEAMMATE>', params['input'][0]['text'])
+            self.assertIn('Dev, the release can wait.', params['input'][0]['text'])
+            self.assertIn('Also this', params['input'][0]['text'])
             self.assertEqual(len(threads), 2)
             self.assertEqual(len(web.messages), 2)
 
-            # Socket delivery wakes the same channel-history path. Duplicate
-            # delivery must still create only one conversation.
-            live = {**first, 'ts': '203.0', 'text': '<@UAGENT> Live request'}
+            # Duplicate socket delivery must still create only one conversation.
+            live = {**root, 'ts': '204.0', 'text': '<@UAGENT> Live request'}
             web.history.append(live)
             for _ in range(2):
                 ingress.receive(ingress.client, SimpleNamespace(type='events_api', envelope_id='live',
@@ -212,7 +235,7 @@ class GatewayTests(unittest.TestCase):
             # Slack owns the offline message. The gateway must recover it through
             # history, not through a test-injected delivery acknowledgement.
             offline = {'type': 'message', 'channel': CHANNEL, 'thread_ts': '100.0',
-                       'ts': '101.0', 'user': 'UFIRST', 'text': 'Explain the dependency finding'}
+                       'ts': '101.0', 'user': 'UFIRST', 'text': '<@UAGENT> Explain the dependency finding'}
             web.history.append(offline)
             native, connection, worker = connect()
             method, params = native.calls.get(timeout=5)
@@ -224,11 +247,12 @@ class GatewayTests(unittest.TestCase):
 
             def event(text, timestamp, user='USECOND', team=CONFIG['slack_team']):
                 value = {**offline, 'ts': timestamp, 'user': user, 'text': text}
+                web.history.append(value)
                 request = SimpleNamespace(type='events_api', envelope_id=timestamp,
                                           payload={'team_id': team, 'event': value})
                 ingress.receive(ingress.client, request)
 
-            event('Also check the version constraints', '102.0')
+            event('<@UAGENT> Also check the version constraints', '102.0')
             method, params = native.calls.get(timeout=5)
             self.assertEqual(method, 'turn/steer')
             self.assertEqual((params['threadId'], params['expectedTurnId']), ('native-review', 'continued-turn'))

@@ -54,7 +54,7 @@ class CodexBoundary:
             return {'thread': {'id': params['threadId'], 'turns': self.turns}}
         if method == 'turn/start':
             self.started.append(params)
-            return {'turn': {'id': 'native-turn'}}
+            return {'turn': {'id': 'native-turn', 'status': 'inProgress', 'items': []}}
         raise AssertionError(method)
 
     def reply(self, ident, result):
@@ -74,14 +74,15 @@ class RoutingTests(unittest.TestCase):
         self.bridge = Bridge(self.state, self.slack, self.codex, CONFIG)
         self.bridge.bot_user = 'UAGENT'
         self.message = {'type': 'message', 'channel': CHANNEL, 'thread_ts': '100.0', 'user': OWNER,
-                        'ts': '101.0', 'text': 'Continue this run'}
+                        'ts': '101.0', 'text': '<@UAGENT> Continue this run'}
 
     def tearDown(self):
         self.directory.cleanup()
 
     def test_channel_participants_continue_the_exact_thread_with_attribution_and_replays_are_ignored(self):
         for change in ({'channel': 'another-channel'}, {'user': ''}, {'bot_id': 'bot'}, {'thread_ts': 'other'},
-                       {'subtype': 'message_changed'}, {'edited': {'ts': '102.0'}}):
+                       {'subtype': 'message_changed'}, {'edited': {'ts': '102.0'}},
+                       {'text': 'Dev, can the release wait?'}):
             self.bridge.receive('native-thread', {**self.message, **change})
         self.assertEqual(self.codex.started, [])
         self.message['user'] = 'UTEAMMATE'
@@ -91,6 +92,7 @@ class RoutingTests(unittest.TestCase):
         self.assertIn('<@UTEAMMATE>', self.codex.started[0]['input'][0]['text'])
         self.assertIn('Continue this run', self.codex.started[0]['input'][0]['text'])
         restarted = Bridge(State(Path(self.directory.name)), self.slack, self.codex, CONFIG)
+        restarted.bot_user = 'UAGENT'
         restarted.receive('native-thread', self.message)
         self.assertEqual(len(self.codex.started), 1)
 
@@ -125,6 +127,23 @@ class RoutingTests(unittest.TestCase):
             restarted.start_from_mention(message)
         self.assertEqual(len(native.started), 1)
 
+    def test_new_turn_status_uses_native_response_before_session_file_is_readable(self):
+        class NativeBeforeSave(CodexBoundary):
+            def call(self, method, params):
+                if method == 'thread/start':
+                    return {'thread': {'id': 'new-native', 'createdAt': 200, 'turns': []}}
+                if method == 'turn/start':
+                    return {'turn': {'id': 'accepted-turn', 'status': 'inProgress', 'items': []}}
+                raise RuntimeError('Native session file is not yet readable')
+
+        config = {**CONFIG, 'new_conversations': {'cwd': '/workspace/project'}}
+        bridge = Bridge(self.state, self.slack, NativeBeforeSave(), config)
+        bridge.bot_user = 'UAGENT'
+        bridge.start_from_mention({'type': 'message', 'channel': CHANNEL, 'ts': '200.0',
+                                  'user': OWNER, 'text': '<@UAGENT> A new request'})
+        self.assertIn('Last observed: Working', self.slack.messages[0]['text'])
+        self.assertIsNone(self.state.data['routes']['new-native']['pending_input'])
+
     def test_lost_input_acknowledgement_does_not_repeat_the_native_turn_after_restart(self):
         class LostAcknowledgement(CodexBoundary):
             def call(self, method, params):
@@ -135,9 +154,11 @@ class RoutingTests(unittest.TestCase):
 
         native = LostAcknowledgement()
         bridge = Bridge(self.state, self.slack, native, CONFIG)
+        bridge.bot_user = 'UAGENT'
         with self.assertRaises(TimeoutError):
             bridge.receive('native-thread', self.message)
         restarted = Bridge(State(Path(self.directory.name)), self.slack, native, CONFIG)
+        restarted.bot_user = 'UAGENT'
         with self.assertRaisesRegex(RuntimeError, 'Uncertain input delivery'):
             restarted.receive('native-thread', self.message)
         self.assertEqual(len(native.started), 1)

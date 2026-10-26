@@ -19,6 +19,7 @@ from slack_sdk.socket_mode.response import SocketModeResponse
 from slack_sdk.errors import SlackApiError
 
 from codex_rpc import RpcError
+from slack_history import SlackHistory
 from slack_render import STATUS_REACTIONS, chunks, markdown_payload, render_native, run_status, thread_root_payload
 
 
@@ -109,6 +110,7 @@ class Bridge:
         self.state, self.web, self.codex = state, web, codex
         self.config = config
         self.channel, self.owner = config['slack_channel'], config['slack_owner']
+        self.slack_history = SlackHistory(web, self.channel)
         self.root_updates = {}  # Transport deduplication only; native turns own status.
         self.bot_user = None
         self.requests = {}
@@ -177,14 +179,16 @@ class Bridge:
     def is_new_mention(self, event):
         return (bool(self.config.get('new_conversations'))
                 and human_message(event, self.channel)
-                and event.get('thread_ts') in (None, event.get('ts'))
                 and f'<@{self.bot_user}>' in event.get('text', ''))
 
     def start_from_mention(self, event):
         if not self.is_new_mention(event):
             return
-        if any(route['root'] == event['ts'] for route in self.state.data['routes'].values()):
-            return
+        root = event.get('thread_ts') or event['ts']
+        for ident, route in self.state.data['routes'].items():
+            if route['root'] == root:
+                self.receive(ident, event)
+                return
         if self.state.data.get('pending_start'):
             raise RuntimeError('A native conversation start has an unknown outcome; reconcile it before starting again')
         settings = self.config['new_conversations']
@@ -195,13 +199,13 @@ class Bridge:
             params['config'] = {'model_reasoning_effort': settings['reasoning_effort']}
         # Like input/post receipts, retain an uncertain submission instead of
         # creating another native conversation after a lost acknowledgement.
-        self.state.data['pending_start'] = {'root': event['ts'], 'user': event['user']}
+        self.state.data['pending_start'] = {'root': root, 'message': event['ts'], 'user': event['user']}
         self.state.save()
         thread = self.codex.call('thread/start', params)['thread']
         ident = thread['id']
         self.state.data['routes'][ident] = {
             'thread_id': ident, 'created_at': thread['createdAt'] * 1000,
-            'root': event['ts'], 'cursor': '0', 'source': 'slack',
+            'root': root, 'cursor': '0', 'source': 'slack',
             'requested_by': event['user'], 'delivered': {}, 'pending_input': None,
         }
         self.state.data['pending_start'] = None
@@ -211,17 +215,27 @@ class Bridge:
     def new_mentions(self):
         if not self.config.get('new_conversations'):
             return
-        cursor, messages = None, []
+        cursor, messages = '', {}
+        since = self.state.data['mention_cursor']
+        known_roots = {route['root'] for route in self.state.data['routes'].values()}
         while True:
-            result = self.web.conversations_history(channel=self.channel,
-                oldest=self.state.data['mention_cursor'], inclusive=False, cursor=cursor, limit=100)
-            messages.extend(result['messages'])
-            cursor = result.get('response_metadata', {}).get('next_cursor')
+            # A new mention can be a reply under an arbitrarily old root.
+            # Channel history filters root timestamps, not latest_reply, so scan
+            # root metadata and read only threads with newer activity. Known
+            # routes retain their own catch-up cursor in history().
+            page = self.slack_history.page(cursor=cursor)
+            for root in page['messages']:
+                if root['ts'] > since:
+                    messages[root['ts']] = root
+                if root['ts'] not in known_roots and root.get('latest_reply', '0') > since:
+                    for reply in self.slack_history.thread(root['ts'], oldest=since):
+                        messages[reply['ts']] = reply
+            cursor = page['next_cursor']
             if not cursor:
                 break
         # Slack history is newest first, including across pages. Process all
         # pages oldest first before advancing the durable channel cursor.
-        for event in sorted(messages, key=lambda message: message['ts']):
+        for event in sorted(messages.values(), key=lambda message: message['ts']):
             self.start_from_mention({**event, 'channel': self.channel})
             self.state.data['mention_cursor'] = event['ts']
             self.state.save()
@@ -301,11 +315,15 @@ class Bridge:
         if event['ts'] <= route['cursor'] or not admitted(
                 event, route['root'], self.channel, route.get('source') == 'slack'):
             return
+        mentioned = f'<@{self.bot_user}>' in event['text']
+        text = event['text'].replace(f'<@{self.bot_user}>', '').strip()
+        words = text.split(maxsplit=2)
+        control = bool(words) and words[0].lower() in ('approve', 'deny', 'answer') and len(words) >= 2
+        if not mentioned and text.lower() != 'stop' and not control:
+            return
         if route['pending_input']:
             raise RuntimeError(f'Uncertain input delivery for {ident}; inspect the native conversation before retrying')
-        text = event['text'].strip()
-        words = text.split(maxsplit=2)
-        if words[0].lower() in ('approve', 'deny', 'answer') and len(words) >= 2:
+        if control:
             token = words[1]
             request = self.requests.get(token)
             if request and request['params']['threadId'] == ident:
@@ -340,6 +358,7 @@ class Bridge:
             self.subscribe(ident, participant_reply=True)
         thread = thread if thread is not None else self.read_thread(ident)
         active = next((t for t in reversed(thread['turns']) if t['status'] == 'inProgress'), None)
+        context = self.slack_history.request_context(route['root'], event) if text.lower() != 'stop' else None
         route['pending_input'] = {'ts': event['ts'], 'operation': 'stop' if text.lower() == 'stop' else 'message'}
         self.state.save()
         if text.lower() == 'stop':
@@ -347,27 +366,23 @@ class Bridge:
                 self.codex.call('turn/interrupt', {'threadId': ident, 'turnId': active['id']})
         elif active:
             self.codex.call('turn/steer', {'threadId': ident, 'expectedTurnId': active['id'],
-                                         'input': [{'type': 'text', 'text': f'Slack participant <@{event["user"]}>:\n\n{text}'}]})
+                                         'input': [{'type': 'text', 'text': context}]})
         else:
-            self.codex.call('turn/start', {'threadId': ident,
+            turn = self.codex.call('turn/start', {'threadId': ident,
                 'clientUserMessageId': f'slack:{self.channel}:{event["ts"]}',
-                'input': [{'type': 'text', 'text': f'Slack participant <@{event["user"]}>:\n\n{text}'}]})
+                'input': [{'type': 'text', 'text': context}]})['turn']
+            # The native response already owns the accepted turn's status. A
+            # brand-new session file may not be readable until its first save.
+            thread = {**thread, 'turns': [*thread['turns'], turn]}
         route['cursor'], route['pending_input'] = event['ts'], None
         route['last_input'] = {'ts': event['ts'], 'user': event['user'], 'kind': 'stop' if text.lower() == 'stop' else 'message'}
         self.state.save()
-        self.update_root(ident)
+        self.update_root(ident, thread if text.lower() != 'stop' else None)
 
     def history(self, ident):
         route = self.state.data['routes'][ident]
-        cursor = None
-        while True:
-            result = self.web.conversations_replies(channel=self.channel, ts=route['root'],
-                oldest=route['cursor'], inclusive=False, cursor=cursor, limit=100)
-            for event in sorted(result['messages'], key=lambda m: m['ts']):
-                self.receive(ident, {**event, 'channel': self.channel})
-            cursor = result.get('response_metadata', {}).get('next_cursor')
-            if not cursor:
-                break
+        for event in self.slack_history.thread(route['root'], oldest=route['cursor']):
+            self.receive(ident, {**event, 'channel': self.channel})
 
     def server_event(self, event):
         params = event.get('params', {})
@@ -429,7 +444,7 @@ class Bridge:
                 while not ingress.incoming.empty():
                     event = ingress.incoming.get_nowait()
                     if self.is_new_mention(event):
-                        ingress.catch_up.set()
+                        self.start_from_mention(event)
                     for ident, route in self.state.data['routes'].items():
                         if event.get('thread_ts') == route['root']:
                             self.receive(ident, event)
