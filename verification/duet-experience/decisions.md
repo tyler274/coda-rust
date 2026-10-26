@@ -59,7 +59,8 @@ Linear wins.
   the AI choice (north-star.md, Identity and setup, steps 1-4). Newer Terms
   published during setup send you back to agree to them. The one optional
   offer to connect your health records nothing when skipped (Dev 2026-09-30),
-  so it is presentation, like picking the companion, and is left out.
+  so it is presentation, like picking the companion, and is left out;
+  connecting itself is in Your health sources.
 - Newer Terms gate the app: until you accept them, only accepting, signing out,
   deleting your account and withdrawing AI permission are available
   (north-star.md, Identity and setup).
@@ -281,13 +282,57 @@ Linear wins.
   goes away while your own date stays (Dev 2026-10-26). The practice's schedule is the physician
   graph's; the two meet through shared events in connected-care.
 
+## Your health sources (step 8)
+
+- Two kinds of source (ENG-162; north-star.md, Connect your health): your
+  phone's health data (Apple Health on iPhone, Health Connect on Android; Dev
+  2026-10-11) and Doctors & hospitals, one search over the portals Duet can
+  authorize end to end (Epic MyChart, Oracle Health and healow). Each
+  organization you sign in to is authorized, refreshed, failed and
+  disconnected on its own (B1); one organization stands for each. Connecting
+  needs a set-up account and current Terms; it is never required.
+- Cancelling a portal sign-in or declining phone access is not a failure
+  (north-star.md, Connect your health).
+- Every import ends: complete (with or without the source's warnings), partial
+  with the unreadable items named, or a failure that keeps what you have and
+  tries again at the next refresh. It never stays importing (B2, B5, B6; Dev
+  2026-10-04). You can refresh on request; Duet refreshes at most once a day.
+- Records are kept exactly as sent; a record missing from a later import is
+  never deleted (B3, B4). A correction or a deletion at the source arrives as a
+  correction: the old version stays for existing citations, and unfinished work
+  looks again (A4, E5, ENG-34). A deletion in the phone's health app works the
+  same way; lost access or an empty read is never a deletion (A4).
+- Phone readings arrive one by one with their time and time zone (A2, A3) and
+  reach the next review rather than starting one (Dev 2026-10-06). Portal
+  records start the new-records review.
+- On iPhone, Apple Health also brings in clinical records you already connected
+  and approved in the Health app, after their own Apple permission. They arrive
+  and change like portal records and start the new-records review. Duet never
+  claims it can add, refresh or disconnect those provider accounts (north-star.md,
+  Source access).
+- The phone reads and uploads only while you're signed in on it; what's queued
+  waits, and the connection and your history stay (behaviour-contract rule 12).
+- A source that stops working shows it on the source, "couldn't update since"
+  its last import, with Reconnect. Duet's AI may mention it in conversation;
+  nothing else alerts you (Dev 2026-10-26). Turning off access in the phone's
+  settings keeps what Duet has and shows on the source.
+- Disconnecting stops new data at once and keeps everything already imported
+  until you delete your account; reconnecting resumes the same history (F1;
+  north-star.md, Source access). There is no separate control that deletes one
+  source's history. Disconnecting is always yours, even before newer Terms, as
+  leaving your practice is (Dev 2026-10-26).
+- While you're connected to a practice, phone readings, Apple Health clinical
+  records and their changes join the live feed with your records (ENG-39).
+
 ## Open, to add later
 
 - **Pausing reviews while you're away (Dev 2026-10-25).** coda-app paused
   Duet's own reviews after 7 days without opening Duet (D10). Dev: the pause
   may not apply to someone who pays, and "I'm not sure about the pauses yet.
   Can we add that later?" No pause is in the graph. Reminders and Check-ins
-  you asked for never pause for inactivity in any version.
+  you asked for never pause for inactivity in any version. The daily portal
+  refresh's old limit to people who opened Duet in the last 7 days (B7) is the
+  same question and is also left out.
 
 ## Left out on purpose
 
@@ -298,3 +343,5 @@ Linear wins.
   bounds, not behavior.
 - A newer message holding a Check-in until the chat is quiet (D2): scheduling;
   the Check-in still delivers once.
+- Switching a portal vendor off (B8) and the import retry budget: operations
+  and bounds. Existing connections stay listed and can always be disconnected.

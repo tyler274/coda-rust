@@ -355,12 +355,16 @@ resource "google_compute_subnetwork" "proxy_only" {
   role          = "ACTIVE"
 }
 
-resource "google_iap_web_iam_member" "langfuse" {
-  for_each = var.langfuse_iap_enabled ? toset(var.langfuse_iap_members) : toset([])
+resource "google_iap_web_region_backend_service_iam_member" "langfuse" {
+  # GKE owns the backend identity. Bootstrap the gateway without a grant,
+  # then bind only the backend the operator verified for its Langfuse route.
+  for_each = var.langfuse_iap_enabled && var.langfuse_iap_backend_service != null ? toset(var.langfuse_iap_members) : toset([])
 
-  project = var.project_id
-  role    = "roles/iap.httpsResourceAccessor"
-  member  = each.value
+  project                    = var.project_id
+  region                     = var.region
+  web_region_backend_service = var.langfuse_iap_backend_service
+  role                       = "roles/iap.httpsResourceAccessor"
+  member                     = each.value
 }
 
 resource "helm_release" "langfuse_iap" {

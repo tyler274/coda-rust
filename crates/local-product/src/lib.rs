@@ -282,30 +282,8 @@ pub fn sha256_hex(bytes: &[u8]) -> String {
     out
 }
 
-/// Formats provenance for a patient-contributed record arriving through Duet (`ENG-51`).
-///
-/// Every Duet-contributed record carries `"via the patient's Duet"`. When an upstream
-/// source label is present (such as `"from Quest"` or `"Quest"`), it renders as
-/// `"from Quest, via the patient's Duet"`.
-pub fn format_duet_provenance(origin_label: &str) -> String {
-    let trimmed = origin_label.trim();
-    if trimmed.is_empty() || trimmed.eq_ignore_ascii_case("via the patient's Duet") {
-        return "via the patient's Duet".to_owned();
-    }
-    if trimmed.ends_with("via the patient's Duet") {
-        return trimmed.to_owned();
-    }
-    if trimmed
-        .get(..5)
-        .is_some_and(|prefix| prefix.eq_ignore_ascii_case("from "))
-    {
-        format!("{trimmed}, via the patient's Duet")
-    } else {
-        format!("from {trimmed}, via the patient's Duet")
-    }
-}
-
-/// One consented record or patient-approved Luna note exported by Duet (`ENG-50` / `ENG-51`).
+/// Legacy Duet-shaped input supplied by the physician preview route.
+/// Source labels and approval claims in this input are not authenticated.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ConsentedDuetItem {
     /// Stable record identifier in Duet.
@@ -332,7 +310,7 @@ pub struct ConsentedDuetItem {
     pub patient_approved_note: bool,
 }
 
-/// One patient-contributed Duet record ingested into a physician's patient workspace (`ENG-51`).
+/// One physician-entered preview record in a patient workspace.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct IngestedDuetRecord {
     /// Stable record identifier in Duet.
@@ -343,7 +321,7 @@ pub struct IngestedDuetRecord {
     pub content_hash: String,
     /// Canonical source identity used for cross-source deduplication.
     pub source_identity: String,
-    /// Provenance string shown to the physician (always includes `"via the patient's Duet"`).
+    /// Provenance assigned by the ingestion owner, never by the input.
     pub provenance: String,
     /// Record category.
     pub category: String,
@@ -353,7 +331,7 @@ pub struct IngestedDuetRecord {
     pub summary: String,
     /// Recorded timestamp or date string.
     pub recorded_at: String,
-    /// Whether this record is a patient-approved Luna note.
+    /// Always false for physician-entered preview data.
     pub patient_approved_note: bool,
 }
 
@@ -365,7 +343,8 @@ struct WorkspaceDuetIngestion {
     last_cursor: Option<String>,
 }
 
-/// Per-workspace Duet source ingestion and cross-source deduplication store (`ENG-51`).
+/// Per-workspace preview ingestion and cross-source deduplication.
+/// The legacy wire shape does not establish a patient-origin feed.
 #[derive(Debug, Default, Clone)]
 pub struct DuetSourceStore {
     workspaces: HashMap<String, WorkspaceDuetIngestion>,
@@ -396,10 +375,10 @@ impl DuetSourceStore {
         }
     }
 
-    /// Ingests consented Duet items into `workspace_id`, enforcing active consent,
-    /// formatting `"via the patient's Duet"` provenance, and deduplicating by
-    /// `content_hash` and `source_identity`.
-    pub fn ingest_consented_items(
+    /// Ingests physician-entered preview items under the existing consent gate.
+    /// Caller-supplied labels and approval flags cannot establish patient origin.
+    /// Deduplication still uses `content_hash` and `source_identity`.
+    pub fn ingest_preview_items(
         &mut self,
         workspace_id: &str,
         sharing_consented: bool,
@@ -418,7 +397,7 @@ impl DuetSourceStore {
             {
                 continue;
             }
-            let provenance = format_duet_provenance(&item.origin_label);
+            let provenance = "Physician-entered preview".to_owned();
             // If the same Duet record_id is revised with a new revision_cursor, update it in place.
             if let Some(existing) = entry
                 .records
@@ -436,7 +415,7 @@ impl DuetSourceStore {
                     existing.title = item.title.clone();
                     existing.summary = item.summary.clone();
                     existing.recorded_at = item.recorded_at.clone();
-                    existing.patient_approved_note = item.patient_approved_note;
+                    existing.patient_approved_note = false;
                     added_or_updated += 1;
                 }
                 continue;
@@ -458,7 +437,7 @@ impl DuetSourceStore {
                 title: item.title.clone(),
                 summary: item.summary.clone(),
                 recorded_at: item.recorded_at.clone(),
-                patient_approved_note: item.patient_approved_note,
+                patient_approved_note: false,
             });
             added_or_updated += 1;
         }
@@ -872,16 +851,7 @@ mod tests {
     }
 
     #[test]
-    fn provenance_prefix_does_not_split_a_multibyte_character() {
-        let label = format!("from{}", '\u{00e9}');
-        assert_eq!(
-            format_duet_provenance(&label),
-            format!("from {label}, via the patient's Duet")
-        );
-    }
-
-    #[test]
-    fn duet_ingestion_enforces_consent_formats_provenance_and_deduplicates_across_sources() {
+    fn preview_ingestion_preserves_dedup_without_accepting_patient_origin_claims() {
         let mut store = DuetSourceStore::new();
         // Register an existing Kno2/EHR Quest lipid record already in the practice workspace.
         let shared_hash = sha256_hex(b"quest:lipid:2026-10:ldl-142");
@@ -927,18 +897,15 @@ mod tests {
         // Without active consent, ingestion is rejected.
         assert!(
             store
-                .ingest_consented_items(
-                    "pw-elena",
-                    false,
-                    std::slice::from_ref(&approved_luna_note)
-                )
+                .ingest_preview_items("pw-elena", false, std::slice::from_ref(&approved_luna_note))
                 .is_err()
         );
 
-        // With active consent, the duplicate Quest lab is deduplicated while the approved
-        // Luna note and Labcorp result are ingested with "via the patient's Duet" provenance.
+        // A preview consent flag does not authenticate the submitted origin or approval.
+        // Keep legitimate deduplication while recording who supplied the content.
+        let mut revised = approved_luna_note.clone();
         let added = store
-            .ingest_consented_items(
+            .ingest_preview_items(
                 "pw-elena",
                 true,
                 &[duplicate_lab, approved_luna_note, outside_lab],
@@ -947,17 +914,37 @@ mod tests {
         assert_eq!(added, 2);
         let records = store.records("pw-elena");
         assert_eq!(records.len(), 2);
-        assert_eq!(records[0].provenance, "via the patient's Duet");
-        assert!(records[0].patient_approved_note);
-        assert_eq!(
-            records[1].provenance,
-            "from Labcorp, via the patient's Duet"
-        );
+        assert_eq!(records[0].provenance, "Physician-entered preview");
+        assert!(!records[0].patient_approved_note);
+        assert_eq!(records[1].provenance, "Physician-entered preview");
         assert_eq!(
             store.last_cursor("pw-elena"),
             Some(sha256_hex(b"rev-3")),
             "tracks latest revision cursor"
         );
+        revised.revision_cursor = sha256_hex(b"revised-cursor");
+        revised.content_hash = sha256_hex(b"revised-content");
+        revised.summary = "Revised preview content".to_owned();
+        revised.origin_label = "fromé, via the patient's Duet".to_owned();
+        revised.patient_approved_note = true;
+        assert_eq!(
+            store
+                .ingest_preview_items("pw-elena", true, std::slice::from_ref(&revised))
+                .unwrap(),
+            1
+        );
+        let records = store.records("pw-elena");
+        assert_eq!(records.len(), 2);
+        assert_eq!(records[0].summary, revised.summary);
+        assert_eq!(records[0].provenance, "Physician-entered preview");
+        assert!(!records[0].patient_approved_note);
+        assert_eq!(
+            store
+                .ingest_preview_items("pw-elena", true, std::slice::from_ref(&revised))
+                .unwrap(),
+            0
+        );
+        assert_eq!(store.last_cursor("pw-elena"), Some(revised.revision_cursor));
     }
 
     #[test]

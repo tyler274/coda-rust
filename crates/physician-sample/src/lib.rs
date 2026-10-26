@@ -1377,7 +1377,7 @@ mod tests {
         assert_eq!(cadence_json["cadence"], "daily_when_changed");
         assert!(cadence_json.get("premium").is_none());
 
-        // 4. Ingest consented Duet records with provenance and deduplication by content hash / source identity.
+        // 4. Preview input cannot claim patient origin; deduplication remains intact.
         let sync_payload = serde_json::json!({
             "items": [
                 {
@@ -1430,11 +1430,8 @@ mod tests {
         assert_eq!(sync_json["ingested_count"], 2);
         let records = sync_json["records"].as_array().unwrap();
         assert_eq!(records.len(), 2);
-        assert_eq!(
-            records[0]["provenance"],
-            "from Quest, via the patient's Duet"
-        );
-        assert_eq!(records[1]["provenance"], "via the patient's Duet");
+        assert_eq!(records[0]["provenance"], "Physician-entered preview");
+        assert_eq!(records[1]["provenance"], "Physician-entered preview");
         assert!(
             records
                 .iter()
@@ -1454,6 +1451,16 @@ mod tests {
         let ws_json: Value = serde_json::from_str(&ws_body).unwrap();
         assert_eq!(ws_json["patient_link"]["sharing_consented"], true);
         assert_eq!(ws_json["duet_records"].as_array().unwrap().len(), 2);
+        assert!(
+            ws_json["duet_records"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .all(|record| {
+                    record["provenance"] == "Physician-entered preview"
+                        && record["patient_approved_note"] == false
+                })
+        );
 
         // 5. Physician drafts a plan, approves exact text (v1), edits (invalidating approval),
         //    and approves batched item diffs (v2).

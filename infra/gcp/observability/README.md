@@ -23,9 +23,20 @@ setting).
 - **No public edge.** The Langfuse chart's Ingress is off and every service is
   `ClusterIP`. People reach the UI with
   `kubectl -n observability port-forward svc/langfuse-web 3000:3000`. Setting
-  `langfuse_iap_enabled = true` (with hostname, OAuth client id, certificate,
-  and members) adds a `gke-l7-rilb` internal Gateway with IAP on the backend.
-  It is reachable only from inside the VPC.
+  `langfuse_iap_enabled = true` (with hostname, OAuth client id and certificate)
+  adds a `gke-l7-rilb` internal Gateway with IAP on the backend. It is reachable
+  only from inside the VPC. First create the gateway with no
+  `langfuse_iap_members`. After GKE reconciles it, the operator verifies the
+  regional backend serving the `langfuse-web` HTTPRoute and supplies its actual
+  name as `langfuse_iap_backend_service`, together with the intended members.
+  The IAM grant targets only that backend; its name is not the Kubernetes
+  Service name and must not be guessed. A recreated backend needs a new verified
+  name before this root grants it access.
+  If an older version of this root was applied, the reviewed migration plan must
+  remove its project-wide `google_iap_web_iam_member.langfuse` grants and add the
+  scoped grants. Do not move the old state entry to the new resource type or
+  leave the broader grant unmanaged. Verify effective access to Langfuse and
+  refusal on an unrelated IAP application after the operator applies the plan.
 - **Content never reaches Datadog.** The collector's Datadog pipeline deletes
   `gen_ai.prompt*`, `gen_ai.completion*`, `gen_ai.{input,output}.messages`, and
   `langfuse.{observation,trace}.{input,output}` from span and span event

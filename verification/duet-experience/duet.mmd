@@ -3,7 +3,7 @@ stateDiagram-v2
 %% The graph is the spec; Verus derives from it. It states the ideal behavior of the full
 %% product for every person, from Dev's intent and the settled sources, never from existing
 %% code. decisions.md holds the charter, the sources and the dated decisions it cites.
-%% Written region by region; this file currently holds the account, the conversation, follow-through, Duet's reviews and Today, For my doctor, your practice, and what comes back from it.
+%% Written region by region; this file currently holds the account, your health sources, the conversation, follow-through, Duet's reviews and Today, For my doctor, your practice, and what comes back from it.
 %% Scope: MVP behavior (Dev 2026-10-25); later functionality joins as connected graphs.
 %%
 %% Events. Every labeled step carries a declared event: who causes it, what it needs, and
@@ -85,13 +85,43 @@ stateDiagram-v2
 %% running when what it read changes looks again from a fresh snapshot, without being used up.
 %% event a day completes | by the clock | Your local day ends; Duet owes it one look. Each day is decided once: a look still owed or running for the day before gives way to the newer day (E3).
 %% event a week with fresh records completes | by the clock | Your local week, Saturday to Friday, ends with something new to read; Duet owes it one recap, which gives way to a newer week the same way. A week with nothing new owes nothing.
-%% event new records arrive | by your records source | A portal or other source delivers something new; a changed record is a correction. Reprocessing Duet's own data is not an arrival (C5). Apple Health readings wait for the next review rather than starting one (Dev 2026-10-06).
-%% event a record is corrected | by your records source | A source corrects or replaces a record you already have. The new version arrives; anything already published keeps the version it used (E5; ENG-162). Unfinished work looks again before it publishes, so nothing goes out from the old version (ENG-34).
-%% events your records change = new records arrive | a record is corrected
+%% Your health sources (ENG-162; behaviour-contract A, B, F1; north-star.md, Connect your health and
+%% Source access): your phone's health data (Apple Health on iPhone, Health Connect on Android) and
+%% Doctors & hospitals, where each organization you sign in to is authorized, refreshed, fails and is
+%% disconnected on its own (B1). One organization stands for each. Records are kept exactly as sent
+%% (B3); a record missing from a later import is never deleted (B4); while anything retries, what you
+%% have stays visible (B6). Disconnecting stops new data and keeps everything already imported until
+%% you delete your account (F1). A source that stops working shows it on the source, with Reconnect;
+%% Duet's AI may mention it, and nothing else alerts you (Dev 2026-10-26).
+%% event connect a doctor or hospital | by you | needs DIn, AReady, OrgOff, TCur | reason: a set-up account connects; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You search for your hospital or clinic among the portals Duet can authorize end to end (Epic MyChart, Oracle Health and healow) and go to its portal to sign in (north-star.md, Connect your health).
+%% event the portal signs you in | by the organization's portal | needs OrgSigning, OrgResigning | reason: only a sign-in in progress finishes, in the session that started it | You finish signing in at the portal and come back to Duet; the import starts. Reconnecting the same organization resumes the same history (F1).
+%% event cancel the portal sign-in | by you | needs OrgSigning, OrgResigning | reason: only a sign-in in progress is cancelled | You back out of the portal; cancelling is never shown as a failure (north-star.md, Connect your health).
+%% event the portal sign-in fails | by the organization's portal | needs OrgSigning, OrgResigning | reason: only a sign-in in progress fails | The portal doesn't sign you in; Duet says why, from one shared failure meaning, and you can try again.
+%% event the import finishes | by Duet | needs OrgImporting | reason: only a running import finishes | Everything this import found is kept, with or without the source's own warnings (B5).
+%% event the import finishes with items it couldn't read | by Duet | needs OrgImporting | reason: only a running import finishes | The import ends as partial: the records or pages it couldn't read are named with their reason, and everything else is kept; the next refresh tries them again (B2, B5; Dev 2026-10-04).
+%% event the import can't finish | by the organization's portal | needs OrgImporting | reason: only a running import fails | The source is down or keeps failing; what you already have stays visible and the next refresh tries again (B5, B6).
+%% event the organization stops accepting Duet's access | by the organization's portal | needs OrgConn | reason: only a connected organization can drop its access | The portal's sign-in expired or was revoked; the source shows it couldn't update since its last import, with Reconnect (Dev 2026-10-26).
+%% event refresh your records | by you | command on the organization: Refresh, clicked while DIn | needs OrgCurrent, OrgPartial, OrgTrouble, TCur | reason: only a connected organization that isn't already importing refreshes; newer Terms wait for your acceptance first | You ask for an update now; a stuck import elsewhere never blocks it (B6).
+%% event the daily refresh starts | by the clock | needs OrgCurrent, OrgPartial, OrgTrouble | reason: only a connected organization that isn't already importing refreshes | At most once a day Duet asks each connected organization for what changed (B7).
+%% event reconnect the organization | by you | needs DIn, OrgSignIn, TCur | reason: only an organization that needs you to sign in again is reconnected; newer Terms wait for your acceptance first | You go back to the portal to sign in again; your history stays as it is.
+%% event disconnect the organization | by you | command on the organization: Disconnect, clicked while DIn | needs OrgConn | reason: only a connected organization disconnects; stopping a source is always yours, even before newer Terms, as leaving your practice is (Dev 2026-10-26) | New data stops at once and work in flight is fenced; everything already imported stays, as of its last update, until you delete your account (F1).
+%% event allow your phone's health data | by you | needs DIn, AReady, PhOff, TCur | reason: a set-up account connects; newer Terms wait for your acceptance first | You allow Duet to read Apple Health on iPhone or Health Connect on Android; declining changes nothing (ENG-162; north-star.md, Connect your health).
+%% event your phone's history finishes importing | by your phone | needs PhImporting, DIn | reason: only an import in progress finishes, and the phone reads only while you're signed in on it (behaviour-contract rule 12) | The available history arrives in resumable steps, and any gap in coverage is stated (A5).
+%% event your phone's readings arrive | by your phone | needs PhOn, DIn | reason: only a connected phone sends readings, and only while you're signed in on it; queued readings wait (behaviour-contract rule 12) | Every reading arrives as its own measurement with its time and the time zone it was taken in (A2, A3). Readings don't start a review; they reach the next one (Dev 2026-10-06).
+%% event a reading is deleted in your phone's health app | by your phone | needs PhOn, DIn | reason: only a connected phone reports deletions, and only while you're signed in on it (behaviour-contract rule 12) | The reading leaves current evidence and its day is recalculated; earlier versions stay for existing citations. An empty or failed read, or lost access, is never a deletion (A4).
+%% event access is turned off in your phone's settings | by you | needs PhOn | reason: only granted access can be turned off | You turn off Duet's access in the phone's settings; Duet stops reading and keeps what it has, and says so on the source.
+%% event access is turned back on in your phone's settings | by you | needs PhBlocked | reason: only access you turned off comes back | Duet reads again from where it left off.
+%% event disconnect your phone's health data | by you | command on your phone's health data: Disconnect, clicked while DIn | needs PhOn, PhBlocked | reason: only a connected phone source disconnects; stopping a source is always yours, even before newer Terms (Dev 2026-10-26) | Uploads stop and everything already imported stays until you delete your account (F1; north-star.md, Apple Health daily history).
+%% event clinical records arrive from your phone's health app | by your phone | needs PhOn, DIn | reason: they come only through a connected phone, while you're signed in on it (behaviour-contract rule 12) | On iPhone, clinical records you already connected and approved in the Health app arrive through Apple Health, after their own Apple permission. Duet never claims it can add, refresh or disconnect those provider accounts; they're managed in the Health app (north-star.md, Source access).
+%% event a clinical record changes in your phone's health app | by your phone | needs PhOn, DIn | reason: only a connected phone reports changes, while you're signed in on it (behaviour-contract rule 12) | A clinical record from the Health app is corrected or removed. The new version arrives; anything already published keeps the version it used, and unfinished work looks again before it publishes (E5; ENG-34).
+%% event new records arrive | by your records source | needs OrgImporting | reason: records arrive only through an import that is running | A portal or other source delivers something new; a changed record is a correction. Reprocessing Duet's own data is not an arrival (C5). Apple Health readings wait for the next review rather than starting one (Dev 2026-10-06).
+%% event a record is corrected | by your records source | needs OrgImporting | reason: corrections and deletions arrive only through an import that is running | A source corrects or replaces a record you already have. The new version arrives; anything already published keeps the version it used (E5; ENG-162). Unfinished work looks again before it publishes, so nothing goes out from the old version (ENG-34).
+%% events records come in = new records arrive | clinical records arrive from your phone's health app
+%% events your records change = new records arrive | a record is corrected | clinical records arrive from your phone's health app | a clinical record changes in your phone's health app
 %% Unfinished work looks again before it publishes when something it read changes (ENG-34). A reply
 %% hears the changes you or your sources make; Duet's own Plan saves happen inside the reply.
-%% events you or your sources change what Duet read = a record is corrected | your doctor's plan arrives or changes | change the Plan | delete the Plan | mark an insight not accurate
-%% events what Duet read changes = a record is corrected | your doctor's plan arrives or changes | change the Plan | delete the Plan | mark an insight not accurate | Duet saves the Plan you asked for | Duet deletes the Plan as you asked
+%% events you or your sources change what Duet read = a record is corrected | a clinical record changes in your phone's health app | a reading is deleted in your phone's health app | your doctor's plan arrives or changes | change the Plan | delete the Plan | mark an insight not accurate
+%% events what Duet read changes = a record is corrected | a clinical record changes in your phone's health app | a reading is deleted in your phone's health app | your doctor's plan arrives or changes | change the Plan | delete the Plan | mark an insight not accurate | Duet saves the Plan you asked for | Duet deletes the Plan as you asked
 %% Your edits to For my doctor and your appointment don't restart work that is running. A review or
 %% reply notes the change, and an update it proposes afterwards waits for you to review it again
 %% against your latest version (Dev 2026-10-26).
@@ -150,7 +180,7 @@ stateDiagram-v2
 %% event your practice moves your appointment | by your practice | needs PrcConn, PaSet | reason: only a known practice appointment moves, while connected | The new time shows; what you prepared stays (ENG-169).
 %% event your practice cancels your appointment | by your practice | needs PrcConn, PaSet | reason: only a known practice appointment is cancelled, while connected | It no longer shows as booked; what you prepared stays.
 %% event your practice's appointment passes | by your practice | needs PrcConn, PaSet | reason: only a known practice appointment passes, while connected | Its time has passed.
-%% events your shared data changes = new records arrive | a record is corrected | you answer a Check-in about your doctor's plan
+%% events your shared data changes = new records arrive | a record is corrected | clinical records arrive from your phone's health app | a clinical record changes in your phone's health app | your phone's readings arrive | a reading is deleted in your phone's health app | you answer a Check-in about your doctor's plan
 
   state "Duet" as App {
 
@@ -491,7 +521,7 @@ stateDiagram-v2
           %% only weekly
           RvIdle --> RvOwed : your records change
           %% only arrival
-          RvRun --> RvOwed : new records arrive
+          RvRun --> RvOwed : records come in
           RvRun --> RvOwed : what Duet read changes
           RvOwed --> RvRun : Duet starts the {review}
           RvRun --> RvIdle : Duet finishes the {review}
@@ -754,6 +784,14 @@ stateDiagram-v2
         state "Your command on your practice" as PrcRc {
           %% receipt your practice
         }
+        --
+        state "Your command on the organization" as OrgRc {
+          %% receipt the organization
+        }
+        --
+        state "Your command on your phone's health data" as PhRc {
+          %% receipt your phone's health data
+        }
       }
       DOut --> DIn : sign in
       DIn --> DOut : sign out on this device
@@ -797,6 +835,87 @@ stateDiagram-v2
       PrcConn --> PrcNone : delete your account
       PrcEnded --> PrcNone : delete your account
     }
+    --
+    %% What you have from your sources: kept through any disconnect, gone only with your account (F1, F2).
+    state "Your health records" as Rec {
+      [*] --> RecNone
+      state "No records yet" as RecNone
+      state "Records kept" as RecHave
+      RecNone --> RecHave : records come in
+      RecNone --> RecHave : your phone's readings arrive
+      RecHave --> RecNone : the deletion finishes
+    }
+    --
+    state "Doctors & hospitals: an organization" as Org {
+      [*] --> OrgOff
+      state "Organization not connected" as OrgOff
+      state "Signing in at the organization's portal" as OrgSigning
+      state "Organization connected" as OrgConn {
+        [*] --> OrgImporting
+        state "Importing your records" as OrgImporting
+        state "Up to date" as OrgCurrent
+        state "Up to date except items it couldn't read, named" as OrgPartial
+        state "Couldn't update; your records stay, and the next refresh tries again" as OrgTrouble
+        state "Couldn't update since its last import, with Reconnect" as OrgSignIn
+        state "Signing in again at the portal" as OrgResigning
+        OrgImporting --> OrgCurrent : the import finishes
+        OrgImporting --> OrgPartial : the import finishes with items it couldn't read
+        OrgImporting --> OrgTrouble : the import can't finish
+        OrgCurrent --> OrgImporting : refresh your records
+        OrgPartial --> OrgImporting : refresh your records
+        OrgTrouble --> OrgImporting : refresh your records
+        OrgCurrent --> OrgImporting : the daily refresh starts
+        OrgPartial --> OrgImporting : the daily refresh starts
+        OrgTrouble --> OrgImporting : the daily refresh starts
+        OrgSignIn --> OrgResigning : reconnect the organization
+        OrgResigning --> OrgImporting : the portal signs you in
+        OrgResigning --> OrgSignIn : cancel the portal sign-in
+        OrgResigning --> OrgSignIn : the portal sign-in fails
+        OrgImporting --> OrgImporting : new records arrive
+        OrgImporting --> OrgImporting : a record is corrected
+      }
+      OrgOff --> OrgSigning : connect a doctor or hospital
+      OrgSigning --> OrgConn : the portal signs you in
+      OrgSigning --> OrgOff : cancel the portal sign-in
+      OrgSigning --> OrgOff : the portal sign-in fails
+      OrgConn --> OrgSignIn : the organization stops accepting Duet's access
+      OrgConn --> OrgOff : disconnect the organization
+      OrgSigning --> OrgOff : delete your account
+      OrgConn --> OrgOff : delete your account
+    }
+    --
+    %% Apple Health on iPhone, Health Connect on Android (Dev 2026-10-11).
+    state "Your phone's health data" as Phone {
+      [*] --> PhOff
+      state "Phone not connected" as PhOff
+      state "Phone connected" as PhOn {
+        [*] --> PhImporting
+        state "Bringing in your history" as PhImporting
+        state "Up to date from your phone" as PhCurrent
+        PhImporting --> PhCurrent : your phone's history finishes importing
+        PhImporting --> PhImporting : your phone's readings arrive
+        PhCurrent --> PhCurrent : your phone's readings arrive
+        PhImporting --> PhImporting : a reading is deleted in your phone's health app
+        PhImporting --> PhImporting : clinical records arrive from your phone's health app
+        PhImporting --> PhImporting : a clinical record changes in your phone's health app
+        PhCurrent --> PhCurrent : a reading is deleted in your phone's health app
+        PhCurrent --> PhCurrent : clinical records arrive from your phone's health app
+        PhCurrent --> PhCurrent : a clinical record changes in your phone's health app
+      }
+      state "Access turned off in your phone's settings; your readings stay" as PhBlocked
+      PhOff --> PhOn : allow your phone's health data
+      PhOn --> PhBlocked : access is turned off in your phone's settings
+      PhBlocked --> PhOn : access is turned back on in your phone's settings
+      PhOn --> PhOff : disconnect your phone's health data
+      PhBlocked --> PhOff : disconnect your phone's health data
+      PhOn --> PhOff : delete your account
+      PhBlocked --> PhOff : delete your account
+    }
+    %% never OrganizationOnlyWithAccount: Organization connected & No account -- Sources belong to an account; deleting it ends every one (F2).
+    %% never PhoneOnlyWithAccount: Phone connected & No account -- Sources belong to an account; deleting it ends every one (F2).
+    %% never OrganizationNotWhileDeleting: Organization connected & Deleting your account -- Deletion stops every source at once (F2).
+    %% never PhoneNotWhileDeleting: Phone connected & Deleting your account -- Deletion stops every source at once (F2).
+    %% never RecordsGoWithAccount: Records kept & No account -- Records are kept until the account is deleted, and not after (F1, F2).
     %% never SessionWithoutAccount: Signed in on this device & No account -- A session always belongs to an account (ENG-111).
     %% never OtherSessionWithoutAccount: Signed in on another device & No account -- A session always belongs to an account (ENG-111).
   }
